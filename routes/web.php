@@ -22,4 +22,7 @@ Route::get('/forgot_password', function () {
 Route::get('/reset_password', function () {
     return view('reset_password');
 });
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
 
