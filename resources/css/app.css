@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (min-width: 1024px) {
+#logo-sidebar.expanded {
+    transition: 0.3s;
+    width: 16rem;
+}
+
+#content.ex-ml {
+    transition: 0.3s;
+    margin-left: 16rem
+}
+
+#logo-sidebar:hover {
+    transition: 0.3s;
+    width: 16rem;
+}
+#logo-sidebar {
+    transition: 0.3s;
+}
+
+#logo-sidebar:hover+#content {
+    transition: 0.3s;
+    margin-left: 16rem;
+}
+}
