@@ -25,4 +25,7 @@ Route::get('/reset_password', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
+Route::get('/UserManager', function () {
+    return view('user_manager');
+});
 
