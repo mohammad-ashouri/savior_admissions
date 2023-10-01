@@ -28,4 +28,7 @@ Route::get('/dashboard', function () {
 Route::get('/UserManager', function () {
     return view('user_manager');
 });
+Route::get('/Documents', function () {
+    return view('documents');
+});
 
