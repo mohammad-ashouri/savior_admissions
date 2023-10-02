@@ -2,27 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (min-width: 1024px) {
-#logo-sidebar.expanded {
-    transition: 0.3s;
-    width: 16rem;
+@media (min-width: 768px) {
+    #logo-sidebar.expanded {
+        transition: 0.3s;
+        width     : 16rem;
+    }
+
+    #content.ex-ml {
+        transition : 0.3s;
+        margin-left: 16rem
+    }
+
+    #logo-sidebar:hover {
+        transition: 0.3s;
+        width     : 16rem;
+    }
+
+    /* add remove menu */
+    #logo-sidebar .menulist {
+        transition: 0.9s;
+        display: none;
+        padding-left: 2.75rem;
+        -webkit-transition: 0.9s;
+        -moz-transition: 0.9s;
+        -ms-transition: 0.9s;
+        -o-transition: 0.9s;
 }
 
-#content.ex-ml {
-    transition: 0.3s;
-    margin-left: 16rem
+    #logo-sidebar:hover .menulist {
+        transition: 0.9s;
+        display: inline-block !important;
+        padding-left: 2.75rem;
 }
 
-#logo-sidebar:hover {
-    transition: 0.3s;
-    width: 16rem;
-}
-#logo-sidebar {
-    transition: 0.3s;
+    #logo-sidebar:hover .menulist-hover {
+        transition  : 0.9s;
+        display     : none !important;
+        padding-left: 2.75rem;
+
+
+    }
+
+    #logo-sidebar #dropdown-example a {
+        transition: 0.9s;
+        padding-left: 10px;
+        -webkit-transition: 0.9s;
+        -moz-transition: 0.9s;
+        -ms-transition: 0.9s;
+        -o-transition: 0.9s;
 }
 
-#logo-sidebar:hover+#content {
-    transition: 0.3s;
-    margin-left: 16rem;
-}
+
+    #logo-sidebar {
+        transition: 0.3s;
+    }
+
+    #logo-sidebar:hover+#content {
+        transition : 0.3s;
+        margin-left: 16rem;
+    }
 }
