@@ -31,4 +31,7 @@ Route::get('/UserManager', function () {
 Route::get('/Documents', function () {
     return view('documents');
 });
+Route::get('/Profile', function () {
+    return view('profile');
+});
 
