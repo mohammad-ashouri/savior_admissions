@@ -24,6 +24,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->middleware('web')->only('logout');
     }
+
     public function showLoginForm()
     {
         if (Auth::check()) {
@@ -32,11 +33,12 @@ class LoginController extends Controller
         Auth::logout();
         return view('Auth.login');
     }
+
     public function login(Request $request)
     {
 
         if (!$request->input('email')) {
-//            $this->logActivity('Login Failed (Null Username)', request()->ip(), request()->userAgent());
+            $this->logActivity('Login Failed (Null Email)', request()->ip(), request()->userAgent());
             return response()->json([
                 'success' => false,
                 'errors' => [
@@ -45,7 +47,7 @@ class LoginController extends Controller
             ]);
         }
         if (!$request->input('password')) {
-//            $this->logActivity('Failed Login With This Username (Null Password)', request()->ip(), request()->userAgent());
+            $this->logActivity('Failed Login With This Email' . $request->input('email') . ' (Null Password)', request()->ip(), request()->userAgent());
             return response()->json([
                 'success' => false,
                 'errors' => [
@@ -54,7 +56,7 @@ class LoginController extends Controller
             ]);
         }
 //        if (!$request->input('captcha')) {
-////            $this->logActivity('Login Failed (Null Captcha) For User => ( ' . $request->input('username').' )', request()->ip(), request()->userAgent());
+////            $this->logActivity('Login Failed (Null Captcha) For User => ( ' . $request->input('email').' )', request()->ip(), request()->userAgent());
 //            return response()->json([
 //                'success' => false,
 //                'errors' => [
@@ -66,7 +68,7 @@ class LoginController extends Controller
 //        $captcha = $request->input('captcha');
 //        $sessionCaptcha = session('captcha')['key'];
 //        if (!password_verify($captcha, $sessionCaptcha)) {
-//            $this->logActivity('Login Failed (Wrong Captcha) For User => ( ' . $request->input('username') . ' )', request()->ip(), request()->userAgent());
+//            $this->logActivity('Login Failed (Wrong Captcha) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
 //            return response()->json([
 //                'success' => false,
 //                'errors' => [
@@ -79,20 +81,20 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = User::where('email', $request->input('email'))->first();
-            $userID=$user['id'];
+            $userID = $user['id'];
             Session::put('id', $userID);
             Session::put('type', $user['type']);
-//            $this->logActivity('Login With This Username => ' . $request->input('username'), request()->ip(), request()->userAgent());
+            $this->logActivity('Login With This Email => ' . $request->input('email'), request()->ip(), request()->userAgent(), $userID);
             return response()->json([
                 'success' => true,
                 'redirect' => route('dashboard')
             ]);
         }
-//        $this->logActivity('Login Failed (Wrong Username Or Password) For User => ( ' . $request->input('username') . ' )', request()->ip(), request()->userAgent());
+        $this->logActivity('Login Failed (Wrong Email Or Password) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
         return response()->json([
             'success' => false,
             'errors' => [
-                'loginError' => ['Please check your username and password']
+                'loginError' => ['Please check your email and password']
             ]
         ]);
     }
