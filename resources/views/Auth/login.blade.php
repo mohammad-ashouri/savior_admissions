@@ -35,6 +35,10 @@
                         placeholder="••••••••" >
                 </div>
 
+                <div class="mb-6">
+                    <p class="text-white text-center">capcha code</p>
+                </div>
+
                 <div class="flex justify-between items-start mb-6">
                     <div class="flex items-center h-5">
                         <input id="remember" type="checkbox" value=""
