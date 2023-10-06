@@ -43,7 +43,7 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        'mysql' => [
+        'main' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -63,20 +63,55 @@ return [
             ]) : [],
         ],
 
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
+        'logs' => [
+            'driver' => 'mysql',
+            'url' => env('LOGS_DATABASE_URL'),
+            'host' => env('LOGS_DB_HOST', '127.0.0.1'),
+            'port' => env('LOGS_DB_PORT', '3306'),
+            'database' => env('LOGS_DB_DATABASE', 'forge'),
+            'username' => env('LOGS_DB_USERNAME', 'forge'),
+            'password' => env('LOGS_DB_PASSWORD', ''),
+            'unix_socket' => env('LOGS_DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
+
+//        'main' => [
+//            'driver' => 'pgsql',
+//            'url' => env('DATABASE_URL'),
+//            'host' => env('DB_HOST', '127.0.0.1'),
+//            'port' => env('DB_PORT', '5432'),
+//            'database' => env('DB_DATABASE', 'forge'),
+//            'username' => env('DB_USERNAME', 'forge'),
+//            'password' => env('DB_PASSWORD', ''),
+//            'charset' => 'utf8',
+//            'prefix' => '',
+//            'prefix_indexes' => true,
+//            'search_path' => 'public',
+//            'sslmode' => 'prefer',
+//        ],
+//
+//        'logs' => [
+//            'driver' => 'pgsql',
+//            'url' => env('LOGS_DATABASE_URL'),
+//            'host' => env('LOGS_DB_HOST', '127.0.0.1'),
+//            'port' => env('LOGS_DB_PORT', '5432'),
+//            'database' => env('LOGS_DB_DATABASE', 'forge'),
+//            'username' => env('LOGS_DB_USERNAME', 'forge'),
+//            'password' => env('LOGS_DB_PASSWORD', ''),
+//            'charset' => 'utf8',
+//            'prefix' => '',
+//            'prefix_indexes' => true,
+//            'search_path' => 'public',
+//            'sslmode' => 'prefer',
+//        ],
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
