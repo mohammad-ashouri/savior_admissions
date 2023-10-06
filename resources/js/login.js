@@ -11,54 +11,87 @@ function swalFire(title = null, text, icon, confirmButtonText) {
     });
 }
 
-$('#login-form').submit(function (e) {
-    e.preventDefault();
+$(document).ready(function () {
 
-    var form = $(this);
-    var data = form.serialize();
 
-    $.ajax({
-        type: 'POST', url: '/login', data: data, headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-        }, success: function (response) {
-            if (response.success) {
-                window.location.href = response.redirect;
-            } else {
-                if (response.errors.Email) {
-                    swalFire('Email Error', response.errors.Email[0], 'error', 'تلاش مجدد');
-                    // reloadCaptcha();
-                    // captcha.value = '';
-                } else if (response.errors.password) {
-                    swalFire('Password', response.errors.password[0], 'error', 'تلاش مجدد');
-                    // reloadCaptcha();
-                    // captcha.value = '';
-                }
+    switch (window.location.pathname) {
+        case '/login':
+        case '/':
+            $('#login-form').submit(function (e) {
+                e.preventDefault();
 
-                    // if (response.errors.captcha) {
-                    //     swalFire('کد امنیتی نامعتبر', response.errors.captcha[0], 'error', 'تلاش مجدد');
-                    //     reloadCaptcha();
-                    //     captcha.value = '';
-                // }
-                else if (response.errors.loginError) {
-                    swalFire('Wrong email or password', response.errors.loginError[0], 'error', 'تلاش مجدد');
-                    // reloadCaptcha();
-                    // captcha.value = '';
-                }
-            }
-        }, error: function (xhr, textStatus, errorThrown) {
-            if (xhr.responseJSON['YouAreLocked']) {
-                swalFire('Access is forbidden', 'Your IP has been blocked. Please provide to your admin', 'error', 'تایید');
-                const fields = [email, password, captcha];
-                fields.forEach(field => {
-                    field.disabled = true;
-                    field.value = null;
-                    field.style.backgroundColor = 'gray';
+                var form = $(this);
+                var data = form.serialize();
+
+                $.ajax({
+                    type: 'POST', url: '/login', data: data, headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }, success: function (response) {
+                        if (response.success) {
+                            window.location.href = response.redirect;
+                        } else {
+                            if (response.errors.Email) {
+                                swalFire('Email Error', response.errors.Email[0], 'error', 'تلاش مجدد');
+                                // reloadCaptcha();
+                                // captcha.value = '';
+                            } else if (response.errors.password) {
+                                swalFire('Password', response.errors.password[0], 'error', 'تلاش مجدد');
+                                // reloadCaptcha();
+                                // captcha.value = '';
+                            }
+
+                                // if (response.errors.captcha) {
+                                //     swalFire('کد امنیتی نامعتبر', response.errors.captcha[0], 'error', 'تلاش مجدد');
+                                //     reloadCaptcha();
+                                //     captcha.value = '';
+                            // }
+                            else if (response.errors.loginError) {
+                                swalFire('Wrong email or password', response.errors.loginError[0], 'error', 'تلاش مجدد');
+                                // reloadCaptcha();
+                                // captcha.value = '';
+                            }
+                        }
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        if (xhr.responseJSON['YouAreLocked']) {
+                            swalFire('Access is forbidden', 'Your IP has been blocked. Please provide to your admin', 'error', 'تایید');
+                            const fields = [email, password, captcha];
+                            fields.forEach(field => {
+                                field.disabled = true;
+                                field.value = null;
+                                field.style.backgroundColor = 'gray';
+                            });
+                        } else {
+                            swalFire('Server Error', 'Server connectivity failed', 'error', 'تلاش مجدد');
+                        }
+
+                    }
                 });
-            } else {
-                swalFire('Server Error', 'Server connectivity failed', 'error', 'تلاش مجدد');
-            }
+            });
+            break;
+        case '/password/forgot':
+            $('#forget-password').submit(function (e) {
+                e.preventDefault();
 
-        }
-    });
+                var form = $(this);
+                var data = form.serialize();
+
+                $.ajax({
+                    type: 'POST', url: '/password/reset', data: data, headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }, success: function (response) {
+                        if (response.success) {
+                            window.location.href = response.redirect;
+                        } else {
+                            if (response.errors.Email) {
+                                swalFire('Email Error', response.errors.Email[0], 'error', 'تلاش مجدد');
+                            }
+                        }
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Server Error', 'Server connectivity failed', 'error', 'تلاش مجدد');
+                    }
+                });
+            });
+            break;
+    }
 });
 
