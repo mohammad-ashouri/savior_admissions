@@ -39,35 +39,30 @@ $(document).ready(function () {
                     var data = form.serialize();
 
                     $.ajax({
-                        type: 'POST', url: '/login', data: data, headers: {
+                        type: 'POST',
+                        url: '/login',
+                        data: data,
+                        headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                        }, success: function (response) {
+                        },
+                        success: function (response) {
                             if (response.success) {
                                 window.location.href = response.redirect;
                             } else {
-                                if (response.errors.Email) {
-                                    swalFire('Email Error', response.errors.Email[0], 'error', 'Try again');
-                                    // reloadCaptcha();
-                                    // captcha.value = '';
+                                if (response.errors.email) {
+                                    swalFire('Email Error', response.errors.email[0], 'error', 'Try again');
+                                    // Reload captcha if needed
                                 } else if (response.errors.password) {
                                     swalFire('Password', response.errors.password[0], 'error', 'Try again');
-                                    // reloadCaptcha();
-                                    // captcha.value = '';
-                                }
-
-                                    // if (response.errors.captcha) {
-                                    //     swalFire('کد امنیتی نامعتبر', response.errors.captcha[0], 'error', 'Try again');
-                                    //     reloadCaptcha();
-                                    //     captcha.value = '';
-                                // }
-                                else if (response.errors.loginError) {
+                                    // Reload captcha if needed
+                                } else if (response.errors.loginError) {
                                     swalFire('Wrong email or password', response.errors.loginError[0], 'error', 'Try again');
-                                    // reloadCaptcha();
-                                    // captcha.value = '';
+                                    // Reload captcha if needed
                                 }
                             }
-                        }, error: function (xhr, textStatus, errorThrown) {
-                            if (xhr.responseJSON['YouAreLocked']) {
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            if (xhr.responseJSON && xhr.responseJSON['YouAreLocked']) {
                                 swalFire('Access is forbidden', 'Your IP has been blocked. Please provide to your admin', 'error', 'Done!');
                                 const fields = [email, password, captcha];
                                 fields.forEach(field => {
@@ -78,10 +73,10 @@ $(document).ready(function () {
                             } else {
                                 swalFire('Server Error', 'Server connectivity failed', 'error', 'Try again');
                             }
-
                         }
                     });
                 });
+
                 break;
             case '/password/forgot':
                 const selectors = document.querySelectorAll('select');
