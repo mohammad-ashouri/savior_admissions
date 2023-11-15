@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
+use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,10 @@ Route::get('/', function () {
     }
     return redirect()->route('dashboard');
 });
+Route::get('/home', function () {
+    Auth::logout();
+    return redirect()->route('login');
+});
 
 Route::prefix('login')->group(function () {
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -39,16 +44,17 @@ Route::prefix('password')->group(function () {
 Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-Route::get('/UserManager', function () {
-    return view('user_manager');
-});
-Route::get('/Documents', function () {
-    return view('documents');
-});
-Route::get('/Profile', function () {
-    return view('profile');
+Route::middleware(CheckLoginMiddleware::class)->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    Route::get('/UserManager', function () {
+        return view('user_manager');
+    });
+    Route::get('/Documents', function () {
+        return view('documents');
+    });
+    Route::get('/Profile', function () {
+        return view('profile');
+    });
 });

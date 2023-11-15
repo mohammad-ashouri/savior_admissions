@@ -16,7 +16,7 @@ class CheckLoginMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() and session('username')) {
+        if (Auth::check() and session('id')) {
             return $next($request);
         }
 

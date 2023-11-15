@@ -29,11 +29,11 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        if (Auth::check()) {
-            return redirect()->route('dashboard');
+        if (!Auth::check()) {
+            return view('Auth.login');
         }
-//        Auth::logout();
-        return view('Auth.login');
+        Auth::logout();
+        return redirect()->route('dashboard');
     }
 
     public function login(Request $request)
