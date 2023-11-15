@@ -31,7 +31,7 @@ class LoginController extends Controller
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
-        Auth::logout();
+//        Auth::logout();
         return view('Auth.login');
     }
 

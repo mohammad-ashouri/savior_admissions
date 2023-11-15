@@ -9,7 +9,11 @@
 
     <title>Savior Login</title>
 </head>
-
+@if( session('successResettedPassword'))
+    <script>
+        alert('salam');
+    </script>
+@endif
 <body class="bg-gray-200 dark:bg-gray-900 flex items-center justify-center h-screen">
     <div class="bg-white dark:bg-gray-800 lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
         <div class="lg:w-2/5 pr-8 lg:inline-block hidden">
@@ -50,8 +54,7 @@
 
 
                     <div class="flex items-center">
-                        <a href="#" class="text-blue-500">Lost Password?</a>
-
+                        <a href="{{ route('ForgetPassword') }}" class="text-blue-500">Lost Password?</a>
                     </div>
                 </div>
 
