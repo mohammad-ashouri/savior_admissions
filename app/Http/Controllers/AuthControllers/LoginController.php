@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 use Mews\Captcha\Captcha;
 
 class LoginController extends Controller
@@ -37,46 +38,31 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+            //'captcha' => 'required', // Uncomment if you want to include captcha validation
+        ]);
 
-        if (!$request->input('email')) {
-            $this->logActivity('Login Failed (Null Email)', request()->ip(), request()->userAgent());
+        if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'errors' => [
-                    'Email' => ['Email is required']
-                ]
+                'errors' => $validator->errors()
             ]);
         }
-        if (!$request->input('password')) {
-            $this->logActivity('Failed Login With This Email' . $request->input('email') . ' (Null Password)', request()->ip(), request()->userAgent());
-            return response()->json([
-                'success' => false,
-                'errors' => [
-                    'password' => ['Password is required']
-                ]
-            ]);
-        }
-//        if (!$request->input('captcha')) {
-////            $this->logActivity('Login Failed (Null Captcha) For User => ( ' . $request->input('email').' )', request()->ip(), request()->userAgent());
-//            return response()->json([
-//                'success' => false,
-//                'errors' => [
-//                    'captcha' => ['کد امنیتی وارد نشده است.']
-//                ]
-//            ]);
-//        }
 
-//        $captcha = $request->input('captcha');
-//        $sessionCaptcha = session('captcha')['key'];
-//        if (!password_verify($captcha, $sessionCaptcha)) {
-//            $this->logActivity('Login Failed (Wrong Captcha) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
-//            return response()->json([
-//                'success' => false,
-//                'errors' => [
-//                    'captcha' => ['کد امنیتی صحیح وارد نشده است.']
-//                ]
-//            ]);
-//        }
+        // Uncomment if you want to include captcha validation
+        // $captcha = $request->input('captcha');
+        // $sessionCaptcha = session('captcha')['key'];
+        // if (!password_verify($captcha, $sessionCaptcha)) {
+        //     $this->logActivity('Login Failed (Wrong Captcha) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
+        //     return response()->json([
+        //         'success' => false,
+        //         'errors' => [
+        //             'captcha' => ['کد امنیتی صحیح وارد نشده است.']
+        //         ]
+        //     ]);
+        // }
 
         $credentials = $request->only('email', 'password');
 
@@ -86,19 +72,24 @@ class LoginController extends Controller
             Session::put('id', $userID);
             Session::put('type', $user['type']);
             $this->logActivity('Login With This Email => ' . $request->input('email'), request()->ip(), request()->userAgent(), $userID);
+
             return response()->json([
                 'success' => true,
-                'redirect' => route('dashboard')
+                'redirect' => route('dashboard'),
+                'message' => 'Login successful',
             ]);
         }
+
         $this->logActivity('Login Failed (Wrong Email Or Password) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
+
         return response()->json([
             'success' => false,
             'errors' => [
-                'loginError' => ['Please check your email and password']
+                'loginError' => ['Invalid email or password']
             ]
         ]);
     }
+
 
     public function logout()
     {

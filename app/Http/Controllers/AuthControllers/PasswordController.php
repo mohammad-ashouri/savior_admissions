@@ -90,24 +90,27 @@ class PasswordController extends Controller
 
     public function resetPassword(Request $request)
     {
+        $resetTokenInfo = PasswordResetToken::where('token', $request->input('token'))->where('active', 1)->first();
         $validator = Validator::make($request->all(), [
             'password' => 'required|min:8|max:24|confirmed',
         ]);
         if ($validator->fails()) {
+            $this->logActivity('Failed Resetting Password=> ' . $validator->errors()->first(), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
             return response()->json(['error' => $validator->errors()->first()], 422);
         }
-        $resetTokenInfo = PasswordResetToken::where('token', $request->input('token'))->where('active', 1)->first();
         $user = User::find($resetTokenInfo->user_id);
         $user->password = Hash::make($request->input('password'));
         if ($user->save()) {
             $resetTokenInfo->active = 0;
             $resetTokenInfo->save();
+            $this->logActivity('Password Resetted Successfully => ' . $request->input('email'), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
             return response()->json([
                 'success' => true,
                 'redirect' => route('login'),
                 'flash_message' => 'Password reset successful!',
             ]);
         }
+        $this->logActivity('Failed Resetting Password=> ' . $validator->errors()->first(), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
         return response()->json(['error' => 'Unknown error'], 422);
     }
 
