@@ -1,8 +1,15 @@
 import './bootstrap';
 import 'flowbite';
+import $ from 'jquery';
+import Swal from 'sweetalert2';
+window.Swal = Swal;
+function swalFire(title = null, text, icon, confirmButtonText) {
+    Swal.fire({
+        title: title, text: text, icon: icon, confirmButtonText: confirmButtonText,
+    });
+}
 
 // open toggled sidebar
-
 const toggleButton = document.getElementById('toggleButton');
 const logoSidebar = document.getElementById('logo-sidebar');
 const content = document.getElementById('content');
@@ -37,7 +44,6 @@ toggleButton.addEventListener('click', function() {
     }
 });
 
-// در ابتدا، وضعیت اولیه را بررسی کنید و بر اساس آن مختصرها را نمایش یا مخفی کنید
 if (logoSidebar.classList.contains('expanded')) {
     menuListItems.forEach(item => {
         item.style.display = 'inline-block';
@@ -46,16 +52,15 @@ if (logoSidebar.classList.contains('expanded')) {
     menuListHoverItems.forEach(item => {
         item.style.display = 'none';
     });
-} else {
+}
+else {
     menuListItems.forEach(item => {
         item.style.display = 'none';
     });
-
     menuListHoverItems.forEach(item => {
         item.style.display = 'inline-block';
     });
 }
-
 
 // config dark mode
 var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -64,7 +69,8 @@ var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 // Change the icons inside the button based on previous settings
 if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     themeToggleLightIcon.classList.remove('hidden');
-} else {
+}
+else {
     themeToggleDarkIcon.classList.remove('hidden');
 }
 
@@ -97,4 +103,15 @@ themeToggleBtn.addEventListener('click', function() {
         }
     }
 
+});
+
+$(document).ready(function () {
+    let fullPath = window.location.pathname;
+    let pageTitle=null;
+    switch (fullPath){
+        case '/dashboard':
+            pageTitle='Dashboard';
+            break;
+    }
+    $('#page-title').text(pageTitle);
 });

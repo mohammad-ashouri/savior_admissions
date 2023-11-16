@@ -6,14 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css',  'resources/js/login.js'])
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>Savior Login</title>
 </head>
-@if( session('successResettedPassword'))
-    <script>
-        alert('salam');
-    </script>
-@endif
 <body class="bg-gray-200 dark:bg-gray-900 flex items-center justify-center h-screen">
     <div class="bg-white dark:bg-gray-800 lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
         <div class="lg:w-2/5 pr-8 lg:inline-block hidden">
