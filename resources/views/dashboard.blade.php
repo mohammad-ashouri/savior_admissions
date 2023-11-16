@@ -1,10 +1,15 @@
 @extends('Layouts.panel')
-
+@php
+    use App\Models\User;
+    $myInfo=User::find(session('id'));
+@endphp
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                Dear {name} {family}. Welcome to savior school panel
+                Dear
+                {{ $myInfo->name }} {{ $myInfo->family }}
+                . Welcome to savior school panel
             </div>
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
