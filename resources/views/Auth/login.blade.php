@@ -11,11 +11,11 @@
 <body class="bg-gray-200 dark:bg-gray-900 flex items-center justify-center h-screen">
     <div class="bg-white dark:bg-gray-800 lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
         <div class="lg:w-2/5 pr-8 lg:inline-block hidden">
-            <img src="{{ resource_path('images/login.jpg') }}" alt="Login Image"
+            <img src="{{ Vite::asset('resources/images/login.jpg') }}" alt="Login Image"
                 class="w-full rounded-l-lg">
         </div>
         <div class="lg:w-1/2 w-full flex flex-col justify-center items-center p-8">
-            <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left dark:text-white">Sign in to platform</h2>
+            <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left dark:text-white">Sign in to savior school</h2>
             <form id="login-form" class="space-y-4 w-full">
                 <div class="mb-6">
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
