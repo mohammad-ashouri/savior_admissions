@@ -20,16 +20,14 @@ return new class extends Migration
             $table->string('mobile')->unique();
             $table->string('email')->unique()->nullable();
             $table->string('password');
-            $table->tinyInteger('type');
             $table->tinyInteger('status')->default('1');
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
-
-        $password=bcrypt('123');
-        $query="insert into users (name,family,mobile,email, password,type) values ('Mohammad','Ashouri','+989012682581','test@example.com' ,'$password',1)";
-        DB::statement($query);
+//        $password=bcrypt('123');
+//        $query="insert into users (name,family,mobile,email, password,type) values ('Mohammad','Ashouri','+989012682581','test@example.com' ,'$password',1)";
+//        DB::statement($query);
     }
 
     /**
