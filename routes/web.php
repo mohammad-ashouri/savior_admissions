@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
+use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/Documents', function () {
         return view('documents');
     });
-    Route::get('/Profile', function () {
-        return view('profile');
+
+    Route::prefix('Profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'index']);
     });
 });

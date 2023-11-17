@@ -112,6 +112,24 @@ $(document).ready(function () {
         case '/dashboard':
             pageTitle='Dashboard';
             break;
+        case '/Profile':
+            pageTitle='Profile';
+
+            $('#reset-password').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                $.ajax({
+                    type: 'POST', url: '/password/reset', data: data, headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }, success: function (response) {
+                        window.location.href = response.redirect;
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                    }
+                });
+            });
+            break;
     }
-    $('#page-title').text(pageTitle);
+    $('#page-title').text(pageTitle + ' | Savior Schools');
 });
