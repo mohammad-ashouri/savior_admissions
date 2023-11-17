@@ -112,6 +112,9 @@ $(document).ready(function () {
         case '/dashboard':
             pageTitle='Dashboard';
             break;
+        case '/users':
+            pageTitle='User Management';
+            break;
         case '/Profile':
             pageTitle='Profile';
 

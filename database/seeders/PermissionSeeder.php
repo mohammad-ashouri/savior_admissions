@@ -15,7 +15,11 @@ class PermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = [
-            'create user', 'read user', 'update user', 'delete user'
+            'create user', 'read user', 'update user', 'delete user',
+            'role-list',
+            'role-create',
+            'role-edit',
+            'role-delete',
         ];
         $permissions = collect($permissions)->map(function ($permission) {
             return ['name' => $permission, 'guard_name' => 'web'];

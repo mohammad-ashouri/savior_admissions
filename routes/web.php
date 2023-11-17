@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -49,9 +51,13 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('/UserManager', function () {
-        return view('user_manager');
+
+    Route::group(['middleware' => ['auth']], function() {
+        Route::resource('roles', RoleController::class);
+        Route::resource('users', UserController::class);
+//        Route::resource('products', ProductController::class);
     });
+
     Route::get('/Documents', function () {
         return view('documents');
     });
