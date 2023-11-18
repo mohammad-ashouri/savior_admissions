@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ActivityLog extends Model
 {
     use HasFactory;
-    protected $connection='logs';
+//    protected $connection='logs';
     protected $fillable = [
         'user_id',
         'activity',

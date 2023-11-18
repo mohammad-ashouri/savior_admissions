@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -22,7 +21,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::pluck('name', 'name')->all();
+        $roles = Role::get();
         return view('users.create', compact('roles'));
     }
 
@@ -30,13 +29,15 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'family' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
+            'mobile' => 'required|integer|unique:users,mobile',
             'roles' => 'required'
         ]);
 
         $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
+//        $input['password'] = Hash::make($input['password']);
+        $input['password'] = Hash::make(12345678);
 
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
@@ -90,6 +91,6 @@ class UserController extends Controller
     {
         User::find($id)->delete();
         return redirect()->route('users.index')
-            ->with('success','User deleted successfully');
+            ->with('success', 'User deleted successfully');
     }
 }

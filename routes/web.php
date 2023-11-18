@@ -52,11 +52,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::group(['middleware' => ['auth']], function() {
-        Route::resource('roles', RoleController::class);
-        Route::resource('users', UserController::class);
-//        Route::resource('products', ProductController::class);
-    });
+    Route::resource('roles', RoleController::class)->middleware('role:Admin');
+    Route::resource('users', UserController::class)->middleware('role:Admin');
 
     Route::get('/Documents', function () {
         return view('documents');

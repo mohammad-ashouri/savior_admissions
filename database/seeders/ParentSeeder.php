@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class AdminSeeder extends Seeder
+class ParentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -19,13 +19,13 @@ class AdminSeeder extends Seeder
          * @var User $user
          */
         $user=User::query()->create([
-            'name'=>'Mohammad',
-            'family'=>'Ashouri',
-            'mobile'=>'+989012682581',
-            'email'=>'test@example.com',
+            'name'=>'Ali',
+            'family'=>'Karimi',
+            'mobile'=>'+989398888226',
+            'email'=>'test@gmail.com',
             'password'=>bcrypt(12345678)
         ]);
-        $role = Role::where('name','admin')->first();
+        $role = Role::where('name','parent')->first();
         $permissions = Permission::pluck('id','id')->all();
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);

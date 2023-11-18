@@ -17,7 +17,7 @@
                     <div class="flex">
                         @can('role-create')
                             <a href="{{ route('roles.create') }}">
-                                <button data-modal-target="add-role" data-modal-toggle="add-role" type="button"
+                                <button type="button"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
                                     <svg class="w-6 h-6 mr-1" fill="currentColor" viewBox="0 0 20 20"
@@ -76,8 +76,6 @@
                                     <!-- Modal toggle -->
                                     @can('role-edit')
                                         <a href="{{ route('roles.edit',$role->id) }}" type="button"
-                                           data-modal-target="editRoleModal"
-                                           data-modal-show="editRoleModal"
                                            class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                             <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
                                                  xmlns="http://www.w3.org/2000/svg">
@@ -92,8 +90,10 @@
                                         </a>
                                     @endcan
                                     @can('role-delete')
-                                        <button type="submit" data-modal-target="deleteRole-modal"
-                                                data-modal-show="deleteRole-modal"
+                                        {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
+                                        <button type="submit"
+{{--                                                data-modal-target="deleteRole-modal"--}}
+{{--                                                data-modal-show="deleteRole-modal"--}}
                                                 class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">
                                             <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
                                                  xmlns="http://www.w3.org/2000/svg">
@@ -103,6 +103,7 @@
                                             </svg>
                                             Delete role
                                         </button>
+                                        {!! Form::close() !!}
                                     @endcan
                                 </td>
                             </tr>
@@ -136,12 +137,10 @@
                                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure
                                         you
                                         want to delete this role?</h3>
-                                    {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
                                     <button data-modal-hide="deleteRole-modal" type="submit"
                                             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                         Yes, I'm sure
                                     </button>
-                                    {!! Form::close() !!}
                                     <button data-modal-hide="deleteRole-modal" type="button"
                                             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
                                         No,
