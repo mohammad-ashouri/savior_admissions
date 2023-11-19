@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('general_information', function (Blueprint $table) {
+        Schema::create('general_informations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('father_name');
+            $table->string('gender');
             $table->date('birthdate');
             $table->string('country');
             $table->string('state/city');
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('general_information');
+        Schema::dropIfExists('general_informations');
     }
 };

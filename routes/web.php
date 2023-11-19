@@ -43,7 +43,6 @@ Route::prefix('password')->group(function () {
     Route::post('/reset', [PasswordController::class, 'resetPassword']);
 });
 
-
 Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -61,5 +60,6 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     Route::prefix('Profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index']);
+        Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
     });
 });

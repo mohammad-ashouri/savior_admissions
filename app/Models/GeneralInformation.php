@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GeneralInformation extends Model
 {
-    use HasFactory,softDeletes;
+    use HasFactory, softDeletes;
+
+    protected $table = 'general_informations';
     protected $fillable = [
+        'user_id',
         'father_name',
         'birthdate',
         'country',
@@ -17,6 +20,8 @@ class GeneralInformation extends Model
         'address',
         'phone',
         'postal_code',
+        'adder',
+        'editor',
     ];
     protected $hidden = [
         'adder',
