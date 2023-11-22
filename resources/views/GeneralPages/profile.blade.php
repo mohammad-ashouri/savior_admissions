@@ -173,13 +173,13 @@
                         </div>
 
 
-                        <form>
+                        <form id="reset-password">
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
                                     <label for="Current_password"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current
                                         password</label>
-                                    <input type="password" id="Current_password"
+                                    <input type="password" id="Current_password" name="Current_password"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="••••••••" required>
                                 </div>
@@ -187,7 +187,7 @@
                                     <label for="New_password"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New
                                         password</label>
-                                    <input type="password" id="New_password"
+                                    <input type="password" id="New_password" name="New_password"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="••••••••" required>
                                 </div>
@@ -195,7 +195,7 @@
                                     <label for="Confirm_password"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
                                         password</label>
-                                    <input type="password" id="Confirm_password"
+                                    <input type="password" id="Confirm_password" name="Confirm_password"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="••••••••" required>
                                 </div>
@@ -209,16 +209,10 @@
                                 </div>
                                 <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
                                     <li>
-                                        At least 10 characters (and up to 100 characters)
+                                        At least 8 characters (and up to 20 characters)
                                     </li>
                                     <li>
-                                        At least one lowercase character
-                                    </li>
-                                    <li>
-                                        Inclusion of at least one special character, e.g., ! @ # ?
-                                    </li>
-                                    <li>
-                                        Some text here zoltan
+                                        At least one english character
                                     </li>
                                 </ul>
 

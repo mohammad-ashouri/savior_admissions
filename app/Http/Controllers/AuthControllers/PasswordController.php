@@ -122,4 +122,19 @@ class PasswordController extends Controller
         }
         abort(403);
     }
+
+    public function changePassword(Request $request)
+    {
+        $this->validate($request, [
+            'Current_password' => 'required',
+            'New_password' => 'required|min:8|max:20',
+            'Confirm_password' => 'required_with:New_password|same:New_password|min:8|max:20',
+        ]);
+        $user=User::find(session('id'));
+        if (password_verify($request->input('Current_password'), $user->password)) {
+            $user->password=Hash::make($request->input('New_password'));
+            $user->save();
+            return redirect()->back()->withSuccess('Password updated successfully!');
+        }
+    }
 }

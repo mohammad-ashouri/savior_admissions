@@ -41,6 +41,7 @@ Route::prefix('password')->group(function () {
     Route::post('/getToken', [PasswordController::class, 'sendToken'])->name('sendToken');
     Route::get('/reset/{token}', [PasswordController::class, 'showResetPassword']);
     Route::post('/reset', [PasswordController::class, 'resetPassword']);
+    Route::post('/change', [PasswordController::class, 'changePassword']);
 });
 
 Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');

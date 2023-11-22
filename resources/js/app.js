@@ -124,12 +124,15 @@ $(document).ready(function () {
                 var form = $(this);
                 var data = form.serialize();
                 $.ajax({
-                    type: 'POST', url: '/password/reset', data: data, headers: {
+                    type: 'POST', url: '/password/change', data: data, headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }, success: function (response) {
-                        window.location.href = response.redirect;
+                        Current_password.value='';
+                        New_password.value='';
+                        Confirm_password.value='';
+                        swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
-                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
                     }
                 });
             });
