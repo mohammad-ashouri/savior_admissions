@@ -12,7 +12,8 @@ class ProfileController extends Controller
     public function index()
     {
         $myInfo = User::find(session('id'));
-        return view('GeneralPages.profile', compact('myInfo'));
+        $myGeneralInformation = GeneralInformation::where('user_id',$myInfo->id)->with('user')->first();
+        return view('GeneralPages.profile', compact('myGeneralInformation'));
     }
 
     public function editMyProfile(Request $request)
@@ -20,7 +21,7 @@ class ProfileController extends Controller
         $this->validate($request, [
             'father-name' => 'required|string',
             'gender' => 'required|string',
-            'Birthdate' => 'required|date',
+            'Birthdate' => 'required|string',
             'Country' => 'required|string',
             'city' => 'required|string',
             'address' => 'required|string',
@@ -28,14 +29,14 @@ class ProfileController extends Controller
             'zip/postalcode' => 'required|string',
         ]);
 
-        $generalInformation = GeneralInformation::updateOrCreate(
+        $generalInformation = GeneralInformation::where('user_id',session('id'))->update(
             [
                 'user_id' => session('id'),
                 'father_name' => $request->input('father-name'),
                 'gender' => $request->input('gender'),
                 'birthdate' => $request->input('Birthdate'),
                 'country' => $request->input('Country'),
-                'state/city' => $request->input('city'),
+                'state_city' => $request->input('city'),
                 'address' => $request->input('address'),
                 'phone' => $request->input('phone'),
                 'postal_code' => $request->input('zip/postalcode'),
@@ -43,5 +44,8 @@ class ProfileController extends Controller
                 'editor' => session('id'),
             ]
         );
+        if ($generalInformation) {
+            return redirect()->back()->withSuccess('Profile updated successfully!');
+        }
     }
 }

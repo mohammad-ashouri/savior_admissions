@@ -118,6 +118,7 @@ $(document).ready(function () {
         case '/Profile':
             pageTitle='Profile';
 
+
             $('#reset-password').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);

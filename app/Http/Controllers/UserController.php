@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GeneralInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -41,6 +42,12 @@ class UserController extends Controller
 
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
+
+        $generalInformation=GeneralInformation::create(
+            [
+                'user_id'=>$user->id
+            ]
+        );
 
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');

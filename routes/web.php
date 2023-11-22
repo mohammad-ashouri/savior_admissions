@@ -59,7 +59,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     });
 
     Route::prefix('Profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'index']);
+        Route::get('/', [ProfileController::class, 'index'])->name('profile');
         Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
     });
 });

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\GeneralInformation;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -25,6 +26,11 @@ class AdminSeeder extends Seeder
             'email'=>'test@example.com',
             'password'=>bcrypt(12345678)
         ]);
+        $generalInformation=GeneralInformation::create(
+            [
+                'user_id'=>$user->id
+            ]
+        );
         $role = Role::where('name','admin')->first();
         $permissions = Permission::pluck('id','id')->all();
         $role->syncPermissions($permissions);
