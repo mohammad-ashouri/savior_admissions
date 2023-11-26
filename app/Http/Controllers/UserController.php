@@ -64,8 +64,9 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
+        $generalInformation=GeneralInformation::where('user_id',$user->id)->first();
 
-        return view('users.edit', compact('user', 'roles', 'userRole'));
+        return view('users.edit', compact('user', 'roles', 'userRole','generalInformation'));
     }
 
     public function update(Request $request, $id)
@@ -113,6 +114,7 @@ class UserController extends Controller
             $user=User::find($input['user_id']);
             $user->password=$input['password'];
             $user->save();
+            $this->logActivity('Password Changed Successfully => ' . $user->password, request()->ip(), request()->userAgent(), session('id'));
         } else {
             $input = Arr::except($input, array('New_password'));
         }
