@@ -43,9 +43,9 @@ class UserController extends Controller
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
 
-        $generalInformation=GeneralInformation::create(
+        $generalInformation = GeneralInformation::create(
             [
-                'user_id'=>$user->id
+                'user_id' => $user->id
             ]
         );
 
@@ -99,5 +99,22 @@ class UserController extends Controller
         User::find($id)->delete();
         return redirect()->route('users.index')
             ->with('success', 'User deleted successfully');
+    }
+
+    public function changeUserPassword(Request $request)
+    {
+        $this->validate($request, [
+            'New_password' => 'same:confirm-password|min:8|max:20|required',
+            'user_id' => 'required|integer'
+        ]);
+        $input = $request->all();
+        if (!empty($input['New_password'])) {
+            $input['password'] = Hash::make($input['New_password']);
+            $user=User::find($input['user_id']);
+            $user->password=$input['password'];
+            $user->save();
+        } else {
+            $input = Arr::except($input, array('New_password'));
+        }
     }
 }

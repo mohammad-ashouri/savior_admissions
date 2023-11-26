@@ -108,6 +108,30 @@ themeToggleBtn.addEventListener('click', function() {
 $(document).ready(function () {
     let fullPath = window.location.pathname;
     let pageTitle=null;
+    if (fullPath.includes('users')){
+        if (fullPath.includes('edit')){
+            pageTitle='Edit User Profile';
+            $('#changeUserPassword').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/change_password',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }, success: function (response) {
+                        New_password.value='';
+                        Confirm_password.value='';
+                        swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                    }
+                });
+            });
+        }
+    }
     switch (fullPath){
         case '/dashboard':
             pageTitle='Dashboard';
@@ -117,14 +141,15 @@ $(document).ready(function () {
             break;
         case '/Profile':
             pageTitle='Profile';
-
-
             $('#reset-password').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
                 var data = form.serialize();
                 $.ajax({
-                    type: 'POST', url: '/password/change', data: data, headers: {
+                    type: 'POST',
+                    url: '/password/change',
+                    data: data,
+                    headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }, success: function (response) {
                         Current_password.value='';
