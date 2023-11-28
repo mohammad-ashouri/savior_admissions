@@ -120,28 +120,5 @@ class UserController extends Controller
         }
     }
 
-    public function changeUserGeneralInformation(Request $request)
-    {
-        dd($request->all());
-//        $this->validate($request, [
-//            'name' => 'required',
-//            'email' => 'required|email|unique:users,email',
-//            'roles' => 'required',
-//            'uesr_id' => 'required',
-//        ]);
 
-//        $input = $request->all();
-//        if (!empty($input['password'])) {
-//            $input['password'] = Hash::make($input['password']);
-//        } else {
-//            $input = Arr::except($input, array('password'));
-//        }
-//
-//        $user = User::find($input['user_id']);
-//        $user->update($input);
-//        DB::table('model_has_roles')->where('model_id', $id)->delete();
-//
-//        $user->syncPermissions($request->input('roles'));
-
-    }
 }

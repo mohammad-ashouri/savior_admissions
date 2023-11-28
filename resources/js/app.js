@@ -2,7 +2,9 @@ import './bootstrap';
 import 'flowbite';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
+
 window.Swal = Swal;
+
 function swalFire(title = null, text, icon, confirmButtonText) {
     Swal.fire({
         title: title, text: text, icon: icon, confirmButtonText: confirmButtonText,
@@ -16,7 +18,7 @@ const content = document.getElementById('content');
 const menuListItems = document.querySelectorAll('.menulist');
 const menuListHoverItems = document.querySelectorAll('.menulist-hover');
 
-toggleButton.addEventListener('click', function() {
+toggleButton.addEventListener('click', function () {
     logoSidebar.classList.toggle('expanded');
     content.classList.toggle('ex-ml');
 
@@ -52,8 +54,7 @@ if (logoSidebar.classList.contains('expanded')) {
     menuListHoverItems.forEach(item => {
         item.style.display = 'none';
     });
-}
-else {
+} else {
     menuListItems.forEach(item => {
         item.style.display = 'none';
     });
@@ -69,14 +70,13 @@ var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 // Change the icons inside the button based on previous settings
 if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     themeToggleLightIcon.classList.remove('hidden');
-}
-else {
+} else {
     themeToggleDarkIcon.classList.remove('hidden');
 }
 
 var themeToggleBtn = document.getElementById('theme-toggle');
 
-themeToggleBtn.addEventListener('click', function() {
+themeToggleBtn.addEventListener('click', function () {
 
     // toggle icons inside button
     themeToggleDarkIcon.classList.toggle('hidden');
@@ -92,7 +92,7 @@ themeToggleBtn.addEventListener('click', function() {
             localStorage.setItem('color-theme', 'light');
         }
 
-    // if NOT set via local storage previously
+        // if NOT set via local storage previously
     } else {
         if (document.documentElement.classList.contains('dark')) {
             document.documentElement.classList.remove('dark');
@@ -107,10 +107,10 @@ themeToggleBtn.addEventListener('click', function() {
 
 $(document).ready(function () {
     let fullPath = window.location.pathname;
-    let pageTitle=null;
-    if (fullPath.includes('users')){
-        if (fullPath.includes('edit')){
-            pageTitle='Edit User Profile';
+    let pageTitle = null;
+    if (fullPath.includes('users')) {
+        if (fullPath.includes('edit')) {
+            pageTitle = 'Edit User Profile';
             $('#changeUserGeneralInformation').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
@@ -122,9 +122,9 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }, success: function (response) {
-                        // swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
+                        swalFire('Done', response.success, 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
-                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
                     }
                 });
             });
@@ -140,8 +140,8 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }, success: function (response) {
-                        New_password.value='';
-                        Confirm_password.value='';
+                        New_password.value = '';
+                        Confirm_password.value = '';
                         swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
                         swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
@@ -150,15 +150,15 @@ $(document).ready(function () {
             });
         }
     }
-    switch (fullPath){
+    switch (fullPath) {
         case '/dashboard':
-            pageTitle='Dashboard';
+            pageTitle = 'Dashboard';
             break;
         case '/users':
-            pageTitle='User Management';
+            pageTitle = 'User Management';
             break;
         case '/Profile':
-            pageTitle='Profile';
+            pageTitle = 'Profile';
             $('#reset-password').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
@@ -170,9 +170,9 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }, success: function (response) {
-                        Current_password.value='';
-                        New_password.value='';
-                        Confirm_password.value='';
+                        Current_password.value = '';
+                        New_password.value = '';
+                        Confirm_password.value = '';
                         swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
                         swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');

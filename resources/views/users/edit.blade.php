@@ -47,7 +47,7 @@
                                     <label for="father-name"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Father
                                         name</label>
-                                    <input type="text" id="father-name"
+                                    <input type="text" id="father-name" name="father_name"
                                            @if($generalInformation->father_name!==null) value=" {{ $generalInformation->father_name }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Max" required>
@@ -71,7 +71,7 @@
                                 <div>
                                     <label for="Birthdate"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthdate</label>
-                                    <input type="date" id="Birthdate"
+                                    <input type="date" id="Birthdate" name="Birthdate"
                                            @if($generalInformation->birthdate!==null) value="{{ $generalInformation->birthdate }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="15/08/1999" required>
@@ -111,8 +111,10 @@
                                 <div>
                                     <label for="address"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                                    <input type="text" id="address" name="address" @if($generalInformation->address!==null) value=" {{ $generalInformation->address }}" @endif
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    <input type="text" id="address" name="address"
+                                           @if($generalInformation->address!==null) value=" {{ $generalInformation->address }}"
+                                           @endif
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Qom, moallem st, 4th alley, no 433" required>
                                 </div>
                                 <div>
@@ -129,8 +131,10 @@
                                     <label for="zip/postalcode"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">zip/postal
                                         code</label>
-                                    <input type="text" id="zip/postalcode" name="postalcode" @if($generalInformation->postal_code!==null) value="{{ $generalInformation->postal_code }}" @endif
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    <input type="text" id="zip/postalcode" name="postalcode"
+                                           @if($generalInformation->postal_code!==null) value="{{ $generalInformation->postal_code }}"
+                                           @endif
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            pattern="[0-9]{10}" placeholder="1234567890" required>
                                 </div>
                                 <div>
