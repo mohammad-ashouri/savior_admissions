@@ -46,6 +46,7 @@ class ProfileController extends Controller
             ]
         );
         if ($generalInformation) {
+            $this->logActivity('Profile updated'  , request()->ip(), request()->userAgent(), session('id'));
             return redirect()->back()->withSuccess('Profile updated successfully!');
         }
     }
@@ -95,12 +96,16 @@ class ProfileController extends Controller
 
         $user->email = $input['email'];
         $user->mobile = $input['mobile'];
+        $user->editor = session('id');
         $user->save();
+
+        $userGeneralInformation->editor = session('id');
         $userGeneralInformation->save();
 
         DB::table('model_has_roles')->where('model_id', $user->id)->delete();
         $user->syncRoles($request->input('roles'));
 
+        $this->logActivity('Profile updated by => ' . session('id') , request()->ip(), request()->userAgent(), $user->id);
         return response()->json(['success' => 'Profile updated!'], 200);
 
     }
