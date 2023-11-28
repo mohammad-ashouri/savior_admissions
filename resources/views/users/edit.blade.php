@@ -31,7 +31,7 @@
                                     <label for="first_name"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
                                         name</label>
-                                    <input type="text" id="first_name" value="{{ $user->name }}"
+                                    <input type="text" id="first_name" name="first_name" value="{{ $user->name }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="John" required>
                                 </div>
@@ -39,7 +39,7 @@
                                     <label for="last_name"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
                                         name</label>
-                                    <input type="text" id="last_name" value="{{ $user->family }}"
+                                    <input type="text" id="last_name" name="last_name" value="{{ $user->family }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Doe" required>
                                 </div>
@@ -79,7 +79,7 @@
                                 <div>
                                     <label for="Country"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                                    <input type="text" id="Country"
+                                    <input type="text" id="Country" name="Country"
                                            @if($generalInformation->country!==null) value=" {{ $generalInformation->country }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Iran" required>
@@ -87,7 +87,7 @@
                                 <div>
                                     <label for="city"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State/City</label>
-                                    <input type="text" id="city"
+                                    <input type="text" id="city" name="city"
                                            @if($generalInformation->state_city!==null) value=" {{ $generalInformation->state_city }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Qom" required>
@@ -96,7 +96,7 @@
                                     <label for="email"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
                                         address</label>
-                                    <input type="email" id="email" value="{{ $user->email }}"
+                                    <input type="email" id="email" name="email" value="{{ $user->email }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="john.doe@company.com" required>
                                 </div>
@@ -111,10 +111,9 @@
                                 <div>
                                     <label for="address"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                                    <input type="url" id="address"
-                                           @if($generalInformation->address!==null) value=" {{ $generalInformation->address }}"
-                                           @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Qom,st moalem haram" required>
+                                    <input type="text" id="address" name="address" @if($generalInformation->address!==null) value=" {{ $generalInformation->address }}" @endif
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Qom, moallem st, 4th alley, no 433" required>
                                 </div>
                                 <div>
                                     <label for="phone"
@@ -127,13 +126,11 @@
                                            placeholder="For example: +982531234567" required>
                                 </div>
                                 <div>
-                                    <label for="zip/postal code"
+                                    <label for="zip/postalcode"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">zip/postal
                                         code</label>
-                                    <input type="text" id="zip/postal code" name="zip/postalcode"
-                                           @if($generalInformation->postal_code!==null) value=" {{ $generalInformation->postal_code }}"
-                                           @endif
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    <input type="text" id="zip/postalcode" name="postalcode" @if($generalInformation->postal_code!==null) value="{{ $generalInformation->postal_code }}" @endif
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            pattern="[0-9]{10}" placeholder="1234567890" required>
                                 </div>
                                 <div>
@@ -149,11 +146,12 @@
                                     @endforeach
                                 </div>
                             </div>
+                            <input type="hidden" value="{{ $user->id }}" name="user_id">
+                            <button type="submit"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Save all
+                            </button>
                         </form>
-                        <button type="submit"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Save all
-                        </button>
 
                     </div>
 

@@ -111,6 +111,24 @@ $(document).ready(function () {
     if (fullPath.includes('users')){
         if (fullPath.includes('edit')){
             pageTitle='Edit User Profile';
+            $('#changeUserGeneralInformation').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/change_user_general_information',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }, success: function (response) {
+                        // swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                    }
+                });
+            });
+
             $('#changeUserPassword').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
