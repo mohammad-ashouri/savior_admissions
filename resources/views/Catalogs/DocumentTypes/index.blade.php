@@ -90,9 +90,14 @@
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold @if($type->status===1) text-green-600 @else text-red-600 @endif">
-                                            @if($type->status===1) Active @else Deactive @endif
-                                            </div>
+                                        <div
+                                            class="text-base font-semibold @if($type->status===1) text-green-600 @else text-red-600 @endif">
+                                            @if($type->status===1)
+                                                Active
+                                            @else
+                                                Deactive
+                                            @endif
+                                        </div>
                                     </div>
                                 </th>
                                 <td class="px-6 py-4 text-center">

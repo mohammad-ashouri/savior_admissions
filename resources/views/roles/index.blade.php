@@ -92,8 +92,8 @@
                                     @can('role-delete')
                                         {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $role->id],'style'=>'display:inline']) !!}
                                         <button type="submit"
-{{--                                                data-modal-target="deleteRole-modal"--}}
-{{--                                                data-modal-show="deleteRole-modal"--}}
+                                                {{--                                                data-modal-target="deleteRole-modal"--}}
+                                                {{--                                                data-modal-show="deleteRole-modal"--}}
                                                 class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">
                                             <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
                                                  xmlns="http://www.w3.org/2000/svg">
