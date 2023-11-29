@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -60,6 +61,12 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     Route::get('/Documents', function () {
         return view('GeneralPages.documents');
+    });
+
+    Route::prefix('Documents')->group(function () {
+        Route::get('/', [DocumentController::class, 'index']);
+        Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('role:Admin');
+        Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('role:Admin');
     });
 
     Route::prefix('Profile')->group(function () {

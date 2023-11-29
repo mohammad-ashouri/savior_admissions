@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Catalogs;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Picture extends Model
+class DocumentType extends Model
 {
-    use HasFactory, SoftDeletes;
-
+    use HasFactory,SoftDeletes;
+    protected $table = 'document_types';
     protected $fillable = [
-        'title',
-        'src',
-        'adder',
+        'name',
+        'active',
     ];
     protected $hidden = [
-        'adder',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 }

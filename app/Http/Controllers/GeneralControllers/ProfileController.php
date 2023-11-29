@@ -23,6 +23,9 @@ class ProfileController extends Controller
             'father-name' => 'required|string',
             'gender' => 'required|string',
             'Birthdate' => 'required|string',
+            'Nationality' => 'required|string',
+            'PassportNumber' => 'required|string',
+            'FaragirCode' => 'required|string',
             'Country' => 'required|string',
             'city' => 'required|string',
             'address' => 'required|string',
@@ -36,6 +39,9 @@ class ProfileController extends Controller
                 'father_name' => $request->input('father-name'),
                 'gender' => $request->input('gender'),
                 'birthdate' => $request->input('Birthdate'),
+                'nationality' => $request->input('Nationality'),
+                'faragir_code' => $request->input('FaragirCode'),
+                'passport_number' => $request->input('PassportNumber'),
                 'country' => $request->input('Country'),
                 'state_city' => $request->input('city'),
                 'address' => $request->input('address'),
@@ -59,6 +65,9 @@ class ProfileController extends Controller
             'father_name' => 'required|string',
             'gender' => 'required|string',
             'Birthdate' => 'required|date',
+            'nationality' => 'required|string',
+            'PassportNumber' => 'required|string',
+            'FaragirCode' => 'required|string',
             'Country' => 'required|string',
             'city' => 'required|string',
             'mobile' => 'required',
@@ -78,6 +87,9 @@ class ProfileController extends Controller
         $userGeneralInformation->father_name = $input['father_name'];
         $userGeneralInformation->birthdate = $input['Birthdate'];
         $userGeneralInformation->country = $input['Country'];
+        $userGeneralInformation->nationality = $input['nationality'];
+        $userGeneralInformation->passport_number = $input['PassportNumber'];
+        $userGeneralInformation->faragir_code = $input['FaragirCode'];
         $userGeneralInformation->state_city = $input['city'];
         $userGeneralInformation->address = $input['address'];
         $userGeneralInformation->phone = $input['phone'];

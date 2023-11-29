@@ -111,6 +111,30 @@
                                            placeholder="15/08/1999" required>
                                 </div>
                                 <div>
+                                    <label for="nationality"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nationality</label>
+                                    <input type="text" id="nationality" name="Nationality"
+                                           @if($myGeneralInformation->nationality!==null) value=" {{ $myGeneralInformation->nationality }}"
+                                           @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Iran" required>
+                                </div>
+                                <div>
+                                    <label for="passport-number"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Passport number</label>
+                                    <input type="text" id="passport-number" name="PassportNumber"
+                                           @if($myGeneralInformation->passport_number!==null) value=" {{ $myGeneralInformation->passport_number }}"
+                                           @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="If not, enter 0" required>
+                                </div>
+                                <div>
+                                    <label for="faragir-code"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faragir code</label>
+                                    <input type="text" id="faragir-code" name="FaragirCode"
+                                           @if($myGeneralInformation->faragir_code!==null) value=" {{ $myGeneralInformation->faragir_code }}"
+                                           @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="If not, enter 0" required>
+                                </div>
+                                <div>
                                     <label for="Country"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
                                     <input type="text" id="Country" name="Country"

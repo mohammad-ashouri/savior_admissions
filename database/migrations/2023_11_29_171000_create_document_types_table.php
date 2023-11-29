@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pictures', function (Blueprint $table) {
+        Schema::create('document_types', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('src');
-            $table->unsignedBigInteger('adder');
-            $table->foreign('adder')->references('id')->on('users');
+            $table->string('name');
+            $table->boolean('active')->default(1);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pictures');
+        Schema::dropIfExists('document_types');
     }
 };
