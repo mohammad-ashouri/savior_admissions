@@ -46,7 +46,7 @@ class ProfileController extends Controller
             ]
         );
         if ($generalInformation) {
-            $this->logActivity('Profile updated'  , request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity('Profile updated', request()->ip(), request()->userAgent(), session('id'));
             return redirect()->back()->withSuccess('Profile updated successfully!');
         }
     }
@@ -66,7 +66,6 @@ class ProfileController extends Controller
             'phone' => 'required',
             'postalcode' => 'required|integer',
             'email' => 'required|email',
-            'roles' => 'required',
             'user_id' => 'required',
         ]);
 
@@ -102,11 +101,16 @@ class ProfileController extends Controller
         $userGeneralInformation->editor = session('id');
         $userGeneralInformation->save();
 
+        $this->logActivity('Profile updated by => ' . session('id'), request()->ip(), request()->userAgent(), $user->id);
+        return response()->json(['success' => 'Profile updated!'], 200);
+    }
+
+    public function changeUserRole(Request $request)
+    {
+        $user = User::find($request->input('user_id'));
         DB::table('model_has_roles')->where('model_id', $user->id)->delete();
         $user->syncRoles($request->input('roles'));
-
-        $this->logActivity('Profile updated by => ' . session('id') , request()->ip(), request()->userAgent(), $user->id);
-        return response()->json(['success' => 'Profile updated!'], 200);
-
+        $this->logActivity('Rules updated by => ' . session('id'), request()->ip(), request()->userAgent(), $user->id);
+        return response()->json(['success' => 'Rules updated!'], 200);
     }
 }

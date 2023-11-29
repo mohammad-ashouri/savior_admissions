@@ -43,7 +43,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'document-delete']);
 
         $adminRole = Role::create(['name' => 'Admin']);
-        $parentRole = Role::create(['name' => 'Parent']);
+        $parentFatherRole = Role::create(['name' => 'Parent(Father)']);
+        $parentMotherRole = Role::create(['name' => 'Parent(Mother)']);
+        $studentRole = Role::create(['name' => 'Student']);
 
         $adminRole->givePermissionTo([
             'create-users',
@@ -60,7 +62,21 @@ class PermissionSeeder extends Seeder
             'document-delete',
         ]);
 
-        $parentRole->givePermissionTo([
+        $parentFatherRole->givePermissionTo([
+            'document-list',
+            'document-create',
+            'document-edit',
+            'document-delete',
+        ]);
+
+        $parentMotherRole->givePermissionTo([
+            'document-list',
+            'document-create',
+            'document-edit',
+            'document-delete',
+        ]);
+
+        $studentRole->givePermissionTo([
             'document-list',
             'document-create',
             'document-edit',

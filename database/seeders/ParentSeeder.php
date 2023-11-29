@@ -30,7 +30,7 @@ class ParentSeeder extends Seeder
                 'user_id' => $user->id
             ]
         );
-        $role = Role::where('name', 'parent')->first();
+        $role = Role::where('name', 'Parent(Father)')->first();
         $permissions = Permission::pluck('id', 'id')->all();
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);

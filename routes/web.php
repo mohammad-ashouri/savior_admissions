@@ -56,6 +56,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('users', UserController::class)->middleware('role:Admin');
     Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('role:Admin');
     Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('role:Admin');
+    Route::post('users/change_rules', [ProfileController::class, 'changeUserRole'])->middleware('role:Admin');
 
     Route::get('/Documents', function () {
         return view('GeneralPages.documents');
