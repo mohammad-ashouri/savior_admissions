@@ -65,11 +65,13 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::post('users/change_rules', [ProfileController::class, 'changeUserRole'])->middleware('role:Admin');
 
     Route::get('/Documents', function () {
-        return view('GeneralPages.documents');
+
     });
 
     Route::prefix('Documents')->group(function () {
         Route::get('/', [DocumentController::class, 'index']);
+        Route::post('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('role:Admin');
+        Route::post('/Create/{user_id}', [DocumentController::class, 'createDocuments'])->middleware('role:Admin');
         Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('role:Admin');
         Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('role:Admin');
     });
