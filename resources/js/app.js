@@ -167,37 +167,41 @@ $(document).ready(function () {
                 });
             });
         }
-    }
-    switch (fullPath) {
-        case '/dashboard':
-            pageTitle = 'Dashboard';
-            break;
-        case '/users':
-            pageTitle = 'User Management';
-            break;
-        case '/Profile':
-            pageTitle = 'Profile';
-            $('#reset-password').submit(function (e) {
-                e.preventDefault();
-                var form = $(this);
-                var data = form.serialize();
-                $.ajax({
-                    type: 'POST',
-                    url: '/password/change',
-                    data: data,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    }, success: function (response) {
-                        Current_password.value = '';
-                        New_password.value = '';
-                        Confirm_password.value = '';
-                        swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
-                    }, error: function (xhr, textStatus, errorThrown) {
-                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                    }
-                });
-            });
-            break;
-    }
+    }else if (fullPath.includes('DocumentTypes')) {
+        pageTitle = 'Document Types Manager';
+    }else
+        {
+            switch (fullPath) {
+                case '/dashboard':
+                    pageTitle = 'Dashboard';
+                    break;
+                case '/users':
+                    pageTitle = 'User Management';
+                    break;
+                case '/Profile':
+                    pageTitle = 'Profile';
+                    $('#reset-password').submit(function (e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        var data = form.serialize();
+                        $.ajax({
+                            type: 'POST',
+                            url: '/password/change',
+                            data: data,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }, success: function (response) {
+                                Current_password.value = '';
+                                New_password.value = '';
+                                Confirm_password.value = '';
+                                swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
+                            }, error: function (xhr, textStatus, errorThrown) {
+                                swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                            }
+                        });
+                    });
+                    break;
+            }
+        }
     $('#page-title').text(pageTitle + ' | Savior Schools');
 });
