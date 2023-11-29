@@ -42,6 +42,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'document-edit']);
         Permission::create(['name' => 'document-delete']);
 
+        Permission::create(['name' => 'catalogs-list']);
+        Permission::create(['name' => 'catalogs-create']);
+        Permission::create(['name' => 'catalogs-edit']);
+        Permission::create(['name' => 'catalogs-delete']);
+
         $adminRole = Role::create(['name' => 'Admin']);
         $parentFatherRole = Role::create(['name' => 'Parent(Father)']);
         $parentMotherRole = Role::create(['name' => 'Parent(Mother)']);
@@ -60,6 +65,10 @@ class PermissionSeeder extends Seeder
             'document-create',
             'document-edit',
             'document-delete',
+            'catalogs-list',
+            'catalogs-create',
+            'catalogs-edit',
+            'catalogs-delete',
         ]);
 
         $parentFatherRole->givePermissionTo([

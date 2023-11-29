@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
+use App\Http\Controllers\Catalogs\DocumentTypeController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -52,6 +53,10 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    //Catalogs
+    Route::resource('DocumentTypes', DocumentTypeController::class)->middleware('role:Admin');
+
 
     Route::resource('roles', RoleController::class)->middleware('role:Admin');
     Route::resource('users', UserController::class)->middleware('role:Admin');
