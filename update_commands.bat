@@ -11,6 +11,14 @@ echo Running Composer install...
 start composer i
 echo Composer install Completed.
 
+echo Running npm update...
+start npm update
+echo npm update Completed.
+
+echo Running Composer update...
+start composer update
+echo Composer update Completed.
+
 echo Running PHP Artisan Migrate...
 start /wait php artisan migrate:fresh
 echo PHP Artisan Migrate Completed.
