@@ -169,6 +169,13 @@ $(document).ready(function () {
         }
     }else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
+    }else if (fullPath.includes('Documents')) {
+        pageTitle = 'Documents';
+
+        $('.show-image').click(function () {
+            let imageSrc = $(this).data('image-src');
+            $('#image-for-show').attr('src', imageSrc);
+        });
     }else
         {
             switch (fullPath) {

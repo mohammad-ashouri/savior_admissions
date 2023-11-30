@@ -30,8 +30,8 @@
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 ">
                 <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <button data-modal-target="openImage" data-modal-toggle="openImage"
-                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center"
+                    <button data-modal-target="openImage" data-modal-toggle="openImage" data-image-src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg"
+                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
                             type="button">
                         <img class="h-auto max-w-full rounded-lg "
                              src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg" alt="">
@@ -40,70 +40,34 @@
                     </button>
                 </div>
                 <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
+                    <button data-modal-target="openImage" data-modal-toggle="openImage" data-image-src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
+                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                            type="button">
+                        <img class="h-auto max-w-full rounded-lg "
+                             src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg" alt="">
+                        <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05
+                        </p>
+                    </button>
                 </div>
                 <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
+                    <button data-modal-target="openImage" data-modal-toggle="openImage" data-image-src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg"
+                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                            type="button">
+                        <img class="h-auto max-w-full rounded-lg "
+                             src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg" alt="">
+                        <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05
+                        </p>
+                    </button>
                 </div>
                 <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
-                </div>
-                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
-                </div>
-                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
-                </div>
-                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
-                </div>
-                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
-                </div>
-                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
-                </div>
-                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
-                </div>
-                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
-                </div>
-                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz">
-                    <img class="h-auto max-w-full rounded-lg"
-                         src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg" alt="">
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05</p>
-
+                    <button data-modal-target="openImage" data-modal-toggle="openImage" data-image-src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg"
+                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                            type="button">
+                        <img class="h-auto max-w-full rounded-lg "
+                             src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg" alt="">
+                        <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image - 2023/10/05
+                        </p>
+                    </button>
                 </div>
             </div>
 
@@ -189,8 +153,8 @@
                         </div>
                         <!-- Modal body -->
                         <div class="">
-                            <img class="h-auto max-w-full rounded-lg"
-                                 src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg" alt="">
+                            <img class="h-auto max-w-full rounded-lg " id="image-for-show"
+                                 src="" alt="image">
                         </div>
 
                     </div>
