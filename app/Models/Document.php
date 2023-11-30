@@ -11,6 +11,7 @@ class Document extends Model
     use HasFactory,SoftDeletes;
     protected $table = 'documents';
     protected $fillable = [
+        'user_id',
         'document_type_id',
         'src',
     ];
