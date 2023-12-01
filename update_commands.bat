@@ -20,7 +20,7 @@ start composer update
 echo Composer update Completed.
 
 echo Running PHP Artisan Migrate...
-start /wait php artisan migrate:fresh
+start /wait php artisan migrate:fresh --seed
 echo PHP Artisan Migrate Completed.
 
 echo Running PHP Artisan Cache Clear...

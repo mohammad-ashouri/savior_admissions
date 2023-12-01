@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Catalogs\DocumentType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,4 +21,8 @@ class Document extends Model
         'updated_at',
         'deleted_at',
     ];
+    public function documentType()
+    {
+        return $this->belongsTo(DocumentType::class,'document_type_id','id');
+    }
 }

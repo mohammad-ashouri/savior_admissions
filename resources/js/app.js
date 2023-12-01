@@ -167,48 +167,97 @@ $(document).ready(function () {
                 });
             });
         }
-    }else if (fullPath.includes('DocumentTypes')) {
+    } else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
-    }else if (fullPath.includes('Documents')) {
+    } else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
+
+        $('.type-filter').click(function () {
+            var typeId = $(this).data('type-id');
+
+            if (typeId === 'all') {
+                $('.document-div').show();
+            } else {
+                $('.document-div').hide();
+
+                $('.document-div[data-type-id="' + typeId + '"]').show();
+            }
+        });
 
         $('.show-image').click(function () {
             let imageSrc = $(this).data('image-src');
             $('#image-for-show').attr('src', imageSrc);
         });
-    }else
-        {
-            switch (fullPath) {
-                case '/dashboard':
-                    pageTitle = 'Dashboard';
-                    break;
-                case '/users':
-                    pageTitle = 'User Management';
-                    break;
-                case '/Profile':
-                    pageTitle = 'Profile';
-                    $('#reset-password').submit(function (e) {
-                        e.preventDefault();
-                        var form = $(this);
-                        var data = form.serialize();
-                        $.ajax({
-                            type: 'POST',
-                            url: '/password/change',
-                            data: data,
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            }, success: function (response) {
-                                Current_password.value = '';
-                                New_password.value = '';
-                                Confirm_password.value = '';
-                                swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
-                            }, error: function (xhr, textStatus, errorThrown) {
-                                swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                            }
-                        });
-                    });
-                    break;
+
+        $('#document_file').change(function () {
+            const fileInput = $('#document_file');
+            const imagePreview = $('#image_preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
             }
+        });
+        $('#create-document').submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var formData = new FormData(form[0]);
+            $.ajax({
+                type: 'POST',
+                url: '/Documents/Create',
+                data: formData,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }, success: function (response) {
+                    location.reload();
+                }, error: function (xhr, textStatus, errorThrown) {
+                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                }
+            });
+        });
+
+    } else {
+        switch (fullPath) {
+            case '/dashboard':
+                pageTitle = 'Dashboard';
+                break;
+            case '/users':
+                pageTitle = 'User Management';
+                break;
+            case '/Profile':
+                pageTitle = 'Profile';
+                $('#reset-password').submit(function (e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var data = form.serialize();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/password/change',
+                        data: data,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }, success: function (response) {
+                            Current_password.value = '';
+                            New_password.value = '';
+                            Confirm_password.value = '';
+                            swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
+                        }, error: function (xhr, textStatus, errorThrown) {
+                            swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                        }
+                    });
+                });
+                break;
         }
+    }
     $('#page-title').text(pageTitle + ' | Savior Schools');
 });
