@@ -119,6 +119,14 @@
                                            placeholder="Iran" required>
                                 </div>
                                 <div>
+                                    <label for="birthplace"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthplace</label>
+                                    <input type="text" id="birthplace" name="birthplace"
+                                           @if($myGeneralInformation->birthplace!==null) value=" {{ $myGeneralInformation->birthplace }}"
+                                           @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Irani" required>
+                                </div>
+                                <div>
                                     <label for="passport-number"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Passport
                                         number</label>

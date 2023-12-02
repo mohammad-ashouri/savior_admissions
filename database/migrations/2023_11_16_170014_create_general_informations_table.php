@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('father_name')->nullable();
             $table->string('gender')->nullable();
             $table->date('birthdate')->nullable();
+            $table->string('birthplace')->nullable();
             $table->string('nationality')->nullable();
             $table->string('passport_number')->nullable();
             $table->string('faragir_code')->nullable();
