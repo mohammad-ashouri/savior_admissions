@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\Catalogs\DocumentTypeController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -77,4 +78,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile');
         Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
     });
+
+    Route::get('/import-excel', [ExcelController::class, 'index']);
+    Route::post('/import-excel', [ExcelController::class, 'import'])->name('excel.import');
+
 });
