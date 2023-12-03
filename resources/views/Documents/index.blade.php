@@ -36,77 +36,14 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 ">
-                <div>
-                    <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz document-div" data-type-id="1">
-                        <button data-modal-target="openImage" data-modal-toggle="openImage"
-                            data-image-src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg"
-                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                            type="button">
-                            <img class="h-auto max-w-full rounded-lg "
-                                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg" alt="">
-
-                        </button>
-                    </div>
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image -
-                        2023/10/05
-                    </p>
-                </div>
-                <div>
-                    <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz document-div" data-type-id="2">
-                        <button data-modal-target="openImage" data-modal-toggle="openImage"
-                            data-image-src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
-                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                            type="button">
-                            <img class="h-auto max-w-full rounded-lg "
-                                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg" alt="">
-
-                        </button>
-                    </div>
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image -
-                        2023/10/05
-                    </p>
-                </div>
-
-                <div>
-                    <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz document-div" data-type-id="1">
-                        <button data-modal-target="openImage" data-modal-toggle="openImage"
-                            data-image-src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg"
-                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                            type="button">
-                            <img class="h-auto max-w-full rounded-lg "
-                                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg" alt="">
-
-                        </button>
-                    </div>
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image -
-                        2023/10/05
-                    </p>
-                </div>
-                <div>
-
-                    <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz document-div" data-type-id="2">
-                        <button data-modal-target="openImage" data-modal-toggle="openImage"
-                            data-image-src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg"
-                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                            type="button">
-                            <img class="h-auto max-w-full rounded-lg "
-                                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg" alt="">
-
-                        </button>
-                    </div>
-                    <p class="text-center font-normal text-gray-700 dark:text-gray-400">01 - personal Image -
-                        2023/10/05
-                    </p>
-                </div>
                 @foreach ($myDocuments as $document)
                     @php
                         $document->src = str_replace('public', 'storage', $document->src);
                     @endphp
-                    <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-
+                    <div data-type-id="{{ $document->document_type_id }}" class="grid grid-cols-1 md:grid-cols-1 gap-4 document-div">
                         <div>
-                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz document-div"
-                                data-type-id="{{ $document->document_type_id }}">
+                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                >
                                 <button data-modal-target="openImage" data-modal-toggle="openImage"
                                     data-image-src="{{ $document->src }}"
                                     class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"

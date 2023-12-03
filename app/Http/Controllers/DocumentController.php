@@ -33,8 +33,12 @@ class DocumentController extends Controller
 
     }
 
-    public function showUserDocument($user_id)
+    public function showUserDocuments($user_id)
     {
+        $documentTypes = DocumentType::orderBy('name', 'asc')->get();
+        $myDocuments=Document::with('documentType')->where('user_id',$user_id)->get();
+        $myDocumentTypes=Document::with('documentType')->where('user_id',$user_id)->pluck('document_type_id')->all();
+        return view('Documents.index', compact('documentTypes','myDocuments','myDocumentTypes'));
 
     }
 }
