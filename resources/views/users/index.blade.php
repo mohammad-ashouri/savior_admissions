@@ -69,7 +69,7 @@
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="w-4 p-4">
                                     <div class="flex items-center">
-                                        {{ $loop->iteration }}
+                                        {{ $user->id }}
                                     </div>
                                 </td>
                                 <th scope="row"
@@ -118,7 +118,7 @@
                                         Delete user
                                     </button>
                                     {!! Form::close() !!}
-                                    <a href="#" type="button"
+                                    <a href="/Documents/Show/{{$user->id}}" type="button"
                                         class="min-w-max inline-flex font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800 hover:underline">
 
                                         <svg class="w-5 h-5 mr-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
@@ -174,9 +174,14 @@
                         </div>
                     </div>
                     {{-- end modal delete user --}}
+
+
                 </div>
 
             </div>
         </div>
-    {!! $data->render() !!}
+{{--    {!! $data->render() !!}--}}
+        <div class="pagination text-center">
+            {{ $data->links() }}
+        </div>
     @endsection

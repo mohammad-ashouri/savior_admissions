@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('document_type_id');
             $table->foreign('document_type_id')->references('id')->on('document_types');
             $table->text('src');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

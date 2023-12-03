@@ -32,4 +32,9 @@ class DocumentController extends Controller
         return response()->json(['success' => 'Document added!'], 200);
 
     }
+
+    public function showUserDocument($user_id)
+    {
+
+    }
 }

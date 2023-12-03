@@ -15,6 +15,7 @@ class Document extends Model
         'user_id',
         'document_type_id',
         'src',
+        'description',
     ];
     protected $hidden = [
         'created_at',

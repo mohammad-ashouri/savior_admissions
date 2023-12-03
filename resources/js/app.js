@@ -109,6 +109,7 @@ $(document).ready(function () {
     let fullPath = window.location.pathname;
     let pageTitle = null;
     if (fullPath.includes('users')) {
+        pageTitle = 'User Management';
         if (fullPath.includes('edit')) {
             pageTitle = 'Edit User Profile';
             $('#changeUserGeneralInformation').submit(function (e) {
@@ -167,27 +168,29 @@ $(document).ready(function () {
                 });
             });
         }
-    } else if (fullPath.includes('DocumentTypes')) {
+    }
+    else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
-    } else if (fullPath.includes('Documents')) {
+    }
+    else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
 
-       $('.type-filter').click(function () {
-    var typeId = $(this).data('type-id');
+        $('.type-filter').click(function () {
+            var typeId = $(this).data('type-id');
 
-    // اضافه کردن کلاس‌های فعال به دکمه کلیک شده
-    $(this).addClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
+            // اضافه کردن کلاس‌های فعال به دکمه کلیک شده
+            $(this).addClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
 
-    // حذف کلاس‌های فعال از دکمه‌های دیگر
-    $('.type-filter').not(this).removeClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
+            // حذف کلاس‌های فعال از دکمه‌های دیگر
+            $('.type-filter').not(this).removeClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
 
-    if (typeId === 'all') {
-        $('.document-div').show();
-    } else {
-        $('.document-div').hide();
-        $('.document-div[data-type-id="' + typeId + '"]').show();
-    }
-});
+            if (typeId === 'all') {
+                $('.document-div').show();
+            } else {
+                $('.document-div').hide();
+                $('.document-div[data-type-id="' + typeId + '"]').show();
+            }
+        });
 
 
         $('.show-image').click(function () {
@@ -236,9 +239,6 @@ $(document).ready(function () {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';
-                break;
-            case '/users':
-                pageTitle = 'User Management';
                 break;
             case '/Profile':
                 pageTitle = 'Profile';

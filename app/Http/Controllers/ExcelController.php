@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\Documents;
+use App\Imports\DocumentTypesImport;
 use App\Imports\StudentsImport;
 use App\Imports\StudentsImport2;
 use Illuminate\Http\Request;
@@ -13,14 +15,34 @@ class ExcelController extends Controller
     {
         return view('Temporary.excelimporter');
     }
-    public function import(Request $request)
+    public function importUsers(Request $request)
     {
         $file = $request->file('excel_file');
 
         // Validate the uploaded file as needed
 
-//        Excel::import(new StudentsImport, $file);
+        Excel::import(new StudentsImport, $file);
         Excel::import(new StudentsImport2, $file);
+
+        return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
+    }
+    public function importDocumentTypes(Request $request)
+    {
+        $file = $request->file('excel_file');
+
+        // Validate the uploaded file as needed
+
+        Excel::import(new DocumentTypesImport, $file);
+
+        return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
+    }
+    public function importDocuments(Request $request)
+    {
+        $file = $request->file('excel_file');
+
+        // Validate the uploaded file as needed
+
+        Excel::import(new Documents, $file);
 
         return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
     }

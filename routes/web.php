@@ -67,7 +67,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     Route::prefix('Documents')->group(function () {
         Route::get('/', [DocumentController::class, 'index']);
-        Route::post('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('role:Admin');
+        Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('role:Admin');
         Route::post('/Create/{user_id}', [DocumentController::class, 'createDocument'])->middleware('role:Admin');
         Route::post('/Create', [DocumentController::class, 'createDocument']);
         Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('role:Admin');
@@ -80,6 +80,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     });
 
     Route::get('/import-excel', [ExcelController::class, 'index']);
-    Route::post('/import-excel', [ExcelController::class, 'import'])->name('excel.import');
+    Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
+    Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');
+    Route::post('/importDocuments', [ExcelController::class, 'importDocuments'])->name('excel.importDocuments');
 
 });
