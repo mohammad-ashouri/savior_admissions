@@ -1,15 +1,7 @@
 @echo off
 echo Running Git Pull...
-start git pull
+start /wait git pull
 echo Git Pull Completed.
-
-echo Running npm install...
-start npm install
-echo npm install Completed.
-
-echo Running Composer install...
-start composer i
-echo Composer install Completed.
 
 echo Running npm update...
 start npm update

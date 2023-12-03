@@ -24,6 +24,7 @@ class ProfileController extends Controller
             'gender' => 'required|string',
             'Birthdate' => 'required|string',
             'Nationality' => 'required|string',
+            'birthplace' => 'required|string',
             'PassportNumber' => 'required|string',
             'FaragirCode' => 'required|string',
             'Country' => 'required|string',
@@ -40,6 +41,7 @@ class ProfileController extends Controller
                 'gender' => $request->input('gender'),
                 'birthdate' => $request->input('Birthdate'),
                 'nationality' => $request->input('Nationality'),
+                'birthplace' => $request->input('birthplace'),
                 'faragir_code' => $request->input('FaragirCode'),
                 'passport_number' => $request->input('PassportNumber'),
                 'country' => $request->input('Country'),
@@ -66,6 +68,7 @@ class ProfileController extends Controller
             'gender' => 'required|string',
             'Birthdate' => 'required|date',
             'nationality' => 'required|string',
+            'birthplace' => 'required|string',
             'PassportNumber' => 'required|string',
             'FaragirCode' => 'required|string',
             'Country' => 'required|string',
@@ -88,6 +91,7 @@ class ProfileController extends Controller
         $userGeneralInformation->birthdate = $input['Birthdate'];
         $userGeneralInformation->country = $input['Country'];
         $userGeneralInformation->nationality = $input['nationality'];
+        $userGeneralInformation->birthplace = $input['birthplace'];
         $userGeneralInformation->passport_number = $input['PassportNumber'];
         $userGeneralInformation->faragir_code = $input['FaragirCode'];
         $userGeneralInformation->state_city = $input['city'];
