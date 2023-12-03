@@ -172,17 +172,23 @@ $(document).ready(function () {
     } else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
 
-        $('.type-filter').click(function () {
-            var typeId = $(this).data('type-id');
+       $('.type-filter').click(function () {
+    var typeId = $(this).data('type-id');
 
-            if (typeId === 'all') {
-                $('.document-div').show();
-            } else {
-                $('.document-div').hide();
+    // اضافه کردن کلاس‌های فعال به دکمه کلیک شده
+    $(this).addClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
 
-                $('.document-div[data-type-id="' + typeId + '"]').show();
-            }
-        });
+    // حذف کلاس‌های فعال از دکمه‌های دیگر
+    $('.type-filter').not(this).removeClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
+
+    if (typeId === 'all') {
+        $('.document-div').show();
+    } else {
+        $('.document-div').hide();
+        $('.document-div[data-type-id="' + typeId + '"]').show();
+    }
+});
+
 
         $('.show-image').click(function () {
             let imageSrc = $(this).data('image-src');
