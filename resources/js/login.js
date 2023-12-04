@@ -10,6 +10,11 @@ function swalFire(title = null, text, icon, confirmButtonText) {
         title: title, text: text, icon: icon, confirmButtonText: confirmButtonText,
     });
 }
+function reloadCaptcha() {
+    var captchaImg = document.getElementById('captchaImg');
+    var captchaUrl = "/captcha";
+    captchaImg.src = captchaUrl + '?' + Date.now();
+}
 
 $(document).ready(function () {
     var fullPath = window.location.pathname;
@@ -51,13 +56,20 @@ $(document).ready(function () {
                             } else {
                                 if (response.errors.email) {
                                     swalFire('Email Error', response.errors.email[0], 'error', 'Try again');
-                                    // Reload captcha if needed
+                                    reloadCaptcha();
+                                    captcha.value = '';
                                 } else if (response.errors.password) {
                                     swalFire('Password', response.errors.password[0], 'error', 'Try again');
-                                    // Reload captcha if needed
+                                    reloadCaptcha();
+                                    captcha.value = '';
                                 } else if (response.errors.loginError) {
                                     swalFire('Wrong email or password', response.errors.loginError[0], 'error', 'Try again');
-                                    // Reload captcha if needed
+                                    reloadCaptcha();
+                                    captcha.value = '';
+                                } else if (response.errors.captcha) {
+                                    swalFire('Wrong captcha', response.errors.captcha[0], 'error', 'Try again');
+                                    reloadCaptcha();
+                                    captcha.value = '';
                                 }
                             }
                         },
@@ -76,7 +88,9 @@ $(document).ready(function () {
                         }
                     });
                 });
-
+                $('#captchaImg').click(function (){
+                    reloadCaptcha();
+                });
                 break;
             case '/password/forgot':
                 const selectors = document.querySelectorAll('select');

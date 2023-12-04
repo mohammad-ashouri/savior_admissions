@@ -52,17 +52,17 @@ class LoginController extends Controller
         }
 
         // Uncomment if you want to include captcha validation
-        // $captcha = $request->input('captcha');
-        // $sessionCaptcha = session('captcha')['key'];
-        // if (!password_verify($captcha, $sessionCaptcha)) {
-        //     $this->logActivity('Login Failed (Wrong Captcha) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
-        //     return response()->json([
-        //         'success' => false,
-        //         'errors' => [
-        //             'captcha' => ['کد امنیتی صحیح وارد نشده است.']
-        //         ]
-        //     ]);
-        // }
+        $captcha = $request->input('captcha');
+        $sessionCaptcha = session('captcha')['key'];
+        if (!password_verify($captcha, $sessionCaptcha)) {
+            $this->logActivity('Login Failed (Wrong Captcha) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
+            return response()->json([
+                'success' => false,
+                'errors' => [
+                    'captcha' => ['Captcha code is wrong or null!']
+                ]
+            ]);
+        }
 
         $credentials = $request->only('email', 'password');
 
