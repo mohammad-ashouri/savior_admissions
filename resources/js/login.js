@@ -10,6 +10,7 @@ function swalFire(title = null, text, icon, confirmButtonText) {
         title: title, text: text, icon: icon, confirmButtonText: confirmButtonText,
     });
 }
+
 function reloadCaptcha() {
     var captchaImg = document.getElementById('captchaImg');
     var captchaUrl = "/captcha";
@@ -88,7 +89,7 @@ $(document).ready(function () {
                         }
                     });
                 });
-                $('#captchaImg').click(function (){
+                $('#captchaImg').click(function () {
                     reloadCaptcha();
                 });
                 break;

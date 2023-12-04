@@ -35,7 +35,8 @@
 
             <div class="mb-6">
                 <div class="flex justify-evenly md:justify-normal">
-                    <img id="captchaImg" src="{{ route('captcha') }}" alt="Captcha" class="w-32 h-10  mt-2 rounded" title="Click on image for reload">
+                    <img id="captchaImg" src="{{ route('captcha') }}" alt="Captcha" class="w-32 h-10  mt-2 rounded"
+                         title="Click on image for reload">
                     {{--                        <button type="button" onclick="reloadCaptcha()" title="Reload"--}}
                     {{--                                class="h-10 p-1 bg-gray-300 hover:bg-gray-400 rounded mt-2">--}}
                     {{--                            <i class="fas fa-sync-alt"></i>--}}
