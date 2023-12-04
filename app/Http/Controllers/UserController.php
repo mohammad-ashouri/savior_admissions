@@ -12,9 +12,9 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $data = User::orderBy('id', 'DESC')->paginate(20);
+        $data = User::orderBy('id', 'DESC')->paginate(3);
         return view('users.index', compact('data'));
     }
 
