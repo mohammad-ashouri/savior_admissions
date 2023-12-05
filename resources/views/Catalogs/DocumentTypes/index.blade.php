@@ -184,6 +184,6 @@
             </div>
         </div>
         <div class="pagination text-center">
-            {{ $data->onEachSide(5)->links() }}
+            {{ $types->onEachSide(5)->links() }}
         </div>
 @endsection

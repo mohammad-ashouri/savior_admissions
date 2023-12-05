@@ -19,7 +19,7 @@ class DocumentTypeController extends Controller
 
     public function index()
     {
-        $types = DocumentType::orderBy('id', 'DESC')->paginate(10);
+        $types = DocumentType::orderBy('name', 'asc')->paginate(10);
         return view('Catalogs.DocumentTypes.index', compact('types'));
     }
 
