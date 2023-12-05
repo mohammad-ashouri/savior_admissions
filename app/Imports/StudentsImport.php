@@ -1,6 +1,7 @@
 <?php
 namespace App\Imports;
 
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\User;
 use App\Models\GeneralInformation;
@@ -9,8 +10,9 @@ class StudentsImport implements ToModel
 {
     public function model(array $row)
     {
+
         // Define how each row in the Excel file should be mapped to your database model
-        return new User([
+        $user= new User([
             'id' => $row[0],
             'name' => $row[1],
             'family' => $row[2],
@@ -18,5 +20,9 @@ class StudentsImport implements ToModel
             'email' => $row[12],
             'password' => 'Aa16001600',
         ]);
+        DB::table('model_has_roles')->where('model_id', $row[0])->delete();
+        $user->syncRoles(4);
+
+        return $user;
     }
 }
