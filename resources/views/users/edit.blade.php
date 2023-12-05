@@ -11,7 +11,7 @@
                     <div>
                         <div class="lg:flex grid lg:items-center items-start lg:space-x-4">
                             <img class="w-28 h-28 rounded-lg"
-                                 src="https://flowbite.com/application-ui/demo/images/users/jese-leos-2x.png"
+                                 src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
                                  alt="">
                             <div class="font-bold dark:text-white">
                                 <div class="text-l">{{ $user->name }} {{ $user->family }}</div>
