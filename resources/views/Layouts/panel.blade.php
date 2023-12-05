@@ -149,11 +149,18 @@
                 <li>
                     <a href="/roles"
                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt" height="24.000000pt" viewBox="0 0 22 21" preserveAspectRatio="xMidYMid meet">
 
-
-                       <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-                        <image id="icons8-roles-24" width="24" height="24" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA5klEQVR4nO2TPQ7CMAyFPykdmbgSDLTMdIO7wKngDDCwUmChlBOwF0VyhRWa/lAqBnjSkyLF9nOeY/jjg5gCVyAFQnpACuTCSx8CZyVw6kNgrARGXT2OPDG58K0ZaY/t2bQQCKR45Yy0gGUCLCS5wFBYwEhM4uSWCoQiYjs5quA1fmxUnM3JpPikIuels1mFx7HnpY1hVGLZHgSeWX1fwCiLYmdG2mN7dwDmTYQKj7MOQ7413QP9TU2FQNDmm7oeF4UHwArYA3ehPS/lrvGilXlssXO609zyROTJr0Vew87I+xbgt/EAPJKCrN6MUJEAAAAASUVORK5CYII="/>
-                      </svg>
+                            <g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
+                                <path d="M106 202 c-7 -11 4 -52 14 -52 10 0 21 41 14 52 -3 4 -9 8 -14 8 -5 0 -11 -4 -14 -8z"/>
+                                <path d="M25 160 c-9 -15 2 -27 30 -32 34 -7 38 1 11 23 -28 22 -32 23 -41 9z"/>
+                                <path d="M173 151 c-12 -10 -20 -21 -17 -24 10 -9 59 9 59 23 0 21 -18 21 -42 1z"/>
+                                <path d="M104 119 c-10 -17 13 -36 27 -22 12 12 4 33 -11 33 -5 0 -12 -5 -16 -11z"/>
+                                <path d="M55 92 c-29 -6 -41 -20 -28 -33 9 -9 18 -6 38 9 27 22 23 31 -10 24z"/>
+                                <path d="M156 92 c-3 -2 6 -14 20 -25 18 -13 29 -16 36 -9 6 6 8 15 4 20 -6 11 -53 22 -60 14z"/>
+                                <path d="M87 64 c-19 -20 -5 -34 34 -34 33 0 40 3 37 18 -3 17 -57 30 -71 16z"/>
+                            </g>
+                        </svg>
 
 
                         <span class="ml-4">Roles</span>

@@ -76,3 +76,14 @@
 .img-hover-zoom:hover img {
     transform: scale(1.5);
 }
+.pagination nav{
+    justify-content: center;
+}
+
+.pagination div.hidden{
+    display: block !important;
+}
+.pagination p{
+    padding-bottom: .8rem;
+    color: rgb(118, 125, 139);
+}
