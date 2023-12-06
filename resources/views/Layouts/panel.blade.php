@@ -201,7 +201,12 @@
                             <a href="/DocumentTypes"
                                class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                                 <span class="menulist">Document types</span>
-                                <span class="menulist-hover">U</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/EducationYears"
+                               class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                <span class="menulist">Education years</span>
                             </a>
                         </li>
                     </ul>

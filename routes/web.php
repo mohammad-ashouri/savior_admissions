@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\Catalogs\DocumentTypeController;
+use App\Http\Controllers\Catalogs\EducationYearController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
@@ -57,6 +58,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     //Catalogs
     Route::resource('DocumentTypes', DocumentTypeController::class)->middleware('role:Admin');
+    Route::resource('EducationYears', EducationYearController::class)->middleware('role:Admin');
+    Route::post('/finishEducationYear', [EducationYearController::class, 'finish'])->middleware('role:Admin');
 
 
     Route::resource('roles', RoleController::class)->middleware('role:Admin');

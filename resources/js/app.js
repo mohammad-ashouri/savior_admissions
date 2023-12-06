@@ -191,13 +191,10 @@ $(document).ready(function () {
                 $('.document-div[data-type-id="' + typeId + '"]').show();
             }
         });
-
-
         $('.show-image').click(function () {
             let imageSrc = $(this).data('image-src');
             $('#image-for-show').attr('src', imageSrc);
         });
-
         $('#document_file').change(function () {
             const fileInput = $('#document_file');
             const imagePreview = $('#image_preview');
@@ -231,6 +228,40 @@ $(document).ready(function () {
                     location.reload();
                 }, error: function (xhr, textStatus, errorThrown) {
                     swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                }
+            });
+        });
+
+    }
+    else if (fullPath.includes('EducationYears')) {
+        pageTitle = 'Education Years';
+        $('#new-education-year').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your education year will be added permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-education-year').off('submit').submit();
+                }
+            });
+        });
+        $('#finish-education-year').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your education year will be finished permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit').submit();
                 }
             });
         });
