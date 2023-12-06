@@ -13,6 +13,7 @@ class DocumentController extends Controller
         $documentTypes = DocumentType::orderBy('name', 'asc')->get();
         $myDocuments=Document::with('documentType')->where('user_id',session('id'))->get();
         $myDocumentTypes=Document::with('documentType')->where('user_id',session('id'))->pluck('document_type_id')->all();
+        $myDocumentTypes = array_unique($myDocumentTypes);
         return view('Documents.index', compact('documentTypes','myDocuments','myDocumentTypes'));
     }
 
