@@ -21,7 +21,7 @@
                     All
                     types
                 </button>
-                @foreach ($myDocumentTypes as $typeId)
+                @foreach (array_unique($myDocumentTypes) as $typeId)
                     @php
                         $documentType = DocumentType::find($typeId);
                     @endphp
