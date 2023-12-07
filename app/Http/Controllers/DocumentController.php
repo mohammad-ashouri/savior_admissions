@@ -23,7 +23,7 @@ class DocumentController extends Controller
             'document_type' => 'exists:document_types,id',
             'document_file' => 'required|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
         ]);
-        $path = $request->file('document_file')->store('public/uploads/Documents');
+        $path = $request->file('document_file')->store('public/uploads/Documents/'.session('id'));
         $document = new Document();
         $document->user_id = session('id');
         $document->document_type_id = $request->input('document_type');
