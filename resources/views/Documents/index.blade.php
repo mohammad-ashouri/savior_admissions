@@ -63,7 +63,7 @@
             </div>
 
             <!-- Main modal -->
-            <form id="create-document">
+            <form @if($user_id) id="create-document-for-user" @else id="create-document" @endif>
                 <div id="defaultModal" tabindex="-1" aria-hidden="true"
                      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <div class="relative w-full max-w-2xl max-h-full">
@@ -125,6 +125,7 @@
                             </div>
 
                             <!-- Modal footer -->
+                            @if($user_id==true) <input type="hidden" name="user_id" id="user_id" value="{{$user_id}}"> @endif
                             <div
                                 class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                                 <button data-modal-hide="defaultModal" type="submit"
