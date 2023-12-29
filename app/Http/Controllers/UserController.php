@@ -12,6 +12,13 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:read-users|create-users|edit-users|delete-users', ['only' => ['index', 'store']]);
+        $this->middleware('permission:create-users', ['only' => ['create', 'store']]);
+        $this->middleware('permission:edit-users', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:delete-users', ['only' => ['destroy']]);
+    }
     public function index()
     {
         $data = User::orderBy('id', 'DESC')->paginate(

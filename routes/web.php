@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\Catalogs\DocumentTypeController;
 use App\Http\Controllers\Catalogs\EducationYearController;
+use App\Http\Controllers\Catalogs\SchoolController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
@@ -57,24 +58,25 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     })->name('dashboard');
 
     //Catalogs
-    Route::resource('DocumentTypes', DocumentTypeController::class)->middleware('role:Admin');
-    Route::resource('EducationYears', EducationYearController::class)->middleware('role:Admin');
-    Route::post('/finishEducationYear', [EducationYearController::class, 'finish'])->middleware('role:Admin');
+    Route::resource('Schools', SchoolController::class)->middleware('role:SuperAdmin');
+    Route::resource('DocumentTypes', DocumentTypeController::class)->middleware('role:SuperAdmin');
+    Route::resource('EducationYears', EducationYearController::class)->middleware('role:SuperAdmin');
+    Route::post('/finishEducationYear', [EducationYearController::class, 'finish'])->middleware('role:SuperAdmin');
 
 
-    Route::resource('roles', RoleController::class)->middleware('role:Admin');
-    Route::resource('users', UserController::class)->middleware('role:Admin');
+    Route::resource('roles', RoleController::class)->middleware('role:SuperAdmin');
+    Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-SchoolAdmin');
     Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('role:Admin');
     Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('role:Admin');
     Route::post('users/change_rules', [ProfileController::class, 'changeUserRole'])->middleware('role:Admin');
 
     Route::prefix('Documents')->group(function () {
         Route::get('/', [DocumentController::class, 'index']);
-        Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('role:Admin');
-        Route::post('/Create/{user_id}', [DocumentController::class, 'createDocument'])->middleware('role:Admin');
+        Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+        Route::post('/Create/{user_id}', [DocumentController::class, 'createDocument'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
         Route::post('/Create', [DocumentController::class, 'createDocument']);
-        Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('role:Admin');
-        Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('role:Admin');
+        Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+        Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
     });
 
     Route::prefix('Profile')->group(function () {

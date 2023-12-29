@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -21,6 +21,24 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('access-student-info', function ($user, $student) {
+            return $user->hasRole('school_admin') && $user->school_id === $student->school_id;
+        });
+
+        Gate::define('access-parent-info', function ($user, $parent) {
+            return $user->hasRole('school_admin') && $user->school_id === $parent->school_id;
+        });
+
+        Gate::define('access-own-interviews', function ($user, $interview) {
+            return $user->id === $interview->interviewer_id;
+        });
+
+        Gate::define('access-school-info', function ($user, $school) {
+            return $user->hasRole('school_admin') && $user->school_id === $school->id;
+        });
+
+        Gate::define('access-SuperAdmin-and-SchoolAdmin', function ($user) {
+            return $user->hasAnyRole(['SuperAdmin', 'SchoolAdmin']);
+        });
     }
 }

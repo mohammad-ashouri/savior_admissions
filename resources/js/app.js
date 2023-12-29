@@ -277,7 +277,14 @@ $(document).ready(function () {
             });
         });
 
-    } else {
+    }
+    else if (fullPath.includes('roles')) {
+        pageTitle = 'Roles';
+    }
+    else if (fullPath.includes('Schools')) {
+        pageTitle = 'Schools';
+    }
+    else {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';

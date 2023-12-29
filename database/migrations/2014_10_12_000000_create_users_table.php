@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('mobile')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password');
+            $table->json('student_information')->nullable();
             $table->tinyInteger('status')->default('1');
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
