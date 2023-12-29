@@ -1,5 +1,8 @@
 @extends('Layouts.panel')
-
+@php
+    use App\Models\User;
+    $myInfo=User::find(session('id'));
+@endphp
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
@@ -17,6 +20,7 @@
                                 <div class="text-l">{{ $user->name }} {{ $user->family }}</div>
                             </div>
                         </div>
+                        @if($myInfo->hasRole('SuperAdmin'))
                         <div class="mt-3">
                             <form id="change-rules">
                                 <label for="Role"
@@ -36,6 +40,7 @@
                                 </button>
                             </form>
                         </div>
+                        @endif
                     </div>
                 </div>
 
@@ -246,6 +251,34 @@
                     </div>
                 </div>
             </div>
+            @if($user->hasRole('Student'))
+            <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
+                <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
+                    <h1 class="text-2xl font-medium"> Student information</h1>
+                </div>
+                <form id="changeStudentInformation">
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <label for="school"
+                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>
+                            <select id="school" name="school"
+                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   required>
+                                <option value="" disabled selected>Select school...</option>
+                                @foreach($schools as $school)
+                                    <option value="{{ $school->id }}">{{ $school->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" value="{{ $user->id }}" name="user_id">
+                    <button type="submit"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Save all
+                    </button>
+                </form>
+            </div>
+            @endif
 
         </div>
     </div>

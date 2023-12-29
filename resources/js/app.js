@@ -7,7 +7,7 @@ window.Swal = Swal;
 
 function swalFire(title = null, text, icon, confirmButtonText) {
     Swal.fire({
-        title: title, text: text, icon: icon, confirmButtonText: confirmButtonText,
+        title: title, html: text, icon: icon, confirmButtonText: confirmButtonText,
     });
 }
 
@@ -162,6 +162,25 @@ $(document).ready(function () {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }, success: function (response) {
                         swalFire('Done', response.success, 'success', 'Ok');
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                    }
+                });
+            });
+
+            $('#changeStudentInformation').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/change_student_information',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }, success: function (response) {
+                        console.log(response);
+                        // swalFire('Done', response.success, 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
                         swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
                     }

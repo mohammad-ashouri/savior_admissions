@@ -66,9 +66,10 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     Route::resource('roles', RoleController::class)->middleware('role:SuperAdmin');
     Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-SchoolAdmin');
-    Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('role:Admin');
-    Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('role:Admin');
-    Route::post('users/change_rules', [ProfileController::class, 'changeUserRole'])->middleware('role:Admin');
+    Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+    Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+    Route::post('users/change_rules', [ProfileController::class, 'changeUserRole'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+    Route::post('users/change_student_information', [UserController::class, 'changeStudentInformation'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
 
     Route::prefix('Documents')->group(function () {
         Route::get('/', [DocumentController::class, 'index']);

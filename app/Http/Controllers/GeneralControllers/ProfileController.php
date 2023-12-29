@@ -127,6 +127,6 @@ class ProfileController extends Controller
         DB::table('model_has_roles')->where('model_id', $user->id)->delete();
         $user->syncRoles($request->input('roles'));
         $this->logActivity('Rules updated by => ' . session('id'), request()->ip(), request()->userAgent(), $user->id);
-        return response()->json(['success' => 'Rules updated!'], 200);
+        return response()->json(['success' => 'Rules updated! <br> Please refresh the page to display additional information'], 200);
     }
 }

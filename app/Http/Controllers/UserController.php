@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogs\School;
 use App\Models\GeneralInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -72,8 +73,8 @@ class UserController extends Controller
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
         $generalInformation=GeneralInformation::where('user_id',$user->id)->first();
-
-        return view('users.edit', compact('user', 'roles', 'userRole','generalInformation'));
+        $schools=School::where('status',1)->get();
+        return view('users.edit', compact('user', 'roles', 'userRole','generalInformation','schools'));
     }
 
     public function update(Request $request, $id)
@@ -127,5 +128,17 @@ class UserController extends Controller
         }
     }
 
+    public function changeStudentInformation(Request $request)
+    {
+        $user=User::find($request->user_id);
+        $studentInformation=[
+            'school_id'=>$request->school,
+        ];
+        $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
+        $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
+        $user->additional_information=json_encode($userAdditionalInformation);
+        $user->save();
+
+    }
 
 }
