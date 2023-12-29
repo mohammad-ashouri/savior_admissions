@@ -308,4 +308,50 @@ $(document).ready(function () {
         }
     }
     $('#page-title').text(pageTitle + ' | Savior Schools');
+
+    const images = []; // Array to store image URLs
+    let currentIndex = 0; // Variable to track the current image index
+
+    // Function to show the image at the given index
+    const showImage = index => {
+        $('#image-for-show').attr('src', images[index]);
+        currentIndex = index;
+    };
+
+    // Function to handle the next button click
+    $('.next-button').on('click', function() {
+        if (currentIndex < images.length - 1) {
+            showImage(currentIndex + 1);
+        }
+    });
+
+    // Function to handle the previous button click
+    $('.previous-button').on('click', function() {
+        if (currentIndex > 0) {
+            showImage(currentIndex - 1);
+        }
+    });
+
+    // Function to open modal and set initial image
+    $('[data-modal-toggle="openImage"]').on('click', function() {
+        const imageUrl = $(this).data('image-src');
+        $('#image-for-show').attr('src', imageUrl);
+
+        // Get all image URLs and store in the array
+        images.length = 0;
+        $('[data-modal-toggle="openImage"]').each(function() {
+            images.push($(this).data('image-src'));
+        });
+
+        // Find the index of the clicked image
+        currentIndex = images.indexOf(imageUrl);
+
+        // Show modal
+        $('#openImage').removeClass('hidden');
+    });
+
+    // Function to close the modal
+    $('[data-modal-hide="openImage"]').on('click', function() {
+        $('#openImage').addClass('hidden');
+    });
 });
