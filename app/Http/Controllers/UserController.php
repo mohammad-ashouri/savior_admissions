@@ -138,7 +138,8 @@ class UserController extends Controller
         $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
         $user->additional_information=json_encode($userAdditionalInformation);
         $user->save();
-
+        $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
+        return response()->json(['success' => 'Student information saved successfully!'], 200);
     }
 
 }
