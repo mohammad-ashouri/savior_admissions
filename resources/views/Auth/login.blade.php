@@ -12,7 +12,7 @@
 <div class="bg-white dark:bg-gray-800 lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
     <div class="lg:w-2/5 pr-8 lg:inline-block hidden">
         <img src="{{ Vite::asset('resources/images/login.jpg') }}" alt="Login Image"
-             class="w-full rounded-l-lg">
+             class="w-full h-auto rounded-l-lg">
     </div>
     <div class="lg:w-1/2 w-full flex flex-col justify-center items-center p-8">
         <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left dark:text-white">Sign in to savior school</h2>
