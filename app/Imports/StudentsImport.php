@@ -21,7 +21,7 @@ class StudentsImport implements ToModel
             'password' => 'Aa16001600',
         ]);
         DB::table('model_has_roles')->where('model_id', $row[0])->delete();
-        $user->syncRoles(4);
+        $user->syncRoles(5);
 
         return $user;
     }
