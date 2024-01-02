@@ -61,6 +61,9 @@
         transition : 0.3s;
         margin-left: 16rem;
     }
+    .loginPic{
+        background: url(../images/login.jpg) no-repeat;
+    }
 }
 /* [1] The container */
 .img-hover-zoom {
