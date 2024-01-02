@@ -90,3 +90,11 @@
     padding-bottom: .8rem;
     color: rgb(118, 125, 139);
 }
+.mainLogo{
+    background: url(../images/Panel/logo.png) no-repeat;
+    background-size: cover;
+}
+.defaultUserIcon{
+    background: url(../images/Panel/default_user_icon.png) no-repeat;
+    background-size: cover;
+}

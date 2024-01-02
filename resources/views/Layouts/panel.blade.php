@@ -46,7 +46,7 @@
                 </button>
 
                 <a href="" class="flex ml-2 md:mr-24">
-                    <img src="{{ Vite::asset('resources/images/Panel/logo.png') }}" class="h-14 w-24 mr-3" alt="Logo"/>
+                    <div class="h-14 w-24 mr-3 mainLogo"></div>
                     <span
                         class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Savior School</span>
                 </a>
@@ -81,9 +81,7 @@
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>
-                            <img class="w-8 h-8 rounded-full"
-                                 src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
-                                 alt="user photo">
+                            <div class="w-8 h-8 mr-3 defaultUserIcon"></div>
                         </button>
                     </div>
                     <div
