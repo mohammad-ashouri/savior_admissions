@@ -207,43 +207,6 @@ $(document).ready(function () {
     else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
 
-        $('.type-filter').click(function () {
-            var typeId = $(this).data('type-id');
-
-            // اضافه کردن کلاس‌های فعال به دکمه کلیک شده
-            $(this).addClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
-
-            // حذف کلاس‌های فعال از دکمه‌های دیگر
-            $('.type-filter').not(this).removeClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
-
-            if (typeId === 'all') {
-                $('.document-div').show();
-            } else {
-                $('.document-div').hide();
-                $('.document-div[data-type-id="' + typeId + '"]').show();
-            }
-        });
-        $('.show-image').click(function () {
-            let imageSrc = $(this).data('image-src');
-            $('#image-for-show').attr('src', imageSrc);
-        });
-        $('#document_file').change(function () {
-            const fileInput = $('#document_file');
-            const imagePreview = $('#image_preview');
-
-            if (fileInput[0].files && fileInput[0].files[0]) {
-                const reader = new FileReader();
-
-                reader.onload = function (e) {
-                    imagePreview.attr('src', e.target.result);
-                    imagePreview.css('display', 'block');
-                };
-
-                reader.readAsDataURL(fileInput[0].files[0]);
-            } else {
-                imagePreview.css('display', 'none');
-            }
-        });
         $('#create-document').submit(function (e) {
             e.preventDefault();
             Swal.fire({
@@ -273,6 +236,90 @@ $(document).ready(function () {
                     });
                 }
             });
+        });
+
+        $('.type-filter').click(function () {
+            var typeId = $(this).data('type-id');
+
+            // اضافه کردن کلاس‌های فعال به دکمه کلیک شده
+            $(this).addClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
+
+            // حذف کلاس‌های فعال از دکمه‌های دیگر
+            $('.type-filter').not(this).removeClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
+
+            if (typeId === 'all') {
+                $('.document-div').show();
+            } else {
+                $('.document-div').hide();
+                $('.document-div[data-type-id="' + typeId + '"]').show();
+            }
+        });
+        $('.show-image').click(function () {
+            let imageSrc = $(this).data('image-src');
+            let imageTitle = $(this).data('image-title');
+            $('#image-for-show').attr('src', imageSrc);
+            $('.DocumentTitle').text(imageTitle);
+        });
+        $('#document_file').change(function () {
+            const fileInput = $('#document_file');
+            const imagePreview = $('#image_preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+
+        const images = []; // Array to store image URLs
+        let currentIndex = 0; // Variable to track the current image index
+
+        // Function to show the image at the given index
+        const showImage = index => {
+            $('#image-for-show').attr('src', images[index]);
+            let imageTitle = $('[data-image-src="' + images[index] + '"]').data('image-title');
+            $('.DocumentTitle').text(imageTitle);
+            currentIndex = index;
+        };
+
+        $('.next-button').on('click', function () {
+            if (currentIndex < images.length - 1) {
+                showImage(currentIndex + 1);
+            }
+        });
+
+        $('.previous-button').on('click', function () {
+            if (currentIndex > 0) {
+                showImage(currentIndex - 1);
+            }
+        });
+
+        $('[data-modal-toggle="openImage"]').on('click', function () {
+            const imageUrl = $(this).data('image-src');
+            $('#image-for-show').attr('src', imageUrl);
+
+            images.length = 0;
+            $('[data-modal-toggle="openImage"]').each(function () {
+                images.push($(this).data('image-src'));
+            });
+
+            currentIndex = images.indexOf(imageUrl);
+
+            $('#openImage').removeClass('hidden');
+
+            let initialImageTitle = $('[data-image-src="' + imageUrl + '"]').data('image-title');
+            $('.DocumentTitle').text(initialImageTitle);
+        });
+
+        $('[data-modal-hide="openImage"]').on('click', function () {
+            $('#openImage').addClass('hidden');
         });
 
     } else if (fullPath.includes('EducationYears')) {
@@ -344,49 +391,5 @@ $(document).ready(function () {
     }
     $('#page-title').text(pageTitle + ' | Savior Schools');
 
-    const images = []; // Array to store image URLs
-    let currentIndex = 0; // Variable to track the current image index
 
-    // Function to show the image at the given index
-    const showImage = index => {
-        $('#image-for-show').attr('src', images[index]);
-        currentIndex = index;
-    };
-
-    // Function to handle the next button click
-    $('.next-button').on('click', function () {
-        if (currentIndex < images.length - 1) {
-            showImage(currentIndex + 1);
-        }
-    });
-
-    // Function to handle the previous button click
-    $('.previous-button').on('click', function () {
-        if (currentIndex > 0) {
-            showImage(currentIndex - 1);
-        }
-    });
-
-    // Function to open modal and set initial image
-    $('[data-modal-toggle="openImage"]').on('click', function () {
-        const imageUrl = $(this).data('image-src');
-        $('#image-for-show').attr('src', imageUrl);
-
-        // Get all image URLs and store in the array
-        images.length = 0;
-        $('[data-modal-toggle="openImage"]').each(function () {
-            images.push($(this).data('image-src'));
-        });
-
-        // Find the index of the clicked image
-        currentIndex = images.indexOf(imageUrl);
-
-        // Show modal
-        $('#openImage').removeClass('hidden');
-    });
-
-    // Function to close the modal
-    $('[data-modal-hide="openImage"]').on('click', function () {
-        $('#openImage').addClass('hidden');
-    });
 });

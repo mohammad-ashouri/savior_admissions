@@ -46,7 +46,7 @@
                             <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
                             >
                                 <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                        data-image-src="{{ env('APP_URL')}}/{{ $document->src }}"
+                                        data-image-src="{{ env('APP_URL')}}/{{ $document->src }}" data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}"
                                         class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
                                         type="button">
                                     <img class="h-auto max-w-full rounded-lg"
@@ -182,7 +182,7 @@
                         <div class="text-center">
                             <img class="h-auto max-w-full rounded-lg " id="image-for-show" src=""
                                  alt="image">
-                            <p class="mt-2 text-white">salam</p>
+                            <p class="mt-2 text-white DocumentTitle"></p>
                         </div>
 
                     </div>
