@@ -145,22 +145,32 @@ class UserController extends Controller
 
     public function searchUser(Request $request)
     {
-        $data = User::where(function ($query) use ($request) {
+        $activity = [];
+        $data = User::where(function ($query) use ($request, &$activity) {
             $searchEduCode = $request->input('search-edu-code');
             $searchFirstName = $request->input('search-first-name');
             $searchLastName = $request->input('search-last-name');
+            $activity['activity'] = 'search in users';
+
             if (!empty($searchEduCode)) {
                 $query->where('id', $searchEduCode);
+                $activity['edu_code'] = $searchEduCode;
             }
+
             if (!empty($searchFirstName)) {
                 $query->where('name', 'LIKE', "%$searchFirstName%");
+                $activity['first_name'] = $searchFirstName;
             }
+
             if (!empty($searchLastName)) {
-                $query->Where('family', 'LIKE', "%$searchLastName%");
+                $query->where('family', 'LIKE', "%$searchLastName%");
+                $activity['last_name'] = $searchLastName;
             }
         })
             ->orderBy('id', 'DESC')
             ->paginate($perPage = 15, $columns = ['*'], $pageName = 'users');
+
+        $this->logActivity(json_encode($activity), request()->ip(), request()->userAgent(), session('id'));
         return view('users.index', compact('data'));
     }
 }
