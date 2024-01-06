@@ -129,4 +129,6 @@ class ProfileController extends Controller
         $this->logActivity('Rules updated by => ' . session('id'), request()->ip(), request()->userAgent(), $user->id);
         return response()->json(['success' => 'Rules updated! <br> Please refresh the page to display additional information'], 200);
     }
+
+
 }

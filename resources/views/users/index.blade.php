@@ -10,9 +10,32 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">
-                        <input type="text" id="search-navbar"
-                               class="font-normal text-lg block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                               placeholder="Search for users">
+                        <form id="search-user" action="/search" method="get">
+                            <div class="flex w-96">
+                                <div>
+                                    <input type="text" id="search-edu-code" name="search-edu-code"
+                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Enter educational code">
+                                </div>
+                                <div>
+                                    <input type="text" id="search-first-name" name="search-first-name"
+                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Enter first name">
+                                </div>
+                                <div>
+                                    <input type="text" id="search-last-name" name="search-last-name"
+                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Enter last name">
+                                </div>
+                                <div>
+                                    <button type="submit"
+                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <i class="fas fa-search mr-2" aria-hidden="true"></i>
+                                        Filter
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="flex">
                         <a href="{{ route('users.create') }}">

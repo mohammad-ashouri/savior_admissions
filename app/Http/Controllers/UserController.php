@@ -20,6 +20,7 @@ class UserController extends Controller
         $this->middleware('permission:edit-users', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete-users', ['only' => ['destroy']]);
     }
+
     public function index()
     {
         $data = User::orderBy('id', 'DESC')->paginate(
@@ -72,9 +73,9 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
-        $generalInformation=GeneralInformation::where('user_id',$user->id)->first();
-        $schools=School::where('status',1)->get();
-        return view('users.edit', compact('user', 'roles', 'userRole','generalInformation','schools'));
+        $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
+        $schools = School::where('status', 1)->get();
+        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools'));
     }
 
     public function update(Request $request, $id)
@@ -119,8 +120,8 @@ class UserController extends Controller
         $input = $request->all();
         if (!empty($input['New_password'])) {
             $input['password'] = Hash::make($input['New_password']);
-            $user=User::find($input['user_id']);
-            $user->password=$input['password'];
+            $user = User::find($input['user_id']);
+            $user->password = $input['password'];
             $user->save();
             $this->logActivity('Password Changed Successfully => ' . $user->password, request()->ip(), request()->userAgent(), session('id'));
         } else {
@@ -130,16 +131,36 @@ class UserController extends Controller
 
     public function changeStudentInformation(Request $request)
     {
-        $user=User::find($request->user_id);
-        $studentInformation=[
-            'school_id'=>$request->school,
+        $user = User::find($request->user_id);
+        $studentInformation = [
+            'school_id' => $request->school,
         ];
         $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
         $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
-        $user->additional_information=json_encode($userAdditionalInformation);
+        $user->additional_information = json_encode($userAdditionalInformation);
         $user->save();
         $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
         return response()->json(['success' => 'Student information saved successfully!'], 200);
     }
 
+    public function searchUser(Request $request)
+    {
+        $data = User::where(function ($query) use ($request) {
+            $searchEduCode = $request->input('search-edu-code');
+            $searchFirstName = $request->input('search-first-name');
+            $searchLastName = $request->input('search-last-name');
+            if (!empty($searchEduCode)) {
+                $query->where('id', $searchEduCode);
+            }
+            if (!empty($searchFirstName)) {
+                $query->where('name', 'LIKE', "%$searchFirstName%");
+            }
+            if (!empty($searchLastName)) {
+                $query->Where('family', 'LIKE', "%$searchLastName%");
+            }
+        })
+            ->orderBy('id', 'DESC')
+            ->paginate($perPage = 15, $columns = ['*'], $pageName = 'users');
+        return view('users.index', compact('data'));
+    }
 }

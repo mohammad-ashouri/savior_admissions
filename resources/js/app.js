@@ -186,9 +186,23 @@ $(document).ready(function () {
                 });
             });
         }
+
+        $('#search-user').submit(function (e) {
+            e.preventDefault();
+            if (($('#search-edu-code').val() == null || $('#search-edu-code').val() == '') &&
+                ($('#search-first-name').val() == null || $('#search-first-name').val() == '') &&
+                ($('#search-last-name').val() == null || $('#search-last-name').val() == '')) {
+                swalFire('Error', 'Fields are empty', 'error', 'Ok');
+            } else {
+                this.submit();
+            }
+        });
+
     }
     else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
+    } else if (fullPath.includes('search')) {
+        pageTitle = 'Search users';
     }
     else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
@@ -261,8 +275,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('EducationYears')) {
+    } else if (fullPath.includes('EducationYears')) {
         pageTitle = 'Education Years';
         $('#new-education-year').submit(function (e) {
             e.preventDefault();
@@ -295,14 +308,11 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('roles')) {
+    } else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';
-    }
-    else if (fullPath.includes('Schools')) {
+    } else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
-    }
-    else {
+    } else {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';
@@ -344,27 +354,27 @@ $(document).ready(function () {
     };
 
     // Function to handle the next button click
-    $('.next-button').on('click', function() {
+    $('.next-button').on('click', function () {
         if (currentIndex < images.length - 1) {
             showImage(currentIndex + 1);
         }
     });
 
     // Function to handle the previous button click
-    $('.previous-button').on('click', function() {
+    $('.previous-button').on('click', function () {
         if (currentIndex > 0) {
             showImage(currentIndex - 1);
         }
     });
 
     // Function to open modal and set initial image
-    $('[data-modal-toggle="openImage"]').on('click', function() {
+    $('[data-modal-toggle="openImage"]').on('click', function () {
         const imageUrl = $(this).data('image-src');
         $('#image-for-show').attr('src', imageUrl);
 
         // Get all image URLs and store in the array
         images.length = 0;
-        $('[data-modal-toggle="openImage"]').each(function() {
+        $('[data-modal-toggle="openImage"]').each(function () {
             images.push($(this).data('image-src'));
         });
 
@@ -376,7 +386,7 @@ $(document).ready(function () {
     });
 
     // Function to close the modal
-    $('[data-modal-hide="openImage"]').on('click', function() {
+    $('[data-modal-hide="openImage"]').on('click', function () {
         $('#openImage').addClass('hidden');
     });
 });
