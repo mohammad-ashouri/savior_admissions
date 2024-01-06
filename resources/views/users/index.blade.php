@@ -10,7 +10,7 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">
-                        <form id="search-user" action="/search" method="get">
+                        <form id="search-user" action="{{ route('searchUser') }}" method="get">
                             <div class="flex w-96">
                                 <div>
                                     <input type="text" id="search-edu-code" name="search-edu-code"

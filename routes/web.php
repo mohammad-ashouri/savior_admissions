@@ -70,7 +70,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
     Route::post('users/change_rules', [ProfileController::class, 'changeUserRole'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
     Route::post('users/change_student_information', [UserController::class, 'changeStudentInformation'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
-    Route::get('/search', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-SchoolAdmin')->name('searchUser');
+    Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-SchoolAdmin')->name('searchUser');
 
     Route::prefix('Documents')->group(function () {
         Route::get('/', [DocumentController::class, 'index']);
