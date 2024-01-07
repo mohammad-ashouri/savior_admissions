@@ -8,9 +8,9 @@
                 <div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         Documents of
-                        {{ $documentOwner->documentOwner->name . $documentOwner->documentOwner->family }}
+                        {{ $documentOwner->name . ' ' . $documentOwner->family }}
                         with id
-                        {{ $documentOwner->documentOwner->id }}
+                        {{ $documentOwner->id }}
                     </h3>
                 </div>
             @endif

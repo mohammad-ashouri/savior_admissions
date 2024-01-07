@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalogs\DocumentType;
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -56,7 +57,7 @@ class DocumentController extends Controller
     {
         $documentTypes = DocumentType::orderBy('name', 'asc')->get();
         $myDocuments = Document::with('documentType')->where('user_id', $user_id)->orderBy('id','desc')->get();
-        $documentOwner=Document::where('user_id', $user_id)->with('documentOwner')->first();
+        $documentOwner=User::find($user_id);
         $myDocumentTypes = Document::with('documentType')->where('user_id', $user_id)->pluck('document_type_id')->all();
         return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes', 'documentOwner', 'user_id'));
 
