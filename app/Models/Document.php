@@ -26,4 +26,8 @@ class Document extends Model
     {
         return $this->belongsTo(DocumentType::class,'document_type_id','id');
     }
+    public function documentOwner()
+    {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
 }

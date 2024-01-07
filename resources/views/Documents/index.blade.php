@@ -4,6 +4,16 @@
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
+            @if(isset($user_id))
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Documents of
+                        {{ $documentOwner->documentOwner->name . $documentOwner->documentOwner->family }}
+                        with id
+                        {{ $documentOwner->documentOwner->id }}
+                    </h3>
+                </div>
+            @endif
             <div class="grid grid-cols-1 gap-4 text-black dark:text-white">
                 <div class="pt-6">
                     <button data-modal-target="defaultModal" data-modal-toggle="defaultModal"
@@ -14,7 +24,7 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-center pb-4 md:pb-8 flex-wrap mt-10 md:mt-8">
+            <div class="flex items-center justify-center pb-4 md:pb-8 flex-wrap mt-8 md:mt-8">
                 <button type="button" data-type-id="all"
                         class="text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800 type-filter">
                     All

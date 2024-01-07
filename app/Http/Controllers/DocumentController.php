@@ -56,9 +56,9 @@ class DocumentController extends Controller
     {
         $documentTypes = DocumentType::orderBy('name', 'asc')->get();
         $myDocuments = Document::with('documentType')->where('user_id', $user_id)->orderBy('id','desc')->get();
+        $documentOwner=Document::where('user_id', $user_id)->with('documentOwner')->first();
         $myDocumentTypes = Document::with('documentType')->where('user_id', $user_id)->pluck('document_type_id')->all();
-        $documentForUser = true;
-        return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes', 'user_id'));
+        return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes', 'documentOwner', 'user_id'));
 
     }
 }
