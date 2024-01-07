@@ -4,7 +4,7 @@
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
-            @if(isset($user_id))
+            @if(isset($user_id) and isset($documentOwner))
                 <div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         Documents of
