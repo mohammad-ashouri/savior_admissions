@@ -12,7 +12,7 @@ class DocumentController extends Controller
     public function index()
     {
         $documentTypes = DocumentType::orderBy('name', 'asc')->get();
-        $myDocuments = Document::with('documentType')->where('user_id', session('id'))->get();
+        $myDocuments = Document::with('documentType')->where('user_id', session('id'))->orderBy('id','desc')->get();
         $myDocumentTypes = Document::with('documentType')->where('user_id', session('id'))->pluck('document_type_id')->all();
         $myDocumentTypes = array_unique($myDocumentTypes);
         return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes'));
@@ -40,7 +40,7 @@ class DocumentController extends Controller
     public function showUserDocuments($user_id)
     {
         $documentTypes = DocumentType::orderBy('name', 'asc')->get();
-        $myDocuments = Document::with('documentType')->where('user_id', $user_id)->get();
+        $myDocuments = Document::with('documentType')->where('user_id', $user_id)->orderBy('id','desc')->get();
         $myDocumentTypes = Document::with('documentType')->where('user_id', $user_id)->pluck('document_type_id')->all();
         $documentForUser = true;
         return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes', 'user_id'));
