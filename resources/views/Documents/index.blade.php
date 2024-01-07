@@ -118,7 +118,7 @@
                                             The files must be in this format: png, jpg, jpeg, pdf, bmp
                                         </li>
                                         <li>
-                                            Maximum size: 5 MB
+                                            Maximum size: 2 MB
                                         </li>
                                     </ul>
 
