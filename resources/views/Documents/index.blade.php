@@ -14,7 +14,6 @@
                 </div>
             </div>
 
-
             <div class="flex items-center justify-center pb-4 md:pb-8 flex-wrap mt-10 md:mt-8">
                 <button type="button" data-type-id="all"
                         class="text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center mr-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800 type-filter">
@@ -46,7 +45,8 @@
                             <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
                             >
                                 <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                        data-image-src="{{ env('APP_URL')}}/{{ $document->src }}" data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}"
+                                        data-image-src="{{ env('APP_URL')}}/{{ $document->src }}"
+                                        data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}"
                                         class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
                                         type="button">
                                     <img class="h-auto max-w-full rounded-lg"
@@ -63,7 +63,7 @@
             </div>
 
             <!-- Main modal -->
-            <form @if(@$user_id) id="create-document-for-user" @else id="create-document" @endif>
+            <form @if(isset($user_id)) id="create-document-for-user" @else id="create-document" @endif>
                 <div id="defaultModal" tabindex="-1" aria-hidden="true"
                      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
                     <div class="relative w-full max-w-2xl max-h-full">
@@ -102,7 +102,8 @@
                                        for="document_file">Upload file</label>
                                 <input
                                     class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                    id="document_file" name="document_file" type="file" accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                    id="document_file" name="document_file" type="file"
+                                    accept=".png,.jpg,.jpeg,.pdf,.bmp">
 
                                 <img id="image_preview" class="w-full h-auto" src="" alt="Preview Image"
                                      style="display:none; ">
@@ -125,7 +126,6 @@
                             </div>
 
                             <!-- Modal footer -->
-                            @if(@$user_id==true) <input type="hidden" name="user_id" id="user_id" value="{{$user_id}}"> @endif
                             <div
                                 class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                                 <button data-modal-hide="defaultModal" type="submit"
@@ -155,8 +155,8 @@
                          style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
                          version="1.1" xml:space="preserve">
                     <path
-                        d="M6.507,17.508l20.963,-0.008c0.828,-0 1.5,-0.673 1.5,-1.501c-0.001,-0.827 -0.673,-1.499 -1.501,-1.499l-20.975,0.008c0.088,-0.119 0.188,-0.231 0.298,-0.334c0,0 9.705,-9.079 9.705,-9.079c0.605,-0.565 0.636,-1.515 0.071,-2.12c-0.566,-0.604 -1.516,-0.636 -2.12,-0.07c-0,-0 -5.9,5.519 -9.705,9.078c-1.118,1.045 -1.749,2.509 -1.743,4.038c0.006,1.53 0.649,2.989 1.774,4.025c3.848,3.543 9.829,9.05 9.829,9.05c0.609,0.56 1.559,0.521 2.119,-0.088c0.561,-0.609 0.522,-1.558 -0.087,-2.119c-0,-0 -5.98,-5.507 -9.828,-9.05c-0.111,-0.102 -0.211,-0.213 -0.3,-0.331Z" />
-                        <g id="Icon" />
+                        d="M6.507,17.508l20.963,-0.008c0.828,-0 1.5,-0.673 1.5,-1.501c-0.001,-0.827 -0.673,-1.499 -1.501,-1.499l-20.975,0.008c0.088,-0.119 0.188,-0.231 0.298,-0.334c0,0 9.705,-9.079 9.705,-9.079c0.605,-0.565 0.636,-1.515 0.071,-2.12c-0.566,-0.604 -1.516,-0.636 -2.12,-0.07c-0,-0 -5.9,5.519 -9.705,9.078c-1.118,1.045 -1.749,2.509 -1.743,4.038c0.006,1.53 0.649,2.989 1.774,4.025c3.848,3.543 9.829,9.05 9.829,9.05c0.609,0.56 1.559,0.521 2.119,-0.088c0.561,-0.609 0.522,-1.558 -0.087,-2.119c-0,-0 -5.98,-5.507 -9.828,-9.05c-0.111,-0.102 -0.211,-0.213 -0.3,-0.331Z"/>
+                        <g id="Icon"/>
                 </svg>
 
                     <span class="sr-only">Previous</span>
@@ -187,10 +187,17 @@
 
                     </div>
                 </div>
-                <button type="button" class="ml-10 next-button text-white bg-transparent rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:text-white">
+                <button type="button"
+                        class="ml-10 next-button text-white bg-transparent rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:text-white">
                     <!-- Next icon or text -->
                     <!-- Example using an SVG icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:serif="http://www.serif.com/" xmlns:xlink="http://www.w3.org/1999/xlink" fill="white" width="800px" height="800px" viewBox="0 0 32 32" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" version="1.1" xml:space="preserve"><path d="M25.468,14.508l-20.967,-0.008c-0.828,-0 -1.501,0.672 -1.501,1.499c-0,0.828 0.672,1.501 1.499,1.501l21.125,0.009c-0.107,0.159 -0.234,0.306 -0.377,0.439c-3.787,3.502 -9.68,8.951 -9.68,8.951c-0.608,0.562 -0.645,1.511 -0.083,2.119c0.562,0.608 1.512,0.645 2.12,0.083c-0,0 5.892,-5.448 9.68,-8.95c1.112,-1.029 1.751,-2.47 1.766,-3.985c0.014,-1.515 -0.596,-2.968 -1.688,-4.018l-9.591,-9.221c-0.596,-0.574 -1.547,-0.556 -2.121,0.041c-0.573,0.597 -0.555,1.547 0.042,2.121l9.591,9.221c0.065,0.063 0.127,0.129 0.185,0.198Z"/><g id="Icon"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:serif="http://www.serif.com/"
+                         xmlns:xlink="http://www.w3.org/1999/xlink" fill="white" width="800px" height="800px"
+                         viewBox="0 0 32 32"
+                         style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
+                         version="1.1" xml:space="preserve"><path
+                            d="M25.468,14.508l-20.967,-0.008c-0.828,-0 -1.501,0.672 -1.501,1.499c-0,0.828 0.672,1.501 1.499,1.501l21.125,0.009c-0.107,0.159 -0.234,0.306 -0.377,0.439c-3.787,3.502 -9.68,8.951 -9.68,8.951c-0.608,0.562 -0.645,1.511 -0.083,2.119c0.562,0.608 1.512,0.645 2.12,0.083c-0,0 5.892,-5.448 9.68,-8.95c1.112,-1.029 1.751,-2.47 1.766,-3.985c0.014,-1.515 -0.596,-2.968 -1.688,-4.018l-9.591,-9.221c-0.596,-0.574 -1.547,-0.556 -2.121,0.041c-0.573,0.597 -0.555,1.547 0.042,2.121l9.591,9.221c0.065,0.063 0.127,0.129 0.185,0.198Z"/>
+                        <g id="Icon"/></svg>
                     <span class="sr-only">Next</span>
                 </button>
             </div>

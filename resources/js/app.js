@@ -11,6 +11,20 @@ function swalFire(title = null, text, icon, confirmButtonText) {
     });
 }
 
+function resetFields() {
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => input.value = "");
+    const selectors = document.querySelectorAll('select');
+    selectors.forEach(select => select.value = "");
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => textarea.value = "");
+
+    // const radios = document.querySelectorAll('input');
+    // radios.forEach(input => input.selected = "");
+    // const checkboxes = document.querySelectorAll("input");
+    // checkboxes.forEach(input => input.selected = "");
+}
+
 // open toggled sidebar
 const toggleButton = document.getElementById('toggleButton');
 const logoSidebar = document.getElementById('logo-sidebar');
@@ -198,15 +212,14 @@ $(document).ready(function () {
             }
         });
 
-    }
-    else if (fullPath.includes('DocumentTypes')) {
+    } else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
     } else if (fullPath.includes('search')) {
         pageTitle = 'Search users';
-    }
-    else if (fullPath.includes('Documents')) {
+    } else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
-
+        let currentIndex = 0; // Variable to track the current image index
+        resetFields();
         $('#create-document').submit(function (e) {
             e.preventDefault();
             Swal.fire({
@@ -223,6 +236,39 @@ $(document).ready(function () {
                     $.ajax({
                         type: 'POST',
                         url: '/Documents/Create',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }, success: function (response) {
+                            location.reload();
+                        }, error: function (xhr, textStatus, errorThrown) {
+                            swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                        }
+                    });
+                }
+            });
+        });
+        $('#create-document-for-user').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'User\'s document will be added permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var form = $(this);
+                    var formData = new FormData(form[0]);
+                    var currentUrl = window.location.href;
+                    var parts = currentUrl.split('/');
+                    var urlLastPart = parts[parts.length - 1];
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Documents/Create/' + urlLastPart,
                         data: formData,
                         contentType: false,
                         processData: false,
@@ -277,9 +323,6 @@ $(document).ready(function () {
                 imagePreview.css('display', 'none');
             }
         });
-
-        const images = []; // Array to store image URLs
-        let currentIndex = 0; // Variable to track the current image index
 
         // Function to show the image at the given index
         const showImage = index => {
