@@ -218,6 +218,7 @@ $(document).ready(function () {
         pageTitle = 'Search users';
     } else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
+        const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
         resetFields();
         $('#create-document').submit(function (e) {
