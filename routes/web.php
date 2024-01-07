@@ -75,7 +75,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::prefix('Documents')->group(function () {
         Route::get('/', [DocumentController::class, 'index']);
         Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
-        Route::post('/Create/{user_id}', [DocumentController::class, 'createDocument'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+        Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
         Route::post('/Create', [DocumentController::class, 'createDocument']);
         Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
         Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
