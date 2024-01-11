@@ -144,32 +144,6 @@
             </li>
 
             @if($myInfo->hasRole('SuperAdmin') or $myInfo->hasRole('SchoolAdmin'))
-                @if($myInfo->hasRole('SuperAdmin'))
-                    <li>
-                        <a href="/roles"
-                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <svg
-                                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt"
-                                height="24.000000pt" viewBox="0 0 22 21" preserveAspectRatio="xMidYMid meet">
-
-                                <g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)"
-                                   fill="currentColor" stroke="none">
-                                    <path
-                                        d="M106 202 c-7 -11 4 -52 14 -52 10 0 21 41 14 52 -3 4 -9 8 -14 8 -5 0 -11 -4 -14 -8z"/>
-                                    <path d="M25 160 c-9 -15 2 -27 30 -32 34 -7 38 1 11 23 -28 22 -32 23 -41 9z"/>
-                                    <path d="M173 151 c-12 -10 -20 -21 -17 -24 10 -9 59 9 59 23 0 21 -18 21 -42 1z"/>
-                                    <path d="M104 119 c-10 -17 13 -36 27 -22 12 12 4 33 -11 33 -5 0 -12 -5 -16 -11z"/>
-                                    <path d="M55 92 c-29 -6 -41 -20 -28 -33 9 -9 18 -6 38 9 27 22 23 31 -10 24z"/>
-                                    <path
-                                        d="M156 92 c-3 -2 6 -14 20 -25 18 -13 29 -16 36 -9 6 6 8 15 4 20 -6 11 -53 22 -60 14z"/>
-                                    <path d="M87 64 c-19 -20 -5 -34 34 -34 33 0 40 3 37 18 -3 17 -57 30 -71 16z"/>
-                                </g>
-                            </svg>
-                            <span class="ml-4">Roles</span>
-                        </a>
-                    </li>
-                @endif
                 <li>
                     <a href="/users"
                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -204,6 +178,35 @@
                         </button>
                         <ul id="dropdown-example" class="hidden py-2 space-y-2">
                             <li>
+                                <a href="/roles"
+                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <svg
+                                        class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                        xmlns="http://www.w3.org/2000/svg" version="1.0" width="24.000000pt"
+                                        height="24.000000pt" viewBox="0 0 22 21" preserveAspectRatio="xMidYMid meet">
+
+                                        <g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)"
+                                           fill="currentColor" stroke="none">
+                                            <path
+                                                d="M106 202 c-7 -11 4 -52 14 -52 10 0 21 41 14 52 -3 4 -9 8 -14 8 -5 0 -11 -4 -14 -8z"/>
+                                            <path
+                                                d="M25 160 c-9 -15 2 -27 30 -32 34 -7 38 1 11 23 -28 22 -32 23 -41 9z"/>
+                                            <path
+                                                d="M173 151 c-12 -10 -20 -21 -17 -24 10 -9 59 9 59 23 0 21 -18 21 -42 1z"/>
+                                            <path
+                                                d="M104 119 c-10 -17 13 -36 27 -22 12 12 4 33 -11 33 -5 0 -12 -5 -16 -11z"/>
+                                            <path
+                                                d="M55 92 c-29 -6 -41 -20 -28 -33 9 -9 18 -6 38 9 27 22 23 31 -10 24z"/>
+                                            <path
+                                                d="M156 92 c-3 -2 6 -14 20 -25 18 -13 29 -16 36 -9 6 6 8 15 4 20 -6 11 -53 22 -60 14z"/>
+                                            <path
+                                                d="M87 64 c-19 -20 -5 -34 34 -34 33 0 40 3 37 18 -3 17 -57 30 -71 16z"/>
+                                        </g>
+                                    </svg>
+                                    <span class="ml-4">Roles</span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/Schools"
                                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                                     <span class="menulist">Schools</span>
@@ -230,14 +233,15 @@
                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                     <svg
                         class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                        viewBox="0 0 22 21">
-                        <path
-                            d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-                        <path
-                            d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                        height="25px" width="25px" fill="currentColor" viewBox="0 0 231.306 231.306">
+                        <g>
+                            <path
+                                d="M229.548,67.743L163.563,1.757C162.438,0.632,160.912,0,159.32,0H40.747C18.279,0,0,18.279,0,40.747v149.813   c0,22.468,18.279,40.747,40.747,40.747h149.813c22.468,0,40.747-18.279,40.747-40.747V71.985   C231.306,70.394,230.673,68.868,229.548,67.743z M164.32,19.485l47.5,47.5h-47.5V19.485z M190.559,219.306H40.747   C24.896,219.306,12,206.41,12,190.559V40.747C12,24.896,24.896,12,40.747,12H152.32v60.985c0,3.313,2.687,6,6,6h60.985v111.574   C219.306,206.41,206.41,219.306,190.559,219.306z"/>
+                            <path
+                                d="m103.826,52.399c-5.867-5.867-13.667-9.098-21.964-9.098s-16.097,3.231-21.964,9.098c-5.867,5.867-9.098,13.667-9.098,21.964 0,8.297 3.231,16.097 9.098,21.964l61.536,61.536c7.957,7.956 20.9,7.954 28.855,0 7.955-7.956 7.955-20.899 0-28.855l-60.928-60.926c-2.343-2.343-6.143-2.343-8.485,0-2.343,2.343-2.343,6.142 0,8.485l60.927,60.927c3.276,3.276 3.276,8.608 0,11.884s-8.607,3.276-11.884,0l-61.536-61.535c-3.601-3.601-5.583-8.388-5.583-13.479 0-5.092 1.983-9.879 5.583-13.479 7.433-7.433 19.525-7.433 26.958,0l64.476,64.476c11.567,11.567 11.567,30.388 0,41.955-5.603,5.603-13.053,8.689-20.977,8.689s-15.374-3.086-20.977-8.689l-49.573-49.574c-2.343-2.343-6.143-2.343-8.485,0-2.343,2.343-2.343,6.142 0,8.485l49.573,49.573c7.87,7.87 18.333,12.204 29.462,12.204s21.593-4.334 29.462-12.204 12.204-18.333 12.204-29.463c0-11.129-4.334-21.593-12.204-29.462l-64.476-64.476z"/>
+                        </g>
                     </svg>
-                    <span class="ml-4">My Documents</span>
+                    <span class="ml-4">Documents</span>
                 </a>
             </li>
             <li>
