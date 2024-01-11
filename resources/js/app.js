@@ -216,7 +216,8 @@ $(document).ready(function () {
         pageTitle = 'Document Types Manager';
     } else if (fullPath.includes('search')) {
         pageTitle = 'Search users';
-    } else if (fullPath.includes('Documents')) {
+    }
+    else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
@@ -366,7 +367,8 @@ $(document).ready(function () {
             $('#openImage').addClass('hidden');
         });
 
-    } else if (fullPath.includes('EducationYears')) {
+    }
+    else if (fullPath.includes('EducationYears')) {
         pageTitle = 'Education Years';
         $('#new-education-year').submit(function (e) {
             e.preventDefault();
@@ -399,7 +401,8 @@ $(document).ready(function () {
             });
         });
 
-    } else if (fullPath.includes('roles')) {
+    }
+    else if (fullPath.includes('Roles')) {
         pageTitle = 'Roles';
     } else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';

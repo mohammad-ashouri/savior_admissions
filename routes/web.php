@@ -64,7 +64,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::post('/finishEducationYear', [EducationYearController::class, 'finish'])->middleware('role:SuperAdmin');
 
 
-    Route::resource('Roles', RoleController::class)->middleware('role:SuperAdmin');
+    Route::resource('roles', RoleController::class)->middleware('role:SuperAdmin');
     Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-SchoolAdmin');
     Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
     Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
