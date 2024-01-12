@@ -212,9 +212,11 @@ $(document).ready(function () {
             }
         });
 
-    } else if (fullPath.includes('DocumentTypes')) {
+    }
+    else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
-    } else if (fullPath.includes('search')) {
+    }
+    else if (fullPath.includes('search')) {
         pageTitle = 'Search users';
     }
     else if (fullPath.includes('Documents')) {
@@ -402,11 +404,32 @@ $(document).ready(function () {
         });
 
     }
-    else if (fullPath.includes('Roles')) {
+    else if (fullPath.includes('EducationTypes')) {
+        pageTitle = 'Education Types';
+        $('#new-education-type').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your education type will be added permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-education-type').off('submit').submit();
+                }
+            });
+        });
+
+    }
+    else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';
-    } else if (fullPath.includes('Schools')) {
+    }
+    else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
-    } else {
+    }
+    else {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';
@@ -437,6 +460,4 @@ $(document).ready(function () {
         }
     }
     $('#page-title').text(pageTitle + ' | Savior Schools');
-
-
 });
