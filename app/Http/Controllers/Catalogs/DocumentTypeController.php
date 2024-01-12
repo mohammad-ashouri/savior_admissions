@@ -72,11 +72,4 @@ class DocumentTypeController extends Controller
         return redirect()->route('DocumentTypes.index')
             ->with('success', 'Document type updated successfully');
     }
-
-    public function destroy($id)
-    {
-        DB::table("document_types")->where('id', $id)->delete();
-        return redirect()->route('DocumentTypes.index')
-            ->with('success', 'Document type deleted successfully');
-    }
 }

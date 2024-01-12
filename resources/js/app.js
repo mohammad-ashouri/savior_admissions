@@ -35,25 +35,18 @@ const menuListHoverItems = document.querySelectorAll('.menulist-hover');
 toggleButton.addEventListener('click', function () {
     logoSidebar.classList.toggle('expanded');
     content.classList.toggle('ex-ml');
-
-    // در صورتی که 'expanded' در 'logo-sidebar' وجود داشته باشد
     if (logoSidebar.classList.contains('expanded')) {
-        // نمایش متن‌ها
         menuListItems.forEach(item => {
             item.style.display = 'inline-block';
         });
-
-        // مخفی کردن مختصرها
         menuListHoverItems.forEach(item => {
             item.style.display = 'none';
         });
     } else {
-        // در غیر این صورت مختصرها را نمایش دهید
         menuListItems.forEach(item => {
             item.style.display = 'none';
         });
 
-        // نمایش مختصرها
         menuListHoverItems.forEach(item => {
             item.style.display = 'inline-block';
         });
@@ -212,14 +205,11 @@ $(document).ready(function () {
             }
         });
 
-    }
-    else if (fullPath.includes('DocumentTypes')) {
+    } else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
-    }
-    else if (fullPath.includes('search')) {
+    } else if (fullPath.includes('search')) {
         pageTitle = 'Search users';
-    }
-    else if (fullPath.includes('Documents')) {
+    } else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
@@ -369,8 +359,7 @@ $(document).ready(function () {
             $('#openImage').addClass('hidden');
         });
 
-    }
-    else if (fullPath.includes('EducationYears')) {
+    } else if (fullPath.includes('EducationYears')) {
         pageTitle = 'Education Years';
         $('#new-education-year').submit(function (e) {
             e.preventDefault();
@@ -403,8 +392,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('EducationTypes')) {
+    } else if (fullPath.includes('EducationTypes')) {
         pageTitle = 'Education Types';
         $('#new-education-type').submit(function (e) {
             e.preventDefault();
@@ -422,14 +410,11 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('roles')) {
+    } else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';
-    }
-    else if (fullPath.includes('Schools')) {
+    } else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
-    }
-    else {
+    } else {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';
