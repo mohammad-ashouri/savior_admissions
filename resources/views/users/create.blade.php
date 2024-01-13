@@ -1,5 +1,8 @@
 @extends('Layouts.panel')
-
+@php
+    use App\Models\User;
+    $myInfo=User::find(session('id'));
+@endphp
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
@@ -55,7 +58,11 @@
                             </div>
                             <div>
                                 <label for="Role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                                @foreach($roles as $value)
+                                @foreach ($roles as $value)
+                                    @if ($myInfo->hasRole('SchoolAdmin') and ($value->name == 'SuperAdmin' or $value->name == 'SchoolAdmin'))
+                                        @continue
+                                    @endif
+
                                     <label>{{ Form::checkbox('roles[]', $value->name, false, array('class' => 'name')) }}
                                         {{ $value->name }}</label>
                                     <br/>

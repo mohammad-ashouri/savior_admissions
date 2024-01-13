@@ -23,10 +23,21 @@ class UserController extends Controller
 
     public function index()
     {
-        $data = User::orderBy('id', 'DESC')->paginate(
-            $perPage = 15, $columns = ['*'], $pageName = 'users'
-        );
-        return view('users.index', compact('data'));
+        $me = User::find(session('id'));
+        if ($me) {
+            if ($me->hasRole('SuperAdmin')) {
+                $data = User::orderBy('id', 'DESC')->paginate(
+                    $perPage = 15, $columns = ['*'], $pageName = 'users'
+                );
+                return view('users.index', compact('data'));
+            } elseif ($me->hasRole('SchoolAdmin')) {
+                $data = User::whereJsonContains('additional_information->school_id', $me->school_id_for_admin)
+                    ->orderBy('id', 'DESC')
+                    ->paginate($perPage = 15, $columns = ['*'], $pageName = 'users');
+                return view('users.index', compact('data'));
+            }
+        }
+        abort(403);
     }
 
     public function create()
@@ -141,7 +152,7 @@ class UserController extends Controller
         $user->save();
         $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
         return response()->json(['success' => 'Student information saved successfully!'], 200);
-     }
+    }
 
     public function searchUser(Request $request)
     {

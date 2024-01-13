@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\GeneralControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogs\DocumentType;
+use App\Models\Document;
 use App\Models\GeneralInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,7 +16,9 @@ class ProfileController extends Controller
     {
         $myInfo = User::find(session('id'));
         $myGeneralInformation = GeneralInformation::where('user_id', $myInfo->id)->with('user')->first();
-        return view('GeneralPages.profile', compact('myGeneralInformation'));
+        $personnelPhotoType=DocumentType::where('name','Personnel Photo')->first();
+        $myDocuments = Document::where('user_id', $myInfo->id)->where('document_type_id',$personnelPhotoType->id)->latest()->first();
+        return view('GeneralPages.profile', compact('myGeneralInformation','myDocuments'));
     }
 
     public function editMyProfile(Request $request)
