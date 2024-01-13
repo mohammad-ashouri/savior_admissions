@@ -193,6 +193,24 @@ $(document).ready(function () {
                     }
                 });
             });
+
+            $('#changeSchoolAdminInformation').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/change_school_admin_information',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }, success: function (response) {
+                        swalFire('Done', response.success, 'success', 'Ok');
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                    }
+                });
+            });
         }
 
         $('#search-user').submit(function (e) {
@@ -209,7 +227,8 @@ $(document).ready(function () {
     }
     else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
-    }else if (fullPath.includes('Levels')) {
+    }
+    else if (fullPath.includes('Levels')) {
         pageTitle = 'Levels Manager';
         $('#new-level').submit(function (e) {
             e.preventDefault();
@@ -226,7 +245,8 @@ $(document).ready(function () {
                 }
             });
         });
-    } else if (fullPath.includes('search')) {
+    }
+    else if (fullPath.includes('search')) {
         pageTitle = 'Search users';
     }
     else if (fullPath.includes('Documents')) {
@@ -413,7 +433,8 @@ $(document).ready(function () {
             });
         });
 
-    } else if (fullPath.includes('EducationTypes')) {
+    }
+    else if (fullPath.includes('EducationTypes')) {
         pageTitle = 'Education Types';
         $('#new-education-type').submit(function (e) {
             e.preventDefault();
@@ -431,11 +452,14 @@ $(document).ready(function () {
             });
         });
 
-    } else if (fullPath.includes('roles')) {
+    }
+    else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';
-    } else if (fullPath.includes('Schools')) {
+    }
+    else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
-    } else {
+    }
+    else {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';

@@ -173,4 +173,9 @@ class UserController extends Controller
         $this->logActivity(json_encode($activity), request()->ip(), request()->userAgent(), session('id'));
         return view('users.index', compact('data'));
     }
+
+    public function changeSchoolAdminInformation(Request $request)
+    {
+        dd($request->all());
+    }
 }
