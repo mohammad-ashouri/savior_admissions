@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('gender');
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         $query="insert into schools (name,gender) values ('Kawthar International School','female'),('Tāhā International School','male'),('Tūba International School','both')";

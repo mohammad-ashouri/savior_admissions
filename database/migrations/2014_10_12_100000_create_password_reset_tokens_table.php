@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('token');
             $table->tinyInteger('active')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('finisher')->nullable();
             $table->foreign('finisher')->references('id')->on('users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

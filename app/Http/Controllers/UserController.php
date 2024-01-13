@@ -141,7 +141,7 @@ class UserController extends Controller
         $user->save();
         $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
         return response()->json(['success' => 'Student information saved successfully!'], 200);
-    }
+     }
 
     public function searchUser(Request $request)
     {
