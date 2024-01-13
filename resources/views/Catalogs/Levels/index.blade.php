@@ -4,9 +4,8 @@
     <div id="content" class="p-4 md:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Schools</h1>
+                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Levels</h1>
             </div>
-
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">
@@ -16,7 +15,7 @@
                     </div>
                     <div class="flex">
                         @can('catalogs-create')
-                            <a href="{{ route('Schools.create') }}">
+                            <a href="{{ route('Levels.create') }}">
                                 <button type="button"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
@@ -73,7 +72,7 @@
                         </thead>
 
                         <tbody>
-                        @foreach($schools as $School)
+                        @foreach($levels as $level)
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="w-4 p-4">
@@ -84,15 +83,15 @@
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $School->name }}</div>
+                                        <div class="text-base font-semibold">{{ $level->name }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
                                         <div
-                                            class="text-base font-semibold @if($School->status===1) text-green-600 @else text-red-600 @endif">
-                                            @if($School->status===1)
+                                            class="text-base font-semibold @if($level->status===1) text-green-600 @else text-red-600 @endif">
+                                            @if($level->status===1)
                                                 Active
                                             @else
                                                 Deactive
@@ -103,7 +102,7 @@
                                 <td class="px-6 py-4 text-center">
                                     <!-- Modal toggle -->
                                     @can('catalogs-edit')
-                                        <a href="{{ route('Schools.edit',$School->id) }}" type="button"
+                                        <a href="{{ route('Levels.edit',$level->id) }}" type="button"
                                            class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                             <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
                                                  xmlns="http://www.w3.org/2000/svg">
@@ -117,22 +116,6 @@
                                             Edit
                                         </a>
                                     @endcan
-{{--                                    @can('catalogs-delete')--}}
-{{--                                        {!! Form::open(['method' => 'DELETE','route' => ['Schools.destroy', $School->id],'style'=>'display:inline']) !!}--}}
-{{--                                        <button type="submit"--}}
-{{--                                                --}}{{--                                                                                                data-modal-target="deleteCatalog-modal"--}}
-{{--                                                --}}{{--                                                                                                data-modal-show="deleteCatalog-modal"--}}
-{{--                                                class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">--}}
-{{--                                            <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"--}}
-{{--                                                 xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                                <path fill-rule="evenodd"--}}
-{{--                                                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"--}}
-{{--                                                      clip-rule="evenodd"></path>--}}
-{{--                                            </svg>--}}
-{{--                                            Delete catalog--}}
-{{--                                        </button>--}}
-{{--                                        {!! Form::close() !!}--}}
-{{--                                    @endcan--}}
                                 </td>
                             </tr>
                         @endforeach
@@ -143,6 +126,6 @@
             </div>
         </div>
         <div class="pagination text-center">
-            {{ $schools->onEachSide(5)->links() }}
+            {{ $levels->onEachSide(5)->links() }}
         </div>
 @endsection

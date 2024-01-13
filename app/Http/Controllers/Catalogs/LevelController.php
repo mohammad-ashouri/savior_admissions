@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Catalogs;
 
 use App\Http\Controllers\Controller;
-use App\Models\Catalogs\DocumentType;
-use App\Models\Catalogs\School;
+use App\Models\Catalogs\Level;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class SchoolController extends Controller
+class LevelController extends Controller
 {
     function __construct()
     {
@@ -20,27 +18,26 @@ class SchoolController extends Controller
 
     public function index()
     {
-        $schools = School::orderBy('name', 'asc')->paginate(10);
-        return view('Catalogs.Schools.index', compact('schools'));
+        $levels = Level::orderBy('name', 'asc')->paginate(10);
+        return view('Catalogs.Levels.index', compact('levels'));
     }
 
     public function create()
     {
-        $schools = School::get();
-        return view('Catalogs.Schools.create', compact('schools'));
+        $levels = Level::get();
+        return view('Catalogs.Levels.create', compact('levels'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|unique:schools,name',
-            'gender' => 'required',
         ]);
 
-        $catalog = School::create(['name' => $request->input('name'),'gender' => $request->input('gender')]);
+        $catalog = Level::create(['name' => $request->input('name')]);
 
-        return redirect()->route('Schools.index')
-            ->with('success', 'School created successfully');
+        return redirect()->route('Levels.index')
+            ->with('success', 'Level created successfully');
     }
 
 //    public function show($id)
@@ -55,25 +52,23 @@ class SchoolController extends Controller
 
     public function edit($id)
     {
-        $catalog = School::find($id);
-        return view('Catalogs.Schools.edit', compact('catalog'));
+        $catalog = Level::find($id);
+        return view('Catalogs.Levels.edit', compact('catalog'));
     }
 
     public function update(Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required',
-            'gender' => 'required',
             'status' => 'required',
         ]);
 
-        $catalog = School::find($id);
+        $catalog = Level::find($id);
         $catalog->name = $request->input('name');
-        $catalog->gender = $request->input('gender');
         $catalog->status = $request->input('status');
         $catalog->save();
 
-        return redirect()->route('Schools.index')
-            ->with('success', 'School updated successfully');
+        return redirect()->route('Levels.index')
+            ->with('success', 'Level updated successfully');
     }
 }

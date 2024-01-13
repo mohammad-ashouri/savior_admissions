@@ -2,6 +2,7 @@ import './bootstrap';
 import 'flowbite';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
+import 'ionicons';
 
 window.Swal = Swal;
 
@@ -205,11 +206,30 @@ $(document).ready(function () {
             }
         });
 
-    } else if (fullPath.includes('DocumentTypes')) {
+    }
+    else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
+    }else if (fullPath.includes('Levels')) {
+        pageTitle = 'Levels Manager';
+        $('#new-level').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your level will be added permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-level').off('submit').submit();
+                }
+            });
+        });
     } else if (fullPath.includes('search')) {
         pageTitle = 'Search users';
-    } else if (fullPath.includes('Documents')) {
+    }
+    else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
@@ -359,7 +379,8 @@ $(document).ready(function () {
             $('#openImage').addClass('hidden');
         });
 
-    } else if (fullPath.includes('EducationYears')) {
+    }
+    else if (fullPath.includes('EducationYears')) {
         pageTitle = 'Education Years';
         $('#new-education-year').submit(function (e) {
             e.preventDefault();
