@@ -176,6 +176,19 @@ class UserController extends Controller
 
     public function changeSchoolAdminInformation(Request $request)
     {
-        dd($request->all());
+        $this->validate($request, [
+            'school' => 'required|exists:schools,id',
+            'user_id' => 'required|integer|exists:users,id'
+        ]);
+        $user = User::find($request->user_id);
+        $studentInformation = [
+            'school_id_for_admin' => $request->school,
+        ];
+        $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
+        $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
+        $user->additional_information = json_encode($userAdditionalInformation);
+        $user->save();
+        $this->logActivity('School admin information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
+        return response()->json(['success' => 'School admin information saved successfully!'], 200);
     }
 }
