@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $query="insert into schools (name,gender) values ('Kawthar International School','female'),('Tāhā International School','male'),('Tūba International School','female')";
+        $query="insert into schools (name,gender) values ('Kawthar International School','female'),('Tāhā International School','male'),('Tūba International School','both')";
         DB::statement($query);
     }
 
