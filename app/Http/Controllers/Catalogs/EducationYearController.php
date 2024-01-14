@@ -36,6 +36,11 @@ class EducationYearController extends Controller
                 'date',
                 'unique:education_years,start'
             ],
+            'finish_date' => [
+                'required',
+                'date',
+                'unique:education_years,finish'
+            ],
         ]);
         if ($validator->fails()) {
             $this->logActivity('Failed Start New Education Year=> ' . $validator->errors()->first(), request()->ip(), request()->userAgent(), session('id'));
@@ -43,7 +48,7 @@ class EducationYearController extends Controller
                 ->with('error', $validator->errors()->first());
         }
         EducationYear::query()->update(['active' => 0]);
-        $catalog = EducationYear::create(['start' => $request->input('start_date'), 'starter' => session('id')]);
+        $catalog = EducationYear::create(['start' => $request->input('start_date'), 'starter' => session('id'), 'finish' => $request->input('finish_date'), 'finisher' => session('id')]);
 
         if ($catalog) {
             $this->logActivity('Start New Education Year=> ' . $catalog, request()->ip(), request()->userAgent(), session('id'));
