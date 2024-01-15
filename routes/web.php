@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
+use App\Http\Controllers\Catalogs\AcademicYearController;
 use App\Http\Controllers\Catalogs\ChangeStatusController;
 use App\Http\Controllers\Catalogs\DocumentTypeController;
 use App\Http\Controllers\Catalogs\EducationTypeController;
@@ -67,6 +68,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::post('/finishEducationYear', [EducationYearController::class, 'finish'])->middleware('role:SuperAdmin');
     Route::resource('EducationTypes', EducationTypeController::class)->middleware('role:SuperAdmin');
     Route::resource('Levels', LevelController::class)->middleware('role:SuperAdmin');
+    Route::resource('AcademicYears', AcademicYearController::class)->middleware('role:SuperAdmin');
 
     Route::resource('roles', RoleController::class)->middleware('role:SuperAdmin');
     Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-SchoolAdmin');

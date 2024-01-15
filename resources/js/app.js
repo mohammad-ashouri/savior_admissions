@@ -246,7 +246,25 @@ $(document).ready(function () {
             });
         });
     }
-    else if (fullPath.includes('search')) {
+    else if (fullPath.includes('AcademicYears')) {
+        pageTitle = 'Academic Years Manager';
+        $('#new-academic-year').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your academic year will be added permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-academic-year').off('submit').submit();
+                }
+            });
+        });
+    }
+    else if (fullPath.includes('searchUsers')) {
         pageTitle = 'Search users';
     }
     else if (fullPath.includes('Documents')) {
