@@ -158,7 +158,8 @@
                             <li>
                                 <a href="/Classes"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span class="menulist"><i class="nav-icon la la-chalkboard-teacher" style="font-size: 24px"></i>
+                                    <span class="menulist"><i class="nav-icon la la-chalkboard-teacher"
+                                                              style="font-size: 24px"></i>
                                         Classes</span>
                                 </a>
                             </li>
@@ -172,21 +173,24 @@
                             <li>
                                 <a href="/Fees"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span class="menulist"><i class="nav-icon la la-money-bill-wave-alt" style="font-size: 24px"></i>
+                                    <span class="menulist"><i class="nav-icon la la-money-bill-wave-alt"
+                                                              style="font-size: 24px"></i>
                                         Fees</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="/Interviews"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span class="menulist"><i class="nav-icon la la-book-reader" style="font-size: 24px"></i>
+                                    <span class="menulist"><i class="nav-icon la la-book-reader"
+                                                              style="font-size: 24px"></i>
                                         Interviews</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="/Students"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span class="menulist"><i class="nav-icon la la-user-graduate" style="font-size: 24px"></i>
+                                    <span class="menulist"><i class="nav-icon la la-user-graduate"
+                                                              style="font-size: 24px"></i>
                                         Students</span>
                                 </a>
                             </li>
@@ -226,13 +230,13 @@
                                         Document types</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="/EducationYears"
-                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span class="menulist"><i class="lar la-calendar" style="font-size: 24px"></i>
-                                        Education years</span>
-                                </a>
-                            </li>
+                            {{--                            <li>--}}
+                            {{--                                <a href="/EducationYears"--}}
+                            {{--                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">--}}
+                            {{--                                    <span class="menulist"><i class="lar la-calendar" style="font-size: 24px"></i>--}}
+                            {{--                                        Education years</span>--}}
+                            {{--                                </a>--}}
+                            {{--                            </li>--}}
                             <li>
                                 <a href="/EducationTypes"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -246,6 +250,14 @@
                                     <span class="menulist">
                                         <i class="nav-icon la la-sort-amount-up" style="font-size: 24px"></i>
                                         Levels</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/AcademicYears"
+                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span class="menulist">
+                                        <i class="lar la-calendar" style="font-size: 24px"></i>
+                                        Academic Years</span>
                                 </a>
                             </li>
                         </ul>
