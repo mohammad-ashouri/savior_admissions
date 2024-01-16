@@ -47,11 +47,17 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'catalogs-edit']);
         Permission::create(['name' => 'catalogs-delete']);
 
+        Permission::create(['name' => 'interview-list']);
+        Permission::create(['name' => 'interview-set']);
+        Permission::create(['name' => 'interview-edit']);
+        Permission::create(['name' => 'interview-delete']);
+
         $superAdminRole = Role::create(['name' => 'SuperAdmin']);
         $schoolAdminRole = Role::create(['name' => 'SchoolAdmin']);
         $parentFatherRole = Role::create(['name' => 'Parent(Father)']);
         $parentMotherRole = Role::create(['name' => 'Parent(Mother)']);
         $studentRole = Role::create(['name' => 'Student']);
+        $interviewerRole = Role::create(['name' => 'Interviewer']);
 
         $superAdminRole->givePermissionTo([
             'create-users',
@@ -70,6 +76,10 @@ class PermissionSeeder extends Seeder
             'catalogs-create',
             'catalogs-edit',
             'catalogs-delete',
+            'interview-list',
+            'interview-set',
+            'interview-edit',
+            'interview-delete',
         ]);
 
         $schoolAdminRole->givePermissionTo([
@@ -102,6 +112,11 @@ class PermissionSeeder extends Seeder
             'document-create',
             'document-edit',
             'document-delete',
+        ]);
+
+        $interviewerRole->givePermissionTo([
+            'interview-list',
+            'interview-set'
         ]);
     }
 }
