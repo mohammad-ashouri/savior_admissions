@@ -21,7 +21,6 @@
                             @foreach ($errors->all() as $error)
                                 <p class="font-bold">{{ $error }}</p>
                             @endforeach
-                            {{-- نمایش خطاها به همراه داده‌های ورودی --}}
                             @error('name')
                             <p class="font-bold">{{ $message }}</p>
                             @enderror
