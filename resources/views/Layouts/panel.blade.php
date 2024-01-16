@@ -10,6 +10,16 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title id="page-title"></title>
+    <script src="/build/plugins/jquery/dist/jquery.js"></script>
+    <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="/build/plugins/select2/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: 'Choose an option',
+            });
+        });
+    </script>
 </head>
 
 <body class="bg-gray-200 dark:bg-gray-900 ">

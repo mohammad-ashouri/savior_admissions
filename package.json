@@ -3,7 +3,10 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build-app": "vite build",
+        "build": "npm-run-all build-app copy-jquery copy-select2",
+        "copy-select2": "mkdirp public/build/plugins && ncp node_modules/select2 public/build/plugins/select2",
+        "copy-jquery": "mkdirp public/build/plugins && ncp node_modules/jquery public/build/plugins/jquery"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.15",
