@@ -31,33 +31,78 @@
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                             <h1 class="text-2xl font-medium"> Level information</h1>
                         </div>
-                        {!! Form::model($catalog, ['method' => 'PATCH','route' => ['Levels.update', $catalog->id]]) !!}
+                        {!! Form::model($catalog, ['method' => 'PATCH','route' => ['AcademicYears.update', $catalog->id]]) !!}
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
                             <div>
                                 <label for="name"
-                                       class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">
-                                    name</label>
-                                <input type="text" id="name" name="name" value="{{ $catalog->name }}"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Name</label>
+                                <input type="text" id="name" value="{{$catalog->name}}" name="name"
                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                       placeholder="" required>
+                                       placeholder="Enter name" required>
                             </div>
                             <div>
-                                <div class="form-group">
-                                    <label for="status"
-                                           class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Status</label>
-                                    <select required
-                                            id="status" name="status"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                        <option value="" selected disabled>Choose an option...</option>
-                                        <option @if($catalog->status===1) selected
-                                                @endif value="1">Active
-                                        </option>
-                                        <option @if($catalog->status===0) selected
-                                                @endif value="0">Deactive
-                                        </option>
-                                    </select>
-                                </div>
+                                <label for="school"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    School</label>
+                                <select id="school" name="school"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        title="Select school" required>
+                                    <option selected disabled value="">Select school</option>
+                                    @foreach($schools as $school)
+                                        <option @if($catalog->school_id===$school->id) selected
+                                                @endif value="{{$school->id}}">{{$school->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="start_date"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Starts at</label>
+                                <input type="date" id="start_date" value="{{$catalog->start_date}}" name="start_date"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       required>
+                            </div>
+                            <div>
+                                <label for="finish_date"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Ends at</label>
+                                <input type="date" id="finish_date" value="{{$catalog->finish_date}}" name="finish_date"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       required>
+                            </div>
+                            <div>
+                                <label for="max_discount_percentage"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Max discount percentage</label>
+                                <input type="number" id="max_discount_percentage"
+                                       value="{{$catalog->max_discount_percentage}}"
+                                       name="max_discount_percentage"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="Enter max discount percentage" required>
+                            </div>
+                            <div>
+                                <label for="max_installments"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Max installments</label>
+                                <input type="number" id="max_installments" value="{{$catalog->max_installments}}"
+                                       name="max_installments"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="Enter max installments" required>
+                            </div>
+                            <div>
+                                <label for="status"
+                                       class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Status</label>
+                                <select required
+                                        id="status" name="status"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                >
+                                    <option value="" selected disabled>Choose an option...</option>
+                                    <option @if($catalog->status===1) selected
+                                            @endif value="1">Active
+                                    </option>
+                                    <option @if($catalog->status===0) selected
+                                            @endif value="0">Deactive
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <button type="submit"

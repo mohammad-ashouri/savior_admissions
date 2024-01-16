@@ -2,17 +2,22 @@
 
 namespace App\Models\Catalogs;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AcademicYear extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
+
+    protected $table = 'academic_years';
+
     protected $fillable = [
         'name',
         'school_id',
-        'education_year_id',
+        'start_date',
+        'finish_date',
         'max_discount_percentage',
         'max_installments',
     ];
@@ -22,4 +27,9 @@ class AcademicYear extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    public function schoolInfo()
+    {
+        return $this->belongsTo(School::class, 'school_id', 'id');
+    }
 }
