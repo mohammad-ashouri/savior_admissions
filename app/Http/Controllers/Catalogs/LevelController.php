@@ -18,7 +18,7 @@ class LevelController extends Controller
 
     public function index()
     {
-        $levels = Level::orderBy('name', 'asc')->paginate(10);
+        $levels = Level::orderBy('id', 'asc')->paginate(10);
         return view('Catalogs.Levels.index', compact('levels'));
     }
 
