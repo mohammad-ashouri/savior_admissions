@@ -31,7 +31,11 @@ class UserController extends Controller
                 );
                 return view('users.index', compact('data'));
             } elseif ($me->hasRole('SchoolAdmin')) {
-                $data = User::whereJsonContains('additional_information->school_id', $me->school_id_for_admin)
+                $data = User::where(function ($query) use ($me) {
+                    foreach ($me->school_id as $schoolId) {
+                        $query->orWhereJsonContains('additional_information->school_id', $schoolId);
+                    }
+                })
                     ->orderBy('id', 'DESC')
                     ->paginate($perPage = 15, $columns = ['*'], $pageName = 'users');
                 return view('users.index', compact('data'));
@@ -115,12 +119,12 @@ class UserController extends Controller
             ->with('success', 'User updated successfully');
     }
 
-    public function destroy($id)
-    {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-            ->with('success', 'User deleted successfully');
-    }
+//    public function destroy($id)
+//    {
+//        User::find($id)->delete();
+//        return redirect()->route('users.index')
+//            ->with('success', 'User deleted successfully');
+//    }
 
     public function changeUserPassword(Request $request)
     {
@@ -138,20 +142,6 @@ class UserController extends Controller
         } else {
             $input = Arr::except($input, array('New_password'));
         }
-    }
-
-    public function changeStudentInformation(Request $request)
-    {
-        $user = User::find($request->user_id);
-        $studentInformation = [
-            'school_id' => $request->school,
-        ];
-        $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-        $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
-        $user->additional_information = json_encode($userAdditionalInformation);
-        $user->save();
-        $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
-        return response()->json(['success' => 'Student information saved successfully!'], 200);
     }
 
     public function searchUser(Request $request)
@@ -185,6 +175,20 @@ class UserController extends Controller
         return view('users.index', compact('data'));
     }
 
+    public function changeStudentInformation(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $studentInformation = [
+            'school_id' => $request->school,
+        ];
+        $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
+        $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
+        $user->additional_information = json_encode($userAdditionalInformation);
+        $user->save();
+        $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
+        return response()->json(['success' => 'Student information saved successfully!'], 200);
+    }
+
     public function changeSchoolAdminInformation(Request $request)
     {
         $this->validate($request, [
@@ -193,7 +197,7 @@ class UserController extends Controller
         ]);
         $user = User::find($request->user_id);
         $studentInformation = [
-            'school_id_for_admin' => $request->school,
+            'school_id' => $request->school,
         ];
         $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
         $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
