@@ -42,6 +42,36 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'document-edit']);
         Permission::create(['name' => 'document-delete']);
 
+        Permission::create(['name' => 'academic-year-list']);
+        Permission::create(['name' => 'academic-year-create']);
+        Permission::create(['name' => 'academic-year-edit']);
+        Permission::create(['name' => 'academic-year-delete']);
+        Permission::create(['name' => 'academic-year-search']);
+
+        Permission::create(['name' => 'document-type-list']);
+        Permission::create(['name' => 'document-type-create']);
+        Permission::create(['name' => 'document-type-edit']);
+        Permission::create(['name' => 'document-type-delete']);
+        Permission::create(['name' => 'document-type-search']);
+
+        Permission::create(['name' => 'education-type-list']);
+        Permission::create(['name' => 'education-type-create']);
+        Permission::create(['name' => 'education-type-edit']);
+        Permission::create(['name' => 'education-type-delete']);
+        Permission::create(['name' => 'education-type-search']);
+
+        Permission::create(['name' => 'level-list']);
+        Permission::create(['name' => 'level-create']);
+        Permission::create(['name' => 'level-edit']);
+        Permission::create(['name' => 'level-delete']);
+        Permission::create(['name' => 'level-search']);
+
+        Permission::create(['name' => 'school-list']);
+        Permission::create(['name' => 'school-create']);
+        Permission::create(['name' => 'school-edit']);
+        Permission::create(['name' => 'school-delete']);
+        Permission::create(['name' => 'school-search']);
+
         Permission::create(['name' => 'catalogs-list']);
         Permission::create(['name' => 'catalogs-create']);
         Permission::create(['name' => 'catalogs-edit']);
@@ -51,13 +81,29 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'interview-set']);
         Permission::create(['name' => 'interview-edit']);
         Permission::create(['name' => 'interview-delete']);
+        Permission::create(['name' => 'interview-search']);
 
-        $superAdminRole = Role::create(['name' => 'SuperAdmin']);
-        $schoolAdminRole = Role::create(['name' => 'SchoolAdmin']);
+        Permission::create(['name' => 'reservation-invoice-details']);
+        Permission::create(['name' => 'reservation-invoice-list']);
+        Permission::create(['name' => 'reservation-invoice-search']);
+        Permission::create(['name' => 'reservation-invoice-add']);
+        Permission::create(['name' => 'reservation-invoice-edit']);
+
+        Permission::create(['name' => 'academic-year-class-list']);
+        Permission::create(['name' => 'academic-year-class-create']);
+        Permission::create(['name' => 'academic-year-class-edit']);
+        Permission::create(['name' => 'academic-year-class-delete']);
+        Permission::create(['name' => 'academic-year-class-search']);
+
+        $superAdminRole = Role::create(['name' => 'Super Admin']);
+        $schoolAdminRole = Role::create(['name' => 'School Admin']);
         $parentFatherRole = Role::create(['name' => 'Parent(Father)']);
         $parentMotherRole = Role::create(['name' => 'Parent(Mother)']);
         $studentRole = Role::create(['name' => 'Student']);
         $interviewerRole = Role::create(['name' => 'Interviewer']);
+        $financialManagerRole = Role::create(['name' => 'Financial Manager']);
+        $admissionsOfficerRole = Role::create(['name' => 'Admissions Officer']);
+        $principalRole = Role::create(['name' => 'Principal']);
 
         $superAdminRole->givePermissionTo([
             'create-users',
@@ -76,10 +122,41 @@ class PermissionSeeder extends Seeder
             'catalogs-create',
             'catalogs-edit',
             'catalogs-delete',
+            'academic-year-list',
+            'academic-year-create',
+            'academic-year-edit',
+            'academic-year-delete',
+            'academic-year-search',
+            'document-type-list',
+            'document-type-create',
+            'document-type-edit',
+            'document-type-delete',
+            'document-type-search',
+            'education-type-list',
+            'education-type-create',
+            'education-type-edit',
+            'education-type-delete',
+            'education-type-search',
+            'level-list',
+            'level-create',
+            'level-edit',
+            'level-delete',
+            'level-search',
+            'school-list',
+            'school-create',
+            'school-edit',
+            'school-delete',
+            'school-search',
             'interview-list',
             'interview-set',
             'interview-edit',
             'interview-delete',
+            'interview-search',
+            'academic-year-class-list',
+            'academic-year-class-create',
+            'academic-year-class-edit',
+            'academic-year-class-delete',
+            'academic-year-class-search',
         ]);
 
         $schoolAdminRole->givePermissionTo([
@@ -116,7 +193,30 @@ class PermissionSeeder extends Seeder
 
         $interviewerRole->givePermissionTo([
             'interview-list',
-            'interview-set'
+            'interview-set',
+            'interview-search',
+        ]);
+
+        $financialManagerRole->givePermissionTo([
+            'reservation-invoice-details',
+            'reservation-invoice-list',
+            'reservation-invoice-search',
+            'reservation-invoice-add',
+            'reservation-invoice-edit',
+            'reservation-invoice-search',
+        ]);
+
+        $admissionsOfficerRole->givePermissionTo([
+            'interview-list',
+            'interview-set',
+            'interview-edit',
+            'interview-delete',
+            'interview-search',
+            'academic-year-class-list',
+            'academic-year-class-create',
+            'academic-year-class-edit',
+            'academic-year-class-delete',
+            'academic-year-class-search',
         ]);
     }
 }

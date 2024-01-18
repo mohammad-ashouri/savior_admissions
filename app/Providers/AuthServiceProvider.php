@@ -22,11 +22,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('access-student-info', function ($user, $student) {
-            return $user->hasRole('school_admin') && $user->school_id === $student->school_id;
+            return $user->hasRole('School Admin') && $user->school_id === $student->school_id;
         });
 
         Gate::define('access-parent-info', function ($user, $parent) {
-            return $user->hasRole('school_admin') && $user->school_id === $parent->school_id;
+            return $user->hasRole('School Admin') && $user->school_id === $parent->school_id;
         });
 
         Gate::define('access-own-interviews', function ($user, $interview) {
@@ -34,15 +34,15 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('access-school-info', function ($user, $school) {
-            return $user->hasRole('school_admin') && $user->school_id === $school->id;
+            return $user->hasRole('School Admin') && $user->school_id === $school->id;
         });
 
         Gate::define('access-SuperAdmin-and-SchoolAdmin', function ($user) {
-            return $user->hasAnyRole(['SuperAdmin', 'SchoolAdmin']);
+            return $user->hasAnyRole(['Super Admin', 'School Admin']);
         });
 
         Gate::define('access-SuperAdmin', function ($user) {
-            return $user->hasAnyRole(['SuperAdmin']);
+            return $user->hasAnyRole(['Super Admin']);
         });
     }
 }

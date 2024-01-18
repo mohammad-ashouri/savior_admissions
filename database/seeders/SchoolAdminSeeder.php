@@ -28,7 +28,7 @@ class SchoolAdminSeeder extends Seeder
                 'user_id'=>$user->id
             ]
         );
-        $role = Role::where('name','SchoolAdmin')->first();
+        $role = Role::where('name','School Admin')->first();
         $permissions = Permission::pluck('id','id')->all();
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);

@@ -59,7 +59,7 @@
                             <div>
                                 <label for="Role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
                                 @foreach ($roles as $value)
-                                    @if ($myInfo->hasRole('SchoolAdmin') and ($value->name == 'SuperAdmin' or $value->name == 'SchoolAdmin'))
+                                    @if ($myInfo->hasRole('SchoolAdmin') and ($value->name == 'Super Admin' or $value->name == 'SchoolAdmin'))
                                         @continue
                                     @endif
 

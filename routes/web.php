@@ -62,15 +62,15 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     })->name('dashboard');
 
     //Catalogs
-    Route::resource('Schools', SchoolController::class)->middleware('role:SuperAdmin');
-    Route::resource('DocumentTypes', DocumentTypeController::class)->middleware('role:SuperAdmin');
-    Route::resource('EducationYears', EducationYearController::class)->middleware('role:SuperAdmin');
-    Route::post('/finishEducationYear', [EducationYearController::class, 'finish'])->middleware('role:SuperAdmin');
-    Route::resource('EducationTypes', EducationTypeController::class)->middleware('role:SuperAdmin');
-    Route::resource('Levels', LevelController::class)->middleware('role:SuperAdmin');
-    Route::resource('AcademicYears', AcademicYearController::class)->middleware('role:SuperAdmin');
+    Route::resource('Schools', SchoolController::class)->middleware('role:Super Admin');
+    Route::resource('DocumentTypes', DocumentTypeController::class)->middleware('role:Super Admin');
+    Route::resource('EducationYears', EducationYearController::class)->middleware('role:Super Admin');
+    Route::post('/finishEducationYear', [EducationYearController::class, 'finish'])->middleware('role:Super Admin');
+    Route::resource('EducationTypes', EducationTypeController::class)->middleware('role:Super Admin');
+    Route::resource('Levels', LevelController::class)->middleware('role:Super Admin');
+    Route::resource('AcademicYears', AcademicYearController::class)->middleware('role:Super Admin');
 
-    Route::resource('roles', RoleController::class)->middleware('role:SuperAdmin');
+    Route::resource('roles', RoleController::class)->middleware('role:Super Admin');
     Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-SchoolAdmin');
     Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
     Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');

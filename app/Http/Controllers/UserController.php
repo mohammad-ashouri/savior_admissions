@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         $me = User::find(session('id'));
         if ($me) {
-            if ($me->hasRole('SuperAdmin')) {
+            if ($me->hasRole('Super Admin')) {
                 $data = User::orderBy('id', 'DESC')->paginate(
                     $perPage = 15, $columns = ['*'], $pageName = 'users'
                 );

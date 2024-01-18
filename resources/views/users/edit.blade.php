@@ -20,7 +20,7 @@
                                 <div class="text-l">{{ $user->name }} {{ $user->family }}</div>
                             </div>
                         </div>
-                        @if($myInfo->hasRole('SuperAdmin'))
+                        @if($myInfo->hasRole('Super Admin'))
                         <div class="mt-3">
                             <form id="change-rules">
                                 <label for="Role"
@@ -279,7 +279,7 @@
                 </form>
             </div>
             @endif
-            @if($user->hasRole('SchoolAdmin') and $myInfo->hasRole('SuperAdmin'))
+            @if($user->hasRole('School Admin') and $myInfo->hasRole('Super Admin'))
             <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mt-4">
                 <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                     <h1 class="text-2xl font-medium"> School admin information</h1>
