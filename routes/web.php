@@ -64,8 +64,6 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     //Catalogs
     Route::resource('Schools', SchoolController::class)->middleware('role:Super Admin');
     Route::resource('DocumentTypes', DocumentTypeController::class)->middleware('role:Super Admin');
-    Route::resource('EducationYears', EducationYearController::class)->middleware('role:Super Admin');
-    Route::post('/finishEducationYear', [EducationYearController::class, 'finish'])->middleware('role:Super Admin');
     Route::resource('EducationTypes', EducationTypeController::class)->middleware('role:Super Admin');
     Route::resource('Levels', LevelController::class)->middleware('role:Super Admin');
     Route::resource('AcademicYears', AcademicYearController::class)->middleware('role:Super Admin');
