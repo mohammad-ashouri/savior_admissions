@@ -11,10 +11,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title id="page-title"></title>
     <script src="/build/plugins/jquery/dist/jquery.js"></script>
-    <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="/build/plugins/select2/dist/js/select2.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.select2').select2({
                 placeholder: 'Choose an option',
             });
@@ -143,7 +143,7 @@
                 </a>
             </li>
 
-            @if($myInfo->hasRole('Super Admin') or $myInfo->hasRole('Principal'))
+            @can('users-menu-access')
                 <li>
                     <a href="/users"
                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -151,74 +151,76 @@
                         <span class="ml-4">Users</span>
                     </a>
                 </li>
-                @if($myInfo->hasRole('Super Admin'))
+            @endcan
+            <li>
+                <button type="button"
+                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                        aria-controls="dropdown-branch" data-collapse-toggle="dropdown-branch">
+                    <i class="nav-icon la la-landmark" style="font-size: 24px"></i>
+                    <span class="flex-1 ml-4 text-left whitespace-nowrap">Branch Info</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+                <ul id="dropdown-branch" class="hidden py-2 space-y-2">
                     <li>
-                        <button type="button"
-                                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                aria-controls="dropdown-branch" data-collapse-toggle="dropdown-branch">
-                            <i class="nav-icon la la-landmark" style="font-size: 24px"></i>
-                            <span class="flex-1 ml-4 text-left whitespace-nowrap">Branch Info</span>
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                 viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                      stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
-                        <ul id="dropdown-branch" class="hidden py-2 space-y-2">
-                            <li>
-                                <a href="/Classes"
-                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <a href="/Classes"
+                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-chalkboard-teacher"
                                                               style="font-size: 24px"></i>
                                         Classes</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/Applications"
-                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Applications"
+                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-paste" style="font-size: 24px"></i>
                                         Applications</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/Fees"
-                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Fees"
+                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-money-bill-wave-alt"
                                                               style="font-size: 24px"></i>
                                         Fees</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/Interviews"
-                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Interviews"
+                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-book-reader"
                                                               style="font-size: 24px"></i>
                                         Interviews</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/Students"
-                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Students"
+                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-user-graduate"
                                                               style="font-size: 24px"></i>
                                         Students</span>
-                                </a>
-                            </li>
-                        </ul>
+                        </a>
                     </li>
-                    <li>
-                        <button type="button"
-                                class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                                aria-controls="dropdown-catalog" data-collapse-toggle="dropdown-catalog">
-                            <i class="las la-toolbox" style="font-size: 24px"></i>
-                            <span class="flex-1 ml-4 text-left whitespace-nowrap">Catalogs</span>
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                 viewBox="0 0 10 6">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                      stroke-width="2" d="m1 1 4 4 4-4"/>
-                            </svg>
-                        </button>
-                        <ul id="dropdown-catalog" class="hidden py-2 space-y-2">
+                </ul>
+            </li>
+            @can('catalogs-menu-access')
+                <li>
+                    <button type="button"
+                            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                            aria-controls="dropdown-catalog" data-collapse-toggle="dropdown-catalog">
+                        <i class="las la-toolbox" style="font-size: 24px"></i>
+                        <span class="flex-1 ml-4 text-left whitespace-nowrap">Catalogs</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+                    <ul id="dropdown-catalog" class="hidden py-2 space-y-2">
+                        @can('role-list')
                             <li>
                                 <a href="/roles"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -226,6 +228,8 @@
                                         Roles</span>
                                 </a>
                             </li>
+                        @endcan
+                        @can('school-list')
                             <li>
                                 <a href="/Schools"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -233,6 +237,8 @@
                                         Schools</span>
                                 </a>
                             </li>
+                        @endcan
+                        @can('document-type-list')
                             <li>
                                 <a href="/DocumentTypes"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -240,13 +246,8 @@
                                         Document types</span>
                                 </a>
                             </li>
-                            {{--                            <li>--}}
-                            {{--                                <a href="/EducationYears"--}}
-                            {{--                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">--}}
-                            {{--                                    <span class="menulist"><i class="lar la-calendar" style="font-size: 24px"></i>--}}
-                            {{--                                        Education years</span>--}}
-                            {{--                                </a>--}}
-                            {{--                            </li>--}}
+                        @endcan
+                        @can('education-type-list')
                             <li>
                                 <a href="/EducationTypes"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -254,6 +255,8 @@
                                         Education types</span>
                                 </a>
                             </li>
+                        @endcan
+                        @can('level-list')
                             <li>
                                 <a href="/Levels"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -262,6 +265,8 @@
                                         Levels</span>
                                 </a>
                             </li>
+                        @endcan
+                        @can('academic-year-list')
                             <li>
                                 <a href="/AcademicYears"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -270,10 +275,10 @@
                                         Academic Years</span>
                                 </a>
                             </li>
-                        </ul>
-                    </li>
-                @endif
-            @endif
+                        @endcan
+                    </ul>
+                </li>
+            @endcan
             <li>
                 <a href="/Documents"
                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">

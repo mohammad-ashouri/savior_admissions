@@ -29,8 +29,6 @@ class PrincipalSeeder extends Seeder
             ]
         );
         $role = Role::where('name','Principal')->first();
-        $permissions = Permission::pluck('id','id')->all();
-        $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);
     }
 }

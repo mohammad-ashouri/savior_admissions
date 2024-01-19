@@ -34,15 +34,16 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'list-users']);
         Permission::create(['name' => 'search-user']);
 
-        Permission::create(['name' => 'role-list']);
-        Permission::create(['name' => 'role-create']);
-        Permission::create(['name' => 'role-edit']);
-        Permission::create(['name' => 'role-delete']);
-
         Permission::create(['name' => 'document-list']);
         Permission::create(['name' => 'document-create']);
         Permission::create(['name' => 'document-edit']);
         Permission::create(['name' => 'document-delete']);
+
+        //catalogs
+        Permission::create(['name' => 'role-list']);
+        Permission::create(['name' => 'role-create']);
+        Permission::create(['name' => 'role-edit']);
+        Permission::create(['name' => 'role-delete']);
 
         Permission::create(['name' => 'academic-year-list']);
         Permission::create(['name' => 'academic-year-create']);
@@ -74,11 +75,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'school-delete']);
         Permission::create(['name' => 'school-search']);
 
-//        Permission::create(['name' => 'catalogs-list']);
-//        Permission::create(['name' => 'catalogs-create']);
-//        Permission::create(['name' => 'catalogs-edit']);
-//        Permission::create(['name' => 'catalogs-delete']);
-
         Permission::create(['name' => 'interview-list']);
         Permission::create(['name' => 'interview-set']);
         Permission::create(['name' => 'interview-edit']);
@@ -91,131 +87,17 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'reservation-invoice-add']);
         Permission::create(['name' => 'reservation-invoice-edit']);
 
+        //branch info
         Permission::create(['name' => 'academic-year-class-list']);
         Permission::create(['name' => 'academic-year-class-create']);
         Permission::create(['name' => 'academic-year-class-edit']);
         Permission::create(['name' => 'academic-year-class-delete']);
         Permission::create(['name' => 'academic-year-class-search']);
 
-        $superAdminRole = Role::create(['name' => 'Super Admin']);
-        $parentFatherRole = Role::create(['name' => 'Parent(Father)']);
-        $parentMotherRole = Role::create(['name' => 'Parent(Mother)']);
-        $studentRole = Role::create(['name' => 'Student']);
-        $interviewerRole = Role::create(['name' => 'Interviewer']);
-        $financialManagerRole = Role::create(['name' => 'Financial Manager']);
-        $admissionsOfficerRole = Role::create(['name' => 'Admissions Officer']);
-        $principalRole = Role::create(['name' => 'Principal']);
+        //menus access
+        Permission::create(['name' => 'catalogs-menu-access']);
+        Permission::create(['name' => 'branch-info-menu-access']);
+        Permission::create(['name' => 'users-menu-access']);
 
-        $superAdminRole->givePermissionTo([
-            'create-users',
-            'show-user',
-            'edit-users',
-            'delete-users',
-            'list-users',
-            'search-user',
-            'role-list',
-            'role-create',
-            'role-edit',
-            'role-delete',
-            'document-list',
-            'document-create',
-            'document-edit',
-            'document-delete',
-            'academic-year-list',
-            'academic-year-create',
-            'academic-year-edit',
-            'academic-year-delete',
-            'academic-year-search',
-            'document-type-list',
-            'document-type-create',
-            'document-type-edit',
-            'document-type-delete',
-            'document-type-search',
-            'education-type-list',
-            'education-type-create',
-            'education-type-edit',
-            'education-type-delete',
-            'education-type-search',
-            'level-list',
-            'level-create',
-            'level-edit',
-            'level-delete',
-            'level-search',
-            'school-list',
-            'school-create',
-            'school-edit',
-            'school-delete',
-            'school-search',
-            'interview-list',
-            'interview-set',
-            'interview-edit',
-            'interview-delete',
-            'interview-search',
-            'academic-year-class-list',
-            'academic-year-class-create',
-            'academic-year-class-edit',
-            'academic-year-class-delete',
-            'academic-year-class-search',
-        ]);
-
-        $principalRole->givePermissionTo([
-            'create-users',
-            'show-user',
-            'edit-users',
-            'delete-users',
-            'document-list',
-            'document-create',
-            'document-edit',
-            'document-delete',
-        ]);
-
-        $parentFatherRole->givePermissionTo([
-            'document-list',
-            'document-create',
-            'document-edit',
-            'document-delete',
-        ]);
-
-        $parentMotherRole->givePermissionTo([
-            'document-list',
-            'document-create',
-            'document-edit',
-            'document-delete',
-        ]);
-
-        $studentRole->givePermissionTo([
-            'document-list',
-            'document-create',
-            'document-edit',
-            'document-delete',
-        ]);
-
-        $interviewerRole->givePermissionTo([
-            'interview-list',
-            'interview-set',
-            'interview-search',
-        ]);
-
-        $financialManagerRole->givePermissionTo([
-            'reservation-invoice-details',
-            'reservation-invoice-list',
-            'reservation-invoice-search',
-            'reservation-invoice-add',
-            'reservation-invoice-edit',
-            'reservation-invoice-search',
-        ]);
-
-        $admissionsOfficerRole->givePermissionTo([
-            'interview-list',
-            'interview-set',
-            'interview-edit',
-            'interview-delete',
-            'interview-search',
-            'academic-year-class-list',
-            'academic-year-class-create',
-            'academic-year-class-edit',
-            'academic-year-class-delete',
-            'academic-year-class-search',
-        ]);
     }
 }

@@ -32,8 +32,6 @@ class SuperAdminSeeder extends Seeder
             ]
         );
         $role = Role::where('name','Super Admin')->first();
-        $permissions = Permission::pluck('id','id')->all();
-        $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);
     }
 }

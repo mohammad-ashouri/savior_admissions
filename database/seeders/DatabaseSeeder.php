@@ -14,9 +14,16 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PermissionSeeder::class,
+            RoleSeeders\SuperAdmin::class,
+            RoleSeeders\FinancialManager::class,
+            RoleSeeders\Interviewer::class,
+            RoleSeeders\ParentFather::class,
+            RoleSeeders\ParentMother::class,
+            RoleSeeders\Student::class,
+            RoleSeeders\AdmissionsOfficer::class,
+            RoleSeeders\Principal::class,
             SuperAdminSeeder::class,
             PrincipalSeeder::class,
-//            ParentSeeder::class,
         ]);
     }
 }

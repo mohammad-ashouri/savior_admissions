@@ -15,7 +15,7 @@
                                placeholder="Search for catalog">
                     </div>
                     <div class="flex">
-                        @can('catalogs-create')
+                        @can('education-type-create')
                             <a href="{{ route('EducationTypes.create') }}">
                                 <button type="button"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -26,7 +26,7 @@
                                               d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                               clip-rule="evenodd"></path>
                                     </svg>
-                                    Add catalog
+                                    New Education Type
                                 </button>
                                 @endcan
                             </a>
