@@ -23,6 +23,8 @@ class Principal extends Seeder
             'delete-users',
             'search-user',
             'list-users',
+            'access-user-role',
+            'change-student-information',
             'document-list',
             'document-create',
             'document-edit',

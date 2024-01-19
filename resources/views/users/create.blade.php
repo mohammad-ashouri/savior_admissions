@@ -57,7 +57,27 @@
                                        placeholder="Like: +989123456789" required>
                             </div>
                             <div>
-                                <label for="Role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                                <label for="password"
+                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                                <input type="password" id="password" name="password" value="" minlength="8"
+                                       maxlength="20"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="Minimum length:8 | Maximum length=20" required>
+                            </div>
+                            <div>
+                                <label for="school"
+                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>
+                                <select id="school" name="school"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                    <option value="" disabled selected>Select school...</option>
+                                    @foreach($schools as $school)
+                                        <option value="{{ $school->id }}">{{ $school->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="Role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
                                 @foreach ($roles as $value)
                                     @if ($myInfo->hasRole('Principal') and ($value->name == 'Super Admin' or $value->name == 'Principal'))
                                         @continue

@@ -20,27 +20,32 @@
                                 <div class="text-l">{{ $user->name }} {{ $user->family }}</div>
                             </div>
                         </div>
-                        @if($myInfo->hasRole('Super Admin'))
-                        <div class="mt-3">
-                            <form id="change-rules">
-                                <label for="Role"
-                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
-                                @foreach($roles as $value)
-                                    <input class="name" name="roles[]" type="checkbox" id="{{ $value }}"
-                                           @foreach($generalInformation->user->getRoleNames() as $v)
-                                               @if($v==$value) checked @endif
-                                           @endforeach
-                                           value="{{ $value }}">
-                                    <label for="{{ $value }}"> {{ $value }} </label><br/>
-                                @endforeach
-                                <input type="hidden" value="{{ $user->id }}" name="user_id">
-                                <button type="submit"
-                                        class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Change rules
-                                </button>
-                            </form>
-                        </div>
-                        @endif
+                        @can('access-user-role')
+                            <div class="mt-3">
+                                <form id="change-rules">
+                                    <label for="Role"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
+                                    @foreach($roles as $value)
+                                        @if(!$myInfo->hasRole('Super Admin'))
+                                            @if($value=='Super Admin' or $value=='Principal')
+                                                @continue
+                                            @endif
+                                        @endif
+                                        <input class="name" name="roles[]" type="checkbox" id="{{ $value }}"
+                                               @foreach($generalInformation->user->getRoleNames() as $v)
+                                                   @if($v==$value) checked @endif
+                                               @endforeach
+                                               value="{{ $value }}">
+                                        <label for="{{ $value }}"> {{ $value }} </label><br/>
+                                    @endforeach
+                                    <input type="hidden" value="{{ $user->id }}" name="user_id">
+                                    <button type="submit"
+                                            class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Change rules
+                                    </button>
+                                </form>
+                            </div>
+                        @endcan
                     </div>
                 </div>
 
@@ -118,7 +123,8 @@
                                 </div>
                                 <div>
                                     <label for="passport-number"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Passport number</label>
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Passport
+                                        number</label>
                                     <input type="text" id="passport-number" name="PassportNumber"
                                            @if($generalInformation->passport_number!==null) value=" {{ $generalInformation->passport_number }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -126,7 +132,8 @@
                                 </div>
                                 <div>
                                     <label for="faragir-code"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faragir code</label>
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faragir
+                                        code</label>
                                     <input type="text" id="faragir-code" name="FaragirCode"
                                            @if($generalInformation->faragir_code!==null) value=" {{ $generalInformation->faragir_code }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -251,62 +258,67 @@
                     </div>
                 </div>
             </div>
-            @if($user->hasRole('Student') and $myInfo->hasRole('Super Admin'))
-            <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
-                <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-                    <h1 class="text-2xl font-medium"> Student information</h1>
-                </div>
-                <form id="changeStudentInformation">
-                    <div class="grid gap-6 mb-6 md:grid-cols-2">
-                        <div>
-                            <label for="school[]"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>
-                            <select id="school[]" name="school[]"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   required>
-                                <option value="" disabled selected>Select school...</option>
-                                @foreach($schools as $school)
-                                    <option value="{{ $school->id }}" @if($user->school_id  == $school->id) selected @endif>{{ $school->name }}</option>
-                                @endforeach
-                            </select>
+            @if($user->hasRole('Student'))
+                @can('change-student-information')
+                    <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
+                        <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
+                            <h1 class="text-2xl font-medium"> Student information</h1>
                         </div>
+                        <form id="changeStudentInformation">
+                            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                <div>
+                                    <label for="school"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>
+                                    <select id="school" name="school"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        <option value="" disabled selected>Select school...</option>
+                                        @foreach($schools as $school)
+                                            <option value="{{ $school->id }}"
+                                                    @if($user->school_id  == $school->id) selected @endif>{{ $school->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" value="{{ $user->id }}" name="user_id">
+                            <button type="submit"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Save all
+                            </button>
+                        </form>
                     </div>
-                    <input type="hidden" value="{{ $user->id }}" name="user_id">
-                    <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Save all
-                    </button>
-                </form>
-            </div>
+                @endcan
             @endif
-            @if($user->hasRole('Principal') and $myInfo->hasRole('Super Admin'))
-            <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mt-4">
-                <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-                    <h1 class="text-2xl font-medium"> Principal information</h1>
-                </div>
-                <form id="changePrincipalInformation">
-                    <div class="grid gap-6 mb-6 md:grid-cols-2">
-                        <div>
-                            <label for="school[]"
-                                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>
-                            <select id="school[]" name="school[]" multiple="multiple"
-                                   class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   required>
-                                @foreach($schools as $school)
-                                    <option value="{{ $school->id }}" @if(isset($user->school_id) && is_array($user->school_id) && in_array($school->id, $user->school_id)) selected @endif>{{ $school->name }}</option>
-                                @endforeach
-                            </select>
+            @if($user->hasRole('Principal'))
+                @can('change-principal-information')
+                    <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mt-4">
+                        <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
+                            <h1 class="text-2xl font-medium"> Principal information</h1>
                         </div>
+                        <form id="changePrincipalInformation">
+                            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                <div>
+                                    <label for="school[]"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>
+                                    <select id="school[]" name="school[]" multiple="multiple"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        @foreach($schools as $school)
+                                            <option value="{{ $school->id }}"
+                                                    @if(isset($user->school_id) && is_array($user->school_id) && in_array($school->id, $user->school_id)) selected @endif>{{ $school->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" value="{{ $user->id }}" name="user_id">
+                            <button type="submit"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Save all
+                            </button>
+                        </form>
                     </div>
-                    <input type="hidden" value="{{ $user->id }}" name="user_id">
-                    <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Save all
-                    </button>
-                </form>
-            </div>
+                @endcan
             @endif
-
         </div>
     </div>
 @endsection

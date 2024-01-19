@@ -33,6 +33,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'delete-users']);
         Permission::create(['name' => 'list-users']);
         Permission::create(['name' => 'search-user']);
+        Permission::create(['name' => 'access-user-role']);
+        Permission::create(['name' => 'change-student-information']);
+        Permission::create(['name' => 'change-principal-information']);
 
         Permission::create(['name' => 'document-list']);
         Permission::create(['name' => 'document-create']);

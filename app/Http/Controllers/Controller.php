@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
+use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -11,6 +12,12 @@ use Jenssegers\Agent\Agent;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+
+    public function __construct()
+    {
+
+    }
 
     public function logActivity($activity, $ip_address, $user_agent, $user_id = null)
     {
@@ -24,7 +31,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function alerts($state,$errorVariable,$errorText)
+    public function alerts($state, $errorVariable, $errorText)
     {
         return response()->json([
             'success' => $state,
@@ -34,7 +41,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function success($state,$messageVariable,$messageText)
+    public function success($state, $messageVariable, $messageText)
     {
         return response()->json([
             'success' => $state,

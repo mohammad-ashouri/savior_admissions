@@ -52,33 +52,48 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::get();
-        return view('users.create', compact('roles'));
+        $mySchools = User::find(session('id'))->school_id;
+        $roles = Role::orderBy('name','asc')->get();
+        $schools = School::whereIn('id', $mySchools)->get();
+        return view('users.create', compact('roles','schools'));
     }
 
     public function store(Request $request)
     {
+        $me = User::find(session('id'));
         $this->validate($request, [
             'name' => 'required',
             'family' => 'required',
             'email' => 'required|email|unique:users,email',
             'mobile' => 'required|integer|unique:users,mobile',
-            'roles' => 'required'
+            'password' => 'required|unique:users,mobile',
+            'roles' => 'required',
+            'school' => 'required|exists:schools,id'
         ]);
 
-        $input = $request->all();
-//        $input['password'] = Hash::make($input['password']);
-        $input['password'] = Hash::make(12345678);
-
-        $user = User::create($input);
-        $user->assignRole($request->input('roles'));
-
-        $generalInformation = GeneralInformation::create(
-            [
-                'user_id' => $user->id
-            ]
-        );
-
+//        $input['password'] = Hash::make(12345678);
+        $user = new User;
+        $user->name=$request->name;
+        $user->family=$request->family;
+        $user->email=$request->email;
+        $user->mobile=$request->mobile;
+        $user->password=Hash::make($request->password);
+        if ($me->hasRole('Principal')){
+            $additionalInformation = [
+                'school_id' => $request->school,
+            ];
+            $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
+            $userAdditionalInformation = array_merge($userAdditionalInformation, $additionalInformation);
+            $user->additional_information = json_encode($userAdditionalInformation);
+        }
+        if ($user->save()) {
+            GeneralInformation::create(
+                [
+                    'user_id' => $user->id
+                ]
+            );
+            $user->assignRole($request->input('roles'));
+        }
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');
     }
