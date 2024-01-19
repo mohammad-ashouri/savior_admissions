@@ -7,16 +7,18 @@ use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\School;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AcademicYearController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:catalogs-list|catalogs-create|catalogs-edit|catalogs-delete', ['only' => ['index', 'store']]);
-        $this->middleware('permission:catalogs-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:catalogs-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:catalogs-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:academic-year-list', ['only' => ['index']]);
+        $this->middleware('permission:academic-year-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:academic-year-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:academic-year-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:academic-year-search', ['only' => ['search']]);
     }
 
     public function index()
@@ -107,5 +109,10 @@ class AcademicYearController extends Controller
             return redirect()->route('AcademicYears.index')
                 ->with('success', 'Academic year edited successfully');
         }
+    }
+
+    public function search()
+    {
+        dd('go');
     }
 }

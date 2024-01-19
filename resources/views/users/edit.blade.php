@@ -251,7 +251,7 @@
                     </div>
                 </div>
             </div>
-            @if($user->hasRole('Student'))
+            @if($user->hasRole('Student') and $myInfo->hasRole('Super Admin'))
             <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
                 <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                     <h1 class="text-2xl font-medium"> Student information</h1>
@@ -279,12 +279,12 @@
                 </form>
             </div>
             @endif
-            @if($user->hasRole('School Admin') and $myInfo->hasRole('Super Admin'))
+            @if($user->hasRole('Principal') and $myInfo->hasRole('Super Admin'))
             <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mt-4">
                 <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-                    <h1 class="text-2xl font-medium"> School admin information</h1>
+                    <h1 class="text-2xl font-medium"> Principal information</h1>
                 </div>
-                <form id="changeSchoolAdminInformation">
+                <form id="changePrincipalInformation">
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
                             <label for="school[]"
@@ -293,7 +293,7 @@
                                    class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                    required>
                                 @foreach($schools as $school)
-                                    <option value="{{ $school->id }}" @if(in_array($school->id, $user->school_id)) selected @endif>{{ $school->name }}</option>
+                                    <option value="{{ $school->id }}" @if(isset($user->school_id) && is_array($user->school_id) && in_array($school->id, $user->school_id)) selected @endif>{{ $school->name }}</option>
                                 @endforeach
                             </select>
                         </div>

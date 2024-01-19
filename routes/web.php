@@ -62,28 +62,37 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     })->name('dashboard');
 
     //Catalogs
-    Route::resource('Schools', SchoolController::class)->middleware('role:Super Admin');
-    Route::resource('DocumentTypes', DocumentTypeController::class)->middleware('role:Super Admin');
-    Route::resource('EducationTypes', EducationTypeController::class)->middleware('role:Super Admin');
-    Route::resource('Levels', LevelController::class)->middleware('role:Super Admin');
-    Route::resource('AcademicYears', AcademicYearController::class)->middleware('role:Super Admin');
+    Route::middleware('role:Super Admin')->group(function () {
+        Route::resources([
+            'Schools' => SchoolController::class,
+            'DocumentTypes' => DocumentTypeController::class,
+            'EducationTypes' => EducationTypeController::class,
+            'Levels' => LevelController::class,
+            'AcademicYears' => AcademicYearController::class,
+        ]);
+
+        $resources=['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
+        foreach ($resources as $resource) {
+            Route::get("$resource/search", [ucfirst($resource) . 'Controller', 'search']);
+        }
+    });
 
     Route::resource('roles', RoleController::class)->middleware('role:Super Admin');
-    Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-SchoolAdmin');
-    Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
-    Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+    Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-Principal');
+    Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-Principal');
+    Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-Principal');
     Route::post('users/change_rules', [ProfileController::class, 'changeUserRole'])->middleware('can:access-SuperAdmin');
     Route::post('users/change_student_information', [UserController::class, 'changeStudentInformation'])->middleware('can:access-SuperAdmin');
-    Route::post('users/change_school_admin_information', [UserController::class, 'changeSchoolAdminInformation'])->middleware('can:access-SuperAdmin');
-    Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-SchoolAdmin')->name('searchUser');
+    Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
+    Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
 
     Route::prefix('Documents')->group(function () {
         Route::get('/', [DocumentController::class, 'index']);
-        Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
-        Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+        Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
+        Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-Principal');
         Route::post('/Create', [DocumentController::class, 'createDocument']);
-        Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
-        Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-SchoolAdmin');
+        Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
+        Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
     });
 
     Route::prefix('Profile')->group(function () {

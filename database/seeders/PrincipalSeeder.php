@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class SchoolAdminSeeder extends Seeder
+class PrincipalSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -28,7 +28,7 @@ class SchoolAdminSeeder extends Seeder
                 'user_id'=>$user->id
             ]
         );
-        $role = Role::where('name','School Admin')->first();
+        $role = Role::where('name','Principal')->first();
         $permissions = Permission::pluck('id','id')->all();
         $role->syncPermissions($permissions);
         $user->assignRole([$role->id]);

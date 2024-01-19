@@ -194,7 +194,7 @@ $(document).ready(function () {
                 });
             });
 
-            $('#changeSchoolAdminInformation').submit(function (e) {
+            $('#changePrincipalInformation').submit(function (e) {
                 e.preventDefault();
                 var form = $(this);
                 var data = form.serialize();

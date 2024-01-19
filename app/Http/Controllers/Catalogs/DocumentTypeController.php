@@ -11,10 +11,10 @@ class DocumentTypeController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:catalogs-list|catalogs-create|catalogs-edit|catalogs-delete', ['only' => ['index', 'store']]);
-        $this->middleware('permission:catalogs-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:catalogs-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:catalogs-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:document-type-list', ['only' => ['index']]);
+        $this->middleware('permission:document-type-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:document-type-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:document-type-delete', ['only' => ['destroy']]);
     }
 
     public function index()

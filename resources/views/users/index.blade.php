@@ -6,7 +6,6 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">All users</h1>
             </div>
-
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">

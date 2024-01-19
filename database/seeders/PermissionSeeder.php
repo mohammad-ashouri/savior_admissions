@@ -28,9 +28,11 @@ class PermissionSeeder extends Seeder
 //        Permission::insert($permissions->toArray());
 
         Permission::create(['name' => 'create-users']);
-        Permission::create(['name' => 'read-user']);
+        Permission::create(['name' => 'show-user']);
         Permission::create(['name' => 'edit-users']);
         Permission::create(['name' => 'delete-users']);
+        Permission::create(['name' => 'list-users']);
+        Permission::create(['name' => 'search-user']);
 
         Permission::create(['name' => 'role-list']);
         Permission::create(['name' => 'role-create']);
@@ -72,10 +74,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'school-delete']);
         Permission::create(['name' => 'school-search']);
 
-        Permission::create(['name' => 'catalogs-list']);
-        Permission::create(['name' => 'catalogs-create']);
-        Permission::create(['name' => 'catalogs-edit']);
-        Permission::create(['name' => 'catalogs-delete']);
+//        Permission::create(['name' => 'catalogs-list']);
+//        Permission::create(['name' => 'catalogs-create']);
+//        Permission::create(['name' => 'catalogs-edit']);
+//        Permission::create(['name' => 'catalogs-delete']);
 
         Permission::create(['name' => 'interview-list']);
         Permission::create(['name' => 'interview-set']);
@@ -96,7 +98,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'academic-year-class-search']);
 
         $superAdminRole = Role::create(['name' => 'Super Admin']);
-        $schoolAdminRole = Role::create(['name' => 'School Admin']);
         $parentFatherRole = Role::create(['name' => 'Parent(Father)']);
         $parentMotherRole = Role::create(['name' => 'Parent(Mother)']);
         $studentRole = Role::create(['name' => 'Student']);
@@ -107,9 +108,11 @@ class PermissionSeeder extends Seeder
 
         $superAdminRole->givePermissionTo([
             'create-users',
-            'read-user',
+            'show-user',
             'edit-users',
             'delete-users',
+            'list-users',
+            'search-user',
             'role-list',
             'role-create',
             'role-edit',
@@ -118,10 +121,6 @@ class PermissionSeeder extends Seeder
             'document-create',
             'document-edit',
             'document-delete',
-            'catalogs-list',
-            'catalogs-create',
-            'catalogs-edit',
-            'catalogs-delete',
             'academic-year-list',
             'academic-year-create',
             'academic-year-edit',
@@ -159,9 +158,9 @@ class PermissionSeeder extends Seeder
             'academic-year-class-search',
         ]);
 
-        $schoolAdminRole->givePermissionTo([
+        $principalRole->givePermissionTo([
             'create-users',
-            'read-user',
+            'show-user',
             'edit-users',
             'delete-users',
             'document-list',

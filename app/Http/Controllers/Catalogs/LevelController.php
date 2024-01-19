@@ -5,15 +5,16 @@ namespace App\Http\Controllers\Catalogs;
 use App\Http\Controllers\Controller;
 use App\Models\Catalogs\Level;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LevelController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:catalogs-list|catalogs-create|catalogs-edit|catalogs-delete', ['only' => ['index', 'store']]);
-        $this->middleware('permission:catalogs-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:catalogs-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:catalogs-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:level-list|level-create|level-edit|level-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:level-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:level-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:level-delete', ['only' => ['destroy']]);
     }
 
     public function index()
@@ -40,18 +41,9 @@ class LevelController extends Controller
             ->with('success', 'Level created successfully');
     }
 
-//    public function show($id)
-//    {
-//        $role = Role::find($id);
-//        $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
-//            ->where("role_has_permissions.role_id", $id)
-//            ->get();
-//
-//        return view('roles.show', compact('role', 'rolePermissions'));
-//    }
-
     public function edit($id)
     {
+
         $catalog = Level::find($id);
         return view('Catalogs.Levels.edit', compact('catalog'));
     }

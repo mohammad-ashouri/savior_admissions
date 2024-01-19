@@ -15,10 +15,11 @@ class UserController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:read-users|create-users|edit-users|delete-users', ['only' => ['index', 'store']]);
+        $this->middleware('permission:list-users', ['only' => ['index']]);
         $this->middleware('permission:create-users', ['only' => ['create', 'store']]);
         $this->middleware('permission:edit-users', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete-users', ['only' => ['destroy']]);
+        $this->middleware('permission:search-user', ['only' => ['searchUser']]);
     }
 
     public function index()
@@ -30,14 +31,19 @@ class UserController extends Controller
                     $perPage = 15, $columns = ['*'], $pageName = 'users'
                 );
                 return view('users.index', compact('data'));
-            } elseif ($me->hasRole('SchoolAdmin')) {
+            } elseif ($me->hasRole('Principal')) {
                 $data = User::where(function ($query) use ($me) {
-                    foreach ($me->school_id as $schoolId) {
-                        $query->orWhereJsonContains('additional_information->school_id', $schoolId);
+                    if(isset($me->school_id) && is_array($me->school_id) && count($me->school_id) > 0 and !empty($me->school_id)) {
+                        foreach ($me->school_id as $schoolId) {
+                            $query->WhereJsonContains('additional_information->school_id', $schoolId);
+                        }
+                    } else {
+                        $query->whereRaw('1 = 0');
                     }
                 })
+                    ->where('id','!=',$me->id)
                     ->orderBy('id', 'DESC')
-                    ->paginate($perPage = 15, $columns = ['*'], $pageName = 'users');
+                    ->paginate(15);
                 return view('users.index', compact('data'));
             }
         }
@@ -189,7 +195,7 @@ class UserController extends Controller
         return response()->json(['success' => 'Student information saved successfully!'], 200);
     }
 
-    public function changeSchoolAdminInformation(Request $request)
+    public function changePrincipalInformation(Request $request)
     {
         $this->validate($request, [
             'school' => 'required|exists:schools,id',
@@ -203,7 +209,7 @@ class UserController extends Controller
         $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
         $user->additional_information = json_encode($userAdditionalInformation);
         $user->save();
-        $this->logActivity('School admin information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
-        return response()->json(['success' => 'School admin information saved successfully!'], 200);
+        $this->logActivity('Principal information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
+        return response()->json(['success' => 'Principal information saved successfully!'], 200);
     }
 }
