@@ -35,7 +35,7 @@ class UserController extends Controller
                 $data = User::where(function ($query) use ($me) {
                     if(isset($me->school_id) && is_array($me->school_id) && count($me->school_id) > 0 and !empty($me->school_id)) {
                         foreach ($me->school_id as $schoolId) {
-                            $query->WhereJsonContains('additional_information->school_id', $schoolId);
+                            $query->orWhereJsonContains('additional_information->school_id', $schoolId);
                         }
                     } else {
                         $query->whereRaw('1 = 0');
