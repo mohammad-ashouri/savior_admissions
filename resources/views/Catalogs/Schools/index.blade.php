@@ -26,7 +26,7 @@
                                               d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                               clip-rule="evenodd"></path>
                                     </svg>
-                                    Add catalog
+                                    Add School
                                 </button>
                                 @endcan
                             </a>
@@ -64,6 +64,9 @@
                                 Name
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
+                                Gender
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center">
                                 Status
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
@@ -85,6 +88,12 @@
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
                                         <div class="text-base font-semibold">{{ $School->name }}</div>
+                                    </div>
+                                </th>
+                                <th scope="row"
+                                    class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div class="pl-3">
+                                        <div class="text-base font-semibold">{{ $School->gender }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
