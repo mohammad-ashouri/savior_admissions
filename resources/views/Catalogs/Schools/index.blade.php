@@ -93,7 +93,7 @@
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $School->gender }}</div>
+                                        <div class="text-base font-semibold">{{ $School->genderInfo->name }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
