@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
+use App\Http\Controllers\BranchInfo\AcademicYearClassController;
 use App\Http\Controllers\Catalogs\AcademicYearController;
 use App\Http\Controllers\Catalogs\ChangeStatusController;
 use App\Http\Controllers\Catalogs\DocumentTypeController;
@@ -76,6 +77,10 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
             Route::get("$resource/search", [ucfirst($resource) . 'Controller', 'search']);
         }
     });
+
+    //Branch Info
+    Route::resource('AcademicYearClasses', AcademicYearClassController::class);
+
 
     Route::resource('roles', RoleController::class)->middleware('role:Super Admin');
     Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-Principal');

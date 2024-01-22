@@ -267,6 +267,9 @@ $(document).ready(function () {
     else if (fullPath.includes('searchUsers')) {
         pageTitle = 'Search users';
     }
+    else if (fullPath.includes('AcademicYearClasses')) {
+        pageTitle = 'Academic Year Classes';
+    }
     else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
         const images = []; // Array to store image URLs
