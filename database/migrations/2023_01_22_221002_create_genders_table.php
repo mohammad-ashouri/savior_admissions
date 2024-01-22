@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
         });
-        $query="insert into genders values ('Male'),('Female'),('Mixed')";
+        $query="insert into genders (name) values ('Male'),('Female'),('Mixed')";
         DB::statement($query);
     }
 
