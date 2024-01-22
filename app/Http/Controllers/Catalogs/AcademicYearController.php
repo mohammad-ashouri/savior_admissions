@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Catalogs;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Catalogs\Level;
 use App\Models\Catalogs\School;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +33,9 @@ class AcademicYearController extends Controller
     {
         $academicYears = AcademicYear::get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
-        return view('Catalogs.AcademicYears.create', compact('academicYears', 'schools'));
+        $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
+        $users = User::where('status', 1)->orderBy('family', 'asc')->get();
+        return view('Catalogs.AcademicYears.create', compact('academicYears', 'schools','levels','users'));
     }
 
     public function store(Request $request)
@@ -41,8 +45,6 @@ class AcademicYearController extends Controller
             'school' => 'required|exists:schools,id',
             'start_date' => 'required|date',
             'finish_date' => 'required|date',
-            'max_discount_percentage' => 'required|integer|max:100',
-            'max_installments' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -57,13 +59,12 @@ class AcademicYearController extends Controller
         } elseif ($request->start_date == $request->finish_date) {
             return redirect()->back()->withErrors('The first date and the second date are equal')->withInput();
         } else {
-            $catalog = AcademicYear::create([
+            AcademicYear::create([
                 'name' => $request->name,
                 'school_id' => $request->school,
                 'start_date' => $request->start_date,
                 'finish_date' => $request->finish_date,
-                'max_discount_percentage' => $request->max_discount_percentage,
-                'max_installments' => $request->max_installments,
+                'levels' => json_encode($request->levels,true),
             ]);
             return redirect()->route('AcademicYears.index')
                 ->with('success', 'Academic year created successfully');
@@ -74,8 +75,9 @@ class AcademicYearController extends Controller
     public function edit($id)
     {
         $catalog = AcademicYear::with('schoolInfo')->find($id);
+        $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
-        return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools'));
+        return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools','levels'));
     }
 
     public function update(Request $request, $id)
@@ -85,8 +87,6 @@ class AcademicYearController extends Controller
             'school' => 'required|exists:schools,id',
             'start_date' => 'required|date',
             'finish_date' => 'required|date',
-            'max_discount_percentage' => 'required|integer|max:100',
-            'max_installments' => 'required|integer',
             'status' => 'required|boolean',
         ]);
 
@@ -105,6 +105,7 @@ class AcademicYearController extends Controller
             $catalog = AcademicYear::find($id);
             $catalog->name = $request->input('name');
             $catalog->status = $request->input('status');
+            $catalog->levels = json_encode($request->input('levels'),true);
             $catalog->save();
             return redirect()->route('AcademicYears.index')
                 ->with('success', 'Academic year edited successfully');

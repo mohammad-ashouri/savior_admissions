@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\RoleSeeders\AdmissionsOfficer;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,6 +25,11 @@ class DatabaseSeeder extends Seeder
             RoleSeeders\Principal::class,
             SuperAdminSeeder::class,
             PrincipalSeeder::class,
+            InterviewerSeeder::class,
+            AdmissionOfficerSeeder::class,
+            FinancialManagerSeeder::class,
+            ParentFatherSeeder::class,
+            ParentMotherSeeder::class,
         ]);
     }
 }
