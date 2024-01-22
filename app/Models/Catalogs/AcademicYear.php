@@ -18,8 +18,8 @@ class AcademicYear extends Model
         'school_id',
         'start_date',
         'finish_date',
-        'max_discount_percentage',
-        'max_installments',
+        'levels',
+        'employees',
     ];
 
     protected $casts = [

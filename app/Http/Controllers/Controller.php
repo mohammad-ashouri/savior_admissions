@@ -13,12 +13,6 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-
-    public function __construct()
-    {
-
-    }
-
     public function logActivity($activity, $ip_address, $user_agent, $user_id = null)
     {
         $agent = new Agent();

@@ -25,7 +25,7 @@ class AcademicYearController extends Controller
 
     public function index()
     {
-        $academicYears = AcademicYear::with('schoolInfo')->orderBy('start_date', 'asc')->paginate(10);
+        $academicYears = AcademicYear::with('schoolInfo')->orderBy('id', 'desc')->paginate(10);
         return view('Catalogs.AcademicYears.index', compact('academicYears'));
     }
 
@@ -45,6 +45,10 @@ class AcademicYearController extends Controller
             'school' => 'required|exists:schools,id',
             'start_date' => 'required|date',
             'finish_date' => 'required|date',
+            'Principal' => 'required',
+            'Admissions_Officer' => 'required',
+            'Financial_Manager' => 'required',
+            'Interviewer' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -59,12 +63,24 @@ class AcademicYearController extends Controller
         } elseif ($request->start_date == $request->finish_date) {
             return redirect()->back()->withErrors('The first date and the second date are equal')->withInput();
         } else {
+            $prevAcademicYear=AcademicYear::where('school_id',$request->input('school'))->where('status',1)->first();
+            if ($prevAcademicYear){
+                $prevAcademicYear->status=0;
+                $prevAcademicYear->save();
+            }
+            $employeesData=[
+                'Principal' => [$request->input('Principal')],
+                'Admissions_Officer' => [$request->input('Admissions_Officer')],
+                'Financial_Manager' => [$request->input('Financial_Manager')],
+                'Interviewer' => [$request->input('Interviewer')],
+            ];
             AcademicYear::create([
                 'name' => $request->name,
                 'school_id' => $request->school,
                 'start_date' => $request->start_date,
                 'finish_date' => $request->finish_date,
                 'levels' => json_encode($request->levels,true),
+                'employees' => json_encode($employeesData,true),
             ]);
             return redirect()->route('AcademicYears.index')
                 ->with('success', 'Academic year created successfully');
@@ -77,7 +93,8 @@ class AcademicYearController extends Controller
         $catalog = AcademicYear::with('schoolInfo')->find($id);
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
-        return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools','levels'));
+        $users = User::where('status', 1)->orderBy('family', 'asc')->get();
+        return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools','levels','users'));
     }
 
     public function update(Request $request, $id)
@@ -102,10 +119,18 @@ class AcademicYearController extends Controller
         } elseif ($request->start_date == $request->finish_date) {
             return redirect()->back()->withErrors('The first date and the second date are equal')->withInput();
         } else {
+            $employeesData=[
+                'Principal' => [$request->input('Principal')],
+                'Admissions_Officer' => [$request->input('Admissions_Officer')],
+                'Financial_Manager' => [$request->input('Financial_Manager')],
+                'Interviewer' => [$request->input('Interviewer')],
+            ];
             $catalog = AcademicYear::find($id);
             $catalog->name = $request->input('name');
             $catalog->status = $request->input('status');
             $catalog->levels = json_encode($request->input('levels'),true);
+            $catalog->employees = json_encode($employeesData,true);
+;
             $catalog->save();
             return redirect()->route('AcademicYears.index')
                 ->with('success', 'Academic year edited successfully');

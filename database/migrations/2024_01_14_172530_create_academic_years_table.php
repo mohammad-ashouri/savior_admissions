@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->foreign('school_id')->references('id')->on('schools');
             $table->date('start_date');
             $table->date('finish_date');
-            $table->float('max_discount_percentage')->default(0);
-            $table->integer('max_installments')->default(1);
+            $table->json('levels');
+            $table->json('employees');
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

@@ -53,7 +53,7 @@
                                     <label for="name"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         Name</label>
-                                    <input type="text" id="name" value="" name="name"
+                                    <input type="text" id="name" value="{{ old('name') }}" name="name"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Enter name" required>
                                 </div>
@@ -66,40 +66,87 @@
                                             title="Select school" required>
                                         <option selected disabled value="">Select school</option>
                                         @foreach($schools as $school)
-                                            <option value="{{$school->id}}">{{$school->name}}</option>
+                                            <option @if(old('school')==$school->id) selected @endif value="{{$school->id}}">{{$school->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div>
                                     <label for="start_date"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">Starts at</label>
-                                    <input type="date" id="start_date" value="" name="start_date"
+                                    <input type="date" id="start_date" value="{{old('start_date')}}" name="start_date"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </div>
                                 <div>
                                     <label for="finish_date"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">Ends at</label>
-                                    <input type="date" id="finish_date" value="" name="finish_date"
+                                    <input type="date" id="finish_date" value="{{old('finish_date')}}" name="finish_date"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </div>
                                 <div>
-                                    <label for="max_discount_percentage"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Max discount percentage</label>
-                                    <input type="number" id="max_discount_percentage" value=""
-                                           name="max_discount_percentage"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter max discount percentage" required>
+                                    <label for="levels[]"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Levels</label>
+                                        <select id="levels[]" name="levels[]" multiple="multiple"
+                                                class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                required>
+                                            @foreach($levels as $level)
+                                                <option @if(old('levels')==$level->id) selected @endif value="{{ $level->id }}">{{ $level->name }}</option>
+                                            @endforeach
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="grid gap-6 mb-6 md:grid-cols-1">
+                                <div class="col-span-1 gap-4  text-black dark:text-white">
+                                    <h1 class="text-2xl font-medium">Employees Information</h1>
                                 </div>
                                 <div>
-                                    <label for="max_installments"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Max installments</label>
-                                    <input type="number" id="max_installments" value="" name="max_installments"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter max installments" required>
+                                    <label for="Principal[]"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Principal(s)</label>
+                                    <select id="Principal[]" name="Principal[]" multiple="multiple"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        @foreach($users as $user)
+                                            @if(!$user->hasRole('Principal')) @continue @endif
+                                            <option @if(old('Principal')==$user->id) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="Admissions_Officer[]"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Admissions Officer(s)</label>
+                                    <select id="Admissions_Officer[]" name="Admissions_Officer[]" multiple="multiple"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        @foreach($users as $user)
+                                            @if(!$user->hasRole('Admissions Officer')) @continue @endif
+                                            <option @if(old('Admissions_Officer')==$user->id) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="Financial_Manager[]"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Financial Manager(s)</label>
+                                    <select id="Financial_Manager[]" name="Financial_Manager[]" multiple="multiple"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        @foreach($users as $user)
+                                            @if(!$user->hasRole('Financial Manager')) @continue @endif
+                                            <option @if(old('Financial_Manager')==$user->id) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="Interviewer[]"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Interviewer(s)</label>
+                                    <select id="Interviewer[]" name="Interviewer[]" multiple="multiple"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        @foreach($users as $user)
+                                            @if(!$user->hasRole('Interviewer')) @continue @endif
+                                            <option @if(old('Interviewer')==$user->id) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <button type="submit"

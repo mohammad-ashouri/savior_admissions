@@ -4,7 +4,7 @@
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium">Edit Level</h1>
+                <h1 class="text-2xl font-medium">Edit Academic Year</h1>
             </div>
             @if (count($errors) > 0)
                 <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
@@ -29,7 +29,7 @@
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-                            <h1 class="text-2xl font-medium"> Level information</h1>
+                            <h1 class="text-2xl font-medium"> Academic Year information</h1>
                         </div>
                         {!! Form::model($catalog, ['method' => 'PATCH','route' => ['AcademicYears.update', $catalog->id]]) !!}
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -70,23 +70,15 @@
                                        required>
                             </div>
                             <div>
-                                <label for="max_discount_percentage"
-                                       class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                    Max discount percentage</label>
-                                <input type="number" id="max_discount_percentage"
-                                       value="{{$catalog->max_discount_percentage}}"
-                                       name="max_discount_percentage"
-                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                       placeholder="Enter max discount percentage" required>
-                            </div>
-                            <div>
-                                <label for="max_installments"
-                                       class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                    Max installments</label>
-                                <input type="number" id="max_installments" value="{{$catalog->max_installments}}"
-                                       name="max_installments"
-                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                       placeholder="Enter max installments" required>
+                                <label for="levels[]"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Levels</label>
+                                <select id="levels[]" name="levels[]" multiple="multiple"
+                                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                    @foreach($levels as $level)
+                                        <option @if(old('levels')==$level->id or in_array($level->id,json_decode($catalog->levels,true))) selected @endif value="{{ $level->id }}">{{ $level->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div>
                                 <label for="status"
@@ -105,11 +97,64 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="grid gap-6 mb-6 md:grid-cols-1">
+                            <div class="col-span-1 gap-4  text-black dark:text-white">
+                                <h1 class="text-2xl font-medium">Employees Information</h1>
+                            </div>
+                            <div>
+                                <label for="Principal[]"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Principal(s)</label>
+                                <select id="Principal[]" name="Principal[]" multiple="multiple"
+                                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                    @foreach($users as $user)
+                                        @if(!$user->hasRole('Principal')) @continue @endif
+                                        <option @if(old('Principal')==$user->id or in_array([$user->id],json_decode($catalog->employees,true)['Principal'])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="Admissions_Officer[]"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Admissions Officer(s)</label>
+                                <select id="Admissions_Officer[]" name="Admissions_Officer[]" multiple="multiple"
+                                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                    @foreach($users as $user)
+                                        @if(!$user->hasRole('Admissions Officer')) @continue @endif
+                                        <option @if(old('Admissions_Officer')==$user->id or in_array([$user->id],json_decode($catalog->employees,true)['Admissions_Officer'])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="Financial_Manager[]"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Financial Manager(s)</label>
+                                <select id="Financial_Manager[]" name="Financial_Manager[]" multiple="multiple"
+                                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                    @foreach($users as $user)
+                                        @if(!$user->hasRole('Financial Manager')) @continue @endif
+                                            <option @if(old('Financial_Manager')==$user->id or in_array([$user->id],json_decode($catalog->employees,true)['Financial_Manager'])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="Interviewer[]"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Interviewer(s)</label>
+                                <select id="Interviewer[]" name="Interviewer[]" multiple="multiple"
+                                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        required>
+                                    @foreach($users as $user)
+                                        @if(!$user->hasRole('Interviewer')) @continue @endif
+                                        <option @if(old('Interviewer')==$user->id or in_array([$user->id],json_decode($catalog->employees,true)['Interviewer'])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <button type="submit"
                                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Save
                         </button>
-                        <a href="/DocumentTypes">
+                        <a href="/AcademicYears">
                             <button type="button"
                                     class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                 Back
