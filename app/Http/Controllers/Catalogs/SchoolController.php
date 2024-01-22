@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Catalogs;
 use App\Http\Controllers\Controller;
 use App\Models\Catalogs\DocumentType;
 use App\Models\Catalogs\School;
+use App\Models\Gender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,14 +22,15 @@ class SchoolController extends Controller
 
     public function index()
     {
-        $schools = School::orderBy('name', 'asc')->paginate(10);
+        $schools = School::with('genderInfo')->orderBy('name', 'asc')->paginate(10);
         return view('Catalogs.Schools.index', compact('schools'));
     }
 
     public function create()
     {
         $schools = School::get();
-        return view('Catalogs.Schools.create', compact('schools'));
+        $genders=Gender::get();
+        return view('Catalogs.Schools.create', compact('schools','genders'));
     }
 
     public function store(Request $request)
@@ -44,20 +46,11 @@ class SchoolController extends Controller
             ->with('success', 'School created successfully');
     }
 
-//    public function show($id)
-//    {
-//        $role = Role::find($id);
-//        $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
-//            ->where("role_has_permissions.role_id", $id)
-//            ->get();
-//
-//        return view('roles.show', compact('role', 'rolePermissions'));
-//    }
-
     public function edit($id)
     {
         $catalog = School::find($id);
-        return view('Catalogs.Schools.edit', compact('catalog'));
+        $genders=Gender::get();
+        return view('Catalogs.Schools.edit', compact('catalog','genders' ));
     }
 
     public function update(Request $request, $id)

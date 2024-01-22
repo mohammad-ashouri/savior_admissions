@@ -40,14 +40,16 @@
                             </div>
                             <div>
                                 <label for="gender"
-                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Gender of school students</label>
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">Gender of school
+                                    students</label>
                                 <select type="text" id="gender" name="gender"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         title="Select gender" required>
                                     <option value="" disabled selected>Select gender...</option>
-                                    <option @if($catalog->gender==='Male') selected @endif value="Male">Male</option>
-                                    <option @if($catalog->gender==='Female') selected @endif value="Female">Female</option>
-                                    <option @if($catalog->gender==='Both') selected @endif value="both">Both</option>
+                                    @foreach($genders as $gender)
+                                        <option @if($catalog->gender===$gender->id) selected
+                                                @endif value="{{ $gender->id }}">{{ $gender->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div>
@@ -75,7 +77,7 @@
                         </button>
                         <a href="/Schools">
                             <button type="button"
-                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                 Back
                             </button>
                         </a>

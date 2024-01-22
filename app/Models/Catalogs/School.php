@@ -2,6 +2,7 @@
 
 namespace App\Models\Catalogs;
 
+use App\Models\Gender;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,4 +20,8 @@ class School extends Model
         'created_at',
         'updated_at',
     ];
+    public function genderInfo()
+    {
+        return $this->belongsTo(Gender::class, 'gender', 'id');
+    }
 }

@@ -15,13 +15,14 @@ return new class extends Migration
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('gender');
+            $table->unsignedBigInteger('gender');
+            $table->foreign('gender')->references('id')->on('genders');
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
 
-        $query="insert into schools (name,gender) values ('Kawthar International School','Female'),('Tāhā International School','Male'),('Tūba International School','Both')";
+        $query="insert into schools (name,gender) values ('Kawthar International School',2),('Tāhā International School',1),('Tūba International School',3)";
         DB::statement($query);
     }
 
