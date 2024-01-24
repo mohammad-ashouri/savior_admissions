@@ -7,9 +7,11 @@ use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\School;
 use App\Models\User;
+use App\Models\UserAccessInformation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AcademicYearController extends Controller
@@ -72,41 +74,74 @@ class AcademicYearController extends Controller
             $admissionsOfficers = $request->input('Admissions_Officer');
             $financialManagers = $request->input('Financial_Manager');
             $interviewers = $request->input('Interviewer');
+            $school = (int)$request->school;
 
             foreach ($principals as $principal) {
-                $user = User::find($principal);
-                $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-                if (!in_array($request->school, $userAdditionalInformation['school_id'])) {
-                    $userAdditionalInformation['school_id'][] = $request->school;
+                $user = UserAccessInformation::firstOrCreate(
+                    [
+                        'user_id' => $principal
+                    ]
+                );
+                if (!$user->principal) {
+                    $user->principal = $school;
+                } else {
+                    $schools = explode('|', $user->principal);
+                    if (!in_array($school, $schools)) {
+                        $schools[] = $school;
+                    }
+                    $user->principal = implode('|', $schools);
                 }
-                $user->additional_information = json_encode($userAdditionalInformation);
                 $user->save();
             }
             foreach ($admissionsOfficers as $admissionsOfficer) {
-                $user = User::find($admissionsOfficer);
-                $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-                if (!in_array($request->school, $userAdditionalInformation['admission_officer_school_id'])) {
-                    $userAdditionalInformation['admission_officer_school_id'][] = $request->school;
+                $user = UserAccessInformation::firstOrCreate(
+                    [
+                        'user_id' => $admissionsOfficer
+                    ]
+                );
+                if (!$user->admissions_officer) {
+                    $user->admissions_officer = $school;
+                } else {
+                    $schools = explode('|', $user->admissions_officer);
+                    if (!in_array($school, $schools)) {
+                        $schools[] = $school;
+                    }
+                    $user->admissions_officer = implode('|', $schools);
                 }
-                $user->additional_information = json_encode($userAdditionalInformation);
                 $user->save();
             }
             foreach ($financialManagers as $financialManager) {
-                $user = User::find($financialManager);
-                $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-                if (!in_array($request->school, $userAdditionalInformation['financial_manager_school_id'])) {
-                    $userAdditionalInformation['financial_manager_school_id'][] = $request->school;
+                $user = UserAccessInformation::firstOrCreate(
+                    [
+                        'user_id' => $financialManager
+                    ]
+                );
+                if (!$user->financial_manager) {
+                    $user->financial_manager = $school;
+                } else {
+                    $schools = explode('|', $user->financial_manager);
+                    if (!in_array($school, $schools)) {
+                        $schools[] = $school;
+                    }
+                    $user->financial_manager = implode('|', $schools);
                 }
-                $user->additional_information = json_encode($userAdditionalInformation);
                 $user->save();
             }
             foreach ($interviewers as $interviewer) {
-                $user = User::find($interviewer);
-                $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-                if (!in_array($request->school, $userAdditionalInformation['interviewer_school_id'])) {
-                    $userAdditionalInformation['interviewer_school_id'][] = $request->school;
+                $user = UserAccessInformation::firstOrCreate(
+                    [
+                        'user_id' => $interviewer
+                    ]
+                );
+                if (!$user->interviewer) {
+                    $user->interviewer = $school;
+                } else {
+                    $schools = explode('|', $user->interviewer);
+                    if (!in_array($school, $schools)) {
+                        $schools[] = $school;
+                    }
+                    $user->interviewer = implode('|', $schools);
                 }
-                $user->additional_information = json_encode($userAdditionalInformation);
                 $user->save();
             }
             $employeesData = [
@@ -165,58 +200,122 @@ class AcademicYearController extends Controller
             $admissionsOfficers = $request->input('Admissions_Officer');
             $financialManagers = $request->input('Financial_Manager');
             $interviewers = $request->input('Interviewer');
+            $school = $request->school;
+
+            $results = DB::table('user_access_informations')->pluck('principal');
+            foreach ($results as $result) {
+                $values = explode('|', $result);
+
+                $key = array_search($school, $values);
+
+                if ($key !== false) {
+                    unset($values[$key]);
+                }
+                UserAccessInformation::where('principal', $result)->update(['principal' => implode('|', $values)]);
+            }
+            $results = DB::table('user_access_informations')->pluck('admissions_officer');
+            foreach ($results as $result) {
+                $values = explode('|', $result);
+
+                $key = array_search($school, $values);
+
+                if ($key !== false) {
+                    unset($values[$key]);
+                }
+                UserAccessInformation::where('admissions_officer', $result)->update(['admissions_officer' => implode('|', $values)]);
+            }
+            $results = DB::table('user_access_informations')->pluck('financial_manager');
+            foreach ($results as $result) {
+                $values = explode('|', $result);
+
+                $key = array_search($school, $values);
+
+                if ($key !== false) {
+                    unset($values[$key]);
+                }
+                UserAccessInformation::where('financial_manager', $result)->update(['financial_manager' => implode('|', $values)]);
+            }
+            $results = DB::table('user_access_informations')->pluck('interviewer');
+            foreach ($results as $result) {
+                $values = explode('|', $result);
+
+                $key = array_search($school, $values);
+
+                if ($key !== false) {
+                    unset($values[$key]);
+                }
+                UserAccessInformation::where('interviewer', $result)->update(['interviewer' => implode('|', $values)]);
+            }
 
             foreach ($principals as $principal) {
-                $user = User::find($principal);
-                $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-                if (!isset($userAdditionalInformation['school_id']) || $userAdditionalInformation['school_id'] === null) {
-                    $userAdditionalInformation['school_id'] = [];
+                $user = UserAccessInformation::firstOrCreate(
+                    [
+                        'user_id' => $principal
+                    ]
+                );
+                if (!$user->principal) {
+                    $user->principal = $school;
+                } else {
+                    $schools = explode('|', $user->principal);
+                    if (!in_array($school, $schools)) {
+                        $schools[] = $school;
+                    }
+                    $user->principal = implode('|', $schools);
                 }
-                if (!in_array($request->school, $userAdditionalInformation['school_id'])) {
-                    $userAdditionalInformation['school_id'][] = $request->school;
-                }
-                $user->additional_information = json_encode($userAdditionalInformation);
                 $user->save();
             }
             foreach ($admissionsOfficers as $admissionsOfficer) {
-                $user = User::find($admissionsOfficer);
-                $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-                if (!isset($userAdditionalInformation['admission_officer_school_id']) || $userAdditionalInformation['admission_officer_school_id'] === null) {
-                    $userAdditionalInformation['admission_officer_school_id'] = [];
+                $user = UserAccessInformation::firstOrCreate(
+                    [
+                        'user_id' => $admissionsOfficer
+                    ]
+                );
+                if (!$user->admissions_officer) {
+                    $user->admissions_officer = $school;
+                } else {
+                    $schools = explode('|', $user->admissions_officer);
+                    if (!in_array($school, $schools)) {
+                        $schools[] = $school;
+                    }
+                    $user->admissions_officer = implode('|', $schools);
                 }
-                if (!in_array($request->school, $userAdditionalInformation['admission_officer_school_id'])) {
-                    $userAdditionalInformation['admission_officer_school_id'][] = $request->school;
-                }
-                $user->additional_information = json_encode($userAdditionalInformation);
                 $user->save();
             }
             foreach ($financialManagers as $financialManager) {
-                $user = User::find($financialManager);
-                $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-                if (!isset($userAdditionalInformation['financial_manager_school_id']) || $userAdditionalInformation['financial_manager_school_id'] === null) {
-                    $userAdditionalInformation['financial_manager_school_id'] = [];
+                $user = UserAccessInformation::firstOrCreate(
+                    [
+                        'user_id' => $financialManager
+                    ]
+                );
+                if (!$user->financial_manager) {
+                    $user->financial_manager = $school;
+                } else {
+                    $schools = explode('|', $user->financial_manager);
+                    if (!in_array($school, $schools)) {
+                        $schools[] = $school;
+                    }
+                    $user->financial_manager = implode('|', $schools);
                 }
-                if (!in_array($request->school, $userAdditionalInformation['financial_manager_school_id'])) {
-                    $userAdditionalInformation['financial_manager_school_id'][] = $request->school;
-                }
-                $user->additional_information = json_encode($userAdditionalInformation);
                 $user->save();
             }
             foreach ($interviewers as $interviewer) {
-                $user = User::find($interviewer);
-                $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-
-                if (!isset($userAdditionalInformation['interviewer_school_id']) || $userAdditionalInformation['interviewer_school_id'] === null) {
-                    $userAdditionalInformation['interviewer_school_id'] = [];
+                $user = UserAccessInformation::firstOrCreate(
+                    [
+                        'user_id' => $interviewer
+                    ]
+                );
+                if (!$user->interviewer) {
+                    $user->interviewer = $school;
+                } else {
+                    $schools = explode('|', $user->interviewer);
+                    if (!in_array($school, $schools)) {
+                        $schools[] = $school;
+                    }
+                    $user->interviewer = implode('|', $schools);
                 }
-
-                if (!in_array($request->school, $userAdditionalInformation['interviewer_school_id'])) {
-                    $userAdditionalInformation['interviewer_school_id'][] = $request->school;
-                }
-
-                $user->additional_information = json_encode($userAdditionalInformation);
                 $user->save();
             }
+
             $employeesData = [
                 'Principal' => [$principals],
                 'Admissions_Officer' => [$admissionsOfficers],
