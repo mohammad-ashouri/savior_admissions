@@ -27,10 +27,7 @@ class UserController extends Controller
         $me = User::find(session('id'));
         if ($me) {
             if ($me->hasRole('Super Admin')) {
-                $data = User::orderBy('id', 'DESC')->paginate(
-                    $perPage = 15, $columns = ['*'], $pageName = 'users'
-                );
-                return view('users.index', compact('data'));
+                $data = User::orderBy('id', 'DESC')->paginate(20);
             } elseif ($me->hasRole('Principal')) {
                 $data = User::where(function ($query) use ($me) {
                     if(isset($me->school_id) && is_array($me->school_id) && count($me->school_id) > 0 and !empty($me->school_id)) {
@@ -44,8 +41,8 @@ class UserController extends Controller
                     ->where('id','!=',$me->id)
                     ->orderBy('id', 'DESC')
                     ->paginate(15);
-                return view('users.index', compact('data'));
             }
+            return view('users.index', compact('data'));
         }
         abort(403);
     }
