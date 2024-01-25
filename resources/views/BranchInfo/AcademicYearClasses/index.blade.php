@@ -4,7 +4,7 @@
     <div id="content" class="p-4 md:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Academic Year classes</h1>
+                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Academic Year Classes</h1>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
@@ -98,45 +98,45 @@
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $academicYear->name }}</div>
+                                        <div class="text-base font-semibold">{{ $academicYearClass->name }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $academicYear->academicYearInfo->name }}</div>
+                                        <div class="text-base font-semibold">{{ $academicYearClass->academicYearInfo->name }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $academicYear->levelInfo->name }}</div>
+                                        <div class="text-base font-semibold">{{ $academicYearClass->levelInfo->name }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $academicYear->educationTypeInfo->name }}</div>
+                                        <div class="text-base font-semibold">{{ $academicYearClass->educationTypeInfo->name }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $academicYear->capacity }}</div>
+                                        <div class="text-base font-semibold">{{ $academicYearClass->capacity }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $academicYear->educationGenderInfo->name }}</div>
+                                        <div class="text-base font-semibold">{{ $academicYearClass->educationGenderInfo->name }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
                                         <div
-                                            class="text-base font-semibold @if($academicYear->status===1) text-green-600 @else text-red-600 @endif">
-                                            @if($academicYear->status===1)
+                                            class="text-base font-semibold @if($academicYearClass->status===1) text-green-600 @else text-red-600 @endif">
+                                            @if($academicYearClass->status===1)
                                                 Active
                                             @else
                                                 Deactive
@@ -146,8 +146,8 @@
                                 </th>
                                 <td class="px-6 py-4 text-center">
                                     <!-- Modal toggle -->
-                                    @can('academic-year-edit')
-                                        <a href="{{ route('AcademicYears.edit',$academicYear->id) }}" type="button"
+                                    @can('academic-year-class-edit')
+                                        <a href="{{ route('AcademicYearClasses.edit',$academicYearClass->id) }}" type="button"
                                            class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                             <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
                                                  xmlns="http://www.w3.org/2000/svg">
