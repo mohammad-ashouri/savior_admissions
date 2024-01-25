@@ -109,7 +109,7 @@
                                         required>
                                     @foreach($users as $user)
                                         @if(!$user->hasRole('Principal')) @continue @endif
-                                        <option @if(old('Principal')==$user->id or in_array([$user->id],json_decode($catalog->employees,true)['Principal'])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                        <option @if(old('Principal')==$user->id or in_array($user->id,json_decode($catalog->employees,true)['Principal'][0])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -121,7 +121,7 @@
                                         required>
                                     @foreach($users as $user)
                                         @if(!$user->hasRole('Admissions Officer')) @continue @endif
-                                        <option @if(old('Admissions_Officer')==$user->id or in_array([$user->id],json_decode($catalog->employees,true)['Admissions_Officer'])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                        <option @if(old('Admissions_Officer')==$user->id or in_array($user->id,json_decode($catalog->employees,true)['Admissions_Officer'][0])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -133,7 +133,7 @@
                                         required>
                                     @foreach($users as $user)
                                         @if(!$user->hasRole('Financial Manager')) @continue @endif
-                                            <option @if(old('Financial_Manager')==$user->id or in_array([$user->id],json_decode($catalog->employees,true)['Financial_Manager'])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            <option @if(old('Financial_Manager')==$user->id or in_array($user->id,json_decode($catalog->employees,true)['Financial_Manager'][0])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -145,7 +145,7 @@
                                         required>
                                     @foreach($users as $user)
                                         @if(!$user->hasRole('Interviewer')) @continue @endif
-                                        <option @if(old('Interviewer')==$user->id or in_array([$user->id],json_decode($catalog->employees,true)['Interviewer'])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                        <option @if(old('Interviewer')==$user->id or in_array($user->id,json_decode($catalog->employees,true)['Interviewer'][0])) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
                                     @endforeach
                                 </select>
                             </div>

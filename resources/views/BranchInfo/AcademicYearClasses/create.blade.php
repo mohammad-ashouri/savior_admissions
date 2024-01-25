@@ -40,7 +40,7 @@
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <form id="new-academic-year" method="post" action="{{route('AcademicYears.store')}}">
+                        <form id="new-academic-year" method="post" action="{{route('AcademicYearClasses.store')}}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
@@ -60,7 +60,7 @@
                                             title="Select academic year" required>
                                         <option selected disabled value="">Select academic year</option>
                                         @foreach($academicYears as $academicYear)
-                                            <option @if(old('school')==$academicYear->id) selected @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                            <option @if(old('academic_year')==$academicYear->id) selected @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -91,7 +91,7 @@
                                 <div>
                                     <label for="capacity"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">Capacity</label>
-                                    <input type="number" id="capacity" value="{{ old('capacity') }}" name="capacity"
+                                    <input type="number" id="capacity" value="{{ old('capacity') }}" name="capacity" max="60" min="1"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Enter capacity" required>
                                 </div>
