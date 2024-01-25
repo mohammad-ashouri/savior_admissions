@@ -35,7 +35,7 @@ class AcademicYearClass extends Model
 
     public function academicYearInfo()
     {
-        return $this->belongsTo(AcademicYear::class, 'school_id', 'id');
+        return $this->belongsTo(AcademicYear::class, 'academic_year', 'id');
     }
 
     public function levelInfo()
