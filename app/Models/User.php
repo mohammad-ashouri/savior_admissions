@@ -54,4 +54,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getSchoolIdAttribute()
+    {
+        $additionalInfo = json_decode($this->attributes['additional_information'], true);
+
+        return isset($additionalInfo['school_id']) ? $additionalInfo['school_id'] : null;
+    }
 }
