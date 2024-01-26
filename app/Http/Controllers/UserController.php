@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Catalogs\School;
 use App\Models\GeneralInformation;
 use App\Models\User;
+use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -28,19 +29,17 @@ class UserController extends Controller
         if ($me) {
             if ($me->hasRole('Super Admin')) {
                 $data = User::orderBy('id', 'DESC')->paginate(20);
-            } elseif ($me->hasRole('Principal')) {
-                $data = User::where(function ($query) use ($me) {
-                    if(isset($me->school_id) && is_array($me->school_id) && count($me->school_id) > 0 and !empty($me->school_id)) {
-                        foreach ($me->school_id as $schoolId) {
-                            $query->orWhereJsonContains('additional_information->school_id', $schoolId);
-                        }
-                    } else {
-                        $query->whereRaw('1 = 0');
-                    }
-                })
-                    ->where('id','!=',$me->id)
-                    ->orderBy('id', 'DESC')
-                    ->paginate(15);
+            } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+                $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+                $principalAccess = explode("|", $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                $data = User::where('status', 1)->whereIn('additional_information->school_id', $filteredArray)->paginate(20);
+                if ($data->isEmpty()) {
+                    $data = [];
+                }
+            } else {
+                $data = [];
             }
             return view('users.index', compact('data'));
         }
@@ -49,10 +48,25 @@ class UserController extends Controller
 
     public function create()
     {
-        $mySchools = User::find(session('id'))->school_id;
-        $roles = Role::orderBy('name','asc')->get();
-        $schools = School::whereIn('id', $mySchools)->get();
-        return view('users.create', compact('roles','schools'));
+        $me = User::find(session('id'));
+        $roles = [];
+        if ($me->hasRole('Super Admin')) {
+            $roles = Role::orderBy('name', 'asc')->get();
+            $schools = School::get();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode("|", $myAllAccesses->principal);
+            $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            $schools = School::where('status', 1)->whereIn('id', $filteredArray)->get();
+            $roles = Role::where('name', 'Parent(Father)')->orWhere('name', 'Parent(Mother)')->orWhere('name', 'Student')->orderBy('name', 'asc')->get();
+            if ($schools->count() == 0) {
+                $schools = [];
+            }
+        } else {
+            $schools = [];
+        }
+        return view('users.create', compact('roles', 'schools'));
     }
 
     public function store(Request $request)
@@ -68,14 +82,13 @@ class UserController extends Controller
             'school' => 'required|exists:schools,id'
         ]);
 
-//        $input['password'] = Hash::make(12345678);
         $user = new User;
-        $user->name=$request->name;
-        $user->family=$request->family;
-        $user->email=$request->email;
-        $user->mobile=$request->mobile;
-        $user->password=Hash::make($request->password);
-        if ($me->hasRole('Principal')){
+        $user->name = $request->name;
+        $user->family = $request->family;
+        $user->email = $request->email;
+        $user->mobile = $request->mobile;
+        $user->password = Hash::make($request->password);
+        if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $additionalInformation = [
                 'school_id' => $request->school,
             ];
@@ -103,11 +116,27 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        $me = User::find(session('id'));
+        $roles = [];
         $user = User::find($id);
-        $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
+        if ($me->hasRole('Super Admin')) {
+            $roles = Role::pluck('name', 'name')->all();
+            $schools = School::get();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode("|", $myAllAccesses->principal);
+            $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            $schools = School::where('status', 1)->whereIn('id', $filteredArray)->paginate(20);
+            $roles = Role::where('name', 'Parent(Father)')->orWhere('name', 'Parent(Mother)')->orWhere('name', 'Student')->orderBy('name', 'asc')->pluck('name')->all();
+            if ($schools->count() == 0) {
+                $schools = [];
+            }
+        } else {
+            $schools = [];
+        }
         $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
-        $schools = School::where('status', 1)->get();
         return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools'));
     }
 
