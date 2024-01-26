@@ -71,8 +71,8 @@
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         <option selected disabled value="">Select level</option>
-                                        @foreach($levels as $level)
-                                            <option @if(old('level')==$level->id or $academicYearClass->level == $level->id) selected @endif value="{{ $level->id }}">{{ $level->name }}</option>
+                                        @foreach($levels as $id => $level)
+                                            <option @if(old('level')==$id or $academicYearClass->level == $id) selected @endif value="{{ $id }}">{{ $level }}</option>
                                         @endforeach
                                     </select>
                                 </div>
