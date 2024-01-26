@@ -34,19 +34,27 @@ class AcademicYearClassController extends Controller
             // Retrieve user access information
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
 
-            // Convert accesses to arrays and remove duplicates
-            $principalAccess = explode("|", $myAllAccesses->principal);
-            $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
+                // Convert accesses to arrays and remove duplicates
+                $principalAccess = explode("|", $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
 
-            // Retrieve academic years associated with the accesses
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+                // Retrieve academic years associated with the accesses
+                $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
 
-            // Convert the 'id' column to an array
-            $academicYearIds = $academicYears->pluck('id')->toArray();
+                // Convert the 'id' column to an array
+                $academicYearIds = $academicYears->pluck('id')->toArray();
 
-            // Retrieve classes associated with academic years
-            $academicYearClasses = AcademicYearClass::with('academicYearInfo')->with('levelInfo')->with('educationTypeInfo')->with('educationGenderInfo')->orderBy('id', 'desc')->whereIn('academic_year', $academicYearIds)->paginate(10);
+                // Retrieve classes associated with academic years
+                $academicYearClasses = AcademicYearClass::with('academicYearInfo')->with('levelInfo')->with('educationTypeInfo')->with('educationGenderInfo')->orderBy('id', 'desc')->whereIn('academic_year', $academicYearIds)->paginate(10);
+                if ($academicYearClasses->count() == 0) {
+                    $academicYearClasses = [];
+                }
+            } else {
+                $academicYearClasses = [];
+            }
+
         }
         return view('BranchInfo.AcademicYearClasses.index', compact('academicYearClasses'));
     }
@@ -58,10 +66,17 @@ class AcademicYearClassController extends Controller
             $academicYears = AcademicYear::where('status', 1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode("|", $myAllAccesses->principal);
-            $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
+                $principalAccess = explode("|", $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+                if ($academicYears->count() == 0) {
+                    $academicYears = [];
+                }
+            } else {
+                $academicYears = [];
+            }
         }
 
         $levels = Level::where('status', 1)->get();
@@ -73,7 +88,7 @@ class AcademicYearClassController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'name' => 'required|string|unique:academic_year_classes,name',
             'academic_year' => 'required|exists:academic_years,id',
             'level' => 'required|exists:levels,id',
             'education_type' => 'required|exists:education_types,id',
@@ -100,6 +115,53 @@ class AcademicYearClassController extends Controller
 
     public function edit($id)
     {
+        $me = User::find(session('id'));
+        if ($me->hasRole('Super Admin')) {
+            $academicYears = AcademicYear::where('status', 1)->get();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode("|", $myAllAccesses->principal);
+            $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            dd($filteredArray);
+        }
 
+        $levels = Level::where('status', 1)->get();
+        $educationTypes = EducationType::where('status', 1)->get();
+        $educationGenders = Gender::get();
+        $academicYearClass = AcademicYearClass::find($id);
+        return view('BranchInfo.AcademicYearClasses.edit', compact('academicYears', 'levels', 'educationTypes', 'educationGenders', 'academicYearClass'));
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'academic_year' => 'required|exists:academic_years,id',
+            'level' => 'required|exists:levels,id',
+            'education_type' => 'required|exists:education_types,id',
+            'capacity' => 'required|integer|max:60|min:1',
+            'education_gender' => 'required|exists:genders,id',
+            'status' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $class = AcademicYearClass::find($id);
+        $class->name = $request->name;
+        $class->academic_year = $request->academic_year;
+        $class->level = $request->level;
+        $class->education_type = $request->education_type;
+        $class->capacity = $request->capacity;
+        $class->education_gender = $request->education_gender;
+        $class->status = $request->status;
+        $class->save();
+
+        return redirect()->route('AcademicYearClasses.index')
+            ->with('success', 'Academic year class edited successfully');
     }
 }
