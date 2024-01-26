@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:access-user-role', ['only' => ['changeUserRole']]);
+    }
+
+
     public function index()
     {
         $myInfo = User::find(session('id'));
@@ -129,10 +135,8 @@ class ProfileController extends Controller
     {
         $user = User::find($request->input('user_id'));
         DB::table('model_has_roles')->where('model_id', $user->id)->delete();
-        $user->syncRoles($request->input('roles'));
+        $user->syncRoles($request->input('role'));
         $this->logActivity('Rules updated by => ' . session('id'), request()->ip(), request()->userAgent(), $user->id);
         return response()->json(['success' => 'Rules updated! <br> Please refresh the page to display additional information'], 200);
     }
-
-
 }

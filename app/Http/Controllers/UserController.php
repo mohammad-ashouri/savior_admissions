@@ -59,13 +59,14 @@ class UserController extends Controller
             $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
             $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
             $schools = School::where('status', 1)->whereIn('id', $filteredArray)->get();
-            $roles = Role::where('name', 'Parent(Father)')->orWhere('name', 'Parent(Mother)')->orWhere('name', 'Student')->orderBy('name', 'asc')->get();
             if ($schools->count() == 0) {
                 $schools = [];
             }
         } else {
             $schools = [];
         }
+        $roles = Role::orderBy('name', 'asc')->get();
+
         return view('users.create', compact('roles', 'schools'));
     }
 
@@ -78,7 +79,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'mobile' => 'required|integer|unique:users,mobile',
             'password' => 'required|unique:users,mobile',
-            'roles' => 'required',
+            'role' => 'required',
             'school' => 'required|exists:schools,id'
         ]);
 
@@ -102,7 +103,7 @@ class UserController extends Controller
                     'user_id' => $user->id
                 ]
             );
-            $user->assignRole($request->input('roles'));
+            $user->assignRole($request->input('role'));
         }
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');
@@ -129,13 +130,13 @@ class UserController extends Controller
             $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
             $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
             $schools = School::where('status', 1)->whereIn('id', $filteredArray)->paginate(20);
-            $roles = Role::where('name', 'Parent(Father)')->orWhere('name', 'Parent(Mother)')->orWhere('name', 'Student')->orderBy('name', 'asc')->pluck('name')->all();
             if ($schools->count() == 0) {
                 $schools = [];
             }
         } else {
             $schools = [];
         }
+        $roles = Role::orderBy('name', 'asc')->pluck('name')->all();
         $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
         return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools'));
     }
@@ -160,7 +161,7 @@ class UserController extends Controller
         $user->update($input);
         DB::table('model_has_roles')->where('model_id', $id)->delete();
 
-        $user->syncPermissions($request->input('roles'));
+        $user->syncPermissions($request->input('role'));
 
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully');

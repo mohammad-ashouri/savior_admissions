@@ -77,16 +77,31 @@
                                 </select>
                             </div>
                             <div>
-                                <label for="Role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
-                                @foreach ($roles as $value)
-                                    @if ($myInfo->hasRole('Principal') and ($value->name == 'Super Admin' or $value->name == 'Principal'))
-                                        @continue
-                                    @endif
 
-                                    <label>{{ Form::checkbox('roles[]', $value->name, false, array('class' => 'name')) }}
-                                        {{ $value->name }}</label>
-                                    <br/>
-                                @endforeach
+                                @if($myInfo->hasRole('Super Admin'))
+                                    <label for="role"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
+                                    @foreach ($roles as $value)
+                                        <label>{{ Form::checkbox('role[]', $value->name, false, array('class' => 'name')) }}
+                                            {{ $value->name }}</label>
+                                        <br/>
+                                    @endforeach
+                                @else
+                                    <label for="role"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                                    <select name="role" id="role" required
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option value="" selected disabled>Select role</option>
+                                        @foreach ($roles as $value)
+                                            @if (($myInfo->hasRole('Principal') or $myInfo->hasRole('Admissions Officer')) and ($value->name == 'Super Admin' or $value->name == 'Principal' or $value->name == 'Admissions Officer' or $value->name == 'Financial Manager' or $value->name == 'Interviewer'))
+                                                @continue
+                                            @endif
+
+                                            <option value="{{ $value->name }}">{{ $value->name }}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
                             </div>
                         </div>
 

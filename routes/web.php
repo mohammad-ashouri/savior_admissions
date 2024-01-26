@@ -72,7 +72,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
             'AcademicYears' => AcademicYearController::class,
         ]);
 
-        $resources=['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
+        $resources = ['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
         foreach ($resources as $resource) {
             Route::get("$resource/search", [ucfirst($resource) . 'Controller', 'search']);
         }
@@ -87,7 +87,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-Principal');
     Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-Principal');
     Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-Principal');
-    Route::post('users/change_rules', [ProfileController::class, 'changeUserRole'])->middleware('can:access-SuperAdmin');
+    Route::post('users/change_rules', [ProfileController::class, 'changeUserRole']);
     Route::post('users/change_student_information', [UserController::class, 'changeStudentInformation'])->middleware('can:access-SuperAdmin');
     Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
     Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
