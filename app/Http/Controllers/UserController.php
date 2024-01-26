@@ -31,11 +31,15 @@ class UserController extends Controller
                 $data = User::orderBy('id', 'DESC')->paginate(20);
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
                 $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-                $principalAccess = explode("|", $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $data = User::where('status', 1)->whereIn('additional_information->school_id', $filteredArray)->paginate(20);
-                if ($data->isEmpty()) {
+                if ($myAllAccesses != null) {
+                    $principalAccess = explode("|", $myAllAccesses->principal);
+                    $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                    $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                    $data = User::where('status', 1)->whereIn('additional_information->school_id', $filteredArray)->paginate(20);
+                    if ($data->isEmpty()) {
+                        $data = [];
+                    }
+                } else {
                     $data = [];
                 }
             } else {
@@ -49,18 +53,20 @@ class UserController extends Controller
     public function create()
     {
         $me = User::find(session('id'));
-        $roles = [];
         if ($me->hasRole('Super Admin')) {
-            $roles = Role::orderBy('name', 'asc')->get();
             $schools = School::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode("|", $myAllAccesses->principal);
-            $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-            $schools = School::where('status', 1)->whereIn('id', $filteredArray)->get();
-            if ($schools->count() == 0) {
-                $schools = [];
+            if ($myAllAccesses != null) {
+                $principalAccess = explode("|", $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                $schools = School::where('status', 1)->whereIn('id', $filteredArray)->get();
+                if ($schools->count() == 0) {
+                    $schools = [];
+                }
+            } else {
+                abort(403);
             }
         } else {
             $schools = [];
@@ -109,29 +115,25 @@ class UserController extends Controller
             ->with('success', 'User created successfully');
     }
 
-    public function show($id)
-    {
-        $user = User::find($id);
-        return view('users.show', compact('user'));
-    }
-
     public function edit($id)
     {
         $me = User::find(session('id'));
-        $roles = [];
         $user = User::find($id);
         $userRole = $user->roles->pluck('name', 'name')->all();
         if ($me->hasRole('Super Admin')) {
-            $roles = Role::pluck('name', 'name')->all();
             $schools = School::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode("|", $myAllAccesses->principal);
-            $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-            $schools = School::where('status', 1)->whereIn('id', $filteredArray)->paginate(20);
-            if ($schools->count() == 0) {
-                $schools = [];
+            if ($myAllAccesses != null) {
+                $principalAccess = explode("|", $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                $schools = School::where('status', 1)->whereIn('id', $filteredArray)->paginate(20);
+                if ($schools->count() == 0) {
+                    $schools = [];
+                }
+            } else {
+                abort(403);
             }
         } else {
             $schools = [];
@@ -166,13 +168,6 @@ class UserController extends Controller
         return redirect()->route('users.index')
             ->with('success', 'User updated successfully');
     }
-
-//    public function destroy($id)
-//    {
-//        User::find($id)->delete();
-//        return redirect()->route('users.index')
-//            ->with('success', 'User deleted successfully');
-//    }
 
     public function changeUserPassword(Request $request)
     {
