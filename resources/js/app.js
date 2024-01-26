@@ -269,6 +269,29 @@ $(document).ready(function () {
     }
     else if (fullPath.includes('AcademicYearClasses')) {
         pageTitle = 'Academic Year Classes';
+        $('#academic_year').change(function (e) {
+            $.ajax({
+                type: 'GET',
+                url: '/GetLevelsForAcademicYearClass',
+                data: {
+                    academic_year:$(this).val()
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }, success: function (response) {
+                    var selectLevel = $('#level');
+                    selectLevel.empty();
+
+                    selectLevel.append('<option selected disabled value="">Select level</option>');
+
+                    $.each(response, function (index, level) {
+                        selectLevel.append('<option value="' + level.id + '">' + level.name + '</option>');
+                    });
+                }, error: function (xhr, textStatus, errorThrown) {
+                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                }
+            });
+        });
     }
     else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';

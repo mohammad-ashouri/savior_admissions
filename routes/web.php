@@ -80,6 +80,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     //Branch Info
     Route::resource('AcademicYearClasses', AcademicYearClassController::class);
+    Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
 
 
     Route::resource('roles', RoleController::class)->middleware('role:Super Admin');

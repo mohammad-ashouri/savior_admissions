@@ -124,7 +124,6 @@ class AcademicYearClassController extends Controller
             $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
             $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
-            dd($filteredArray);
         }
 
         $levels = Level::where('status', 1)->get();
@@ -163,5 +162,29 @@ class AcademicYearClassController extends Controller
 
         return redirect()->route('AcademicYearClasses.index')
             ->with('success', 'Academic year class edited successfully');
+    }
+
+    public function levels(Request $request)
+    {
+        $me = User::find(session('id'));
+        $academicYear = $request->academic_year;
+        $academicYearLevels=[];
+        if ($me->hasRole('Super Admin')) {
+            $academicYearLevels = AcademicYear::where('status', 1)->where('id', $academicYear)->pluck('levels')->all();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode("|", $myAllAccesses->principal);
+            $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            $academicYearLevels = AcademicYear::where('status', 1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('levels')->all();
+        }
+
+        if (empty($academicYearLevels)) {
+            $levelInfo = [];
+        } else {
+            $levelInfo = Level::whereIn('id', json_decode($academicYearLevels[0], true))->where('status', 1)->get();
+        }
+
+        return $levelInfo;
     }
 }
