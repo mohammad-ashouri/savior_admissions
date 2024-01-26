@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Level extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
     protected $table = 'levels';
     protected $fillable = [
         'name',
