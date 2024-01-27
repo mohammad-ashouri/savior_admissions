@@ -2,26 +2,30 @@
 
 namespace App\Models;
 
+use App\Models\Catalogs\StudentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StudentsParent extends Model
+class StudentInformation extends Model
 {
     use HasFactory, softDeletes;
 
-    protected $table = 'general_informations';
+    protected $table = 'student_informations';
     protected $fillable = [
         'student_id',
         'parent_father_id',
         'parent_mother_id',
-        'editor',
+        'guardian',
+        'releationship',
+        'current_nationality',
+        'current_identification_type',
+        'current_identification',
+        'status',
     ];
     protected $hidden = [
-        'editor',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function studentInfo()
@@ -39,8 +43,15 @@ class StudentsParent extends Model
         return $this->belongsTo(User::class, 'parent_mother_id', 'id');
     }
 
-    public function editorInfo()
+    public function nationalityInfo()
     {
-        return $this->belongsTo(User::class, 'editor', 'id');
+        return $this->belongsTo(Country::class, 'current_nationality', 'id');
     }
+
+    public function statusInfo()
+    {
+        return $this->belongsTo(StudentStatus::class, 'status', 'id');
+    }
+
+
 }
