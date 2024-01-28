@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Catalogs\School;
+use App\Models\Country;
 use App\Models\GeneralInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
@@ -140,7 +141,8 @@ class UserController extends Controller
         }
         $roles = Role::orderBy('name', 'asc')->pluck('name')->all();
         $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
-        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools'));
+        $countries=Country::get();
+        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools','countries'));
     }
 
     public function update(Request $request, $id)

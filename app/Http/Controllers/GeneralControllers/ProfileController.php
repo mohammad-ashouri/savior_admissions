@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GeneralControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogs\DocumentType;
+use App\Models\Country;
 use App\Models\Document;
 use App\Models\GeneralInformation;
 use App\Models\User;
@@ -24,7 +25,8 @@ class ProfileController extends Controller
         $myGeneralInformation = GeneralInformation::where('user_id', $myInfo->id)->with('user')->first();
         $personnelPhotoType=DocumentType::where('name','Personnel Photo')->first();
         $myDocuments = Document::where('user_id', $myInfo->id)->where('document_type_id',$personnelPhotoType->id)->latest()->first();
-        return view('GeneralPages.profile', compact('myGeneralInformation','myDocuments'));
+        $countries=Country::get();
+        return view('GeneralPages.profile', compact('myGeneralInformation','myDocuments','countries'));
     }
 
     public function editMyProfile(Request $request)
@@ -33,11 +35,11 @@ class ProfileController extends Controller
             'father-name' => 'required|string',
             'gender' => 'required|string',
             'Birthdate' => 'required|string',
-            'Nationality' => 'required|string',
-            'birthplace' => 'required|string',
+            'Nationality' => 'required|exists:countries,id',
+            'birthplace' => 'required|exists:countries,id',
             'PassportNumber' => 'required|string',
             'FaragirCode' => 'required|string',
-            'Country' => 'required|string',
+            'Country' => 'required|exists:countries,id',
             'city' => 'required|string',
             'address' => 'required|string',
             'phone' => 'required|string',
@@ -77,18 +79,18 @@ class ProfileController extends Controller
             'father_name' => 'required|string',
             'gender' => 'required|string',
             'Birthdate' => 'required|date',
-            'nationality' => 'required|string',
-            'birthplace' => 'required|string',
+            'nationality' => 'required|exists:countries,id',
+            'birthplace' => 'required|exists:countries,id',
             'PassportNumber' => 'required|string',
             'FaragirCode' => 'required|string',
-            'Country' => 'required|string',
+            'Country' => 'required|exists:countries,id',
             'city' => 'required|string',
             'mobile' => 'required',
             'address' => 'required|string|max:100',
             'phone' => 'required',
             'postalcode' => 'required|integer',
             'email' => 'required|email',
-            'user_id' => 'required',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         $input = $request->all();

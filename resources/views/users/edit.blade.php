@@ -24,32 +24,32 @@
                             <div class="mt-3">
                                 <form id="change-rules">
                                     @if($myInfo->hasRole('Super Admin'))
-                                    <label for="role"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
-                                    @foreach($roles as $value)
-                                        <input class="name" name="role[]" type="checkbox" id="{{ $value }}"
-                                               @foreach($generalInformation->user->getRoleNames() as $v)
-                                                   @if($v==$value) checked @endif
-                                               @endforeach
-                                               value="{{ $value }}">
-                                        <label for="{{ $value }}"> {{ $value }} </label><br/>
-                                    @endforeach
-                                    @else
-                                    <label for="role[]"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                                    <select name="role[]" id="role[]"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-
+                                        <label for="role"
+                                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
                                         @foreach($roles as $value)
-                                            @if(!$myInfo->hasRole('Super Admin') && ($value == 'Super Admin' or $value == 'Principal' or $value == 'Admissions Officer' or $value == 'Financial Manager' or $value == 'Interviewer'))
-                                                @continue
-                                            @endif
-
-                                            <option value="{{ $value }}"
-                                                    @if($generalInformation->user->hasRole($value)) selected @endif>{{ $value }}</option>
+                                            <input class="name" name="role[]" type="checkbox" id="{{ $value }}"
+                                                   @foreach($generalInformation->user->getRoleNames() as $v)
+                                                       @if($v==$value) checked @endif
+                                                   @endforeach
+                                                   value="{{ $value }}">
+                                            <label for="{{ $value }}"> {{ $value }} </label><br/>
                                         @endforeach
-                                    </select>
+                                    @else
+                                        <label for="role[]"
+                                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                                        <select name="role[]" id="role[]"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        >
+
+                                            @foreach($roles as $value)
+                                                @if(!$myInfo->hasRole('Super Admin') && ($value == 'Super Admin' or $value == 'Principal' or $value == 'Admissions Officer' or $value == 'Financial Manager' or $value == 'Interviewer'))
+                                                    @continue
+                                                @endif
+
+                                                <option value="{{ $value }}"
+                                                        @if($generalInformation->user->hasRole($value)) selected @endif>{{ $value }}</option>
+                                            @endforeach
+                                        </select>
                                     @endif
 
                                     <input type="hidden" value="{{ $user->id }}" name="user_id">
@@ -122,18 +122,30 @@
                                 <div>
                                     <label for="nationality"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nationality</label>
-                                    <input type="text" id="nationality" name="Nationality"
-                                           @if($generalInformation->nationality!==null) value=" {{ $generalInformation->nationality }}"
-                                           @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Iran" required>
+                                    <select required id="nationality"
+                                            name="nationality"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option selected disabled value=""></option>
+                                        @foreach($countries as $nationality)
+                                            <option @if($generalInformation->nationality==$nationality->id) selected
+                                                    @endif value="{{ $nationality->id }}">{{$nationality->nationality}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="birthplace"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthplace</label>
-                                    <input type="text" id="birthplace" name="birthplace"
-                                           @if($generalInformation->birthplace!==null) value=" {{ $generalInformation->birthplace }}"
-                                           @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Irani" required>
+                                    <select required id="birthplace"
+                                            name="birthplace"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option selected disabled value=""></option>
+                                        @foreach($countries as $birthplaces)
+                                            <option @if($generalInformation->birthplace==$birthplaces->id) selected
+                                                    @endif value="{{ $birthplaces->id }}">{{$birthplaces->en_short_name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="passport-number"
@@ -156,10 +168,16 @@
                                 <div>
                                     <label for="Country"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                                    <input type="text" id="Country" name="Country"
-                                           @if($generalInformation->country!==null) value=" {{ $generalInformation->country }}"
-                                           @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Iran" required>
+                                    <select required id="Country"
+                                            name="Country"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option selected disabled value=""></option>
+                                        @foreach($countries as $country)
+                                            <option @if($generalInformation->country==$country->id) selected
+                                                    @endif value="{{ $country->id }}">{{$country->en_short_name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="city"
