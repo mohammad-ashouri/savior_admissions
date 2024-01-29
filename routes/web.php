@@ -3,11 +3,10 @@
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\BranchInfo\AcademicYearClassController;
+use App\Http\Controllers\BranchInfo\ApplicationTimingController;
 use App\Http\Controllers\Catalogs\AcademicYearController;
-use App\Http\Controllers\Catalogs\ChangeStatusController;
 use App\Http\Controllers\Catalogs\DocumentTypeController;
 use App\Http\Controllers\Catalogs\EducationTypeController;
-use App\Http\Controllers\Catalogs\EducationYearController;
 use App\Http\Controllers\Catalogs\LevelController;
 use App\Http\Controllers\Catalogs\SchoolController;
 use App\Http\Controllers\DocumentController;
@@ -81,7 +80,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     //Branch Info
     Route::resource('AcademicYearClasses', AcademicYearClassController::class);
     Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
-
+    Route::resource('Applications', ApplicationTimingController::class);
 
     Route::resource('roles', RoleController::class)->middleware('role:Super Admin');
     Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-Principal');
