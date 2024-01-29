@@ -19,7 +19,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('parent_mother_id')->nullable();
             $table->foreign('parent_mother_id')->references('id')->on('users');
             $table->string('guardian');
-            $table->string('releationship')->nullable();
+            $table->unsignedBigInteger('guardian_student_relationship')->nullable();
+            $table->foreign('guardian_student_relationship')->references('id')->on('guardian_student_relationships');
             $table->unsignedBigInteger('current_nationality')->nullable();
             $table->foreign('current_nationality')->references('id')->on('countries');
             $table->string('current_identification_type')->nullable();
