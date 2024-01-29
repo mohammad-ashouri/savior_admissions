@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             FinancialManagerSeeder::class,
             ParentFatherSeeder::class,
             ParentMotherSeeder::class,
+            StudentSeeder::class,
         ]);
     }
 }
