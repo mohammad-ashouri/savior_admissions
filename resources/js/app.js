@@ -187,7 +187,8 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }, success: function (response) {
-                        swalFire('Done', response.success, 'success', 'Ok');
+                        console.log(response);
+                        // swalFire('Done', response.success, 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
                         swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
                     }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogs\CurrentIdentificationType;
+use App\Models\Catalogs\GuardianStudentRelationship;
 use App\Models\Catalogs\School;
+use App\Models\Catalogs\StudentStatus;
 use App\Models\Country;
 use App\Models\GeneralInformation;
 use App\Models\User;
@@ -141,8 +144,14 @@ class UserController extends Controller
         }
         $roles = Role::orderBy('name', 'asc')->pluck('name')->all();
         $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
-        $countries=Country::get();
-        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools','countries'));
+        $countries = Country::get();
+        $parents = Role::where('name', 'Parent(Father)')->orWhere('name', 'Parent(Mother)')->with(['users' => function ($query) {
+            $query->orderBy('family', 'desc');
+        }])->get();
+        $guardianStudentRelationships = GuardianStudentRelationship::get();
+        $currentIdentificationTypes = CurrentIdentificationType::get();
+        $statuses = StudentStatus::orderBy('name', 'asc')->get();
+        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools', 'countries', 'parents', 'guardianStudentRelationships', 'currentIdentificationTypes', 'statuses'));
     }
 
     public function update(Request $request, $id)
@@ -222,6 +231,7 @@ class UserController extends Controller
 
     public function changeStudentInformation(Request $request)
     {
+        return $request->all();
         $user = User::find($request->user_id);
         $studentInformation = [
             'school_id' => $request->school,

@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->foreign('current_nationality')->references('id')->on('countries');
             $table->unsignedBigInteger('current_identification_type')->nullable();
             $table->foreign('current_identification_type')->references('id')->on('current_identification_types');
-            $table->string('current_identification')->nullable();
+            $table->string('current_identification_code')->nullable();
             $table->unsignedBigInteger('status')->nullable();
             $table->foreign('status')->references('id')->on('student_statuses');
             $table->timestamps();

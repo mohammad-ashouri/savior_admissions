@@ -152,7 +152,7 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Passport
                                         number</label>
                                     <input type="text" id="passport-number" name="PassportNumber"
-                                           @if($generalInformation->passport_number!==null) value=" {{ $generalInformation->passport_number }}"
+                                           @if($generalInformation->passport_number!==null) value="{{ $generalInformation->passport_number }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="If not, enter 0" required>
                                 </div>
@@ -161,7 +161,7 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faragir
                                         code</label>
                                     <input type="text" id="faragir-code" name="FaragirCode"
-                                           @if($generalInformation->faragir_code!==null) value=" {{ $generalInformation->faragir_code }}"
+                                           @if($generalInformation->faragir_code!==null) value="{{ $generalInformation->faragir_code }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="If not, enter 0" required>
                                 </div>
@@ -183,7 +183,7 @@
                                     <label for="city"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State/City</label>
                                     <input type="text" id="city" name="city"
-                                           @if($generalInformation->state_city!==null) value=" {{ $generalInformation->state_city }}"
+                                           @if($generalInformation->state_city!==null) value="{{ $generalInformation->state_city }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Qom" required>
                                 </div>
@@ -207,7 +207,7 @@
                                     <label for="address"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
                                     <input type="text" id="address" name="address"
-                                           @if($generalInformation->address!==null) value=" {{ $generalInformation->address }}"
+                                           @if($generalInformation->address!==null) value="{{ $generalInformation->address }}"
                                            @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Qom, moallem st, 4th alley, no 433" required>
@@ -217,7 +217,7 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone
                                         number</label>
                                     <input type="tel" id="phone" name="phone"
-                                           @if($generalInformation->phone!==null) value=" {{ $generalInformation->phone }}"
+                                           @if($generalInformation->phone!==null) value="{{ $generalInformation->phone }}"
                                            @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="For example: +982531234567" required>
@@ -294,7 +294,7 @@
                 @can('change-student-information')
                     <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-                            <h1 class="text-2xl font-medium"> Student information</h1>
+                            <h1 class="text-2xl font-medium"> Student Information</h1>
                         </div>
                         <form id="changeStudentInformation">
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -308,6 +308,121 @@
                                         @foreach($schools as $school)
                                             <option value="{{ $school->id }}"
                                                     @if($user->school_id  == $school->id) selected @endif>{{ $school->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                <div>
+                                    <label for="guardian"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Guardian</label>
+                                    <select id="guardian" name="guardian"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        <option value="" disabled selected>Select guardian...</option>
+                                        @foreach($parents as $parent)
+                                            @foreach($parent->users as $user)
+                                                <option
+                                                    value="{{$user->id}}">{{ $user->id . " - " . $user->name . " " . $user->family }}</option>
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="guardian_student_relationship"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Guardian
+                                        Student Relationship</label>
+                                    <select id="guardian_student_relationship" name="guardian_student_relationship"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        <option value="" disabled selected>Select guardian student relationship...
+                                        </option>
+                                        @foreach($guardianStudentRelationships as $guardianStudentRelationship)
+                                            <option
+                                                value="{{$guardianStudentRelationship->id}}">{{ $guardianStudentRelationship->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="father"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
+                                        Father</label>
+                                    <select id="father" name="father"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        <option value="" disabled selected>Select father...</option>
+                                        @foreach($parents as $parent)
+                                            @foreach($parent->users as $user)
+                                                <option value="{{$user->id}}">{{ $user->id . " - " . $user->name . " " . $user->family }}</option>
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="mother"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
+                                        Mother</label>
+                                    <select id="mother" name="mother"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        <option value="" disabled selected>Select mother...</option>
+                                        @foreach($parents as $parent)
+                                            @foreach($parent->users as $user)
+                                                <option value="{{$user->id}}">{{ $user->id . " - " . $user->name . " " . $user->family }}</option>
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="current_nationality"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current
+                                        Nationality</label>
+                                    <select id="current_nationality" name="current_nationality"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        <option value="" disabled selected>Select current nationality...</option>
+                                        @foreach($countries as $country)
+                                            <option @if($generalInformation->country==$country->id) selected
+                                                    @endif value="{{ $country->id }}">{{$country->en_short_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="current_identification_type"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current
+                                        Identification Type</label>
+                                    <select id="current_identification_type" name="current_identification_type"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        <option value="" disabled selected>Select current identification type...
+                                        </option>
+                                        @foreach($currentIdentificationTypes as $currentIdentificationType)
+                                            <option value="{{ $currentIdentificationType->id }}"
+                                                    @if($user->school_id  == $school->id) selected @endif>{{ $currentIdentificationType->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="current_identification_code"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current
+                                        Identification Code</label>
+                                    <input type="text" id="current_identification_code"
+                                           name="current_identification_code"
+                                           @if($generalInformation->phone!==null) value="{{ $generalInformation->phone }}"
+                                           @endif
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="For example: IRC123456789" required>
+                                </div>
+                                <div>
+                                    <label for="status"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                                    <select id="status" name="status"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        <option value="" disabled selected>Select status...</option>
+                                        @foreach($statuses as $status)
+                                            <option value="{{ $status->id }}"
+                                                    @if($user->school_id  == $school->id) selected @endif>{{ $status->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
