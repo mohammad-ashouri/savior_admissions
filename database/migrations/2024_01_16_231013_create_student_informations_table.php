@@ -18,12 +18,14 @@ return new class extends Migration {
             $table->foreign('parent_father_id')->references('id')->on('users');
             $table->unsignedBigInteger('parent_mother_id')->nullable();
             $table->foreign('parent_mother_id')->references('id')->on('users');
-            $table->string('guardian');
+            $table->unsignedBigInteger('guardian')->nullable();
+            $table->foreign('guardian')->references('id')->on('users');
             $table->unsignedBigInteger('guardian_student_relationship')->nullable();
             $table->foreign('guardian_student_relationship')->references('id')->on('guardian_student_relationships');
             $table->unsignedBigInteger('current_nationality')->nullable();
             $table->foreign('current_nationality')->references('id')->on('countries');
-            $table->string('current_identification_type')->nullable();
+            $table->unsignedBigInteger('current_identification_type')->nullable();
+            $table->foreign('current_identification_type')->references('id')->on('current_identification_types');
             $table->string('current_identification')->nullable();
             $table->unsignedBigInteger('status')->nullable();
             $table->foreign('status')->references('id')->on('student_statuses');
