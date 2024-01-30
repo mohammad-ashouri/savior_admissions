@@ -83,8 +83,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
     Route::resource('Applications', ApplicationTimingController::class);
 
-    Route::resource('roles', RoleController::class)->middleware('role:Super Admin');
-    Route::resource('users', UserController::class)->middleware('can:access-SuperAdmin-and-Principal');
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
     Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-Principal');
     Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-Principal');
     Route::post('users/change_rules', [ProfileController::class, 'changeUserRole']);
