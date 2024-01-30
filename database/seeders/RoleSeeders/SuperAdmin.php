@@ -76,6 +76,11 @@ class SuperAdmin extends Seeder
             'reservation-invoice-add',
             'reservation-invoice-edit',
             'reservation-invoice-search',
+            'application-timing-list',
+            'application-timing-create',
+            'application-timing-edit',
+            'application-timing-delete',
+            'application-timing-search',
         ]);
     }
 }
