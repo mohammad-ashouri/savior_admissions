@@ -8,6 +8,7 @@ use App\Models\Catalogs\School;
 use App\Models\Catalogs\StudentStatus;
 use App\Models\Country;
 use App\Models\GeneralInformation;
+use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
@@ -151,7 +152,11 @@ class UserController extends Controller
         $guardianStudentRelationships = GuardianStudentRelationship::get();
         $currentIdentificationTypes = CurrentIdentificationType::get();
         $statuses = StudentStatus::orderBy('name', 'asc')->get();
-        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools', 'countries', 'parents', 'guardianStudentRelationships', 'currentIdentificationTypes', 'statuses'));
+        $studentInformation = StudentInformation::where('student_id', $id)->first();
+        if (empty($studentInformation)) {
+            $studentInformation = [];
+        }
+        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools', 'countries', 'parents', 'guardianStudentRelationships', 'currentIdentificationTypes', 'statuses', 'studentInformation'));
     }
 
     public function update(Request $request, $id)
@@ -229,20 +234,6 @@ class UserController extends Controller
         return view('users.index', compact('data'));
     }
 
-    public function changeStudentInformation(Request $request)
-    {
-        return $request->all();
-        $user = User::find($request->user_id);
-        $studentInformation = [
-            'school_id' => $request->school,
-        ];
-        $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-        $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
-        $user->additional_information = json_encode($userAdditionalInformation);
-        $user->save();
-        $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
-        return response()->json(['success' => 'Student information saved successfully!'], 200);
-    }
 
     public function changePrincipalInformation(Request $request)
     {

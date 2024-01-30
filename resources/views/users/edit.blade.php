@@ -321,9 +321,11 @@
                                             required>
                                         <option value="" disabled selected>Select guardian...</option>
                                         @foreach($parents as $parent)
-                                            @foreach($parent->users as $user)
+                                            @foreach($parent->users as $guardian)
                                                 <option
-                                                    value="{{$user->id}}">{{ $user->id . " - " . $user->name . " " . $user->family }}</option>
+                                                    @if(!empty($studentInformation) and $studentInformation->guardian==$guardian->id) selected
+                                                    @endif
+                                                    value="{{$guardian->id}}">{{ $guardian->id . " - " . $guardian->name . " " . $guardian->family }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
@@ -339,6 +341,8 @@
                                         </option>
                                         @foreach($guardianStudentRelationships as $guardianStudentRelationship)
                                             <option
+                                                @if(!empty($studentInformation) and $studentInformation->guardian_student_relationship==$guardianStudentRelationship->id) selected
+                                                @endif
                                                 value="{{$guardianStudentRelationship->id}}">{{ $guardianStudentRelationship->name }}</option>
                                         @endforeach
                                     </select>
@@ -352,8 +356,11 @@
                                             required>
                                         <option value="" disabled selected>Select father...</option>
                                         @foreach($parents as $parent)
-                                            @foreach($parent->users as $user)
-                                                <option value="{{$user->id}}">{{ $user->id . " - " . $user->name . " " . $user->family }}</option>
+                                            @foreach($parent->users as $father)
+                                                <option
+                                                    @if(!empty($studentInformation) and $studentInformation->parent_father_id==$father->id) selected
+                                                    @endif
+                                                    value="{{$father->id}}">{{ $father->id . " - " . $father->name . " " . $father->family }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
@@ -367,8 +374,11 @@
                                             required>
                                         <option value="" disabled selected>Select mother...</option>
                                         @foreach($parents as $parent)
-                                            @foreach($parent->users as $user)
-                                                <option value="{{$user->id}}">{{ $user->id . " - " . $user->name . " " . $user->family }}</option>
+                                            @foreach($parent->users as $mother)
+                                                <option
+                                                    @if(!empty($studentInformation) and $studentInformation->parent_mother_id==$mother->id) selected
+                                                    @endif
+                                                    value="{{$mother->id}}">{{ $mother->id . " - " . $mother->name . " " . $mother->family }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
@@ -382,8 +392,9 @@
                                             required>
                                         <option value="" disabled selected>Select current nationality...</option>
                                         @foreach($countries as $country)
-                                            <option @if($generalInformation->country==$country->id) selected
-                                                    @endif value="{{ $country->id }}">{{$country->en_short_name}}</option>
+                                            <option
+                                                @if(!empty($studentInformation) and $studentInformation->current_nationality==$country->id) selected
+                                                @endif value="{{ $country->id }}">{{$country->nationality}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -398,7 +409,7 @@
                                         </option>
                                         @foreach($currentIdentificationTypes as $currentIdentificationType)
                                             <option value="{{ $currentIdentificationType->id }}"
-                                                    @if($user->school_id  == $school->id) selected @endif>{{ $currentIdentificationType->name }}</option>
+                                                    @if(!empty($studentInformation) and $studentInformation->current_identification_type==$currentIdentificationType->id) selected @endif>{{ $currentIdentificationType->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -408,7 +419,7 @@
                                         Identification Code</label>
                                     <input type="text" id="current_identification_code"
                                            name="current_identification_code"
-                                           @if($generalInformation->phone!==null) value="{{ $generalInformation->phone }}"
+                                           @if(!empty($studentInformation) and $studentInformation->current_identification_code) value="{{ $studentInformation->current_identification_code }}"
                                            @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="For example: IRC123456789" required>
@@ -422,7 +433,7 @@
                                         <option value="" disabled selected>Select status...</option>
                                         @foreach($statuses as $status)
                                             <option value="{{ $status->id }}"
-                                                    @if($user->school_id  == $school->id) selected @endif>{{ $status->name }}</option>
+                                                    @if(!empty($studentInformation) and $studentInformation->status==$status->id) selected @endif>{{ $status->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

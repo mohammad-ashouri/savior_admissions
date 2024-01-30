@@ -182,13 +182,12 @@ $(document).ready(function () {
                 var data = form.serialize();
                 $.ajax({
                     type: 'POST',
-                    url: '/users/change_student_information',
+                    url: '/student/change_information',
                     data: data,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     }, success: function (response) {
-                        console.log(response);
-                        // swalFire('Done', response.success, 'success', 'Ok');
+                        swalFire('Done', response.success, 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
                         swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
                     }
