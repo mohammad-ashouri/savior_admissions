@@ -97,6 +97,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'academic-year-class-delete']);
         Permission::create(['name' => 'academic-year-class-search']);
 
+        Permission::create(['name' => 'application-timing-list']);
+        Permission::create(['name' => 'application-timing-create']);
+        Permission::create(['name' => 'application-timing-edit']);
+        Permission::create(['name' => 'application-timing-delete']);
+        Permission::create(['name' => 'application-timing-search']);
+
         //menus access
         Permission::create(['name' => 'catalogs-menu-access']);
         Permission::create(['name' => 'branch-info-menu-access']);

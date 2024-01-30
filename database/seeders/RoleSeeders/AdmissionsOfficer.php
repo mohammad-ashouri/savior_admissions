@@ -25,6 +25,11 @@ class AdmissionsOfficer extends Seeder
             'academic-year-class-edit',
             'academic-year-class-delete',
             'academic-year-class-search',
+            'application-timing-list',
+            'application-timing-create',
+            'application-timing-edit',
+            'application-timing-delete',
+            'application-timing-search',
         ]);
     }
 }
