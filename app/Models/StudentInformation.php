@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Catalogs\CurrentIdentificationType;
+use App\Models\Catalogs\GuardianStudentRelationship;
 use App\Models\Catalogs\StudentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,10 +19,10 @@ class StudentInformation extends Model
         'parent_father_id',
         'parent_mother_id',
         'guardian',
-        'releationship',
+        'guardian_student_relationship',
         'current_nationality',
         'current_identification_type',
-        'current_identification',
+        'current_identification_code',
         'status',
     ];
     protected $hidden = [
@@ -43,9 +45,24 @@ class StudentInformation extends Model
         return $this->belongsTo(User::class, 'parent_mother_id', 'id');
     }
 
+    public function guradianInfo()
+    {
+        return $this->belongsTo(User::class, 'guardian', 'id');
+    }
+
+    public function guardianRelationshipInfo()
+    {
+        return $this->belongsTo(GuardianStudentRelationship::class, 'guardian_student_relationship', 'id');
+    }
+
     public function nationalityInfo()
     {
         return $this->belongsTo(Country::class, 'current_nationality', 'id');
+    }
+
+    public function identificationTypeInfo()
+    {
+        return $this->belongsTo(CurrentIdentificationType::class, 'current_identification_type', 'id');
     }
 
     public function statusInfo()
