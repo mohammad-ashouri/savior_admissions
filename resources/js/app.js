@@ -497,6 +497,24 @@ $(document).ready(function () {
         });
 
     }
+    else if (fullPath.includes('Applications')) {
+        pageTitle = 'Application Timings Manager';
+        $('#new-academic-year').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your academic year will be added permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-academic-year').off('submit').submit();
+                }
+            });
+        });
+    }
     else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';
     }
