@@ -211,6 +211,28 @@ $(document).ready(function () {
                     }
                 });
             });
+
+            $('#student-extra-information-table').on('click', '.delete-row', function() {
+                $(this).closest('tr').remove();
+            });
+
+            $('.add-row').on('click', function() {
+                var newRow = '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">' +
+                    '<td class="p-4">' +
+                    '<input type="text" name="title[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>' +
+                    '</td>' +
+                    '<td class="p-4">' +
+                    '<input type="text" name="description[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>' +
+                    '</td>' +
+                    '<td class="p-4 text-center">' +
+                    '<button type="button" class="delete-row text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">' +
+                    '<i class="las la-trash" style="font-size: 24px"></i>' +
+                    '</button>' +
+                    '</td>' +
+                    '</tr>';
+
+                $('tbody').append(newRow);
+            });
         }
 
         $('#search-user').submit(function (e) {

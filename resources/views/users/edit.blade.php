@@ -438,12 +438,101 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
+                                <h1 class="text-xl font-medium"> Extras</h1>
+                            </div>
+                            <div class="grid gap-6 mb-6">
+                                <div>
+                                    <table id="student-extra-information-table"
+                                           class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                        <thead
+                                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th scope="col" class="p-4">
+                                                <div class=" items-center text-center">
+                                                    Name
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="p-4">
+                                                <div class=" items-center text-center">
+                                                    Description
+                                                </div>
+                                            </th>
+                                            <th scope="col" class="p-4">
+                                                <div class=" items-center text-center">
+                                                    Action
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(!empty($studentInformation->extraInformations))
+                                            @foreach($studentInformation->extraInformations as $extras)
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="p-4">
+                                                        <input type="text" id="title" name="title[]"
+                                                               value="{{$extras->name}}"
+                                                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                               required>
+                                                    </td>
+                                                    <td class="p-4">
+                                                        <input type="text" id="description" name="description[]"
+                                                               value="{{$extras->description}}"
+                                                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                               required>
+                                                    </td>
+                                                    <td class="p-4 text-center">
+                                                        <button type="button"
+                                                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 delete-row">
+                                                            <i class="las la-trash" style="font-size: 24px"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <td class="p-4">
+                                                    <input type="text" id="title" name="title[]"
+                                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                           required>
+                                                </td>
+                                                <td class="p-4">
+                                                    <input type="text" id="description" name="description[]"
+                                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                           required>
+                                                </td>
+                                                <td class="p-4 text-center">
+                                                    <button type="button"
+                                                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 delete-row">
+                                                        <i class="las la-trash" style="font-size: 24px"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center">
+                                        <button type="button"
+                                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 add-row">
+                                            <i class="las la-plus-circle" style="font-size: 24px"></i>
+                                            Add extras
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                             <input type="hidden" value="{{ $user->id }}" name="user_id">
-                            <button type="submit"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Save all
-                            </button>
+                            <div class="">
+                                <button type="submit"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Save all
+                                </button>
+                            </div>
                         </form>
+                    </div>
+                    <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
+
                     </div>
                 @endcan
             @endif

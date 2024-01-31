@@ -70,5 +70,9 @@ class StudentInformation extends Model
         return $this->belongsTo(StudentStatus::class, 'status', 'id');
     }
 
+    public function extraInformations()
+    {
+        return $this->hasMany(StudentExtraInformation::class,'student_informations_id');
+    }
 
 }

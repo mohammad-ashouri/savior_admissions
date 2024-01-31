@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StudentExtraInformation;
 use App\Models\StudentInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,6 +33,12 @@ class StudentController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator], 422);
         }
+        $extraInformationTitles = $request->title;
+        $extraInformationDescriptions = $request->description;
+        if (count($extraInformationTitles) != count($extraInformationDescriptions)) {
+            return response()->json(['error' => 'Extras count values is not same'], 422);
+        }
+
         $user = User::find($request->user_id);
 
         $studentInformation = [
@@ -57,6 +64,16 @@ class StudentController extends Controller
         $studentInformation->current_identification_code = $request->current_identification_code;
         $studentInformation->status = $request->status;
         $studentInformation->save();
+
+        StudentExtraInformation::where('student_informations_id', $studentInformation->id)->delete();
+
+        foreach ($extraInformationTitles as $index => $titles) {
+            $studentExtraInformation = new StudentExtraInformation();
+            $studentExtraInformation->student_informations_id = $studentInformation->id;
+            $studentExtraInformation->name = $titles;
+            $studentExtraInformation->description = $extraInformationDescriptions[$index];
+            $studentExtraInformation->save();
+        }
 
         $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
         return response()->json(['success' => 'Student information saved successfully!'], 200);
