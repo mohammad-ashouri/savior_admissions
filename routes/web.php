@@ -82,6 +82,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('AcademicYearClasses', AcademicYearClassController::class);
     Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
     Route::resource('Applications', ApplicationTimingController::class);
+    Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

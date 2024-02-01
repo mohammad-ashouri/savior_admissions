@@ -4,7 +4,7 @@
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium"> New Academic Year Class</h1>
+                <h1 class="text-2xl font-medium"> New Application Timing</h1>
             </div>
             @if (count($errors) > 0)
                 <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
@@ -40,17 +40,9 @@
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <form id="new-academic-year" method="post" action="{{route('AcademicYearClasses.store')}}">
+                        <form id="new-application-timing" method="post" action="{{route('Applications.store')}}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
-                                <div>
-                                    <label for="name"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Name</label>
-                                    <input type="text" id="name" value="{{ old('name') }}" name="name"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter name" required>
-                                </div>
                                 <div>
                                     <label for="academic_year"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
@@ -60,49 +52,106 @@
                                             title="Select academic year" required>
                                         <option selected disabled value="">Select academic year</option>
                                         @foreach($academicYears as $academicYear)
-                                            <option @if(old('academic_year')==$academicYear->id) selected @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                            <option @if(old('academic_year')==$academicYear->id) selected
+                                                    @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="level"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Level</label>
-                                        <select id="level" name="level"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                required>
-                                            <option selected disabled value="">Select level</option>
-                                        </select>
+                                    <label for="student_application_type"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        Student Application Type</label>
+                                    <select id="student_application_type" name="student_application_type"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            title="Select student application type" required>
+                                        <option selected disabled value="">Select student application type</option>
+                                        <option @if(old('student_application_type')=='All') selected @endif value="All">
+                                            All
+                                        </option>
+                                        <option @if(old('student_application_type')=='Presently Studying') selected
+                                                @endif value="Presently Studying">Presently Studying
+                                        </option>
+                                    </select>
                                 </div>
                                 <div>
-                                    <label for="education_type"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Education Type</label>
-                                        <select id="education_type" name="education_type"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                required>
-                                            <option selected disabled value="">Select education type</option>
-                                            @foreach($educationTypes as $educationType)
-                                                <option @if(old('education_type')==$educationType->id) selected @endif value="{{ $educationType->id }}">{{ $educationType->name }}</option>
-                                            @endforeach
-                                        </select>
-                                </div>
-                                <div>
-                                    <label for="capacity"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Capacity</label>
-                                    <input type="number" id="capacity" value="{{ old('capacity') }}" name="capacity" max="60" min="1"
+                                    <label for="start_date"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        App Begins At</label>
+                                    <input type="date" id="start_date" value="{{ old('start_date') }}" name="start_date"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter capacity" required>
+                                           title="Select start date" required>
                                 </div>
                                 <div>
-                                    <label for="education_gender"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Education Gender</label>
-                                        <select id="education_gender" name="education_gender"
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                required>
-                                            <option selected disabled value="">Select education gender</option>
-                                            @foreach($educationGenders as $educationGender)
-                                                <option @if(old('education_gender')==$educationGender->id) selected @endif value="{{ $educationGender->id }}">{{ $educationGender->name }}</option>
-                                            @endforeach
-                                        </select>
+                                    <label for="start_time"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        App Start Time</label>
+                                    <input type="time" id="start_time" value="{{ old('start_time') }}" name="start_time"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           title="Select start time" required>
+                                </div>
+                                <div>
+                                    <label for="end_date"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        App Ends At</label>
+                                    <input type="date" id="end_date" value="{{ old('end_date') }}" name="end_date"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           title="Select end date" required>
+                                </div>
+                                <div>
+                                    <label for="end_time"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        App End Time</label>
+                                    <input type="time" id="end_time" value="{{ old('end_time') }}" name="end_time"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           title="Select end time" required>
+                                </div>
+                                <div>
+                                    <label for="interview_time"
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                        Interview Time</label>
+                                    <div class="flex justify-between">
+                                        <input type="text" id="interview_time" name="interview_time" value="{{ old('interview_time') }}" required
+                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <span
+                                            class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                            Minutes
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="delay_between_reserve"
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                        App Delay Between Reserve</label>
+                                    <div class="flex justify-between">
+                                        <input type="text" id="delay_between_reserve" name="delay_between_reserve" value="{{ old('delay_between_reserve') }}" required
+                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <span
+                                            class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                            Minutes
+                                        </span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="interviewers"
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                        Interviewers</label>
+                                    <select id="interviewers" name="interviewers[]" multiple="multiple"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="interview_fee"
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                        Interview Fee</label>
+                                    <div class="flex justify-between">
+                                        <input type="number" id="interview_fee" name="interview_fee" value="{{ old('interview_fee') }}" required min="0"
+                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <span
+                                            class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                            Rials
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <button type="submit"

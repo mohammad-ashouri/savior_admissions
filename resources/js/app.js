@@ -521,18 +521,26 @@ $(document).ready(function () {
     }
     else if (fullPath.includes('Applications')) {
         pageTitle = 'Application Timings Manager';
-        $('#new-academic-year').submit(function (e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Your academic year will be added permanently!',
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: 'No',
-                confirmButtonText: 'Yes',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#new-academic-year').off('submit').submit();
+        $('#academic_year').change(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/GetInterviewersForApplications',
+                data: {
+                    academic_year:$(this).val()
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }, success: function (response) {
+                    var selectInterviewer = $('#interviewers');
+                    selectInterviewer.empty();
+
+                    selectInterviewer.append('<option selected disabled value="">Select interviewers</option>');
+
+                    $.each(response, function (index, Interviewer) {
+                        selectInterviewer.append('<option value="' + Interviewer.id + '">' + Interviewer.name + ' ' + Interviewer.family + '</option>');
+                    });
+                }, error: function (xhr, textStatus, errorThrown) {
+                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
                 }
             });
         });
