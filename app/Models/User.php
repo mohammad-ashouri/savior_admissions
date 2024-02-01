@@ -40,6 +40,7 @@ class User extends Authenticatable
         'remember_token',
         'created_at',
         'updated_at',
+        'deleted_at',
         'remember_token',
         'status',
         'email_verified_at'
