@@ -46,7 +46,7 @@ class AcademicYearController extends Controller
             'name' => 'required|unique:academic_years,name',
             'school' => 'required|exists:schools,id',
             'start_date' => 'required|date',
-            'finish_date' => 'required|after_or_equal:start_date',
+            'end_date' => 'required|after_or_equal:start_date',
             'Principal' => 'required',
             'Admissions_Officer' => 'required',
             'Financial_Manager' => 'required',
@@ -147,7 +147,7 @@ class AcademicYearController extends Controller
             'name' => $request->name,
             'school_id' => $request->school,
             'start_date' => $request->start_date,
-            'finish_date' => $request->finish_date,
+            'end_date' => $request->end_date,
             'levels' => json_encode($request->levels, true),
             'employees' => json_encode($employeesData, true),
         ]);
@@ -170,7 +170,7 @@ class AcademicYearController extends Controller
             'name' => 'required',
             'school' => 'required|exists:schools,id',
             'start_date' => 'required|date',
-            'finish_date' => 'required|after_or_equal:start_date',
+            'end_date' => 'required|after_or_equal:start_date',
             'status' => 'required|boolean',
         ]);
 

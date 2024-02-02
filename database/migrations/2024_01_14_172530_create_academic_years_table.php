@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('school_id');
             $table->foreign('school_id')->references('id')->on('schools');
             $table->date('start_date');
-            $table->date('finish_date');
+            $table->date('end_date');
             $table->json('levels');
             $table->json('employees');
             $table->boolean('status')->default(1);

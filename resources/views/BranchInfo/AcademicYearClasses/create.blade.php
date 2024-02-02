@@ -21,18 +21,6 @@
                             @foreach ($errors->all() as $error)
                                 <p class="font-bold">{{ $error }}</p>
                             @endforeach
-                            @error('name')
-                            <p class="font-bold">{{ $message }}</p>
-                            @enderror
-                            @error('school')
-                            <p class="font-bold">{{ $message }}</p>
-                            @enderror
-                            @error('start_date')
-                            <p class="font-bold">{{ $message }}</p>
-                            @enderror
-                            @error('finish_date')
-                            <p class="font-bold">{{ $message }}</p>
-                            @enderror
                         </div>
                     </div>
                 </div>

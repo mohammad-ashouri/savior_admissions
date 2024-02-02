@@ -17,7 +17,7 @@ class AcademicYear extends Model
         'name',
         'school_id',
         'start_date',
-        'finish_date',
+        'end_date',
         'levels',
         'employees',
     ];
