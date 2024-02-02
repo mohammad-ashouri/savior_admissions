@@ -36,5 +36,8 @@ class ApplicationTiming extends Model
         return $this->belongsTo(AcademicYear::class, 'academic_year', 'id');
     }
 
-
+    public function interviews()
+    {
+        return $this->hasMany(Interview::class,'application_timing_id');
+    }
 }
