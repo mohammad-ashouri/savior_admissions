@@ -74,6 +74,64 @@ class ApplicationTimingController extends Controller
         return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
     }
 
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'academic_year' => 'required|exists:academic_years,id',
+            'student_application_type' => 'required|string|in:All,Presently Studying',
+            'start_date' => 'required|date',
+            'start_time' => 'required|date_format:H:i',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'interview_time' => 'required|integer|min:1',
+            'delay_between_reserve' => 'required|integer|min:1',
+            'interviewers' => 'required|exists:users,id',
+            'interview_fee' => 'required|min:0',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $me = User::find(session('id'));
+        $academicYears = [];
+        if ($me->hasRole('Super Admin')) {
+            $academicYears = AcademicYear::where('status', 1)->get();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
+                $principalAccess = explode("|", $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+                if ($academicYears->count() == 0) {
+                    $academicYears = [];
+                }
+            } else {
+                $academicYears = [];
+            }
+        }
+
+        if (!empty($academicYears)){
+            $applicationTiming=new ApplicationTiming();
+            $applicationTiming->academic_year=$request->academic_year;
+            $applicationTiming->students_application_type=$request->student_application_type;
+            $applicationTiming->start_date=$request->start_date;
+            $applicationTiming->start_time=$request->start_time;
+            $applicationTiming->end_date=$request->end_date;
+            $applicationTiming->end_time=$request->end_time;
+            $applicationTiming->interview_time=$request->interview_time;
+            $applicationTiming->delay_between_reserve=$request->delay_between_reserve;
+            $applicationTiming->interviewers=json_encode($request->interviewers,true);
+            $applicationTiming->fee=$request->interview_fee;
+            $applicationTiming->save();
+        }
+
+
+        return redirect()->route('Applications.index')
+            ->with('success', 'Application timing created successfully');
+    }
+
     public function interviewers(Request $request)
     {
         $me = User::find(session('id'));

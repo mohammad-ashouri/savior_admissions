@@ -191,4 +191,35 @@ class AcademicYearClassController extends Controller
 
         return $levelInfo;
     }
+
+    public function academicYearStarttimeAndEndtime(Request $request)
+    {
+        $me = User::find(session('id'));
+        $validator = Validator::make($request->all(), [
+            'academic_year' => 'required|exists:academic_years,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Error on choosing academic year!'], 422);
+        }
+
+        $academicYear = $request->academic_year;
+
+        if ($me->hasRole('Super Admin')) {
+            $academicYear = AcademicYear::where('status', 1)->where('id', $academicYear)->select('start_date','end_date')->first();
+        } else {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
+                $principalAccess = explode("|", $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                $academicYear = AcademicYear::where('status', 1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->select('start_date','end_date')->first();
+                if (empty($academicYear)) {
+                    $academicYear = [];
+                }
+            } else {
+                $academicYear = [];
+            }
+        }
+        return $academicYear;
+    }
 }

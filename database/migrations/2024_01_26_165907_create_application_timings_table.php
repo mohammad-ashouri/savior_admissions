@@ -23,7 +23,8 @@ return new class extends Migration
             $table->integer('interview_time');
             $table->integer('delay_between_reserve');
             $table->json('interviewers');
-            $table->float('fee');
+            $table->integer('fee');
+            $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

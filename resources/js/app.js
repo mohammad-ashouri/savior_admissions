@@ -12,6 +12,17 @@ function swalFire(title = null, text, icon, confirmButtonText) {
     });
 }
 
+function resetAllInputValues(){
+    $('input:not([name="_token"])').each(function() {
+        $(this).val(null);
+    });
+}
+function resetAllSelectValues(){
+    $('select').each(function() {
+        $(this).val(null);
+    });
+}
+
 function resetFields() {
     const inputs = document.querySelectorAll('input');
     inputs.forEach(input => input.value = "");
@@ -115,6 +126,7 @@ themeToggleBtn.addEventListener('click', function () {
 
 $(document).ready(function () {
     let fullPath = window.location.pathname;
+    let csrf_token='meta[name="csrf-token"]';
     let pageTitle = null;
     if (fullPath.includes('users')) {
         pageTitle = 'User Management';
@@ -129,7 +141,7 @@ $(document).ready(function () {
                     url: '/users/change_user_general_information',
                     data: data,
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
                         swalFire('Done', response.success, 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
@@ -147,7 +159,7 @@ $(document).ready(function () {
                     url: '/users/change_password',
                     data: data,
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
                         New_password.value = '';
                         Confirm_password.value = '';
@@ -167,7 +179,7 @@ $(document).ready(function () {
                     url: '/users/change_rules',
                     data: data,
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
                         swalFire('Done', response.success, 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
@@ -185,7 +197,7 @@ $(document).ready(function () {
                     url: '/student/change_information',
                     data: data,
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
                         swalFire('Done', response.success, 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
@@ -203,7 +215,7 @@ $(document).ready(function () {
                     url: '/users/change_school_admin_information',
                     data: data,
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
                         swalFire('Done', response.success, 'success', 'Ok');
                     }, error: function (xhr, textStatus, errorThrown) {
@@ -299,7 +311,7 @@ $(document).ready(function () {
                     academic_year:$(this).val()
                 },
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                 }, success: function (response) {
                     var selectLevel = $('#level');
                     selectLevel.empty();
@@ -340,7 +352,7 @@ $(document).ready(function () {
                         contentType: false,
                         processData: false,
                         headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                         }, success: function (response) {
                             location.reload();
                         }, error: function (xhr, textStatus, errorThrown) {
@@ -373,7 +385,7 @@ $(document).ready(function () {
                         contentType: false,
                         processData: false,
                         headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                         }, success: function (response) {
                             location.reload();
                         }, error: function (xhr, textStatus, errorThrown) {
@@ -521,6 +533,10 @@ $(document).ready(function () {
     }
     else if (fullPath.includes('Applications')) {
         pageTitle = 'Application Timings Manager';
+        // resetAllInputValues();
+        resetAllSelectValues();
+
+        //Set interviewers selection
         $('#academic_year').change(function () {
             $.ajax({
                 type: 'GET',
@@ -529,18 +545,51 @@ $(document).ready(function () {
                     academic_year:$(this).val()
                 },
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                 }, success: function (response) {
                     var selectInterviewer = $('#interviewers');
                     selectInterviewer.empty();
-
-                    selectInterviewer.append('<option selected disabled value="">Select interviewers</option>');
-
+                    resetAllInputValues();
                     $.each(response, function (index, Interviewer) {
                         selectInterviewer.append('<option value="' + Interviewer.id + '">' + Interviewer.name + ' ' + Interviewer.family + '</option>');
                     });
                 }, error: function (xhr, textStatus, errorThrown) {
                     swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                }
+            });
+
+            //Set app start and end date min and max attributes
+            $.ajax({
+                type: 'GET',
+                url: '/GetAcademicYearStarttimeAndEndtime',
+                data: {
+                    academic_year:$(this).val()
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                }, success: function (response) {
+                    $("#start_date, #end_date").prop({
+                        "min": response.start_date,
+                        "max": response.end_date
+                    });
+                    }, error: function (xhr, textStatus, errorThrown) {
+                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                }
+            });
+        });
+
+        $('#new-application-timing').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Application timing created by you can no longer be deleted or edited!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-application-timing').off('submit').submit();
                 }
             });
         });
@@ -567,7 +616,7 @@ $(document).ready(function () {
                         url: '/password/change',
                         data: data,
                         headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                         }, success: function (response) {
                             Current_password.value = '';
                             New_password.value = '';
