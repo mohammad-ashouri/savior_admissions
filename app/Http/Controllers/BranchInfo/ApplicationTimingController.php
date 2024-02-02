@@ -127,11 +127,32 @@ class ApplicationTimingController extends Controller
             $applicationTiming->save();
         }
 
-
         return redirect()->route('Applications.index')
             ->with('success', 'Application timing created successfully');
     }
 
+    public function show($id)
+    {
+        $me = User::find(session('id'));
+        $applicationTiming = [];
+        if ($me->hasRole('Super Admin')) {
+            $applicationTiming = ApplicationTiming::find($id);
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
+                $principalAccess = explode("|", $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                $applicationTiming = ApplicationTiming::
+                    with('academicYearInfo')
+                    ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
+                    ->whereIn('academic_years.school_id', $filteredArray)
+                    ->where('application_timings.id',$id)
+                    ->get();
+            }
+        }
+        return view('BranchInfo.ApplicationTimings.show', compact('applicationTiming'));
+    }
     public function interviewers(Request $request)
     {
         $me = User::find(session('id'));

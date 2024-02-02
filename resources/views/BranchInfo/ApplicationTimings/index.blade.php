@@ -158,26 +158,34 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $applicationTiming->fee }}</div>
+                                                class="text-base font-semibold">{{ $applicationTiming->fee . ' Rials' }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
                                         @can('application-timing-edit')
-                                            <a href="{{ route('Applications.edit',$applicationTiming->id) }}"
+                                            <a href="{{ route('Applications.show',$applicationTiming->id) }}"
                                                type="button"
                                                class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                                                    </path>
-                                                    <path fill-rule="evenodd"
-                                                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                          clip-rule="evenodd"></path>
-                                                </svg>
-                                                Edit
+                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                Details
                                             </a>
+                                        @endcan
+                                        @can('application-timing-show')
+                                            {{--                                            <a href="{{ route('Applications.edit',$applicationTiming->id) }}"--}}
+                                            {{--                                               type="button"--}}
+                                            {{--                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">--}}
+                                            {{--                                                <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"--}}
+                                            {{--                                                     xmlns="http://www.w3.org/2000/svg">--}}
+                                            {{--                                                    <path--}}
+                                            {{--                                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">--}}
+                                            {{--                                                    </path>--}}
+                                            {{--                                                    <path fill-rule="evenodd"--}}
+                                            {{--                                                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"--}}
+                                            {{--                                                          clip-rule="evenodd"></path>--}}
+                                            {{--                                                </svg>--}}
+                                            {{--                                                Edit--}}
+                                            {{--                                            </a>--}}
                                         @endcan
                                     </td>
                                 </tr>
