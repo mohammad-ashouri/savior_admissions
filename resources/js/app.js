@@ -593,6 +593,22 @@ $(document).ready(function () {
                 }
             });
         });
+
+        $('.RemoveInterview').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Interview selected by you can no longer be deleted!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit').submit();
+                }
+            });
+        });
     }
     else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\BranchInfo\AcademicYearClassController;
 use App\Http\Controllers\BranchInfo\ApplicationTimingController;
+use App\Http\Controllers\BranchInfo\InterviewController;
 use App\Http\Controllers\Catalogs\AcademicYearController;
 use App\Http\Controllers\Catalogs\DocumentTypeController;
 use App\Http\Controllers\Catalogs\EducationTypeController;
@@ -84,6 +85,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/GetAcademicYearStarttimeAndEndtime', [AcademicYearClassController::class, 'academicYearStarttimeAndEndtime']);
     Route::resource('Applications', ApplicationTimingController::class);
     Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
+    Route::resource('Interviews', InterviewController::class);
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
