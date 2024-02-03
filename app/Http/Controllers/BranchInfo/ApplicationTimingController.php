@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\BranchInfo;
 
 use App\Http\Controllers\Controller;
-use App\Models\Branch\AcademicYearClass;
 use App\Models\Branch\ApplicationTiming;
+use App\Models\Branch\Interview;
 use App\Models\Catalogs\AcademicYear;
-use App\Models\Catalogs\EducationType;
-use App\Models\Catalogs\Level;
-use App\Models\Gender;
 use App\Models\User;
 use App\Models\UserAccessInformation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ApplicationTimingController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:application-timing-list', ['only' => ['index']]);
         $this->middleware('permission:application-timing-create', ['only' => ['create', 'store']]);
@@ -34,11 +32,11 @@ class ApplicationTimingController extends Controller
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
-        } elseif (!$me->hasRole('Super Admin')) {
+        } elseif (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             if ($myAllAccesses != null) {
-                $principalAccess = explode("|", $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $principalAccess = explode('|', $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
                 $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
                 $applicationTimings = ApplicationTiming::join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                     ->whereIn('academic_years.school_id', $filteredArray)
@@ -48,6 +46,7 @@ class ApplicationTimingController extends Controller
                 }
             }
         }
+
         return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
     }
 
@@ -60,8 +59,8 @@ class ApplicationTimingController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode("|", $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $principalAccess = explode('|', $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
                 $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
                 $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
                 if ($academicYears->count() == 0) {
@@ -71,6 +70,7 @@ class ApplicationTimingController extends Controller
                 $academicYears = [];
             }
         }
+
         return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
     }
 
@@ -100,8 +100,8 @@ class ApplicationTimingController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode("|", $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $principalAccess = explode('|', $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
                 $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
                 $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
                 if ($academicYears->count() == 0) {
@@ -112,23 +112,68 @@ class ApplicationTimingController extends Controller
             }
         }
 
-        if (!empty($academicYears)){
-            $applicationTiming=new ApplicationTiming();
-            $applicationTiming->academic_year=$request->academic_year;
-            $applicationTiming->students_application_type=$request->student_application_type;
-            $applicationTiming->start_date=$request->start_date;
-            $applicationTiming->start_time=$request->start_time;
-            $applicationTiming->end_date=$request->end_date;
-            $applicationTiming->end_time=$request->end_time;
-            $applicationTiming->interview_time=$request->interview_time;
-            $applicationTiming->delay_between_reserve=$request->delay_between_reserve;
-            $applicationTiming->interviewers=json_encode($request->interviewers,true);
-            $applicationTiming->fee=$request->interview_fee;
-            $applicationTiming->save();
+        if (! empty($academicYears)) {
+            $applicationTiming = new ApplicationTiming();
+            $applicationTiming->academic_year = $request->academic_year;
+            $applicationTiming->students_application_type = $request->student_application_type;
+            $applicationTiming->start_date = $request->start_date;
+            $applicationTiming->start_time = $request->start_time;
+            $applicationTiming->end_date = $request->end_date;
+            $applicationTiming->end_time = $request->end_time;
+            $applicationTiming->interview_time = $request->interview_time;
+            $applicationTiming->delay_between_reserve = $request->delay_between_reserve;
+            $applicationTiming->interviewers = json_encode($request->interviewers, true);
+            $applicationTiming->fee = $request->interview_fee;
+
+            if ($applicationTiming->save()) {
+                $startDate = Carbon::parse($request->start_date);
+                $endDate = Carbon::parse($request->end_date);
+                $daysBetween = [];
+                $currentDate = clone $startDate;
+
+                while ($currentDate <= $endDate) {
+                    $daysBetween[] = $currentDate->format('Y-m-d');
+                    $currentDate->addDay();
+                }
+
+                foreach ($daysBetween as $day) {
+                    foreach ($request->interviewers as $interviewer) {
+                        $duration = $request->interview_time;
+                        $breakTime = $request->delay_between_reserve;
+                        $startTime = Carbon::createFromFormat('H:i', $request->start_time);
+                        $endTime = Carbon::createFromFormat('H:i', $request->end_time);
+                        $totalSessions = floor($startTime->diffInMinutes($endTime) / ($duration + $breakTime));
+                        $currentDateTime = $startTime;
+
+                        for ($i = 1; $i <= $totalSessions; $i++) {
+                            $interview = new Interview();
+                            $interview->application_timing_id = $applicationTiming->id;
+                            $interview->date = $day;
+                            $start_from = $currentDateTime->format('H:i');
+                            $interview->start_from = $start_from;
+                            $currentDateTime->addMinutes($duration);
+                            $ends_to = $currentDateTime->format('H:i');
+                            $interview->ends_to = $ends_to;
+                            $interview->interviewer = $interviewer;
+                            $currentDateTime->addMinutes($breakTime);
+                            $interview->save();
+                        }
+                    }
+                }
+            } else {
+                return redirect()->route('Applications.create')
+                    ->with('error', 'Creating application timing failed!');
+
+            }
+        } else {
+            return redirect()->route('Applications.create')
+                ->with('error', 'Creating application timing failed!');
+
         }
 
         return redirect()->route('Applications.index')
             ->with('success', 'Application timing created successfully');
+
     }
 
     public function show($id)
@@ -140,20 +185,21 @@ class ApplicationTimingController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode("|", $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $principalAccess = explode('|', $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
                 $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $applicationTiming = ApplicationTiming::
-                    with('academicYearInfo')
+                $applicationTiming = ApplicationTiming::with('academicYearInfo')
                     ->with('interviews')
                     ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                     ->whereIn('academic_years.school_id', $filteredArray)
-                    ->where('application_timings.id',$id)
+                    ->where('application_timings.id', $id)
                     ->first();
             }
         }
+
         return view('BranchInfo.ApplicationTimings.show', compact('applicationTiming'));
     }
+
     public function interviewers(Request $request)
     {
         $me = User::find(session('id'));
@@ -172,8 +218,8 @@ class ApplicationTimingController extends Controller
         } else {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode("|", $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
+                $principalAccess = explode('|', $myAllAccesses->principal);
+                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
                 $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
                 $academicYearInterviewers = AcademicYear::where('status', 1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
                 if (empty($academicYearInterviewers)) {
@@ -187,6 +233,7 @@ class ApplicationTimingController extends Controller
                 $interviewers = [];
             }
         }
+
         return $interviewers;
     }
 }
