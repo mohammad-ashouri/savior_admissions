@@ -594,6 +594,38 @@ $(document).ready(function () {
             });
         });
 
+        $('.RemoveReservation').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'The interview selected by you will be changed to unreserved!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit').submit();
+                }
+            });
+        });
+
+        $('.ChangeInterviewStatus').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your interview status will change!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit').submit();
+                }
+            });
+        });
+
         $('.RemoveInterview').submit(function (e) {
             e.preventDefault();
             Swal.fire({
