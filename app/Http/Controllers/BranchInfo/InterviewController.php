@@ -71,11 +71,7 @@ class InterviewController extends Controller
         }
 
         $removeInterviewReserve = Interview::find($id);
-        if ($removeInterviewReserve->reserved == 0) {
-            $removeInterviewReserve->reserved = 1;
-        } else {
-            $removeInterviewReserve->reserved = 0;
-        }
+        $removeInterviewReserve->reserved = 0;
 
         if (! $removeInterviewReserve->save()) {
             return redirect()->back()

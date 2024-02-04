@@ -226,17 +226,20 @@
                                     <th scope="row"
                                         class="px-2 py-2 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex justify-center space-x-2">
-                                            <div
-                                                class="text-base font-semibold">
-                                                <form class="RemoveReservation" method="post"
-                                                      action="/Interviews/RemoveFromReserve/{{ $interview->id }}">
-                                                    @csrf
-                                                    <button type="submit" title="Remove From Reservation"
-                                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
-                                                        <i class="las la-calendar-times" style="font-size: 22px"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
+                                            @if($interview->reserved==1)
+                                                <div
+                                                    class="text-base font-semibold">
+                                                    <form class="RemoveReservation" method="post"
+                                                          action="/Interviews/RemoveFromReserve/{{ $interview->id }}">
+                                                        @csrf
+                                                        <button type="submit" title="Remove From Reservation"
+                                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
+                                                            <i class="las la-calendar-times"
+                                                               style="font-size: 22px"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @endif
                                             <div
                                                 class="text-base font-semibold">
                                                 <form class="ChangeInterviewStatus" method="post"
