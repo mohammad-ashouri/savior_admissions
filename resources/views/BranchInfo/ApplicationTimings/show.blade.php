@@ -224,18 +224,42 @@
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
-                                            <form class="RemoveInterview" method="post"
-                                                  action="/Interviews/{{ $interview->id }}">
-                                                @csrf
-                                                <input name="_method" type="hidden" value="DELETE">
-                                                <button type="submit"
-                                                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-3 py-2.5 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
-                                                    <i class="las la-trash" style="font-size: 22px"></i>
-                                                </button>
-                                            </form>
+                                        class="px-2 py-2 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="flex justify-center space-x-2">
+                                            <div
+                                                class="text-base font-semibold">
+                                                <form class="RemoveReservation" method="post"
+                                                      action="/Interviews/RemoveFromReserve/{{ $interview->id }}">
+                                                    @csrf
+                                                    <button type="submit" title="Remove From Reservation"
+                                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
+                                                        <i class="las la-calendar-times" style="font-size: 22px"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div
+                                                class="text-base font-semibold">
+                                                <form class="ChangeInterviewStatus" method="post"
+                                                      action="/Interviews/ChangeInterviewStatus/{{ $interview->id }}">
+                                                    @csrf
+                                                    <button type="submit" title="Change Status Of Interview"
+                                                            class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800 ">
+                                                        <i class="las la-low-vision" style="font-size: 22px"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div
+                                                class="text-base font-semibold">
+                                                <form class="RemoveInterview" method="post"
+                                                      action="/Interviews/{{ $interview->id }}">
+                                                    @csrf
+                                                    <input name="_method" type="hidden" value="DELETE">
+                                                    <button type="submit" title="Remove Interview"
+                                                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
+                                                        <i class="las la-trash" style="font-size: 22px"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </th>
                                 </tr>

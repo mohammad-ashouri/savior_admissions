@@ -86,6 +86,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('Applications', ApplicationTimingController::class);
     Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
     Route::resource('Interviews', InterviewController::class);
+    Route::post('Interviews/RemoveFromReserve/{id}', [InterviewController::class,'removeFromReserve']);
+    Route::post('Interviews/ChangeInterviewStatus/{id}', [InterviewController::class,'changeInterviewStatus']);
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

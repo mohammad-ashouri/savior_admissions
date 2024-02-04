@@ -38,8 +38,11 @@ class ApplicationTimingController extends Controller
                 $principalAccess = explode('|', $myAllAccesses->principal);
                 $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
                 $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $applicationTimings = ApplicationTiming::join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
+                $applicationTimings = ApplicationTiming::with('academicYearInfo')
+                    ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                     ->whereIn('academic_years.school_id', $filteredArray)
+                    ->orderBy('application_timings.id', 'desc')
+                    ->select('application_timings.*', 'academic_years.id as academic_year_id')
                     ->paginate(20);
                 if ($applicationTimings->isEmpty()) {
                     $applicationTimings = [];
@@ -162,12 +165,12 @@ class ApplicationTimingController extends Controller
                 }
             } else {
                 return redirect()->route('Applications.create')
-                    ->with('error', 'Creating application timing failed!');
+                    ->withErrors(['errors' => 'Creating application timing failed!']);
 
             }
         } else {
             return redirect()->route('Applications.create')
-                ->with('error', 'Creating application timing failed!');
+                ->withErrors(['errors' => 'Creating application timing failed!']);
 
         }
 
@@ -193,6 +196,7 @@ class ApplicationTimingController extends Controller
                     ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                     ->whereIn('academic_years.school_id', $filteredArray)
                     ->where('application_timings.id', $id)
+                    ->select('application_timings.*', 'academic_years.id as academic_year_id')
                     ->first();
             }
         }
