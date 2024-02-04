@@ -217,9 +217,9 @@
                                         <div
                                             class="text-base font-semibold">
                                             @if($interview->status==0)
-                                                Deactive
+                                                <p class="text-red-400">Deactive</p>
                                             @elseif($interview->status==1)
-                                                Active
+                                                <p class="text-green-400">Active</p>
                                             @endif
                                         </div>
                                     </th>
