@@ -30,6 +30,10 @@ class AdmissionsOfficer extends Seeder
             'application-timing-edit',
             'application-timing-delete',
             'application-timing-search',
+            'list-of-application-interviews',
+            'remove-interview-from-reserve',
+            'change-status-of-interview',
+            'remove-interview',
         ]);
     }
 }

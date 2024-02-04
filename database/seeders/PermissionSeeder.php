@@ -103,6 +103,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'application-timing-delete']);
         Permission::create(['name' => 'application-timing-search']);
 
+        Permission::create(['name' => 'list-of-application-interviews']);
+        Permission::create(['name' => 'remove-interview-from-reserve']);
+        Permission::create(['name' => 'change-status-of-interview']);
+        Permission::create(['name' => 'remove-interview']);
+
         //menus access
         Permission::create(['name' => 'catalogs-menu-access']);
         Permission::create(['name' => 'branch-info-menu-access']);

@@ -92,6 +92,7 @@
                 </div>
             </div>
         </div>
+        @can('list-of-application-interviews')
         <div class="p-4 rounded-lg dark:border-gray-700">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 <h1 class="text-2xl font-medium"> List Of Interviews Created</h1>
@@ -226,50 +227,56 @@
                                     <th scope="row"
                                         class="px-2 py-2 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex justify-center space-x-2">
-                                            @if($interview->reserved==1)
+                                            @can('remove-interview-from-reserve')
+                                                @if($interview->reserved==1)
+                                                    <div
+                                                        class="text-base font-semibold">
+                                                        <form class="RemoveReservation" method="post"
+                                                              action="/Interviews/RemoveFromReserve/{{ $interview->id }}">
+                                                            @csrf
+                                                            <button type="submit" title="Remove From Reservation"
+                                                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
+                                                                <i class="las la-calendar-times"
+                                                                   style="font-size: 22px"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                @endif
+                                            @endcan
+                                            @can('change-status-of-interview')
                                                 <div
                                                     class="text-base font-semibold">
-                                                    <form class="RemoveReservation" method="post"
-                                                          action="/Interviews/RemoveFromReserve/{{ $interview->id }}">
+                                                    <form class="ChangeInterviewStatus" method="post"
+                                                          action="/Interviews/ChangeInterviewStatus/{{ $interview->id }}">
                                                         @csrf
-                                                        <button type="submit" title="Remove From Reservation"
-                                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
-                                                            <i class="las la-calendar-times"
-                                                               style="font-size: 22px"></i>
+                                                        @if($interview->status==1)
+                                                            <button type="submit" title="Change Status Of Interview"
+                                                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
+                                                                <i class="las la-eye-slash" style="font-size: 22px"></i>
+                                                            </button>
+                                                        @else
+                                                            <button type="submit" title="Change Status Of Interview"
+                                                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 ">
+                                                                <i class="las la-eye" style="font-size: 22px"></i>
+                                                            </button>
+                                                        @endif
+                                                    </form>
+                                                </div>
+                                            @endcan
+                                            @can('remove-interview')
+                                                <div
+                                                    class="text-base font-semibold">
+                                                    <form class="RemoveInterview" method="post"
+                                                          action="/Interviews/{{ $interview->id }}">
+                                                        @csrf
+                                                        <input name="_method" type="hidden" value="DELETE">
+                                                        <button type="submit" title="Remove Interview"
+                                                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
+                                                            <i class="las la-trash" style="font-size: 22px"></i>
                                                         </button>
                                                     </form>
                                                 </div>
-                                            @endif
-                                            <div
-                                                class="text-base font-semibold">
-                                                <form class="ChangeInterviewStatus" method="post"
-                                                      action="/Interviews/ChangeInterviewStatus/{{ $interview->id }}">
-                                                    @csrf
-                                                    @if($interview->status==1)
-                                                    <button type="submit" title="Change Status Of Interview"
-                                                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
-                                                            <i class="las la-eye-slash" style="font-size: 22px"></i>
-                                                    </button>
-                                                    @else
-                                                        <button type="submit" title="Change Status Of Interview"
-                                                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 ">
-                                                            <i class="las la-eye" style="font-size: 22px"></i>
-                                                        </button>
-                                                    @endif
-                                                </form>
-                                            </div>
-                                            <div
-                                                class="text-base font-semibold">
-                                                <form class="RemoveInterview" method="post"
-                                                      action="/Interviews/{{ $interview->id }}">
-                                                    @csrf
-                                                    <input name="_method" type="hidden" value="DELETE">
-                                                    <button type="submit" title="Remove Interview"
-                                                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
-                                                        <i class="las la-trash" style="font-size: 22px"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
+                                            @endcan
                                         </div>
                                     </th>
                                 </tr>
@@ -281,5 +288,6 @@
                 </div>
             </div>
         </div>
+        @endcan
     </div>
 @endsection
