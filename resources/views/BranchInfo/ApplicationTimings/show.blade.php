@@ -245,10 +245,17 @@
                                                 <form class="ChangeInterviewStatus" method="post"
                                                       action="/Interviews/ChangeInterviewStatus/{{ $interview->id }}">
                                                     @csrf
+                                                    @if($interview->status==1)
                                                     <button type="submit" title="Change Status Of Interview"
-                                                            class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800 ">
-                                                        <i class="las la-low-vision" style="font-size: 22px"></i>
+                                                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
+                                                            <i class="las la-eye-slash" style="font-size: 22px"></i>
                                                     </button>
+                                                    @else
+                                                        <button type="submit" title="Change Status Of Interview"
+                                                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 ">
+                                                            <i class="las la-eye" style="font-size: 22px"></i>
+                                                        </button>
+                                                    @endif
                                                 </form>
                                             </div>
                                             <div
