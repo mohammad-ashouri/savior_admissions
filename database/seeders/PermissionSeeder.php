@@ -108,6 +108,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'change-status-of-interview']);
         Permission::create(['name' => 'remove-interview']);
 
+        Permission::create(['name' => 'childes-list']);
+        Permission::create(['name' => 'childes-create']);
+        Permission::create(['name' => 'childes-edit']);
+        Permission::create(['name' => 'childes-delete']);
+        Permission::create(['name' => 'childes-search']);
+
         //menus access
         Permission::create(['name' => 'catalogs-menu-access']);
         Permission::create(['name' => 'branch-info-menu-access']);

@@ -97,6 +97,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
     Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
 
+    Route::resource('Childes', StudentController::class);
+
     Route::post('student/change_information', [StudentController::class, 'changeInformation']);
 
     Route::prefix('Documents')->group(function () {

@@ -12,6 +12,11 @@ class StudentController extends Controller
 {
     function __construct()
     {
+        $this->middleware('permission:childes-list', ['only' => ['index']]);
+        $this->middleware('permission:childes-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:childes-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:childes-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:childes-search', ['only' => ['search','show']]);
         $this->middleware('permission:change-student-information', ['only' => ['changeInformation']]);
     }
 
