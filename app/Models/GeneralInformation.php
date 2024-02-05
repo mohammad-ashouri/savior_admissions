@@ -40,4 +40,16 @@ class GeneralInformation extends Model
     {
         return $this->belongsTo(User::class,'user_id','id');
     }
+    public function birthplaceInfo()
+    {
+        return $this->belongsTo(Country::class,'birthplace','id');
+    }
+    public function nationalityInfo()
+    {
+        return $this->belongsTo(Country::class,'nationality','id');
+    }
+    public function countryInfo()
+    {
+        return $this->belongsTo(Country::class,'country','id');
+    }
 }
