@@ -648,6 +648,26 @@ $(document).ready(function () {
     else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
     }
+    else if (fullPath.includes('Childes')) {
+        pageTitle = 'Childes';
+        $('#new-education-type').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your education type will be added permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-education-type').off('submit').submit();
+                }
+            });
+        });
+
+    }
+
     else {
         switch (fullPath) {
             case '/dashboard':

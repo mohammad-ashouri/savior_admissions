@@ -10,19 +10,30 @@ use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:childes-list', ['only' => ['index']]);
         $this->middleware('permission:childes-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:childes-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:childes-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:childes-search', ['only' => ['search','show']]);
+        $this->middleware('permission:childes-search', ['only' => ['search']]);
+        $this->middleware('permission:childes-show', ['only' => ['show']]);
         $this->middleware('permission:change-student-information', ['only' => ['changeInformation']]);
     }
 
     public function index()
     {
+        $childes = StudentInformation::where('guardian', session('id'))
+            ->with('studentInfo')
+            ->with('nationalityInfo')
+            ->with('identificationTypeInfo')
+            ->with('generalInformations')
+            ->orderBy('student_id', 'asc')->get();
+        if ($childes->isEmpty()) {
+            $childes = [];
+        }
 
+        return view('ParentPages.Childes.index', compact('childes'));
     }
 
     public function changeInformation(Request $request)
@@ -85,7 +96,8 @@ class StudentController extends Controller
             $studentExtraInformation->save();
         }
 
-        $this->logActivity('Student information saved successfully => ' . $request->user_id, request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity('Student information saved successfully => '.$request->user_id, request()->ip(), request()->userAgent(), session('id'));
+
         return response()->json(['success' => 'Student information saved successfully!'], 200);
     }
 }

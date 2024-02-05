@@ -32,13 +32,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if (!Auth::check()) {
+    if (! Auth::check()) {
         return redirect()->route('login');
     }
+
     return redirect()->route('dashboard');
 });
 Route::get('/home', function () {
     Auth::logout();
+
     return redirect()->route('login');
 });
 
@@ -75,7 +77,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
         $resources = ['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
         foreach ($resources as $resource) {
-            Route::get("$resource/search", [ucfirst($resource) . 'Controller', 'search']);
+            Route::get("$resource/search", [ucfirst($resource).'Controller', 'search']);
         }
     });
 
@@ -86,8 +88,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('Applications', ApplicationTimingController::class);
     Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
     Route::resource('Interviews', InterviewController::class);
-    Route::post('Interviews/RemoveFromReserve/{id}', [InterviewController::class,'removeFromReserve']);
-    Route::post('Interviews/ChangeInterviewStatus/{id}', [InterviewController::class,'changeInterviewStatus']);
+    Route::post('Interviews/RemoveFromReserve/{id}', [InterviewController::class, 'removeFromReserve']);
+    Route::post('Interviews/ChangeInterviewStatus/{id}', [InterviewController::class, 'changeInterviewStatus']);
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

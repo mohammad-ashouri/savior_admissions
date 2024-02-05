@@ -7,13 +7,13 @@ use App\Models\Catalogs\GuardianStudentRelationship;
 use App\Models\Catalogs\StudentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentInformation extends Model
 {
     use HasFactory;
 
     protected $table = 'student_informations';
+
     protected $fillable = [
         'student_id',
         'parent_father_id',
@@ -25,6 +25,7 @@ class StudentInformation extends Model
         'current_identification_code',
         'status',
     ];
+
     protected $hidden = [
         'created_at',
         'updated_at',
@@ -72,7 +73,11 @@ class StudentInformation extends Model
 
     public function extraInformations()
     {
-        return $this->hasMany(StudentExtraInformation::class,'student_informations_id');
+        return $this->hasMany(StudentExtraInformation::class, 'student_informations_id');
     }
 
+    public function generalInformations()
+    {
+        return $this->belongsTo(GeneralInformation::class, 'student_id', 'user_id');
+    }
 }
