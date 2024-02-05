@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogs\CurrentIdentificationType;
+use App\Models\Country;
 use App\Models\StudentExtraInformation;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -34,6 +36,15 @@ class StudentController extends Controller
         }
 
         return view('ParentPages.Childes.index', compact('childes'));
+    }
+
+    public function create()
+    {
+        $birthplaces = Country::orderBy('en_short_name', 'asc')->get();
+        $nationalities = Country::orderBy('nationality', 'asc')->get();
+        $identificationTypes = CurrentIdentificationType::get();
+
+        return view('ParentPages.Childes.create', compact('birthplaces', 'identificationTypes', 'nationalities'));
     }
 
     public function changeInformation(Request $request)
