@@ -112,6 +112,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'catalogs-menu-access']);
         Permission::create(['name' => 'branch-info-menu-access']);
         Permission::create(['name' => 'users-menu-access']);
+        Permission::create(['name' => 'childes-menu-access']);
 
     }
 }

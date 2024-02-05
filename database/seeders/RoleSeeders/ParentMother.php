@@ -19,6 +19,7 @@ class ParentMother extends Seeder
             'document-create',
             'document-edit',
             'document-delete',
+            'childes-menu-access',
         ]);
     }
 }

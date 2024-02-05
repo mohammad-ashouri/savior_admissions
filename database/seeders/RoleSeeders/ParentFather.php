@@ -19,6 +19,7 @@ class ParentFather extends Seeder
             'document-create',
             'document-edit',
             'document-delete',
+            'childes-menu-access',
         ]);
     }
 }
