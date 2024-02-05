@@ -114,6 +114,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'childes-edit']);
         Permission::create(['name' => 'childes-delete']);
         Permission::create(['name' => 'childes-search']);
+        Permission::create(['name' => 'childes-show']);
 
         //menus access
         Permission::create(['name' => 'catalogs-menu-access']);

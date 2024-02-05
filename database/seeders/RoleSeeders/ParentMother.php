@@ -25,6 +25,7 @@ class ParentMother extends Seeder
             'childes-edit',
             'childes-delete',
             'childes-search',
+            'childes-show',
         ]);
     }
 }
