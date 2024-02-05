@@ -20,6 +20,11 @@ class StudentController extends Controller
         $this->middleware('permission:change-student-information', ['only' => ['changeInformation']]);
     }
 
+    public function index()
+    {
+
+    }
+
     public function changeInformation(Request $request)
     {
         $validator = Validator::make($request->all(), [

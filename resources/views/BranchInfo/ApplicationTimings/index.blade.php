@@ -163,7 +163,7 @@
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
-                                        @can('application-timing-edit')
+                                        @can('application-timing-show')
                                             <a href="{{ route('Applications.show',$applicationTiming->id) }}"
                                                type="button"
                                                class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
@@ -171,7 +171,7 @@
                                                 Details
                                             </a>
                                         @endcan
-                                        @can('application-timing-show')
+                                        @can('application-timing-edit')
                                             {{--                                            <a href="{{ route('Applications.edit',$applicationTiming->id) }}"--}}
                                             {{--                                               type="button"--}}
                                             {{--                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">--}}

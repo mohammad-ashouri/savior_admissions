@@ -81,6 +81,7 @@ class SuperAdmin extends Seeder
             'application-timing-edit',
             'application-timing-delete',
             'application-timing-search',
+            'application-timing-show',
             'list-of-application-interviews',
             'remove-interview-from-reserve',
             'change-status-of-interview',
