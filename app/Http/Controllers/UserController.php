@@ -146,6 +146,7 @@ class UserController extends Controller
         $roles = Role::orderBy('name', 'asc')->pluck('name')->all();
         $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
         $countries = Country::get();
+        $nationalities = Country::orderBy('nationality', 'asc')->select('nationality','id')->distinct('nationality')->get();
         $parents = Role::where('name', 'Parent(Father)')->orWhere('name', 'Parent(Mother)')->with(['users' => function ($query) {
             $query->orderBy('family', 'desc');
         }])->get();
@@ -156,7 +157,7 @@ class UserController extends Controller
         if (empty($studentInformation)) {
             $studentInformation = [];
         }
-        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools', 'countries', 'parents', 'guardianStudentRelationships', 'currentIdentificationTypes', 'statuses', 'studentInformation'));
+        return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools', 'countries', 'nationalities', 'parents', 'guardianStudentRelationships', 'currentIdentificationTypes', 'statuses', 'studentInformation'));
     }
 
     public function update(Request $request, $id)

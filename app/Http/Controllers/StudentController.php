@@ -41,7 +41,7 @@ class StudentController extends Controller
     public function create()
     {
         $birthplaces = Country::orderBy('en_short_name', 'asc')->get();
-        $nationalities = Country::orderBy('nationality', 'asc')->get();
+        $nationalities = Country::orderBy('nationality', 'asc')->select('nationality')->distinct()->get();
         $identificationTypes = CurrentIdentificationType::get();
 
         return view('ParentPages.Childes.create', compact('birthplaces', 'identificationTypes', 'nationalities'));
