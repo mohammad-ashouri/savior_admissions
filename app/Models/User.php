@@ -62,4 +62,9 @@ class User extends Authenticatable
 
         return isset($additionalInfo['school_id']) ? $additionalInfo['school_id'] : null;
     }
+
+    public function generalInformationInfo()
+    {
+        return $this->belongsTo(GeneralInformation::class, 'user_id', 'id');
+    }
 }
