@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
         });
-        $query = "insert into guardian_student_relationships (name) values ('Father'),('Mother'),('Grandfather'),('Grandmother'),('Other')";
+        $query = "insert into guardian_student_relationships (name) values ('Father'),('Mother'),('Other')";
         DB::statement($query);
     }
 
