@@ -36,7 +36,7 @@ class AcademicYearController extends Controller
         $academicYears = AcademicYear::get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
-        $users = User::where('status', 1)->orderBy('family', 'asc')->get();
+        $users = User::where('status', 1)->with('generalInformationInfo')->orderBy('id')->get();
         return view('Catalogs.AcademicYears.create', compact('academicYears', 'schools', 'levels', 'users'));
     }
 
@@ -160,7 +160,7 @@ class AcademicYearController extends Controller
         $catalog = AcademicYear::with('schoolInfo')->find($id);
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
-        $users = User::where('status', 1)->orderBy('family', 'asc')->get();
+        $users = User::where('status', 1)->with('generalInformationInfo')->orderBy('id')->get();
         return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools', 'levels', 'users'));
     }
 

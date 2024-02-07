@@ -73,9 +73,9 @@
                                 <p class="font-bold">Interviewers: </p>
                                 @foreach(json_decode($applicationTiming->interviewers,true) as $interviewer)
                                     @php
-                                        $interviewerInfo=\App\Models\User::find($interviewer);
+                                        $interviewerInfo=\App\Models\User::with('generalInformationInfo')->find($interviewer);
                                     @endphp
-                                    * {{ $interviewerInfo->name . " " . $interviewerInfo->family }}<br/>
+                                    * {{ $interviewerInfo->generalInformationInfo->first_name . " " . $interviewerInfo->last_name }}<br/>
                                 @endforeach
                             </div>
                             <div>
@@ -185,10 +185,10 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             @php
-                                                $interviewerInfo=\App\Models\User::find($interview->interviewer);
+                                                $interviewerInfo=\App\Models\User::with('generalInformationInfo')->find($interview->interviewer);
                                             @endphp
                                             class="text-base font-semibold">
-                                            {{ $interviewerInfo->name }} {{ $interviewerInfo->family }}
+                                            {{ $interviewerInfo->generalInformationInfo->first_name . " " . $interviewerInfo->last_name }}
                                         </div>
                                     </th>
                                     <th scope="row"

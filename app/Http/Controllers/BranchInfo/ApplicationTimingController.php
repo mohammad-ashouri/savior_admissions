@@ -218,7 +218,7 @@ class ApplicationTimingController extends Controller
 
         if ($me->hasRole('Super Admin')) {
             $academicYearInterviewers = AcademicYear::where('status', 1)->where('id', $academicYear)->pluck('employees')->first();
-            $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->where('status', 1)->select('name', 'family', 'id')->get()->keyBy('id')->toArray();
+            $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->where('status', 1)->with('generalInformationInfo')->get()->keyBy('id')->toArray();
         } else {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
@@ -232,7 +232,7 @@ class ApplicationTimingController extends Controller
             } else {
                 $academicYearInterviewers = [];
             }
-            $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->where('status', 1)->select('name', 'family', 'id')->get()->toArray();
+            $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->where('status', 1)->with('generalInformationInfo')->get()->toArray();
             if (empty($interviewers)) {
                 $interviewers = [];
             }

@@ -134,7 +134,7 @@
                                              alt="User Personal Image">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $user->name }} {{ $user->family }}</div>
+                                                class="text-base font-semibold">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}</div>
                                             <div class="font-normal text-gray-500">{{ $user->email }}</div>
                                         </div>
                                     </th>

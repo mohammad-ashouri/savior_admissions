@@ -115,7 +115,7 @@
                                         @endif
                                         <option
                                             @if(old('Principal')==$user->id or (old('Principal') !== null and in_array($user->id,old('Principal'))) or in_array($user->id,json_decode($catalog->employees,true)['Principal'][0])) selected
-                                            @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }}
+                                            @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}
                                             - {{ $user->email }} - {{ $user->mobile }}</option>
                                     @endforeach
                                 </select>
@@ -133,7 +133,7 @@
                                         @endif
                                         <option
                                             @if(old('Admissions_Officer')==$user->id or (old('Admissions_Officer') !== null and in_array($user->id,old('Admissions_Officer'))) or in_array($user->id,json_decode($catalog->employees,true)['Admissions_Officer'][0])) selected
-                                            @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }}
+                                            @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}
                                             - {{ $user->email }} - {{ $user->mobile }}</option>
                                     @endforeach
                                 </select>
@@ -151,7 +151,7 @@
                                         @endif
                                         <option
                                             @if(old('Financial_Manager')==$user->id or (old('Financial_Manager') !== null and in_array($user->id,old('Financial_Manager'))) or in_array($user->id,json_decode($catalog->employees,true)['Financial_Manager'][0])) selected
-                                            @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }}
+                                            @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}
                                             - {{ $user->email }} - {{ $user->mobile }}</option>
                                     @endforeach
                                 </select>
@@ -168,7 +168,7 @@
                                         @endif
                                         <option
                                             @if(old('Interviewer')==$user->id or (old('Interviewer') !== null and in_array($user->id,old('Interviewer'))) or in_array($user->id,json_decode($catalog->employees,true)['Interviewer'][0])) selected
-                                            @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }}
+                                            @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}
                                             - {{ $user->email }} - {{ $user->mobile }}</option>
                                     @endforeach
                                 </select>

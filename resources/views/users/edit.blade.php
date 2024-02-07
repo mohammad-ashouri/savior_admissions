@@ -7,7 +7,7 @@
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium"> Profile of {{ $user->name }} {{ $user->family }}</h1>
+                <h1 class="text-2xl font-medium"> Profile of {{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}</h1>
             </div>
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-1 col-span-3 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
@@ -17,7 +17,7 @@
                                  src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
                                  alt="">
                             <div class="font-bold dark:text-white">
-                                <div class="text-l">{{ $user->name }} {{ $user->family }}</div>
+                                <div class="text-l">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}</div>
                             </div>
                         </div>
                         @can('access-user-role')
@@ -74,7 +74,7 @@
                                     <label for="first_name"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
                                         name</label>
-                                    <input type="text" id="first_name" name="first_name" value="{{ $user->name }}"
+                                    <input type="text" id="first_name" name="first_name" value="{{ $user->generalInformationInfo->first_name }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="John" required>
                                 </div>
@@ -82,7 +82,7 @@
                                     <label for="last_name"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
                                         name</label>
-                                    <input type="text" id="last_name" name="last_name" value="{{ $user->family }}"
+                                    <input type="text" id="last_name" name="last_name" value="{{ $user->generalInformationInfo->last_name }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Doe" required>
                                 </div>
@@ -325,7 +325,7 @@
                                                 <option
                                                     @if(!empty($studentInformation) and $studentInformation->guardian==$guardian->id) selected
                                                     @endif
-                                                    value="{{$guardian->id}}">{{ $guardian->id . " - " . $guardian->name . " " . $guardian->family }}</option>
+                                                    value="{{$guardian->id}}">{{ $guardian->id . " - " . $guardian->generalInformationInfo->first_name . " " . $guardian->generalInformationInfo->last_name }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
@@ -360,7 +360,7 @@
                                                 <option
                                                     @if(!empty($studentInformation) and $studentInformation->parent_father_id==$father->id) selected
                                                     @endif
-                                                    value="{{$father->id}}">{{ $father->id . " - " . $father->name . " " . $father->family }}</option>
+                                                    value="{{$father->id}}">{{ $father->id . " - " . $father->generalInformationInfo->first_name . " " . $father->generalInformationInfo->last_name }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
@@ -378,7 +378,7 @@
                                                 <option
                                                     @if(!empty($studentInformation) and $studentInformation->parent_mother_id==$mother->id) selected
                                                     @endif
-                                                    value="{{$mother->id}}">{{ $mother->id . " - " . $mother->name . " " . $mother->family }}</option>
+                                                    value="{{$mother->id}}">{{ $mother->id . " - " . $mother->generalInformationInfo->first_name . " " . $mother->generalInformationInfo->last_name }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>

@@ -63,6 +63,6 @@ class User extends Authenticatable
 
     public function generalInformationInfo()
     {
-        return $this->belongsTo(GeneralInformation::class, 'user_id', 'id');
+        return $this->belongsTo(GeneralInformation::class, 'id', 'user_id');
     }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 @php
     use App\Models\User;
-    $myInfo=User::find(session('id'));
+    $myInfo=User::with('generalInformationInfo')->find(session('id'));
 @endphp
 <html class="dark" lang="en">
 <head>
@@ -99,7 +99,7 @@
                         id="dropdown-user">
                         <div class="px-4 py-3" role="none">
                             <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                {{ $myInfo->name }} {{ $myInfo->family }}
+                                {{ $myInfo->first_name }} {{ $myInfo->last_name }}
                             </p>
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
                                 {{ $myInfo->email }}
@@ -143,13 +143,13 @@
                 </a>
             </li>
             @can('childes-menu-access')
-            <li>
-                <a href="/Childes"
-                   class="flex items-center p-2 mt-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <i class="las la-users" style="font-size: 24px"></i>
-                    <span class="ml-4">Childes</span>
-                </a>
-            </li>
+                <li>
+                    <a href="/Childes"
+                       class="flex items-center p-2 mt-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <i class="las la-users" style="font-size: 24px"></i>
+                        <span class="ml-4">Childes</span>
+                    </a>
+                </li>
             @endcan
             @can('branch-info-menu-access')
                 <li>
@@ -161,60 +161,60 @@
                 </li>
             @endcan
             @can('users-menu-access')
-            <li>
-                <button type="button"
-                        class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                        aria-controls="dropdown-branch" data-collapse-toggle="dropdown-branch">
-                    <i class="nav-icon la la-landmark" style="font-size: 24px"></i>
-                    <span class="flex-1 ml-4 text-left whitespace-nowrap">Branch Info</span>
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                         viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                              stroke-width="2" d="m1 1 4 4 4-4"/>
-                    </svg>
-                </button>
-                <ul id="dropdown-branch" class="hidden py-2 space-y-2">
-                    <li>
-                        <a href="/AcademicYearClasses"
-                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <li>
+                    <button type="button"
+                            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                            aria-controls="dropdown-branch" data-collapse-toggle="dropdown-branch">
+                        <i class="nav-icon la la-landmark" style="font-size: 24px"></i>
+                        <span class="flex-1 ml-4 text-left whitespace-nowrap">Branch Info</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+                    <ul id="dropdown-branch" class="hidden py-2 space-y-2">
+                        <li>
+                            <a href="/AcademicYearClasses"
+                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-chalkboard-teacher"
                                                               style="font-size: 24px"></i>
                                         Classes</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/Applications"
-                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Applications"
+                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-paste" style="font-size: 24px"></i>
                                         Applications</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/Fees"
-                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Fees"
+                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-money-bill-wave-alt"
                                                               style="font-size: 24px"></i>
                                         Fees</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/Interviews"
-                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Interviews"
+                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-book-reader"
                                                               style="font-size: 24px"></i>
                                         Interviews</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/Students"
-                           class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Students"
+                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-user-graduate"
                                                               style="font-size: 24px"></i>
                                         Students</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             @endcan
             @can('catalogs-menu-access')
                 <li>

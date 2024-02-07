@@ -69,8 +69,6 @@ class StudentController extends Controller
 
         $me = User::find(session('id'));
         $user = new User();
-        $user->name = $request->first_name;
-        $user->family = $request->last_name;
         $user->password = Hash::make('Aa12345678');
         $user->status = 0;
         $user->save();
@@ -78,6 +76,8 @@ class StudentController extends Controller
 
         $generalInformation = new GeneralInformation();
         $generalInformation->user_id = $user->id;
+        $generalInformation->first_name = $request->first_name;
+        $generalInformation->last_name = $request->last_name;
         $generalInformation->birthdate = $birthdate;
         $generalInformation->birthplace = $birthplace;
         $generalInformation->nationality = $nationality;

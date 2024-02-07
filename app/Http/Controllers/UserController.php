@@ -33,7 +33,7 @@ class UserController extends Controller
         $me = User::find(session('id'));
         if ($me) {
             if ($me->hasRole('Super Admin')) {
-                $data = User::orderBy('id', 'DESC')->paginate(20);
+                $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->paginate(20);
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
                 $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
                 if ($myAllAccesses != null) {
@@ -85,8 +85,8 @@ class UserController extends Controller
     {
         $me = User::find(session('id'));
         $this->validate($request, [
-            'name' => 'required',
-            'family' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
             'mobile' => 'required|integer|unique:users,mobile',
             'password' => 'required|unique:users,mobile',
@@ -96,7 +96,6 @@ class UserController extends Controller
 
         $user = new User;
         $user->name = $request->name;
-        $user->family = $request->family;
         $user->email = $request->email;
         $user->mobile = $request->mobile;
         $user->password = Hash::make($request->password);
@@ -111,7 +110,9 @@ class UserController extends Controller
         if ($user->save()) {
             GeneralInformation::create(
                 [
-                    'user_id' => $user->id
+                    'user_id' => $user->id,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
                 ]
             );
             $user->assignRole($request->input('role'));
@@ -148,7 +149,7 @@ class UserController extends Controller
         $countries = Country::get();
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality','id')->distinct('nationality')->get();
         $parents = Role::where('name', 'Parent(Father)')->orWhere('name', 'Parent(Mother)')->with(['users' => function ($query) {
-            $query->orderBy('family', 'desc');
+            $query->orderBy('id', 'desc');
         }])->get();
         $guardianStudentRelationships = GuardianStudentRelationship::get();
         $currentIdentificationTypes = CurrentIdentificationType::get();
@@ -224,7 +225,7 @@ class UserController extends Controller
             }
 
             if (!empty($searchLastName)) {
-                $query->where('family', 'LIKE', "%$searchLastName%");
+                $query->where('id', 'LIKE', "%$searchLastName%");
                 $activity['last_name'] = $searchLastName;
             }
         })

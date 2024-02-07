@@ -90,7 +90,7 @@
                                             required>
                                         @foreach($users as $user)
                                             @if(!$user->hasRole('Principal')) @continue @endif
-                                            <option @if(is_array(old('Principal')) and in_array($user->id,old('Principal'))) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            <option @if(is_array(old('Principal')) and in_array($user->id,old('Principal'))) selected @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }} - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -102,7 +102,7 @@
                                             required>
                                         @foreach($users as $user)
                                             @if(!$user->hasRole('Admissions Officer')) @continue @endif
-                                            <option @if(is_array(old('Admissions_Officer')) and in_array($user->id,old('Admissions_Officer'))) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            <option @if(is_array(old('Admissions_Officer')) and in_array($user->id,old('Admissions_Officer'))) selected @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }} - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -114,7 +114,7 @@
                                             required>
                                         @foreach($users as $user)
                                             @if(!$user->hasRole('Financial Manager')) @continue @endif
-                                            <option @if(is_array(old('Financial_Manager')) and in_array($user->id,old('Financial_Manager'))) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            <option @if(is_array(old('Financial_Manager')) and in_array($user->id,old('Financial_Manager'))) selected @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }} - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -126,7 +126,7 @@
                                             required>
                                         @foreach($users as $user)
                                             @if(!$user->hasRole('Interviewer')) @continue @endif
-                                            <option @if(is_array(old('Interviewer')) and in_array($user->id,old('Interviewer'))) selected @endif value="{{ $user->id }}">{{ $user->name }} {{ $user->family }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            <option @if(is_array(old('Interviewer')) and in_array($user->id,old('Interviewer'))) selected @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }} - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
