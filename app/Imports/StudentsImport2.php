@@ -11,6 +11,8 @@ class StudentsImport2 implements ToModel
         // Define how each row in the Excel file should be mapped to your database model
         return new GeneralInformation([
             'user_id' => $row[0],
+            'first_name' => $row[1],
+            'last_name' => $row[2],
             'gender' => $row[3],
             'birthdate' => $row[5],
             'birthplace' => $row[6],

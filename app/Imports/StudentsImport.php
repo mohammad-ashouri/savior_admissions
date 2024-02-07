@@ -14,8 +14,6 @@ class StudentsImport implements ToModel
         // Define how each row in the Excel file should be mapped to your database model
         $user= new User([
             'id' => $row[0],
-            'name' => $row[1],
-            'family' => $row[2],
             'mobile' => $row[9],
             'email' => $row[12],
             'password' => 'Aa16001600',
