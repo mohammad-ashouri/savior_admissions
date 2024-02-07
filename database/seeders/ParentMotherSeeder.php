@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\GeneralInformation;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -19,15 +18,15 @@ class ParentMotherSeeder extends Seeder
          * @var User $user
          */
         $user = User::query()->create([
-            'name' => 'Fatima',
-            'family' => 'Mother',
             'mobile' => '+989398844226',
             'email' => 'test34@gmail.com',
-            'password' => bcrypt(12345678)
+            'password' => bcrypt(12345678),
         ]);
         $generalInformation = GeneralInformation::create(
             [
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'first_name' => 'Fatima',
+                'last_name' => 'Mother',
             ]
         );
         $role = Role::where('name', 'Parent(Mother)')->first();

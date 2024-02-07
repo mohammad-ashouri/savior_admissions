@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\GeneralInformation;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class ParentFatherSeeder extends Seeder
@@ -19,15 +18,15 @@ class ParentFatherSeeder extends Seeder
          * @var User $user
          */
         $user = User::query()->create([
-            'name' => 'Ali',
-            'family' => 'Father',
             'mobile' => '+989398888226',
             'email' => 'test@gmail.com',
-            'password' => bcrypt(12345678)
+            'password' => bcrypt(12345678),
         ]);
         $generalInformation = GeneralInformation::create(
             [
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'first_name' => 'Ali',
+                'last_name' => 'Father',
             ]
         );
         $role = Role::where('name', 'Parent(Father)')->first();

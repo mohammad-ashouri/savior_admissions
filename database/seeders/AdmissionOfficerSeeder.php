@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\GeneralInformation;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -18,19 +17,19 @@ class AdmissionOfficerSeeder extends Seeder
         /**
          * @var User $user
          */
-        $user=User::query()->create([
-            'name'=>'Hamid',
-            'family'=>'AdmissionOfficer',
-            'mobile'=>'+989152465487',
-            'email'=>'test@sa.com',
-            'password'=>bcrypt(12345678)
+        $user = User::query()->create([
+            'mobile' => '+989152465487',
+            'email' => 'test@sa.com',
+            'password' => bcrypt(12345678),
         ]);
-        $generalInformation=GeneralInformation::create(
+        $generalInformation = GeneralInformation::create(
             [
-                'user_id'=>$user->id
+                'user_id' => $user->id,
+                'first_name' => 'Hamid',
+                'last_name' => 'AdmissionOfficer',
             ]
         );
-        $role = Role::where('name','Admissions Officer')->first();
+        $role = Role::where('name', 'Admissions Officer')->first();
         $user->assignRole([$role->id]);
     }
 }

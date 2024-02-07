@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\GeneralInformation;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -18,19 +17,19 @@ class InterviewerSeeder extends Seeder
         /**
          * @var User $user
          */
-        $user=User::query()->create([
-            'name'=>'Ali',
-            'family'=>'Interviewer',
-            'mobile'=>'+989123546787',
-            'email'=>'test@magic.com',
-            'password'=>bcrypt(12345678)
+        $user = User::query()->create([
+            'mobile' => '+989123546787',
+            'email' => 'test@magic.com',
+            'password' => bcrypt(12345678),
         ]);
-        $generalInformation=GeneralInformation::create(
+        $generalInformation = GeneralInformation::create(
             [
-                'user_id'=>$user->id
+                'user_id' => $user->id,
+                'first_name' => 'Ali',
+                'last_name' => 'Interviewer',
             ]
         );
-        $role = Role::where('name','Interviewer')->first();
+        $role = Role::where('name', 'Interviewer')->first();
         $user->assignRole([$role->id]);
     }
 }
