@@ -96,8 +96,8 @@ class ProfileController extends Controller
         $input = $request->all();
         $user = User::find($input['user_id']);
         $userGeneralInformation = GeneralInformation::where('user_id', $user->id)->first();
-        $user->name = $input['first_name'];
-        $user->family = $input['last_name'];
+        $userGeneralInformation->first_name = $input['first_name'];
+        $userGeneralInformation->last_name = $input['last_name'];
         $userGeneralInformation->gender = $input['gender'];
         $userGeneralInformation->father_name = $input['father_name'];
         $userGeneralInformation->birthdate = $input['Birthdate'];
