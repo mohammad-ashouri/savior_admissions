@@ -26,6 +26,10 @@ class ParentMother extends Seeder
             'childes-delete',
             'childes-search',
             'childes-show',
+            'applications-list',
+            'new-application-reserve',
+            'show-application-reserve',
+            'applications-menu-access',
         ]);
     }
 }

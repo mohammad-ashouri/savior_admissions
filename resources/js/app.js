@@ -531,7 +531,7 @@ $(document).ready(function () {
         });
 
     }
-    else if (fullPath.includes('Applications')) {
+    else if (fullPath.includes('ApplicationTimings')) {
         pageTitle = 'Application Timings Manager';
         // resetAllInputValues();
         resetAllSelectValues();

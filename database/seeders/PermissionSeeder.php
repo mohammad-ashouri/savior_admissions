@@ -116,11 +116,17 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'childes-search']);
         Permission::create(['name' => 'childes-show']);
 
+        Permission::create(['name' => 'applications-list']);
+        Permission::create(['name' => 'new-application-reserve']);
+        Permission::create(['name' => 'show-application-reserve']);
+        Permission::create(['name' => 'edit-application-reserve']);
+
         //menus access
         Permission::create(['name' => 'catalogs-menu-access']);
         Permission::create(['name' => 'branch-info-menu-access']);
         Permission::create(['name' => 'users-menu-access']);
         Permission::create(['name' => 'childes-menu-access']);
+        Permission::create(['name' => 'applications-menu-access']);
 
     }
 }

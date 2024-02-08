@@ -15,7 +15,7 @@
                     </div>
                     <div class="flex">
                         @can('application-timing-create')
-                            <a href="{{ route('Applications.create') }}">
+                            <a href="{{ route('ApplicationTimings.create') }}">
                                 <button type="button"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
@@ -164,7 +164,7 @@
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
                                         @can('application-timing-show')
-                                            <a href="{{ route('Applications.show',$applicationTiming->id) }}"
+                                            <a href="{{ route('ApplicationTimings.show',$applicationTiming->id) }}"
                                                type="button"
                                                class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                 <i class="las la-eye mt-1 mr-1"></i>
@@ -172,7 +172,7 @@
                                             </a>
                                         @endcan
                                         @can('application-timing-edit')
-                                            {{--                                            <a href="{{ route('Applications.edit',$applicationTiming->id) }}"--}}
+                                            {{--                                            <a href="{{ route('ApplicationTimings.edit',$applicationTiming->id) }}"--}}
                                             {{--                                               type="button"--}}
                                             {{--                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">--}}
                                             {{--                                                <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"--}}

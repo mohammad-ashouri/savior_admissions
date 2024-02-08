@@ -49,6 +49,10 @@ class Principal extends Seeder
             'remove-interview-from-reserve',
             'change-status-of-interview',
             'remove-interview',
+            'applications-list',
+            'new-application-reserve',
+            'show-application-reserve',
+            'edit-application-reserve',
         ]);
     }
 }

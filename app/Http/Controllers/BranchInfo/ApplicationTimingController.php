@@ -164,17 +164,17 @@ class ApplicationTimingController extends Controller
                     }
                 }
             } else {
-                return redirect()->route('Applications.create')
+                return redirect()->route('ApplicationTimings.create')
                     ->withErrors(['errors' => 'Creating application timing failed!']);
 
             }
         } else {
-            return redirect()->route('Applications.create')
+            return redirect()->route('ApplicationTimings.create')
                 ->withErrors(['errors' => 'Creating application timing failed!']);
 
         }
 
-        return redirect()->route('Applications.index')
+        return redirect()->route('ApplicationTimings.index')
             ->with('success', 'Application timing created successfully');
 
     }

@@ -151,6 +151,15 @@
                     </a>
                 </li>
             @endcan
+            @can('applications-menu-access')
+                <li>
+                    <a href="/Applications"
+                       class="flex items-center p-2 mt-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <i class="las la-calendar-plus" style="font-size: 24px"></i>
+                        <span class="ml-4">Applications</span>
+                    </a>
+                </li>
+            @endcan
             @can('branch-info-menu-access')
                 <li>
                     <a href="/users"
@@ -183,9 +192,16 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/Applications"
+                            <a href="/ApplicationTimings"
                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="nav-icon la la-paste" style="font-size: 24px"></i>
+                                        Application Timings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Applications"
+                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span class="menulist"><i class="las la-calendar-plus" style="font-size: 24px"></i>
                                         Applications</span>
                             </a>
                         </li>

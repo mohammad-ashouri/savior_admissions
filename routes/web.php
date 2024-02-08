@@ -85,7 +85,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('AcademicYearClasses', AcademicYearClassController::class);
     Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
     Route::get('/GetAcademicYearStarttimeAndEndtime', [AcademicYearClassController::class, 'academicYearStarttimeAndEndtime']);
-    Route::resource('Applications', ApplicationTimingController::class);
+    Route::resource('ApplicationTimings', ApplicationTimingController::class);
     Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
     Route::resource('Interviews', InterviewController::class);
     Route::post('Interviews/RemoveFromReserve/{id}', [InterviewController::class, 'removeFromReserve']);
