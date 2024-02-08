@@ -86,16 +86,13 @@
                                     Birthdate
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
+                                    Gender
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
                                     Birthplace
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Nationality
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Current Identification Type
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Current Identification Code
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Action
@@ -137,6 +134,13 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
+                                                class="text-base font-semibold">{{ $child->generalInformations->gender }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            <div
                                                 class="text-base font-semibold">{{ $child->generalInformations->birthplaceInfo->en_short_name }}</div>
                                         </div>
                                     </th>
@@ -147,30 +151,15 @@
                                                 class="text-base font-semibold">{{ $child->generalInformations->nationalityInfo->nationality }}</div>
                                         </div>
                                     </th>
-                                    <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $child->identificationTypeInfo->name }}
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $child->current_identification_code }}
-                                            </div>
-                                        </div>
-                                    </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
                                         @can('childes-show')
                                             <a href="{{ route('Childes.show',$child->id) }}"
                                                type="button"
                                                class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                <i class="las la-eye mt-1 mr-1"></i>
-                                                Details
+                                                <div class="text-center">
+                                                    <i class="las la-eye "></i>
+                                                </div>
                                             </a>
                                         @endcan
                                     </td>
@@ -185,7 +174,7 @@
         </div>
         @if(!empty($childes))
             <div class="pagination text-center">
-{{--                {{ $childes->links() }}--}}
+                {{--                {{ $childes->links() }}--}}
             </div>
     @endif
 @endsection
