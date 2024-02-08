@@ -56,6 +56,22 @@
                                            title="Select birthdate of your child" required>
                                 </div>
                                 <div>
+                                    <label for="gender"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        Gender</label>
+                                    <select id="gender" name="gender"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            title="Select student birthplace" required>
+                                        <option selected disabled value="">Select student gender</option>
+                                            <option @if(old('gender')=='Male') selected
+                                                    @endif value="Male">Male
+                                            </option>
+                                            <option @if(old('gender')=='Female') selected
+                                                    @endif value="Female">Female
+                                            </option>
+                                    </select>
+                                </div>
+                                <div>
                                     <label for="birthplace"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         Birthplace</label>

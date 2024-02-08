@@ -32,7 +32,7 @@ class StudentController extends Controller
             ->with('nationalityInfo')
             ->with('identificationTypeInfo')
             ->with('generalInformations')
-            ->orderBy('student_id', 'asc')->get();
+            ->orderBy('student_id', 'asc')->paginate(15);
         if ($childes->isEmpty()) {
             $childes = [];
         }
@@ -43,7 +43,7 @@ class StudentController extends Controller
     public function create()
     {
         $birthplaces = Country::orderBy('en_short_name', 'asc')->get();
-        $nationalities = Country::orderBy('nationality', 'asc')->select('nationality')->distinct()->get();
+        $nationalities = Country::orderBy('nationality', 'asc')->select('nationality','id')->distinct()->get();
         $identificationTypes = CurrentIdentificationType::get();
 
         return view('ParentPages.Childes.create', compact('birthplaces', 'identificationTypes', 'nationalities'));
@@ -51,7 +51,6 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'nationality' => 'required|exists:countries,id',
             'birthplace' => 'required|exists:countries,id',
@@ -66,6 +65,7 @@ class StudentController extends Controller
         $birthplace = $request->birthplace;
         $birthdate = $request->birthdate;
         $current_identification_code = $request->current_identification_code;
+        $gender=$request->gender;
 
         $me = User::find(session('id'));
         $user = new User();
@@ -81,6 +81,7 @@ class StudentController extends Controller
         $generalInformation->birthdate = $birthdate;
         $generalInformation->birthplace = $birthplace;
         $generalInformation->nationality = $nationality;
+        $generalInformation->gender = $gender;
         $generalInformation->save();
 
         $studentInformation = new StudentInformation();
@@ -100,7 +101,8 @@ class StudentController extends Controller
         }
         $studentInformation->save();
 
-        dd($request->all());
+        return redirect()->route('Childes.index')
+            ->with('success', 'Child added successfully');
     }
 
     public function changeInformation(Request $request)

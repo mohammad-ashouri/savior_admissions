@@ -103,11 +103,11 @@
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                         <option value="" selected>Choose an option...</option>
-                                        <option @if($generalInformation->gender==='male') selected @endif value="male">
+                                        <option @if($generalInformation->gender==='Male') selected @endif value="Male">
                                             Male
                                         </option>
-                                        <option @if($generalInformation->gender==='female') selected
-                                                @endif  value="female">Female
+                                        <option @if($generalInformation->gender==='Female') selected
+                                                @endif  value="Female">Female
                                         </option>
                                     </select>
                                 </div>
