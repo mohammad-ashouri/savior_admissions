@@ -2,7 +2,7 @@
 
 return [
     'disable' => env('CAPTCHA_DISABLE', false),
-    'characters' => ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+    'characters' => ['2', '3', '4', '5', '6', '7', '8', '9'],
     'default' => [
         'length' => 5,
         'width' => 120,
