@@ -43,7 +43,7 @@ class StudentController extends Controller
     public function create()
     {
         $birthplaces = Country::orderBy('en_short_name', 'asc')->get();
-        $nationalities = Country::orderBy('nationality', 'asc')->select('nationality','id')->distinct()->get();
+        $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct()->get();
         $identificationTypes = CurrentIdentificationType::get();
 
         return view('ParentPages.Childes.create', compact('birthplaces', 'identificationTypes', 'nationalities'));
@@ -65,7 +65,7 @@ class StudentController extends Controller
         $birthplace = $request->birthplace;
         $birthdate = $request->birthdate;
         $current_identification_code = $request->current_identification_code;
-        $gender=$request->gender;
+        $gender = $request->gender;
 
         $me = User::find(session('id'));
         $user = new User();
@@ -105,6 +105,17 @@ class StudentController extends Controller
             ->with('success', 'Child added successfully');
     }
 
+    public function show($id)
+    {
+        $studentInformations = StudentInformation::with('extraInformations')->where('student_id', $id)->where('guardian', session('id'))->first();
+        if (! empty($studentInformations)) {
+            $generalInformations = GeneralInformation::where('user_id', $id)->first();
+
+            return view('ParentPages.Childes.show', compact('generalInformations', 'studentInformations'));
+        }
+        abort(403);
+    }
+
     public function changeInformation(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -115,7 +126,6 @@ class StudentController extends Controller
             'guardian' => 'required|exists:users,id',
             'guardian_student_relationship' => 'required|exists:guardian_student_relationships,id',
             'mother' => 'required|exists:users,id',
-            'school' => 'required|exists:schools,id',
             'status' => 'required|exists:student_statuses,id',
             'user_id' => 'required|exists:users,id',
         ]);
@@ -129,22 +139,23 @@ class StudentController extends Controller
             return response()->json(['error' => 'Extras count values is not same'], 422);
         }
 
-        $user = User::find($request->user_id);
+//        $user = User::find($request->user_id);
+//
+//        $studentInformation = [
+//            'school_id' => $request->school,
+//        ];
+//        $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
+//        $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
+//        $user->additional_information = json_encode($userAdditionalInformation);
+//        $user->save();
 
-        $studentInformation = [
-            'school_id' => $request->school,
-        ];
-        $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-        $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
-        $user->additional_information = json_encode($userAdditionalInformation);
-        $user->save();
+//        $studentInformation = StudentInformation::firstOrCreate(
+//            [
+//                'student_id' => $user->id,
+//            ]
+//        );
 
-        $studentInformation = StudentInformation::firstOrCreate(
-            [
-                'student_id' => $user->id,
-            ]
-        );
-
+        $studentInformation=StudentInformation::where('student_id',$request->user_id)->first();
         $studentInformation->parent_father_id = $request->father;
         $studentInformation->parent_mother_id = $request->mother;
         $studentInformation->guardian = $request->guardian;
