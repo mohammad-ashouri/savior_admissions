@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('interview_reservations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('interview_id');
-            $table->foreign('interview_id')->references('id')->on('interviews');
+            $table->unsignedBigInteger('application_id');
+            $table->foreign('application_id')->references('id')->on('applications');
             $table->unsignedBigInteger('student_id');
             $table->foreign('student_id')->references('id')->on('users');
             $table->unsignedBigInteger('reservatore');

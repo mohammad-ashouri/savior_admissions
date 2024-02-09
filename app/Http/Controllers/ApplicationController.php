@@ -28,8 +28,13 @@ class ApplicationController extends Controller
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')){
             $myChildes=StudentInformation::where('guardian',$me->id)->pluck('student_id')->toArray();
             $applications=InterviewReservation::with('interviewInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id',$myChildes)->get();
-            return view('Applications.index', compact('applications'));
         }
+
+        if ($applications->isEmpty()){
+            $applications=[];
+        }
+        return view('Applications.index', compact('applications'));
+
     }
 
     public function destroy($id)
