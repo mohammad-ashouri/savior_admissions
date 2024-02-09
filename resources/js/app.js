@@ -658,8 +658,11 @@ $(document).ready(function () {
                     }, success: function (response) {
                         var selectAcademicYear = $('#academic_year');
                         selectAcademicYear.empty();
+                        var selectDateAndTime = $('#date_and_time');
+                        selectDateAndTime.empty();
 
                         selectAcademicYear.append('<option selected disabled value="">Select academic year</option>');
+                        selectDateAndTime.append('<option selected disabled value="">Select date and time</option>');
 
                         $.each(response, function (index, academic_year) {
                             selectAcademicYear.append('<option value="' + academic_year.id + '">' + academic_year.name + '</option>');
@@ -680,7 +683,6 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
-                        console.log(response);
                         var selectDateAndTime = $('#date_and_time');
                         selectDateAndTime.empty();
 
