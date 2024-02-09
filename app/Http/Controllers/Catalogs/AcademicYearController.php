@@ -307,6 +307,8 @@ class AcademicYearController extends Controller
         $catalog = AcademicYear::find($id);
         $catalog->name = $request->input('name');
         $catalog->status = $request->input('status');
+        $catalog->start_date = $request->input('start_date');
+        $catalog->end_date = $request->input('end_date');
         $catalog->levels = json_encode($request->input('levels'), true);
         $catalog->employees = json_encode($employeesData, true);;
         $catalog->save();
