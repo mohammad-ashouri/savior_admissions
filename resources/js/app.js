@@ -644,21 +644,59 @@ $(document).ready(function () {
     }
     else if (fullPath.includes('Applications')) {
         pageTitle = 'Applications';
-        $('#new-education-type').submit(function (e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Your education type will be added permanently!',
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: 'No',
-                confirmButtonText: 'Yes',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#new-education-type').off('submit').submit();
-                }
+
+        if (fullPath.includes('Applications/create')){
+            $('#level').change(function (e) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/GetAcademicYearsByLevel',
+                    data: {
+                        level:$(this).val()
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                    }, success: function (response) {
+                        var selectAcademicYear = $('#academic_year');
+                        selectAcademicYear.empty();
+
+                        selectAcademicYear.append('<option selected disabled value="">Select academic year</option>');
+
+                        $.each(response, function (index, academic_year) {
+                            selectAcademicYear.append('<option value="' + academic_year.id + '">' + academic_year.name + '</option>');
+                        });
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                    }
+                });
             });
-        });
+
+            $('#academic_year').change(function (e) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/GetApplicationsByAcademicYear',
+                    data: {
+                        academic_year:$(this).val()
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                    }, success: function (response) {
+                        console.log(response);
+                        var selectDateAndTime = $('#date_and_time');
+                        selectDateAndTime.empty();
+
+                        selectDateAndTime.append('<option selected disabled value="">Select date and time</option>');
+
+                        $.each(response, function (index, date_and_time) {
+                            selectDateAndTime.append('<option value="' + date_and_time.id + '">' + date_and_time.date + " - " + date_and_time.start_from + " - " + date_and_time.ends_to + '</option>');
+                        });
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                    }
+                });
+            });
+        }else{
+
+        }
 
     }
     else if (fullPath.includes('roles')) {

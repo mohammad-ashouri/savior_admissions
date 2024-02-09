@@ -184,7 +184,7 @@ class ApplicationTimingController extends Controller
         $me = User::find(session('id'));
         $applicationTiming = [];
         if ($me->hasRole('Super Admin')) {
-            $applicationTiming = ApplicationTiming::with('interviews')->find($id);
+            $applicationTiming = ApplicationTiming::with('applications')->find($id);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
@@ -192,7 +192,7 @@ class ApplicationTimingController extends Controller
                 $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
                 $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
                 $applicationTiming = ApplicationTiming::with('academicYearInfo')
-                    ->with('interviews')
+                    ->with('applications')
                     ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                     ->whereIn('academic_years.school_id', $filteredArray)
                     ->where('application_timings.id', $id)

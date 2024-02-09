@@ -101,7 +101,9 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('Childes', StudentController::class);
     Route::resource('Applications', ApplicationController::class);
     Route::post('Applications/RemoveFromReserve/{id}', [ApplicationController::class, 'removeFromReserve']);
-    Route::post('Applications/ChangeInterviewStatus/{id}', [ApplicationController::class, 'changeInterviewStatus']);
+    Route::post('Applications/ChangeInterviewStatus/{id}', [ApplicationController::class, 'changeApplicationStatus']);
+    Route::get('GetAcademicYearsByLevel', [ApplicationController::class, 'getAcademicYearsByLevel']);
+    Route::get('GetApplicationsByAcademicYear', [ApplicationController::class, 'getApplicationsByAcademicYear']);
 
     Route::post('student/change_information', [StudentController::class, 'changeInformation']);
 

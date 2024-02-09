@@ -28,6 +28,12 @@ class AcademicYear extends Model
         'deleted_at' => 'datetime',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function schoolInfo()
     {
         return $this->belongsTo(School::class, 'school_id', 'id');

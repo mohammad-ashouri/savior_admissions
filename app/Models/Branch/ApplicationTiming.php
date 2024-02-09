@@ -31,12 +31,18 @@ class ApplicationTiming extends Model
         'deleted_at' => 'datetime',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
     public function academicYearInfo()
     {
         return $this->belongsTo(AcademicYear::class, 'academic_year', 'id');
     }
 
-    public function interviews()
+    public function applications()
     {
         return $this->hasMany(Applications::class,'application_timing_id');
     }
