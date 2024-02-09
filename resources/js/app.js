@@ -594,11 +594,11 @@ $(document).ready(function () {
             });
         });
 
-        $('.RemoveReservation').submit(function (e) {
+        $('.RemoveApplicationReservation').submit(function (e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'The interview selected by you will be changed to unreserved!',
+                text: 'The application selected by you will be changed to unreserved!',
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'No',
@@ -610,11 +610,11 @@ $(document).ready(function () {
             });
         });
 
-        $('.ChangeInterviewStatus').submit(function (e) {
+        $('.ChangeApplicationStatus').submit(function (e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'Your interview status will change!',
+                text: 'Your application status will change!',
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'No',
@@ -626,11 +626,11 @@ $(document).ready(function () {
             });
         });
 
-        $('.RemoveInterview').submit(function (e) {
+        $('.RemoveApplication').submit(function (e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'Interview selected by you can no longer be deleted!',
+                text: 'Application selected by you can no longer be deleted!',
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'No',
@@ -641,6 +641,25 @@ $(document).ready(function () {
                 }
             });
         });
+    }
+    else if (fullPath.includes('Applications')) {
+        pageTitle = 'Applications';
+        $('#new-education-type').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your education type will be added permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-education-type').off('submit').submit();
+                }
+            });
+        });
+
     }
     else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';

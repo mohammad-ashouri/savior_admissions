@@ -104,11 +104,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'application-timing-search']);
         Permission::create(['name' => 'application-timing-show']);
 
-        Permission::create(['name' => 'list-of-application-interviews']);
-        Permission::create(['name' => 'remove-interview-from-reserve']);
-        Permission::create(['name' => 'change-status-of-interview']);
-        Permission::create(['name' => 'remove-interview']);
-
         Permission::create(['name' => 'childes-list']);
         Permission::create(['name' => 'childes-create']);
         Permission::create(['name' => 'childes-edit']);
@@ -120,6 +115,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'new-application-reserve']);
         Permission::create(['name' => 'show-application-reserve']);
         Permission::create(['name' => 'edit-application-reserve']);
+        Permission::create(['name' => 'remove-application']);
+        Permission::create(['name' => 'change-status-of-application']);
+        Permission::create(['name' => 'remove-application-from-reserve']);
 
         //menus access
         Permission::create(['name' => 'catalogs-menu-access']);

@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Interview extends Model
+class Applications extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'interviews';
+    protected $table = 'applications';
 
     protected $fillable = [
         'application_timing_id',

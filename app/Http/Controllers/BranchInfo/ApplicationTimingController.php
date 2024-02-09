@@ -4,7 +4,7 @@ namespace App\Http\Controllers\BranchInfo;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch\ApplicationTiming;
-use App\Models\Branch\Interview;
+use App\Models\Branch\Applications;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\User;
 use App\Models\UserAccessInformation;
@@ -149,7 +149,7 @@ class ApplicationTimingController extends Controller
                         $currentDateTime = $startTime;
 
                         for ($i = 1; $i <= $totalSessions; $i++) {
-                            $interview = new Interview();
+                            $interview = new Applications();
                             $interview->application_timing_id = $applicationTiming->id;
                             $interview->date = $day;
                             $start_from = $currentDateTime->format('H:i');

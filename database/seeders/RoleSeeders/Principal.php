@@ -45,14 +45,13 @@ class Principal extends Seeder
             'application-timing-delete',
             'application-timing-search',
             'application-timing-show',
-            'list-of-application-interviews',
-            'remove-interview-from-reserve',
-            'change-status-of-interview',
-            'remove-interview',
             'applications-list',
             'new-application-reserve',
             'show-application-reserve',
             'edit-application-reserve',
+            'remove-application',
+            'change-status-of-application',
+            'remove-application-from-reserve',
         ]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\BranchInfo\AcademicYearClassController;
@@ -88,8 +89,6 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('ApplicationTimings', ApplicationTimingController::class);
     Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
     Route::resource('Interviews', InterviewController::class);
-    Route::post('Interviews/RemoveFromReserve/{id}', [InterviewController::class, 'removeFromReserve']);
-    Route::post('Interviews/ChangeInterviewStatus/{id}', [InterviewController::class, 'changeInterviewStatus']);
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
@@ -100,6 +99,9 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
 
     Route::resource('Childes', StudentController::class);
+    Route::resource('Applications', ApplicationController::class);
+    Route::post('Applications/RemoveFromReserve/{id}', [ApplicationController::class, 'removeFromReserve']);
+    Route::post('Applications/ChangeInterviewStatus/{id}', [ApplicationController::class, 'changeInterviewStatus']);
 
     Route::post('student/change_information', [StudentController::class, 'changeInformation']);
 

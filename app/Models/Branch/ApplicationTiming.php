@@ -38,6 +38,6 @@ class ApplicationTiming extends Model
 
     public function interviews()
     {
-        return $this->hasMany(Interview::class,'application_timing_id');
+        return $this->hasMany(Applications::class,'application_timing_id');
     }
 }

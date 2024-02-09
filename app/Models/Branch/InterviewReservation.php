@@ -10,11 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class InterviewReservation extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $table = 'interviews';
+    protected $table = 'interview_reservations';
 
     protected $fillable = [
         'interview_id',
-        'user_id',
+        'student_id',
+        'reservatore',
     ];
 
     protected $casts = [
@@ -25,10 +26,14 @@ class InterviewReservation extends Model
 
     public function interviewInfo()
     {
-        return $this->belongsTo(Interview::class, 'interview_id', 'id');
+        return $this->belongsTo(Applications::class, 'interview_id', 'id');
     }
-    public function userInfo()
+    public function studentInfo()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'student_id', 'id');
+    }
+    public function reservatoreInfo()
+    {
+        return $this->belongsTo(User::class, 'reservatore', 'id');
     }
 }

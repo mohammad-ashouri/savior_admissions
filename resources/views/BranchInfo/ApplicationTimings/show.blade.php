@@ -92,10 +92,10 @@
                 </div>
             </div>
         </div>
-        @can('list-of-application-interviews')
+        @can('applications-list')
         <div class="p-4 rounded-lg dark:border-gray-700">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium"> List Of Interviews Created</h1>
+                <h1 class="text-2xl font-medium"> List Of Applications Created</h1>
             </div>
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
@@ -188,7 +188,7 @@
                                                 $interviewerInfo=\App\Models\User::with('generalInformationInfo')->find($interview->interviewer);
                                             @endphp
                                             class="text-base font-semibold">
-                                            {{ $interviewerInfo->generalInformationInfo->first_name . " " . $interviewerInfo->last_name }}
+                                            {{ $interviewerInfo->generalInformationInfo->first_name . " " . $interviewerInfo->generalInformationInfo->last_name }}
                                         </div>
                                     </th>
                                     <th scope="row"
@@ -227,12 +227,12 @@
                                     <th scope="row"
                                         class="px-2 py-2 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex justify-center space-x-2">
-                                            @can('remove-interview-from-reserve')
+                                            @can('remove-application-from-reserve')
                                                 @if($interview->reserved==1)
                                                     <div
                                                         class="text-base font-semibold">
-                                                        <form class="RemoveReservation" method="post"
-                                                              action="/Interviews/RemoveFromReserve/{{ $interview->id }}">
+                                                        <form class="RemoveApplicationReservation" method="post"
+                                                              action="/Interviews/Applications/{{ $interview->id }}">
                                                             @csrf
                                                             <button type="submit" title="Remove From Reservation"
                                                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
@@ -243,11 +243,11 @@
                                                     </div>
                                                 @endif
                                             @endcan
-                                            @can('change-status-of-interview')
+                                            @can('change-status-of-application')
                                                 <div
                                                     class="text-base font-semibold">
-                                                    <form class="ChangeInterviewStatus" method="post"
-                                                          action="/Interviews/ChangeInterviewStatus/{{ $interview->id }}">
+                                                    <form class="ChangeApplicationStatus" method="post"
+                                                          action="/Applications/ChangeInterviewStatus/{{ $interview->id }}">
                                                         @csrf
                                                         @if($interview->status==1)
                                                             <button type="submit" title="Change Status Of Interview"
@@ -263,11 +263,11 @@
                                                     </form>
                                                 </div>
                                             @endcan
-                                            @can('remove-interview')
+                                            @can('remove-application')
                                                 <div
                                                     class="text-base font-semibold">
-                                                    <form class="RemoveInterview" method="post"
-                                                          action="/Interviews/{{ $interview->id }}">
+                                                    <form class="RemoveApplication" method="post"
+                                                          action="/Applications/{{ $interview->id }}">
                                                         @csrf
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button type="submit" title="Remove Interview"

@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('interview_id');
             $table->foreign('interview_id')->references('id')->on('interviews');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('id')->on('users');
+            $table->unsignedBigInteger('reservatore');
+            $table->foreign('reservatore')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
