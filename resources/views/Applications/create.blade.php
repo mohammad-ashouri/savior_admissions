@@ -28,7 +28,7 @@
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <form id="new-child" method="post" action="{{route('Childes.store')}}">
+                        <form id="application-payment" method="post" action="/ApplicationPayment">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
@@ -85,8 +85,8 @@
                                 </select>
                             </div>
                             <button type="submit"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Save
+                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                Pay
                             </button>
                             <a href="/Applications">
                                 <button type="button"

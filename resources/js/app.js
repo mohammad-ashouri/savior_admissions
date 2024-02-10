@@ -646,6 +646,7 @@ $(document).ready(function () {
         pageTitle = 'Applications';
 
         if (fullPath.includes('Applications/create')){
+            resetAllSelectValues();
             $('#level').change(function (e) {
                 $.ajax({
                     type: 'GET',
@@ -691,6 +692,21 @@ $(document).ready(function () {
                         $.each(response, function (index, date_and_time) {
                             selectDateAndTime.append('<option value="' + date_and_time.id + '">' + date_and_time.date + " - " + date_and_time.start_from + " - " + date_and_time.ends_to + '</option>');
                         });
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                    }
+                });
+            });
+
+            $('#date_and_time').change(function (e) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/CheckDateAndTimeToBeFreeApplication',
+                    data: {
+                        application:$(this).val()
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, error: function (xhr, textStatus, errorThrown) {
                         swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
                     }

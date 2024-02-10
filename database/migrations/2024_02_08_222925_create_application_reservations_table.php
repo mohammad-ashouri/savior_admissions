@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('interview_reservations', function (Blueprint $table) {
+        Schema::create('application_reservations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('application_id');
             $table->foreign('application_id')->references('id')->on('applications');
@@ -19,6 +19,9 @@ return new class extends Migration
             $table->foreign('student_id')->references('id')->on('users');
             $table->unsignedBigInteger('reservatore');
             $table->foreign('reservatore')->references('id')->on('users');
+            $table->unsignedBigInteger('level');
+            $table->foreign('level')->references('id')->on('levels');
+            $table->boolean('payment_status')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('interview_reservations');
+        Schema::dropIfExists('application_reservations');
     }
 };

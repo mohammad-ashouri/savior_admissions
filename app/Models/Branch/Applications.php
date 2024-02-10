@@ -30,6 +30,12 @@ class Applications extends Model
         'deleted_at' => 'datetime',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
     public function applicationTimingInfo()
     {
         return $this->belongsTo(ApplicationTiming::class, 'application_timing_id', 'id');

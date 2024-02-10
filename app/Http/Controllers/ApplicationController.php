@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
-use App\Models\Branch\InterviewReservation;
+use App\Models\Branch\ApplicationReservation;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\StudentInformation;
@@ -32,9 +32,9 @@ class ApplicationController extends Controller
         $applications = [];
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $myChildes = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
-            $applications = InterviewReservation::with('interviewInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myChildes)->paginate(30);
+            $applications = ApplicationReservation::with('interviewInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myChildes)->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
-            $applications = InterviewReservation::with('interviewInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
+            $applications = ApplicationReservation::with('interviewInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
         }
 
         if (empty($applications)) {
@@ -201,5 +201,77 @@ class ApplicationController extends Controller
             ->get();
 
         return $applicationTimings;
+    }
+
+    public function checkDateAndTimeToBeFreeApplication(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'application' => 'required|exists:applications,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Error on choosing application!'], 422);
+        }
+
+        $application = $request->application;
+        $applicationCheck = Applications::where('status', 1)->where('reserved', 0)->find($application);
+        if (empty($applicationCheck)) {
+            return response()->json(['error' => 'Unfortunately, the selected application was reserved a few minutes ago. Please choose another application'], 422);
+        }
+        return 0;
+    }
+
+    public function preparationForApplicationPayment(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'date_and_time' => 'required|exists:applications,id',
+            'academic_year' => 'required|exists:academic_years,id',
+            'level' => 'required|exists:levels,id',
+            'child' => 'required|exists:student_informations,id',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $me=User::find(session('id'));
+        $child=$request->child;
+        $level=$request->level;
+        $academic_year=$request->academic_year;
+        $dateAndTime=$request->date_and_time;
+
+        $childInfo=StudentInformation::where('guardian',$me->id)->where('id',$child)->first();
+
+        if (empty($childInfo)){
+            abort(403);
+        }
+
+        $academicYearInfo=AcademicYear::whereJsonContains('levels',$level)->find($academic_year);
+        if (empty($academicYearInfo)){
+            abort(403);
+        }
+
+        $applicationCheck = Applications::where('status', 1)->where('reserved', 0)->find($dateAndTime);
+        if (empty($applicationCheck)) {
+            return redirect()->back()->withErrors('Unfortunately, the selected application was reserved a few minutes ago. Please choose another application')->withInput();
+        }
+
+        $applicationReservation=new ApplicationReservation();
+        $applicationReservation->application_id=$dateAndTime;
+        $applicationReservation->student_id=$child;
+        $applicationReservation->reservatore=$me->id;
+        $applicationReservation->level=$level;
+
+        if ($applicationReservation->save()){
+            $applications=Applications::find($dateAndTime);
+            $applications->reserved=1;
+            $applications->save();
+        }
+
+        return view('Applications.application_payment',compact('applicationCheck'));
+    }
+
+    public function payApplicationFee(Request $request)
+    {
+
     }
 }
