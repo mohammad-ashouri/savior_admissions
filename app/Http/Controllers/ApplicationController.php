@@ -7,6 +7,7 @@ use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
+use App\Models\Catalogs\PaymentMethod;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
@@ -277,7 +278,7 @@ class ApplicationController extends Controller
         $me = User::find(session('id'));
 
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
-            $checkApplication = ApplicationReservation::where('reservatore', $me->id)->find($application_id);
+            $checkApplication = ApplicationReservation::with('applicationInfo')->where('reservatore', $me->id)->find($application_id);
             if (empty($checkApplication)) {
                 abort(403);
             }
@@ -285,7 +286,8 @@ class ApplicationController extends Controller
         $createdAt = $checkApplication->created_at;
 
         $deadline = Carbon::parse($createdAt)->addHour()->toDateTimeString();
-        return view('Applications.application_payment', compact('checkApplication','deadline'));
+        $paymentMethods=PaymentMethod::where('status',1)->get();
+        return view('Applications.application_payment', compact('checkApplication','deadline','paymentMethods'));
     }
 
     public function payApplicationFee(Request $request)

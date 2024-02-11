@@ -645,6 +645,8 @@ $(document).ready(function () {
     }
     else if (fullPath.includes('PrepareToPayApplication')) {
         pageTitle = 'Pay Application';
+        resetAllSelectValues();
+        resetAllInputValues();
 
         var dateTimeString = document.getElementById('deadline').innerText;
         var now = new Date();
@@ -668,6 +670,34 @@ $(document).ready(function () {
         }
 
         let timerInterval = setInterval(countdownTimer, 1000);
+
+        $('#payment_method').change(function () {
+            if ($(this).val() === '1') {
+                $('#offline_payment_div').show();
+                $('#online_payment_div').hide();
+            }else if ($(this).val() === '2'){
+                $('#online_payment_div').show();
+                $('#offline_payment_div').hide();
+            }
+        });
+
+        $('#document_file').change(function () {
+            const fileInput = $('#document_file');
+            const imagePreview = $('#image_preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
 
     }
     else if (fullPath.includes('Applications')) {
