@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('payment_information');
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
