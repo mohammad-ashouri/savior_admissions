@@ -8,6 +8,8 @@ use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\PaymentMethod;
+use App\Models\Document;
+use App\Models\Payments\ApplicationReservationsInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
@@ -292,6 +294,55 @@ class ApplicationController extends Controller
 
     public function payApplicationFee(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'payment_method' => 'required|exists:payment_methods,id',
+            'id' => 'required|exists:application_reservations,id',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
+        $applicationInformation=ApplicationReservation::find($request->id);
+
+        switch ($request->payment_method){
+            case 1:
+                $validator = Validator::make($request->all(), [
+                    'document_file' => 'required|file|mimes:jpg,bmp,pdf,jpeg,png',
+                ]);
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+
+                $path = $request->file('document_file')->store('public/uploads/Documents/' . session('id'));
+
+                $document=new Document();
+                $document->user_id=$applicationInformation->student_id;
+                $document->document_type_id=243;
+                $document->src=$path;
+                $document->save();
+
+                if ($document){
+                    $applicationReservationInvoice=new ApplicationReservationsInvoices();
+                    $applicationReservationInvoice->a_reservation_id=$request->id;
+                    $applicationReservationInvoice->payment_information=json_encode([
+                        "payment_method"=>$request->payment_method,
+                        "document_id"=>$document->id
+                    ],true);
+                    $applicationReservationInvoice->description=$request->description;
+                    $applicationReservationInvoice->save();
+
+                    if ($applicationReservationInvoice){
+                        $applicationInformation->payment_status=2; //For Pending
+                        $applicationInformation->save();
+
+                        return redirect()->route('Applications.index')->with('success', 'Application reserved successfully!');
+                    }
+                }
+                break;
+            case 2:
+                break;
+            default:
+                abort(403);
+        }
     }
 }

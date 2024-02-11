@@ -14,7 +14,7 @@ function swalFire(title = null, text, icon, confirmButtonText) {
 }
 
 function resetAllInputValues(){
-    $('input:not([name="_token"])').each(function() {
+    $('input:not([name="_token"]):not([name="id"])').each(function() {
         $(this).val(null);
     });
 }
