@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class UnreserveApplications extends Command
@@ -39,6 +40,20 @@ class UnreserveApplications extends Command
             $application->reserved=0;
             $application->save();
             ApplicationReservation::find($applicationReservation->id)->delete();
+        }
+
+        $today = Carbon::today();
+
+        $applications = Applications::where('status', 1)
+            ->where('date', '<', $today)
+            ->where('reserved', 0)
+            ->where('status', 1)
+            ->select('id', 'date')
+            ->get();
+
+        foreach ($applications as $application) {
+            $application->status = 0;
+            $application->save();
         }
     }
 }
