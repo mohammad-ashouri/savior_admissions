@@ -71,11 +71,11 @@
                             </div>
                             <div>
                                 <p class="font-bold">Interviewers: </p>
-                                @foreach(json_decode($applicationTiming->interviewers,true) as $interviewer)
+                                @foreach(json_decode($applicationTiming->interviewers,true) as $applicationer)
                                     @php
-                                        $interviewerInfo=\App\Models\User::with('generalInformationInfo')->find($interviewer);
+                                        $applicationerInfo=\App\Models\User::with('generalInformationInfo')->find($applicationer);
                                     @endphp
-                                    * {{ $interviewerInfo->generalInformationInfo->first_name . " " . $interviewerInfo->last_name }}<br/>
+                                    * {{ $applicationerInfo->generalInformationInfo->first_name . " " . $applicationerInfo->last_name }}<br/>
                                 @endforeach
                             </div>
                             <div>
@@ -152,7 +152,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($applicationTiming->applications as $interview)
+                            @foreach($applicationTiming->applications as $application)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 pl-4">
@@ -164,40 +164,40 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            {{ $interview->date }}
+                                            {{ $application->date }}
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            {{ $interview->start_from }}
+                                            {{ $application->start_from }}
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            {{ $interview->ends_to }}
+                                            {{ $application->ends_to }}
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             @php
-                                                $interviewerInfo=\App\Models\User::with('generalInformationInfo')->find($interview->interviewer);
+                                                $applicationerInfo=\App\Models\User::with('generalInformationInfo')->find($application->interviewer);
                                             @endphp
                                             class="text-base font-semibold">
-                                            {{ $interviewerInfo->generalInformationInfo->first_name . " " . $interviewerInfo->generalInformationInfo->last_name }}
+                                            {{ $applicationerInfo->generalInformationInfo->first_name . " " . $applicationerInfo->generalInformationInfo->last_name }}
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            @if($interview->reserved==0)
+                                            @if($application->reserved==0)
                                                 No
-                                            @elseif($interview->reserved==1)
+                                            @elseif($application->reserved==1)
                                                 Yes
                                             @endif
                                         </div>
@@ -206,9 +206,9 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            @if($interview->Interviewed==0)
+                                            @if($application->Interviewed==0)
                                                 No
-                                            @elseif($interview->Interviewed==1)
+                                            @elseif($application->Interviewed==1)
                                                 Yes
                                             @endif
                                         </div>
@@ -217,9 +217,9 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            @if($interview->status==0)
+                                            @if($application->status==0)
                                                 <p class="text-red-400">Deactive</p>
-                                            @elseif($interview->status==1)
+                                            @elseif($application->status==1)
                                                 <p class="text-green-400">Active</p>
                                             @endif
                                         </div>
@@ -228,11 +228,11 @@
                                         class="px-2 py-2 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex justify-center space-x-2">
                                             @can('remove-application-from-reserve')
-                                                @if($interview->reserved==1)
+                                                @if($application->reserved==1)
                                                     <div
                                                         class="text-base font-semibold">
                                                         <form class="RemoveApplicationReservation" method="post"
-                                                              action="/Interviews/Applications/{{ $interview->id }}">
+                                                              action="/Applications/RemoveFromReserve/{{ $application->id }}">
                                                             @csrf
                                                             <button type="submit" title="Remove From Reservation"
                                                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
@@ -247,9 +247,9 @@
                                                 <div
                                                     class="text-base font-semibold">
                                                     <form class="ChangeApplicationStatus" method="post"
-                                                          action="/Applications/ChangeInterviewStatus/{{ $interview->id }}">
+                                                          action="/Applications/ChangeInterviewStatus/{{ $application->id }}">
                                                         @csrf
-                                                        @if($interview->status==1)
+                                                        @if($application->status==1)
                                                             <button type="submit" title="Change Status Of Interview"
                                                                     class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
                                                                 <i class="las la-eye-slash" style="font-size: 22px"></i>
@@ -267,7 +267,7 @@
                                                 <div
                                                     class="text-base font-semibold">
                                                     <form class="RemoveApplication" method="post"
-                                                          action="/Applications/{{ $interview->id }}">
+                                                          action="/Applications/{{ $application->id }}">
                                                         @csrf
                                                         <input name="_method" type="hidden" value="DELETE">
                                                         <button type="submit" title="Remove Interview"

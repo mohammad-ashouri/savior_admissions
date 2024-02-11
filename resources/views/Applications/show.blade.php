@@ -86,8 +86,15 @@
                                 @endswitch
                             </div>
                             <div>
-                                <p class="font-bold"> Paid at: </p> {{$applicationInfo->applicationInvoiceInfo->created_at}}
+                                <p class="font-bold"> Paid
+                                    at: </p> {{$applicationInfo->applicationInvoiceInfo->created_at}}
                             </div>
+                            @if($applicationInfo->applicationInvoiceInfo->description)
+                                <div>
+                                    <p class="font-bold">
+                                        Description: </p> {{$applicationInfo->applicationInvoiceInfo->description}}
+                                </div>
+                            @endif
                         </div>
                         <div>
                             <div class="mb-2">

@@ -599,7 +599,7 @@ $(document).ready(function () {
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'The application selected by you will be changed to unreserved!',
+                text: 'The application selected by you will be unreserved and its payment information will be deleted forever!',
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'No',

@@ -175,7 +175,7 @@ class ApplicationController extends Controller
                 $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
                 $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
                 $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
-                    ->with('interviews')
+                    ->with('applications')
                     ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                     ->join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
                     ->whereIn('academic_years.school_id', $filteredArray)
@@ -192,7 +192,10 @@ class ApplicationController extends Controller
         $removeApplicationReserve = Applications::find($id);
         $removeApplicationReserve->reserved = 0;
 
-        if (! $removeApplicationReserve->save()) {
+        $applicationReservations=ApplicationReservation::where('application_id',$removeApplicationReserve->id)->first();
+        $applicationReservationInvoice=ApplicationReservationsInvoices::where('a_reservation_id',$applicationReservations->id)->delete();
+        $applicationReservations->delete();
+        if (! $removeApplicationReserve->save() or ! $applicationReservations or !$applicationReservationInvoice) {
             return redirect()->back()
                 ->withErrors(['errors' => 'Remove Application Reservation Failed!']);
         }
