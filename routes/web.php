@@ -106,6 +106,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('GetApplicationsByAcademicYear', [ApplicationController::class, 'getApplicationsByAcademicYear']);
     Route::get('CheckDateAndTimeToBeFreeApplication', [ApplicationController::class, 'checkDateAndTimeToBeFreeApplication']);
     Route::post('ApplicationPayment', [ApplicationController::class, 'preparationForApplicationPayment']);
+    Route::get('PrepareToPayApplication/{application_id}', [ApplicationController::class, 'prepareToPay'])->name('PrepareToPayApplication');
     Route::get('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
 
     Route::post('student/change_information', [StudentController::class, 'changeInformation']);

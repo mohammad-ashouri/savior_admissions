@@ -117,28 +117,28 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->interviewInfo->date }}</div>
+                                                class="text-base font-semibold">{{ $application->applicationInfo->date }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->interviewInfo->start_from }}</div>
+                                                class="text-base font-semibold">{{ $application->applicationInfo->start_from }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->interviewInfo->ends_to }}</div>
+                                                class="text-base font-semibold">{{ $application->applicationInfo->ends_to }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->interviewInfo->interviewerInfo->generalInformationInfo->first_name }} {{ $application->interviewInfo->interviewerInfo->generalInformationInfo->last_name }}</div>
+                                                class="text-base font-semibold">{{ $application->applicationInfo->interviewerInfo->generalInformationInfo->first_name }} {{ $application->applicationInfo->interviewerInfo->generalInformationInfo->last_name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
@@ -160,6 +160,16 @@
                                                 Details
                                             </a>
                                         @endcan
+                                        @if($application->payment_status==0)
+                                        <a href="PrepareToPayApplication/{{$application->id}}"
+                                           type="button"
+                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                            <div class="text-center">
+                                                <i class="las la-eye "></i>
+                                            </div>
+                                            Pay
+                                        </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

@@ -33,9 +33,9 @@ class ApplicationReservation extends Model
         'deleted_at',
     ];
 
-    public function interviewInfo()
+    public function applicationInfo()
     {
-        return $this->belongsTo(Applications::class, 'interview_id', 'id');
+        return $this->belongsTo(Applications::class, 'application_id', 'id');
     }
 
     public function studentInfo()

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
-use App\Models\Branch\ApplicationReservation;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,9 +33,9 @@ class ApplicationController extends Controller
         $applications = [];
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $myChildes = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
-            $applications = ApplicationReservation::with('interviewInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myChildes)->paginate(30);
+            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myChildes)->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
-            $applications = ApplicationReservation::with('interviewInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
+            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
         }
 
         if (empty($applications)) {
@@ -217,6 +218,7 @@ class ApplicationController extends Controller
         if (empty($applicationCheck)) {
             return response()->json(['error' => 'Unfortunately, the selected application was reserved a few minutes ago. Please choose another application'], 422);
         }
+
         return 0;
     }
 
@@ -233,20 +235,20 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $me=User::find(session('id'));
-        $child=$request->child;
-        $level=$request->level;
-        $academic_year=$request->academic_year;
-        $dateAndTime=$request->date_and_time;
+        $me = User::find(session('id'));
+        $child = $request->child;
+        $level = $request->level;
+        $academic_year = $request->academic_year;
+        $dateAndTime = $request->date_and_time;
 
-        $childInfo=StudentInformation::where('guardian',$me->id)->where('id',$child)->first();
+        $childInfo = StudentInformation::where('guardian', $me->id)->where('id', $child)->first();
 
-        if (empty($childInfo)){
+        if (empty($childInfo)) {
             abort(403);
         }
 
-        $academicYearInfo=AcademicYear::whereJsonContains('levels',$level)->find($academic_year);
-        if (empty($academicYearInfo)){
+        $academicYearInfo = AcademicYear::whereJsonContains('levels', $level)->find($academic_year);
+        if (empty($academicYearInfo)) {
             abort(403);
         }
 
@@ -255,19 +257,35 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors('Unfortunately, the selected application was reserved a few minutes ago. Please choose another application')->withInput();
         }
 
-        $applicationReservation=new ApplicationReservation();
-        $applicationReservation->application_id=$dateAndTime;
-        $applicationReservation->student_id=$child;
-        $applicationReservation->reservatore=$me->id;
-        $applicationReservation->level=$level;
+        $applicationReservation = new ApplicationReservation();
+        $applicationReservation->application_id = $dateAndTime;
+        $applicationReservation->student_id = $childInfo->student_id;
+        $applicationReservation->reservatore = $me->id;
+        $applicationReservation->level = $level;
 
-        if ($applicationReservation->save()){
-            $applications=Applications::find($dateAndTime);
-            $applications->reserved=1;
+        if ($applicationReservation->save()) {
+            $applications = Applications::find($dateAndTime);
+            $applications->reserved = 1;
             $applications->save();
         }
 
-        return view('Applications.application_payment',compact('applicationCheck'));
+        return redirect()->route('PrepareToPayApplication', $applicationReservation->id);
+    }
+
+    public function prepareToPay($application_id)
+    {
+        $me = User::find(session('id'));
+
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+            $checkApplication = ApplicationReservation::where('reservatore', $me->id)->find($application_id);
+            if (empty($checkApplication)) {
+                abort(403);
+            }
+        }
+        $createdAt = $checkApplication->created_at;
+
+        $deadline = Carbon::parse($createdAt)->addHour()->toDateTimeString();
+        return view('Applications.application_payment', compact('checkApplication','deadline'));
     }
 
     public function payApplicationFee(Request $request)

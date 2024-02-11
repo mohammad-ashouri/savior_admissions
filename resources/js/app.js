@@ -3,7 +3,8 @@ import 'flowbite';
 import $ from 'jquery';
 import Swal from 'sweetalert2';
 import 'ionicons';
-
+import moment from 'moment';
+window.moment = moment;
 window.Swal = Swal;
 
 function swalFire(title = null, text, icon, confirmButtonText) {
@@ -641,6 +642,33 @@ $(document).ready(function () {
                 }
             });
         });
+    }
+    else if (fullPath.includes('PrepareToPayApplication')) {
+        pageTitle = 'Pay Application';
+
+        var dateTimeString = document.getElementById('deadline').innerText;
+        var now = new Date();
+        var deadline = new Date(dateTimeString);
+        var remainingTime = (deadline - now) / 1000;
+
+        function countdownTimer() {
+            var hours = Math.floor(remainingTime / 3600);
+            var minutes = Math.floor((remainingTime % 3600) / 60);
+            var seconds = Math.floor(remainingTime % 60);
+
+            var timerElement = document.getElementById('timer');
+            timerElement.innerText = hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+
+            remainingTime--;
+
+            if (remainingTime < 0) {
+                clearInterval(timerInterval);
+                window.location.href = '/Applications';
+            }
+        }
+
+        let timerInterval = setInterval(countdownTimer, 1000);
+
     }
     else if (fullPath.includes('Applications')) {
         pageTitle = 'Applications';
