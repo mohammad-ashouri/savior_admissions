@@ -46,16 +46,23 @@ class ApplicationController extends Controller
             $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
             $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
 
-            // Retrieve academic years associated with the accesses
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
-            // Convert the 'id' column to an array
-            $academicYearIds = $academicYears->pluck('id')->toArray();
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
 
-            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYearIds)->pluck('id')->all();
-            $applications = Applications::whereIn('application_timing_id', $applicationTimings)->pluck('id')->all();
-            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('application_id', $applications)->paginate(30);
+            // Finding applications related to the application timings
+            $applications = Applications::whereIn('application_timing_id', $applicationTimings)
+                ->pluck('id')
+                ->toArray();
 
+            // Getting reservations of applications along with related information
+            $applications = ApplicationReservation::with('applicationInfo')
+                ->with('studentInfo')
+                ->with('reservatoreInfo')
+                ->whereIn('application_id', $applications)
+                ->paginate(30);
         }
 
         if (empty($applications)) {
@@ -90,6 +97,33 @@ class ApplicationController extends Controller
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myChildes)->where('id', $id)->first();
         } elseif ($me->hasRole('Super Admin')) {
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();
+        }elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $applications = Applications::whereIn('application_timing_id', $applicationTimings)
+                ->pluck('id')
+                ->toArray();
+
+            // Getting reservations of applications along with related information
+            $applicationInfo = ApplicationReservation::with('applicationInfo')
+                ->with('studentInfo')
+                ->with('reservatoreInfo')
+                ->whereIn('application_id', $applications)
+                ->where('id',$id)->first();
+            if (empty($applicationInfo)){
+                abort(403);
+            }
         }
 
         return view('Applications.show', compact('applicationInfo'));
