@@ -2,6 +2,8 @@
 
 namespace App\Models\Branch;
 
+use App\Models\Catalogs\Level;
+use App\Models\Payments\ApplicationReservationsInvoices;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,5 +48,13 @@ class ApplicationReservation extends Model
     public function reservatoreInfo()
     {
         return $this->belongsTo(User::class, 'reservatore', 'id');
+    }
+    public function applicationInvoiceInfo()
+    {
+        return $this->belongsTo(ApplicationReservationsInvoices::class, 'id', 'a_reservation_id');
+    }
+    public function levelInfo()
+    {
+        return $this->belongsTo(Level::class, 'level', 'id');
     }
 }

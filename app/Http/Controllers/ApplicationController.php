@@ -39,6 +39,23 @@ class ApplicationController extends Controller
             $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myChildes)->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+
+            // Retrieve academic years associated with the accesses
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+
+            // Convert the 'id' column to an array
+            $academicYearIds = $academicYears->pluck('id')->toArray();
+
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYearIds)->pluck('id')->all();
+            $applications = Applications::whereIn('application_timing_id', $applicationTimings)->pluck('id')->all();
+            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('application_id', $applications)->paginate(30);
+
         }
 
         if (empty($applications)) {
@@ -58,6 +75,24 @@ class ApplicationController extends Controller
 
             return view('Applications.create', compact('myChildes', 'levels'));
         }
+    }
+
+    public function show($id)
+    {
+        $me = User::find(session('id'));
+        $applicationReservation = ApplicationReservation::find($id);
+        if (empty($applicationReservation)) {
+            abort(403);
+        }
+
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+            $myChildes = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myChildes)->where('id', $id)->first();
+        } elseif ($me->hasRole('Super Admin')) {
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();
+        }
+
+        return view('Applications.show', compact('applicationInfo'));
     }
 
     public function destroy($id)
@@ -288,8 +323,9 @@ class ApplicationController extends Controller
         $createdAt = $checkApplication->created_at;
 
         $deadline = Carbon::parse($createdAt)->addHour()->toDateTimeString();
-        $paymentMethods=PaymentMethod::where('status',1)->get();
-        return view('Applications.application_payment', compact('checkApplication','deadline','paymentMethods'));
+        $paymentMethods = PaymentMethod::where('status', 1)->get();
+
+        return view('Applications.application_payment', compact('checkApplication', 'deadline', 'paymentMethods'));
     }
 
     public function payApplicationFee(Request $request)
@@ -302,9 +338,9 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $applicationInformation=ApplicationReservation::find($request->id);
+        $applicationInformation = ApplicationReservation::find($request->id);
 
-        switch ($request->payment_method){
+        switch ($request->payment_method) {
             case 1:
                 $validator = Validator::make($request->all(), [
                     'document_file' => 'required|file|mimes:jpg,bmp,pdf,jpeg,png',
@@ -313,26 +349,26 @@ class ApplicationController extends Controller
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
 
-                $path = $request->file('document_file')->store('public/uploads/Documents/' . session('id'));
+                $path = $request->file('document_file')->store('public/uploads/Documents/'.session('id'));
 
-                $document=new Document();
-                $document->user_id=$applicationInformation->student_id;
-                $document->document_type_id=243;
-                $document->src=$path;
+                $document = new Document();
+                $document->user_id = $applicationInformation->student_id;
+                $document->document_type_id = 243;
+                $document->src = $path;
                 $document->save();
 
-                if ($document){
-                    $applicationReservationInvoice=new ApplicationReservationsInvoices();
-                    $applicationReservationInvoice->a_reservation_id=$request->id;
-                    $applicationReservationInvoice->payment_information=json_encode([
-                        "payment_method"=>$request->payment_method,
-                        "document_id"=>$document->id
-                    ],true);
-                    $applicationReservationInvoice->description=$request->description;
+                if ($document) {
+                    $applicationReservationInvoice = new ApplicationReservationsInvoices();
+                    $applicationReservationInvoice->a_reservation_id = $request->id;
+                    $applicationReservationInvoice->payment_information = json_encode([
+                        'payment_method' => $request->payment_method,
+                        'document_id' => $document->id,
+                    ], true);
+                    $applicationReservationInvoice->description = $request->description;
                     $applicationReservationInvoice->save();
 
-                    if ($applicationReservationInvoice){
-                        $applicationInformation->payment_status=2; //For Pending
+                    if ($applicationReservationInvoice) {
+                        $applicationInformation->payment_status = 2; //For Pending
                         $applicationInformation->save();
 
                         return redirect()->route('Applications.index')->with('success', 'Application reserved successfully!');
