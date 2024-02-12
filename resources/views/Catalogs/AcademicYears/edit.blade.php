@@ -77,7 +77,7 @@
                                         required>
                                     @foreach($levels as $level)
                                         <option
-                                            @if(is_array(old('levels')) and in_array($level->id, old('levels'))) selected
+                                            @if(is_array(old('levels')) and in_array($level->id, old('levels')) or in_array($level->id,json_decode($catalog->levels,true))) selected
                                             @endif value="{{ $level->id }}">{{ $level->name }}</option>
                                     @endforeach
                                 </select>
