@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Catalogs;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch\AcademicYearClass;
+use App\Models\Branch\Applications;
+use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\School;
@@ -184,7 +187,7 @@ class AcademicYearController extends Controller
         $interviewers = $request->input('Interviewer');
         $school = $request->school;
 
-        $results = DB::table('user_access_informations')->pluck('principal');
+        $results = UserAccessInformation::pluck('principal');
         foreach ($results as $result) {
             $values = explode('|', $result);
 
@@ -195,7 +198,7 @@ class AcademicYearController extends Controller
             }
             UserAccessInformation::where('principal', $result)->update(['principal' => implode('|', $values)]);
         }
-        $results = DB::table('user_access_informations')->pluck('admissions_officer');
+        $results = UserAccessInformation::pluck('admissions_officer');
         foreach ($results as $result) {
             $values = explode('|', $result);
 
@@ -206,7 +209,7 @@ class AcademicYearController extends Controller
             }
             UserAccessInformation::where('admissions_officer', $result)->update(['admissions_officer' => implode('|', $values)]);
         }
-        $results = DB::table('user_access_informations')->pluck('financial_manager');
+        $results = UserAccessInformation::pluck('financial_manager');
         foreach ($results as $result) {
             $values = explode('|', $result);
 
@@ -217,7 +220,7 @@ class AcademicYearController extends Controller
             }
             UserAccessInformation::where('financial_manager', $result)->update(['financial_manager' => implode('|', $values)]);
         }
-        $results = DB::table('user_access_informations')->pluck('interviewer');
+        $results = UserAccessInformation::pluck('interviewer');
         foreach ($results as $result) {
             $values = explode('|', $result);
 
@@ -307,6 +310,28 @@ class AcademicYearController extends Controller
         $catalog = AcademicYear::find($id);
         $catalog->name = $request->input('name');
         $catalog->status = $request->input('status');
+
+        $academicYearClasses=AcademicYearClass::where('academic_year',$catalog->id)->get();
+        foreach ($academicYearClasses as $academicYearClass){
+            $academicYearClass=AcademicYearClass::find($academicYearClass->id);
+            $academicYearClass->status=$catalog->status;
+            $academicYearClass->save();
+        }
+
+        $applicationTimings=ApplicationTiming::where('academic_year',$catalog->id)->get();
+        foreach ($applicationTimings as $applicationTiming){
+            $applicationTiming=ApplicationTiming::find($applicationTiming->id);
+            $applicationTiming->status=$catalog->status;
+            $applicationTiming->save();
+
+            $applications=Applications::where('application_timing_id',$applicationTiming->id)->where('reserved',0)->where('status',1)->get();
+            foreach ($applications as $application){
+                $application=Applications::find($application->id)->first();
+                $application->status=0;
+                $application->save();
+            }
+        }
+
         $catalog->start_date = $request->input('start_date');
         $catalog->end_date = $request->input('end_date');
         $catalog->levels = json_encode($request->input('levels'), true);
