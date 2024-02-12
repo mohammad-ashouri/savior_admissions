@@ -40,10 +40,10 @@
                                             title="Select child" required>
                                         <option selected disabled value="">Select child</option>
                                         @foreach($myChildes as $child)
-                                        <option @if(old('child')==$child->id) selected
-                                                @endif value="{{$child->id}}">
-                                            {{ $child->generalInformations->first_name }} {{ $child->generalInformations->last_name }}
-                                        </option>
+                                            <option @if(old('child')==$child->id) selected
+                                                    @endif value="{{$child->id}}">
+                                                {{ $child->generalInformations->first_name }} {{ $child->generalInformations->last_name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -56,10 +56,10 @@
                                             title="Select level" required>
                                         <option selected disabled value="">Select level</option>
                                         @foreach($levels as $level)
-                                        <option @if(old('level')==$level->id) selected
-                                                @endif value="{{$level->id}}">
-                                            {{ $level->name }}
-                                        </option>
+                                            <option @if(old('level')==$level->id) selected
+                                                    @endif value="{{$level->id}}">
+                                                {{ $level->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -88,7 +88,7 @@
                                     class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                 Next
                             </button>
-                            <a href="/Applications">
+                            <a href="{{ url()->previous() }}">
                                 <button type="button"
                                         class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                     Back

@@ -48,7 +48,8 @@
                                             title="Select school" required>
                                         <option selected disabled value="">Select school</option>
                                         @foreach($schools as $school)
-                                            <option @if(old('school')==$school->id) selected @endif value="{{$school->id}}">{{$school->name}}</option>
+                                            <option @if(old('school')==$school->id) selected
+                                                    @endif value="{{$school->id}}">{{$school->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -69,13 +70,15 @@
                                 <div>
                                     <label for="levels[]"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">Levels</label>
-                                        <select id="levels[]" name="levels[]" multiple="multiple"
-                                                class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                required>
-                                            @foreach($levels as $level)
-                                                <option @if(is_array(old('levels')) and in_array($level->id, old('levels'))) selected @endif value="{{ $level->id }}">{{ $level->name }}</option>
-                                            @endforeach
-                                        </select>
+                                    <select id="levels[]" name="levels[]" multiple="multiple"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                        @foreach($levels as $level)
+                                            <option
+                                                @if(is_array(old('levels')) and in_array($level->id, old('levels'))) selected
+                                                @endif value="{{ $level->id }}">{{ $level->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="grid gap-6 mb-6 md:grid-cols-1">
@@ -89,32 +92,49 @@
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         @foreach($users as $user)
-                                            @if(!$user->hasRole('Principal')) @continue @endif
-                                            <option @if(is_array(old('Principal')) and in_array($user->id,old('Principal'))) selected @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            @if(!$user->hasRole('Principal'))
+                                                @continue
+                                            @endif
+                                            <option
+                                                @if(is_array(old('Principal')) and in_array($user->id,old('Principal'))) selected
+                                                @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}
+                                                - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div>
                                     <label for="Admissions_Officer[]"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Admissions Officer(s)</label>
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Admissions
+                                        Officer(s)</label>
                                     <select id="Admissions_Officer[]" name="Admissions_Officer[]" multiple="multiple"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         @foreach($users as $user)
-                                            @if(!$user->hasRole('Admissions Officer')) @continue @endif
-                                            <option @if(is_array(old('Admissions_Officer')) and in_array($user->id,old('Admissions_Officer'))) selected @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            @if(!$user->hasRole('Admissions Officer'))
+                                                @continue
+                                            @endif
+                                            <option
+                                                @if(is_array(old('Admissions_Officer')) and in_array($user->id,old('Admissions_Officer'))) selected
+                                                @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}
+                                                - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div>
                                     <label for="Financial_Manager[]"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Financial Manager(s)</label>
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">Financial
+                                        Manager(s)</label>
                                     <select id="Financial_Manager[]" name="Financial_Manager[]" multiple="multiple"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         @foreach($users as $user)
-                                            @if(!$user->hasRole('Financial Manager')) @continue @endif
-                                            <option @if(is_array(old('Financial_Manager')) and in_array($user->id,old('Financial_Manager'))) selected @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            @if(!$user->hasRole('Financial Manager'))
+                                                @continue
+                                            @endif
+                                            <option
+                                                @if(is_array(old('Financial_Manager')) and in_array($user->id,old('Financial_Manager'))) selected
+                                                @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}
+                                                - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -125,8 +145,13 @@
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         @foreach($users as $user)
-                                            @if(!$user->hasRole('Interviewer')) @continue @endif
-                                            <option @if(is_array(old('Interviewer')) and in_array($user->id,old('Interviewer'))) selected @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }} - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            @if(!$user->hasRole('Interviewer'))
+                                                @continue
+                                            @endif
+                                            <option
+                                                @if(is_array(old('Interviewer')) and in_array($user->id,old('Interviewer'))) selected
+                                                @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}
+                                                - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -135,7 +160,7 @@
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Save
                             </button>
-                            <a href="/AcademicYears">
+                            <a href="{{ url()->previous() }}">
                                 <button type="button"
                                         class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                     Back
