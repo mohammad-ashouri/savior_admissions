@@ -158,7 +158,7 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $applicationTiming->fee . ' Rials' }}</div>
+                                                class="text-base font-semibold">{{ number_format($applicationTiming->fee) . ' Rials' }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
