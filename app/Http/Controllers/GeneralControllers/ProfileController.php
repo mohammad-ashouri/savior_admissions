@@ -74,8 +74,10 @@ class ProfileController extends Controller
     public function changeUserGeneralInformation(Request $request)
     {
         $this->validate($request, [
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            'first_name_fa' => 'required|string',
+            'last_name_fa' => 'required|string',
+            'first_name_en' => 'required|string',
+            'last_name_en' => 'required|string',
             'father_name' => 'required|string',
             'gender' => 'required|string',
             'Birthdate' => 'required|date',
@@ -96,8 +98,10 @@ class ProfileController extends Controller
         $input = $request->all();
         $user = User::find($input['user_id']);
         $userGeneralInformation = GeneralInformation::where('user_id', $user->id)->first();
-        $userGeneralInformation->first_name = $input['first_name'];
-        $userGeneralInformation->last_name = $input['last_name'];
+        $userGeneralInformation->first_name_fa = $input['first_name_fa'];
+        $userGeneralInformation->last_name_fa = $input['last_name_fa'];
+        $userGeneralInformation->first_name_en = $input['first_name_en'];
+        $userGeneralInformation->last_name_en = $input['last_name_en'];
         $userGeneralInformation->gender = $input['gender'];
         $userGeneralInformation->father_name = $input['father_name'];
         $userGeneralInformation->birthdate = $input['Birthdate'];

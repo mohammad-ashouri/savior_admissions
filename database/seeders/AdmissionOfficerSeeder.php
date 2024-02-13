@@ -25,8 +25,10 @@ class AdmissionOfficerSeeder extends Seeder
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name' => 'Hamid',
-                'last_name' => 'AdmissionOfficer',
+                'first_name_fa' => 'حمید',
+                'last_name_fa' => 'مدیر آموزش',
+                'first_name_en' => 'Hamid',
+                'last_name_en' => 'AdmissionOfficer',
             ]
         );
         $role = Role::where('name', 'Admissions Officer')->first();

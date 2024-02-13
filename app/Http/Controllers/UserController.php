@@ -85,8 +85,10 @@ class UserController extends Controller
     {
         $me = User::find(session('id'));
         $this->validate($request, [
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'first_name_fa' => 'required',
+            'last_name_fa' => 'required',
+            'first_name_en' => 'required',
+            'last_name_en' => 'required',
             'email' => 'required|email|unique:users,email',
             'mobile' => 'required|integer|unique:users,mobile',
             'password' => 'required|unique:users,mobile',
@@ -111,8 +113,10 @@ class UserController extends Controller
             GeneralInformation::create(
                 [
                     'user_id' => $user->id,
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
+                    'first_name_fa' => $request->first_name_fa,
+                    'last_name_fa' => $request->last_name_fa,
+                    'first_name_en' => $request->first_name_en,
+                    'last_name_en' => $request->last_name_en,
                 ]
             );
             $user->assignRole($request->input('role'));

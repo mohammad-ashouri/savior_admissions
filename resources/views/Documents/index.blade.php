@@ -8,7 +8,7 @@
                 <div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                         Documents of
-                        {{ $documentOwner->generalInformationInfo->first_name . ' ' . $documentOwner->generalInformationInfo->last_name }}
+                        {{ $documentOwner->generalInformationInfo->first_name_en . ' ' . $documentOwner->generalInformationInfo->last_name_en }}
                         with id
                         {{ $documentOwner->id }}
                     </h3>

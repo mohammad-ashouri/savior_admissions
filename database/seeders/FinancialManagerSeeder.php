@@ -25,8 +25,10 @@ class FinancialManagerSeeder extends Seeder
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name' => 'Amir',
-                'last_name' => 'Finance',
+                'first_name_fa' => 'امیر',
+                'last_name_fa' => 'مدیر مالی',
+                'first_name_en' => 'Amir',
+                'last_name_en' => 'Finance',
             ]
         );
         $role = Role::where('name', 'Financial Manager')->first();

@@ -16,7 +16,7 @@
                             </div>
                             <div>
                                 <p class="font-bold">Child
-                                    Information: </p>{{ $applicationInfo->studentInfo->generalInformationInfo->first_name }} {{ $applicationInfo->studentInfo->generalInformationInfo->last_name }}
+                                    Information: </p>{{ $applicationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->studentInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
                                 <p class="font-bold">Level: </p>{{ $applicationInfo->levelInfo->name }}
@@ -33,11 +33,11 @@
                             </div>
                             <div>
                                 <p class="font-bold"> Interviewer
-                                    : </p>{{ $applicationInfo->applicationInfo->interviewerInfo->generalInformationInfo->first_name }} {{ $applicationInfo->applicationInfo->interviewerInfo->generalInformationInfo->last_name }}
+                                    : </p>{{ $applicationInfo->applicationInfo->interviewerInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->applicationInfo->interviewerInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
                                 <p class="font-bold"> Reservatore
-                                    : </p>{{ $applicationInfo->reservatoreInfo->generalInformationInfo->first_name }} {{ $applicationInfo->reservatoreInfo->generalInformationInfo->last_name }}
+                                    : </p>{{ $applicationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}
                             </div>
                         </div>
                         <a href="{{ url()->previous() }}">

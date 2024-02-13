@@ -75,7 +75,7 @@
                                     @php
                                         $applicationerInfo=\App\Models\User::with('generalInformationInfo')->find($applicationer);
                                     @endphp
-                                    * {{ $applicationerInfo->generalInformationInfo->first_name . " " . $applicationerInfo->last_name }}
+                                    * {{ $applicationerInfo->generalInformationInfo->first_name_en . " " . $applicationerInfo->last_name_en }}
                                     <br/>
                                 @endforeach
                             </div>
@@ -189,7 +189,7 @@
                                                     $applicationerInfo=\App\Models\User::with('generalInformationInfo')->find($application->interviewer);
                                                 @endphp
                                                 class="text-base font-semibold">
-                                                {{ $applicationerInfo->generalInformationInfo->first_name . " " . $applicationerInfo->generalInformationInfo->last_name }}
+                                                {{ $applicationerInfo->generalInformationInfo->first_name_en . " " . $applicationerInfo->generalInformationInfo->last_name_en }}
                                             </div>
                                         </th>
                                         <th scope="row"

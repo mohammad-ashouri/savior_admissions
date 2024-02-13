@@ -25,8 +25,10 @@ class ParentFatherSeeder extends Seeder
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name' => 'Ali',
-                'last_name' => 'Father',
+                'first_name_fa' => 'علی',
+                'last_name_fa' => 'والدین(پدر)',
+                'first_name_en' => 'Ali',
+                'last_name_en' => 'Father',
             ]
         );
         $role = Role::where('name', 'Parent(Father)')->first();

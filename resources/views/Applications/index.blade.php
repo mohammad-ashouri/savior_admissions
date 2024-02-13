@@ -110,7 +110,7 @@
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
-                                            <div class="text-base font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name }} {{ $application->studentInfo->generalInformationInfo->last_name }}</div>
+                                            <div class="text-base font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
@@ -138,14 +138,14 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->interviewerInfo->generalInformationInfo->first_name }} {{ $application->applicationInfo->interviewerInfo->generalInformationInfo->last_name }}</div>
+                                                class="text-base font-semibold">{{ $application->applicationInfo->interviewerInfo->generalInformationInfo->first_name_en }} {{ $application->applicationInfo->interviewerInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->reservatoreInfo->generalInformationInfo->first_name }} {{ $application->reservatoreInfo->generalInformationInfo->last_name }}</div>
+                                                class="text-base font-semibold">{{ $application->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $application->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">

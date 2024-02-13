@@ -22,8 +22,10 @@ class PrincipalSeeder extends Seeder
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name' => 'Reza',
-                'last_name' => 'Ghanbari',
+                'first_name_fa' => 'رضا',
+                'last_name_fa' => 'قنبری',
+                'first_name_en' => 'Reza',
+                'last_name_en' => 'Ghanbari',
             ]
         );
         $role = Role::where('name', 'Principal')->first();

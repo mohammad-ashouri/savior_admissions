@@ -552,7 +552,7 @@ $(document).ready(function () {
                     selectInterviewer.empty();
                     resetAllInputValues();
                     $.each(response, function (index, Interviewer) {
-                        selectInterviewer.append('<option value="' + Interviewer.id + '">' + Interviewer.general_information_info.first_name + ' ' + Interviewer.general_information_info.last_name + '</option>');
+                        selectInterviewer.append('<option value="' + Interviewer.id + '">' + Interviewer.general_information_info.first_name_en + ' ' + Interviewer.general_information_info.last_name_en + '( ' +Interviewer.general_information_info.first_name_fa + ' ' + Interviewer.general_information_info.last_name_fa + ' )' + '</option>');
                     });
                 }, error: function (xhr, textStatus, errorThrown) {
                     swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');

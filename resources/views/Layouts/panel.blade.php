@@ -99,7 +99,7 @@
                         id="dropdown-user">
                         <div class="px-4 py-3" role="none">
                             <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                {{ $myInfo->generalInformationInfo->first_name }} {{ $myInfo->generalInformationInfo->last_name }}
+                                {{ $myInfo->generalInformationInfo->first_name_en }} {{ $myInfo->generalInformationInfo->last_name_en }}
                             </p>
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
                                 {{ $myInfo->email }}

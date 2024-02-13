@@ -42,7 +42,7 @@
                                         @foreach($myChildes as $child)
                                             <option @if(old('child')==$child->id) selected
                                                     @endif value="{{$child->id}}">
-                                                {{ $child->generalInformations->first_name }} {{ $child->generalInformations->last_name }}
+                                                {{ $child->generalInformations->first_name_en }} {{ $child->generalInformations->last_name_en }}
                                             </option>
                                         @endforeach
                                     </select>

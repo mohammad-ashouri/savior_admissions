@@ -25,8 +25,10 @@ class SuperAdminSeeder extends Seeder
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name' => 'Mohammad',
-                'last_name' => 'Ashouri',
+                'first_name_fa' => 'محمد',
+                'last_name_fa' => 'عاشوری',
+                'first_name_en' => 'Mohammad',
+                'last_name_en' => 'Ashouri',
             ]
         );
         $role = Role::where('name', 'Super Admin')->first();

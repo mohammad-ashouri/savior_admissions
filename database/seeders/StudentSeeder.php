@@ -22,8 +22,10 @@ class StudentSeeder extends Seeder
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name' => 'Hamid',
-                'last_name' => 'Student',
+                'first_name_fa' => 'اکبر',
+                'last_name_fa' => 'دانش آموز',
+                'first_name_en' => 'Akbar',
+                'last_name_en' => 'Student',
             ]
         );
         $role = Role::where('name', 'Student')->first();

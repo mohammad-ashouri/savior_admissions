@@ -25,8 +25,10 @@ class InterviewerSeeder extends Seeder
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name' => 'Ali',
-                'last_name' => 'Interviewer',
+                'first_name_fa' => 'علی',
+                'last_name_fa' => 'مصاحبه گر',
+                'first_name_en' => 'Ali',
+                'last_name_en' => 'Interviewer',
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();

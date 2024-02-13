@@ -17,7 +17,7 @@
                                  src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
                                  alt="">
                             <div class="font-bold dark:text-white">
-                                <div class="text-l">{{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}</div>
+                                <div class="text-l">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}</div>
                             </div>
                         </div>
                         @can('access-user-role')
@@ -71,18 +71,34 @@
                         <form id="changeUserGeneralInformation">
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
-                                    <label for="first_name"
+                                    <label for="first_name_fa"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
-                                        name</label>
-                                    <input type="text" id="first_name" name="first_name" value="{{ $user->generalInformationInfo->first_name }}"
+                                        name (Persian)</label>
+                                    <input type="text" id="first_name_fa" name="first_name_fa" value="{{ $user->generalInformationInfo->first_name_fa }}"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           required>
+                                </div>
+                                <div>
+                                    <label for="last_name_fa"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
+                                        name (Persian)</label>
+                                    <input type="text" id="last_name_fa" name="last_name_fa" value="{{ $user->generalInformationInfo->last_name_fa }}"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           required>
+                                </div>
+                                <div>
+                                    <label for="first_name_en"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
+                                        name (English)</label>
+                                    <input type="text" id="first_name_en" name="first_name_en" value="{{ $user->generalInformationInfo->first_name_en }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="John" required>
                                 </div>
                                 <div>
-                                    <label for="last_name"
+                                    <label for="last_name_en"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
-                                        name</label>
-                                    <input type="text" id="last_name" name="last_name" value="{{ $user->generalInformationInfo->last_name }}"
+                                        name (English)</label>
+                                    <input type="text" id="last_name_en" name="last_name_en" value="{{ $user->generalInformationInfo->last_name_en }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Doe" required>
                                 </div>
@@ -325,7 +341,7 @@
                                                 <option
                                                     @if(!empty($studentInformation) and $studentInformation->guardian==$guardian->id) selected
                                                     @endif
-                                                    value="{{$guardian->id}}">{{ $guardian->id . " - " . $guardian->generalInformationInfo->first_name . " " . $guardian->generalInformationInfo->last_name }}</option>
+                                                    value="{{$guardian->id}}">{{ $guardian->id . " - " . $guardian->generalInformationInfo->first_name_en . " " . $guardian->generalInformationInfo->last_name_en }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
@@ -360,7 +376,7 @@
                                                 <option
                                                     @if(!empty($studentInformation) and $studentInformation->parent_father_id==$father->id) selected
                                                     @endif
-                                                    value="{{$father->id}}">{{ $father->id . " - " . $father->generalInformationInfo->first_name . " " . $father->generalInformationInfo->last_name }}</option>
+                                                    value="{{$father->id}}">{{ $father->id . " - " . $father->generalInformationInfo->first_name_en . " " . $father->generalInformationInfo->last_name_en }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
@@ -378,7 +394,7 @@
                                                 <option
                                                     @if(!empty($studentInformation) and $studentInformation->parent_mother_id==$mother->id) selected
                                                     @endif
-                                                    value="{{$mother->id}}">{{ $mother->id . " - " . $mother->generalInformationInfo->first_name . " " . $mother->generalInformationInfo->last_name }}</option>
+                                                    value="{{$mother->id}}">{{ $mother->id . " - " . $mother->generalInformationInfo->first_name_en . " " . $mother->generalInformationInfo->last_name_en }}</option>
                                             @endforeach
                                         @endforeach
                                     </select>
