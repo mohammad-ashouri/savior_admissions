@@ -8,7 +8,7 @@
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 Dear
-                {{ $myInfo->generalInformationInfo->first_name }} {{ $myInfo->generalInformationInfo->last_name }}
+                {{ $myInfo->generalInformationInfo->first_name_en }} {{ $myInfo->generalInformationInfo->last_name_en }}
                 . Welcome to savior school panel
             </div>
             <div class="grid grid-cols-3 gap-4 mb-4">
