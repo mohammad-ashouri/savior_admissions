@@ -40,7 +40,14 @@ class UserController extends Controller
                     $principalAccess = explode("|", $myAllAccesses->principal);
                     $admissionsOfficerAccess = explode("|", $myAllAccesses->admissions_officer);
                     $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                    $data = User::where('status', 1)->whereIn('additional_information->school_id', $filteredArray)->paginate(20);
+                    $data = User::where('status', 1)->whereIn('additional_information->school_id', $filteredArray)
+                        ->orWhereHas('roles', function ($query) {
+                            $query->where('name', 'Parent(Mother)');
+                        })
+                        ->orWhereHas('roles', function ($query) {
+                            $query->where('name', 'Parent(Father)');
+                        })
+                        ->paginate(20);
                     if ($data->isEmpty()) {
                         $data = [];
                     }
@@ -97,11 +104,10 @@ class UserController extends Controller
         ]);
 
         $user = new User;
-        $user->name = $request->name;
         $user->email = $request->email;
         $user->mobile = $request->mobile;
         $user->password = Hash::make($request->password);
-        if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and $request->role=="Student") {
             $additionalInformation = [
                 'school_id' => $request->school,
             ];
@@ -110,15 +116,13 @@ class UserController extends Controller
             $user->additional_information = json_encode($userAdditionalInformation);
         }
         if ($user->save()) {
-            GeneralInformation::create(
-                [
-                    'user_id' => $user->id,
-                    'first_name_fa' => $request->first_name_fa,
-                    'last_name_fa' => $request->last_name_fa,
-                    'first_name_en' => $request->first_name_en,
-                    'last_name_en' => $request->last_name_en,
-                ]
-            );
+            $generalInformation=new GeneralInformation();
+            $generalInformation->user_id=$user->id;
+            $generalInformation->first_name_fa=$request->first_name_fa;
+            $generalInformation->last_name_fa=$request->last_name_fa;
+            $generalInformation->first_name_en=$request->first_name_en;
+            $generalInformation->last_name_en=$request->last_name_en;
+            $generalInformation->save();
             $user->assignRole($request->input('role'));
         }
         return redirect()->route('users.index')
@@ -239,7 +243,6 @@ class UserController extends Controller
         $this->logActivity(json_encode($activity), request()->ip(), request()->userAgent(), session('id'));
         return view('users.index', compact('data'));
     }
-
 
     public function changePrincipalInformation(Request $request)
     {
