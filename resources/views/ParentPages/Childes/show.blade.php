@@ -11,10 +11,16 @@
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
                             <div>
-                                <p class="font-bold">First Name: </p> {{ $generalInformations->first_name }}
+                                <p class="font-bold">First Name (English): </p> {{ $generalInformations->first_name_en }}
                             </div>
                             <div>
-                                <p class="font-bold">Last Name: </p> {{ $generalInformations->last_name }}
+                                <p class="font-bold">Last Name (English): </p> {{ $generalInformations->last_name_en }}
+                            </div>
+                            <div>
+                                <p class="font-bold">First Name (Persian): </p> {{ $generalInformations->first_name_fa }}
+                            </div>
+                            <div>
+                                <p class="font-bold">Last Name (Persian): </p> {{ $generalInformations->last_name_fa }}
                             </div>
                             <div>
                                 <p class="font-bold">Birthdate: </p> {{ $generalInformations->birthdate }}

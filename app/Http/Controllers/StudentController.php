@@ -55,6 +55,12 @@ class StudentController extends Controller
             'nationality' => 'required|exists:countries,id',
             'birthplace' => 'required|exists:countries,id',
             'current_identification_type' => 'required|exists:current_identification_types,id',
+            'first_name_fa' => 'required|string',
+            'last_name_fa' => 'required|string',
+            'first_name_en' => 'required|string',
+            'last_name_en' => 'required|string',
+            'birthdate' => 'required|date',
+            'gender' => 'required|string',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -76,10 +82,10 @@ class StudentController extends Controller
 
         $generalInformation = new GeneralInformation();
         $generalInformation->user_id = $user->id;
-        $generalInformation->first_name = $request->first_name_fa;
-        $generalInformation->last_name = $request->last_name_fa;
-        $generalInformation->first_name = $request->first_name_en;
-        $generalInformation->last_name = $request->last_name_en;
+        $generalInformation->first_name_fa = $request->first_name_fa;
+        $generalInformation->last_name_fa = $request->last_name_fa;
+        $generalInformation->first_name_en = $request->first_name_en;
+        $generalInformation->last_name_en = $request->last_name_en;
         $generalInformation->birthdate = $birthdate;
         $generalInformation->birthplace = $birthplace;
         $generalInformation->nationality = $nationality;

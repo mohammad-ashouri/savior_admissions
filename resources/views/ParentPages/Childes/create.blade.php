@@ -34,7 +34,7 @@
                                 <div>
                                     <label for="first_name_en"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        First Name</label>
+                                        First Name (English)</label>
                                     <input type="text" id="first_name_en" value="{{ old('first_name_en') }}" name="first_name_en"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Enter first name of your child" required>
@@ -42,26 +42,26 @@
                                 <div>
                                     <label for="last_name_en"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Last Name</label>
+                                        Last Name (English)</label>
                                     <input type="text" id="last_name_en" value="{{ old('last_name_en') }}" name="last_name_en"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter last name of your child" required>
+                                           placeholder="نام فرزند خود را به فارسی وارد نمایید" required>
                                 </div>
                                 <div>
-                                    <label for="first_name_en"
+                                    <label for="first_name_fa"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        First Name</label>
-                                    <input type="text" id="first_name_en" value="{{ old('first_name_en') }}" name="first_name_en"
+                                        First Name (Persian)</label>
+                                    <input type="text" id="first_name_fa" value="{{ old('first_name_fa') }}" name="first_name_fa"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter first name of your child" required>
+                                           placeholder="نام فرزند خود را به فارسی وارد نمایید" required>
                                 </div>
                                 <div>
-                                    <label for="last_name_en"
+                                    <label for="last_name_fa"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Last Name</label>
-                                    <input type="text" id="last_name_en" value="{{ old('last_name_en') }}" name="last_name_en"
+                                        Last Name (Persian)</label>
+                                    <input type="text" id="last_name_fa" value="{{ old('last_name_fa') }}" name="last_name_fa"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter last name of your child" required>
+                                           placeholder="نام خانوادگی فرزند خود را به فارسی وارد نمایید" required>
                                 </div>
                                 <div>
                                     <label for="birthdate"
