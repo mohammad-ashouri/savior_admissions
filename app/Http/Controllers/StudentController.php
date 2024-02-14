@@ -117,9 +117,8 @@ class StudentController extends Controller
     {
         $studentInformations = StudentInformation::with('extraInformations')->where('student_id', $id)->where('guardian', session('id'))->first();
         if (! empty($studentInformations)) {
-            $generalInformations = GeneralInformation::where('user_id', $id)->first();
-
-            return view('ParentPages.Childes.show', compact('generalInformations', 'studentInformations'));
+            $studentInformations = StudentInformation::with('generalInformations')->with('extraInformations')->where('student_id', $id)->where('guardian', session('id'))->first();
+            return view('ParentPages.Childes.show', compact('studentInformations'));
         }
         abort(403);
     }

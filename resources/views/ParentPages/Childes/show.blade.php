@@ -11,30 +11,30 @@
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
                             <div>
-                                <p class="font-bold">First Name (English): </p> {{ $generalInformations->first_name_en }}
+                                <p class="font-bold">First Name (English): </p> {{ $studentInformations->generalInformations->first_name_en }}
                             </div>
                             <div>
-                                <p class="font-bold">Last Name (English): </p> {{ $generalInformations->last_name_en }}
+                                <p class="font-bold">Last Name (English): </p> {{ $studentInformations->generalInformations->last_name_en }}
                             </div>
                             <div>
-                                <p class="font-bold">First Name (Persian): </p> {{ $generalInformations->first_name_fa }}
+                                <p class="font-bold">First Name (Persian): </p> {{ $studentInformations->generalInformations->first_name_fa }}
                             </div>
                             <div>
-                                <p class="font-bold">Last Name (Persian): </p> {{ $generalInformations->last_name_fa }}
+                                <p class="font-bold">Last Name (Persian): </p> {{ $studentInformations->generalInformations->last_name_fa }}
                             </div>
                             <div>
-                                <p class="font-bold">Birthdate: </p> {{ $generalInformations->birthdate }}
+                                <p class="font-bold">Birthdate: </p> {{ $studentInformations->generalInformations->birthdate }}
                             </div>
                             <div>
-                                <p class="font-bold">Gender: </p> {{ $generalInformations->gender }}
-                            </div>
-                            <div>
-                                <p class="font-bold">
-                                    Birthplace: </p> {{ $generalInformations->birthplaceInfo->en_short_name }}
+                                <p class="font-bold">Gender: </p> {{ $studentInformations->generalInformations->gender }}
                             </div>
                             <div>
                                 <p class="font-bold">
-                                    Nationality: </p> {{ $studentInformations->nationalityInfo->nationality }}
+                                    Birthplace: </p> {{ $studentInformations->generalInformations->birthplaceInfo->en_short_name }}
+                            </div>
+                            <div>
+                                <p class="font-bold">
+                                    Nationality: </p> {{ $studentInformations->generalInformations->nationalityInfo->nationality }}
                             </div>
                             <div>
                                 <p class="font-bold">Identification
