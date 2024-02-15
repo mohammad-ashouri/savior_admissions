@@ -16,6 +16,7 @@ class Principal extends Seeder
         $principalRole = Role::create(['name' => 'Principal']);
         $principalRole->givePermissionTo([
             'branch-info-menu-access',
+            'finance-menu-access',
             'users-menu-access',
             'create-users',
             'show-user',
@@ -45,6 +46,13 @@ class Principal extends Seeder
             'application-timing-delete',
             'application-timing-search',
             'application-timing-show',
+            'reservation-invoice-details',
+            'reservation-invoice-list',
+            'reservation-invoice-search',
+            'reservation-invoice-edit',
+            'reservation-invoice-search',
+            'reservation-invoice-show',
+            'reservation-invoice-delete',
             'applications-list',
             'new-application-reserve',
             'show-application-reserve',

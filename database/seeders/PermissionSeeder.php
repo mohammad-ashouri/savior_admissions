@@ -84,11 +84,13 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'interview-delete']);
         Permission::create(['name' => 'interview-search']);
 
-        Permission::create(['name' => 'reservation-invoice-details']);
         Permission::create(['name' => 'reservation-invoice-list']);
         Permission::create(['name' => 'reservation-invoice-search']);
-        Permission::create(['name' => 'reservation-invoice-add']);
+        Permission::create(['name' => 'reservation-invoice-create']);
         Permission::create(['name' => 'reservation-invoice-edit']);
+        Permission::create(['name' => 'reservation-invoice-details']);
+        Permission::create(['name' => 'reservation-invoice-show']);
+        Permission::create(['name' => 'reservation-invoice-delete']);
 
         //branch info
         Permission::create(['name' => 'academic-year-class-list']);
@@ -125,6 +127,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'users-menu-access']);
         Permission::create(['name' => 'childes-menu-access']);
         Permission::create(['name' => 'applications-menu-access']);
+        Permission::create(['name' => 'finance-menu-access']);
 
     }
 }
