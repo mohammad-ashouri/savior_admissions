@@ -75,12 +75,12 @@
                                     @php
                                         $applicationerInfo=\App\Models\User::with('generalInformationInfo')->find($applicationer);
                                     @endphp
-                                    * {{ $applicationerInfo->generalInformationInfo->first_name_en . " " . $applicationerInfo->last_name_en }}
+                                    * {{ $applicationerInfo->generalInformationInfo->first_name_en . " " . $applicationerInfo->generalInformationInfo->last_name_en }}
                                     <br/>
                                 @endforeach
                             </div>
                             <div>
-                                <p class="font-bold">Interview Fee: </p> {{ $applicationTiming->fee . ' Rials' }}
+                                <p class="font-bold">Interview Fee: </p> {{ number_format($applicationTiming->fee) . ' Rials' }}
                             </div>
                         </div>
                         <a href="{{ url()->previous() }}">
