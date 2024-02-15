@@ -3,7 +3,7 @@
 namespace App\Models\Branch;
 
 use App\Models\Catalogs\Level;
-use App\Models\Payments\ApplicationReservationsInvoices;
+use App\Models\Finance\ApplicationReservationsInvoices;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

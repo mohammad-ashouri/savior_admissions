@@ -9,7 +9,7 @@ use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\PaymentMethod;
 use App\Models\Document;
-use App\Models\Payments\ApplicationReservationsInvoices;
+use App\Models\Finance\ApplicationReservationsInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
