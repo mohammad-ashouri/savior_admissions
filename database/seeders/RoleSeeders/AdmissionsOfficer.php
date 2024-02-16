@@ -39,6 +39,9 @@ class AdmissionsOfficer extends Seeder
             'change-status-of-application',
             'remove-application-from-reserve',
             'branch-info-menu-access',
+            'applications-menu-access',
+            'academic-year-classes-menu-access',
+            'application-timings-menu-access',
         ]);
     }
 }
