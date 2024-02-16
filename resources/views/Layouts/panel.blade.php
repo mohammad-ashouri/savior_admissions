@@ -151,15 +151,6 @@
                     </a>
                 </li>
             @endcan
-            @can('applications-menu-access')
-                <li>
-                    <a href="/Applications"
-                       class="flex items-center p-2 mt-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i class="las la-calendar-plus" style="font-size: 24px"></i>
-                        <span class="ml-4">Applications</span>
-                    </a>
-                </li>
-            @endcan
             @can('users-menu-access')
                 <li>
                     <a href="/users"
