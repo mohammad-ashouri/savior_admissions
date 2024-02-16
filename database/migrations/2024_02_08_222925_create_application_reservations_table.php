@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign('reservatore')->references('id')->on('users');
             $table->unsignedBigInteger('level');
             $table->foreign('level')->references('id')->on('levels');
+            $table->enum('interview_type', ['On-Campus' , 'On-Sight']);
             $table->boolean('payment_status')->default(0);
             $table->timestamps();
             $table->softDeletes();

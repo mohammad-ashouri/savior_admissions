@@ -128,7 +128,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'students-menu-access']);
         Permission::create(['name' => 'applications-menu-access']);
         Permission::create(['name' => 'finance-menu-access']);
-        Permission::create(['name' => 'students-menu-access']);
 
     }
 }

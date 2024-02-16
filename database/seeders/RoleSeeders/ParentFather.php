@@ -26,6 +26,7 @@ class ParentFather extends Seeder
             'students-delete',
             'students-search',
             'students-show',
+            'reservation-payment-details-show',
             'applications-list',
             'new-application-reserve',
             'show-application-reserve',

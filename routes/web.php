@@ -117,7 +117,6 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::post('ApplicationPayment', [ApplicationController::class, 'preparationForApplicationPayment']);
     Route::get('PrepareToPayApplication/{application_id}', [ApplicationController::class, 'prepareToPay'])->name('PrepareToPayApplication');
     Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
-    Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
 
     Route::post('student/change_information', [StudentController::class, 'changeInformation']);
 

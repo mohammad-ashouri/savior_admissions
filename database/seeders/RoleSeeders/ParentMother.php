@@ -27,6 +27,7 @@ class ParentMother extends Seeder
             'students-search',
             'students-show',
             'applications-list',
+            'reservation-payment-details-show',
             'new-application-reserve',
             'show-application-reserve',
             'applications-menu-access',

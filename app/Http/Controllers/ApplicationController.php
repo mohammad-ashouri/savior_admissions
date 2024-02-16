@@ -305,6 +305,7 @@ class ApplicationController extends Controller
             'academic_year' => 'required|exists:academic_years,id',
             'level' => 'required|exists:levels,id',
             'student' => 'required|exists:student_informations,id',
+            'interview_type' => 'required',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
@@ -315,6 +316,7 @@ class ApplicationController extends Controller
         $level = $request->level;
         $academic_year = $request->academic_year;
         $dateAndTime = $request->date_and_time;
+        $interviewType = $request->interview_type;
 
         $studentInfo = StudentInformation::where('guardian', $me->id)->where('id', $student)->first();
 
@@ -337,6 +339,7 @@ class ApplicationController extends Controller
         $applicationReservation->student_id = $studentInfo->student_id;
         $applicationReservation->reservatore = $me->id;
         $applicationReservation->level = $level;
+        $applicationReservation->interview_type = $interviewType;
 
         if ($applicationReservation->save()) {
             $applications = Applications::find($dateAndTime);

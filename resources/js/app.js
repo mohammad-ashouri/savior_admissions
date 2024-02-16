@@ -674,10 +674,16 @@ $(document).ready(function () {
         $('#payment_method').change(function () {
             if ($(this).val() === '1') {
                 $('#offline_payment_div').show();
-                $('#online_payment_div').hide();
+                $('#online_payment_iran_div').hide();
+                $('#online_payment_paypal_div').hide();
             }else if ($(this).val() === '2'){
-                $('#online_payment_div').show();
                 $('#offline_payment_div').hide();
+                $('#online_payment_iran_div').show();
+                $('#online_payment_paypal_div').hide();
+            }else if ($(this).val() === '3'){
+                $('#offline_payment_div').hide();
+                $('#online_payment_iran_div').hide();
+                $('#online_payment_paypal_div').show();
             }
         });
 
@@ -699,13 +705,29 @@ $(document).ready(function () {
             }
         });
 
+        $('#application-payment').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your payment will be registered in the system. Are you sure to continue?',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#application-payment').off('submit').submit();
+                }
+            });
+        });
+
     }
     else if (fullPath.includes('Applications')) {
         pageTitle = 'Applications';
 
         if (fullPath.includes('Applications/create')){
             resetAllSelectValues();
-            $('#level').change(function (e) {
+            $('#level').change(function () {
                 $.ajax({
                     type: 'GET',
                     url: '/GetAcademicYearsByLevel',
@@ -732,7 +754,7 @@ $(document).ready(function () {
                 });
             });
 
-            $('#academic_year').change(function (e) {
+            $('#academic_year').change(function () {
                 $.ajax({
                     type: 'GET',
                     url: '/GetApplicationsByAcademicYear',
@@ -756,7 +778,7 @@ $(document).ready(function () {
                 });
             });
 
-            $('#date_and_time').change(function (e) {
+            $('#date_and_time').change(function () {
                 $.ajax({
                     type: 'GET',
                     url: '/CheckDateAndTimeToBeFreeApplication',
@@ -770,8 +792,30 @@ $(document).ready(function () {
                     }
                 });
             });
-        }else{
 
+            $('#interview_type').change(function () {
+                if ($(this).val()==='On-Sight') {
+                    $('#onsight-alert').show();
+                }else{
+                    $('#onsight-alert').hide();
+                }
+            });
+
+            $('#application-payment').submit(function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Your application will go to the payment stage. Are you sure about the entered information?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#application-payment').off('submit').submit();
+                    }
+                });
+            });
         }
 
     }
