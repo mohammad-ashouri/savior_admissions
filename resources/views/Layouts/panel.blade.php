@@ -183,6 +183,7 @@
                         </svg>
                     </button>
                     <ul id="dropdown-branch" class="hidden py-2 space-y-2">
+                        @can('academic-year-classes-menu-access')
                         <li>
                             <a href="/AcademicYearClasses"
                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -191,6 +192,8 @@
                                         Classes</span>
                             </a>
                         </li>
+                        @endcan
+                        @can('application-timings-menu-access')
                         <li>
                             <a href="/ApplicationTimings"
                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -198,6 +201,8 @@
                                         Application Timings</span>
                             </a>
                         </li>
+                            @endcan
+                            @can('applications-menu-access')
                         <li>
                             <a href="/Applications"
                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -205,6 +210,8 @@
                                         Applications</span>
                             </a>
                         </li>
+                            @endcan
+                            @can('interviews-menu-access')
                         <li>
                             <a href="/Interviews"
                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -213,14 +220,7 @@
                                         Interviews</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="/Students"
-                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span class="menulist"><i class="nav-icon la la-user-graduate"
-                                                              style="font-size: 24px"></i>
-                                        Students</span>
-                            </a>
-                        </li>
+                            @endcan
                     </ul>
                 </li>
             @endcan

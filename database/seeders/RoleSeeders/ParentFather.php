@@ -31,6 +31,8 @@ class ParentFather extends Seeder
             'new-application-reserve',
             'show-application-reserve',
             'applications-menu-access',
+            'branch-info-menu-access',
+            'interviews-menu-access',
         ]);
     }
 }

@@ -19,6 +19,8 @@ class SuperAdmin extends Seeder
             'branch-info-menu-access',
             'finance-menu-access',
             'users-menu-access',
+            'branch-info-menu-access',
+            'interviews-menu-access',
             'create-users',
             'show-user',
             'edit-users',

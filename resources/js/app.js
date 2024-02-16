@@ -828,6 +828,9 @@ $(document).ready(function () {
     else if (fullPath.includes('Students')) {
         pageTitle = 'Students';
     }
+    else if (fullPath.includes('Interviews')) {
+        pageTitle = 'Interviews';
+    }
     else if (fullPath.includes('ReservationInvoices')) {
         pageTitle = 'Reservation Invoices';
 

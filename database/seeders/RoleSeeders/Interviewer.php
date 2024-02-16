@@ -15,9 +15,8 @@ class Interviewer extends Seeder
     {
         $interviewerRole = Role::create(['name' => 'Interviewer']);
         $interviewerRole->givePermissionTo([
-            'interview-list',
-            'interview-set',
-            'interview-search',
+            'branch-info-menu-access',
+            'interviews-menu-access',
         ]);
     }
 }
