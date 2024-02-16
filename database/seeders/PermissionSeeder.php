@@ -106,12 +106,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'application-timing-search']);
         Permission::create(['name' => 'application-timing-show']);
 
-        Permission::create(['name' => 'childes-list']);
-        Permission::create(['name' => 'childes-create']);
-        Permission::create(['name' => 'childes-edit']);
-        Permission::create(['name' => 'childes-delete']);
-        Permission::create(['name' => 'childes-search']);
-        Permission::create(['name' => 'childes-show']);
+        Permission::create(['name' => 'students-list']);
+        Permission::create(['name' => 'students-create']);
+        Permission::create(['name' => 'students-edit']);
+        Permission::create(['name' => 'students-delete']);
+        Permission::create(['name' => 'students-search']);
+        Permission::create(['name' => 'students-show']);
 
         Permission::create(['name' => 'applications-list']);
         Permission::create(['name' => 'new-application-reserve']);
@@ -128,6 +128,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'childes-menu-access']);
         Permission::create(['name' => 'applications-menu-access']);
         Permission::create(['name' => 'finance-menu-access']);
+        Permission::create(['name' => 'students-menu-access']);
 
     }
 }

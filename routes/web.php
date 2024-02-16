@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\BranchInfo\AcademicYearClassController;
 use App\Http\Controllers\BranchInfo\ApplicationTimingController;
 use App\Http\Controllers\BranchInfo\InterviewController;
+use App\Http\Controllers\BranchInfo\StudentController;
 use App\Http\Controllers\Catalogs\AcademicYearController;
 use App\Http\Controllers\Catalogs\DocumentTypeController;
 use App\Http\Controllers\Catalogs\EducationTypeController;
@@ -16,10 +17,8 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\Finance\ApplicationReservationController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckLoginMiddleware;
-use App\Models\Finance\ApplicationReservationsInvoices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -106,7 +105,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
     Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
 
-    Route::resource('Childes', StudentController::class);
+    Route::resource('Students', StudentController::class);
 
     //Applications
     Route::resource('Applications', ApplicationController::class);

@@ -142,12 +142,12 @@
                     <span class="ml-4">Dashboard</span>
                 </a>
             </li>
-            @can('childes-menu-access')
+            @can('students-menu-access')
                 <li>
-                    <a href="/Childes"
+                    <a href="/Students"
                        class="flex items-center p-2 mt-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <i class="las la-users" style="font-size: 24px"></i>
-                        <span class="ml-4">Childes</span>
+                        <span class="ml-4">Student(s)</span>
                     </a>
                 </li>
             @endcan
