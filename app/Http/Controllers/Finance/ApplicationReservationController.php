@@ -23,6 +23,7 @@ class ApplicationReservationController extends Controller
         $this->middleware('permission:reservation-invoice-delete', ['only' => ['destroy']]);
         $this->middleware('permission:reservation-invoice-show', ['only' => ['show']]);
         $this->middleware('permission:reservation-invoice-search', ['only' => ['searchApplicationTiming']]);
+        $this->middleware('permission:change-application-payment-status', ['only' => ['changeApplicationPaymentStatus']]);
     }
 
     public function index()
@@ -173,8 +174,8 @@ class ApplicationReservationController extends Controller
     public function changeApplicationPaymentStatus(Request $request)
     {
         $me = User::find(session('id'));
-        $applicationID=$request->application_id;
-        $applicationStatus=$request->status;
+        $applicationID = $request->application_id;
+        $applicationStatus = $request->status;
 
         if ($me->hasRole('Super Admin')) {
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $applicationID)->first();
@@ -206,9 +207,17 @@ class ApplicationReservationController extends Controller
         }
 
         if (empty($applicationInfo)) {
-            return response()->json(['error' => $applicationInfo], 422);
+            return response()->json(['message' => $applicationInfo], 422);
         }
 
-        return $request->all();
+        $applicationReservation = ApplicationReservation::find($applicationID);
+        if (empty($applicationReservation)) {
+            return response()->json(['message' => 'Application not found!'], 422);
+        }
+
+        $applicationReservation->payment_status = $applicationStatus;
+        $applicationReservation->save();
+
+        return response()->json(['message' => 'Application payment status changed!'], 200);
     }
 }

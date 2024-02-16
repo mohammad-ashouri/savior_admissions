@@ -71,26 +71,28 @@
                                     : </p>{{ number_format($applicationInfo->applicationInfo->applicationTimingInfo->fee) }}
                                 Rials
                             </div>
-                            <div>
-                                <p class="font-bold"> Status: </p>
-                                <select id="payment_status" name="payment_status"
-                                        data-reservation-id="{{ $applicationInfo->id }}"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        title="Select an option to change payment status" required>
-                                    <option selected disabled value="">-</option>
-                                    <option @if($applicationInfo->payment_status==0) selected
-                                            @endif value="0">Payment Processing
-                                    </option>
-                                    <option @if($applicationInfo->payment_status==1) selected @endif value="1">Paid
-                                    </option>
-                                    <option @if($applicationInfo->payment_status==2) selected
-                                            @endif value="2">Awaiting Confirmation
-                                    </option>
-                                    <option @if($applicationInfo->payment_status==3) selected @endif value="3">
-                                        Rejected
-                                    </option>
-                                </select>
-                            </div>
+                            @can('reservation-payment-status-change')
+                                <div>
+                                    <p class="font-bold"> Status: </p>
+                                    <select id="payment_status" name="payment_status"
+                                            data-reservation-id="{{ $applicationInfo->id }}"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            title="Select an option to change payment status" required>
+                                        <option selected disabled value="">-</option>
+                                        <option @if($applicationInfo->payment_status==0) selected
+                                                @endif value="0">Payment Processing
+                                        </option>
+                                        <option @if($applicationInfo->payment_status==1) selected @endif value="1">Paid
+                                        </option>
+                                        <option @if($applicationInfo->payment_status==2) selected
+                                                @endif value="2">Awaiting Confirmation
+                                        </option>
+                                        <option @if($applicationInfo->payment_status==3) selected @endif value="3">
+                                            Rejected
+                                        </option>
+                                    </select>
+                                </div>
+                            @endcan
                             <div>
                                 <p class="font-bold"> Paid
                                     at: </p> {{$applicationInfo->applicationInvoiceInfo->created_at}}

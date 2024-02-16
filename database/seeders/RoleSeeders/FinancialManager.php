@@ -23,6 +23,7 @@ class FinancialManager extends Seeder
             'reservation-invoice-show',
             'reservation-invoice-delete',
             'reservation-payment-details-show',
+            'reservation-payment-status-change',
         ]);
     }
 }
