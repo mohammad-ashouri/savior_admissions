@@ -169,7 +169,7 @@
                     </a>
                 </li>
             @endcan
-            @can('users-menu-access')
+            @can('branch-info-menu-access')
                 <li>
                     <button type="button"
                             class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -236,7 +236,7 @@
                 <li>
                     <button type="button"
                             class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                            aria-controls="dropdown-catalog" data-collapse-toggle="dropdown-catalog">
+                            aria-controls="dropdown-finance" data-collapse-toggle="dropdown-finance">
                         <i class="las la-coins" style="font-size: 24px"></i>
                         <span class="flex-1 ml-4 text-left whitespace-nowrap">Finance</span>
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -245,7 +245,7 @@
                                   stroke-width="2" d="m1 1 4 4 4-4"/>
                         </svg>
                     </button>
-                    <ul id="dropdown-catalog" class="hidden py-2 space-y-2">
+                    <ul id="dropdown-finance" class="hidden py-2 space-y-2">
                         @can('reservation-invoice-list')
                             <li>
                                 <a href="/ReservationInvoices"
