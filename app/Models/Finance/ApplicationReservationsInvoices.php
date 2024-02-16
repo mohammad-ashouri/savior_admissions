@@ -11,4 +11,9 @@ class ApplicationReservationsInvoices extends Model
     use HasFactory,SoftDeletes;
 
     protected $table = 'application_reservations_invoices';
+
+    public function applicationReservationInformation()
+    {
+        return $this->belongsTo(ApplicationReservationsInvoices::class, 'a_reservation_id', 'id');
+    }
 }

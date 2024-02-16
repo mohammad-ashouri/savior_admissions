@@ -71,7 +71,6 @@ class SuperAdmin extends Seeder
             'academic-year-class-edit',
             'academic-year-class-delete',
             'academic-year-class-search',
-            'reservation-invoice-details',
             'reservation-invoice-list',
             'reservation-invoice-create',
             'reservation-invoice-edit',

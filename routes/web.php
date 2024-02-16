@@ -13,11 +13,13 @@ use App\Http\Controllers\Catalogs\LevelController;
 use App\Http\Controllers\Catalogs\SchoolController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\Finance\ApplicationReservationController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckLoginMiddleware;
+use App\Models\Finance\ApplicationReservationsInvoices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -89,6 +91,11 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('ApplicationTimings', ApplicationTimingController::class);
     Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
     Route::resource('Interviews', InterviewController::class);
+
+    //Finance
+    Route::resource('ReservationInvoices', ApplicationReservationController::class);
+
+
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

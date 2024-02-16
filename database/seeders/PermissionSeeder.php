@@ -88,7 +88,6 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'reservation-invoice-search']);
         Permission::create(['name' => 'reservation-invoice-create']);
         Permission::create(['name' => 'reservation-invoice-edit']);
-        Permission::create(['name' => 'reservation-invoice-details']);
         Permission::create(['name' => 'reservation-invoice-show']);
         Permission::create(['name' => 'reservation-invoice-delete']);
 

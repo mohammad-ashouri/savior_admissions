@@ -800,7 +800,9 @@ $(document).ready(function () {
         });
 
     }
-
+    else if (fullPath.includes('ReservationInvoices')) {
+        pageTitle = 'Reservation Invoices';
+    }
     else {
         switch (fullPath) {
             case '/dashboard':

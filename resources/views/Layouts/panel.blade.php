@@ -248,10 +248,10 @@
                     <ul id="dropdown-catalog" class="hidden py-2 space-y-2">
                         @can('reservation-invoice-list')
                             <li>
-                                <a href="/reservationInvoices"
+                                <a href="/ReservationInvoices"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="las la la-money" style="font-size: 24px"></i>
-                                        reservation invoices</span>
+                                        Reservations</span>
                                 </a>
                             </li>
                         @endcan
