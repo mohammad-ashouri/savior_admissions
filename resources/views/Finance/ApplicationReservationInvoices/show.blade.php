@@ -75,13 +75,16 @@
                                 <p class="font-bold"> Status: </p>
                                 @switch($applicationInfo->payment_status)
                                     @case(0)
-                                        Awaiting payment
+                                        Payment Processing
                                         @break
                                     @case(1)
                                         Paid
                                         @break
                                     @case(2)
-                                        Awaiting confirmation
+                                        Awaiting Confirmation
+                                        @break
+                                    @case(3)
+                                        Rejected
                                         @break
                                 @endswitch
                             </div>
