@@ -77,6 +77,7 @@ class SuperAdmin extends Seeder
             'reservation-invoice-search',
             'reservation-invoice-show',
             'reservation-invoice-delete',
+            'reservation-payment-details-show',
             'application-timing-list',
             'application-timing-create',
             'application-timing-edit',

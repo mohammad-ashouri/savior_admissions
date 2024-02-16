@@ -49,6 +49,7 @@
                     </div>
                 </div>
             </div>
+            @can('reservation-payment-details-show')
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 <h1 class="text-2xl font-medium"> Payment Details</h1>
             </div>
@@ -110,6 +111,7 @@
                 </div>
 
             </div>
+            @endcan
         </div>
     </div>
 @endsection

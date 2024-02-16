@@ -69,7 +69,7 @@ class ApplicationController extends Controller
             $applications = [];
         }
 
-        return view('Applications.index', compact('applications'));
+        return view('Applications.index', compact('applications','me'));
 
     }
 

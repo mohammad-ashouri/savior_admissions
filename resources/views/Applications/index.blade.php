@@ -105,12 +105,13 @@
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
-                                        {{$application->application_id}}
+                                        {{$application->id}}
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
-                                            <div class="text-base font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                            <div
+                                                class="text-base font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
@@ -150,25 +151,38 @@
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
-                                        @can('show-application-reserve')
-                                            <a href="{{ route('Applications.show',$application->id) }}"
+                                        @if(($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) and $application->payment_status!=0)
+                                            @can('show-application-reserve')
+                                                <a href="{{ route('Applications.show',$application->id) }}"
+                                                   type="button"
+                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                    <div class="text-center">
+                                                        <i class="las la-eye "></i>
+                                                    </div>
+                                                    Details
+                                                </a>
+                                            @endcan
+                                        @elseif((!$me->hasRole('Parent(Father)') and !$me->hasRole('Parent(Mother)')))
+                                            @can('show-application-reserve')
+                                                <a href="{{ route('Applications.show',$application->id) }}"
+                                                   type="button"
+                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                    <div class="text-center">
+                                                        <i class="las la-eye "></i>
+                                                    </div>
+                                                    Details
+                                                </a>
+                                            @endcan
+                                        @endif
+                                        @if($application->payment_status==0)
+                                            <a href="PrepareToPayApplication/{{$application->id}}"
                                                type="button"
-                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                 <div class="text-center">
                                                     <i class="las la-eye "></i>
                                                 </div>
-                                                Details
+                                                Pay
                                             </a>
-                                        @endcan
-                                        @if($application->payment_status==0)
-                                        <a href="PrepareToPayApplication/{{$application->id}}"
-                                           type="button"
-                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                            <div class="text-center">
-                                                <i class="las la-eye "></i>
-                                            </div>
-                                            Pay
-                                        </a>
                                         @endif
                                     </td>
                                 </tr>

@@ -52,6 +52,7 @@ class Principal extends Seeder
             'reservation-invoice-edit',
             'reservation-invoice-show',
             'reservation-invoice-delete',
+            'reservation-payment-details-show',
             'applications-list',
             'new-application-reserve',
             'show-application-reserve',

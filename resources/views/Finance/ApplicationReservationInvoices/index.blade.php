@@ -4,7 +4,7 @@
     <div id="content" class="p-4 md:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Applications</h1>
+                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Application Reservation Invoices</h1>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
@@ -14,8 +14,8 @@
                                placeholder="Search it...">
                     </div>
                     <div class="flex">
-                        @can('new-application-reserve')
-                            <a href="{{ route('Applications.create') }}">
+                        @can('reservation-invoice-create')
+                            <a href="{{ route('ReservationInvoices.create') }}">
                                 <button type="button"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
 
@@ -25,7 +25,7 @@
                                               d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                               clip-rule="evenodd"></path>
                                     </svg>
-                                    New Application
+                                    New Reservation
                                 </button>
                                 @endcan
                             </a>
@@ -64,7 +64,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    There is not any applications to show!
+                                    There is not any application reservation invoices to show!
                                 </div>
                             </div>
                         </div>
@@ -77,22 +77,19 @@
                                     Reserve ID
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Child
+                                    Student
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Date
+                                    Date Of Create
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Start From
+                                    Date Of Payment
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Ends To
+                                    Amount
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Interviewer
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Reservatore
+                                    Status
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Action
@@ -105,70 +102,83 @@
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
-                                        {{$application->application_id}}
+                                        {{$application->id}}
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
-                                            <div class="text-base font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                            <div
+                                                class="text-base font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->date }}</div>
+                                                class="text-base font-semibold">{{ $application->created_at }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->start_from }}</div>
+                                                class="text-base font-semibold">
+                                                @if($application->payment_status==0)
+                                                    Not Paid Yet!
+                                                @else
+                                                {{$application->applicationInvoiceInfo->created_at}}
+                                                @endif
+                                            </div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->ends_to }}</div>
+                                                class="text-base font-semibold">{{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->interviewerInfo->generalInformationInfo->first_name_en }} {{ $application->applicationInfo->interviewerInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $application->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $application->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
+                                                class="text-base font-semibold">
+                                                @switch($application->payment_status)
+                                                    @case(0)
+                                                        Payment Processing
+                                                        @break
+                                                    @case(1)
+                                                        Paid
+                                                        @break
+                                                    @case(2)
+                                                        Awaiting Confirmation
+                                                @endswitch
+                                            </div>
+
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
-                                        @can('show-application-reserve')
-                                            <a href="{{ route('Applications.show',$application->id) }}"
+                                        @if($application->payment_status!=0)
+                                            @can('reservation-invoice-show')
+                                                <a href="{{ route('ReservationInvoices.show',$application->id) }}"
+                                                   type="button"
+                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                    <div class="text-center">
+                                                        <i class="las la-eye "></i>
+                                                    </div>
+                                                    Details
+                                                </a>
+                                            @endcan
+                                        @elseif($application->payment_status==0)
+                                            <a href="PrepareToPayApplication/{{$application->id}}"
                                                type="button"
-                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                 <div class="text-center">
                                                     <i class="las la-eye "></i>
                                                 </div>
-                                                Details
+                                                Pay
                                             </a>
-                                        @endcan
-                                        @if($application->payment_status==0)
-                                        <a href="PrepareToPayApplication/{{$application->id}}"
-                                           type="button"
-                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                            <div class="text-center">
-                                                <i class="las la-eye "></i>
-                                            </div>
-                                            Pay
-                                        </a>
                                         @endif
                                     </td>
                                 </tr>
