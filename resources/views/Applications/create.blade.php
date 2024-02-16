@@ -32,17 +32,17 @@
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
-                                    <label for="child"
+                                    <label for="student"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Child</label>
-                                    <select id="child" name="child"
+                                        Student</label>
+                                    <select id="student" name="student"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            title="Select child" required>
-                                        <option selected disabled value="">Select child</option>
-                                        @foreach($myChildes as $child)
-                                            <option @if(old('child')==$child->id) selected
-                                                    @endif value="{{$child->id}}">
-                                                {{ $child->generalInformations->first_name_en }} {{ $child->generalInformations->last_name_en }}
+                                            title="Select student" required>
+                                        <option selected disabled value="">Select student</option>
+                                        @foreach($myStudent as $student)
+                                            <option @if(old('student')==$student->id) selected
+                                                    @endif value="{{$student->id}}">
+                                                {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }}
                                             </option>
                                         @endforeach
                                     </select>

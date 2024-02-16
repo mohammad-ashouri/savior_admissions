@@ -4,7 +4,7 @@
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium"> New Child</h1>
+                <h1 class="text-2xl font-medium"> New Student</h1>
             </div>
             @if (count($errors) > 0)
                 <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
@@ -28,7 +28,7 @@
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <form id="new-child" method="post" action="{{route('Students.store')}}">
+                        <form id="new-student" method="post" action="{{route('Students.store')}}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
@@ -37,7 +37,7 @@
                                         First Name (English)</label>
                                     <input type="text" id="first_name_en" value="{{ old('first_name_en') }}" name="first_name_en"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter first name of your child" required>
+                                           placeholder="Enter first name of your student" required>
                                 </div>
                                 <div>
                                     <label for="last_name_en"
@@ -45,7 +45,7 @@
                                         Last Name (English)</label>
                                     <input type="text" id="last_name_en" value="{{ old('last_name_en') }}" name="last_name_en"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter last name of your child" required>
+                                           placeholder="Enter last name of your student" required>
                                 </div>
                                 <div>
                                     <label for="first_name_fa"
@@ -69,7 +69,7 @@
                                         Birthdate</label>
                                     <input type="date" id="birthdate" value="{{ old('birthdate') }}" name="birthdate"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           title="Select birthdate of your child" required>
+                                           title="Select birthdate of your student" required>
                                 </div>
                                 <div>
                                     <label for="gender"
@@ -141,7 +141,7 @@
                                            value="{{ old('current_identification_code') }}"
                                            name="current_identification_code"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter current identification code of your child" required>
+                                           placeholder="Enter current identification code of your student" required>
                                 </div>
                             </div>
                             <button type="submit"

@@ -4,7 +4,7 @@
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium"> Child's Details </h1>
+                <h1 class="text-2xl font-medium"> Student's Details </h1>
             </div>
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-2 ">

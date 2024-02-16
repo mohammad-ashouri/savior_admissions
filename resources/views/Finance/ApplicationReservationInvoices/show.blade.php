@@ -15,7 +15,7 @@
                                 <p class="font-bold">Reserve ID: </p> {{ $applicationInfo->id }}
                             </div>
                             <div>
-                                <p class="font-bold">Child
+                                <p class="font-bold">Student
                                     Information: </p>{{ $applicationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->studentInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>

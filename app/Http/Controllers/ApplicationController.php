@@ -35,8 +35,8 @@ class ApplicationController extends Controller
         $me = User::find(session('id'));
         $applications = [];
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
-            $myChildes = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
-            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myChildes)->paginate(30);
+            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myStudents)->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
@@ -77,10 +77,10 @@ class ApplicationController extends Controller
     {
         $me = User::find(session('id'));
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
-            $myChildes = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
+            $myStudents = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
             $levels = Level::where('status', 1)->get();
 
-            return view('Applications.create', compact('myChildes', 'levels'));
+            return view('Applications.create', compact('myStudents', 'levels'));
         }
     }
 
@@ -93,8 +93,8 @@ class ApplicationController extends Controller
         }
 
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
-            $myChildes = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
-            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myChildes)->where('id', $id)->first();
+            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->where('id', $id)->first();
         } elseif ($me->hasRole('Super Admin')) {
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();
         }elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
@@ -304,21 +304,21 @@ class ApplicationController extends Controller
             'date_and_time' => 'required|exists:applications,id',
             'academic_year' => 'required|exists:academic_years,id',
             'level' => 'required|exists:levels,id',
-            'child' => 'required|exists:student_informations,id',
+            'student' => 'required|exists:student_informations,id',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $me = User::find(session('id'));
-        $child = $request->child;
+        $student= $request->student;
         $level = $request->level;
         $academic_year = $request->academic_year;
         $dateAndTime = $request->date_and_time;
 
-        $childInfo = StudentInformation::where('guardian', $me->id)->where('id', $child)->first();
+        $studentInfo = StudentInformation::where('guardian', $me->id)->where('id', $student)->first();
 
-        if (empty($childInfo)) {
+        if (empty($studentInfo)) {
             abort(403);
         }
 
@@ -334,7 +334,7 @@ class ApplicationController extends Controller
 
         $applicationReservation = new ApplicationReservation();
         $applicationReservation->application_id = $dateAndTime;
-        $applicationReservation->student_id = $childInfo->student_id;
+        $applicationReservation->student_id = $studentInfo->student_id;
         $applicationReservation->reservatore = $me->id;
         $applicationReservation->level = $level;
 

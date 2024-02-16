@@ -25,7 +25,7 @@
                                               d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                               clip-rule="evenodd"></path>
                                     </svg>
-                                    New Child
+                                    New Student
                                 </button>
                                 @endcan
                             </a>
@@ -49,7 +49,7 @@
                     </div>
                 @endif
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    @if(empty($childes))
+                    @if(empty($students))
                         <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                              role="alert">
                             <div class="flex">
@@ -101,60 +101,60 @@
                             </thead>
 
                             <tbody>
-                            @foreach($childes as $child)
+                            @foreach($students as $student)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
                                         <div class="flex items-center">
-                                            {{ $child->student_id }}
+                                            {{ $student->student_id }}
                                         </div>
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $child->generalInformations->first_name_en }}</div>
+                                                class="text-base font-semibold">{{ $student->generalInformations->first_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $child->generalInformations->last_name_en }}</div>
+                                                class="text-base font-semibold">{{ $student->generalInformations->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $child->generalInformations->birthdate }}</div>
+                                                class="text-base font-semibold">{{ $student->generalInformations->birthdate }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $child->generalInformations->gender }}</div>
+                                                class="text-base font-semibold">{{ $student->generalInformations->gender }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $child->generalInformations->birthplaceInfo->en_short_name }}</div>
+                                                class="text-base font-semibold">{{ $student->generalInformations->birthplaceInfo->en_short_name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $child->generalInformations->nationalityInfo->nationality }}</div>
+                                                class="text-base font-semibold">{{ $student->generalInformations->nationalityInfo->nationality }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
                                         @can('students-show')
-                                            <a href="{{ route('Students.show',$child->student_id) }}"
+                                            <a href="{{ route('Students.show',$student->student_id) }}"
                                                type="button"
                                                class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                 <div class="text-center">
@@ -172,9 +172,9 @@
 
             </div>
         </div>
-        @if(!empty($childes))
+        @if(!empty($students))
             <div class="pagination text-center">
-                {{--                {{ $childes->links() }}--}}
+                                {{ $students->links() }}
             </div>
     @endif
 @endsection
