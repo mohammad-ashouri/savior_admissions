@@ -11,6 +11,7 @@ use App\Models\Catalogs\Level;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
+use Illuminate\Http\Request;
 
 class ApplicationReservationController extends Controller
 {
@@ -167,5 +168,47 @@ class ApplicationReservationController extends Controller
 
         return redirect()->back()
             ->with('success', 'Application deleted!');
+    }
+
+    public function changeApplicationPaymentStatus(Request $request)
+    {
+        $me = User::find(session('id'));
+        $applicationID=$request->application_id;
+        $applicationStatus=$request->status;
+
+        if ($me->hasRole('Super Admin')) {
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $applicationID)->first();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $applications = Applications::whereIn('application_timing_id', $applicationTimings)
+                ->pluck('id')
+                ->toArray();
+
+            // Getting reservations of applications along with related information
+            $applicationInfo = ApplicationReservation::with('applicationInfo')
+                ->with('studentInfo')
+                ->with('reservatoreInfo')
+                ->whereIn('application_id', $applications)
+                ->where('id', $applicationID)->first();
+
+        }
+
+        if (empty($applicationInfo)) {
+            return response()->json(['error' => $applicationInfo], 422);
+        }
+
+        return $request->all();
     }
 }

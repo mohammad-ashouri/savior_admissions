@@ -77,13 +77,25 @@
                             <div class="mb-6">
                                 <label for="date_and_time"
                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                    Date And Time</label>
+                                    Interview Date And Time</label>
                                 <select id="date_and_time" name="date_and_time"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         title="Select date and time" required>
                                     <option selected disabled value="">Select date and time</option>
                                 </select>
                             </div>
+{{--                            <div class="mb-6">--}}
+{{--                                <label for="date_and_time"--}}
+{{--                                       class="block mb-2  font-bold text-gray-900 dark:text-white">--}}
+{{--                                    Interview Type</label>--}}
+{{--                                <select id="date_and_time" name="date_and_time"--}}
+{{--                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+{{--                                        title="Select date and time" required>--}}
+{{--                                    <option selected disabled value="">Select interview type</option>--}}
+{{--                                    <option value="">On-Campus</option>--}}
+{{--                                    <option value="">On-Sight</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
                             <button type="submit"
                                     class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                 Next

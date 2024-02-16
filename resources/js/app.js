@@ -802,6 +802,27 @@ $(document).ready(function () {
     }
     else if (fullPath.includes('ReservationInvoices')) {
         pageTitle = 'Reservation Invoices';
+
+        $('#payment_status').change(function () {
+            let status=$(this).val();
+            if (status!=null) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/ChangeApplicationPaymentStatus',
+                    data: {
+                        application_id: $(this).data('reservation-id'),
+                        status: status,
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                    }, success: function (response) {
+                        console.log(response);
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                    }
+                });
+            }
+        });
     }
     else {
         switch (fullPath) {

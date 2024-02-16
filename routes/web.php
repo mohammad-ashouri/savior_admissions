@@ -94,6 +94,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     //Finance
     Route::resource('ReservationInvoices', ApplicationReservationController::class);
+    Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class,'changeApplicationPaymentStatus']);
 
 
 
@@ -106,6 +107,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
 
     Route::resource('Childes', StudentController::class);
+
+    //Applications
     Route::resource('Applications', ApplicationController::class);
     Route::post('Applications/RemoveFromReserve/{id}', [ApplicationController::class, 'removeFromReserve']);
     Route::post('Applications/ChangeInterviewStatus/{id}', [ApplicationController::class, 'changeApplicationStatus']);
@@ -114,6 +117,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('CheckDateAndTimeToBeFreeApplication', [ApplicationController::class, 'checkDateAndTimeToBeFreeApplication']);
     Route::post('ApplicationPayment', [ApplicationController::class, 'preparationForApplicationPayment']);
     Route::get('PrepareToPayApplication/{application_id}', [ApplicationController::class, 'prepareToPay'])->name('PrepareToPayApplication');
+    Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
     Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
 
     Route::post('student/change_information', [StudentController::class, 'changeInformation']);
