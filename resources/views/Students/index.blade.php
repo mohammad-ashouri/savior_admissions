@@ -4,7 +4,7 @@
     <div id="content" class="p-4 md:ml-14 transition-all duration-300">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Your Children</h1>
+                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Your Students</h1>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
@@ -62,7 +62,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    There is not any children informations to show!
+                                    There is not any student informations to show!
                                 </div>
                             </div>
                         </div>
