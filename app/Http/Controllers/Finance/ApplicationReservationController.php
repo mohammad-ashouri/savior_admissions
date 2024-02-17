@@ -23,7 +23,7 @@ class ApplicationReservationController extends Controller
         $this->middleware('permission:reservation-invoice-delete', ['only' => ['destroy']]);
         $this->middleware('permission:reservation-invoice-show', ['only' => ['show']]);
         $this->middleware('permission:reservation-invoice-search', ['only' => ['searchApplicationTiming']]);
-        $this->middleware('permission:change-application-payment-status', ['only' => ['changeApplicationPaymentStatus']]);
+        $this->middleware('permission:reservation-payment-status-change', ['only' => ['changeApplicationPaymentStatus']]);
     }
 
     public function index()
