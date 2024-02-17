@@ -17,6 +17,12 @@ class Interviewer extends Seeder
         $interviewerRole->givePermissionTo([
             'branch-info-menu-access',
             'interviews-menu-access',
+            'interview-list',
+            'interview-set',
+            'interview-edit',
+            'interview-delete',
+            'interview-search',
+            'interview-show',
         ]);
     }
 }

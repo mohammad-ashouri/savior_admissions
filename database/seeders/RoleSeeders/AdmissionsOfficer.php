@@ -20,6 +20,7 @@ class AdmissionsOfficer extends Seeder
             'interview-edit',
             'interview-delete',
             'interview-search',
+            'interview-show',
             'academic-year-class-list',
             'academic-year-class-create',
             'academic-year-class-edit',

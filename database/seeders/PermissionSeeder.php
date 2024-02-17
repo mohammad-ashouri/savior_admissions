@@ -83,6 +83,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'interview-edit']);
         Permission::create(['name' => 'interview-delete']);
         Permission::create(['name' => 'interview-search']);
+        Permission::create(['name' => 'interview-show']);
 
         Permission::create(['name' => 'reservation-invoice-list']);
         Permission::create(['name' => 'reservation-invoice-search']);
