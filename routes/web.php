@@ -90,7 +90,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('ApplicationTimings', ApplicationTimingController::class);
     Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
     Route::resource('Interviews', InterviewController::class);
-    Route::get('/SetInterview/{id}', InterviewController::class);
+    Route::get('/SetInterview/{id}', [InterviewController::class,'GetInterviewForm']);
+    Route::post('/SetInterview', [InterviewController::class,'SetInterview']);
 
     //Finance
     Route::resource('ReservationInvoices', ApplicationReservationController::class);

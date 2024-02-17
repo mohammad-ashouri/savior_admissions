@@ -831,6 +831,9 @@ $(document).ready(function () {
     else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
     }
+    else if (fullPath.includes('SetInterview')) {
+        pageTitle = 'Set Interview';
+    }
     else if (fullPath.includes('ReservationInvoices')) {
         pageTitle = 'Reservation Invoices';
 

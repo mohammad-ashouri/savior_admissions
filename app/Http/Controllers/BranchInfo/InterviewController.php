@@ -90,4 +90,74 @@ class InterviewController extends Controller
         return view('BranchInfo.Interviews.index', compact('interviews'));
 
     }
+
+    public function GetInterviewForm($id)
+    {
+        $me = User::find(session('id'));
+        $interviews = [];
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $interviews = ApplicationReservation::with('studentInfo')
+                ->with('reservatoreInfo')
+                ->with('applicationInvoiceInfo')
+                ->whereIn('student_id', $myStudents)
+                ->where('id', $id)
+                ->orderBy('date','desc')
+                ->orderBy('ends_to','desc')
+                ->orderBy('start_from','desc')
+                ->first();
+        } elseif ($me->hasRole('Super Admin')) {
+            $interviews = Applications::with('applicationTimingInfo')
+                ->with('interviewerInfo')
+                ->where('reserved', 1)
+                ->where('reserved', 1)
+                ->where('id', $id)
+                ->orderBy('date','desc')
+                ->orderBy('ends_to','desc')
+                ->orderBy('start_from','desc')
+                ->first();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $interviews = Applications::with('applicationTimingInfo')
+                ->with('interviewerInfo')
+                ->where('reserved', 1)
+                ->whereIn('application_timing_id', $applicationTimings)
+                ->where('reserved', 1)
+                ->where('id', $id)
+                ->orderBy('date','desc')
+                ->orderBy('ends_to','desc')
+                ->orderBy('start_from','desc')
+                ->first();
+
+        } elseif ($me->hasRole('Interviewer')) {
+            $interviews = Applications::with('applicationTimingInfo')
+                ->with('interviewerInfo')
+                ->with('reservationInfo')
+                ->where('reserved', 1)
+                ->where('interviewer', $me->id)
+                ->where('Interviewed', 0)
+                ->where('id', $id)
+                ->orderBy('date','desc')
+                ->orderBy('ends_to','desc')
+                ->orderBy('start_from','desc')
+                ->first();
+        }
+        if (empty($interviews)) {
+            abort(403);
+        }
+
+        return view('BranchInfo.Interviews.set', compact('interviews'));
+    }
 }
