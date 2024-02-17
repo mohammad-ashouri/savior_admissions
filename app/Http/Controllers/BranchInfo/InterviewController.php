@@ -94,10 +94,10 @@ class InterviewController extends Controller
     public function GetInterviewForm($id)
     {
         $me = User::find(session('id'));
-        $interviews = [];
+        $interview = [];
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
-            $interviews = ApplicationReservation::with('studentInfo')
+            $interview = ApplicationReservation::with('studentInfo')
                 ->with('reservatoreInfo')
                 ->with('applicationInvoiceInfo')
                 ->whereIn('student_id', $myStudents)
@@ -107,7 +107,7 @@ class InterviewController extends Controller
                 ->orderBy('start_from','desc')
                 ->first();
         } elseif ($me->hasRole('Super Admin')) {
-            $interviews = Applications::with('applicationTimingInfo')
+            $interview = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
                 ->where('reserved', 1)
                 ->where('reserved', 1)
@@ -130,7 +130,7 @@ class InterviewController extends Controller
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
 
             // Finding applications related to the application timings
-            $interviews = Applications::with('applicationTimingInfo')
+            $interview = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
@@ -142,7 +142,7 @@ class InterviewController extends Controller
                 ->first();
 
         } elseif ($me->hasRole('Interviewer')) {
-            $interviews = Applications::with('applicationTimingInfo')
+            $interview = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
@@ -154,10 +154,10 @@ class InterviewController extends Controller
                 ->orderBy('start_from','desc')
                 ->first();
         }
-        if (empty($interviews)) {
+        if (empty($interview)) {
             abort(403);
         }
 
-        return view('BranchInfo.Interviews.set', compact('interviews'));
+        return view('BranchInfo.Interviews.set', compact('interview'));
     }
 }

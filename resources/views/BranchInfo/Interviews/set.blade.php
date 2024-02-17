@@ -25,33 +25,47 @@
                     </div>
                 </div>
             @endif
-            <div class="grid grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <form id="set-interview" method="post" action="/SetInterview">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
-                                    <label for="name"
+                                    <label
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Name</label>
-                                    <input type="text" id="name" value=""
-                                           name="name"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter name" required>
+                                        Name And Surname: </label>
+                                    {{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}
+                                </div>
+                                <div>
+                                    <label
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        Class: </label>
+                                    {{ $interview->reservationInfo->levelInfo->name }}
                                 </div>
                             </div>
-                            <input type="hidden" name="application_id" value="">
-                            <button type="submit"
-                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Submit
-                            </button>
-                            <a href="{{ url()->previous() }}">
-                                <button type="button"
-                                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                    Back
+                            @switch($interview->reservationInfo->levelInfo->name)
+                                @case('Kindergarten 1')
+                                @case('Kindergarten 2')
+                                    @include('BranchInfo.Interviews.Forms.2024.Preschool')
+                                @break
+                                @default
+                                    @include('BranchInfo.Interviews.Forms.2024.G1-G12')
+
+                            @endswitch
+                            <div id="last-step" hidden="hidden">
+                                <input type="hidden" name="application_id" value="{{ $interview->id }}">
+                                <button type="submit"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Submit
                                 </button>
-                            </a>
+                                <a href="{{ url()->previous() }}">
+                                    <button type="button"
+                                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                        Back
+                                    </button>
+                                </a>
+                            </div>
                         </form>
                     </div>
                 </div>
