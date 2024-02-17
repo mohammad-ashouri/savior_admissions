@@ -60,25 +60,22 @@
                                     </div>
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Academic Year
+                                    Student
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Students Application Type
+                                    Date and Time
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Start Date and Time
+                                    Level
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    End Date and Time
+                                    Interview Type
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Interview Time
+                                    Reservatore
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Delay Between Reserve
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Fee
+                                    Status
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Action
@@ -87,7 +84,7 @@
                             </thead>
 
                             <tbody>
-                            @foreach($interviews as $applicationTiming)
+                            @foreach($interviews as $interview)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
@@ -99,77 +96,77 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $applicationTiming->academicYearInfo->name }}</div>
+                                                class="text-base font-semibold">{{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $applicationTiming->students_application_type }}</div>
+                                                class="text-base font-semibold">{{ $interview->date . ' - ' . $interview->start_from . ' - ' .  $interview->ends_to}}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $applicationTiming->start_date . " " . $applicationTiming->start_time }}</div>
+                                                class="text-base font-semibold">{{ $interview->reservationInfo->levelInfo->name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $applicationTiming->end_date . " " . $applicationTiming->end_time }}</div>
+                                                class="text-base font-semibold">{{ $interview->reservationInfo->interview_type }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $applicationTiming->interview_time }}</div>
+                                                class="text-base font-semibold">{{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $applicationTiming->delay_between_reserve }}</div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ number_format($applicationTiming->fee) . ' Rials' }}</div>
+                                                class="text-base font-semibold">
+                                                @switch($interview->interviewed)
+                                                    @case(0)
+                                                        Awaiting interview
+                                                        @break
+                                                    @case(1)
+                                                        Interviewed
+                                                        @break
+                                                @endswitch
+                                            </div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
-                                        @can('application-timing-show')
-                                            <a href="{{ route('ApplicationTimings.show',$applicationTiming->id) }}"
-                                               type="button"
-                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                <i class="las la-eye mt-1 mr-1"></i>
-                                                Details
-                                            </a>
-                                        @endcan
-                                        @can('application-timing-edit')
-                                            {{--                                            <a href="{{ route('ApplicationTimings.edit',$applicationTiming->id) }}"--}}
-                                            {{--                                               type="button"--}}
-                                            {{--                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">--}}
-                                            {{--                                                <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"--}}
-                                            {{--                                                     xmlns="http://www.w3.org/2000/svg">--}}
-                                            {{--                                                    <path--}}
-                                            {{--                                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">--}}
-                                            {{--                                                    </path>--}}
-                                            {{--                                                    <path fill-rule="evenodd"--}}
-                                            {{--                                                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"--}}
-                                            {{--                                                          clip-rule="evenodd"></path>--}}
-                                            {{--                                                </svg>--}}
-                                            {{--                                                Edit--}}
-                                            {{--                                            </a>--}}
-                                        @endcan
+                                        @switch($interview->interviewed)
+                                            @case(1)
+                                                @can('interview-show')
+                                                    <a href="{{ route('Interviews.show',$interview->id) }}"
+                                                       type="button"
+                                                       class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                        <i class="las la-eye mt-1 mr-1"></i>
+                                                        Details
+                                                    </a>
+                                                @endcan
+                                                @break
+                                            @case(0)
+                                                @can('interview-set')
+                                                    <a href="/SetInterview/{{ $interview->id }}"
+                                                       type="button"
+                                                       class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                        <i class="las la-eye mt-1 mr-1"></i>
+                                                        Set
+                                                    </a>
+                                                @endcan
+                                                @break
+                                        @endswitch
                                     </td>
                                 </tr>
                             @endforeach

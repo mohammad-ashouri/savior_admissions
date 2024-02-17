@@ -13,16 +13,15 @@ use App\Models\UserAccessInformation;
 
 class InterviewController extends Controller
 {
-    //    public function __construct()
-    //    {
-    //        $this->middleware('permission:students-list', ['only' => ['index']]);
-    //        $this->middleware('permission:students-create', ['only' => ['create', 'store']]);
-    //        $this->middleware('permission:students-edit', ['only' => ['edit', 'update']]);
-    //        $this->middleware('permission:students-delete', ['only' => ['destroy']]);
-    //        $this->middleware('permission:students-search', ['only' => ['search']]);
-    //        $this->middleware('permission:students-show', ['only' => ['show']]);
-    //        $this->middleware('permission:change-student-information', ['only' => ['changeInformation']]);
-    //    }
+        public function __construct()
+        {
+            $this->middleware('permission:interview-list', ['only' => ['index']]);
+            $this->middleware('permission:interview-set', ['only' => ['set']]);
+            $this->middleware('permission:interview-edit', ['only' => ['edit', 'update']]);
+            $this->middleware('permission:interview-delete', ['only' => ['destroy']]);
+            $this->middleware('permission:interview-search', ['only' => ['search']]);
+            $this->middleware('permission:interview-show', ['only' => ['show']]);
+        }
 
     public function index()
     {
@@ -34,14 +33,18 @@ class InterviewController extends Controller
                 ->with('reservatoreInfo')
                 ->with('applicationInvoiceInfo')
                 ->whereIn('student_id', $myStudents)
-                ->orderBy('created_at','desc')
+                ->orderBy('date','desc')
+                ->orderBy('ends_to','desc')
+                ->orderBy('start_from','desc')
                 ->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
             $interviews = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
                 ->where('reserved', 1)
                 ->where('reserved', 1)
-                ->orderBy('created_at','desc')
+                ->orderBy('date','desc')
+                ->orderBy('ends_to','desc')
+                ->orderBy('start_from','desc')
                 ->paginate(30);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
@@ -62,16 +65,21 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->orderBy('created_at','desc')
+                ->orderBy('date','desc')
+                ->orderBy('ends_to','desc')
+                ->orderBy('start_from','desc')
                 ->paginate(30);
 
         } elseif ($me->hasRole('Interviewer')) {
             $interviews = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
+                ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->where('interviewer', $me->id)
                 ->where('Interviewed', 0)
-                ->orderBy('created_at','desc')
+                ->orderBy('date','desc')
+                ->orderBy('ends_to','desc')
+                ->orderBy('start_from','desc')
                 ->paginate(30);
         }
 

@@ -45,4 +45,9 @@ class Applications extends Model
     {
         return $this->belongsTo(User::class, 'interviewer', 'id');
     }
+    public function reservationInfo()
+    {
+        return $this->hasOne(ApplicationReservation::class, 'application_id', 'id');
+    }
+
 }
