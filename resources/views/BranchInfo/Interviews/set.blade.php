@@ -33,27 +33,29 @@
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
                                     <label
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         Name And Surname: </label>
                                     {{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}
                                 </div>
                                 <div>
                                     <label
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         Class: </label>
                                     {{ $interview->reservationInfo->levelInfo->name }}
                                 </div>
                             </div>
-                            @switch($interview->reservationInfo->levelInfo->name)
-                                @case('Kindergarten 1')
-                                @case('Kindergarten 2')
-                                    @include('BranchInfo.Interviews.Forms.2024.Preschool')
-                                @break
-                                @default
-                                    @include('BranchInfo.Interviews.Forms.2024.G1-G12')
+                            @include('BranchInfo.Interviews.Forms.2024.Set.G1-G12')
+{{--                            @include('BranchInfo.Interviews.Forms.2024.Set.Preschool')--}}
+{{--                            @switch($interview->reservationInfo->levelInfo->name)--}}
+{{--                                @case('Kindergarten 1')--}}
+{{--                                @case('Kindergarten 2')--}}
+{{--                                    @include('BranchInfo.Interviews.Forms.2024.Set.Preschool')--}}
+{{--                                    @break--}}
+{{--                                @default--}}
+{{--                                    @include('BranchInfo.Interviews.Forms.2024.Set.G1-G12')--}}
 
-                            @endswitch
-                            <div id="last-step" hidden="hidden">
+{{--                            @endswitch--}}
+                            <div id="last-step" class="text-center hidden">
                                 <input type="hidden" name="application_id" value="{{ $interview->id }}">
                                 <button type="submit"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
