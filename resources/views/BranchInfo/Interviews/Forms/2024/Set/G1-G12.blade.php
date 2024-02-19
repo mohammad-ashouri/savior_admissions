@@ -1240,25 +1240,36 @@
     });
 
     $('#nextBtn').click(function () {
-        console.log(currentTab);
-        if (currentTab < 6) {
-            currentTab += 1;
-            showTab(currentTab);
-            $('#sum-of-points').text(
-                parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
-            );
-        }
-        if ($('#s1_1_s').val() === 'Inadmissible' || $('#s1_2_s').val() === 'Inadmissible' || $('#s1_3_s').val() === 'Inadmissible') {
-            $('#tab2, #tab3, #tab4, #tab5').addClass('hidden');
-            $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').addClass('hidden');
-            currentTab = 6;
-            showTab(currentTab);
-        } else if ($('#s1_1_s').val() !== 'Inadmissible' && $('#s1_2_s').val() !== 'Inadmissible' && $('#s1_3_s').val() !== 'Inadmissible') {
-            $('#tab2, #tab3, #tab4, #tab5').removeClass('hidden');
-            $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').removeClass('hidden');
-            showTab(currentTab);
+        let hasEmptyField = false;
+
+        $('#tab' + currentTab).find('input, textarea, select').each(function () {
+            if ($.trim($(this).val()) === '') {
+                hasEmptyField = true;
+            }
+        });
+        if (hasEmptyField) {
+            swalFire('Error', "Some fields are empty", 'error', 'Try again');
+        } else {
+            if (currentTab < 6) {
+                currentTab += 1;
+                showTab(currentTab);
+                $('#sum-of-points').text(
+                    parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
+                );
+            }
+            if ($('#s1_1_s').val() === 'Inadmissible' || $('#s1_2_s').val() === 'Inadmissible' || $('#s1_3_s').val() === 'Inadmissible' || $('#s1_4_s').val() === 'Inadmissible') {
+                $('#tab2, #tab3, #tab4, #tab5').addClass('hidden');
+                $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').addClass('hidden');
+                currentTab = 6;
+                showTab(currentTab);
+            } else if ($('#s1_1_s').val() !== 'Inadmissible' && $('#s1_2_s').val() !== 'Inadmissible' && $('#s1_3_s').val() !== 'Inadmissible' && $('#s1_4_s').val() !== 'Inadmissible') {
+                $('#tab2, #tab3, #tab4, #tab5').removeClass('hidden');
+                $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').removeClass('hidden');
+                showTab(currentTab);
+            }
         }
     });
+
 
     function showTab(tabIndex) {
         $('.tab-btn').removeClass('bg-gray-900').addClass('bg-gray-700');
