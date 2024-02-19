@@ -14,6 +14,11 @@
     <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="/build/plugins/select2/dist/js/select2.min.js"></script>
     <script>
+        function swalFire(title = null, text, icon, confirmButtonText) {
+            Swal.fire({
+                title: title, html: text, icon: icon, confirmButtonText: confirmButtonText,
+            });
+        }
         $(document).ready(function () {
             $('.select2').select2({
                 placeholder: 'Choose an option',
