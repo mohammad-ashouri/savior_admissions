@@ -50,4 +50,9 @@ class Applications extends Model
         return $this->hasOne(ApplicationReservation::class, 'application_id', 'id');
     }
 
+    public function interview()
+    {
+        return $this->hasOne(Interview::class, 'application_id');
+    }
+
 }
