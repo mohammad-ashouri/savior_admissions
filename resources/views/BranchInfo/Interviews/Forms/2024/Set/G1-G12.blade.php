@@ -1240,6 +1240,7 @@
     });
 
     $('#nextBtn').click(function () {
+        console.log(currentTab);
         if (currentTab < 6) {
             currentTab += 1;
             showTab(currentTab);
@@ -1255,7 +1256,6 @@
         } else if ($('#s1_1_s').val() !== 'Inadmissible' && $('#s1_2_s').val() !== 'Inadmissible' && $('#s1_3_s').val() !== 'Inadmissible') {
             $('#tab2, #tab3, #tab4, #tab5').removeClass('hidden');
             $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').removeClass('hidden');
-            currentTab = 2;
             showTab(currentTab);
         }
     });

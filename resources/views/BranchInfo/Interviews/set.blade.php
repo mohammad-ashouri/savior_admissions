@@ -44,16 +44,14 @@
                                     {{ $interview->reservationInfo->levelInfo->name }}
                                 </div>
                             </div>
-                            @include('BranchInfo.Interviews.Forms.2024.Set.G1-G12')
-
-{{--                            @switch($interview->reservationInfo->levelInfo->name)--}}
-{{--                                @case('Kindergarten 1')--}}
-{{--                                @case('Kindergarten 2')--}}
-{{--                                    @include('BranchInfo.Interviews.Forms.2024.Set.Preschool')--}}
-{{--                                    @break--}}
-{{--                                @default--}}
-{{--                                    @include('BranchInfo.Interviews.Forms.2024.Set.G1-G12')--}}
-{{--                            @endswitch--}}
+                            @switch($interview->reservationInfo->levelInfo->name)
+                                @case('Kindergarten 1')
+                                @case('Kindergarten 2')
+                                    @include('BranchInfo.Interviews.Forms.2024.Set.Preschool')
+                                    @break
+                                @default
+                                    @include('BranchInfo.Interviews.Forms.2024.Set.G1-G12')
+                            @endswitch
                             <div id="last-step" class="text-center hidden">
                                 <input type="hidden" name="application_id" value="{{ $interview->id }}">
                                 <button type="submit"

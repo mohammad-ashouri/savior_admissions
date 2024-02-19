@@ -1379,7 +1379,6 @@
         } else if ($('#s1_1_s').val() !== 'Rejected' && $('#s1_2_s').val() !== 'Rejected' && $('#s1_3_s').val() !== 'Rejected' || $('#s1_4_s').val() === 'Rejected') {
             $('#tab2, #tab3, #tab4, #tab5, #tab6, #tab7').removeClass('hidden');
             $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn, #step-6-btn, #step-7-btn').removeClass('hidden');
-            currentTab = 2;
             showTab(currentTab);
         }
     });
