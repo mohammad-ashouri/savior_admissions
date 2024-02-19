@@ -261,9 +261,11 @@ $(document).ready(function () {
             }
         });
 
-    } else if (fullPath.includes('DocumentTypes')) {
+    }
+    else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
-    } else if (fullPath.includes('Levels')) {
+    }
+    else if (fullPath.includes('Levels')) {
         pageTitle = 'Levels Manager';
         $('#new-level').submit(function (e) {
             e.preventDefault();
@@ -280,7 +282,8 @@ $(document).ready(function () {
                 }
             });
         });
-    } else if (fullPath.includes('AcademicYears')) {
+    }
+    else if (fullPath.includes('AcademicYears')) {
         pageTitle = 'Academic Years Manager';
         $('#new-academic-year').submit(function (e) {
             e.preventDefault();
@@ -297,9 +300,11 @@ $(document).ready(function () {
                 }
             });
         });
-    } else if (fullPath.includes('searchUsers')) {
+    }
+    else if (fullPath.includes('searchUsers')) {
         pageTitle = 'Search users';
-    } else if (fullPath.includes('AcademicYearClasses')) {
+    }
+    else if (fullPath.includes('AcademicYearClasses')) {
         pageTitle = 'Academic Year Classes';
         $('#academic_year').change(function (e) {
             $.ajax({
@@ -324,7 +329,8 @@ $(document).ready(function () {
                 }
             });
         });
-    } else if (fullPath.includes('Documents')) {
+    }
+    else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
@@ -474,7 +480,8 @@ $(document).ready(function () {
             $('#openImage').addClass('hidden');
         });
 
-    } else if (fullPath.includes('EducationYears')) {
+    }
+    else if (fullPath.includes('EducationYears')) {
         pageTitle = 'Education Years';
         $('#new-education-year').submit(function (e) {
             e.preventDefault();
@@ -507,7 +514,8 @@ $(document).ready(function () {
             });
         });
 
-    } else if (fullPath.includes('EducationTypes')) {
+    }
+    else if (fullPath.includes('EducationTypes')) {
         pageTitle = 'Education Types';
         $('#new-education-type').submit(function (e) {
             e.preventDefault();
@@ -525,7 +533,8 @@ $(document).ready(function () {
             });
         });
 
-    } else if (fullPath.includes('ApplicationTimings')) {
+    }
+    else if (fullPath.includes('ApplicationTimings')) {
         pageTitle = 'Application Timings Manager';
         // resetAllInputValues();
         resetAllSelectValues();
@@ -635,7 +644,8 @@ $(document).ready(function () {
                 }
             });
         });
-    } else if (fullPath.includes('PrepareToPayApplication')) {
+    }
+    else if (fullPath.includes('PrepareToPayApplication')) {
         pageTitle = 'Pay Application';
         resetAllSelectValues();
         resetAllInputValues();
@@ -713,7 +723,8 @@ $(document).ready(function () {
             });
         });
 
-    } else if (fullPath.includes('Applications')) {
+    }
+    else if (fullPath.includes('Applications')) {
         pageTitle = 'Applications';
 
         if (fullPath.includes('Applications/create')) {
@@ -809,19 +820,41 @@ $(document).ready(function () {
             });
         }
 
-    } else if (fullPath.includes('roles')) {
+    }
+    else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';
-    } else if (fullPath.includes('Schools')) {
+    }
+    else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
-    } else if (fullPath.includes('Students')) {
+    }
+    else if (fullPath.includes('Students')) {
         pageTitle = 'Students';
-    } else if (fullPath.includes('Interviews')) {
+        $('#new-student').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your student will be added permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-student').off('submit').submit();
+                }
+            });
+        });
+
+    }
+    else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
-    } else if (fullPath.includes('SetInterview')) {
+    }
+    else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
 
 
-    } else if (fullPath.includes('ReservationInvoices')) {
+    }
+    else if (fullPath.includes('ReservationInvoices')) {
         pageTitle = 'Reservation Invoices';
 
         $('#payment_status').change(function () {
@@ -844,7 +877,8 @@ $(document).ready(function () {
                 });
             }
         });
-    } else {
+    }
+    else {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';
