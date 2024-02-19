@@ -294,7 +294,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s2_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
                                     </label>
                                 </td>
                             </tr>
@@ -662,7 +662,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s3_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
                                     </label>
                                 </td>
                             </tr>
@@ -834,7 +834,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s4_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
                                     </label>
                                 </td>
                             </tr>
@@ -1028,7 +1028,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s5_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
                                     </label>
                                 </td>
                             </tr>
@@ -1127,6 +1127,7 @@
                                     Sum of points with coefficient
                                 </th>
                                 <td class="font-bold p-4 text-center">
+                                    <p id="sum-of-points"></p>
                                 </td>
                                 <td class=" p-4 text-center" rowspan="2">
                                     Acceptance conditions (to be completed if the conditional option is selected)
@@ -1162,6 +1163,13 @@
 
 
 <script>
+    function isNumber(value) {
+        return !isNaN(value) && value !== '';
+    }
+
+    if (!isNumber(value)) {
+        $(this).val('');
+    }
 
     // Calculate the total sum of Rating Sum with Coefficient for all rows of each table
     function calculateTotal(tableId, totalId) {
@@ -1206,14 +1214,19 @@
         calculateTotal(tableId, totalId);
     });
 
-
-    let currentTab = 5;
+    let currentTab = 1;
     showTab(currentTab);
 
     $('.tab-btn').click(function () {
         let tabId = $(this).data('tab');
         currentTab = Number(tabId.replace('tab', ''));
         showTab(currentTab);
+
+        if (currentTab === 6) {
+            $('#sum-of-points').text(
+                parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
+            );
+        }
     });
 
     $('#prevBtn').click(function () {
@@ -1230,6 +1243,9 @@
         if (currentTab < 6) {
             currentTab += 1;
             showTab(currentTab);
+            $('#sum-of-points').text(
+                parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
+            );
         }
         if ($('#s1_1_s').val() === 'Inadmissible' || $('#s1_2_s').val() === 'Inadmissible' || $('#s1_3_s').val() === 'Inadmissible') {
             $('#tab2, #tab3, #tab4, #tab5').addClass('hidden');
@@ -1264,6 +1280,5 @@
             $('#last-step').addClass('hidden');
         }
     }
-
 
 </script>

@@ -54,9 +54,9 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option" required>
                             <option selected disabled value="">Select an option</option>
-                            <option value="admitted">admitted</option>
-                            <option value="conditional">conditional</option>
-                            <option value="rejected">rejected</option>
+                            <option value="Admitted">Admitted</option>
+                            <option value="Conditional">Conditional</option>
+                            <option value="Rejected">Rejected</option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_1_r"
@@ -76,9 +76,9 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option" required>
                             <option selected disabled value="">Select an option</option>
-                            <option value="admitted">admitted</option>
-                            <option value="conditional">conditional</option>
-                            <option value="rejected">rejected</option>
+                            <option value="Admitted">Admitted</option>
+                            <option value="Conditional">Conditional</option>
+                            <option value="Rejected">Rejected</option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_2_r"
@@ -98,9 +98,9 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option" required>
                             <option selected disabled value="">Select an option</option>
-                            <option value="admitted">admitted</option>
-                            <option value="conditional">conditional</option>
-                            <option value="rejected">rejected</option>
+                            <option value="Admitted">Admitted</option>
+                            <option value="Conditional">Conditional</option>
+                            <option value="Rejected">Rejected</option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_3_r"
@@ -120,9 +120,9 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option" required>
                             <option selected disabled value="">Select an option</option>
-                            <option value="admitted">admitted</option>
-                            <option value="conditional">conditional</option>
-                            <option value="rejected">rejected</option>
+                            <option value="Admitted">Admitted</option>
+                            <option value="Conditional">Conditional</option>
+                            <option value="Rejected">Rejected</option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_4_r"
@@ -139,7 +139,7 @@
                         Second step: Social Domain
                     </p>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table id="table2" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -337,8 +337,8 @@
                                     Total
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <label for="s2_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    <label id="s2_total"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
                                     </label>
                                 </td>
                             </tr>
@@ -351,7 +351,7 @@
                         Third step: Cognitive Domain
                     </p>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table id="table3" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -527,8 +527,8 @@
                                     Total
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <label for="s3_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    <label id="s3_total"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
                                     </label>
                                 </td>
                             </tr>
@@ -541,7 +541,7 @@
                         Fourth step: Physical Health
                     </p>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table id="table4" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -640,8 +640,8 @@
                                     Total
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <label for="s4_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    <label id="s4_total"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
                                     </label>
                                 </td>
                             </tr>
@@ -662,7 +662,7 @@
                         Fifth step: Communication, Literacy and learning
                     </p>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table id="table5" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -813,8 +813,8 @@
                                     Total
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <label for="s4_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    <label id="s5_total"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
                                     </label>
                                 </td>
                             </tr>
@@ -1193,9 +1193,9 @@
                                 <option value="No">No</option>
                                 <option value="Yes">Yes</option>
                             </select>
-                            <input type="text" id="s7_2_r" name="s7_2_r" value=""
-                                   placeholder="Name of the institution (If Yes)"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <textarea id="s7_2_r" required placeholder="Name of the institution (If Yes)"
+                                      name="s7_2_r"
+                                      class="bg-gray-50 border border-gray-300 h-11 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
 
                         <div class="mt-5">
@@ -1249,6 +1249,7 @@
                                     Sum of points with coefficient
                                 </th>
                                 <td class="font-bold p-4 text-center">
+                                    <p id="sum-of-points"></p>
                                 </td>
                                 <td class=" p-4 text-center" rowspan="2">
                                     Acceptance conditions (to be completed if the conditional option is selected)
@@ -1284,17 +1285,79 @@
 
 
 <script>
-    var currentTab = 1;
+    function isNumber(value) {
+        return !isNaN(value) && value !== '';
+    }
+
+    // Calculate the total sum of Rating Sum with Coefficient for all rows of each table
+    function calculateTotal(tableId, totalId) {
+        var total = 0;
+        $('#' + tableId + ' td:last-child label').each(function () {
+            var value = parseFloat($(this).text());
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+        $('#' + totalId).text(total);
+    }
+
+    // For each row in each table
+    $('input[type="text"]').on('input', function () {
+        var value = $(this).val();
+
+        if (!isNumber(value)) {
+            $(this).val('');
+        }
+
+        var tableId = $(this).closest('table').attr('id'); // Get the id of the current table
+        var totalId = 's' + tableId.slice(-1) + '_total'; // Construct the id of the total column for the current table
+
+        // Get the input score
+        var inputScore = parseFloat($(this).val());
+
+        // Get the coefficient from the corresponding row
+        var coefficient = parseFloat($(this).closest('tr').find('p').text().trim());
+
+        // Calculate the result with coefficient
+        var result = inputScore * coefficient;
+
+        // Display the result in the last column of each row
+        $(this).closest('tr').find('label').text(result);
+
+        // Calculate the total sum of Rating Sum with Coefficient for each row of each table
+        var rowTotal = 0;
+        $(this).closest('table').find('td:last-child:not(:last-child) label').each(function () { // Exclude the last column
+            var value = parseFloat($(this).text());
+            if (!isNaN(value)) {
+                rowTotal += value;
+            }
+        });
+        $(this).closest('table').find('tr:last-child td:last-child label').text(rowTotal);
+
+        // Display the total sum in the Total column for each table
+        calculateTotal(tableId, totalId);
+    });
+
+    let currentTab = 1;
     showTab(currentTab);
 
     $('.tab-btn').click(function () {
-        var tabId = $(this).data('tab');
+        let tabId = $(this).data('tab');
         currentTab = Number(tabId.replace('tab', ''));
         showTab(currentTab);
+
+        if (currentTab === 8) {
+            $('#sum-of-points').text(
+                parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
+            );
+        }
     });
 
     $('#prevBtn').click(function () {
-        if (currentTab > 1) {
+        if (currentTab > 1 && ($('#s1_1_s').val() === 'Rejected' || $('#s1_2_s').val() === 'Rejected' || $('#s1_3_s').val() === 'Rejected')) {
+            currentTab -= 8;
+            showTab(currentTab);
+        } else {
             currentTab -= 1;
             showTab(currentTab);
         }
@@ -1303,6 +1366,20 @@
     $('#nextBtn').click(function () {
         if (currentTab < 8) {
             currentTab += 1;
+            showTab(currentTab);
+            $('#sum-of-points').text(
+                parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
+            );
+        }
+        if ($('#s1_1_s').val() === 'Rejected' || $('#s1_2_s').val() === 'Rejected' || $('#s1_3_s').val() === 'Rejected') {
+            $('#tab2, #tab3, #tab4, #tab5, #tab6, #tab7').addClass('hidden');
+            $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').addClass('hidden');
+            currentTab = 8;
+            showTab(currentTab);
+        } else if ($('#s1_1_s').val() !== 'Rejected' && $('#s1_2_s').val() !== 'Rejected' && $('#s1_3_s').val() !== 'Rejected') {
+            $('#tab2, #tab3, #tab4, #tab5, #tab6, #tab7').removeClass('hidden');
+            $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').removeClass('hidden');
+            currentTab = 2;
             showTab(currentTab);
         }
     });
@@ -1314,14 +1391,16 @@
         $('[data-tab="tab' + tabIndex + '"]').removeClass('bg-gray-700').addClass('bg-gray-900');
 
         if (tabIndex === 1) {
+            $('#nextBtn').removeClass('hidden');
             $('#prevBtn').addClass('hidden');
             $('#last-step').addClass('hidden');
         } else if (tabIndex === 8) {
             $('#nextBtn').addClass('hidden');
+            $('#prevBtn').removeClass('hidden');
             $('#last-step').removeClass('hidden');
         } else {
-            $('#prevBtn').removeClass('hidden');
             $('#nextBtn').removeClass('hidden');
+            $('#prevBtn').removeClass('hidden');
             $('#last-step').addClass('hidden');
         }
     }
