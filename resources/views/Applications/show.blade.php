@@ -105,7 +105,7 @@
                                 $paymentMethod=Document::find(json_decode($applicationInfo->applicationInvoiceInfo->payment_information,true)['document_id']);
                                 $paymentMethod->src = str_replace('public', 'storage', $paymentMethod->src);
                             @endphp
-                            <img src="{{ env('APP_URL')}}/{{$paymentMethod->src }}" alt="Payment image not found!">
+                            <img class="w-96" src="{{ env('APP_URL')}}/{{$paymentMethod->src }}" alt="Payment image not found!">
                         </div>
                     </div>
                 </div>
