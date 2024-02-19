@@ -22,7 +22,7 @@ class InterviewController extends Controller
         $this->middleware('permission:interview-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:interview-delete', ['only' => ['destroy']]);
         $this->middleware('permission:interview-search', ['only' => ['search']]);
-        $this->middleware('permission:interview-show', ['only' => ['show', 'GetInterviewForm']]);
+//        $this->middleware('permission:interview-show', ['only' => ['show']]);
     }
 
     public function index()
@@ -78,7 +78,7 @@ class InterviewController extends Controller
                 ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->where('interviewer', $me->id)
-                ->where('Interviewed', 0)
+                ->orderBy('Interviewed', 'desc')
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -225,5 +225,10 @@ class InterviewController extends Controller
 
         return redirect()->route('Interviews.index')
             ->withErrors(['errors' => 'Recording the interview failed!']);
+    }
+
+    public function show($id)
+    {
+        return 'go';
     }
 }
