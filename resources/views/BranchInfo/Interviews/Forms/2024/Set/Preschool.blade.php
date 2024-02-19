@@ -1341,17 +1341,17 @@
     let currentTab = 1;
     showTab(currentTab);
 
-    $('.tab-btn').click(function () {
-        let tabId = $(this).data('tab');
-        currentTab = Number(tabId.replace('tab', ''));
-        showTab(currentTab);
-
-        if (currentTab === 8) {
-            $('#sum-of-points').text(
-                parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
-            );
-        }
-    });
+    // $('.tab-btn').click(function () {
+    //     let tabId = $(this).data('tab');
+    //     currentTab = Number(tabId.replace('tab', ''));
+    //     showTab(currentTab);
+    //
+    //     if (currentTab === 8) {
+    //         $('#sum-of-points').text(
+    //             parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
+    //         );
+    //     }
+    // });
 
     $('#prevBtn').click(function () {
         if (currentTab > 1 && ($('#s1_1_s').val() === 'Rejected' || $('#s1_2_s').val() === 'Rejected' || $('#s1_3_s').val() === 'Rejected')) {
@@ -1371,14 +1371,14 @@
                 parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
             );
         }
-        if ($('#s1_1_s').val() === 'Rejected' || $('#s1_2_s').val() === 'Rejected' || $('#s1_3_s').val() === 'Rejected') {
+        if ($('#s1_1_s').val() === 'Rejected' || $('#s1_2_s').val() === 'Rejected' || $('#s1_3_s').val() === 'Rejected' || $('#s1_4_s').val() === 'Rejected') {
             $('#tab2, #tab3, #tab4, #tab5, #tab6, #tab7').addClass('hidden');
-            $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').addClass('hidden');
+            $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn, #step-6-btn, #step-7-btn').addClass('hidden');
             currentTab = 8;
             showTab(currentTab);
-        } else if ($('#s1_1_s').val() !== 'Rejected' && $('#s1_2_s').val() !== 'Rejected' && $('#s1_3_s').val() !== 'Rejected') {
+        } else if ($('#s1_1_s').val() !== 'Rejected' && $('#s1_2_s').val() !== 'Rejected' && $('#s1_3_s').val() !== 'Rejected' || $('#s1_4_s').val() === 'Rejected') {
             $('#tab2, #tab3, #tab4, #tab5, #tab6, #tab7').removeClass('hidden');
-            $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn').removeClass('hidden');
+            $('#step-2-btn, #step-3-btn, #step-4-btn, #step-5-btn, #step-6-btn, #step-7-btn').removeClass('hidden');
             currentTab = 2;
             showTab(currentTab);
         }

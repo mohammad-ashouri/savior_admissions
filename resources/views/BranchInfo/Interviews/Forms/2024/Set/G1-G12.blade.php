@@ -1163,12 +1163,11 @@
 
 
 <script>
+    let currentTab = 1;
+    showTab(currentTab);
+
     function isNumber(value) {
         return !isNaN(value) && value !== '';
-    }
-
-    if (!isNumber(value)) {
-        $(this).val('');
     }
 
     // Calculate the total sum of Rating Sum with Coefficient for all rows of each table
@@ -1185,6 +1184,10 @@
 
     // For each row in each table
     $('input[type="text"]').on('input', function () {
+        var value = $(this).val();
+        if (!isNumber(value)) {
+            $(this).val('');
+        }
         var tableId = $(this).closest('table').attr('id'); // Get the id of the current table
         var totalId = 's' + tableId.slice(-1) + '_total'; // Construct the id of the total column for the current table
 
@@ -1214,20 +1217,17 @@
         calculateTotal(tableId, totalId);
     });
 
-    let currentTab = 1;
-    showTab(currentTab);
-
-    $('.tab-btn').click(function () {
-        let tabId = $(this).data('tab');
-        currentTab = Number(tabId.replace('tab', ''));
-        showTab(currentTab);
-
-        if (currentTab === 6) {
-            $('#sum-of-points').text(
-                parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
-            );
-        }
-    });
+    // $('.tab-btn').click(function () {
+    //     let tabId = $(this).data('tab');
+    //     currentTab = Number(tabId.replace('tab', ''));
+    //     showTab(currentTab);
+    //
+    //     if (currentTab === 6) {
+    //         $('#sum-of-points').text(
+    //             parseFloat($('#s2_total').text()) + parseFloat($('#s3_total').text()) + parseFloat($('#s4_total').text()) + parseFloat($('#s5_total').text())
+    //         );
+    //     }
+    // });
 
     $('#prevBtn').click(function () {
         if (currentTab > 1 && ($('#s1_1_s').val() === 'Inadmissible' || $('#s1_2_s').val() === 'Inadmissible' || $('#s1_3_s').val() === 'Inadmissible')) {
