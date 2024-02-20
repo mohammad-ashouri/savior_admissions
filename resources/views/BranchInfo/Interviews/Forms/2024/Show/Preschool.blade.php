@@ -615,13 +615,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_1" name="s4_1" value="" min="0" max="5"
+                                    <input type="text" id="s4_1" name="s4_1" value="{{$interviewForm['s4_1']}}" min="0"
+                                           max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewForm['s4_1']*5}}
                                     </label>
                                 </td>
                             </tr>
@@ -638,13 +639,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_2" name="s4_2" value="" min="0" max="5"
+                                    <input type="text" id="s4_2" name="s4_2" value="{{$interviewForm['s4_2']}}" min="0"
+                                           max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_2_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewForm['s4_2']*5}}
                                     </label>
                                 </td>
                             </tr>
@@ -661,13 +663,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_3" name="s4_3" value="" min="0" max="5"
+                                    <input type="text" id="s4_3" name="s4_3" value="{{$interviewForm['s4_3']}}" min="0"
+                                           max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewForm['s4_3']*4}}
                                     </label>
                                 </td>
                             </tr>
@@ -678,7 +681,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s4_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewForm['s4_1']*5)+($interviewForm['s4_2']*5)+($interviewForm['s4_3']*4)}}
                                     </label>
                                 </td>
                             </tr>
@@ -690,7 +693,7 @@
                                 Remarks</label>
                             <textarea id="s4_r" required placeholder="Enter remarks"
                                       name="s4_r"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewForm['s4_r']}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -736,13 +739,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_1" name="s5_1" value="" min="0" max="5"
+                                    <input type="text" id="s5_1" name="s5_1" value="{{$interviewForm['s5_1']}}" min="0"
+                                           max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewForm['s5_1']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -762,13 +766,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_2" name="s5_2" value="" min="0" max="5"
+                                    <input type="text" id="s5_2" name="s5_2" value="{{$interviewForm['s5_2']}}" min="0"
+                                           max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_2_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewForm['s5_2']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -786,13 +791,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_3" name="s5_3" value="" min="0" max="5"
+                                    <input type="text" id="s5_3" name="s5_3" value="{{$interviewForm['s5_3']}}" min="0"
+                                           max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewForm['s5_3']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -810,13 +816,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_4" name="s5_4" value="" min="0" max="5"
+                                    <input type="text" id="s5_4" name="s5_4" value="{{$interviewForm['s5_4']}}" min="0"
+                                           max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_4_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewForm['s5_4']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -834,13 +841,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_5" name="s5_5" value="" min="0" max="5"
+                                    <input type="text" id="s5_5" name="s5_5" value="{{$interviewForm['s5_5']}}" min="0"
+                                           max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_5_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewForm['s5_5']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -851,7 +859,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s5_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewForm['s5_1']*3)+($interviewForm['s5_2']*3)+($interviewForm['s5_3']*2)+($interviewForm['s5_4']*1)+($interviewForm['s5_5']*2)}}
                                     </label>
                                 </td>
                             </tr>
@@ -1078,7 +1086,7 @@
                                 interest </label>
                             <textarea id="s6_1_r" required placeholder="Enter remarks"
                                       name="s6_1_r"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewForm['s6_1_r']}}</textarea>
                         </div>
                         <div class="mt-5">
                             <label for="s6_2_r"
@@ -1088,7 +1096,7 @@
                             </label>
                             <textarea id="s6_2_r" required placeholder="Enter remarks"
                                       name="s6_2_r"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewForm['s6_2_r']}}</textarea>
                         </div>
                         <div class="mt-5">
                             <label for="s6_3_r"
@@ -1098,7 +1106,7 @@
                             </label>
                             <textarea id="s6_3_r" required placeholder="Enter remarks"
                                       name="s6_3_r"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewForm['s6_3_r']}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -1209,10 +1217,13 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
                                 <option selected disabled value="">Select an option</option>
-                                <option value="poor">poor</option>
-                                <option value="average">average</option>
-                                <option value="good">good</option>
-                                <option value="very good">very good</option>
+                                <option @if($interviewForm['s7_1']=='poor') selected @endif value="poor">poor</option>
+                                <option @if($interviewForm['s7_1']=='average') selected @endif value="average">average
+                                </option>
+                                <option @if($interviewForm['s7_1']=='good') selected @endif value="good">good</option>
+                                <option @if($interviewForm['s7_1']=='very good') selected @endif value="very good">very
+                                    good
+                                </option>
                             </select>
                         </div>
 
@@ -1227,12 +1238,14 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
                                 <option selected disabled value="">Select an option</option>
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
+                                <option @if($interviewForm['s7_2']=='No') selected @endif value="No">No</option>
+                                <option @if($interviewForm['s7_2']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
                             <textarea id="s7_2_r" required placeholder="Name of the institution (If Yes)"
                                       name="s7_2_r"
-                                      class="bg-gray-50 border border-gray-300 h-11 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 h-11 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">@if($interviewForm['s7_2_r'])
+                                    {{ $interviewForm['s7_2_r'] }}
+                                @endif</textarea>
                         </div>
 
                         <div class="mt-5">
@@ -1244,8 +1257,8 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
                                 <option selected disabled value="">Select an option</option>
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
+                                <option @if($interviewForm['s7_3']=='No') selected @endif value="No">No</option>
+                                <option @if($interviewForm['s7_3']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
                         </div>
                         <div class="mt-5">
@@ -1258,8 +1271,8 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
                                 <option selected disabled value="">Select an option</option>
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
+                                <option @if($interviewForm['s7_4']=='No') selected @endif value="No">No</option>
+                                <option @if($interviewForm['s7_4']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
                         </div>
                         <div class="mt-5">
@@ -1268,12 +1281,13 @@
                                 5- Financial administrative suggestions and criticisms:</label>
                             <textarea id="s7_5" required placeholder="Enter remarks"
                                       name="s7_5"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">@if($interviewForm['s7_5'])
+                                    {{$interviewForm['s7_5']}}
+                                @endif</textarea>
                         </div>
                     </div>
                 </div>
                 <div id="tab8" class="hidden">
-
                     <p class="font-bold mb-4">
                         Final step: Interview result
                     </p>
@@ -1286,7 +1300,14 @@
                                     Sum of points with coefficient
                                 </th>
                                 <td class="font-bold p-4 text-center">
-                                    <p id="sum-of-points"></p>
+                                    <p id="sum-of-points">
+                                        {{
+    ($interviewForm['s2_1']*5)+($interviewForm['s2_2']*4)+($interviewForm['s2_3']*3)+($interviewForm['s2_4']*4)+($interviewForm['s2_5']*4)+($interviewForm['s2_6']*3)+($interviewForm['s2_7']*2)+
+    ($interviewForm['s3_1']*5)+($interviewForm['s3_2']*3)+($interviewForm['s3_3']*2)+($interviewForm['s3_4']*3)+($interviewForm['s3_5']*3)+($interviewForm['s3_6']*4)+
+    ($interviewForm['s4_1']*5)+($interviewForm['s4_2']*5)+($interviewForm['s4_3']*4)+
+    ($interviewForm['s5_1']*3)+($interviewForm['s5_2']*3)+($interviewForm['s5_3']*2)+($interviewForm['s5_4']*1)+($interviewForm['s5_5']*2)
+    }}
+                                    </p>
                                 </td>
                                 <td class=" p-4 text-center" rowspan="2">
                                     Acceptance conditions (to be completed if the conditional option is selected)
@@ -1326,7 +1347,7 @@
         $('textarea, input, select').prop('disabled', true);
     });
 
-    let currentTab = 3;
+    let currentTab = 7;
     showTab(currentTab);
 
     $('.tab-btn').click(function () {
