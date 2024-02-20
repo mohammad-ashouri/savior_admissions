@@ -1243,9 +1243,7 @@
                             </select>
                             <textarea id="s7_2_r" required placeholder="Name of the institution (If Yes)"
                                       name="s7_2_r"
-                                      class="bg-gray-50 border border-gray-300 h-11 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">@if($interviewForm['s7_2_r'])
-                                    {{ $interviewForm['s7_2_r'] }}
-                                @endif</textarea>
+                                      class="bg-gray-50 border border-gray-300 h-11 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">@if($interviewForm['s7_2_r']){{$interviewForm['s7_2_r']}}@endif</textarea>
                         </div>
 
                         <div class="mt-5">
@@ -1281,9 +1279,7 @@
                                 5- Financial administrative suggestions and criticisms:</label>
                             <textarea id="s7_5" required placeholder="Enter remarks"
                                       name="s7_5"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">@if($interviewForm['s7_5'])
-                                    {{$interviewForm['s7_5']}}
-                                @endif</textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">@if($interviewForm['s7_5']){{$interviewForm['s7_5']}}@endif</textarea>
                         </div>
                     </div>
                 </div>
@@ -1347,7 +1343,7 @@
         $('textarea, input, select').prop('disabled', true);
     });
 
-    let currentTab = 7;
+    let currentTab = 1;
     showTab(currentTab);
 
     $('.tab-btn').click(function () {
