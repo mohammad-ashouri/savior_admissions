@@ -132,7 +132,7 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">
-                                                @switch($interview->interviewed)
+                                                @switch($interview->Interviewed)
                                                     @case(0)
                                                         Awaiting interview
                                                         @break
@@ -151,7 +151,7 @@
                                             <i class="las la-eye mt-1 mr-1"></i>
                                             Details
                                         </a>
-                                        @switch($interview->interviewed)
+                                        @switch($interview->Interviewed)
                                             @case(1)
                                                 @can('interview-show')
                                                     <a href="{{ route('Interviews.show',$interview->id) }}"
@@ -162,7 +162,7 @@
                                                     </a>
                                                 @endcan
                                                 @break
-                                            @case('0')
+                                            @case(0)
                                                 @can('interview-set')
                                                     <a href="/SetInterview/{{ $interview->id }}"
                                                        type="button"

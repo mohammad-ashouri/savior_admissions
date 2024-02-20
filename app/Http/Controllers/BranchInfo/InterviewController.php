@@ -43,7 +43,6 @@ class InterviewController extends Controller
             $interviews = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
                 ->where('reserved', 1)
-                ->where('reserved', 1)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
