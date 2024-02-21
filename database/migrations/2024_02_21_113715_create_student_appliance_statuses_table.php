@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->foreign('student_id')->references('id')->on('users');
-            $table->unsignedBigInteger('academic_year');
-            $table->foreign('academic_year')->references('id')->on('academic_years');
+            $table->unsignedBigInteger('application_id');
+            $table->foreign('application_id')->references('id')->on('applications');
             $table->string('interview_status')->nullable();
             $table->boolean('documents_uploaded')->nullable();
             $table->string('documents_uploaded_approval')->nullable();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_statuses');
+        Schema::dropIfExists('student_appliance_statuses');
     }
 };

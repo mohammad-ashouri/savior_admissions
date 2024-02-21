@@ -7,6 +7,7 @@ use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
 use App\Models\Branch\Interview;
+use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -214,9 +215,33 @@ class InterviewController extends Controller
         $interview->application_id = $request->application_id;
         $interview->interview_form = json_encode($request->all(), true);
         if ($interview->save()) {
-            $application = Applications::find($request->application_id);
+            $application = Applications::find($request->application_id)->with('applicationTimingInfo')->with('reservationInfo');
+            switch ($interview->reservationInfo->levelInfo->name) {
+                case('Kindergarten 1'):
+                case('Kindergarten 2'):
+                    if ($request->s1_1_s == 'Rejected' or $request->s1_2_s == 'Rejected' or $request->s1_3_s == 'Rejected' or $request->s1_4_s == 'Rejected') {
+                        $interviewStatus = "Rejected";
+                    } else {
+                        $interviewStatus = "Admitted";
+                    }
+                    break;
+                default:
+                    if ($request->s1_1_s == 'Rejected' or $request->s1_2_s == 'Rejected' or $request->s1_3_s == 'Rejected') {
+                        $interviewStatus = "Rejected";
+                    } else {
+                        $interviewStatus = "Admitted";
+                    }
+            }
             $application->interviewed = 1;
             if ($application->save()) {
+                $studentStatus = new StudentApplianceStatus();
+                $studentStatus->student_id = $application->reservationInfo->student_id;
+                $studentStatus->application_id = $application->applicationTimingInfo->application_id;
+                $studentStatus->interview_status = $interviewStatus;
+                if ($interviewStatus == "Admitted") {
+                    $studentStatus->documents_uploaded = "Pending";
+                }
+                $studentStatus->save();
                 return redirect()->route('Interviews.index')
                     ->with('success', 'The interview was successfully recorded');
             }
