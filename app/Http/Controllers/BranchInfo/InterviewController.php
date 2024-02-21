@@ -31,10 +31,13 @@ class InterviewController extends Controller
         $interviews = [];
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
-            $interviews = ApplicationReservation::with('studentInfo')
-                ->with('reservatoreInfo')
-                ->with('applicationInvoiceInfo')
-                ->whereIn('student_id', $myStudents)
+            $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
+            $interviews = Applications::
+            with('applicationTimingInfo')
+                ->with('interviewerInfo')
+                ->with('reservationInfo')
+                ->where('reserved', 1)
+                ->whereIn('id', $reservations)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -42,6 +45,7 @@ class InterviewController extends Controller
         } elseif ($me->hasRole('Super Admin')) {
             $interviews = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
+                ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -63,6 +67,7 @@ class InterviewController extends Controller
             // Finding applications related to the application timings
             $interviews = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
+                ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
@@ -228,7 +233,20 @@ class InterviewController extends Controller
     {
         $me = User::find(session('id'));
         $interview = [];
-        if ($me->hasRole('Super Admin')) {
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
+            $interview = Applications::
+            with('applicationTimingInfo')
+                ->with('interviewerInfo')
+                ->with('reservationInfo')
+                ->where('reserved', 1)
+                ->whereIn('id', $reservations)
+                ->orderBy('date', 'desc')
+                ->orderBy('ends_to', 'desc')
+                ->orderBy('start_from', 'desc')
+                ->first();
+        } elseif ($me->hasRole('Super Admin')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
                 ->with('interview')
