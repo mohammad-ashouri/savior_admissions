@@ -145,12 +145,6 @@
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
-                                        <a href="{{ route('Interviews.show',$interview->id) }}"
-                                           type="button"
-                                           class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                            <i class="las la-eye mt-1 mr-1"></i>
-                                            Details
-                                        </a>
                                         @switch($interview->Interviewed)
                                             @case(1)
                                                 @can('interview-show')
