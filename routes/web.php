@@ -15,6 +15,7 @@ use App\Http\Controllers\Catalogs\SchoolController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\Finance\ApplicationReservationController;
+use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -90,14 +91,12 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('ApplicationTimings', ApplicationTimingController::class);
     Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
     Route::resource('Interviews', InterviewController::class);
-    Route::get('/SetInterview/{id}', [InterviewController::class,'GetInterviewForm']);
-    Route::post('/SetInterview', [InterviewController::class,'SetInterview']);
+    Route::get('/SetInterview/{id}', [InterviewController::class, 'GetInterviewForm']);
+    Route::post('/SetInterview', [InterviewController::class, 'SetInterview']);
 
     //Finance
     Route::resource('ReservationInvoices', ApplicationReservationController::class);
-    Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class,'changeApplicationPaymentStatus']);
-
-
+    Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class, 'changeApplicationPaymentStatus']);
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
@@ -134,6 +133,12 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::prefix('Profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile');
         Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
+    });
+
+    //Exports
+    //PDF
+    Route::prefix('PDF')->group(function () {
+        Route::get('/tuition_card', [PDFExportController::class, 'tuitionCardExport']);
     });
 
     Route::get('/import-excel', [ExcelController::class, 'index']);

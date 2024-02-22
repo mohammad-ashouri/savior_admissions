@@ -4,9 +4,10 @@
     "scripts": {
         "dev": "vite",
         "build-app": "vite build",
-        "build": "npm-run-all build-app copy-jquery copy-select2",
+        "build": "npm-run-all build-app copy-jquery copy-select2 copy-export-images",
         "copy-select2": "mkdirp public/build/plugins && ncp node_modules/select2 public/build/plugins/select2",
-        "copy-jquery": "mkdirp public/build/plugins && ncp node_modules/jquery public/build/plugins/jquery"
+        "copy-jquery": "mkdirp public/build/plugins && ncp node_modules/jquery public/build/plugins/jquery",
+        "copy-export-images": "mkdirp public/build/export-images && ncp resources/images/Panel/logo.png public/build/export-images"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.15",
