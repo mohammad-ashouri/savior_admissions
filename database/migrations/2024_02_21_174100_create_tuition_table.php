@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('discounts', function (Blueprint $table) {
+        Schema::create('tuition', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('academic_year');
             $table->foreign('academic_year')->references('id')->on('academic_years');
-            $table->string('name');
-            $table->integer('percentage');
-            $table->integer('status');
+            $table->unsignedBigInteger('level');
+            $table->foreign('level')->references('id')->on('levels');
+            $table->float('price');
+            $table->float('status');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('discounts');
+        Schema::dropIfExists('tuition');
     }
 };
