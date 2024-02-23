@@ -6,7 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-
+        @page  {
+            size: a4;
+        }
         body {
             font-family: Arial, sans-serif;
             background-image: url(/build/export-images/bg-layer.jpg);
@@ -17,7 +19,6 @@
         }
 
         .container {
-            width: 1200px;
             margin: 0 auto;
             padding: 0 1rem;
         }
@@ -322,7 +323,6 @@
     </div>
 </header>
 
-
 <section class="bg-border-blue bg-white table-v">
     <div class="flex">
         <div class="texthead bg-blue">
@@ -382,7 +382,6 @@
     </div>
 </section>
 
-<!-- اضافه کردن بخش جدید با جدول -->
 <div id="table1" class="border-table bg-border-blue radius-table bg-white">
     <h3 class="title-section bg-blue p-1r m-0 radius-table">fee Details</h3>
     <div class="table-container">
@@ -405,7 +404,6 @@
         </table>
     </div>
 </div>
-
 
 <div class="flex w-100">
     <div class="w-100 p-1r">
@@ -504,7 +502,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="Considerations">
     <h1>Considerations</h1>
