@@ -76,19 +76,6 @@
                                             class="text-base font-semibold">{{ $tuition->academicYearInfo->name }}</div>
                                     </div>
                                 </th>
-                                <th scope="row"
-                                    class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <div class="pl-3">
-                                        <div
-                                            class="text-base font-semibold @if($tuition->status===1) text-green-600 @else text-red-600 @endif">
-                                            @if($tuition->status===1)
-                                                Active
-                                            @else
-                                                Deactive
-                                            @endif
-                                        </div>
-                                    </div>
-                                </th>
                                 <td class="px-6 py-4 text-center">
                                     <!-- Modal toggle -->
                                     @can('tuition-edit')
@@ -115,7 +102,9 @@
 
             </div>
         </div>
-        <div class="pagination text-center">
-            {{ $tuitions->onEachSide(5)->links() }}
-        </div>
+        @if(!empty($tuitions))
+            <div class="pagination text-center">
+                {{ $tuitions->onEachSide(5)->links() }}
+            </div>
+    @endif
 @endsection

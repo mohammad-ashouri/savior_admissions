@@ -156,7 +156,11 @@ class AcademicYearController extends Controller
             'employees' => json_encode($employeesData, true),
         ]);
 
-        Tuition::create([
+        $tuition=Tuition::create([
+            'academic_year' => $academicYear->id
+        ]);
+
+        $tuitionDetail=Tuition::create([
             'academic_year' => $academicYear->id
         ]);
         return redirect()->route('AcademicYears.index')

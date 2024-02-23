@@ -15,10 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('academic_year');
             $table->foreign('academic_year')->references('id')->on('academic_years');
-            $table->unsignedBigInteger('level');
-            $table->foreign('level')->references('id')->on('levels');
-            $table->float('price');
-            $table->float('status')->default(1);
             $table->timestamps();
         });
     }
