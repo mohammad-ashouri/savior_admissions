@@ -9,6 +9,7 @@ use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\School;
+use App\Models\Finance\Tuition;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Carbon\Carbon;
@@ -146,13 +147,17 @@ class AcademicYearController extends Controller
             'Interviewer' => [$interviewers],
         ];
 
-        AcademicYear::create([
+        $academicYear=AcademicYear::create([
             'name' => $request->name,
             'school_id' => $request->school,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'levels' => json_encode($request->levels, true),
             'employees' => json_encode($employeesData, true),
+        ]);
+
+        Tuition::create([
+            'academic_year' => $academicYear->id
         ]);
         return redirect()->route('AcademicYears.index')
             ->with('success', 'Academic year created successfully');
