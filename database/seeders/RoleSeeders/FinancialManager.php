@@ -17,6 +17,7 @@ class FinancialManager extends Seeder
         $financialManagerRole->givePermissionTo([
             'finance-menu-access',
             'discounts-menu-access',
+            'tuition-menu-access',
             'reservation-invoice-list',
             'reservation-invoice-create',
             'reservation-invoice-edit',
@@ -30,6 +31,11 @@ class FinancialManager extends Seeder
             'discounts-edit',
             'discounts-change-status',
             'discounts-show',
+            'tuition-list',
+            'tuition-create',
+            'tuition-edit',
+            'tuition-change-status',
+            'tuition-show',
         ]);
     }
 }

@@ -101,6 +101,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'discounts-show']);
         Permission::create(['name' => 'discounts-change-status']);
 
+        Permission::create(['name' => 'tuition-list']);
+        Permission::create(['name' => 'tuition-create']);
+        Permission::create(['name' => 'tuition-edit']);
+        Permission::create(['name' => 'tuition-show']);
+        Permission::create(['name' => 'tuition-change-status']);
+
         //branch info
         Permission::create(['name' => 'academic-year-class-list']);
         Permission::create(['name' => 'academic-year-class-create']);
