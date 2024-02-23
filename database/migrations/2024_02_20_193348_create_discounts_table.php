@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('academic_year')->references('id')->on('academic_years');
             $table->string('name');
             $table->integer('percentage');
-            $table->integer('status');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

@@ -11,7 +11,7 @@ class Tuition extends Model
 {
     use HasFactory;
 
-    protected $table = 'tuition';
+    protected $table = 'tuitions';
 
     protected $fillable = [
         'academic_year',
