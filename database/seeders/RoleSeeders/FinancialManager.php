@@ -16,6 +16,7 @@ class FinancialManager extends Seeder
         $financialManagerRole = Role::create(['name' => 'Financial Manager']);
         $financialManagerRole->givePermissionTo([
             'finance-menu-access',
+            'discounts-menu-access',
             'reservation-invoice-list',
             'reservation-invoice-create',
             'reservation-invoice-edit',
@@ -24,6 +25,11 @@ class FinancialManager extends Seeder
             'reservation-invoice-delete',
             'reservation-payment-details-show',
             'reservation-payment-status-change',
+            'discounts-list',
+            'discounts-create',
+            'discounts-edit',
+            'discounts-change-status',
+            'discounts-show',
         ]);
     }
 }
