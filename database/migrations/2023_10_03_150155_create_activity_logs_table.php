@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('savior_admissions.users')->onConnection('logs');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('activity');
             $table->string('ip_address');
             $table->string('user_agent');
