@@ -23,8 +23,6 @@ class Principal extends Seeder
             'applications-menu-access',
             'academic-year-classes-menu-access',
             'application-timings-menu-access',
-            'discounts-menu-access',
-            'tuition-menu-access',
             'create-users',
             'show-user',
             'edit-users',

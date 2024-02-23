@@ -24,8 +24,6 @@ class SuperAdmin extends Seeder
             'academic-year-classes-menu-access',
             'application-timings-menu-access',
             'interviews-menu-access',
-            'discounts-menu-access',
-            'tuition-menu-access',
             'create-users',
             'show-user',
             'edit-users',
