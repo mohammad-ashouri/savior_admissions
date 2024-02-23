@@ -345,8 +345,7 @@
                 <p>National ID: <span>987654321</span></p>
             </div>
             <div class="address">
-                <p>Address: <span>123 Main Street, City, Country Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Quae aliquid repellendus tempora optio, eos quaerat iste est numquam id excepturi.</span></p>
+                <p>Address: <span>Savior International Schools, 8th Alley (at the end of Shah Hamzeh walkway), 5th Alley, Ammar Yaser Boulevard, Qom, I.R Iran.</span></p>
             </div>
         </div>
     </div>
@@ -356,27 +355,23 @@
     <div class="flex">
         <div class="texthead bg-yellow">
             <div class="writing-rl">
-                <h5>Education Center Details</h5>
+                <h5>Student Details</h5>
             </div>
         </div>
         <div class="textbody">
             <div class="flex justify-between">
-                <p>Postal Code: <span>12345</span></p>
-                <p>Registration Number: <span>ABC123</span></p>
-                <p>National ID: <span>987654321</span></p>
+                <p>Full Name of Student: <span>Sayyid Mojtaba Alavi</span></p>
+                <p>Passport Number: <span>R123387658</span></p>
+                <p>Level of education: <span>5</span></p>
             </div>
             <div class="flex justify-between">
-                <p>Postal Code: <span>12345</span></p>
-                <p>Registration Number: <span>ABC123</span></p>
-                <p>National ID: <span>987654321</span></p>
+                <p>Full Name of Parent/Guardian: <span>Sayyid Mostafa Alavi</span></p>
+                <p>Registration Number: <span>R34565484</span></p>
+                <p>Student ID: <span>60789</span></p>
             </div>
-            <div class="contact-info">
-                <div class="name">
-                    <p>Name: <span>John Doe</span></p>
-                </div>
-                <div class="contact-number">
-                    <p>Contact Number: <span>+123456789</span></p>
-                </div>
+            <div class="flex justify-between">
+                <p>Country: <span>Afghanistan</span></p>
+                <p>Contact Number: <span>+98 922 376 4658</span></p>
             </div>
         </div>
     </div>
@@ -503,7 +498,7 @@
     </div>
 </div>
 
-<div class="Considerations">
+<div style="page-break-after: auto" class="Considerations">
     <h1>Considerations</h1>
     <ul class="considerations ">
         <li class="consideration-item">Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus ullam ea natus iusto architecto libero.</li>
@@ -513,11 +508,11 @@
     </ul>
 </div>
 <footer class="mt-2rem">
-    <div class="footer-text font-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint atque suscipit, id, nulla asperiores repudiandae nemo aliquam nisi magni, iste tenetur dolores optio nobis impedit quo molestias laudantium dignissimos architecto!</div>
+    <div class="footer-text font-bold">I, {parent/guardian name} {parent/guardian family}, parent/guardian of {student name} {student family}, hereby agree to all rules and regulations of Monji Noor International Educational Institute.</div>
     <div class="footer-content font-bold">
-        <div class="footer-text">Lorem ipsum dolor sit amet.</div>
-        <div class="footer-text">Lorem ipsum dolor sit amet.</div>
-        <div class="footer-text">Lorem ipsum dolor sit amet.</div>
+        <div class="footer-text">Signature and Fingerprint of Parent/Guardian</div>
+        <div class="footer-text">Signature and Stamp of Admissions</div>
+        <div class="footer-text">Signature and Stamp of Finance</div>
     </div>
 </footer>
 
