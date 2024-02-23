@@ -15,6 +15,8 @@ use App\Http\Controllers\Catalogs\SchoolController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\Finance\ApplicationReservationController;
+use App\Http\Controllers\Finance\DiscountsController;
+use App\Http\Controllers\Finance\TuitionController;
 use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -97,6 +99,10 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     //Finance
     Route::resource('ReservationInvoices', ApplicationReservationController::class);
     Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class, 'changeApplicationPaymentStatus']);
+    Route::resource('Tuition', TuitionController::class);
+    Route::post('ChangeTuitionStatus', [TuitionController::class, 'changeTuitionStatus']);
+    Route::resource('Discounts', DiscountsController::class);
+    Route::post('ChangeDiscountStatus', [DiscountsController::class, 'changeDiscountStatus']);
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
