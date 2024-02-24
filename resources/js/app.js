@@ -300,6 +300,21 @@ $(document).ready(function () {
                 }
             });
         });
+        $('#academic-year-edit').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your academic year will be edited. You may have disorders or deficiencies in other parts!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#new-academic-year').off('submit').submit();
+                }
+            });
+        });
     }
     else if (fullPath.includes('searchUsers')) {
         pageTitle = 'Search users';
