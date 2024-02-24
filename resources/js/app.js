@@ -881,15 +881,16 @@ $(document).ready(function () {
     else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 
-        $('#payment_status').change(function () {
-            let status = $(this).val();
-            if (status != null) {
+        $('.price').change(function () {
+            let price = $(this).val();
+            let tuition_id = $(this).data('tuition-id');
+            if (price != null) {
                 $.ajax({
                     type: 'POST',
-                    url: '/ChangeApplicationPaymentStatus',
+                    url: '/ChangeTuitionPrice',
                     data: {
-                        application_id: $(this).data('reservation-id'),
-                        status: status,
+                        tuition_id: tuition_id,
+                        price: price,
                     },
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),

@@ -55,11 +55,6 @@
                                                     Status
                                                 </div>
                                             </th>
-                                            <th scope="col" class="p-4">
-                                                <div class=" items-center text-center">
-                                                    Action
-                                                </div>
-                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -67,23 +62,30 @@
                                             @foreach($tuitions->allTuitions as $tuition)
                                                 <tr
                                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="p-4">
-                                                        <input type="text" id="title" name="title[]"
-                                                               value="{{$tuition->levelInfo->name}}"
-                                                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                               required>
+                                                    <td class="p-4 text-center">
+                                                        {{$tuition->levelInfo->name}}
                                                     </td>
                                                     <td class="p-4">
-                                                        <input type="text" id="description" name="description[]"
-                                                               value="{{$tuition->description}}"
-                                                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                               required>
+                                                        @if($tuition->tuitionInfo->academicYearInfo->status==1)
+                                                            <input type="number"
+                                                                   value="{{$tuition->price}}"
+                                                                   data-tuition-id="{{ $tuition->id }}"
+                                                                   placeholder="Enter the tuition fee for {{$tuition->levelInfo->name}} in Rials"
+                                                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                   required>
+                                                        @else
+                                                            {{$tuition->price}}
+                                                        @endif
                                                     </td>
                                                     <td class="p-4 text-center">
-                                                        <button type="button"
-                                                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 delete-row">
-                                                            <i class="las la-trash" style="font-size: 24px"></i>
-                                                        </button>
+                                                        @switch($tuition->status)
+                                                            @case(0)
+                                                                Deactive
+                                                                @break
+                                                            @case(1)
+                                                                Active
+                                                                @break
+                                                        @endswitch
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -110,25 +112,18 @@
                                         @endif
                                         </tbody>
                                     </table>
-                                    <div class="text-center mt-3">
-                                        <button type="button"
-                                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 add-row">
-                                            <i class="las la-plus-circle" style="font-size: 24px"></i>
-                                            Add tuition
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                            <a href="{{ url()->previous() }}">
-                                <button type="button"
-                                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                    Back
-                                </button>
-                            </a>
-                        </div>
+                        <a href="{{ url()->previous() }}">
+                            <button type="button"
+                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                Back
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 @endsection

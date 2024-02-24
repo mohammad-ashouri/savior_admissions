@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Finance;
 use App\Http\Controllers\Controller;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Finance\Tuition;
+use App\Models\Finance\TuitionDetail;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
@@ -72,21 +73,16 @@ class TuitionController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function changeTuitionPrice(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'gender' => 'required',
-            'status' => 'required',
+            'tuition_id' => 'required|exists:tuition_details,id',
+            'price' => 'required|integer',
         ]);
 
-        $catalog = School::find($id);
-        $catalog->name = $request->input('name');
-        $catalog->gender = $request->input('gender');
-        $catalog->status = $request->input('status');
-        $catalog->save();
-
-        return redirect()->route('Schools.index')
-            ->with('success', 'School updated successfully');
+        $tuition = TuitionDetail::find($request->tuition_id);
+        $tuition->price = $request->price;
+        $tuition->save();
+        return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
     }
 }

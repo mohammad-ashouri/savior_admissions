@@ -100,7 +100,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('ReservationInvoices', ApplicationReservationController::class);
     Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class, 'changeApplicationPaymentStatus']);
     Route::resource('Tuition', TuitionController::class);
-    Route::post('ChangeTuitionStatus', [TuitionController::class, 'changeTuitionStatus']);
+    Route::post('ChangeTuitionPrice', [TuitionController::class, 'changeTuitionPrice']);
     Route::resource('Discounts', DiscountsController::class);
     Route::post('ChangeDiscountStatus', [DiscountsController::class, 'changeDiscountStatus']);
 
