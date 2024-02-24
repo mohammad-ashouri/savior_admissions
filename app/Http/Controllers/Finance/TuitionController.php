@@ -17,7 +17,7 @@ class TuitionController extends Controller
         $this->middleware('permission:tuition-list', ['only' => ['index']]);
         $this->middleware('permission:tuition-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:tuition-show', ['only' => ['show']]);
-        $this->middleware('permission:tuition-change-status', ['only' => ['changeTuitionStatus']]);
+        $this->middleware('permission:tuition-change-price', ['only' => ['changeTuitionPrice']]);
     }
 
     public function index()

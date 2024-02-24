@@ -32,7 +32,7 @@ class FinancialManager extends Seeder
             'tuition-list',
             'tuition-create',
             'tuition-edit',
-            'tuition-change-status',
+            'tuition-change-price',
             'tuition-show',
         ]);
     }

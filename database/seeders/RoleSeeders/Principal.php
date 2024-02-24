@@ -66,7 +66,7 @@ class Principal extends Seeder
             'tuition-list',
             'tuition-create',
             'tuition-edit',
-            'tuition-change-status',
+            'tuition-change-price',
             'tuition-show',
             'reservation-payment-details-show',
             'reservation-payment-status-change',
