@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('discount_details', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('discount_id');
+            $table->foreign('discount_id')->references('id')->on('discounts');
             $table->string('name');
             $table->integer('percentage');
             $table->boolean('status')->default(1);
