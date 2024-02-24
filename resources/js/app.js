@@ -300,7 +300,7 @@ $(document).ready(function () {
                 }
             });
         });
-        $('#academic-year-edit').submit(function (e) {
+        $('#edit-academic-year').submit(function (e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
@@ -311,7 +311,7 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#new-academic-year').off('submit').submit();
+                    $('#edit-academic-year').off('submit').submit();
                 }
             });
         });

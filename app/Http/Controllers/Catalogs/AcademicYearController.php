@@ -321,21 +321,21 @@ class AcademicYearController extends Controller
             'Financial_Manager' => [$financialManagers],
             'Interviewer' => [$interviewers],
         ];
-        $catalog = AcademicYear::find($id);
-        $catalog->name = $request->input('name');
-        $catalog->status = $request->input('status');
+        $academicYear = AcademicYear::find($id);
+        $academicYear->name = $request->input('name');
+        $academicYear->status = $request->input('status');
 
-        $academicYearClasses = AcademicYearClass::where('academic_year', $catalog->id)->get();
+        $academicYearClasses = AcademicYearClass::where('academic_year', $academicYear->id)->get();
         foreach ($academicYearClasses as $academicYearClass) {
             $academicYearClass = AcademicYearClass::find($academicYearClass->id);
-            $academicYearClass->status = $catalog->status;
+            $academicYearClass->status = $academicYear->status;
             $academicYearClass->save();
         }
 
-        $applicationTimings = ApplicationTiming::where('academic_year', $catalog->id)->get();
+        $applicationTimings = ApplicationTiming::where('academic_year', $academicYear->id)->get();
         foreach ($applicationTimings as $applicationTiming) {
             $applicationTiming = ApplicationTiming::find($applicationTiming->id);
-            $applicationTiming->status = $catalog->status;
+            $applicationTiming->status = $academicYear->status;
             $applicationTiming->save();
 
             $applications = Applications::where('application_timing_id', $applicationTiming->id)->where('reserved', 0)->where('status', 1)->get();
@@ -346,11 +346,25 @@ class AcademicYearController extends Controller
             }
         }
 
-        $catalog->start_date = $request->input('start_date');
-        $catalog->end_date = $request->input('end_date');
-        $catalog->levels = json_encode($request->input('levels'), true);
-        $catalog->employees = json_encode($employeesData, true);
-        $catalog->save();
+        $academicYear->start_date = $request->input('start_date');
+        $academicYear->end_date = $request->input('end_date');
+        $academicYear->levels = json_encode($request->input('levels'), true);
+        $academicYear->employees = json_encode($employeesData, true);
+        $academicYear->save();
+
+        $tuition = Tuition::where('academic_year',$academicYear->id)->first();
+
+        //For deactivate all tuitions
+        TuitionDetail::where('tuition_id',$tuition->id)->update(['status'=>0]);
+
+
+        foreach ($request->levels as $level) {
+            TuitionDetail::firstOrCreate([
+                'tuition_id' => $tuition->id,
+                'level' => $level,
+            ]);
+            TuitionDetail::where('tuition_id',$tuition->id)->where('level',$level)->update(['status'=>1]);
+        }
 
         return redirect()->route('AcademicYears.index')
             ->with('success', 'Academic year edited successfully');
