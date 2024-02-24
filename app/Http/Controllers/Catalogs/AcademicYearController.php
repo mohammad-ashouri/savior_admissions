@@ -9,6 +9,7 @@ use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\School;
+use App\Models\Finance\Discount;
 use App\Models\Finance\Tuition;
 use App\Models\Finance\TuitionDetail;
 use App\Models\User;
@@ -154,6 +155,10 @@ class AcademicYearController extends Controller
             'end_date' => $request->end_date,
             'levels' => json_encode($request->levels, true),
             'employees' => json_encode($employeesData, true),
+        ]);
+
+        Discount::create([
+            'academic_year' => $academicYear->id,
         ]);
 
         $tuition = Tuition::create([
@@ -352,11 +357,14 @@ class AcademicYearController extends Controller
         $academicYear->employees = json_encode($employeesData, true);
         $academicYear->save();
 
+        Discount::firstOrCreate([
+            'academic_year' => $academicYear->id,
+        ]);
+
         $tuition = Tuition::where('academic_year',$academicYear->id)->first();
 
         //For deactivate all tuitions
         TuitionDetail::where('tuition_id',$tuition->id)->update(['status'=>0]);
-
 
         foreach ($request->levels as $level) {
             TuitionDetail::firstOrCreate([
