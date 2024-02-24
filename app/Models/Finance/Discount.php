@@ -14,13 +14,15 @@ class Discount extends Model
 
     protected $fillable = [
         'academic_year',
-        'name',
-        'percentage',
-        'status',
     ];
 
     public function academicYearInfo()
     {
         return $this->belongsTo(AcademicYear::class, 'academic_year', 'id');
+    }
+
+    public function allDiscounts()
+    {
+        return $this->hasMany(Discount::class, 'discount_id');
     }
 }
