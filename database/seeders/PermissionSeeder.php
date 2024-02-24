@@ -96,13 +96,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'reservation-payment-status-change']);
 
         Permission::create(['name' => 'discounts-list']);
-        Permission::create(['name' => 'discounts-create']);
         Permission::create(['name' => 'discounts-edit']);
         Permission::create(['name' => 'discounts-show']);
         Permission::create(['name' => 'discounts-change-status']);
 
         Permission::create(['name' => 'tuition-list']);
-        Permission::create(['name' => 'tuition-create']);
         Permission::create(['name' => 'tuition-edit']);
         Permission::create(['name' => 'tuition-show']);
         Permission::create(['name' => 'tuition-change-price']);
