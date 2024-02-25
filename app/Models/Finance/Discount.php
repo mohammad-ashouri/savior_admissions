@@ -23,6 +23,6 @@ class Discount extends Model
 
     public function allDiscounts()
     {
-        return $this->hasMany(Discount::class, 'discount_id');
+        return $this->hasMany(DiscountDetail::class, 'discount_id');
     }
 }

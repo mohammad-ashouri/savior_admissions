@@ -261,11 +261,9 @@ $(document).ready(function () {
             }
         });
 
-    }
-    else if (fullPath.includes('DocumentTypes')) {
+    } else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
-    }
-    else if (fullPath.includes('Levels')) {
+    } else if (fullPath.includes('Levels')) {
         pageTitle = 'Levels Manager';
         $('#new-level').submit(function (e) {
             e.preventDefault();
@@ -282,8 +280,7 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else if (fullPath.includes('AcademicYears')) {
+    } else if (fullPath.includes('AcademicYears')) {
         pageTitle = 'Academic Years Manager';
         $('#new-academic-year').submit(function (e) {
             e.preventDefault();
@@ -315,11 +312,9 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else if (fullPath.includes('searchUsers')) {
+    } else if (fullPath.includes('searchUsers')) {
         pageTitle = 'Search users';
-    }
-    else if (fullPath.includes('AcademicYearClasses')) {
+    } else if (fullPath.includes('AcademicYearClasses')) {
         pageTitle = 'Academic Year Classes';
         $('#academic_year').change(function (e) {
             $.ajax({
@@ -344,8 +339,7 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else if (fullPath.includes('Documents')) {
+    } else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
@@ -495,8 +489,7 @@ $(document).ready(function () {
             $('#openImage').addClass('hidden');
         });
 
-    }
-    else if (fullPath.includes('EducationYears')) {
+    } else if (fullPath.includes('EducationYears')) {
         pageTitle = 'Education Years';
         $('#new-education-year').submit(function (e) {
             e.preventDefault();
@@ -529,8 +522,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('EducationTypes')) {
+    } else if (fullPath.includes('EducationTypes')) {
         pageTitle = 'Education Types';
         $('#new-education-type').submit(function (e) {
             e.preventDefault();
@@ -548,8 +540,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('ApplicationTimings')) {
+    } else if (fullPath.includes('ApplicationTimings')) {
         pageTitle = 'Application Timings Manager';
         // resetAllInputValues();
         resetAllSelectValues();
@@ -659,8 +650,7 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else if (fullPath.includes('PrepareToPayApplication')) {
+    } else if (fullPath.includes('PrepareToPayApplication')) {
         pageTitle = 'Pay Application';
         resetAllSelectValues();
         resetAllInputValues();
@@ -738,8 +728,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('Applications')) {
+    } else if (fullPath.includes('Applications')) {
         pageTitle = 'Applications';
 
         if (fullPath.includes('Applications/create')) {
@@ -835,14 +824,11 @@ $(document).ready(function () {
             });
         }
 
-    }
-    else if (fullPath.includes('roles')) {
+    } else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';
-    }
-    else if (fullPath.includes('Schools')) {
+    } else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
-    }
-    else if (fullPath.includes('Students')) {
+    } else if (fullPath.includes('Students')) {
         pageTitle = 'Students';
         $('#new-student').submit(function (e) {
             e.preventDefault();
@@ -860,16 +846,13 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('Interviews')) {
+    } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
-    }
-    else if (fullPath.includes('SetInterview')) {
+    } else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
 
 
-    }
-    else if (fullPath.includes('ReservationInvoices')) {
+    } else if (fullPath.includes('ReservationInvoices')) {
         pageTitle = 'Reservation Invoices';
 
         $('#payment_status').change(function () {
@@ -892,8 +875,7 @@ $(document).ready(function () {
                 });
             }
         });
-    }
-    else if (fullPath.includes('Tuition')) {
+    } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 
         $('.price').change(function () {
@@ -917,8 +899,52 @@ $(document).ready(function () {
                 });
             }
         });
-    }
-    else {
+    } else if (fullPath.includes('Discounts')) {
+        pageTitle = 'Discounts Manager';
+
+        $('#discounts-table').on('click', '.delete-row', function () {
+            $(this).closest('tr').remove();
+        });
+
+        $('.add-row').on('click', function () {
+            var newRow = '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">' +
+                '<td class="p-4">' +
+                '<input type="text" name="name[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>' +
+                '</td>' +
+                '<td class="p-4">' +
+                '<div class="flex justify-between">' +
+                '<input type="number" min="0" max="100" name="percentage[]" class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price" required>' +
+                '<span class = "inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600" > '
+                + '%' +
+                '</span>' +
+                '</div>' +
+                '</td>' +
+                '<td class="p-4 text-center">' +
+                '<button type="button" class="delete-row text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">' +
+                '<i class="las la-trash" style="font-size: 24px"></i>' +
+                '</button>' +
+                '</td>' +
+                '</tr>';
+
+            $('tbody').append(newRow);
+        });
+
+        $('#discounts-edit').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your discounts will be set permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#discounts-edit').off('submit').submit();
+                }
+            });
+        });
+    } else {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';

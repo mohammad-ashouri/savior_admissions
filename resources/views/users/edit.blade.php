@@ -547,9 +547,6 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-
-                    </div>
                 @endcan
             @endif
             @if($user->hasRole('Principal'))
