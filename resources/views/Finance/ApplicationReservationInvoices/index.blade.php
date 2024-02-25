@@ -1,3 +1,4 @@
+@php use App\Models\Catalogs\PaymentMethod; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -16,17 +17,17 @@
                     <div class="flex">
                         @can('reservation-invoice-create')
                             <a href="{{ route('ReservationInvoices.create') }}">
-{{--                                <button type="button"--}}
-{{--                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">--}}
+                                {{--                                <button type="button"--}}
+                                {{--                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">--}}
 
-{{--                                    <svg class="w-6 h-6 mr-1" fill="currentColor" viewBox="0 0 20 20"--}}
-{{--                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                        <path fill-rule="evenodd"--}}
-{{--                                              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"--}}
-{{--                                              clip-rule="evenodd"></path>--}}
-{{--                                    </svg>--}}
-{{--                                    New Reservation--}}
-{{--                                </button>--}}
+                                {{--                                    <svg class="w-6 h-6 mr-1" fill="currentColor" viewBox="0 0 20 20"--}}
+                                {{--                                         xmlns="http://www.w3.org/2000/svg">--}}
+                                {{--                                        <path fill-rule="evenodd"--}}
+                                {{--                                              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"--}}
+                                {{--                                              clip-rule="evenodd"></path>--}}
+                                {{--                                    </svg>--}}
+                                {{--                                    New Reservation--}}
+                                {{--                                </button>--}}
                                 @endcan
                             </a>
                     </div>
@@ -89,6 +90,9 @@
                                     Amount
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
+                                    Payment Method
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
                                     Status
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
@@ -126,7 +130,7 @@
                                                 @if($application->payment_status==0)
                                                     Not Paid Yet!
                                                 @else
-                                                {{$application->applicationInvoiceInfo->created_at}}
+                                                    {{$application->applicationInvoiceInfo->created_at}}
                                                 @endif
                                             </div>
                                         </div>
@@ -136,6 +140,16 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            @php
+                                                $method=PaymentMethod::find(json_decode($application->applicationInvoiceInfo->payment_information,true)['payment_method']);
+                                            @endphp
+                                            <div
+                                                class="text-base font-semibold">{{ $method->name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"

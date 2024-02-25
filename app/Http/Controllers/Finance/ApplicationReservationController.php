@@ -37,12 +37,16 @@ class ApplicationReservationController extends Controller
                 ->with('reservatoreInfo')
                 ->with('applicationInvoiceInfo')
                 ->whereIn('student_id', $myStudents)
+                ->orderBy('id','desc')
                 ->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
                 ->with('applicationInvoiceInfo')
+                ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
+                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                ->orderBy('application_timings.academic_year','desc')
                 ->paginate(30);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
@@ -68,6 +72,7 @@ class ApplicationReservationController extends Controller
                 ->with('reservatoreInfo')
                 ->with('applicationInvoiceInfo')
                 ->whereIn('application_id', $applications)
+                ->orderBy('id','desc')
                 ->paginate(30);
         }
 
