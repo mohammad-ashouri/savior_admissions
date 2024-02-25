@@ -32,18 +32,7 @@ class ApplicationReservationController extends Controller
     {
         $me = User::find(session('id'));
         $applications = [];
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
-            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
-            $applications = ApplicationReservation::with('applicationInfo')
-                ->with('studentInfo')
-                ->with('reservatoreInfo')
-                ->with('applicationInvoiceInfo')
-                ->whereIn('student_id', $myStudents)
-                ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
-                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
-                ->orderBy('application_timings.academic_year', 'desc')
-                ->paginate(30);
-        } elseif ($me->hasRole('Super Admin')) {
+        if ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
@@ -87,8 +76,20 @@ class ApplicationReservationController extends Controller
         }
 
         $paymentMethods = PaymentMethod::where('status', 1)->get();
+        if ($me->hasRole('Super Admin')) {
+            $academicYears = AcademicYear::get();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
 
-        return view('Finance.ApplicationReservationInvoices.index', compact('applications', 'paymentMethods'));
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->get();
+        }
+
+        return view('Finance.ApplicationReservationInvoices.index', compact('applications', 'paymentMethods', 'academicYears'));
 
     }
 
@@ -238,16 +239,7 @@ class ApplicationReservationController extends Controller
     {
         $me = User::find(session('id'));
         $applications = [];
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
-            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
-            $applications = ApplicationReservation::with('applicationInfo')
-                ->with('studentInfo')
-                ->with('reservatoreInfo')
-                ->with('applicationInvoiceInfo')
-                ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
-                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
-                ->whereIn('application_reservations.student_id', $myStudents);
-        } elseif ($me->hasRole('Super Admin')) {
+        if ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
@@ -285,7 +277,6 @@ class ApplicationReservationController extends Controller
         if (! empty($request->academic_year)) {
             $applications->where('application_timings.academic_year', $request->academic_year);
         }
-
         if (! empty($request->date_of_payment) or ! empty($request->payment_method) or ! empty($request->status)) {
             $applications = $applications->join('application_reservations_invoices', 'application_reservations.id', '=', 'application_reservations_invoices.a_reservation_id');
             if (! empty($request->date_of_payment)) {
@@ -294,12 +285,12 @@ class ApplicationReservationController extends Controller
                 $applications->whereDate('application_reservations_invoices.created_at', $date);
             }
             if (! empty($request->payment_method)) {
-                $applications->where('application_reservations.payment_status', 1)
-                    ->whereJsonContains('application_reservations_invoices.payment_information->payment_method', $request->payment_method);
+                $applications->whereJsonContains('application_reservations_invoices.payment_information->payment_method', $request->payment_method);
             }
             if (! empty($request->status)) {
-                $applications->where('application_reservations.payment_status', $request->status)
-                    ->whereJsonContains('application_reservations_invoices.payment_information->payment_method', $request->payment_method);
+                $applications->where('application_reservations.payment_status', '=', $request->status);
+            } else {
+                $applications->where('application_reservations.payment_status', '=', 0);
             }
         }
 
@@ -312,6 +303,19 @@ class ApplicationReservationController extends Controller
 
         $paymentMethods = PaymentMethod::where('status', 1)->get();
 
-        return view('Finance.ApplicationReservationInvoices.index', compact('applications', 'paymentMethods'));
+        if ($me->hasRole('Super Admin')) {
+            $academicYears = AcademicYear::get();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->get();
+        }
+
+        return view('Finance.ApplicationReservationInvoices.index', compact('applications', 'paymentMethods', 'academicYears'));
     }
 }
