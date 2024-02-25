@@ -94,6 +94,10 @@
                                 </div>
                             @endcan
                             <div>
+                                <p class="font-bold"> Created
+                                    at: </p> {{$applicationInfo->created_at}}
+                            </div>
+                            <div>
                                 <p class="font-bold"> Paid
                                     at: </p> {{$applicationInfo->applicationInvoiceInfo->created_at}}
                             </div>
@@ -112,7 +116,8 @@
                                 $paymentMethod=Document::find(json_decode($applicationInfo->applicationInvoiceInfo->payment_information,true)['document_id']);
                                 $paymentMethod->src = str_replace('public', 'storage', $paymentMethod->src);
                             @endphp
-                            <img class="w-96" src="{{ env('APP_URL')}}/{{$paymentMethod->src }}" alt="Payment image not found!">
+                            <img class="w-96" src="{{ env('APP_URL')}}/{{$paymentMethod->src }}"
+                                 alt="Payment image not found!">
                         </div>
                     </div>
                 </div>
