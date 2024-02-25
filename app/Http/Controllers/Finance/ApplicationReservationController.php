@@ -8,9 +8,11 @@ use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
+use App\Models\Catalogs\PaymentMethod;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ApplicationReservationController extends Controller
@@ -37,7 +39,9 @@ class ApplicationReservationController extends Controller
                 ->with('reservatoreInfo')
                 ->with('applicationInvoiceInfo')
                 ->whereIn('student_id', $myStudents)
-                ->orderBy('id','desc')
+                ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
+                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                ->orderBy('application_timings.academic_year', 'desc')
                 ->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')
@@ -46,7 +50,7 @@ class ApplicationReservationController extends Controller
                 ->with('applicationInvoiceInfo')
                 ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
                 ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
-                ->orderBy('application_timings.academic_year','desc')
+                ->orderBy('application_timings.academic_year', 'desc')
                 ->paginate(30);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
@@ -72,7 +76,9 @@ class ApplicationReservationController extends Controller
                 ->with('reservatoreInfo')
                 ->with('applicationInvoiceInfo')
                 ->whereIn('application_id', $applications)
-                ->orderBy('id','desc')
+                ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
+                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                ->orderBy('application_timings.academic_year', 'desc')
                 ->paginate(30);
         }
 
@@ -80,7 +86,9 @@ class ApplicationReservationController extends Controller
             $applications = [];
         }
 
-        return view('Finance.ApplicationReservationInvoices.index', compact('applications'));
+        $paymentMethods = PaymentMethod::where('status', 1)->get();
+
+        return view('Finance.ApplicationReservationInvoices.index', compact('applications', 'paymentMethods'));
 
     }
 
@@ -224,5 +232,86 @@ class ApplicationReservationController extends Controller
         $applicationReservation->save();
 
         return response()->json(['message' => 'Application payment status changed!'], 200);
+    }
+
+    public function searchReservationInvoices(Request $request)
+    {
+        $me = User::find(session('id'));
+        $applications = [];
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $applications = ApplicationReservation::with('applicationInfo')
+                ->with('studentInfo')
+                ->with('reservatoreInfo')
+                ->with('applicationInvoiceInfo')
+                ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
+                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                ->whereIn('application_reservations.student_id', $myStudents);
+        } elseif ($me->hasRole('Super Admin')) {
+            $applications = ApplicationReservation::with('applicationInfo')
+                ->with('studentInfo')
+                ->with('reservatoreInfo')
+                ->with('applicationInvoiceInfo')
+                ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
+                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id');
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $applications = Applications::whereIn('application_timing_id', $applicationTimings)
+                ->pluck('id')
+                ->toArray();
+
+            // Getting reservations of applications along with related information
+            $applications = ApplicationReservation::with('applicationInfo')
+                ->with('studentInfo')
+                ->with('reservatoreInfo')
+                ->with('applicationInvoiceInfo')
+                ->whereIn('application_id', $applications)
+                ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
+                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id');
+        }
+
+        if (! empty($request->academic_year)) {
+            $applications->where('application_timings.academic_year', $request->academic_year);
+        }
+
+        if (! empty($request->date_of_payment) or ! empty($request->payment_method) or ! empty($request->status)) {
+            $applications = $applications->join('application_reservations_invoices', 'application_reservations.id', '=', 'application_reservations_invoices.a_reservation_id');
+            if (! empty($request->date_of_payment)) {
+                $applications->where('application_reservations.payment_status', 1);
+                $date = Carbon::parse($request->date_of_payment)->toDateString();
+                $applications->whereDate('application_reservations_invoices.created_at', $date);
+            }
+            if (! empty($request->payment_method)) {
+                $applications->where('application_reservations.payment_status', 1)
+                    ->whereJsonContains('application_reservations_invoices.payment_information->payment_method', $request->payment_method);
+            }
+            if (! empty($request->status)) {
+                $applications->where('application_reservations.payment_status', $request->status)
+                    ->whereJsonContains('application_reservations_invoices.payment_information->payment_method', $request->payment_method);
+            }
+        }
+
+        $applications = $applications->orderBy('application_timings.academic_year', 'desc')
+            ->paginate(30);
+
+        if (! isset($applications) and $applications->isEmpty()) {
+            $applications = [];
+        }
+
+        $paymentMethods = PaymentMethod::where('status', 1)->get();
+
+        return view('Finance.ApplicationReservationInvoices.index', compact('applications', 'paymentMethods'));
     }
 }
