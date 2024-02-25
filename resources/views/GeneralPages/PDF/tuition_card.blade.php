@@ -303,6 +303,9 @@
         }
 
     </style>
+    <script>
+        window.print();
+    </script>
     <title>Your Invoice</title>
 
 </head>
