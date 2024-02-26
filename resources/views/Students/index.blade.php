@@ -8,11 +8,26 @@
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
-                    <div class="relative hidden md:block w-96">
-                        <input type="text" id="search-navbar"
-                               class="font-normal text-lg block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                               placeholder="Search it...">
-                    </div>
+                    @can('students-search')
+                        <form id="search-user" action="{{ route('SearchReservationInvoices') }}" method="get">
+                            <div class="flex w-full">
+                                <div class="mr-3">
+                                    <label for="academic_year"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Academic Year</label>
+                                    <select id="academic_year" name="academic_year"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="" disabled selected>Select Academic Year...</option>
+                                        @foreach($academicYears as $academicYear)
+                                            <option
+                                                @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                                @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    @endcan
                     <div class="flex">
                         @can('students-create')
                             <a href="{{ route('Students.create') }}">
@@ -174,7 +189,7 @@
         </div>
         @if(!empty($students))
             <div class="pagination text-center">
-                                {{ $students->links() }}
+                {{ $students->links() }}
             </div>
     @endif
 @endsection

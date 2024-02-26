@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\BranchInfo;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\CurrentIdentificationType;
 use App\Models\Country;
 use App\Models\GeneralInformation;
 use App\Models\StudentExtraInformation;
 use App\Models\StudentInformation;
 use App\Models\User;
+use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -28,17 +30,57 @@ class StudentController extends Controller
 
     public function index()
     {
-        $students = StudentInformation::where('guardian', session('id'))
-            ->with('studentInfo')
-            ->with('nationalityInfo')
-            ->with('identificationTypeInfo')
-            ->with('generalInformations')
-            ->orderBy('student_id', 'asc')->paginate(15);
+        $me = User::find(session('id'));
+
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+            $students = StudentInformation::where('guardian', session('id'))
+                ->with('studentInfo')
+                ->with('nationalityInfo')
+                ->with('identificationTypeInfo')
+                ->with('generalInformations')
+                ->orderBy('student_id', 'asc')->paginate(15);
+        } elseif ($me->hasRole('Super Admin')) {
+            $students = StudentInformation::with('studentInfo')
+                ->with('nationalityInfo')
+                ->with('identificationTypeInfo')
+                ->with('generalInformations')
+                ->orderBy('student_id', 'asc')->paginate(15);
+            $academicYears = AcademicYear::get();
+
+            return view('Students.index', compact('students', 'academicYears'));
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            if (empty($myAllAccesses)) {
+                abort(403);
+            }
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $students = StudentInformation::with('studentInfo')
+                ->with('nationalityInfo')
+                ->with('identificationTypeInfo')
+                ->with('generalInformations')
+                ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->join('applications', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                ->whereIn('application_timings.academic_year', $academicYears)
+                ->orderBy('student_id', 'asc')->paginate(15);
+            $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+
+            return view('Students.index', compact('students', 'academicYears'));
+
+        }
+
         if ($students->isEmpty()) {
             $students = [];
         }
 
         return view('Students.index', compact('students'));
+
     }
 
     public function create()
@@ -116,12 +158,54 @@ class StudentController extends Controller
 
     public function show($id)
     {
-        $studentInformations = StudentInformation::with('extraInformations')->where('student_id', $id)->where('guardian', session('id'))->first();
-        if (! empty($studentInformations)) {
-            $studentInformations = StudentInformation::with('generalInformations')->with('extraInformations')->where('student_id', $id)->where('guardian', session('id'))->first();
-            return view('Students.show', compact('studentInformations'));
+        $me = User::find(session('id'));
+
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+            $studentInformations = StudentInformation::where('guardian', session('id'))
+                ->with('studentInfo')
+                ->with('nationalityInfo')
+                ->with('identificationTypeInfo')
+                ->with('generalInformations')
+                ->with('extraInformations')
+                ->where('student_id', $id)
+                ->first();
+        } elseif ($me->hasRole('Super Admin')) {
+            $studentInformations = StudentInformation::with('studentInfo')
+                ->with('nationalityInfo')
+                ->with('identificationTypeInfo')
+                ->with('generalInformations')
+                ->with('extraInformations')
+                ->where('student_id', $id)
+                ->first();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            if (empty($myAllAccesses)) {
+                abort(403);
+            }
+            $principalAccess = explode('|', $myAllAccesses->principal);
+            $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
+            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $studentInformations = StudentInformation::with('studentInfo')
+                ->with('nationalityInfo')
+                ->with('identificationTypeInfo')
+                ->with('generalInformations')
+                ->with('extraInformations')
+                ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->join('applications', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                ->whereIn('application_timings.academic_year', $academicYears)
+                ->first();
         }
-        abort(403);
+
+        if (empty($studentInformations)) {
+            abort(403);
+        }
+
+        return view('Students.show', compact('studentInformations'));
     }
 
     public function changeInformation(Request $request)
@@ -147,7 +231,7 @@ class StudentController extends Controller
             return response()->json(['error' => 'Extras count values is not same'], 422);
         }
 
-        $studentInformation=StudentInformation::where('student_id',$request->user_id)->first();
+        $studentInformation = StudentInformation::where('student_id', $request->user_id)->first();
         $studentInformation->parent_father_id = $request->father;
         $studentInformation->parent_mother_id = $request->mother;
         $studentInformation->guardian = $request->guardian;

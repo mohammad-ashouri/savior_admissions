@@ -18,6 +18,7 @@ class Principal extends Seeder
             'branch-info-menu-access',
             'finance-menu-access',
             'users-menu-access',
+            'students-menu-access',
             'branch-info-menu-access',
             'interviews-menu-access',
             'applications-menu-access',
@@ -75,6 +76,11 @@ class Principal extends Seeder
             'remove-application',
             'change-status-of-application',
             'remove-application-from-reserve',
+            'students-list',
+            'students-edit',
+            'students-delete',
+            'students-search',
+            'students-show',
         ]);
     }
 }

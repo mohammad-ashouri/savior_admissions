@@ -24,7 +24,6 @@ class ParentMother extends Seeder
             'students-create',
             'students-edit',
             'students-delete',
-            'students-search',
             'students-show',
             'applications-list',
             'reservation-payment-details-show',

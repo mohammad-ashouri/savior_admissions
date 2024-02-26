@@ -43,6 +43,12 @@ class AdmissionsOfficer extends Seeder
             'applications-menu-access',
             'academic-year-classes-menu-access',
             'application-timings-menu-access',
+            'students-menu-access',
+            'students-list',
+            'students-edit',
+            'students-delete',
+            'students-search',
+            'students-show',
         ]);
     }
 }
