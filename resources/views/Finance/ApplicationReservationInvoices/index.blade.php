@@ -18,6 +18,9 @@
                                 <select id="academic_year" name="academic_year"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="" disabled selected>Select Academic Year...</option>
+                                    @foreach($academicYears as $academicYear)
+                                        <option @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mr-3">
@@ -60,13 +63,13 @@
                                     Filter
                                 </button>
                             </div>
-                            @if(isset($_GET['search-edu-code']) || isset($_GET['search-first-name']) || isset($_GET['search-last-name']))
+                            @if(isset($_GET['academic_year']) || isset($_GET['date_of_payment']) || isset($_GET['payment_method']) || isset($_GET['status']))
                                 <div class="ml-3">
-                                    <a href="/users">
+                                    <a href="/ReservationInvoices">
                                         <button type="button"
-                                                class="text-white bg-red-700 hover:bg-red-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 RemoveFilter">
+                                                class="text-white bg-red-700 hover:bg-red-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                             <i class="fas fa-remove mr-2" aria-hidden="true"></i>
-                                            Remove
+                                            Remove Filter
                                         </button>
                                     </a>
                                 </div>
