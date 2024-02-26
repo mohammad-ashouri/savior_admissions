@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('interview_status')->nullable();
             $table->boolean('documents_uploaded')->nullable();
             $table->string('documents_uploaded_approval')->nullable();
-            $table->unsignedBigInteger('documents_uploaded_seconder');
+            $table->unsignedBigInteger('documents_uploaded_seconder')->nullable();
             $table->foreign('documents_uploaded_seconder')->references('id')->on('users');
             $table->timestamps();
         });
