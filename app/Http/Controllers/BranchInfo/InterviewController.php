@@ -215,8 +215,8 @@ class InterviewController extends Controller
         $interview->application_id = $request->application_id;
         $interview->interview_form = json_encode($request->all(), true);
         if ($interview->save()) {
-            $application = Applications::find($request->application_id)->with('applicationTimingInfo')->with('reservationInfo');
-            switch ($interview->reservationInfo->levelInfo->name) {
+            $application = Applications::with('applicationTimingInfo')->with('reservationInfo')->find($request->application_id);
+            switch ($application->reservationInfo->levelInfo->name) {
                 case('Kindergarten 1'):
                 case('Kindergarten 2'):
                     if ($request->s1_1_s == 'Rejected' or $request->s1_2_s == 'Rejected' or $request->s1_3_s == 'Rejected' or $request->s1_4_s == 'Rejected') {
@@ -236,10 +236,10 @@ class InterviewController extends Controller
             if ($application->save()) {
                 $studentStatus = new StudentApplianceStatus();
                 $studentStatus->student_id = $application->reservationInfo->student_id;
-                $studentStatus->application_id = $application->applicationTimingInfo->application_id;
+                $studentStatus->application_id = $application->id;
                 $studentStatus->interview_status = $interviewStatus;
                 if ($interviewStatus == "Admitted") {
-                    $studentStatus->documents_uploaded = "Pending";
+                    $studentStatus->documents_uploaded = 0;
                 }
                 $studentStatus->save();
                 return redirect()->route('Interviews.index')

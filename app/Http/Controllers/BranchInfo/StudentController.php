@@ -147,22 +147,6 @@ class StudentController extends Controller
             return response()->json(['error' => 'Extras count values is not same'], 422);
         }
 
-//        $user = User::find($request->user_id);
-//
-//        $studentInformation = [
-//            'school_id' => $request->school,
-//        ];
-//        $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-//        $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
-//        $user->additional_information = json_encode($userAdditionalInformation);
-//        $user->save();
-
-//        $studentInformation = StudentInformation::firstOrCreate(
-//            [
-//                'student_id' => $user->id,
-//            ]
-//        );
-
         $studentInformation=StudentInformation::where('student_id',$request->user_id)->first();
         $studentInformation->parent_father_id = $request->father;
         $studentInformation->parent_mother_id = $request->mother;
