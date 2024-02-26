@@ -9,17 +9,17 @@ use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\School;
+use App\Models\Finance\Discount;
+use App\Models\Finance\Tuition;
+use App\Models\Finance\TuitionDetail;
 use App\Models\User;
 use App\Models\UserAccessInformation;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AcademicYearController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:academic-year-list', ['only' => ['index']]);
         $this->middleware('permission:academic-year-create', ['only' => ['create', 'store']]);
@@ -31,6 +31,7 @@ class AcademicYearController extends Controller
     public function index()
     {
         $academicYears = AcademicYear::with('schoolInfo')->orderBy('id', 'desc')->paginate(10);
+
         return view('Catalogs.AcademicYears.index', compact('academicYears'));
     }
 
@@ -40,6 +41,7 @@ class AcademicYearController extends Controller
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
         $users = User::where('status', 1)->with('generalInformationInfo')->orderBy('id')->get();
+
         return view('Catalogs.AcademicYears.create', compact('academicYears', 'schools', 'levels', 'users'));
     }
 
@@ -69,19 +71,19 @@ class AcademicYearController extends Controller
         $admissionsOfficers = $request->input('Admissions_Officer');
         $financialManagers = $request->input('Financial_Manager');
         $interviewers = $request->input('Interviewer');
-        $school = (int)$request->school;
+        $school = (int) $request->school;
 
         foreach ($principals as $principal) {
             $user = UserAccessInformation::firstOrCreate(
                 [
-                    'user_id' => $principal
+                    'user_id' => $principal,
                 ]
             );
-            if (!$user->principal) {
+            if (! $user->principal) {
                 $user->principal = $school;
             } else {
                 $schools = explode('|', $user->principal);
-                if (!in_array($school, $schools)) {
+                if (! in_array($school, $schools)) {
                     $schools[] = $school;
                 }
                 $user->principal = implode('|', $schools);
@@ -91,14 +93,14 @@ class AcademicYearController extends Controller
         foreach ($admissionsOfficers as $admissionsOfficer) {
             $user = UserAccessInformation::firstOrCreate(
                 [
-                    'user_id' => $admissionsOfficer
+                    'user_id' => $admissionsOfficer,
                 ]
             );
-            if (!$user->admissions_officer) {
+            if (! $user->admissions_officer) {
                 $user->admissions_officer = $school;
             } else {
                 $schools = explode('|', $user->admissions_officer);
-                if (!in_array($school, $schools)) {
+                if (! in_array($school, $schools)) {
                     $schools[] = $school;
                 }
                 $user->admissions_officer = implode('|', $schools);
@@ -108,14 +110,14 @@ class AcademicYearController extends Controller
         foreach ($financialManagers as $financialManager) {
             $user = UserAccessInformation::firstOrCreate(
                 [
-                    'user_id' => $financialManager
+                    'user_id' => $financialManager,
                 ]
             );
-            if (!$user->financial_manager) {
+            if (! $user->financial_manager) {
                 $user->financial_manager = $school;
             } else {
                 $schools = explode('|', $user->financial_manager);
-                if (!in_array($school, $schools)) {
+                if (! in_array($school, $schools)) {
                     $schools[] = $school;
                 }
                 $user->financial_manager = implode('|', $schools);
@@ -125,14 +127,14 @@ class AcademicYearController extends Controller
         foreach ($interviewers as $interviewer) {
             $user = UserAccessInformation::firstOrCreate(
                 [
-                    'user_id' => $interviewer
+                    'user_id' => $interviewer,
                 ]
             );
-            if (!$user->interviewer) {
+            if (! $user->interviewer) {
                 $user->interviewer = $school;
             } else {
                 $schools = explode('|', $user->interviewer);
-                if (!in_array($school, $schools)) {
+                if (! in_array($school, $schools)) {
                     $schools[] = $school;
                 }
                 $user->interviewer = implode('|', $schools);
@@ -146,7 +148,7 @@ class AcademicYearController extends Controller
             'Interviewer' => [$interviewers],
         ];
 
-        AcademicYear::create([
+        $academicYear = AcademicYear::create([
             'name' => $request->name,
             'school_id' => $request->school,
             'start_date' => $request->start_date,
@@ -154,6 +156,22 @@ class AcademicYearController extends Controller
             'levels' => json_encode($request->levels, true),
             'employees' => json_encode($employeesData, true),
         ]);
+
+        Discount::create([
+            'academic_year' => $academicYear->id,
+        ]);
+
+        $tuition = Tuition::create([
+            'academic_year' => $academicYear->id,
+        ]);
+
+        foreach ($request->levels as $level) {
+            TuitionDetail::create([
+                'tuition_id' => $tuition->id,
+                'level' => $level,
+            ]);
+        }
+
         return redirect()->route('AcademicYears.index')
             ->with('success', 'Academic year created successfully');
     }
@@ -164,6 +182,7 @@ class AcademicYearController extends Controller
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
         $users = User::where('status', 1)->with('generalInformationInfo')->orderBy('id')->get();
+
         return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools', 'levels', 'users'));
     }
 
@@ -235,14 +254,14 @@ class AcademicYearController extends Controller
         foreach ($principals as $principal) {
             $user = UserAccessInformation::firstOrCreate(
                 [
-                    'user_id' => $principal
+                    'user_id' => $principal,
                 ]
             );
-            if (!$user->principal) {
+            if (! $user->principal) {
                 $user->principal = $school;
             } else {
                 $schools = explode('|', $user->principal);
-                if (!in_array($school, $schools)) {
+                if (! in_array($school, $schools)) {
                     $schools[] = $school;
                 }
                 $user->principal = implode('|', $schools);
@@ -252,14 +271,14 @@ class AcademicYearController extends Controller
         foreach ($admissionsOfficers as $admissionsOfficer) {
             $user = UserAccessInformation::firstOrCreate(
                 [
-                    'user_id' => $admissionsOfficer
+                    'user_id' => $admissionsOfficer,
                 ]
             );
-            if (!$user->admissions_officer) {
+            if (! $user->admissions_officer) {
                 $user->admissions_officer = $school;
             } else {
                 $schools = explode('|', $user->admissions_officer);
-                if (!in_array($school, $schools)) {
+                if (! in_array($school, $schools)) {
                     $schools[] = $school;
                 }
                 $user->admissions_officer = implode('|', $schools);
@@ -269,14 +288,14 @@ class AcademicYearController extends Controller
         foreach ($financialManagers as $financialManager) {
             $user = UserAccessInformation::firstOrCreate(
                 [
-                    'user_id' => $financialManager
+                    'user_id' => $financialManager,
                 ]
             );
-            if (!$user->financial_manager) {
+            if (! $user->financial_manager) {
                 $user->financial_manager = $school;
             } else {
                 $schools = explode('|', $user->financial_manager);
-                if (!in_array($school, $schools)) {
+                if (! in_array($school, $schools)) {
                     $schools[] = $school;
                 }
                 $user->financial_manager = implode('|', $schools);
@@ -286,14 +305,14 @@ class AcademicYearController extends Controller
         foreach ($interviewers as $interviewer) {
             $user = UserAccessInformation::firstOrCreate(
                 [
-                    'user_id' => $interviewer
+                    'user_id' => $interviewer,
                 ]
             );
-            if (!$user->interviewer) {
+            if (! $user->interviewer) {
                 $user->interviewer = $school;
             } else {
                 $schools = explode('|', $user->interviewer);
-                if (!in_array($school, $schools)) {
+                if (! in_array($school, $schools)) {
                     $schools[] = $school;
                 }
                 $user->interviewer = implode('|', $schools);
@@ -307,36 +326,54 @@ class AcademicYearController extends Controller
             'Financial_Manager' => [$financialManagers],
             'Interviewer' => [$interviewers],
         ];
-        $catalog = AcademicYear::find($id);
-        $catalog->name = $request->input('name');
-        $catalog->status = $request->input('status');
+        $academicYear = AcademicYear::find($id);
+        $academicYear->name = $request->input('name');
+        $academicYear->status = $request->input('status');
 
-        $academicYearClasses=AcademicYearClass::where('academic_year',$catalog->id)->get();
-        foreach ($academicYearClasses as $academicYearClass){
-            $academicYearClass=AcademicYearClass::find($academicYearClass->id);
-            $academicYearClass->status=$catalog->status;
+        $academicYearClasses = AcademicYearClass::where('academic_year', $academicYear->id)->get();
+        foreach ($academicYearClasses as $academicYearClass) {
+            $academicYearClass = AcademicYearClass::find($academicYearClass->id);
+            $academicYearClass->status = $academicYear->status;
             $academicYearClass->save();
         }
 
-        $applicationTimings=ApplicationTiming::where('academic_year',$catalog->id)->get();
-        foreach ($applicationTimings as $applicationTiming){
-            $applicationTiming=ApplicationTiming::find($applicationTiming->id);
-            $applicationTiming->status=$catalog->status;
+        $applicationTimings = ApplicationTiming::where('academic_year', $academicYear->id)->get();
+        foreach ($applicationTimings as $applicationTiming) {
+            $applicationTiming = ApplicationTiming::find($applicationTiming->id);
+            $applicationTiming->status = $academicYear->status;
             $applicationTiming->save();
 
-            $applications=Applications::where('application_timing_id',$applicationTiming->id)->where('reserved',0)->where('status',1)->get();
-            foreach ($applications as $application){
-                $application=Applications::find($application->id)->first();
-                $application->status=0;
+            $applications = Applications::where('application_timing_id', $applicationTiming->id)->where('reserved', 0)->where('status', 1)->get();
+            foreach ($applications as $application) {
+                $application = Applications::find($application->id)->first();
+                $application->status = 0;
                 $application->save();
             }
         }
 
-        $catalog->start_date = $request->input('start_date');
-        $catalog->end_date = $request->input('end_date');
-        $catalog->levels = json_encode($request->input('levels'), true);
-        $catalog->employees = json_encode($employeesData, true);;
-        $catalog->save();
+        $academicYear->start_date = $request->input('start_date');
+        $academicYear->end_date = $request->input('end_date');
+        $academicYear->levels = json_encode($request->input('levels'), true);
+        $academicYear->employees = json_encode($employeesData, true);
+        $academicYear->save();
+
+        Discount::firstOrCreate([
+            'academic_year' => $academicYear->id,
+        ]);
+
+        $tuition = Tuition::where('academic_year',$academicYear->id)->first();
+
+        //For deactivate all tuitions
+        TuitionDetail::where('tuition_id',$tuition->id)->update(['status'=>0]);
+
+        foreach ($request->levels as $level) {
+            TuitionDetail::firstOrCreate([
+                'tuition_id' => $tuition->id,
+                'level' => $level,
+            ]);
+            TuitionDetail::where('tuition_id',$tuition->id)->where('level',$level)->update(['status'=>1]);
+        }
+
         return redirect()->route('AcademicYears.index')
             ->with('success', 'Academic year edited successfully');
     }

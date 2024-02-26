@@ -31,7 +31,7 @@
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                             <h1 class="text-2xl font-medium"> Academic Year information</h1>
                         </div>
-                        {!! Form::model($catalog, ['method' => 'PATCH','route' => ['AcademicYears.update', $catalog->id]]) !!}
+                        {!! Form::model($catalog, ['method' => 'PATCH','id'=>'edit-academic-year','route' => ['AcademicYears.update', $catalog->id]]) !!}
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
                             <div>
                                 <label for="name"

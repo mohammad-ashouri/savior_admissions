@@ -243,6 +243,24 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('tuition-list')
+                            <li>
+                                <a href="/Tuition"
+                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span class="menulist"><i class="las la la-file-invoice" style="font-size: 24px"></i>
+                                        Tuition</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('discounts-list')
+                            <li>
+                                <a href="/Discounts"
+                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span class="menulist"><i class="las la la-percent" style="font-size: 24px"></i>
+                                        Discounts</span>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
             @endcan

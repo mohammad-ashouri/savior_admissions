@@ -1,3 +1,4 @@
+@php use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\PaymentMethod; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -8,28 +9,70 @@
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
-                    <div class="relative hidden md:block w-96">
-                        <input type="text" id="search-navbar"
-                               class="font-normal text-lg block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                               placeholder="Search it...">
-                    </div>
-                    <div class="flex">
-                        @can('reservation-invoice-create')
-                            <a href="{{ route('ReservationInvoices.create') }}">
-{{--                                <button type="button"--}}
-{{--                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">--}}
-
-{{--                                    <svg class="w-6 h-6 mr-1" fill="currentColor" viewBox="0 0 20 20"--}}
-{{--                                         xmlns="http://www.w3.org/2000/svg">--}}
-{{--                                        <path fill-rule="evenodd"--}}
-{{--                                              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"--}}
-{{--                                              clip-rule="evenodd"></path>--}}
-{{--                                    </svg>--}}
-{{--                                    New Reservation--}}
-{{--                                </button>--}}
-                                @endcan
-                            </a>
-                    </div>
+                    <form id="search-user" action="{{ route('SearchReservationInvoices') }}" method="get">
+                        <div class="flex w-full">
+                            <div class="mr-3">
+                                <label for="academic_year"
+                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Academic Year</label>
+                                <select id="academic_year" name="academic_year"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="" disabled selected>Select Academic Year...</option>
+                                </select>
+                            </div>
+                            <div class="mr-3">
+                                <label for="date_of_payment"
+                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Date Of Payment</label>
+                                <input type="date" id="date_of_payment" name="date_of_payment"
+                                       value="{{ @$_GET['date_of_payment'] }}"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </div>
+                            <div class="mr-3">
+                                <label for="payment_method"
+                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Payment Method</label>
+                                <select id="payment_method" name="payment_method"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="" disabled selected>Select Payment Method...</option>
+                                    @foreach($paymentMethods as $paymentMethod)
+                                        <option @if(isset($_GET['payment_method']) and $_GET['payment_method']==$paymentMethod->id) selected @endif value="{{$paymentMethod->id}}">{{$paymentMethod->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mr-3">
+                                <label for="status"
+                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Status</label>
+                                <select id="status" name="status"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="" disabled selected>Select Status...</option>
+                                    <option @if(isset($_GET['status']) and $_GET['status']==0) selected @endif value="0">Payment Processing</option>
+                                    <option @if(isset($_GET['status']) and $_GET['status']==1) selected @endif value="1">Paid</option>
+                                    <option @if(isset($_GET['status']) and $_GET['status']==2) selected @endif value="2">Awaiting Confirmation</option>
+                                    <option @if(isset($_GET['status']) and $_GET['status']==3) selected @endif value="3">Rejected</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button type="submit"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <i class="fas fa-search mr-2" aria-hidden="true"></i>
+                                    Filter
+                                </button>
+                            </div>
+                            @if(isset($_GET['search-edu-code']) || isset($_GET['search-first-name']) || isset($_GET['search-last-name']))
+                                <div class="ml-3">
+                                    <a href="/users">
+                                        <button type="button"
+                                                class="text-white bg-red-700 hover:bg-red-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 RemoveFilter">
+                                            <i class="fas fa-remove mr-2" aria-hidden="true"></i>
+                                            Remove
+                                        </button>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </form>
                 </div>
 
                 @if( session()->has('success') )
@@ -77,6 +120,9 @@
                                     Reserve ID
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
+                                    Academic Year
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
                                     Student
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
@@ -87,6 +133,9 @@
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Amount
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Payment Method
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Status
@@ -104,6 +153,16 @@
                                     <td class="w-4 p-4">
                                         {{$application->id}}
                                     </td>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        @php
+                                            $academicYear=AcademicYear::find($application->academic_year);
+                                        @endphp
+                                        <div class="pl-3">
+                                            <div
+                                                class="text-base font-semibold">{{ $academicYear->name }}</div>
+                                        </div>
+                                    </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
@@ -126,7 +185,7 @@
                                                 @if($application->payment_status==0)
                                                     Not Paid Yet!
                                                 @else
-                                                {{$application->applicationInvoiceInfo->created_at}}
+                                                    {{$application->applicationInvoiceInfo->created_at}}
                                                 @endif
                                             </div>
                                         </div>
@@ -136,6 +195,16 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            @php
+                                                $method=PaymentMethod::find(json_decode($application->applicationInvoiceInfo->payment_information,true)['payment_method']);
+                                            @endphp
+                                            <div
+                                                class="text-base font-semibold">{{ $method->name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
@@ -187,7 +256,7 @@
         </div>
         @if(!empty($applications))
             <div class="pagination text-center">
-                {{ $applications->onEachSide(5)->links() }}
+                {{ $applications->links() }}
             </div>
     @endif
 @endsection
