@@ -234,10 +234,17 @@ class InterviewController extends Controller
             }
             $application->interviewed = 1;
             if ($application->save()) {
-                $studentStatus = new StudentApplianceStatus();
-                $studentStatus->student_id = $application->reservationInfo->student_id;
-                $studentStatus->application_id = $application->id;
-                $studentStatus->interview_status = $interviewStatus;
+                $studentStatus = StudentApplianceStatus::where('student_id', $application->reservationInfo->student_id)->where('academic_year', $application->applicationTimingInfo->academic_year)->first();
+                if (empty($studentStatus)) {
+                    $studentStatus = new StudentApplianceStatus();
+                    $studentStatus->student_id = $application->reservationInfo->student_id;
+                    $studentStatus->academic_year = $application->applicationTimingInfo->academic_year;
+                    $studentStatus->interview_status = $interviewStatus;
+                } else {
+                    $studentStatus->student_id = $application->reservationInfo->student_id;
+                    $studentStatus->application_id = $application->applicationTimingInfo->academic_year;
+                    $studentStatus->interview_status = $interviewStatus;
+                }
                 if ($interviewStatus == "Admitted") {
                     $studentStatus->documents_uploaded = 0;
                 }
