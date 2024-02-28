@@ -14,6 +14,10 @@ class GeneralInformation extends Model
 
     protected $fillable = [
         'user_id',
+        'first_name_en',
+        'last_name_en',
+        'first_name_fa',
+        'last_name_fa',
         'father_name',
         'gender',
         'birthdate',
