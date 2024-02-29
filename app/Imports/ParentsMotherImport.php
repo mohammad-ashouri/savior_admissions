@@ -23,7 +23,7 @@ class ParentsMotherImport implements ToModel
             $user->save();
             $user->assignRole('Parent(Mother)');
 
-            new GeneralInformation([
+            $generalInformation=new GeneralInformation([
                 'user_id' => $user->id,
                 'first_name_en' => $row[1],
                 'last_name_en' => $row[2],
@@ -31,6 +31,8 @@ class ParentsMotherImport implements ToModel
                 'gender' => 'Male',
                 'passport_number' => $row[5],
             ]);
+            $generalInformation->save();
+
         }
         $user = User::where('email', $row[3])->first();
 
