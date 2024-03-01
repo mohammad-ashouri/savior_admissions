@@ -851,6 +851,21 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
+        $('#set-interview').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your interview will be submitted permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#set-interview').off('submit').submit();
+                }
+            });
+        });
     } else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
 
