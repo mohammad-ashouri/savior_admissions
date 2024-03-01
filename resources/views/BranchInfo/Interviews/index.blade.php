@@ -1,3 +1,4 @@
+@php use App\Models\Branch\StudentApplianceStatus; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -136,7 +137,7 @@
                                                 @switch($interview->reservationInfo->payment_status)
                                                     @case(0)
                                                         Awaiting for pay
-                                                    @break
+                                                        @break
                                                     @case(1)
                                                         @switch($interview->Interviewed)
                                                             @case(0)
@@ -144,12 +145,19 @@
                                                                 @break
                                                             @case(1)
                                                                 Interviewed
+                                                                @php
+                                                                    $interviewStatus=StudentApplianceStatus::where('student_id',$interview->reservationInfo->student_id)->where('academic_year',$interview->applicationTimingInfo->academic_year)->first();
+
+                                                                @endphp
+                                                                @if ($interviewStatus->interview_status)
+                                                                    ({{$interviewStatus->interview_status}})
+                                                                @endif
                                                                 @break
                                                         @endswitch
-                                                    @break
+                                                        @break
                                                     @case(2)
                                                         Waiting for payment confirmation
-                                                    @break
+                                                        @break
                                                 @endswitch
                                             </div>
                                         </div>
