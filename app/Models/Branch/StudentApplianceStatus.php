@@ -3,13 +3,15 @@
 namespace App\Models\Branch;
 
 use App\Models\Catalogs\AcademicYear;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentApplianceStatus extends Model
 {
     use HasFactory;
-    protected $table = 'interviews';
+
+    protected $table = 'student_appliance_statuses';
 
     protected $fillable = [
         'student_id',
@@ -18,6 +20,7 @@ class StudentApplianceStatus extends Model
         'documents_uploaded',
         'documents_uploaded_approval',
         'documents_uploaded_seconder',
+        'tuition_payment_status',
     ];
 
     protected $casts = [
@@ -29,6 +32,11 @@ class StudentApplianceStatus extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function studentInfo()
+    {
+        return $this->belongsTo(User::class, 'student_id', 'id');
+    }
 
     public function academicYearInfo()
     {

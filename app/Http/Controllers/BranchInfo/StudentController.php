@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BranchInfo;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\CurrentIdentificationType;
 use App\Models\Country;
@@ -60,15 +61,11 @@ class StudentController extends Controller
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-            $students = StudentInformation::with('studentInfo')
-                ->with('nationalityInfo')
-                ->with('identificationTypeInfo')
-                ->with('generalInformations')
-                ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
-                ->join('applications', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
-                ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
-                ->whereIn('application_timings.academic_year', $academicYears)
-                ->orderBy('student_id', 'asc')->paginate(15);
+            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
+                ->whereIn('academic_year', $academicYears)
+                ->where('tuition_payment_status', "Paid")
+                ->distinct('student_id')
+                ->orderBy('academic_year', 'desc')->paginate(15);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
             return view('Students.index', compact('students', 'academicYears'));

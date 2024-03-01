@@ -19,6 +19,7 @@ use App\Http\Controllers\Finance\DiscountsController;
 use App\Http\Controllers\Finance\TuitionController;
 use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckLoginMiddleware;
@@ -148,6 +149,9 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::prefix('PDF')->group(function () {
         Route::get('/tuition_card', [PDFExportController::class, 'tuitionCardExport']);
     });
+
+    //Payment
+    Route::post('testpay',[PaymentController::class,'behpardakhtPayment']);
 
 
 });

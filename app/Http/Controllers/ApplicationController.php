@@ -16,6 +16,8 @@ use App\Models\UserAccessInformation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Shetabit\Multipay\Invoice;
+use Shetabit\Payment\Facade\Payment;
 
 class ApplicationController extends Controller
 {
@@ -416,6 +418,11 @@ class ApplicationController extends Controller
                 }
                 break;
             case 2:
+                 $invoice = (new Invoice())->amount(15000);
+                return Payment::purchase($invoice, function($driver, $transactionId) {
+                    // Store transactionId in database as we need it to verify payment in the future.
+
+                })->pay()->render();
                 break;
             default:
                 abort(403);

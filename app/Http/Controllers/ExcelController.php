@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Imports\Documents;
 use App\Imports\DocumentTypesImport;
-use App\Imports\ParentsGeneralInformationsImport;
 use App\Imports\ParentsFatherImport;
 use App\Imports\ParentsMotherImport;
 use App\Imports\StudentsImport;

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('documents_uploaded_approval')->nullable();
             $table->unsignedBigInteger('documents_uploaded_seconder')->nullable();
             $table->foreign('documents_uploaded_seconder')->references('id')->on('users');
+            $table->string('tuition_payment_status')->nullable();
             $table->timestamps();
         });
     }
