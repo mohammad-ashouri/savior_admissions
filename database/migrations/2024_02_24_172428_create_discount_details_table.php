@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('percentage');
             $table->boolean('status')->default(1);
+            $table->boolean('interviewer_permission')->default(1);
             $table->timestamps();
         });
     }

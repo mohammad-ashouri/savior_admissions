@@ -15,6 +15,7 @@ class DiscountDetail extends Model
         'discount_id',
         'name',
         'percentage',
+        'interviewer_permission',
         'status',
     ];
 }

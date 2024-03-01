@@ -70,7 +70,12 @@
                                                 </th>
                                                 <th scope="col" class="p-4">
                                                     <div class=" items-center text-center">
-                                                        Action
+                                                        Display on the interview form
+                                                    </div>
+                                                </th>
+                                                <th scope="col" class="p-4">
+                                                    <div class=" items-center text-center">
+                                                        Status
                                                     </div>
                                                 </th>
                                             </tr>
@@ -81,6 +86,7 @@
                                                     <tr
                                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                         <td class="p-4">
+                                                            <input type="hidden" value="{{ $discount->id }}" name="id[]">
                                                             <input type="text" id="name" name="name[]"
                                                                    value="{{$discount->name}}"
                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -97,6 +103,22 @@
                                                                     class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                                                                 %
                                                             </span>
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <div class="flex justify-between">
+                                                                <select name="display_in_form[]" id="display_in_form"
+                                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                        required>
+                                                                    <option
+                                                                        @if($discount->interviewer_permission==1) selected
+                                                                        @endif value="1">Display on interview form
+                                                                    </option>
+                                                                    <option
+                                                                        @if($discount->interviewer_permission==0) selected
+                                                                        @endif value="0">Dont display on interview form
+                                                                    </option>
+                                                                </select>
                                                             </div>
                                                         </td>
                                                         <td class="p-4 text-center">
@@ -131,6 +153,17 @@
                                                                 class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                                                                 %
                                                             </span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-4">
+                                                        <div class="flex justify-between">
+                                                            <select name="display_in_form[]" id="display_in_form"
+                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                    required>
+                                                                <option value="1">Display on interview form</option>
+                                                                <option value="0">Dont display on interview form
+                                                                </option>
+                                                            </select>
                                                         </div>
                                                     </td>
                                                     <td class="p-4 text-center">

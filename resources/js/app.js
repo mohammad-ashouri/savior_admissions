@@ -938,6 +938,12 @@ $(document).ready(function () {
                 '</div>' +
                 '</td>' +
                 '<td class="p-4 text-center">' +
+                '<select name="display_in_form[]" id="display_in_form" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">'+
+                    '<option value="1">Display on interview form</option>'+
+                    '<option value="0">Dont display on interview form</option>'+
+                '</select>'+
+                '</td>' +
+                '<td class="p-4 text-center">' +
                 '<button type="button" class="delete-row text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">' +
                 '<i class="las la-trash" style="font-size: 24px"></i>' +
                 '</button>' +
