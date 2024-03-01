@@ -38,7 +38,7 @@
                             </div>
                             <div>
                                 <p class="font-bold">Identification
-                                    Type: </p> {{ $studentInformations->identificationTypeInfo->name }}
+                                    Type: </p> {{ @$studentInformations->identificationTypeInfo->name }}
                             </div>
                             <div>
                                 <p class="font-bold">Identification
