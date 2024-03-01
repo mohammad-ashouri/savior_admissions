@@ -417,13 +417,6 @@ class ApplicationController extends Controller
                     }
                 }
                 break;
-            case 2:
-                 $invoice = (new Invoice())->amount(15000);
-                return Payment::purchase($invoice, function($driver, $transactionId) {
-                    // Store transactionId in database as we need it to verify payment in the future.
-
-                })->pay()->render();
-                break;
             default:
                 abort(403);
         }
