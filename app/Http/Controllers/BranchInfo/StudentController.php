@@ -41,11 +41,10 @@ class StudentController extends Controller
                 ->with('generalInformations')
                 ->orderBy('student_id', 'asc')->paginate(15);
         } elseif ($me->hasRole('Super Admin')) {
-            $students = StudentInformation::with('studentInfo')
-                ->with('nationalityInfo')
-                ->with('identificationTypeInfo')
-                ->with('generalInformations')
-                ->orderBy('student_id', 'asc')->paginate(15);
+            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
+                ->where('tuition_payment_status', "Paid")
+                ->distinct('student_id')
+                ->orderBy('academic_year', 'desc')->paginate(15);
             $academicYears = AcademicYear::get();
 
             return view('Students.index', compact('students', 'academicYears'));
