@@ -683,14 +683,17 @@ $(document).ready(function () {
                 $('#offline_payment_div').show();
                 $('#online_payment_iran_div').hide();
                 $('#online_payment_paypal_div').hide();
+                $('#document_file').attr('required', true);
             } else if ($(this).val() === '2') {
                 $('#offline_payment_div').hide();
                 $('#online_payment_iran_div').show();
                 $('#online_payment_paypal_div').hide();
+                $('#document_file').attr('required', false);
             } else if ($(this).val() === '3') {
                 $('#offline_payment_div').hide();
                 $('#online_payment_iran_div').hide();
                 $('#online_payment_paypal_div').show();
+                $('#document_file').attr('required', false);
             }
         });
 
