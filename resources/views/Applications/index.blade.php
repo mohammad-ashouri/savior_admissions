@@ -159,7 +159,7 @@
                                                     <div class="text-center">
                                                         <i class="las la-eye "></i>
                                                     </div>
-                                                    Details
+                                                    Payment Details
                                                 </a>
                                             @endcan
                                         @elseif((!$me->hasRole('Parent(Father)') and !$me->hasRole('Parent(Mother)')))
@@ -170,7 +170,7 @@
                                                     <div class="text-center">
                                                         <i class="las la-eye "></i>
                                                     </div>
-                                                    Details
+                                                    Payment Details
                                                 </a>
                                             @endcan
                                         @endif
