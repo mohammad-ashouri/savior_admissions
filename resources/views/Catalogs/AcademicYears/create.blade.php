@@ -27,7 +27,7 @@
             @endif
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
-                    <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
+                    <div class="general-info  bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <form id="new-academic-year" method="post" action="{{route('AcademicYears.store')}}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -89,7 +89,7 @@
                                     <label for="Principal[]"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">Principal(s)</label>
                                     <select id="Principal[]" name="Principal[]" multiple="multiple"
-                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         @foreach($users as $user)
                                             @if(!$user->hasRole('Principal'))
@@ -107,7 +107,7 @@
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">Admissions
                                         Officer(s)</label>
                                     <select id="Admissions_Officer[]" name="Admissions_Officer[]" multiple="multiple"
-                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         @foreach($users as $user)
                                             @if(!$user->hasRole('Admissions Officer'))
@@ -125,7 +125,7 @@
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">Financial
                                         Manager(s)</label>
                                     <select id="Financial_Manager[]" name="Financial_Manager[]" multiple="multiple"
-                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         @foreach($users as $user)
                                             @if(!$user->hasRole('Financial Manager'))
@@ -142,7 +142,7 @@
                                     <label for="Interviewer[]"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">Interviewer(s)</label>
                                     <select id="Interviewer[]" name="Interviewer[]" multiple="multiple"
-                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         @foreach($users as $user)
                                             @if(!$user->hasRole('Interviewer'))

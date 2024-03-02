@@ -3,7 +3,7 @@
     use App\Models\User;
     $myInfo=User::with('generalInformationInfo')->find(session('id'));
 @endphp
-<html class="dark" lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +22,7 @@
         $(document).ready(function () {
             $('.select2').select2({
                 placeholder: 'Choose an option',
+                theme: "classic"
             });
         });
     </script>
@@ -61,9 +62,9 @@
                 </button>
 
                 <a href="" class="flex ml-2 md:mr-24">
-                    <div class="h-14 w-24 mr-3 mainLogo"></div>
+                    <div class="h-10 w-14 md:h-14 md:w-24 mr-3 mainLogo"></div>
                     <span
-                        class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Savior School</span>
+                        class=" hidden md:inline-block self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Savior School</span>
                 </a>
             </div>
             <div class="flex items-center">
@@ -74,7 +75,7 @@
                             class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                         <div id="tooltip-bottom" role="tooltip"
                              class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                            Toggle dark mode
+                            Dark mode
                             <div class="tooltip-arrow" data-popper-arrow></div>
                         </div>
                         <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor"
@@ -93,7 +94,7 @@
                 <div class="flex items-center ml-3">
                     <div>
                         <button type="button"
-                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                                class="flex text-sm dark:bg-gray-800 bg-white rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>
                             <div class="w-8 h-8 mr-3 defaultUserIcon"></div>
