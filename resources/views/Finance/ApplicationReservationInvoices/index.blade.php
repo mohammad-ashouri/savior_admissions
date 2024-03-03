@@ -19,7 +19,9 @@
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="" disabled selected>Select Academic Year...</option>
                                     @foreach($academicYears as $academicYear)
-                                        <option @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                        <option
+                                            @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                            @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -39,7 +41,9 @@
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="" disabled selected>Select Payment Method...</option>
                                     @foreach($paymentMethods as $paymentMethod)
-                                        <option @if(isset($_GET['payment_method']) and $_GET['payment_method']==$paymentMethod->id) selected @endif value="{{$paymentMethod->id}}">{{$paymentMethod->name}}</option>
+                                        <option
+                                            @if(isset($_GET['payment_method']) and $_GET['payment_method']==$paymentMethod->id) selected
+                                            @endif value="{{$paymentMethod->id}}">{{$paymentMethod->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -50,10 +54,18 @@
                                 <select id="status" name="status"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="" disabled selected>Select Status...</option>
-                                    <option @if(isset($_GET['status']) and $_GET['status']==0) selected @endif value="0">Payment Processing</option>
-                                    <option @if(isset($_GET['status']) and $_GET['status']==1) selected @endif value="1">Paid</option>
-                                    <option @if(isset($_GET['status']) and $_GET['status']==2) selected @endif value="2">Awaiting Confirmation</option>
-                                    <option @if(isset($_GET['status']) and $_GET['status']==3) selected @endif value="3">Rejected</option>
+                                    <option @if(isset($_GET['status']) and $_GET['status']==0) selected
+                                            @endif value="0">Payment Processing
+                                    </option>
+                                    <option @if(isset($_GET['status']) and $_GET['status']==1) selected
+                                            @endif value="1">Paid
+                                    </option>
+                                    <option @if(isset($_GET['status']) and $_GET['status']==2) selected
+                                            @endif value="2">Awaiting Confirmation
+                                    </option>
+                                    <option @if(isset($_GET['status']) and $_GET['status']==3) selected
+                                            @endif value="3">Rejected
+                                    </option>
                                 </select>
                             </div>
                             <div>
@@ -154,16 +166,13 @@
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
-                                        {{$application->id}}
+                                        {{$application->application_reservations_id}}
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        @php
-                                            $academicYear=AcademicYear::find($application->academic_year);
-                                        @endphp
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $academicYear->name }}</div>
+                                                class="text-base font-semibold">{{ $application->applicationInfo->applicationTimingInfo->academicYearInfo->name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
@@ -237,7 +246,7 @@
                                         <!-- Modal toggle -->
                                         @if($application->payment_status!=0)
                                             @can('reservation-invoice-show')
-                                                <a href="{{ route('ReservationInvoices.show',$application->id) }}"
+                                                <a href="{{ route('ReservationInvoices.show',$application->application_reservations_id) }}"
                                                    type="button"
                                                    class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                     <div class="text-center">
