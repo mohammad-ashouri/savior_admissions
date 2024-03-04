@@ -1340,7 +1340,7 @@
         calculateTotal(tableId, totalId);
     });
 
-    let currentTab = 1;
+    let currentTab = 8;
     showTab(currentTab);
 
     // $('.tab-btn').click(function () {

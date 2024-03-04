@@ -9,6 +9,7 @@ use App\Models\Finance\DiscountDetail;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DiscountsController extends Controller
 {
@@ -118,5 +119,18 @@ class DiscountsController extends Controller
         return redirect()->route('Discounts.index')
             ->with('success', 'Discount settings saved successfully!');
 
+    }
+
+    public function getDiscountPercentage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'discount_id' => 'required|exists:discount_details,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator], 422);
+        }
+
+        return DiscountDetail::where('id', $request->discount_id)->value('percentage');
     }
 }

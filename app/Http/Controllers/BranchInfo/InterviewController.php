@@ -9,6 +9,7 @@ use App\Models\Branch\ApplicationTiming;
 use App\Models\Branch\Interview;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Finance\Discount;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
@@ -153,7 +154,13 @@ class InterviewController extends Controller
             abort(403);
         }
 
-        return view('BranchInfo.Interviews.set', compact('interview'));
+        $discounts=Discount::with('allDiscounts')
+            ->where('academic_year',$interview->applicationTimingInfo->academic_year)
+            ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+            ->where('discount_details.status',1)
+            ->where('discount_details.interviewer_permission',1)
+            ->get();
+        return view('BranchInfo.Interviews.set', compact('interview','discounts'));
     }
 
     public function SetInterview(Request $request)

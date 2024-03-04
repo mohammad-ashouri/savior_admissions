@@ -53,7 +53,56 @@
                                     @include('BranchInfo.Interviews.Forms.2024.Set.G1-G12')
                             @endswitch
                             <div id="last-step" class="text-center hidden">
-                                <input type="hidden" name="application_id" value="{{ $interview->id }}">
+                                <div class="text-left mb-4">
+                                    <p class="font-bold mt-4">
+                                        Discount <u>(Check only when needed)</u>
+                                    </p>
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                            <thead
+                                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" class="p-4 text-center">
+                                                    ID
+                                                </th>
+                                                <th scope="col" class="p-4 text-center">
+                                                    Title
+                                                </th>
+                                                <th scope="col" class="p-4 text-center">
+                                                    Percentage
+                                                </th>
+                                                <th scope="col" class="p-4 text-center">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody
+                                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            @foreach($discounts as $discount)
+                                                <tr>
+                                                    <td class="w-10 font-bold p-4 text-center">
+                                                        {{ $loop->iteration }}
+                                                    </td>
+                                                    <td class="w-1/3 font-bold p-4 text-center">
+                                                        {{ $discount->name }}
+                                                    </td>
+                                                    <td class="font-bold p-4 text-center">
+                                                        {{ $discount->percentage }}%
+                                                    </td>
+                                                    <td class="font-bold p-4 text-center">
+                                                        <input class="discount-checks" type="checkbox"
+                                                               value="{{ $discount->id }}"
+                                                               name="discount[]">
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="application_id" id="application_id"
+                                       value="{{ $interview->id }}">
                                 <button type="submit"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Submit

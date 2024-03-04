@@ -36,7 +36,6 @@ function resetFields() {
 }
 
 
-
 $(document).ready(function () {
     // open toggled sidebar
     const toggleButton = document.getElementById('toggleButton');
@@ -124,8 +123,6 @@ $(document).ready(function () {
         }
 
     });
-
-
 
 
     let fullPath = window.location.pathname;
@@ -411,10 +408,8 @@ $(document).ready(function () {
         $('.type-filter').click(function () {
             var typeId = $(this).data('type-id');
 
-            // اضافه کردن کلاس‌های فعال به دکمه کلیک شده
             $(this).addClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
 
-            // حذف کلاس‌های فعال از دکمه‌های دیگر
             $('.type-filter').not(this).removeClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
 
             if (typeId === 'all') {
@@ -851,24 +846,77 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
-        $('#set-interview').submit(function (e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Your interview will be submitted permanently.',
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: 'No',
-                confirmButtonText: 'Yes',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#set-interview').off('submit').submit();
-                }
-            });
-        });
     } else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
 
+        $('#set-interview').submit(function (e) {
+            e.preventDefault();
+
+            function getDiscountDetail(id) {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/GetDiscountPercentage',
+                        data: {
+                            discount_id: id,
+                        },
+                        success: function (response) {
+                            resolve(response);
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            reject('Unprocessable Entity');
+                        }
+                    });
+                });
+            }
+
+            if ($('.discount-checks:checked').length > 0) {
+                let promises = [];
+
+                $('.discount-checks:checked').each(function () {
+                    promises.push(getDiscountDetail($(this).val()));
+                });
+
+                Promise.all(promises).then(function (responses) {
+                    let totalDiscounts = 0;
+                    responses.forEach(function (response) {
+                        totalDiscounts += parseInt(response);
+                    });
+                    if (totalDiscounts > 30) {
+                        swalFire('Error', "The discount amount selected by you is higher than 30%", 'error', 'Try again');
+                    } else {
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'Your interview will be submitted permanently.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            cancelButtonText: 'No',
+                            confirmButtonText: 'Yes',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#set-interview').off('submit').submit();
+                            }
+                        });
+                    }
+                }).catch(function (error) {
+                    swalFire('Error', error, 'error', 'Try again');
+                });
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Your interview will be submitted permanently.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#set-interview').off('submit').submit();
+                    }
+                });
+            }
+
+        });
 
     } else if (fullPath.includes('ReservationInvoices')) {
         pageTitle = 'Reservation Invoices';
@@ -938,10 +986,10 @@ $(document).ready(function () {
                 '</div>' +
                 '</td>' +
                 '<td class="p-4 text-center">' +
-                '<select name="display_in_form[]" id="display_in_form" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">'+
-                    '<option value="1">Display on interview form</option>'+
-                    '<option value="0">Dont display on interview form</option>'+
-                '</select>'+
+                '<select name="display_in_form[]" id="display_in_form" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">' +
+                '<option value="1">Display on interview form</option>' +
+                '<option value="0">Dont display on interview form</option>' +
+                '</select>' +
                 '</td>' +
                 '<td class="p-4 text-center">' +
                 '<button type="button" class="delete-row text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">' +

@@ -106,6 +106,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::resource('Discounts', DiscountsController::class);
     Route::post('ChangeDiscountPercentage', [DiscountsController::class, 'changeDiscountPercentage']);
     Route::post('ChangeDiscountStatus', [DiscountsController::class, 'changeDiscountStatus']);
+    Route::get('GetDiscountPercentage', [DiscountsController::class, 'getDiscountPercentage']);
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
