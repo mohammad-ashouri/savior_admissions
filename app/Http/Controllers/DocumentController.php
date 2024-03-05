@@ -62,4 +62,9 @@ class DocumentController extends Controller
         return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes', 'documentOwner', 'user_id'));
 
     }
+
+    public function uploadStudentDocumentByParent()
+    {
+
+    }
 }
