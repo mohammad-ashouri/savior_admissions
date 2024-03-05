@@ -57,7 +57,7 @@ Route::prefix('login')->group(function () {
 
 Route::prefix('password')->group(function () {
     Route::get('/forgot', [PasswordController::class, 'showForgetPassword'])->name('ForgetPassword');
-    Route::post('/getToken', [PasswordController::class, 'sendToken'])->name('sendToken');
+    Route::post('/sendToken', [PasswordController::class, 'sendToken'])->name('sendToken');
     Route::get('/reset/{token}', [PasswordController::class, 'showResetPassword']);
     Route::post('/reset', [PasswordController::class, 'resetPassword']);
     Route::post('/change', [PasswordController::class, 'changePassword']);

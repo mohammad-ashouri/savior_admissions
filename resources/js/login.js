@@ -120,7 +120,7 @@ $(document).ready(function () {
                         var data = form.serialize();
 
                         $.ajax({
-                            type: 'POST', url: '/password/getToken', data: data, headers: {
+                            type: 'POST', url: '/password/sendToken', data: data, headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                             }, success: function (response) {
                                 if (response.success) {
