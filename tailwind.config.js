@@ -10,9 +10,15 @@ module.exports = {
     darkMode: 'class',
 
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'light-theme-color-nav-base': '#D2E69C',
+                'light-theme-color-base': '#F3F2C9',
+            },
+        },
     },
     plugins: [
         require('flowbite/plugin')
     ],
 }
+
