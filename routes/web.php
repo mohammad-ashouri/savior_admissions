@@ -21,6 +21,7 @@ use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Auth;
@@ -155,6 +156,9 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     //Payment
     Route::post('testpay',[PaymentController::class,'behpardakhtPayment']);
+
+    //SMS
+    Route::get('testsms',[SMSController::class,'sendSMS']);
 
 
 });
