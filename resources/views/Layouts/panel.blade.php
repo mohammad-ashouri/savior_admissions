@@ -28,7 +28,7 @@
     </script>
 </head>
 
-<body class="bg-gray-200 dark:bg-gray-900 ">
+<body class=" bg-light-theme-color-base dark:bg-gray-800 ">
 
 <nav class="fixed top-0 z-50 w-full bg-light-theme-color-nav-base border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">

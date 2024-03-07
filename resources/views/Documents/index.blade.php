@@ -2,7 +2,7 @@
 @extends('Layouts.panel')
 
 @section('content')
-    <div id="content" class="p-4 sm:ml-14 transition-all duration-300">
+    <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
             @if(isset($user_id) and isset($documentOwner))
                 <div>

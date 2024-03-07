@@ -14,7 +14,7 @@
     $tokenInfo=PasswordResetToken::where('token',$token)->first();
     $userInfo=User::find($tokenInfo->user_id);
 @endphp
-<body class="bg-gray-200 dark:bg-gray-900 flex items-center justify-center h-screen">
+<body class=" bg-light-theme-color-base dark:bg-gray-800 flex items-center justify-center h-screen">
 <div class="bg-white dark:bg-gray-800 lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
     <div class="lg:w-2/5 pr-8 lg:inline-block hidden">
         <img src="https://flowbite.com/application-ui/demo/images/authentication/reset-password.jpg" alt="Login Image"
