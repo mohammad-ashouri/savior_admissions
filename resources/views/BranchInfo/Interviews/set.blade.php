@@ -58,6 +58,26 @@
                                         Discount <u>(Check only when needed)</u>
                                     </p>
                                     <div class="overflow-x-auto">
+                                        @if($discounts->isEmpty())
+                                            <div class="bg-teal-100 border-t-4 border-teal-500 mt-4 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                                 role="alert">
+                                                <div class="flex">
+                                                    <div class="py-1">
+                                                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        There is not any discount items to show! Please contact the financial manager of your department and raise the issue.
+                                                        <br/>
+                                                        Note: If the student needs to register a discount and you do not choose, your interview will no longer be editable.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @else
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <thead
                                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -99,6 +119,7 @@
 
                                             </tbody>
                                         </table>
+                                        @endif
                                     </div>
                                 </div>
                                 <input type="hidden" name="application_id" id="application_id"

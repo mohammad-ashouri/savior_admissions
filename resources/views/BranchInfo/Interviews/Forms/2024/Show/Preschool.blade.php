@@ -4,35 +4,35 @@
             <!-- Tabs -->
             <div class="flex flex-wrap">
                 <button type="button" id="step-1-btn"
-                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-tl-lg rounded-tr-lg"
+                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-tl-lg rounded-tr-lg"
                         data-tab="tab1">Step 1
                 </button>
                 <button type="button" id="step-2-btn"
-                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         data-tab="tab2">Step 2
                 </button>
                 <button type="button" id="step-3-btn"
-                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         data-tab="tab3">Step 3
                 </button>
                 <button type="button" id="step-4-btn"
-                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         data-tab="tab4">Step 4
                 </button>
                 <button type="button" id="step-5-btn"
-                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         data-tab="tab5">Step 5
                 </button>
                 <button type="button" id="step-6-btn"
-                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         data-tab="tab6">Step 6
                 </button>
                 <button type="button" id="step-7-btn"
-                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
                         data-tab="tab7">Step 7
                 </button>
                 <button type="button" id="step-8-btn"
-                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-bl-lg rounded-br-lg"
+                        class="tab-btn w-full md:w-2/4 lg:w-1/7 py-2 px-4 text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-bl-lg rounded-br-lg"
                         data-tab="tab8">Final
                 </button>
             </div>
