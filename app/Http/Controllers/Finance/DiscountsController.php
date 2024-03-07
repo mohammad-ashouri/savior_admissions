@@ -95,25 +95,35 @@ class DiscountsController extends Controller
         if (empty($discounts)) {
             abort(403);
         }
-
-        if (count($request->id) != count($request->percentage)) {
+        if (count($request->name) != count($request->percentage)) {
             abort(503);
         }
-        foreach ($request->id as $key => $id) {
-            $discount_details = DiscountDetail::where('discount_id', $request->discount_id)->where('id', $id)->first();
-            if (empty($discount_details)) {
+        if ($discounts->allDiscounts->isNotEmpty()) {
+            foreach ($request->id as $key => $id) {
+                $discount_details = DiscountDetail::where('discount_id', $request->discount_id)->where('id', $id)->first();
+                if (empty($discount_details)) {
+                    $discount_details = new DiscountDetail();
+                    $discount_details->discount_id = $request->discount_id;
+                    $discount_details->name = $request->name[$key];
+                    $discount_details->percentage = $request->percentage[$key];
+                    $discount_details->interviewer_permission = $request->display_in_form[$key];
+                } else {
+                    $discount_details->name = $request->name[$key];
+                    $discount_details->percentage = $request->percentage[$key];
+                    $discount_details->interviewer_permission = $request->display_in_form[$key];
+                    $discount_details->status = $request->status[$key];
+                }
+                $discount_details->save();
+            }
+        } else {
+            foreach ($request->name as $key => $id) {
                 $discount_details = new DiscountDetail();
                 $discount_details->discount_id = $request->discount_id;
                 $discount_details->name = $request->name[$key];
                 $discount_details->percentage = $request->percentage[$key];
                 $discount_details->interviewer_permission = $request->display_in_form[$key];
-            } else {
-                $discount_details->name = $request->name[$key];
-                $discount_details->percentage = $request->percentage[$key];
-                $discount_details->interviewer_permission = $request->display_in_form[$key];
-                $discount_details->status = $request->status[$key];
+                $discount_details->save();
             }
-            $discount_details->save();
         }
 
         return redirect()->route('Discounts.index')
