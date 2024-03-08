@@ -12,6 +12,7 @@ use App\Http\Controllers\Catalogs\DocumentTypeController;
 use App\Http\Controllers\Catalogs\EducationTypeController;
 use App\Http\Controllers\Catalogs\LevelController;
 use App\Http\Controllers\Catalogs\SchoolController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\Finance\ApplicationReservationController;
@@ -68,9 +69,7 @@ Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(CheckLoginMiddleware::class)->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //Catalogs
     Route::middleware('role:Super Admin')->group(function () {
@@ -155,11 +154,10 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     });
 
     //Payment
-    Route::post('testpay',[PaymentController::class,'behpardakhtPayment']);
+    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
 
     //SMS
-    Route::get('testsms',[SMSController::class,'sendSMS']);
-
+    Route::get('testsms', [SMSController::class, 'sendSMS']);
 
 });
 Route::get('/import-excel', [ExcelController::class, 'index']);

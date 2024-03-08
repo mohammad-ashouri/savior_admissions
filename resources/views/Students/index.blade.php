@@ -167,7 +167,6 @@
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
-                                        <!-- Modal toggle -->
                                         @can('students-show')
                                             <a href="{{ route('Students.show',$student->student_id) }}"
                                                type="button"
