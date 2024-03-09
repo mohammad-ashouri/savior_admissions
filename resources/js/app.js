@@ -965,6 +965,24 @@ $(document).ready(function () {
                 });
             }
         });
+    }else if (fullPath.includes('UploadStudentDocumentByParent')) {
+        pageTitle = 'Upload Student\'s Documents';
+        $('#upload-student-documents').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your documents will be added permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#upload-student-documents').off('submit').submit();
+                }
+            });
+        });
+
     } else if (fullPath.includes('Discounts')) {
         pageTitle = 'Discounts Manager';
 

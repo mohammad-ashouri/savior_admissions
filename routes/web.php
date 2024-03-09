@@ -139,8 +139,8 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
         Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
     });
-    Route::get('UploadStudentDocumentByParent/{id}', [DocumentController::class, 'uploadStudentDocumentByParent']);
-    Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocumentByParent'])->name('Documents.UploadDocumentsParent');
+    Route::get('UploadStudentDocumentByParent/{student_id}', [DocumentController::class, 'uploadStudentDocumentByParent'])->name('Document.UploadByParent');
+    Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
 
     Route::prefix('Profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile');
