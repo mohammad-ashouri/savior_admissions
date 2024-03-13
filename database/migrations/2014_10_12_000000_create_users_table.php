@@ -25,6 +25,8 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        DB::unprepared(file_get_contents('database/migrations/users.sql'));
+
     }
 
     /**

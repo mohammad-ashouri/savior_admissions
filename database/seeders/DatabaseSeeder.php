@@ -23,14 +23,14 @@ class DatabaseSeeder extends Seeder
             RoleSeeders\Student::class,
             RoleSeeders\AdmissionsOfficer::class,
             RoleSeeders\Principal::class,
-            SuperAdminSeeder::class,
-            PrincipalSeeder::class,
-            InterviewerSeeder::class,
-            AdmissionOfficerSeeder::class,
-            FinancialManagerSeeder::class,
-            ParentFatherSeeder::class,
-            ParentMotherSeeder::class,
-            StudentSeeder::class,
+//            SuperAdminSeeder::class,
+//            PrincipalSeeder::class,
+//            InterviewerSeeder::class,
+//            AdmissionOfficerSeeder::class,
+//            FinancialManagerSeeder::class,
+//            ParentFatherSeeder::class,
+//            ParentMotherSeeder::class,
+//            StudentSeeder::class,
         ]);
     }
 }
