@@ -146,7 +146,5 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'interviews-menu-access']);
         Permission::create(['name' => 'finance-menu-access']);
 
-        DB::unprepared(file_get_contents('database/migrations/model_has_roles.sql'));
-        DB::unprepared(file_get_contents('database/migrations/role_has_permissions.sql'));
     }
 }

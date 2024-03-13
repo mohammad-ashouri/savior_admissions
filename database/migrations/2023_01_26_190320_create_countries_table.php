@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->string('en_short_name');
             $table->string('nationality');
         });
-        DB::unprepared(file_get_contents('database/migrations/countries.sql'));
     }
 
     /**

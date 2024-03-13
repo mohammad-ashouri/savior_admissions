@@ -32,7 +32,6 @@ return new class extends Migration {
             $table->foreign('status')->references('id')->on('student_statuses');
             $table->timestamps();
         });
-        DB::unprepared(file_get_contents('database/migrations/student_informations.sql'));
 
     }
 

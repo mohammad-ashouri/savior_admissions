@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeders\Student::class,
             RoleSeeders\AdmissionsOfficer::class,
             RoleSeeders\Principal::class,
+            DatabaseImportSql::class,
 //            SuperAdminSeeder::class,
 //            PrincipalSeeder::class,
 //            InterviewerSeeder::class,
