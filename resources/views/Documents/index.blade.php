@@ -3,6 +3,18 @@
 
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
+        <div class="page-spinner">
+            <div
+                class="fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
+                <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
+                <p class="ml-5 text-xl font-semibold text-gray-900 dark:text-white">Loading documents</p>
+            </div>
+        </div>
+        <script>
+            $(window).on('load', function () {
+                $(".page-spinner").fadeOut("slow");
+            });
+        </script>
         <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
             @if(isset($user_id) and isset($documentOwner))
                 <div>
@@ -59,7 +71,7 @@
                                         data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}"
                                         class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
                                         type="button">
-                                    <img class="h-auto max-w-full rounded-lg"
+                                    <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"
                                          src="{{ env('APP_URL')}}/{{$document->src }}" alt="Document Not Found!">
 
                                 </button>
