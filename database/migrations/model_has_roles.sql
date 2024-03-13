@@ -24,10 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `model_has_roles`
---
-
---
 -- Dumping data for table `model_has_roles`
 --
 
