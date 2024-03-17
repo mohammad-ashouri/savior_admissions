@@ -88,7 +88,7 @@
                     <label for="payment_options" class="block mb-2 text-sm font-medium text-gray-900 ">گزینه های پرداخت</label>
                     <select required name="payment_options" id="payment_options" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected disabled value="">انتخاب کنید</option>
-                        <option value="1000000">پرداخت حق مصاحبه (1.000.000 ریال)</option>
+                        <option value="1000000">پرداخت هزینه مصاحبه (1.000.000 ریال)</option>
                         <option value="12000000">پرداخت شهریه اول (12.000.000 ریال)</option>
                         <option value="16000000">پرداخت شهریه دوم (16.000.000 ریال)</option>
                         <option value="18000000">پرداخت شهریه سوم (18.000.000 ریال)</option>
