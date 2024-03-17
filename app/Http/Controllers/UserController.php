@@ -216,7 +216,9 @@ class UserController extends Controller
     public function searchUser(Request $request)
     {
         $activity = [];
-        $data = User::where(function ($query) use ($request, &$activity) {
+        $data = User::
+            join('general_informations', 'users.id', '=', 'general_informations.user_id')
+            ->where(function ($query) use ($request, &$activity) {
             $searchEduCode = $request->input('search-edu-code');
             $searchFirstName = $request->input('search-first-name');
             $searchLastName = $request->input('search-last-name');
@@ -228,18 +230,19 @@ class UserController extends Controller
             }
 
             if (!empty($searchFirstName)) {
-                $query->where('name', 'LIKE', "%$searchFirstName%");
+                $query->where('general_informations.first_name_en', 'LIKE', "%$searchFirstName%");
                 $activity['first_name'] = $searchFirstName;
             }
 
             if (!empty($searchLastName)) {
-                $query->where('id', 'LIKE', "%$searchLastName%");
+                $query->where('general_informations.last_name_en', 'LIKE', "%$searchLastName%");
                 $activity['last_name'] = $searchLastName;
             }
         })
-            ->orderBy('id', 'DESC')
-            ->paginate($perPage = 15, $columns = ['*'], $pageName = 'users');
-
+            ->select('general_informations.*', 'users.id as users.id')
+            ->with('generalInformationInfo')
+            ->orderBy('users.id', 'DESC')
+            ->paginate(15);
         $this->logActivity(json_encode($activity), request()->ip(), request()->userAgent(), session('id'));
         return view('users.index', compact('data'));
     }
