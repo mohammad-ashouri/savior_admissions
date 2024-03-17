@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\AuthControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,8 +30,12 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
+//        if (!Auth::check()) {
+//            return view('Auth.login');
+//        }
+        $nationalities=Country::select('id','nationality')->get();
         if (!Auth::check()) {
-            return view('Auth.login');
+            return view('Auth.fake_signup',compact('nationalities'));
         }
         Auth::logout();
         return redirect()->route('dashboard');
