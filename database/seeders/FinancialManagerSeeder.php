@@ -18,17 +18,53 @@ class FinancialManagerSeeder extends Seeder
          * @var User $user
          */
         $user = User::query()->create([
-            'mobile' => '+989026548798',
-            'email' => 'test@testi.com',
-            'password' => bcrypt(12345678),
+            'mobile' => '+989022222222',
+            'email' => 'n.ahamadi@saviorschools.com',
+            'password' => bcrypt('ahmadi444'),
         ]);
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name_fa' => 'امیر',
-                'last_name_fa' => 'مدیر مالی',
-                'first_name_en' => 'Amir',
-                'last_name_en' => 'Finance',
+                'first_name_fa' => 'نسا',
+                'last_name_fa' => 'احمدی',
+                'first_name_en' => 'Nesa',
+                'last_name_en' => 'Ahmadi',
+            ]
+        );
+        $role = Role::where('name', 'Financial Manager')->first();
+        $user->assignRole([$role->id]);
+
+
+        $user = User::query()->create([
+            'mobile' => '+989033333333',
+            'email' => 'r.ahmadi@saviorschools.com',
+            'password' => bcrypt('ahmadi1314'),
+        ]);
+        $generalInformation = GeneralInformation::create(
+            [
+                'user_id' => $user->id,
+                'first_name_fa' => 'رضا',
+                'last_name_fa' => 'احمدی',
+                'first_name_en' => 'Reza',
+                'last_name_en' => 'Ahmadi',
+            ]
+        );
+        $role = Role::where('name', 'Financial Manager')->first();
+        $user->assignRole([$role->id]);
+
+
+        $user = User::query()->create([
+            'mobile' => '+989044444444',
+            'email' => 'f.najari@saviorschooslc.om',
+            'password' => bcrypt('najari574'),
+        ]);
+        $generalInformation = GeneralInformation::create(
+            [
+                'user_id' => $user->id,
+                'first_name_fa' => 'فاطمه',
+                'last_name_fa' => 'نجاری',
+                'first_name_en' => 'Fatemeh',
+                'last_name_en' => 'Najari',
             ]
         );
         $role = Role::where('name', 'Financial Manager')->first();

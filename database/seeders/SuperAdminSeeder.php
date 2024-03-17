@@ -50,5 +50,22 @@ class SuperAdminSeeder extends Seeder
         );
         $role = Role::where('name', 'Super Admin')->first();
         $user->assignRole([$role->id]);
+
+        $user = User::query()->create([
+            'mobile' => '+989011111111',
+            'email' => 'a.alavian@saviorschools.com',
+            'password' => bcrypt('alavian1247'),
+        ]);
+        $generalInformation = GeneralInformation::create(
+            [
+                'user_id' => $user->id,
+                'first_name_fa' => 'علی',
+                'last_name_fa' => 'علویان',
+                'first_name_en' => 'Ali',
+                'last_name_en' => 'Alavian',
+            ]
+        );
+        $role = Role::where('name', 'Super Admin')->first();
+        $user->assignRole([$role->id]);
     }
 }
