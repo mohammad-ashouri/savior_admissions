@@ -70,8 +70,9 @@ class LoginController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials,$remember)) {
             $user = User::where('email', $request->input('email'))->first();
             $userID = $user['id'];
             Session::put('id', $userID);
