@@ -270,5 +270,6 @@
             <div class="pagination text-center">
                 {{ $applications->links() }}
             </div>
-    @endif
+        @endif
+    </div>
 @endsection

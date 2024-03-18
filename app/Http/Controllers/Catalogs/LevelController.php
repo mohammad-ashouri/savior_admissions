@@ -63,4 +63,14 @@ class LevelController extends Controller
         return redirect()->route('Levels.index')
             ->with('success', 'Level updated successfully');
     }
+
+    public function show(Request $request)
+    {
+        $name=$request->name;
+        $levels=Level::where('name','LIKE', "%$name%")->paginate(10);
+        if ($levels->isEmpty()){
+            return redirect()->route('Levels.index')->withErrors('Not Found!')->withInput();
+        }
+        return view('Catalogs.Levels.index', compact('levels','name'));
+    }
 }

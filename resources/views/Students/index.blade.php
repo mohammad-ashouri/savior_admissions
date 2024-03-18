@@ -190,5 +190,6 @@
             <div class="pagination text-center">
                 {{ $students->links() }}
             </div>
-    @endif
+        @endif
+    </div>
 @endsection

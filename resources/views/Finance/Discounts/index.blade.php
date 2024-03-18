@@ -99,5 +99,6 @@
             <div class="pagination text-center">
                 {{ $discounts->onEachSide(5)->links() }}
             </div>
-    @endif
+        @endif
+    </div>
 @endsection

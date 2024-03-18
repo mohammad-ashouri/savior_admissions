@@ -202,5 +202,6 @@
             <div class="pagination text-center">
                 {{ $interviews->links() }}
             </div>
-    @endif
+        @endif
+    </div>
 @endsection

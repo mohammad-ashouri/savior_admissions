@@ -152,7 +152,8 @@
 
             </div>
         </div>
-        <div class="pagination text-center">
-            {{ $academicYears->onEachSide(5)->links() }}
-        </div>
+    </div>
+    <div class="pagination text-center">
+        {{ $academicYears->onEachSide(5)->links() }}
+    </div>
 @endsection

@@ -201,5 +201,6 @@
             <div class="pagination text-center">
                 {{ $applicationTimings->links() }}
             </div>
-    @endif
+        @endif
+    </div>
 @endsection

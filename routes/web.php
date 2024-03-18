@@ -87,6 +87,9 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         }
     });
 
+    //Search routes
+    Route::get('/Levels/search', [LevelController::class, 'search'])->name('Levels.search');
+
     //Branch Info
     Route::resource('AcademicYearClasses', AcademicYearClassController::class);
     Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);

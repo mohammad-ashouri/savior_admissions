@@ -200,5 +200,6 @@
             <div class="pagination text-center">
                 {{ $academicYearClasses->onEachSide(5)->links() }}
             </div>
-    @endif
+        @endif
+    </div>
 @endsection
