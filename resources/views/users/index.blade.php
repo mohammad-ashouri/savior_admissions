@@ -186,7 +186,7 @@
         </div>
         @if(!empty($data))
             <div class="pagination text-center">
-                {{ $data->onEachSide(5)->links() }}
+                {{ $data->links() }}
             </div>
         @endif
     </div>
