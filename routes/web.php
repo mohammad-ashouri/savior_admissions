@@ -162,15 +162,15 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     });
 
     //Payment
-    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
+//    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
 
     //SMS
-    Route::get('testsms', [SMSController::class, 'sendSMS']);
+//    Route::get('testsms', [SMSController::class, 'sendSMS']);
 
 });
-Route::get('/import-excel', [ExcelController::class, 'index']);
-Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
-Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');
-Route::post('/importDocuments', [ExcelController::class, 'importDocuments'])->name('excel.importDocuments');
-Route::post('/importParentFathers', [ExcelController::class, 'importParentFathers'])->name('excel.importParentFathers');
-Route::post('/importParentMothers', [ExcelController::class, 'importParentMothers'])->name('excel.importParentMothers');
+//Route::get('/import-excel', [ExcelController::class, 'index']);
+//Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
+//Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');
+//Route::post('/importDocuments', [ExcelController::class, 'importDocuments'])->name('excel.importDocuments');
+//Route::post('/importParentFathers', [ExcelController::class, 'importParentFathers'])->name('excel.importParentFathers');
+//Route::post('/importParentMothers', [ExcelController::class, 'importParentMothers'])->name('excel.importParentMothers');
