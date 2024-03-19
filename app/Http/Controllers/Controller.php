@@ -13,7 +13,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function logActivity($activity, $ip_address, $user_agent, $user_id = null)
+    public function logActivity($activity, $ip_address, $user_agent, $user_id = null): void
     {
         $agent = new Agent();
         ActivityLog::create([
@@ -25,7 +25,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function alerts($state, $errorVariable, $errorText)
+    public function alerts($state, $errorVariable, $errorText): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'success' => $state,
@@ -35,7 +35,7 @@ class Controller extends BaseController
         ]);
     }
 
-    public function success($state, $messageVariable, $messageText)
+    public function success($state, $messageVariable, $messageText): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'success' => $state,
@@ -46,7 +46,7 @@ class Controller extends BaseController
     }
 
     //Getting principal and financial manager accesses
-    public function getFilteredAccessesPF($userAccessInfo)
+    public function getFilteredAccessesPF($userAccessInfo): array
     {
         $principalAccess = [];
         $financialManagerAccess = [];
@@ -62,19 +62,19 @@ class Controller extends BaseController
         return array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
     }
     //Getting principal and admissions officer accesses
-    public function getFilteredAccessesPA($userAccessInfo)
+    public function getFilteredAccessesPA($userAccessInfo): array
     {
         $principalAccess = [];
-        $financialManagerAccess = [];
+        $admissionsOfficerAccess = [];
 
         if (! empty($userAccessInfo->principal)) {
             $principalAccess = explode('|', $userAccessInfo->principal);
         }
 
-        if (! empty($userAccessInfo->financial_manager)) {
-            $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
+        if (! empty($userAccessInfo->admissions_officer)) {
+            $admissionsOfficerAccess = explode('|', $userAccessInfo->admissions_officer);
         }
 
-        return array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+        return array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
     }
 }
