@@ -16,8 +16,6 @@ use App\Models\UserAccessInformation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Shetabit\Multipay\Invoice;
-use Shetabit\Payment\Facade\Payment;
 
 class ApplicationController extends Controller
 {
@@ -44,9 +42,7 @@ class ApplicationController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -71,7 +67,7 @@ class ApplicationController extends Controller
             $applications = [];
         }
 
-        return view('Applications.index', compact('applications','me'));
+        return view('Applications.index', compact('applications', 'me'));
 
     }
 
@@ -99,12 +95,10 @@ class ApplicationController extends Controller
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->where('id', $id)->first();
         } elseif ($me->hasRole('Super Admin')) {
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();
-        }elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -122,8 +116,8 @@ class ApplicationController extends Controller
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
                 ->whereIn('application_id', $applications)
-                ->where('id',$id)->first();
-            if (empty($applicationInfo)){
+                ->where('id', $id)->first();
+            if (empty($applicationInfo)) {
                 abort(403);
             }
         }
@@ -137,22 +131,18 @@ class ApplicationController extends Controller
         $checkAccessToApplication = [];
         if (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
-                    ->with('applications')
-                    ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
-                    ->join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
-                    ->whereIn('academic_years.school_id', $filteredArray)
-                    ->where('applications.id', $id)
-                    ->select('application_timings.*', 'academic_years.id as academic_year_id')
-                    ->first();
-                if (! $checkAccessToApplication) {
-                    return redirect()->back()
-                        ->withErrors(['errors' => 'Delete Failed!']);
-                }
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
+                ->with('applications')
+                ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
+                ->join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
+                ->whereIn('academic_years.school_id', $filteredArray)
+                ->where('applications.id', $id)
+                ->select('application_timings.*', 'academic_years.id as academic_year_id')
+                ->first();
+            if (! $checkAccessToApplication) {
+                return redirect()->back()
+                    ->withErrors(['errors' => 'Delete Failed!']);
             }
         }
 
@@ -172,32 +162,28 @@ class ApplicationController extends Controller
         $me = User::find(session('id'));
         if (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
-                    ->with('applications')
-                    ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
-                    ->join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
-                    ->whereIn('academic_years.school_id', $filteredArray)
-                    ->where('applications.id', $id)
-                    ->select('application_timings.*', 'academic_years.id as academic_year_id')
-                    ->first();
-                if (! $checkAccessToApplication) {
-                    return redirect()->back()
-                        ->withErrors(['errors' => 'Delete Failed!']);
-                }
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
+                ->with('applications')
+                ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
+                ->join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
+                ->whereIn('academic_years.school_id', $filteredArray)
+                ->where('applications.id', $id)
+                ->select('application_timings.*', 'academic_years.id as academic_year_id')
+                ->first();
+            if (! $checkAccessToApplication) {
+                return redirect()->back()
+                    ->withErrors(['errors' => 'Delete Failed!']);
             }
         }
 
         $removeApplicationReserve = Applications::find($id);
         $removeApplicationReserve->reserved = 0;
 
-        $applicationReservations=ApplicationReservation::where('application_id',$removeApplicationReserve->id)->first();
-        $applicationReservationInvoice=ApplicationReservationsInvoices::where('a_reservation_id',$applicationReservations->id)->delete();
+        $applicationReservations = ApplicationReservation::where('application_id', $removeApplicationReserve->id)->first();
+        $applicationReservationInvoice = ApplicationReservationsInvoices::where('a_reservation_id', $applicationReservations->id)->delete();
         $applicationReservations->delete();
-        if (! $removeApplicationReserve->save() or ! $applicationReservations or !$applicationReservationInvoice) {
+        if (! $removeApplicationReserve->save() or ! $applicationReservations or ! $applicationReservationInvoice) {
             return redirect()->back()
                 ->withErrors(['errors' => 'Remove Application Reservation Failed!']);
         }
@@ -211,22 +197,18 @@ class ApplicationController extends Controller
         $me = User::find(session('id'));
         if (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
-                    ->with('applications')
-                    ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
-                    ->join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
-                    ->whereIn('academic_years.school_id', $filteredArray)
-                    ->where('applications.id', $id)
-                    ->select('application_timings.*', 'academic_years.id as academic_year_id')
-                    ->first();
-                if (! $checkAccessToApplication) {
-                    return redirect()->back()
-                        ->withErrors(['errors' => 'Delete Failed!']);
-                }
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
+                ->with('applications')
+                ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
+                ->join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
+                ->whereIn('academic_years.school_id', $filteredArray)
+                ->where('applications.id', $id)
+                ->select('application_timings.*', 'academic_years.id as academic_year_id')
+                ->first();
+            if (! $checkAccessToApplication) {
+                return redirect()->back()
+                    ->withErrors(['errors' => 'Delete Failed!']);
             }
         }
 
@@ -314,7 +296,7 @@ class ApplicationController extends Controller
         }
 
         $me = User::find(session('id'));
-        $student= $request->student;
+        $student = $request->student;
         $level = $request->level;
         $academic_year = $request->academic_year;
         $dateAndTime = $request->date_and_time;

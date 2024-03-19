@@ -1,14 +1,14 @@
 @extends('Layouts.panel')
 @php
     use App\Models\User;
-    $myInfo=User::with('generalInformationInfo')->find(session('id'));
+    $me=User::with('generalInformationInfo')->find(session('id'));
 @endphp
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 Dear
-                {{ $myInfo->generalInformationInfo->first_name_en }} {{ $myInfo->generalInformationInfo->last_name_en }}
+                {{ $me->generalInformationInfo->first_name_en }} {{ $me->generalInformationInfo->last_name_en }}
                 . Welcome to savior school panel
             </div>
             <div class="grid grid-cols-3 gap-4 mb-4">

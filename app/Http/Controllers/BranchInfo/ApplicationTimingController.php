@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\BranchInfo;
 
 use App\Http\Controllers\Controller;
-use App\Models\Branch\ApplicationTiming;
 use App\Models\Branch\Applications;
+use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\User;
 use App\Models\UserAccessInformation;
@@ -34,19 +34,15 @@ class ApplicationTimingController extends Controller
             }
         } elseif (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            if ($myAllAccesses != null) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $applicationTimings = ApplicationTiming::with('academicYearInfo')
-                    ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
-                    ->whereIn('academic_years.school_id', $filteredArray)
-                    ->orderBy('application_timings.id', 'desc')
-                    ->select('application_timings.*', 'academic_years.id as academic_year_id')
-                    ->paginate(20);
-                if ($applicationTimings->isEmpty()) {
-                    $applicationTimings = [];
-                }
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $applicationTimings = ApplicationTiming::with('academicYearInfo')
+                ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
+                ->whereIn('academic_years.school_id', $filteredArray)
+                ->orderBy('application_timings.id', 'desc')
+                ->select('application_timings.*', 'academic_years.id as academic_year_id')
+                ->paginate(20);
+            if ($applicationTimings->isEmpty()) {
+                $applicationTimings = [];
             }
         }
 
@@ -61,15 +57,9 @@ class ApplicationTimingController extends Controller
             $academicYears = AcademicYear::where('status', 1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
-                if ($academicYears->count() == 0) {
-                    $academicYears = [];
-                }
-            } else {
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            if ($academicYears->count() == 0) {
                 $academicYears = [];
             }
         }
@@ -102,15 +92,9 @@ class ApplicationTimingController extends Controller
             $academicYears = AcademicYear::where('status', 1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
-                if ($academicYears->count() == 0) {
-                    $academicYears = [];
-                }
-            } else {
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            if ($academicYears->count() == 0) {
                 $academicYears = [];
             }
         }
@@ -187,18 +171,14 @@ class ApplicationTimingController extends Controller
             $applicationTiming = ApplicationTiming::with('applications')->find($id);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $applicationTiming = ApplicationTiming::with('academicYearInfo')
-                    ->with('applications')
-                    ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
-                    ->whereIn('academic_years.school_id', $filteredArray)
-                    ->where('application_timings.id', $id)
-                    ->select('application_timings.*', 'academic_years.id as academic_year_id')
-                    ->first();
-            }
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $applicationTiming = ApplicationTiming::with('academicYearInfo')
+                ->with('applications')
+                ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
+                ->whereIn('academic_years.school_id', $filteredArray)
+                ->where('application_timings.id', $id)
+                ->select('application_timings.*', 'academic_years.id as academic_year_id')
+                ->first();
         }
 
         return view('BranchInfo.ApplicationTimings.show', compact('applicationTiming'));
@@ -221,15 +201,9 @@ class ApplicationTimingController extends Controller
             $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->where('status', 1)->with('generalInformationInfo')->get()->keyBy('id')->toArray();
         } else {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
-                $academicYearInterviewers = AcademicYear::where('status', 1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
-                if (empty($academicYearInterviewers)) {
-                    $academicYearInterviewers = [];
-                }
-            } else {
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $academicYearInterviewers = AcademicYear::where('status', 1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
+            if (empty($academicYearInterviewers)) {
                 $academicYearInterviewers = [];
             }
             $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->where('status', 1)->with('generalInformationInfo')->get()->toArray();

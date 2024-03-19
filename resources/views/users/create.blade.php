@@ -1,7 +1,7 @@
 @extends('Layouts.panel')
 @php
     use App\Models\User;
-    $myInfo=User::find(session('id'));
+    $me=User::find(session('id'));
 @endphp
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
@@ -94,7 +94,7 @@
                             </div>
                             <div>
 
-                                @if($myInfo->hasRole('Super Admin'))
+                                @if($me->hasRole('Super Admin'))
                                     <label for="role"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
                                     @foreach ($roles as $value)
@@ -110,7 +110,7 @@
                                     >
                                         <option value="" selected disabled>Select role</option>
                                         @foreach ($roles as $value)
-                                            @if (($myInfo->hasRole('Principal') or $myInfo->hasRole('Admissions Officer')) and ($value->name == 'Super Admin' or $value->name == 'Principal' or $value->name == 'Admissions Officer' or $value->name == 'Financial Manager' or $value->name == 'Interviewer'))
+                                            @if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and ($value->name == 'Super Admin' or $value->name == 'Principal' or $value->name == 'Admissions Officer' or $value->name == 'Financial Manager' or $value->name == 'Interviewer'))
                                                 @continue
                                             @endif
 

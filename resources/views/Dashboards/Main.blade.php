@@ -4,13 +4,13 @@
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 Dear
-                {{ $myInfo->generalInformationInfo->first_name_en }} {{ $myInfo->generalInformationInfo->last_name_en }}
+                {{ $me->generalInformationInfo->first_name_en }} {{ $me->generalInformationInfo->last_name_en }}
                 . Welcome to savior school panel
             </div>
-            @if($myInfo->hasRole('Super Admin'))
+            @if($me->hasRole('Super Admin'))
                 @include('Dashboards.Roles.SuperAdmin')
             @endif
-            @if($myInfo->hasRole('Parent(Father)') or $myInfo->hasRole('Parent(Mother)'))
+            @if($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)'))
                 @include('Dashboards.Roles.Parent')
             @endif
 

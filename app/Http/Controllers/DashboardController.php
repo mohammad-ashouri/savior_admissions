@@ -15,31 +15,26 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $myInfo = User::with('generalInformationInfo')->find(session('id'));
+        $me = User::with('generalInformationInfo')->find(session('id'));
 
         //Students
-        $students=[];
-        if ($myInfo->hasRole('Parent(Father)') or $myInfo->hasRole('Parent(Mother)')) {
+        $students = [];
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $students = StudentInformation::where('guardian', session('id'))
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
                 ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
-        } elseif ($myInfo->hasRole('Super Admin')) {
+        } elseif ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->where('tuition_payment_status', 'Paid')
                 ->distinct('student_id')
                 ->orderBy('id', 'desc')->orderBy('academic_year', 'desc')->take(5)->get();
-        } elseif ($myInfo->hasRole('Principal') or $myInfo->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $myInfo->id)->first();
-            if (empty($myAllAccesses)) {
-                abort(403);
-            }
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -56,17 +51,15 @@ class DashboardController extends Controller
 
         //Applications
         $applicationStatuses = [];
-        if ($myInfo->hasRole('Parent(Father)') or $myInfo->hasRole('Parent(Mother)')) {
-            $myStudents = StudentInformation::where('guardian', $myInfo->id)->pluck('student_id')->toArray();
+        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $applicationStatuses = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('student_id', $myStudents)->orderByDesc('academic_year')->get();
-        } elseif ($myInfo->hasRole('Super Admin')) {
+        } elseif ($me->hasRole('Super Admin')) {
             $applicationStatuses = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
-        } elseif ($myInfo->hasRole('Principal') or $myInfo->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $myInfo->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -91,6 +84,6 @@ class DashboardController extends Controller
             $applicationStatuses = [];
         }
 
-        return view('Dashboards.Main', compact('myInfo','students','applicationStatuses'));
+        return view('Dashboards.Main', compact('me', 'students', 'applicationStatuses'));
     }
 }

@@ -1,7 +1,7 @@
 @extends('Layouts.panel')
 @php
     use App\Models\User;
-    $myInfo=User::find(session('id'));
+    $me=User::find(session('id'));
 @endphp
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
@@ -23,7 +23,7 @@
                         @can('access-user-role')
                             <div class="mt-3">
                                 <form id="change-rules">
-                                    @if($myInfo->hasRole('Super Admin'))
+                                    @if($me->hasRole('Super Admin'))
                                         <label for="role"
                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role(s)</label>
                                         @foreach($roles as $value)
@@ -42,7 +42,7 @@
                                         >
 
                                             @foreach($roles as $value)
-                                                @if(!$myInfo->hasRole('Super Admin') && ($value == 'Super Admin' or $value == 'Principal' or $value == 'Admissions Officer' or $value == 'Financial Manager' or $value == 'Interviewer'))
+                                                @if(!$me->hasRole('Super Admin') && ($value == 'Super Admin' or $value == 'Principal' or $value == 'Admissions Officer' or $value == 'Financial Manager' or $value == 'Interviewer'))
                                                     @continue
                                                 @endif
 

@@ -24,7 +24,7 @@ class InterviewController extends Controller
         $this->middleware('permission:interview-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:interview-delete', ['only' => ['destroy']]);
         $this->middleware('permission:interview-search', ['only' => ['search']]);
-//        $this->middleware('permission:interview-show', ['only' => ['show']]);
+        //        $this->middleware('permission:interview-show', ['only' => ['show']]);
     }
 
     public function index()
@@ -34,8 +34,7 @@ class InterviewController extends Controller
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
-            $interviews = Applications::
-            with('applicationTimingInfo')
+            $interviews = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
@@ -56,9 +55,7 @@ class InterviewController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -115,9 +112,7 @@ class InterviewController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -154,13 +149,14 @@ class InterviewController extends Controller
             abort(403);
         }
 
-        $discounts=Discount::with('allDiscounts')
-            ->where('academic_year',$interview->applicationTimingInfo->academic_year)
+        $discounts = Discount::with('allDiscounts')
+            ->where('academic_year', $interview->applicationTimingInfo->academic_year)
             ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
-            ->where('discount_details.status',1)
-            ->where('discount_details.interviewer_permission',1)
+            ->where('discount_details.status', 1)
+            ->where('discount_details.interviewer_permission', 1)
             ->get();
-        return view('BranchInfo.Interviews.set', compact('interview','discounts'));
+
+        return view('BranchInfo.Interviews.set', compact('interview', 'discounts'));
     }
 
     public function SetInterview(Request $request)
@@ -179,9 +175,7 @@ class InterviewController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -224,19 +218,19 @@ class InterviewController extends Controller
         if ($interview->save()) {
             $application = Applications::with('applicationTimingInfo')->with('reservationInfo')->find($request->application_id);
             switch ($application->reservationInfo->levelInfo->name) {
-                case('Kindergarten 1'):
-                case('Kindergarten 2'):
+                case 'Kindergarten 1':
+                case 'Kindergarten 2':
                     if ($request->s1_1_s == 'Rejected' or $request->s1_2_s == 'Rejected' or $request->s1_3_s == 'Rejected' or $request->s1_4_s == 'Rejected') {
-                        $interviewStatus = "Rejected";
+                        $interviewStatus = 'Rejected';
                     } else {
-                        $interviewStatus = "Admitted";
+                        $interviewStatus = 'Admitted';
                     }
                     break;
                 default:
                     if ($request->s1_1_s == 'Rejected' or $request->s1_2_s == 'Rejected' or $request->s1_3_s == 'Rejected') {
-                        $interviewStatus = "Rejected";
+                        $interviewStatus = 'Rejected';
                     } else {
-                        $interviewStatus = "Admitted";
+                        $interviewStatus = 'Admitted';
                     }
             }
             $application->interviewed = 1;
@@ -252,10 +246,11 @@ class InterviewController extends Controller
                     $studentStatus->application_id = $application->applicationTimingInfo->academic_year;
                     $studentStatus->interview_status = $interviewStatus;
                 }
-                if ($interviewStatus == "Admitted") {
+                if ($interviewStatus == 'Admitted') {
                     $studentStatus->documents_uploaded = 0;
                 }
                 $studentStatus->save();
+
                 return redirect()->route('Interviews.index')
                     ->with('success', 'The interview was successfully recorded');
             }
@@ -275,8 +270,7 @@ class InterviewController extends Controller
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
-            $interview = Applications::
-            with('applicationTimingInfo')
+            $interview = Applications::with('applicationTimingInfo')
                 ->with('interviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
@@ -299,9 +293,7 @@ class InterviewController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
