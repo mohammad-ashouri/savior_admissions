@@ -72,7 +72,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //Catalogs
-    Route::middleware('role:Super Admin')->group(function () {
+    Route::group([],function () {
         Route::resources([
             'Schools' => SchoolController::class,
             'DocumentTypes' => DocumentTypeController::class,
@@ -83,16 +83,11 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
         $resources = ['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
         foreach ($resources as $resource) {
-            Route::get("$resource/search", [ucfirst($resource).'Controller', 'search']);
+            Route::get("$resource/search", [ucfirst($resource).'Controller', 'search'])->name("$resource.search");
         }
     });
 
     //Search routes
-    Route::get('/Levels/search', [LevelController::class, 'search'])->name('Levels.search');
-    Route::get('/EducationTypes/search', [EducationTypeController::class, 'search'])->name('EducationTypes.search');
-    Route::get('/DocumentTypes/search', [DocumentTypeController::class, 'search'])->name('DocumentTypes.search');
-    Route::get('/Schools/search', [SchoolController::class, 'search'])->name('Schools.search');
-    Route::get('/AcademicYears/search', [AcademicYearController::class, 'search'])->name('AcademicYears.search');
     Route::get('/SearchRoles', [RoleController::class, 'search'])->name('Roles.search');
 
     //Branch Info

@@ -44,4 +44,37 @@ class Controller extends BaseController
             ]
         ]);
     }
+
+    //Getting principal and financial manager accesses
+    public function getFilteredAccessesPF($userAccessInfo)
+    {
+        $principalAccess = [];
+        $financialManagerAccess = [];
+
+        if (! empty($userAccessInfo->principal)) {
+            $principalAccess = explode('|', $userAccessInfo->principal);
+        }
+
+        if (! empty($userAccessInfo->financial_manager)) {
+            $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
+        }
+
+        return array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+    }
+    //Getting principal and admissions officer accesses
+    public function getFilteredAccessesPA($userAccessInfo)
+    {
+        $principalAccess = [];
+        $financialManagerAccess = [];
+
+        if (! empty($userAccessInfo->principal)) {
+            $principalAccess = explode('|', $userAccessInfo->principal);
+        }
+
+        if (! empty($userAccessInfo->financial_manager)) {
+            $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
+        }
+
+        return array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+    }
 }

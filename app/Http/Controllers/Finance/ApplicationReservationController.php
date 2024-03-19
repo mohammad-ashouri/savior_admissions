@@ -31,7 +31,8 @@ class ApplicationReservationController extends Controller
     public function index()
     {
         $me = User::find(session('id'));
-        $applications = [];
+        $applications = $principalAccess = $financialManagerAccess = [];
+
         if ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')
                 ->with('studentInfo')
@@ -45,9 +46,7 @@ class ApplicationReservationController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -83,9 +82,7 @@ class ApplicationReservationController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->get();
@@ -108,6 +105,8 @@ class ApplicationReservationController extends Controller
 
     public function show($id)
     {
+        $applicationInfo = $principalAccess = $financialManagerAccess = [];
+
         $me = User::find(session('id'));
         $applicationReservation = ApplicationReservation::find($id);
         if (empty($applicationReservation)) {
@@ -122,9 +121,7 @@ class ApplicationReservationController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -156,11 +153,9 @@ class ApplicationReservationController extends Controller
         $me = User::find(session('id'));
         $checkAccessToApplication = [];
         if (! $me->hasRole('Super Admin')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $principalAccess = explode('|', $myAllAccesses->principal);
-                $admissionsOfficerAccess = explode('|', $myAllAccesses->admissions_officer);
-                $filteredArray = array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+                $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+                $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
                 $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
                     ->with('applications')
                     ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
@@ -198,9 +193,7 @@ class ApplicationReservationController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -240,7 +233,8 @@ class ApplicationReservationController extends Controller
     public function searchReservationInvoices(Request $request)
     {
         $me = User::find(session('id'));
-        $applications = [];
+        $applications = $principalAccess = $financialManagerAccess = [];
+
         if ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')
                 ->with('studentInfo')
@@ -251,9 +245,7 @@ class ApplicationReservationController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -310,9 +302,7 @@ class ApplicationReservationController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->get();

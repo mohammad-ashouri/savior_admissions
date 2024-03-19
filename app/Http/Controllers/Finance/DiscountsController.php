@@ -30,9 +30,7 @@ class DiscountsController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -56,9 +54,7 @@ class DiscountsController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -82,9 +78,7 @@ class DiscountsController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $principalAccess = explode('|', $myAllAccesses->principal);
-            $financialManagerAccess = explode('|', $myAllAccesses->financial_manager);
-            $filteredArray = array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();

@@ -50,7 +50,7 @@ class DashboardController extends Controller
                 ->orderBy('id', 'desc')->orderBy('academic_year', 'desc')->take(5)->get();
         }
 
-        if ($students->isEmpty()) {
+        if (empty($students) or $students->isEmpty()) {
             $students = [];
         }
 
