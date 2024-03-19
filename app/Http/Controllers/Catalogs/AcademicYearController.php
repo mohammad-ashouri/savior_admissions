@@ -378,8 +378,13 @@ class AcademicYearController extends Controller
             ->with('success', 'Academic year edited successfully');
     }
 
-    public function search()
+    public function show(Request $request)
     {
-        dd('go');
+        $name=$request->name;
+        $academicYears=AcademicYear::with('schoolInfo')->where('name','LIKE', "%$name%")->paginate(10);
+        if ($academicYears->isEmpty()){
+            return redirect()->route('AcademicYears.index')->withErrors('Not Found!')->withInput();
+        }
+        return view('Catalogs.AcademicYears.index', compact('academicYears','name'));
     }
 }

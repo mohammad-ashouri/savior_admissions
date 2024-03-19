@@ -22,7 +22,6 @@
                                 </button>
                             </div>
                         </form>
-
                     </div>
                     <div class="flex">
                         @can('level-create')

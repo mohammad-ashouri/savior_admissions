@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Catalogs;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogs\EducationType;
+use App\Models\Catalogs\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -74,5 +75,14 @@ class EducationTypeController extends Controller
 
         return redirect()->route('EducationTypes.index')
             ->with('success', 'Document type updated successfully');
+    }
+    public function show(Request $request)
+    {
+        $name=$request->name;
+        $types=EducationType::where('name','LIKE', "%$name%")->paginate(10);
+        if ($types->isEmpty()){
+            return redirect()->route('EducationTypes.index')->withErrors('Not Found!')->withInput();
+        }
+        return view('Catalogs.EducationTypes.index', compact('types','name'));
     }
 }

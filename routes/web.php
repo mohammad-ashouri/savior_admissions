@@ -89,6 +89,11 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     //Search routes
     Route::get('/Levels/search', [LevelController::class, 'search'])->name('Levels.search');
+    Route::get('/EducationTypes/search', [EducationTypeController::class, 'search'])->name('EducationTypes.search');
+    Route::get('/DocumentTypes/search', [DocumentTypeController::class, 'search'])->name('DocumentTypes.search');
+    Route::get('/Schools/search', [SchoolController::class, 'search'])->name('Schools.search');
+    Route::get('/AcademicYears/search', [AcademicYearController::class, 'search'])->name('AcademicYears.search');
+    Route::get('/SearchRoles', [RoleController::class, 'search'])->name('Roles.search');
 
     //Branch Info
     Route::resource('AcademicYearClasses', AcademicYearClassController::class);

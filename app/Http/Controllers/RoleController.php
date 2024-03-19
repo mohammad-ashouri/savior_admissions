@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Catalogs\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -79,5 +80,14 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully');
+    }
+    public function search(Request $request)
+    {
+        $name=$request->name;
+        $roles=Role::where('name','LIKE', "%$name%")->paginate(10);
+        if ($roles->isEmpty()){
+            return redirect()->route('Roles.index')->withErrors('Not Found!')->withInput();
+        }
+        return view('Catalogs.Roles.index', compact('roles','name'));
     }
 }

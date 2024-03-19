@@ -70,4 +70,13 @@ class SchoolController extends Controller
         return redirect()->route('Schools.index')
             ->with('success', 'School updated successfully');
     }
+    public function show(Request $request)
+    {
+        $name=$request->name;
+        $schools=School::where('name','LIKE', "%$name%")->paginate(10);
+        if ($schools->isEmpty()){
+            return redirect()->route('Schools.index')->withErrors('Not Found!')->withInput();
+        }
+        return view('Catalogs.Schools.index', compact('schools','name'));
+    }
 }
