@@ -290,6 +290,7 @@ class ApplicationReservationController extends Controller
 
         $applications = $applications->orderBy('application_timings.academic_year', 'desc')
             ->paginate(30);
+        $applications->appends(request()->query())->links();
 
         if (! isset($applications) and $applications->isEmpty()) {
             $applications = [];

@@ -77,6 +77,7 @@ class DocumentTypeController extends Controller
     {
         $name=$request->name;
         $types=DocumentType::where('name','LIKE', "%$name%")->paginate(10);
+        $types->appends(request()->query())->links();
         if ($types->isEmpty()){
             return redirect()->route('DocumentTypes.index')->withErrors('Not Found!')->withInput();
         }

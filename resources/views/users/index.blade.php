@@ -12,10 +12,10 @@
                         <form id="search-user" action="{{ route('searchUser') }}" method="get">
                             <div class="flex w-96">
                                 <div>
-                                    <input type="text" id="search-edu-code" name="search-edu-code"
-                                           value="{{ @$_GET['search-edu-code'] }}"
+                                    <input type="text" id="search-user-code" name="search-user-code"
+                                           value="{{ @$_GET['search-user-code'] }}"
                                            class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter educational code">
+                                           placeholder="Enter user code">
                                 </div>
                                 <div>
                                     <input type="text" id="search-first-name" name="search-first-name"

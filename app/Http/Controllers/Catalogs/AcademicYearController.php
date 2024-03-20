@@ -382,6 +382,7 @@ class AcademicYearController extends Controller
     {
         $name=$request->name;
         $academicYears=AcademicYear::with('schoolInfo')->where('name','LIKE', "%$name%")->paginate(10);
+        $academicYears->appends(request()->query())->links();
         if ($academicYears->isEmpty()){
             return redirect()->route('AcademicYears.index')->withErrors('Not Found!')->withInput();
         }

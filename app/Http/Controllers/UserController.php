@@ -197,7 +197,7 @@ class UserController extends Controller
 
     public function searchUser(Request $request)
     {
-        $searchEduCode = $request->input('search-edu-code');
+        $searchEduCode = $request->input('search-user-code');
         $searchFirstName = $request->input('search-first-name');
         $searchLastName = $request->input('search-last-name');
         $query = GeneralInformation::where('first_name_en', 'like', "%$searchFirstName%");
@@ -224,6 +224,7 @@ class UserController extends Controller
                 });
             });
         $data = $query->paginate(20);
+        $data->appends(request()->query())->links();
         if ($data->isEmpty()) {
             $data = [];
         }

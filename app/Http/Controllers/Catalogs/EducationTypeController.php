@@ -80,6 +80,7 @@ class EducationTypeController extends Controller
     {
         $name=$request->name;
         $types=EducationType::where('name','LIKE', "%$name%")->paginate(10);
+        $types->appends(request()->query())->links();
         if ($types->isEmpty()){
             return redirect()->route('EducationTypes.index')->withErrors('Not Found!')->withInput();
         }

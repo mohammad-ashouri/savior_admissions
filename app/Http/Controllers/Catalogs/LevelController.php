@@ -68,6 +68,7 @@ class LevelController extends Controller
     {
         $name=$request->name;
         $levels=Level::where('name','LIKE', "%$name%")->paginate(10);
+        $levels->appends(request()->query())->links();
         if ($levels->isEmpty()){
             return redirect()->route('Levels.index')->withErrors('Not Found!')->withInput();
         }

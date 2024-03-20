@@ -249,7 +249,7 @@ $(document).ready(function () {
 
         $('#search-user').submit(function (e) {
             e.preventDefault();
-            if (($('#search-edu-code').val() == null || $('#search-edu-code').val() == '') &&
+            if (($('#search-user-code').val() == null || $('#search-user-code').val() == '') &&
                 ($('#search-first-name').val() == null || $('#search-first-name').val() == '') &&
                 ($('#search-last-name').val() == null || $('#search-last-name').val() == '')) {
                 swalFire('Error', 'Fields are empty', 'error', 'Ok');

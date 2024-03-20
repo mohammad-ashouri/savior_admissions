@@ -74,6 +74,7 @@ class SchoolController extends Controller
     {
         $name=$request->name;
         $schools=School::where('name','LIKE', "%$name%")->paginate(10);
+        $schools->appends(request()->query())->links();
         if ($schools->isEmpty()){
             return redirect()->route('Schools.index')->withErrors('Not Found!')->withInput();
         }
