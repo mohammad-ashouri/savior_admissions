@@ -26,7 +26,8 @@ class PasswordController extends Controller
             case 'Mobile':
                 $mobile = $request->input('mobile');
                 if (!$mobile) {
-                    $this->logActivity('Reset Failed (Null Mobile)', request()->ip(), request()->userAgent());
+                    $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Null Mobile)']), request()->ip(), request()->userAgent());
+
                     return response()->json([
                         'success' => false,
                         'errors' => [
@@ -56,7 +57,8 @@ class PasswordController extends Controller
             case 'Email':
                 $email = $request->input('email');
                 if (!$email) {
-                    $this->logActivity('Reset Failed (Null Email)', request()->ip(), request()->userAgent());
+                    $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Null Email)']), request()->ip(), request()->userAgent());
+
                     return response()->json([
                         'success' => false,
                         'errors' => [
@@ -67,7 +69,8 @@ class PasswordController extends Controller
 
                 $user = User::where('email', $email)->first();
                 if (!$user) {
-                    $this->logActivity('Reset Failed (Wrong Email) - Entered email => ' . $email, request()->ip(), request()->userAgent());
+                    $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Wrong Email)','email'=>$email]), request()->ip(), request()->userAgent());
+
                     return response()->json([
                         'success' => false,
                         'errors' => [
@@ -95,7 +98,7 @@ class PasswordController extends Controller
             'password' => 'required|min:8|max:24|confirmed',
         ]);
         if ($validator->fails()) {
-            $this->logActivity('Failed Resetting Password=> ' . $validator->errors()->first(), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
+            $this->logActivity(json_encode(['activity' => 'Failed Resetting Password', 'errors' => $validator->errors()->first()]), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
             return response()->json(['error' => $validator->errors()->first()], 422);
         }
         $user = User::find($resetTokenInfo->user_id);
@@ -103,14 +106,14 @@ class PasswordController extends Controller
         if ($user->save()) {
             $resetTokenInfo->active = 0;
             $resetTokenInfo->save();
-            $this->logActivity('Password Resetted Successfully => ' . $request->input('email'), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
+            $this->logActivity(json_encode(['activity' => 'Password Reset Successfully', 'email' => $request->input('email')]), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
             return response()->json([
                 'success' => true,
                 'redirect' => route('login'),
                 'flash_message' => 'Password reset successful!',
             ]);
         }
-        $this->logActivity('Failed Resetting Password=> ' . $validator->errors()->first(), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
+        $this->logActivity(json_encode(['activity' => 'Failed Resetting Password', 'errors' => $validator->errors()->first()]), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
         return response()->json(['error' => 'Unknown error'], 422);
     }
 

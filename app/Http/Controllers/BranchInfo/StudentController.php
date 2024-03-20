@@ -238,7 +238,7 @@ class StudentController extends Controller
             $studentExtraInformation->save();
         }
 
-        $this->logActivity('Student information saved successfully => '.$request->user_id, request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Student information saved successfully', 'user_id' => $request->user_id]), request()->ip(), request()->userAgent(), session('id'));
 
         return response()->json(['success' => 'Student information saved successfully!'], 200);
     }

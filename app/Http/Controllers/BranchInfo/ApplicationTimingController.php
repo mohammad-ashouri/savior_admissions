@@ -45,6 +45,7 @@ class ApplicationTimingController extends Controller
                 $applicationTimings = [];
             }
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Application Timings']), request()->ip(), request()->userAgent(), session('id'));
 
         return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
     }
@@ -148,19 +149,21 @@ class ApplicationTimingController extends Controller
                     }
                 }
             } else {
+                $this->logActivity(json_encode(['activity' => 'Creating Application Timing Failed']), request()->ip(), request()->userAgent(), session('id'));
+
                 return redirect()->route('ApplicationTimings.create')
                     ->withErrors(['errors' => 'Creating application timing failed!']);
-
             }
         } else {
+            $this->logActivity(json_encode(['activity' => 'Creating Application Timing Failed']), request()->ip(), request()->userAgent(), session('id'));
+
             return redirect()->route('ApplicationTimings.create')
                 ->withErrors(['errors' => 'Creating application timing failed!']);
-
         }
+        $this->logActivity(json_encode(['activity' => 'Application Timings Saved', 'id' => $applicationTiming->id]), request()->ip(), request()->userAgent(), session('id'));
 
         return redirect()->route('ApplicationTimings.index')
             ->with('success', 'Application timing created successfully');
-
     }
 
     public function show($id)
@@ -180,6 +183,7 @@ class ApplicationTimingController extends Controller
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->first();
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Application Timings Informations', 'id' => $applicationTiming->id]), request()->ip(), request()->userAgent(), session('id'));
 
         return view('BranchInfo.ApplicationTimings.show', compact('applicationTiming'));
     }
@@ -211,6 +215,7 @@ class ApplicationTimingController extends Controller
                 $interviewers = [];
             }
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Interviewers For Application Timings', 'interviewers' => json_encode($interviewers)]), request()->ip(), request()->userAgent(), session('id'));
 
         return $interviewers;
     }

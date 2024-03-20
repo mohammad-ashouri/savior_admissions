@@ -60,7 +60,8 @@ class LoginController extends Controller
         $captcha = $request->input('captcha');
         $sessionCaptcha = session('captcha')['key'];
         if (!password_verify($captcha, $sessionCaptcha)) {
-            $this->logActivity('Login Failed (Wrong Captcha) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Captcha)', 'email' => $request->input('email')]), request()->ip(), request()->userAgent(), session('id'));
+
             return response()->json([
                 'success' => false,
                 'errors' => [
@@ -77,7 +78,7 @@ class LoginController extends Controller
             $userID = $user['id'];
             Session::put('id', $userID);
             Session::put('type', $user['type']);
-            $this->logActivity('Login With This Email => ' . $request->input('email'), request()->ip(), request()->userAgent(), $userID);
+            $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent(), session('id'));
 
             return response()->json([
                 'success' => true,
@@ -86,7 +87,7 @@ class LoginController extends Controller
             ]);
         }
 
-        $this->logActivity('Login Failed (Wrong Email Or Password) For User => ( ' . $request->input('email') . ' )', request()->ip(), request()->userAgent());
+        $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Email Or Password)', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
 
         return response()->json([
             'success' => false,

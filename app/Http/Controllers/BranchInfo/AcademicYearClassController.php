@@ -49,6 +49,7 @@ class AcademicYearClassController extends Controller
         } else {
             $academicYearClasses = [];
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Classes']), request()->ip(), request()->userAgent(), session('id'));
 
         return view('BranchInfo.AcademicYearClasses.index', compact('academicYearClasses'));
     }
@@ -100,6 +101,8 @@ class AcademicYearClassController extends Controller
         $class->education_gender = $request->education_gender;
         $class->save();
 
+        $this->logActivity(json_encode(['activity' => 'Academic Year Class Saved', 'id' => $class->id]), request()->ip(), request()->userAgent(), session('id'));
+
         return redirect()->route('AcademicYearClasses.index')
             ->with('success', 'Academic year class added successfully');
     }
@@ -123,6 +126,7 @@ class AcademicYearClassController extends Controller
 
         $educationTypes = EducationType::where('status', 1)->get();
         $educationGenders = Gender::get();
+        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Class Information For Edit', 'id' => $academicYearClass->id]), request()->ip(), request()->userAgent(), session('id'));
 
         return view('BranchInfo.AcademicYearClasses.edit', compact('academicYears', 'levels', 'educationTypes', 'educationGenders', 'academicYearClass'));
 
@@ -154,6 +158,8 @@ class AcademicYearClassController extends Controller
         $class->status = $request->status;
         $class->save();
 
+        $this->logActivity(json_encode(['activity' => 'Academic Year Class Updated', 'id' => $class->id]), request()->ip(), request()->userAgent(), session('id'));
+
         return redirect()->route('AcademicYearClasses.index')
             ->with('success', 'Academic year class edited successfully');
     }
@@ -176,6 +182,7 @@ class AcademicYearClassController extends Controller
         } else {
             $levelInfo = Level::whereIn('id', json_decode($academicYearLevels[0], true))->where('status', 1)->get();
         }
+        $this->logActivity(json_encode(['activity' => 'Levels Returned For Academic Year Class', 'id' => $levelInfo->id]), request()->ip(), request()->userAgent(), session('id'));
 
         return $levelInfo;
     }
@@ -202,6 +209,7 @@ class AcademicYearClassController extends Controller
                 $academicYear = [];
             }
         }
+        $this->logActivity(json_encode(['activity' => 'Academic Year Start Time And End Time Returned', 'id' => $academicYear->id]), request()->ip(), request()->userAgent(), session('id'));
 
         return $academicYear;
     }
