@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Catalogs;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogs\DocumentType;
-use App\Models\Catalogs\EducationType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class DocumentTypeController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:document-type-list', ['only' => ['index']]);
         $this->middleware('permission:document-type-create', ['only' => ['create', 'store']]);
@@ -21,66 +20,80 @@ class DocumentTypeController extends Controller
     public function index()
     {
         $types = DocumentType::orderBy('name', 'asc')->paginate(10);
+        $this->logActivity(json_encode(['activity' => 'Getting Document Types']), request()->ip(), request()->userAgent(), session('id'));
+
         return view('Catalogs.DocumentTypes.index', compact('types'));
     }
 
     public function create()
     {
         $catalog = DocumentType::get();
+
         return view('Catalogs.DocumentTypes.create', compact('catalog'));
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|unique:document_types,name',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|unique:document_types,name',
         ]);
 
-        $catalog = DocumentType::create(['name' => $request->input('name')]);
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Saving Document Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $documentType = DocumentType::create(['name' => $request->input('name')]);
+        $this->logActivity(json_encode(['activity' => 'Document Type Saved', 'id' => $documentType->id]), request()->ip(), request()->userAgent(), session('id'));
 
         return redirect()->route('DocumentTypes.index')
             ->with('success', 'Document type created successfully');
     }
 
-//    public function show($id)
-//    {
-//        $role = Role::find($id);
-//        $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
-//            ->where("role_has_permissions.role_id", $id)
-//            ->get();
-//
-//        return view('roles.show', compact('role', 'rolePermissions'));
-//    }
+    public function show(Request $request)
+    {
+        $name = $request->name;
+        $types = DocumentType::where('name', 'LIKE', "%$name%")->paginate(10);
+        $types->appends(request()->query())->links();
+        if ($types->isEmpty()) {
+            $this->logActivity(json_encode(['activity' => 'Getting Document Type Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent(), session('id'));
+
+            return redirect()->route('DocumentTypes.index')->withErrors('Not Found!')->withInput();
+        }
+        $this->logActivity(json_encode(['activity' => 'Getting Document Type Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent(), session('id'));
+
+        return view('Catalogs.DocumentTypes.index', compact('types', 'name'));
+    }
 
     public function edit($id)
     {
         $catalog = DocumentType::find($id);
+        $this->logActivity(json_encode(['activity' => 'Getting Document Type Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+
         return view('Catalogs.DocumentTypes.edit', compact('catalog'));
     }
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'status' => 'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|unique:document_types,name',
+            'status' => 'required|boolean',
         ]);
+
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Saving Document Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $catalog = DocumentType::find($id);
         $catalog->name = $request->input('name');
         $catalog->status = $request->input('status');
         $catalog->save();
 
+        $this->logActivity(json_encode(['activity' => 'Document Type Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+
         return redirect()->route('DocumentTypes.index')
             ->with('success', 'Document type updated successfully');
-    }
-    public function show(Request $request)
-    {
-        $name=$request->name;
-        $types=DocumentType::where('name','LIKE', "%$name%")->paginate(10);
-        $types->appends(request()->query())->links();
-        if ($types->isEmpty()){
-            return redirect()->route('DocumentTypes.index')->withErrors('Not Found!')->withInput();
-        }
-        return view('Catalogs.DocumentTypes.index', compact('types','name'));
     }
 }

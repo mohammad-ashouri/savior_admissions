@@ -7,6 +7,7 @@ use App\Models\Catalogs\EducationType;
 use App\Models\Catalogs\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class EducationTypeController extends Controller
 {
@@ -21,6 +22,8 @@ class EducationTypeController extends Controller
     public function index()
     {
         $types = EducationType::orderBy('name', 'asc')->paginate(10);
+        $this->logActivity(json_encode(['activity' => 'Getting Education Type']), request()->ip(), request()->userAgent(), session('id'));
+
         return view('Catalogs.EducationTypes.index', compact('types'));
     }
 
@@ -32,26 +35,21 @@ class EducationTypeController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|unique:document_types,name',
             'description' => 'required',
-        ]);
+            ]);
 
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Saving Document Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $catalog = EducationType::create(['name' => $request->input('name') , 'description'=>$request->input('description')]);
 
         return redirect()->route('EducationTypes.index')
             ->with('success', 'Document type created successfully');
     }
-
-//    public function show($id)
-//    {
-//        $role = Role::find($id);
-//        $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
-//            ->where("role_has_permissions.role_id", $id)
-//            ->get();
-//
-//        return view('roles.show', compact('role', 'rolePermissions'));
-//    }
 
     public function edit($id)
     {

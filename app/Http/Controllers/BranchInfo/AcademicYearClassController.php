@@ -89,6 +89,8 @@ class AcademicYearClassController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Saving Academic Year Class Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -145,6 +147,7 @@ class AcademicYearClassController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Saving Academic Year Class Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
             return redirect()->back()->withErrors($validator)->withInput();
         }
 

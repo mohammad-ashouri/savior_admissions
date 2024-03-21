@@ -69,6 +69,7 @@ class StudentController extends Controller
         if ($students->isEmpty()) {
             $students = [];
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent(), session('id'));
 
         return view('Students.index', compact('students'));
 
@@ -97,6 +98,8 @@ class StudentController extends Controller
             'gender' => 'required|string',
         ]);
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Saving Student Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -142,6 +145,7 @@ class StudentController extends Controller
             $studentInformation->guardian_student_relationship = 3;
         }
         $studentInformation->save();
+        $this->logActivity(json_encode(['activity' => 'Student Saved', 'id' => $studentInformation->user_id]), request()->ip(), request()->userAgent(), session('id'));
 
         return redirect()->route('Students.index')
             ->with('success', 'Student added successfully');
@@ -188,8 +192,11 @@ class StudentController extends Controller
         }
 
         if (empty($studentInformations)) {
+            $this->logActivity(json_encode(['activity' => 'Failed Access To Student Information', 'student_id' => $id]), request()->ip(), request()->userAgent(), session('id'));
+
             abort(403);
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Student Information', 'id' => $studentInformations->student_id]), request()->ip(), request()->userAgent(), session('id'));
 
         return view('Students.show', compact('studentInformations'));
     }
@@ -209,11 +216,15 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Saving Student Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+
             return response()->json(['error' => $validator], 422);
         }
         $extraInformationTitles = $request->title;
         $extraInformationDescriptions = $request->description;
         if (count($extraInformationTitles) != count($extraInformationDescriptions)) {
+            $this->logActivity(json_encode(['activity' => 'Extras Count Values Is Not Same', 'student_id' => $request->user_id]), request()->ip(), request()->userAgent(), session('id'));
+
             return response()->json(['error' => 'Extras count values is not same'], 422);
         }
 
