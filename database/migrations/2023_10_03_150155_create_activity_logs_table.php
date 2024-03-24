@@ -18,8 +18,12 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->json('activity');
             $table->string('ip_address');
-            $table->string('user_agent');
             $table->string('device');
+            $table->string('platform')->nullable();
+            $table->string('platform_version')->nullable();
+            $table->string('browser')->nullable();
+            $table->string('browser_version')->nullable();
+            $table->string('device_type')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
