@@ -20,8 +20,14 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        $query = "INSERT INTO `document_types` (`id`, `name`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Old Type', 0, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL);";
+        $query = "INSERT INTO `document_types` (`name`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('Old Type', 0, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
+('Personal picture', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
+('Passport photo - page 1', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
+('Passport photo - page 2', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
+('Passport photo - page 3', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
+('National card photo', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL)
+;";
         DB::statement($query);
     }
 

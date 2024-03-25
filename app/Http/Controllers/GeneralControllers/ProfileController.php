@@ -23,7 +23,7 @@ class ProfileController extends Controller
     {
         $me = User::find(session('id'));
         $myGeneralInformation = GeneralInformation::where('user_id', $me->id)->with('user')->first();
-        $personnelPhotoType=DocumentType::where('name','Personnel Photo (Old Type)')->first();
+        $personnelPhotoType=DocumentType::where('name','Personal picture')->first();
         $myDocuments = Document::where('user_id', $me->id)->where('document_type_id',$personnelPhotoType->id)->latest()->first();
         $countries=Country::get();
         return view('GeneralPages.profile', compact('myGeneralInformation','myDocuments','countries'));
