@@ -183,7 +183,6 @@
                                                 Add discount
                                             </button>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
