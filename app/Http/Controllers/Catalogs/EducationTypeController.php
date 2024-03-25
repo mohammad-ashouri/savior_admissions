@@ -20,7 +20,7 @@ class EducationTypeController extends Controller
     public function index()
     {
         $types = EducationType::orderBy('name', 'asc')->paginate(10);
-        $this->logActivity(json_encode(['activity' => 'Getting Education Type']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Education Type']), request()->ip(), request()->userAgent());
 
         return view('Catalogs.EducationTypes.index', compact('types'));
     }
@@ -40,12 +40,12 @@ class EducationTypeController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Education Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Saving Education Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $educationType = EducationType::create(['name' => $request->input('name'), 'description' => $request->input('description')]);
-        $this->logActivity(json_encode(['activity' => 'Education Type Saved', 'id' => $educationType->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Education Type Saved', 'id' => $educationType->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('EducationTypes.index')
             ->with('success', 'Document type created successfully');
@@ -54,7 +54,7 @@ class EducationTypeController extends Controller
     public function edit($id)
     {
         $catalog = EducationType::find($id);
-        $this->logActivity(json_encode(['activity' => 'Getting Education Type Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Education Type Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
 
         return view('Catalogs.EducationTypes.edit', compact('catalog'));
     }
@@ -68,7 +68,7 @@ class EducationTypeController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Education Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Saving Education Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -78,7 +78,7 @@ class EducationTypeController extends Controller
         $catalog->description = $request->input('description');
         $catalog->status = $request->input('status');
         $catalog->save();
-        $this->logActivity(json_encode(['activity' => 'Education Type Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Education Type Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('EducationTypes.index')
             ->with('success', 'Document type updated successfully');
@@ -90,11 +90,11 @@ class EducationTypeController extends Controller
         $types = EducationType::where('name', 'LIKE', "%$name%")->paginate(10);
         $types->appends(request()->query())->links();
         if ($types->isEmpty()) {
-            $this->logActivity(json_encode(['activity' => 'Getting Education Type Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Getting Education Type Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent());
 
             return redirect()->route('EducationTypes.index')->withErrors('Not Found!')->withInput();
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Education Type Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Education Type Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent());
 
         return view('Catalogs.EducationTypes.index', compact('types', 'name'));
     }

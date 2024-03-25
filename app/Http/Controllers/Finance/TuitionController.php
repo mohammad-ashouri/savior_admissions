@@ -40,7 +40,7 @@ class TuitionController extends Controller
         if ($tuitions->isEmpty()) {
             $tuitions = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Tuitions']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Tuitions']), request()->ip(), request()->userAgent());
 
         return view('Finance.Tuition.index', compact('tuitions'));
     }
@@ -65,7 +65,7 @@ class TuitionController extends Controller
         if (empty($tuitions)) {
             $tuitions = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Tuitions Information For Edit', 'tuition_id' => $id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Tuitions Information For Edit', 'tuition_id' => $id]), request()->ip(), request()->userAgent());
 
         return view('Finance.Tuition.edit', compact('tuitions'));
 
@@ -81,7 +81,7 @@ class TuitionController extends Controller
         $tuition = TuitionDetail::find($request->tuition_id);
         $tuition->price = $request->price;
         $tuition->save();
-        $this->logActivity(json_encode(['activity' => 'Tuition Fee Changed', 'tuition_id' => $request->tuition_id, 'price' => $request->price]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Tuition Fee Changed', 'tuition_id' => $request->tuition_id, 'price' => $request->price]), request()->ip(), request()->userAgent());
 
         return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
     }

@@ -52,7 +52,7 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => $validator->errors()]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => $validator->errors()]), request()->ip(), request()->userAgent());
 
             return response()->json([
                 'success' => false,
@@ -64,7 +64,7 @@ class LoginController extends Controller
         $captcha = $request->input('captcha');
         $sessionCaptcha = session('captcha')['key'];
         if (! password_verify($captcha, $sessionCaptcha)) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Captcha)', 'email' => $request->input('email')]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Captcha)', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
 
             return response()->json([
                 'success' => false,
@@ -82,7 +82,7 @@ class LoginController extends Controller
             $userID = $user['id'];
             Session::put('id', $userID);
             Session::put('type', $user['type']);
-            $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
 
             return response()->json([
                 'success' => true,

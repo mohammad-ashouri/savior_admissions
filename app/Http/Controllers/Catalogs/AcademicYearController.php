@@ -31,7 +31,7 @@ class AcademicYearController extends Controller
     public function index()
     {
         $academicYears = AcademicYear::with('schoolInfo')->orderBy('id', 'desc')->paginate(10);
-        $this->logActivity(json_encode(['activity' => 'Getting Academic Year List']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Academic Year List']), request()->ip(), request()->userAgent());
 
         return view('Catalogs.AcademicYears.index', compact('academicYears'));
     }
@@ -60,7 +60,7 @@ class AcademicYearController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Academic Year Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Saving Academic Year Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -163,12 +163,12 @@ class AcademicYearController extends Controller
         $discount = Discount::create([
             'academic_year' => $academicYear->id,
         ]);
-        $this->logActivity(json_encode(['activity' => 'Discount Created', 'id' => $discount->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Discount Created', 'id' => $discount->id]), request()->ip(), request()->userAgent());
 
         $tuition = Tuition::create([
             'academic_year' => $academicYear->id,
         ]);
-        $this->logActivity(json_encode(['activity' => 'Tuition Created', 'id' => $tuition->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Tuition Created', 'id' => $tuition->id]), request()->ip(), request()->userAgent());
 
         foreach ($request->levels as $level) {
             TuitionDetail::create([
@@ -176,7 +176,7 @@ class AcademicYearController extends Controller
                 'level' => $level,
             ]);
         }
-        $this->logActivity(json_encode(['activity' => 'Academic Year Saved', 'id' => $academicYear->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Academic Year Saved', 'id' => $academicYear->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('AcademicYears.index')
             ->with('success', 'Academic year created successfully');
@@ -188,7 +188,7 @@ class AcademicYearController extends Controller
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
         $users = User::where('status', 1)->with('generalInformationInfo')->orderBy('id')->get();
-        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
 
         return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools', 'levels', 'users'));
     }
@@ -204,7 +204,7 @@ class AcademicYearController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Academic Year Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Saving Academic Year Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -374,7 +374,7 @@ class AcademicYearController extends Controller
 
         //For deactivate all tuitions
         TuitionDetail::where('tuition_id', $tuition->id)->update(['status' => 0]);
-        $this->logActivity(json_encode(['activity' => 'Tuition Details Updated', 'tuition_id' => $tuition->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Tuition Details Updated', 'tuition_id' => $tuition->id]), request()->ip(), request()->userAgent());
 
         foreach ($request->levels as $level) {
             TuitionDetail::firstOrCreate([
@@ -383,7 +383,7 @@ class AcademicYearController extends Controller
             ]);
             TuitionDetail::where('tuition_id', $tuition->id)->where('level', $level)->update(['status' => 1]);
         }
-        $this->logActivity(json_encode(['activity' => 'Academic Year Saved', 'academic_year_id' => $academicYear->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Academic Year Saved', 'academic_year_id' => $academicYear->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('AcademicYears.index')
             ->with('success', 'Academic year edited successfully');
@@ -395,11 +395,11 @@ class AcademicYearController extends Controller
         $academicYears = AcademicYear::with('schoolInfo')->where('name', 'LIKE', "%$name%")->paginate(10);
         $academicYears->appends(request()->query())->links();
         if ($academicYears->isEmpty()) {
-            $this->logActivity(json_encode(['activity' => 'Getting Academic Year Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Getting Academic Year Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent());
 
             return redirect()->route('AcademicYears.index')->withErrors('Not Found!')->withInput();
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent());
 
         return view('Catalogs.AcademicYears.index', compact('academicYears', 'name'));
     }

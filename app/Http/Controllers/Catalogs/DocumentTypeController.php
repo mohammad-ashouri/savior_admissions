@@ -20,7 +20,7 @@ class DocumentTypeController extends Controller
     public function index()
     {
         $types = DocumentType::orderBy('name', 'asc')->paginate(10);
-        $this->logActivity(json_encode(['activity' => 'Getting Document Types']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Document Types']), request()->ip(), request()->userAgent());
 
         return view('Catalogs.DocumentTypes.index', compact('types'));
     }
@@ -39,12 +39,12 @@ class DocumentTypeController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Document Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Saving Document Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $documentType = DocumentType::create(['name' => $request->input('name')]);
-        $this->logActivity(json_encode(['activity' => 'Document Type Saved', 'id' => $documentType->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Document Type Saved', 'id' => $documentType->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('DocumentTypes.index')
             ->with('success', 'Document type created successfully');
@@ -56,11 +56,11 @@ class DocumentTypeController extends Controller
         $types = DocumentType::where('name', 'LIKE', "%$name%")->paginate(10);
         $types->appends(request()->query())->links();
         if ($types->isEmpty()) {
-            $this->logActivity(json_encode(['activity' => 'Getting Document Type Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Getting Document Type Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent());
 
             return redirect()->route('DocumentTypes.index')->withErrors('Not Found!')->withInput();
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Document Type Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Document Type Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent());
 
         return view('Catalogs.DocumentTypes.index', compact('types', 'name'));
     }
@@ -68,7 +68,7 @@ class DocumentTypeController extends Controller
     public function edit($id)
     {
         $catalog = DocumentType::find($id);
-        $this->logActivity(json_encode(['activity' => 'Getting Document Type Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Document Type Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
 
         return view('Catalogs.DocumentTypes.edit', compact('catalog'));
     }
@@ -81,7 +81,7 @@ class DocumentTypeController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Document Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Saving Document Type Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -91,7 +91,7 @@ class DocumentTypeController extends Controller
         $catalog->status = $request->input('status');
         $catalog->save();
 
-        $this->logActivity(json_encode(['activity' => 'Document Type Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Document Type Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('DocumentTypes.index')
             ->with('success', 'Document type updated successfully');

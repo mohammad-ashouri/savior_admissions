@@ -20,7 +20,7 @@ class LevelController extends Controller
     public function index()
     {
         $levels = Level::orderBy('id', 'asc')->paginate(10);
-        $this->logActivity(json_encode(['activity' => 'Getting Levels']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Levels']), request()->ip(), request()->userAgent());
 
         return view('Catalogs.Levels.index', compact('levels'));
     }
@@ -39,12 +39,12 @@ class LevelController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Level Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Saving Level Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $level = Level::create(['name' => $request->input('name')]);
-        $this->logActivity(json_encode(['activity' => 'Level Saved', 'id' => $level->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Level Saved', 'id' => $level->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('Levels.index')
             ->with('success', 'Level created successfully');
@@ -53,7 +53,7 @@ class LevelController extends Controller
     public function edit($id)
     {
         $catalog = Level::find($id);
-        $this->logActivity(json_encode(['activity' => 'Getting Level Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Level Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
 
         return view('Catalogs.Levels.edit', compact('catalog'));
     }
@@ -66,7 +66,7 @@ class LevelController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Level Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Saving Level Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -75,7 +75,7 @@ class LevelController extends Controller
         $catalog->name = $request->input('name');
         $catalog->status = $request->input('status');
         $catalog->save();
-        $this->logActivity(json_encode(['activity' => 'Level Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Level Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('Levels.index')
             ->with('success', 'Level updated successfully');
@@ -87,11 +87,11 @@ class LevelController extends Controller
         $levels = Level::where('name', 'LIKE', "%$name%")->paginate(10);
         $levels->appends(request()->query())->links();
         if ($levels->isEmpty()) {
-            $this->logActivity(json_encode(['activity' => 'Getting Level Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent(), session('id'));
+            $this->logActivity(json_encode(['activity' => 'Getting Level Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent());
 
             return redirect()->route('Levels.index')->withErrors('Not Found!')->withInput();
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Level Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'Getting Level Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent());
 
         return view('Catalogs.Levels.index', compact('levels', 'name'));
     }

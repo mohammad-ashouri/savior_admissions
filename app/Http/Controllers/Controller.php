@@ -7,8 +7,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Jenssegers\Agent\Agent;
-use Illuminate\Http\Request;
-
 
 class Controller extends BaseController
 {
@@ -16,6 +14,9 @@ class Controller extends BaseController
 
     public function logActivity($activity, $ip_address, $user_agent, $user_id = null)
     {
+        if (session('id')) {
+            $user_id = session('id');
+        }
         // Detect device type based on user agent header
         $deviceType = null;
         if (strpos($user_agent, 'Mobile') !== false) {
@@ -61,8 +62,8 @@ class Controller extends BaseController
         return response()->json([
             'success' => $state,
             'errors' => [
-                $errorVariable => [$errorText]
-            ]
+                $errorVariable => [$errorText],
+            ],
         ]);
     }
 
@@ -71,8 +72,8 @@ class Controller extends BaseController
         return response()->json([
             'success' => $state,
             'message' => [
-                $messageVariable => [$messageText]
-            ]
+                $messageVariable => [$messageText],
+            ],
         ]);
     }
 
@@ -92,6 +93,7 @@ class Controller extends BaseController
 
         return array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
     }
+
     //Getting principal and admissions officer accesses
     public function getFilteredAccessesPA($userAccessInfo): array
     {

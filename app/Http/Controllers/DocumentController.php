@@ -34,7 +34,7 @@ class DocumentController extends Controller
         $document->document_type_id = $request->document_type;
         $document->src = $path;
         $document->save();
-        $this->logActivity(json_encode(['activity' => 'User Document Added', 'document id' => $document->id, 'user_id' => $document->user_id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'User Document Added', 'document id' => $document->id, 'user_id' => $document->user_id]), request()->ip(), request()->userAgent());
 
         return response()->json(['success' => 'Document added!'], 200);
     }
@@ -54,7 +54,7 @@ class DocumentController extends Controller
         $document->document_type_id = $request->document_type;
         $document->src = $path;
         $document->save();
-        $this->logActivity(json_encode(['activity' => 'User Document Added', 'document id' => $document->id, 'user_id' => $document->user_id]), request()->ip(), request()->userAgent(), session('id'));
+        $this->logActivity(json_encode(['activity' => 'User Document Added', 'document id' => $document->id, 'user_id' => $document->user_id]), request()->ip(), request()->userAgent());
 
         return response()->json(['success' => 'Document added!'], 200);
     }
