@@ -66,6 +66,7 @@ class ApplicationController extends Controller
         if (empty($applications)) {
             $applications = [];
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Applications']), request()->ip(), request()->userAgent());
 
         return view('Applications.index', compact('applications', 'me'));
 
@@ -85,8 +86,11 @@ class ApplicationController extends Controller
     public function show($id)
     {
         $me = User::find(session('id'));
+        $applicationInfo = null;
         $applicationReservation = ApplicationReservation::find($id);
         if (empty($applicationReservation)) {
+            $this->logActivity(json_encode(['activity' => 'Unauthorized Permission To Access Applications', 'entered_id' => $id]), request()->ip(), request()->userAgent());
+
             abort(403);
         }
 
@@ -118,9 +122,12 @@ class ApplicationController extends Controller
                 ->whereIn('application_id', $applications)
                 ->where('id', $id)->first();
             if (empty($applicationInfo)) {
+                $this->logActivity(json_encode(['activity' => 'Application Not Found', 'entered_id' => $id]), request()->ip(), request()->userAgent());
+
                 abort(403);
             }
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Application Informations', 'entered_id' => $id]), request()->ip(), request()->userAgent());
 
         return view('Applications.show', compact('applicationInfo'));
     }
@@ -128,7 +135,6 @@ class ApplicationController extends Controller
     public function destroy($id)
     {
         $me = User::find(session('id'));
-        $checkAccessToApplication = [];
         if (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -141,6 +147,8 @@ class ApplicationController extends Controller
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->first();
             if (! $checkAccessToApplication) {
+                $this->logActivity(json_encode(['activity' => 'Failed To Delete Application', 'entered_id' => $id]), request()->ip(), request()->userAgent());
+
                 return redirect()->back()
                     ->withErrors(['errors' => 'Delete Failed!']);
             }
@@ -149,9 +157,12 @@ class ApplicationController extends Controller
         $removeApplication = Applications::find($id)->delete();
 
         if (! $removeApplication) {
+            $this->logActivity(json_encode(['activity' => 'Failed To Delete Application', 'entered_id' => $id]), request()->ip(), request()->userAgent());
+
             return redirect()->back()
                 ->withErrors(['errors' => 'Delete Failed!']);
         }
+        $this->logActivity(json_encode(['activity' => 'Application Deleted', 'entered_id' => $id]), request()->ip(), request()->userAgent());
 
         return redirect()->back()
             ->with('success', 'Application deleted!');
@@ -172,6 +183,8 @@ class ApplicationController extends Controller
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->first();
             if (! $checkAccessToApplication) {
+                $this->logActivity(json_encode(['activity' => 'Failed To Remove Application From Reservation', 'entered_id' => $id]), request()->ip(), request()->userAgent());
+
                 return redirect()->back()
                     ->withErrors(['errors' => 'Delete Failed!']);
             }
@@ -184,9 +197,12 @@ class ApplicationController extends Controller
         $applicationReservationInvoice = ApplicationReservationsInvoices::where('a_reservation_id', $applicationReservations->id)->delete();
         $applicationReservations->delete();
         if (! $removeApplicationReserve->save() or ! $applicationReservations or ! $applicationReservationInvoice) {
+            $this->logActivity(json_encode(['activity' => 'Failed To Remove Application From Reservation', 'entered_id' => $id]), request()->ip(), request()->userAgent());
+
             return redirect()->back()
                 ->withErrors(['errors' => 'Remove Application Reservation Failed!']);
         }
+        $this->logActivity(json_encode(['activity' => 'Application Reservation Changed', 'entered_id' => $id]), request()->ip(), request()->userAgent());
 
         return redirect()->back()
             ->with('success', 'Application Reservation Changed!');
@@ -207,6 +223,8 @@ class ApplicationController extends Controller
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->first();
             if (! $checkAccessToApplication) {
+                $this->logActivity(json_encode(['activity' => 'Failed To Change Application Status', 'entered_id' => $id]), request()->ip(), request()->userAgent());
+
                 return redirect()->back()
                     ->withErrors(['errors' => 'Delete Failed!']);
             }
@@ -220,9 +238,12 @@ class ApplicationController extends Controller
         }
 
         if (! $changeApplicationStatus->save()) {
+            $this->logActivity(json_encode(['activity' => 'Failed To Change Application Status', 'entered_id' => $id]), request()->ip(), request()->userAgent());
+
             return redirect()->back()
-                ->withErrors(['errors' => 'Remove Interview Status Failed!']);
+                ->withErrors(['errors' => 'Change Interview Status Failed!']);
         }
+        $this->logActivity(json_encode(['activity' => 'Interview Status Changed Successfully', 'entered_id' => $id]), request()->ip(), request()->userAgent());
 
         return redirect()->back()
             ->with('success', 'Interview Status Changed!');
@@ -234,10 +255,13 @@ class ApplicationController extends Controller
             'level' => 'required|exists:levels,id',
         ]);
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Getting Academic Years By Level Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
             return response()->json(['error' => 'Error on choosing level!'], 422);
         }
         $level = $request->level;
         $academicYears = AcademicYear::where('status', 1)->whereJsonContains('levels', $level)->select('id', 'name')->get()->toArray();
+        $this->logActivity(json_encode(['activity' => 'Getting Academic Years By Level', 'entered_level' => $level]), request()->ip(), request()->userAgent());
 
         return $academicYears;
     }
@@ -248,6 +272,8 @@ class ApplicationController extends Controller
             'academic_year' => 'required|exists:academic_years,id',
         ]);
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Getting Applications By Academic Year Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
             return response()->json(['error' => 'Error on choosing academic year!'], 422);
         }
 
@@ -259,6 +285,7 @@ class ApplicationController extends Controller
             ->select('applications.*', 'application_timings.id as application_timings_id')
             ->orderBy('application_timings.start_date')
             ->get();
+        $this->logActivity(json_encode(['activity' => 'Getting Applications By Academic Year', 'entered_academic_year' => $request->academic_year]), request()->ip(), request()->userAgent());
 
         return $applicationTimings;
     }
@@ -269,21 +296,25 @@ class ApplicationController extends Controller
             'application' => 'required|exists:applications,id',
         ]);
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Getting Date And Time To Be Free Application Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
             return response()->json(['error' => 'Error on choosing application!'], 422);
         }
 
         $application = $request->application;
         $applicationCheck = Applications::where('status', 1)->where('reserved', 0)->find($application);
         if (empty($applicationCheck)) {
+            $this->logActivity(json_encode(['activity' => 'Application Reserved A Few Moments Ago', 'application_id' => $application]), request()->ip(), request()->userAgent());
+
             return response()->json(['error' => 'Unfortunately, the selected application was reserved a few minutes ago. Please choose another application'], 422);
         }
+        $this->logActivity(json_encode(['activity' => 'Getting Date And Time To Be Free Application', 'application_id' => $application]), request()->ip(), request()->userAgent());
 
         return 0;
     }
 
     public function preparationForApplicationPayment(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'date_and_time' => 'required|exists:applications,id',
             'academic_year' => 'required|exists:academic_years,id',
@@ -292,6 +323,8 @@ class ApplicationController extends Controller
             'interview_type' => 'required',
         ]);
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Preparation For Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -305,16 +338,22 @@ class ApplicationController extends Controller
         $studentInfo = StudentInformation::where('guardian', $me->id)->where('id', $student)->first();
 
         if (empty($studentInfo)) {
+            $this->logActivity(json_encode(['activity' => 'Preparation For Application Payment Failed', 'errors' => 'Access To Student Denied', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
+
             abort(403);
         }
 
         $academicYearInfo = AcademicYear::whereJsonContains('levels', $level)->find($academic_year);
         if (empty($academicYearInfo)) {
+            $this->logActivity(json_encode(['activity' => 'Preparation For Application Payment Failed', 'errors' => 'Access To Academic Year Info Denied', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
+
             abort(403);
         }
 
         $applicationCheck = Applications::where('status', 1)->where('reserved', 0)->find($dateAndTime);
         if (empty($applicationCheck)) {
+            $this->logActivity(json_encode(['activity' => 'Application Reserved A Few Moments Ago', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
+
             return redirect()->back()->withErrors('Unfortunately, the selected application was reserved a few minutes ago. Please choose another application')->withInput();
         }
 
@@ -330,6 +369,7 @@ class ApplicationController extends Controller
             $applications->reserved = 1;
             $applications->save();
         }
+        $this->logActivity(json_encode(['activity' => 'Application Payment Prepared To Pay Successfully', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
 
         return redirect()->route('PrepareToPayApplication', $applicationReservation->id);
     }
@@ -337,10 +377,12 @@ class ApplicationController extends Controller
     public function prepareToPay($application_id)
     {
         $me = User::find(session('id'));
-
+        $checkApplication = null;
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $checkApplication = ApplicationReservation::with('applicationInfo')->where('reservatore', $me->id)->find($application_id);
             if (empty($checkApplication)) {
+                $this->logActivity(json_encode(['activity' => 'Prepare To Pay Application Failed', 'application_id' => $application_id, 'errors' => 'Access Denied']), request()->ip(), request()->userAgent());
+
                 abort(403);
             }
         }
@@ -348,6 +390,7 @@ class ApplicationController extends Controller
 
         $deadline = Carbon::parse($createdAt)->addHour()->toDateTimeString();
         $paymentMethods = PaymentMethod::where('status', 1)->get();
+        $this->logActivity(json_encode(['activity' => 'Application Prepared To Pay', 'application_id' => $application_id]), request()->ip(), request()->userAgent());
 
         return view('Applications.application_payment', compact('checkApplication', 'deadline', 'paymentMethods'));
     }
@@ -359,6 +402,8 @@ class ApplicationController extends Controller
             'id' => 'required|exists:application_reservations,id',
         ]);
         if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -370,6 +415,8 @@ class ApplicationController extends Controller
                     'document_file' => 'required|file|mimes:jpg,bmp,pdf,jpeg,png',
                 ]);
                 if ($validator->fails()) {
+                    $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
 
@@ -394,12 +441,15 @@ class ApplicationController extends Controller
                     if ($applicationReservationInvoice) {
                         $applicationInformation->payment_status = 2; //For Pending
                         $applicationInformation->save();
+                        $this->logActivity(json_encode(['activity' => 'Application Reserved Successfully', 'reservation_invoice_id' => $applicationInformation->id]), request()->ip(), request()->userAgent());
 
                         return redirect()->route('Applications.index')->with('success', 'Application reserved successfully!');
                     }
                 }
                 break;
             default:
+                $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
                 abort(403);
         }
     }
