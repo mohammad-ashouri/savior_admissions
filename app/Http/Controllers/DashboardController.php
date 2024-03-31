@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\MonthlyUsersChart;
+use App\Charts\AcademicYearStudents;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -14,7 +14,7 @@ use App\Models\UserAccessInformation;
 
 class DashboardController extends Controller
 {
-    public function index(MonthlyUsersChart $chart)
+    public function index(AcademicYearStudents $chart)
     {
         $me = User::with('generalInformationInfo')->find(session('id'));
 

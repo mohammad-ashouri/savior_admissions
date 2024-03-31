@@ -41,17 +41,17 @@
                 <div class=" mb-6 md:grid-cols-2">
                     <div class="relative overflow-x-auto">
                         <div class="grid grid-cols-1 gap-4 mb-4">
-                            <h1 class="text-xl font-semibold text-black dark:text-white ">Application Status </h1>
+                            <h1 class="text-xl font-semibold text-black dark:text-white ">Students Status </h1>
                         </div>
                     </div>
-                    <div>
-
-                        {!! $chart->container() !!}
-
-                        <script src="{{ $chart->cdn() }}"></script>
-
-                        {{ $chart->script() }}
+                    <div class="flex flex-row">
+                        <div class="w-72 mr-4">
+                            {!! $chart->container() !!}
+                            <script src="{{ $chart->cdn() }}"></script>
+                            {{ $chart->script() }}
+                        </div>
                     </div>
+
                 </div>
             </div>
         @endcan
