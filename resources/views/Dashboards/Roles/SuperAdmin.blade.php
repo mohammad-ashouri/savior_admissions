@@ -44,8 +44,13 @@
                             <h1 class="text-xl font-semibold text-black dark:text-white ">Application Status </h1>
                         </div>
                     </div>
-                    <div style="width: 300px">
-                        <canvas id="myChart" width="50" height="50"></canvas>
+                    <div>
+
+                        {!! $chart->container() !!}
+
+                        <script src="{{ $chart->cdn() }}"></script>
+
+                        {{ $chart->script() }}
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\MonthlyUsersChart;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -13,7 +14,7 @@ use App\Models\UserAccessInformation;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(MonthlyUsersChart $chart)
     {
         $me = User::with('generalInformationInfo')->find(session('id'));
 
@@ -31,6 +32,8 @@ class DashboardController extends Controller
                 ->where('tuition_payment_status', 'Paid')
                 ->distinct('student_id')
                 ->orderBy('id', 'desc')->orderBy('academic_year', 'desc')->take(5)->get();
+            $chart=$chart->build();
+            return view('Dashboards.Main', compact('me','chart'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
