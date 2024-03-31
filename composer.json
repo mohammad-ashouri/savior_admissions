@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "akaunting/laravel-apexcharts": "*",
+        "arielmejiadev/larapex-charts": "*",
         "guzzlehttp/guzzle": "^7.2",
         "jenssegers/agent": "^2.6",
         "kavenegar/laravel": "^1.3",

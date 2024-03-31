@@ -23,6 +23,7 @@ use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SMSController;
+use App\Http\Controllers\Test\ChartController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Auth;
@@ -161,6 +162,9 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
     //SMS
 //    Route::get('testsms', [SMSController::class, 'sendSMS']);
+
+    //Chart Maker
+    Route::get('charts', [ChartController::class, 'index']);
 
 });
 //Route::get('/import-excel', [ExcelController::class, 'index']);
