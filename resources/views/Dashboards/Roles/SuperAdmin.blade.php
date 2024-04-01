@@ -44,12 +44,21 @@
                             <h1 class="text-xl font-semibold text-black dark:text-white ">Students Status </h1>
                         </div>
                     </div>
-                    <div class="flex flex-row">
-                        <div class="w-72 mr-4">
-                            {!! $chart->container() !!}
-                            <script src="{{ $chart->cdn() }}"></script>
-                            {{ $chart->script() }}
-                        </div>
+                    <div class="flex">
+                        @if($studentNumberStatusByAcademicYear)
+                            <div class="mr-4">
+                                {!! $studentNumberStatusByAcademicYear->container() !!}
+                                <script src="{{ $studentNumberStatusByAcademicYear->cdn() }}"></script>
+                                {{ $studentNumberStatusByAcademicYear->script() }}
+                            </div>
+                        @endif
+                        @if($studentNumberStatusByAcademicYear)
+                            <div class="mr-4">
+                                {!! $studentNumberStatusByAcademicYear->container() !!}
+                                <script src="{{ $studentNumberStatusByAcademicYear->cdn() }}"></script>
+                                {{ $studentNumberStatusByAcademicYear->script() }}
+                            </div>
+                        @endif
                     </div>
 
                 </div>
