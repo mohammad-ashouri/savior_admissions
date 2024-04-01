@@ -9,7 +9,7 @@ use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class SchoolsStudentsNumber
 {
-    protected $studentNumberStatusByAcademicYear;
+    protected LarapexChart $studentNumberStatusByAcademicYear;
 
     public function __construct(LarapexChart $studentNumberStatusByAcademicYear)
     {
@@ -27,7 +27,7 @@ class SchoolsStudentsNumber
         $studentCountsByYear = [];
         foreach ($students as $student) {
             $yearId = $student->academicYearInfo->id;
-            if (!isset($studentCountsByYear[$yearId])) {
+            if (! isset($studentCountsByYear[$yearId])) {
                 $studentCountsByYear[$yearId] = 0;
             }
             $studentCountsByYear[$yearId]++;
@@ -38,8 +38,9 @@ class SchoolsStudentsNumber
             $data[] = $studentCountsByYear[$yearId] ?? 0;
         }
 
-        $schoolLabels = collect($academicYears)->map(function($academicYearId) {
-            $academicYears=AcademicYear::find($academicYearId);
+        $schoolLabels = collect($academicYears)->map(function ($academicYearId) {
+            $academicYears = AcademicYear::find($academicYearId);
+
             return School::find($academicYears->school_id)->name;
         })->toArray();
 
@@ -47,8 +48,7 @@ class SchoolsStudentsNumber
             ->setTitle('Number of students by school')
             ->addData($data)
             ->setLabels($schoolLabels)
-            ->setWidth(400)
-            ;
+            ->setWidth(400);
 
     }
 }

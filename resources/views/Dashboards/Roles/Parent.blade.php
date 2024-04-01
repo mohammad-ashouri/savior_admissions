@@ -6,7 +6,7 @@
                 <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 0 20 20">
                     <path
-                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                 </svg>
             </div>
             <div>
@@ -25,7 +25,7 @@
                 <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 0 20 20">
                     <path
-                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                 </svg>
             </div>
             <div>
@@ -135,8 +135,9 @@
                                 </tbody>
                             </table>
                         @else
-                            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                                 role="alert">
+                            <div
+                                class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                role="alert">
                                 <div class="flex">
                                     <div class="py-1">
                                         <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
@@ -176,7 +177,7 @@
                         @if($applicationStatuses->isNotEmpty())
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead
-                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="p-4">
                                         Academic Year
@@ -196,7 +197,7 @@
                                 <tbody>
                                 @foreach($applicationStatuses as $applicationStatus)
                                     <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="w-56 p-4">
                                             {{$applicationStatus->academicYearInfo->name}}
                                         </td>
@@ -204,7 +205,7 @@
                                             class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                             <div>
                                                 <div
-                                                        class="text-base font-semibold">{{ $applicationStatus->studentInfo->generalInformationInfo->first_name_en }} {{ $applicationStatus->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                                    class="text-base font-semibold">{{ $applicationStatus->studentInfo->generalInformationInfo->first_name_en }} {{ $applicationStatus->studentInfo->generalInformationInfo->last_name_en }}</div>
                                             </div>
                                         </th>
                                         <th scope="row"
@@ -215,6 +216,9 @@
                                                         $statusPercent=0;
                                                         $statusText='';
                                                         $statusColor='green';
+                                                         if ($applicationStatus->interview_status=='Pending Interview'){
+                                                             $statusText='Pending Interview';
+                                                         }
                                                          if ($applicationStatus->interview_status=='Admitted'){
                                                              $statusPercent+=25;
                                                              $statusText='Waiting For Upload Documents';
@@ -237,9 +241,9 @@
                                                          }
                                                     @endphp
                                                     <span
-                                                            class="text-base font-medium text-{{$statusColor}}-700 dark:text-white">{{$statusText}}</span>
+                                                        class="text-base font-medium text-{{$statusColor}}-700 dark:text-white">{{$statusText}}</span>
                                                     <span
-                                                            class="text-sm font-medium text-{{$statusColor}}-700 dark:text-white">{{$statusPercent}}%</span>
+                                                        class="text-sm font-medium text-{{$statusColor}}-700 dark:text-white">{{$statusPercent}}%</span>
                                                 </div>
                                                 <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                                                     <div class="bg-{{$statusColor}}-600 h-2.5 rounded-full"
@@ -250,9 +254,9 @@
                                         <th scope="row"
                                             class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                             <div>
-                                                @if($applicationStatus->documents_uploaded==0)
+                                                @if($applicationStatus->documents_uploaded==0 and $applicationStatus->documents_uploaded!=null)
                                                     <div
-                                                            class="text-base font-semibold">
+                                                        class="text-base font-semibold">
                                                         <a href="{{ route('Document.UploadByParent',$student->student_id) }}"
                                                            type="button"
                                                            class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
@@ -271,15 +275,16 @@
                                 </tbody>
                             </table>
                         @else
-                            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                                 role="alert">
+                            <div
+                                class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                role="alert">
                                 <div class="flex">
                                     <div class="py-1">
                                         <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
                                              xmlns="http://www.w3.org/2000/svg"
                                              viewBox="0 0 20 20">
                                             <path
-                                                    d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                         </svg>
                                     </div>
                                     <div class="flex">

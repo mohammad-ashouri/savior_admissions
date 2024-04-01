@@ -36,33 +36,28 @@
 @endif
 <div class="grid grid-cols-2 gap-4 mb-4">
     <div class="lg:col-span-2 col-span-3 ">
-        @can('applications-list')
-            <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                <div class=" mb-6 md:grid-cols-2">
-                    <div class="relative overflow-x-auto">
-                        <div class="grid grid-cols-1 gap-4 mb-4">
-                            <h1 class="text-xl font-semibold text-black dark:text-white ">Students Status </h1>
-                        </div>
+        <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
+            <div class=" mb-6 md:grid-cols-2">
+                <div class="relative overflow-x-auto">
+                    <div class="grid grid-cols-1 gap-4 mb-4">
+                        <h1 class="text-xl font-semibold text-black dark:text-white ">Students Status </h1>
                     </div>
-                    <div class="flex">
-                        @if($studentNumberStatusByAcademicYear)
-                            <div class="mr-4">
-                                {!! $studentNumberStatusByAcademicYear->container() !!}
-                                <script src="{{ $studentNumberStatusByAcademicYear->cdn() }}"></script>
-                                {{ $studentNumberStatusByAcademicYear->script() }}
-                            </div>
-                        @endif
-                        @if($studentNumberStatusByAcademicYear)
-                            <div class="mr-4">
-                                {!! $studentNumberStatusByAcademicYear->container() !!}
-                                <script src="{{ $studentNumberStatusByAcademicYear->cdn() }}"></script>
-                                {{ $studentNumberStatusByAcademicYear->script() }}
-                            </div>
-                        @endif
-                    </div>
-
                 </div>
+                <div class="flex">
+                    @if($studentNumberStatusByAcademicYear)
+                        <div class="mr-4">
+                            @if(!empty($data))
+                                {!! $studentNumberStatusByAcademicYear->container() !!}
+                                <script src="{{ $studentNumberStatusByAcademicYear->cdn() }}"></script>
+                                {{ $studentNumberStatusByAcademicYear->script() }}
+                            @else
+                                There is no data chart to show about: Student numbers by school
+                            @endif
+                        </div>
+                    @endif
+                </div>
+
             </div>
-        @endcan
+        </div>
     </div>
 </div>

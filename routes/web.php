@@ -163,9 +163,6 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     //SMS
 //    Route::get('testsms', [SMSController::class, 'sendSMS']);
 
-    //Chart Maker
-    Route::get('charts', [ChartController::class, 'index']);
-
 });
 //Route::get('/import-excel', [ExcelController::class, 'index']);
 //Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');

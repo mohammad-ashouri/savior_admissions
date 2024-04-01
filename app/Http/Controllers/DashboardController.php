@@ -14,7 +14,7 @@ use App\Models\UserAccessInformation;
 
 class DashboardController extends Controller
 {
-    protected $studentNumberStatusByAcademicYear;
+    protected SchoolsStudentsNumber $studentNumberStatusByAcademicYear;
 
     public function __construct(SchoolsStudentsNumber $studentNumberStatusByAcademicYear)
     {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
+use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\PaymentMethod;
@@ -226,14 +227,14 @@ class ApplicationReservationController extends Controller
         }
 
         if (empty($applicationInfo)) {
-            $this->logActivity(json_encode(['activity' => 'Changing Application Payment Status Failed', 'application_id' => $applicationID, 'application_status' => $applicationStatus,'message' => $applicationInfo]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Changing Application Payment Status Failed', 'application_id' => $applicationID, 'application_status' => $applicationStatus, 'message' => $applicationInfo]), request()->ip(), request()->userAgent());
 
             return response()->json(['message' => $applicationInfo], 422);
         }
 
-        $applicationReservation = ApplicationReservation::find($applicationID);
+        $applicationReservation = ApplicationReservation::with('applicationInfo')->find($applicationID);
         if (empty($applicationReservation)) {
-            $this->logActivity(json_encode(['activity' => 'Changing Application Payment Status Failed', 'application_id' => $applicationID, 'application_status' => $applicationStatus,'message' => $applicationInfo]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Changing Application Payment Status Failed', 'application_id' => $applicationID, 'application_status' => $applicationStatus, 'message' => $applicationInfo]), request()->ip(), request()->userAgent());
 
             return response()->json(['message' => 'Application not found!'], 422);
         }
@@ -241,6 +242,20 @@ class ApplicationReservationController extends Controller
         $applicationReservation->payment_status = $applicationStatus;
         $applicationReservation->save();
         $this->logActivity(json_encode(['activity' => 'Application Payment Status Changed', 'application_id' => $applicationID, 'application_status' => $applicationStatus]), request()->ip(), request()->userAgent());
+
+        $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->first();
+        if ($applicationStatus == 1) {
+            if (empty($applianceStatus)) {
+                $applianceStatus = new StudentApplianceStatus();
+                $applianceStatus->student_id = $applicationReservation->student_id;
+                $applianceStatus->academic_year = $applicationReservation->applicationInfo->applicationTimingInfo->academic_year;
+                $applianceStatus->interview_status = 'Pending Interview';
+            } elseif ($applianceStatus->interview_status == 'Rejected') {
+                $applianceStatus->interview_status = 'Pending Interview';
+            }
+            $applianceStatus->save();
+
+        }
 
         return response()->json(['message' => 'Application payment status changed!'], 200);
     }
