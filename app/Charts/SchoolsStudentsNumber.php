@@ -10,17 +10,18 @@ use ArielMejiaDev\LarapexCharts\LarapexChart;
 class SchoolsStudentsNumber
 {
     protected LarapexChart $studentNumberStatusByAcademicYear;
+    protected $academicYears;
 
     public function __construct(LarapexChart $studentNumberStatusByAcademicYear)
     {
         $this->studentNumberStatusByAcademicYear = $studentNumberStatusByAcademicYear;
+        $this->academicYears = AcademicYear::where('status', 1)->get()->pluck('id')->toArray();
     }
 
     public function build(): \ArielMejiaDev\LarapexCharts\PieChart
     {
-        $academicYears = AcademicYear::where('status', 1)->get()->pluck('id')->toArray();
         $students = StudentApplianceStatus::with('academicYearInfo')
-            ->whereIn('academic_year', $academicYears)
+            ->whereIn('academic_year', $this->academicYears)
             ->where('approval_status', 1)
             ->get();
 
@@ -34,11 +35,11 @@ class SchoolsStudentsNumber
         }
 
         $data = [];
-        foreach ($academicYears as $yearId) {
+        foreach ($this->academicYears as $yearId) {
             $data[] = $studentCountsByYear[$yearId] ?? 0;
         }
 
-        $schoolLabels = collect($academicYears)->map(function ($academicYearId) {
+        $schoolLabels = collect($this->academicYears)->map(function ($academicYearId) {
             $academicYears = AcademicYear::find($academicYearId);
 
             return School::find($academicYears->school_id)->name;
@@ -48,7 +49,8 @@ class SchoolsStudentsNumber
             ->setTitle('Number of students by school')
             ->addData($data)
             ->setLabels($schoolLabels)
-            ->setWidth(400);
+            ->setWidth(400)
+            ->setXAxis($schoolLabels);
 
     }
 }

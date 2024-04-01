@@ -55,6 +55,15 @@
                             @endif
                         </div>
                     @endif
+                    <div class="flex">
+                        @if($allRegisteredStudentsInLastAcademicYear)
+                                {!! $allRegisteredStudentsInLastAcademicYear->container() !!}
+                                <script src="{{ $allRegisteredStudentsInLastAcademicYear->cdn() }}"></script>
+                                {{ $allRegisteredStudentsInLastAcademicYear->script() }}
+                        @else
+                            There is no data chart to show about: Number of all registered students by academic year
+                        @endif
+                    </div>
                 </div>
 
             </div>

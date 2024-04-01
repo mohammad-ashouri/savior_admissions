@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\AllRegisteredStudentsInLastAcademicYear;
 use App\Charts\SchoolsStudentsNumber;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
@@ -15,10 +16,12 @@ use App\Models\UserAccessInformation;
 class DashboardController extends Controller
 {
     protected SchoolsStudentsNumber $studentNumberStatusByAcademicYear;
+    protected AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear;
 
-    public function __construct(SchoolsStudentsNumber $studentNumberStatusByAcademicYear)
+    public function __construct(SchoolsStudentsNumber $studentNumberStatusByAcademicYear,AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear)
     {
         $this->studentNumberStatusByAcademicYear = $studentNumberStatusByAcademicYear;
+        $this->allRegisteredStudentsInLastAcademicYear = $allRegisteredStudentsInLastAcademicYear;
     }
 
     public function index()
@@ -36,8 +39,9 @@ class DashboardController extends Controller
                 ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
         } elseif ($me->hasRole('Super Admin')) {
             $studentNumberStatusByAcademicYear = $this->studentNumberStatusByAcademicYear->build();
+            $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear->build();
 
-            return view('Dashboards.Main', compact('me', 'studentNumberStatusByAcademicYear'));
+            return view('Dashboards.Main', compact('me', 'studentNumberStatusByAcademicYear','allRegisteredStudentsInLastAcademicYear'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
