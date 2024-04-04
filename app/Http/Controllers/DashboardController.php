@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Charts\AllRegisteredStudentsInLastAcademicYear;
-use App\Charts\SchoolsStudentsNumber;
+use App\Charts\AcceptedStudentsByAcademicYear;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -15,12 +15,12 @@ use App\Models\UserAccessInformation;
 
 class DashboardController extends Controller
 {
-    protected SchoolsStudentsNumber $studentNumberStatusByAcademicYear;
+    protected AcceptedStudentsByAcademicYear $acceptedStudentNumberStatusByAcademicYear;
     protected AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear;
 
-    public function __construct(SchoolsStudentsNumber $studentNumberStatusByAcademicYear,AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear)
+    public function __construct(AcceptedStudentsByAcademicYear $acceptedStudentNumberStatusByAcademicYear, AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear)
     {
-        $this->studentNumberStatusByAcademicYear = $studentNumberStatusByAcademicYear;
+        $this->acceptedStudentNumberStatusByAcademicYear = $acceptedStudentNumberStatusByAcademicYear;
         $this->allRegisteredStudentsInLastAcademicYear = $allRegisteredStudentsInLastAcademicYear;
     }
 
@@ -38,10 +38,10 @@ class DashboardController extends Controller
                 ->with('generalInformations')
                 ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
         } elseif ($me->hasRole('Super Admin')) {
-            $studentNumberStatusByAcademicYear = $this->studentNumberStatusByAcademicYear->build();
             $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear->build();
+            $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear->build();
 
-            return view('Dashboards.Main', compact('me', 'studentNumberStatusByAcademicYear','allRegisteredStudentsInLastAcademicYear'));
+            return view('Dashboards.Main', compact('me', 'acceptedStudentNumberStatusByAcademicYear','allRegisteredStudentsInLastAcademicYear'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
