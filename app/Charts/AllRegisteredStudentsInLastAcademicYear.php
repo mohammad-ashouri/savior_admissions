@@ -46,8 +46,9 @@ class AllRegisteredStudentsInLastAcademicYear
 
         $chart = $this->allRegisteredStudentsInLastAcademicYear->horizontalBarChart()
             ->setTitle('Number of all registered students by academic year')
-            ->setWidth(500)
+            ->setWidth(600)
             ->setHeight(500)
+            ->setGrid()
         ;
 
         foreach ($academicYearLabels as $index => $academicYearLabel) {

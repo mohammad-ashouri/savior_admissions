@@ -43,8 +43,8 @@
                         <h1 class="text-xl font-semibold text-black dark:text-white ">Students Status </h1>
                     </div>
                 </div>
-                <div class="flex">
-                    <div class="flex mr-4">
+                <div class="flex w-full">
+                    <div class="flex mr-4 w-full">
                         @if($allRegisteredStudentsInLastAcademicYear)
                             {!! $allRegisteredStudentsInLastAcademicYear->container() !!}
                             <script src="{{ $allRegisteredStudentsInLastAcademicYear->cdn() }}"></script>
@@ -53,7 +53,7 @@
                             There is no data chart to show about: Number of all registered students by academic year
                         @endif
                     </div>
-                    <div class="flex mr-4">
+                    <div class="flex mr-4 w-full">
                         @if($acceptedStudentNumberStatusByAcademicYear)
                             @if(!empty($data))
                                 {!! $acceptedStudentNumberStatusByAcademicYear->container() !!}

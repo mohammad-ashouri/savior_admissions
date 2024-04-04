@@ -47,8 +47,9 @@ class AcceptedStudentsByAcademicYear
 
         $chart = $this->acceptedStudentNumberStatusByAcademicYear->horizontalBarChart()
             ->setTitle('Number of all approved students by academic year')
-            ->setWidth(500)
+            ->setWidth(600)
             ->setHeight(500)
+            ->setGrid()
         ;
 
         foreach ($academicYearLabels as $index => $academicYearLabel) {
