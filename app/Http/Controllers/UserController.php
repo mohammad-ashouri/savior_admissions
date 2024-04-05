@@ -54,7 +54,7 @@ class UserController extends Controller
         abort(403);
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         if ($me->hasRole('Super Admin')) {
@@ -74,7 +74,7 @@ class UserController extends Controller
         return view('users.create', compact('roles', 'schools'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
         $this->validate($request, [
@@ -116,7 +116,7 @@ class UserController extends Controller
             ->with('success', 'User created successfully');
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $user = User::find($id);
@@ -151,7 +151,7 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'roles', 'userRole', 'generalInformation', 'schools', 'countries', 'nationalities', 'parents', 'guardianStudentRelationships', 'currentIdentificationTypes', 'statuses', 'studentInformation'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $this->validate($request, [
             'name' => 'required',
@@ -177,7 +177,7 @@ class UserController extends Controller
             ->with('success', 'User updated successfully');
     }
 
-    public function changeUserPassword(Request $request)
+    public function changeUserPassword(Request $request): void
     {
         $this->validate($request, [
             'New_password' => 'same:confirm-password|min:8|max:20|required',
@@ -196,7 +196,7 @@ class UserController extends Controller
         }
     }
 
-    public function searchUser(Request $request)
+    public function searchUser(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $searchEduCode = $request->input('search-user-code');
         $searchFirstName = $request->input('search-first-name');
@@ -233,7 +233,7 @@ class UserController extends Controller
         return view('users.index', compact('data'));
     }
 
-    public function changePrincipalInformation(Request $request)
+    public function changePrincipalInformation(Request $request): \Illuminate\Http\JsonResponse
     {
         $this->validate($request, [
             'school' => 'required|exists:schools,id',

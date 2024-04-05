@@ -19,7 +19,7 @@ class ProfileController extends Controller
     }
 
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $myGeneralInformation = GeneralInformation::where('user_id', $me->id)->with('user')->first();
@@ -72,7 +72,7 @@ class ProfileController extends Controller
         }
     }
 
-    public function changeUserGeneralInformation(Request $request)
+    public function changeUserGeneralInformation(Request $request): \Illuminate\Http\JsonResponse
     {
         $this->validate($request, [
             'first_name_fa' => 'required|string',
@@ -137,7 +137,7 @@ class ProfileController extends Controller
         return response()->json(['success' => 'Profile updated!'], 200);
     }
 
-    public function changeUserRole(Request $request)
+    public function changeUserRole(Request $request): \Illuminate\Http\JsonResponse
     {
         $user = User::find($request->input('user_id'));
         DB::table('model_has_roles')->where('model_id', $user->id)->delete();

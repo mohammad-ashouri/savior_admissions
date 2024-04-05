@@ -8,7 +8,7 @@ use Shetabit\Multipay\Payment;
 
 class PaymentController extends Controller
 {
-    public function behpardakhtPayment(Request $request)
+    public function behpardakhtPayment(Request $request): void
     {
         // Create new invoice.
         $invoice = new Invoice;

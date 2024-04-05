@@ -23,7 +23,7 @@ class ApplicationTimingController extends Controller
         $this->middleware('permission:application-timing-search', ['only' => ['searchApplicationTiming']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $applicationTimings = [];
@@ -50,7 +50,7 @@ class ApplicationTimingController extends Controller
         return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $academicYears = [];
@@ -68,7 +68,7 @@ class ApplicationTimingController extends Controller
         return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
@@ -166,7 +166,7 @@ class ApplicationTimingController extends Controller
             ->with('success', 'Application timing created successfully');
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $applicationTiming = [];

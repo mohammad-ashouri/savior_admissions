@@ -17,7 +17,7 @@ class EducationTypeController extends Controller
         $this->middleware('permission:education-type-delete', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $types = EducationType::orderBy('name', 'asc')->paginate(10);
         $this->logActivity(json_encode(['activity' => 'Getting Education Type']), request()->ip(), request()->userAgent());
@@ -25,14 +25,14 @@ class EducationTypeController extends Controller
         return view('Catalogs.EducationTypes.index', compact('types'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = EducationType::get();
 
         return view('Catalogs.EducationTypes.create', compact('catalog'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:document_types,name',
@@ -51,7 +51,7 @@ class EducationTypeController extends Controller
             ->with('success', 'Document type created successfully');
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = EducationType::find($id);
         $this->logActivity(json_encode(['activity' => 'Getting Education Type Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
@@ -59,7 +59,7 @@ class EducationTypeController extends Controller
         return view('Catalogs.EducationTypes.edit', compact('catalog'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -84,7 +84,7 @@ class EducationTypeController extends Controller
             ->with('success', 'Document type updated successfully');
     }
 
-    public function show(Request $request)
+    public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
         $types = EducationType::where('name', 'LIKE', "%$name%")->paginate(10);

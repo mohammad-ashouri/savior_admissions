@@ -17,7 +17,7 @@ class LevelController extends Controller
         $this->middleware('permission:level-delete', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $levels = Level::orderBy('id', 'asc')->paginate(10);
         $this->logActivity(json_encode(['activity' => 'Getting Levels']), request()->ip(), request()->userAgent());
@@ -25,14 +25,14 @@ class LevelController extends Controller
         return view('Catalogs.Levels.index', compact('levels'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $levels = Level::get();
 
         return view('Catalogs.Levels.create', compact('levels'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:schools,name',
@@ -50,7 +50,7 @@ class LevelController extends Controller
             ->with('success', 'Level created successfully');
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = Level::find($id);
         $this->logActivity(json_encode(['activity' => 'Getting Level Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
@@ -81,7 +81,7 @@ class LevelController extends Controller
             ->with('success', 'Level updated successfully');
     }
 
-    public function show(Request $request)
+    public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
         $levels = Level::where('name', 'LIKE', "%$name%")->paginate(10);

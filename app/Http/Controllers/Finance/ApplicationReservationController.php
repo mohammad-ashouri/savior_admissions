@@ -29,7 +29,7 @@ class ApplicationReservationController extends Controller
         $this->middleware('permission:reservation-payment-status-change', ['only' => ['changeApplicationPaymentStatus']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $applications = $principalAccess = $financialManagerAccess = [];
@@ -106,7 +106,7 @@ class ApplicationReservationController extends Controller
         abort(403);
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $applicationInfo = $principalAccess = $financialManagerAccess = [];
 
@@ -154,7 +154,7 @@ class ApplicationReservationController extends Controller
         return view('Finance.ApplicationReservationInvoices.show', compact('applicationInfo'));
     }
 
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
         $checkAccessToApplication = [];
@@ -193,7 +193,7 @@ class ApplicationReservationController extends Controller
             ->with('success', 'Application deleted!');
     }
 
-    public function changeApplicationPaymentStatus(Request $request)
+    public function changeApplicationPaymentStatus(Request $request): \Illuminate\Http\JsonResponse
     {
         $me = User::find(session('id'));
         $applicationID = $request->application_id;
@@ -260,7 +260,7 @@ class ApplicationReservationController extends Controller
         return response()->json(['message' => 'Application payment status changed!'], 200);
     }
 
-    public function searchReservationInvoices(Request $request)
+    public function searchReservationInvoices(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $applications = $academicYears = [];

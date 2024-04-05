@@ -29,7 +29,7 @@ class StudentController extends Controller
         $this->middleware('permission:change-student-information', ['only' => ['changeInformation']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
 
@@ -75,7 +75,7 @@ class StudentController extends Controller
 
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $birthplaces = Country::orderBy('en_short_name', 'asc')->get();
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct()->get();
@@ -84,7 +84,7 @@ class StudentController extends Controller
         return view('Students.create', compact('birthplaces', 'identificationTypes', 'nationalities'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'nationality' => 'required|exists:countries,id',
@@ -151,7 +151,7 @@ class StudentController extends Controller
             ->with('success', 'Student added successfully');
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
 
@@ -201,7 +201,7 @@ class StudentController extends Controller
         return view('Students.show', compact('studentInformations'));
     }
 
-    public function changeInformation(Request $request)
+    public function changeInformation(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'current_identification_code' => 'required',

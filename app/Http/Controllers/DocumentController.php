@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 
 class DocumentController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $documentTypes = DocumentType::orderBy('name', 'asc')->get();
         $myDocuments = Document::with('documentType')->where('user_id', session('id'))->orderBy('id', 'desc')->get();
@@ -22,7 +22,7 @@ class DocumentController extends Controller
         return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes'));
     }
 
-    public function createDocument(Request $request)
+    public function createDocument(Request $request): \Illuminate\Http\JsonResponse
     {
         $this->validate($request, [
             'document_type' => 'exists:document_types,id',
@@ -39,7 +39,7 @@ class DocumentController extends Controller
         return response()->json(['success' => 'Document added!'], 200);
     }
 
-    public function createDocumentForUser(Request $request, $user_id)
+    public function createDocumentForUser(Request $request, $user_id): \Illuminate\Http\JsonResponse
     {
         $this->validate($request, [
             'document_type' => 'exists:document_types,id',
@@ -59,7 +59,7 @@ class DocumentController extends Controller
         return response()->json(['success' => 'Document added!'], 200);
     }
 
-    public function showUserDocuments($user_id)
+    public function showUserDocuments($user_id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $documentTypes = DocumentType::orderBy('name', 'asc')->get();
         $myDocuments = Document::with('documentType')->where('user_id', $user_id)->orderBy('id', 'desc')->get();
@@ -70,7 +70,7 @@ class DocumentController extends Controller
 
     }
 
-    public function uploadStudentDocumentByParent($student_id)
+    public function uploadStudentDocumentByParent($student_id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
     {
         $studentInformation = StudentInformation::where('student_id', $student_id)->where('guardian', session('id'))->first();
         if (empty($studentInformation)) {
@@ -85,7 +85,7 @@ class DocumentController extends Controller
 
     }
 
-    public function uploadStudentDocuments(Request $request)
+    public function uploadStudentDocuments(Request $request): \Illuminate\Http\RedirectResponse
     {
         $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', session('id'))->first();
         if (empty($studentInformation)) {

@@ -28,7 +28,7 @@ class AcademicYearController extends Controller
         $this->middleware('permission:academic-year-search', ['only' => ['search']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $academicYears = AcademicYear::with('schoolInfo')->orderBy('id', 'desc')->paginate(10);
         $this->logActivity(json_encode(['activity' => 'Getting Academic Year List']), request()->ip(), request()->userAgent());
@@ -36,7 +36,7 @@ class AcademicYearController extends Controller
         return view('Catalogs.AcademicYears.index', compact('academicYears'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $academicYears = AcademicYear::get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
@@ -46,7 +46,7 @@ class AcademicYearController extends Controller
         return view('Catalogs.AcademicYears.create', compact('academicYears', 'schools', 'levels', 'users'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:academic_years,name',
@@ -182,7 +182,7 @@ class AcademicYearController extends Controller
             ->with('success', 'Academic year created successfully');
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = AcademicYear::with('schoolInfo')->find($id);
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
@@ -193,7 +193,7 @@ class AcademicYearController extends Controller
         return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools', 'levels', 'users'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -389,7 +389,7 @@ class AcademicYearController extends Controller
             ->with('success', 'Academic year edited successfully');
     }
 
-    public function show(Request $request)
+    public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
         $academicYears = AcademicYear::with('schoolInfo')->where('name', 'LIKE', "%$name%")->paginate(10);

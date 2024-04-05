@@ -30,7 +30,7 @@ class ApplicationController extends Controller
         $this->middleware('permission:change-status-of-application', ['only' => ['changeInterviewStatus']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $applications = [];
@@ -83,7 +83,7 @@ class ApplicationController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $applicationInfo = null;
@@ -132,7 +132,7 @@ class ApplicationController extends Controller
         return view('Applications.show', compact('applicationInfo'));
     }
 
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
         if (! $me->hasRole('Super Admin')) {
@@ -168,7 +168,7 @@ class ApplicationController extends Controller
             ->with('success', 'Application deleted!');
     }
 
-    public function removeFromReserve($id)
+    public function removeFromReserve($id): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
         if (! $me->hasRole('Super Admin')) {
@@ -208,7 +208,7 @@ class ApplicationController extends Controller
             ->with('success', 'Application Reservation Changed!');
     }
 
-    public function changeApplicationStatus($id)
+    public function changeApplicationStatus($id): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
         if (! $me->hasRole('Super Admin')) {
@@ -266,7 +266,7 @@ class ApplicationController extends Controller
         return $academicYears;
     }
 
-    public function getApplicationsByAcademicYear(Request $request)
+    public function getApplicationsByAcademicYear(Request $request): \Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse|array
     {
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
@@ -290,7 +290,7 @@ class ApplicationController extends Controller
         return $applicationTimings;
     }
 
-    public function checkDateAndTimeToBeFreeApplication(Request $request)
+    public function checkDateAndTimeToBeFreeApplication(Request $request): \Illuminate\Http\JsonResponse|int
     {
         $validator = Validator::make($request->all(), [
             'application' => 'required|exists:applications,id',
@@ -313,7 +313,7 @@ class ApplicationController extends Controller
         return 0;
     }
 
-    public function preparationForApplicationPayment(Request $request)
+    public function preparationForApplicationPayment(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'date_and_time' => 'required|exists:applications,id',
@@ -374,7 +374,7 @@ class ApplicationController extends Controller
         return redirect()->route('PrepareToPayApplication', $applicationReservation->id);
     }
 
-    public function prepareToPay($application_id)
+    public function prepareToPay($application_id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $checkApplication = null;

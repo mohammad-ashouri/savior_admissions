@@ -18,19 +18,19 @@ class RoleController extends Controller
         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $roles = Role::orderBy('name', 'asc')->paginate(10);
         return view('Catalogs.Roles.index', compact('roles'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $permission = Permission::get();
         return view('Catalogs.Roles.create', compact('permission'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->validate($request, [
             'name' => 'required|unique:roles,name',
@@ -44,7 +44,7 @@ class RoleController extends Controller
             ->with('success', 'Role created successfully');
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $role = Role::find($id);
         $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
@@ -54,7 +54,7 @@ class RoleController extends Controller
         return view('Catalogs.Roles.show', compact('role', 'rolePermissions'));
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $role = Role::find($id);
         $permission = Permission::get();
@@ -65,7 +65,7 @@ class RoleController extends Controller
         return view('Catalogs.Roles.edit', compact('role', 'permission', 'rolePermissions'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $this->validate($request, [
             'name' => 'required',
@@ -81,7 +81,7 @@ class RoleController extends Controller
         return redirect()->route('roles.index')
             ->with('success', 'Role updated successfully');
     }
-    public function search(Request $request)
+    public function search(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name=$request->name;
         $roles=Role::where('name','LIKE', "%$name%")->paginate(10);

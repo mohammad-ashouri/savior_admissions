@@ -24,7 +24,7 @@ class AcademicYearClassController extends Controller
         $this->middleware('permission:academic-year-class-search', ['only' => ['search']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         if ($me->hasRole('Super Admin')) {
@@ -54,7 +54,7 @@ class AcademicYearClassController extends Controller
         return view('BranchInfo.AcademicYearClasses.index', compact('academicYearClasses'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         if ($me->hasRole('Super Admin')) {
@@ -77,7 +77,7 @@ class AcademicYearClassController extends Controller
         return view('BranchInfo.AcademicYearClasses.create', compact('academicYears', 'levels', 'educationTypes', 'educationGenders'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:academic_year_classes,name',
@@ -109,7 +109,7 @@ class AcademicYearClassController extends Controller
             ->with('success', 'Academic year class added successfully');
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $academicYearClass = AcademicYearClass::find($id);
@@ -134,7 +134,7 @@ class AcademicYearClassController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',

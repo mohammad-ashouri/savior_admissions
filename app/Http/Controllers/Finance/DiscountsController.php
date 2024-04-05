@@ -21,7 +21,7 @@ class DiscountsController extends Controller
         $this->middleware('permission:discounts-change-status', ['only' => ['changeTuitionStatus']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $discounts = [];
@@ -46,7 +46,7 @@ class DiscountsController extends Controller
         return view('Finance.Discounts.index', compact('discounts'));
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $discounts = [];
@@ -71,7 +71,7 @@ class DiscountsController extends Controller
         return view('Finance.Discounts.edit', compact('discounts'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
         $discounts = [];

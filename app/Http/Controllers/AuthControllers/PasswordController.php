@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class PasswordController extends Controller
 {
-    public function showForgetPassword()
+    public function showForgetPassword(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('Auth.forgot_password');
     }
@@ -91,7 +91,7 @@ class PasswordController extends Controller
         }
     }
 
-    public function resetPassword(Request $request)
+    public function resetPassword(Request $request): \Illuminate\Http\JsonResponse
     {
         $resetTokenInfo = PasswordResetToken::where('token', $request->input('token'))->where('active', 1)->first();
         $validator = Validator::make($request->all(), [

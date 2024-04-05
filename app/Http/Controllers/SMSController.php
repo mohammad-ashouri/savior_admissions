@@ -11,7 +11,7 @@ class SMSController extends Controller
 {
     const FORMAT = "%s = %s <br/>";
 
-    public function sendSMS(Request $request)
+    public function sendSMS(Request $request): void
     {
         try{
             $sender = "+9890005085";
@@ -28,7 +28,7 @@ class SMSController extends Controller
         }
     }
 
-    private function format($result)
+    private function format($result): void
     {
         if($result){
             echo "<pre>";

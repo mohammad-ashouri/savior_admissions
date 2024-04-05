@@ -13,11 +13,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExcelController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('Temporary.excelimporter');
     }
-    public function importUsers(Request $request)
+
+    public function importUsers(Request $request): \Illuminate\Http\RedirectResponse
     {
         $file = $request->file('excel_file');
 
@@ -28,7 +29,8 @@ class ExcelController extends Controller
 
         return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
     }
-    public function importDocumentTypes(Request $request)
+
+    public function importDocumentTypes(Request $request): \Illuminate\Http\RedirectResponse
     {
         $file = $request->file('excel_file');
 
@@ -38,7 +40,8 @@ class ExcelController extends Controller
 
         return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
     }
-    public function importDocuments(Request $request)
+
+    public function importDocuments(Request $request): \Illuminate\Http\RedirectResponse
     {
         $file = $request->file('excel_file');
 
@@ -48,7 +51,8 @@ class ExcelController extends Controller
 
         return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
     }
-    public function importParentFathers(Request $request)
+
+    public function importParentFathers(Request $request): \Illuminate\Http\RedirectResponse
     {
         $file = $request->file('excel_file');
 
@@ -58,7 +62,8 @@ class ExcelController extends Controller
 
         return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
     }
-    public function importParentMothers(Request $request)
+
+    public function importParentMothers(Request $request): \Illuminate\Http\RedirectResponse
     {
         $file = $request->file('excel_file');
 

@@ -24,7 +24,7 @@ class DashboardController extends Controller
         $this->allRegisteredStudentsInLastAcademicYear = $allRegisteredStudentsInLastAcademicYear;
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::with('generalInformationInfo')->find(session('id'));
 

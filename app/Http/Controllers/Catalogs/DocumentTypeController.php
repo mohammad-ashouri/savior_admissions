@@ -17,7 +17,7 @@ class DocumentTypeController extends Controller
         $this->middleware('permission:document-type-delete', ['only' => ['destroy']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $types = DocumentType::orderBy('name', 'asc')->paginate(10);
         $this->logActivity(json_encode(['activity' => 'Getting Document Types']), request()->ip(), request()->userAgent());
@@ -25,14 +25,14 @@ class DocumentTypeController extends Controller
         return view('Catalogs.DocumentTypes.index', compact('types'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = DocumentType::get();
 
         return view('Catalogs.DocumentTypes.create', compact('catalog'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:document_types,name',
@@ -50,7 +50,7 @@ class DocumentTypeController extends Controller
             ->with('success', 'Document type created successfully');
     }
 
-    public function show(Request $request)
+    public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
         $types = DocumentType::where('name', 'LIKE', "%$name%")->paginate(10);
@@ -65,7 +65,7 @@ class DocumentTypeController extends Controller
         return view('Catalogs.DocumentTypes.index', compact('types', 'name'));
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = DocumentType::find($id);
         $this->logActivity(json_encode(['activity' => 'Getting Document Type Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
@@ -73,7 +73,7 @@ class DocumentTypeController extends Controller
         return view('Catalogs.DocumentTypes.edit', compact('catalog'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:document_types,name',

@@ -27,7 +27,7 @@ class InterviewController extends Controller
         //        $this->middleware('permission:interview-show', ['only' => ['show']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $interviews = [];
@@ -97,7 +97,7 @@ class InterviewController extends Controller
 
     }
 
-    public function GetInterviewForm($id)
+    public function GetInterviewForm($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $interview = [];
@@ -161,7 +161,7 @@ class InterviewController extends Controller
         return view('BranchInfo.Interviews.set', compact('interview', 'discounts'));
     }
 
-    public function SetInterview(Request $request)
+    public function SetInterview(Request $request): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
         $interview = [];
@@ -266,7 +266,7 @@ class InterviewController extends Controller
             ->withErrors(['errors' => 'Recording the interview failed!']);
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $interview = [];

@@ -21,7 +21,7 @@ class SchoolController extends Controller
         $this->middleware('permission:school-search', ['only' => ['search']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $schools = School::with('genderInfo')->orderBy('name')->paginate(10);
         $this->logActivity(json_encode(['activity' => 'Getting Schools']), request()->ip(), request()->userAgent());
@@ -29,14 +29,14 @@ class SchoolController extends Controller
         return view('Catalogs.Schools.index', compact('schools'));
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $schools = School::get();
         $genders=Gender::get();
         return view('Catalogs.Schools.create', compact('schools','genders'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:schools,name',
@@ -55,7 +55,7 @@ class SchoolController extends Controller
             ->with('success', 'School created successfully');
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = School::find($id);
         $genders=Gender::get();
@@ -64,7 +64,7 @@ class SchoolController extends Controller
         return view('Catalogs.Schools.edit', compact('catalog','genders' ));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -88,7 +88,7 @@ class SchoolController extends Controller
         return redirect()->route('Schools.index')
             ->with('success', 'School updated successfully');
     }
-    public function show(Request $request)
+    public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name=$request->name;
         $schools=School::where('name','LIKE', "%$name%")->paginate(10);

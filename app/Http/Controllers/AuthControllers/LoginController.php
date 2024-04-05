@@ -29,7 +29,7 @@ class LoginController extends Controller
         $this->middleware('web')->only('logout');
     }
 
-    public function showLoginForm()
+    public function showLoginForm(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         if (! Auth::check()) {
             return view('Auth.login');
@@ -43,7 +43,7 @@ class LoginController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
@@ -101,14 +101,14 @@ class LoginController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(): \Illuminate\Http\RedirectResponse
     {
         Auth::logout();
 
         return redirect()->route('login');
     }
 
-    protected function authenticated(Request $request, $user)
+    protected function authenticated(Request $request, $user): \Illuminate\Http\RedirectResponse
     {
         return redirect()->intended($this->redirectPath());
     }

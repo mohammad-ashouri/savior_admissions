@@ -20,7 +20,7 @@ class TuitionController extends Controller
         $this->middleware('permission:tuition-change-price', ['only' => ['changeTuitionPrice']]);
     }
 
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $tuitions = [];
@@ -45,7 +45,7 @@ class TuitionController extends Controller
         return view('Finance.Tuition.index', compact('tuitions'));
     }
 
-    public function edit($id)
+    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $tuitions = [];
@@ -71,7 +71,7 @@ class TuitionController extends Controller
 
     }
 
-    public function changeTuitionPrice(Request $request)
+    public function changeTuitionPrice(Request $request): \Illuminate\Http\JsonResponse
     {
         $this->validate($request, [
             'tuition_id' => 'required|exists:tuition_details,id',
