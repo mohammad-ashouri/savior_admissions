@@ -26,7 +26,8 @@ return new class extends Migration {
 ('Passport photo - page 1', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
 ('Passport photo - page 2', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
 ('Passport photo - page 3', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
-('National card photo', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL)
+('National card photo', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL),
+('Deposit slip', 1, '2024-01-19 06:22:23', '2024-01-19 06:22:23', NULL)
 ;";
         DB::statement($query);
     }

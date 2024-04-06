@@ -6,6 +6,7 @@ use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Catalogs\DocumentType;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\PaymentMethod;
 use App\Models\Document;
@@ -424,7 +425,7 @@ class ApplicationController extends Controller
 
                 $document = new Document();
                 $document->user_id = $applicationInformation->student_id;
-                $document->document_type_id = 243;
+                $document->document_type_id = DocumentType::where('name','Deposit slip')->first()->id;
                 $document->src = $path;
                 $document->save();
 
