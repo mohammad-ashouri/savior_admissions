@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\AllRegisteredStudentsInLastAcademicYear;
 use App\Charts\AcceptedStudentsByAcademicYear;
+use App\Charts\AllRegisteredApplications;
+use App\Charts\AllRegisteredStudentsInLastAcademicYear;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -16,12 +17,18 @@ use App\Models\UserAccessInformation;
 class DashboardController extends Controller
 {
     protected AcceptedStudentsByAcademicYear $acceptedStudentNumberStatusByAcademicYear;
+
     protected AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear;
 
-    public function __construct(AcceptedStudentsByAcademicYear $acceptedStudentNumberStatusByAcademicYear, AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear)
-    {
+    protected AllRegisteredApplications $allRegisteredApplicationsInLastAcademicYear;
+
+    public function __construct(AcceptedStudentsByAcademicYear          $acceptedStudentNumberStatusByAcademicYear,
+                                AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear,
+                                AllRegisteredApplications               $allRegisteredApplicationsInLastAcademicYear,
+    ) {
         $this->acceptedStudentNumberStatusByAcademicYear = $acceptedStudentNumberStatusByAcademicYear;
         $this->allRegisteredStudentsInLastAcademicYear = $allRegisteredStudentsInLastAcademicYear;
+        $this->allRegisteredApplicationsInLastAcademicYear = $allRegisteredApplicationsInLastAcademicYear;
     }
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -40,8 +47,9 @@ class DashboardController extends Controller
         } elseif ($me->hasRole('Super Admin')) {
             $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear->build();
             $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear->build();
+            $allRegisteredApplicationsInLastAcademicYear = $this->allRegisteredApplicationsInLastAcademicYear->build();
 
-            return view('Dashboards.Main', compact('me', 'acceptedStudentNumberStatusByAcademicYear','allRegisteredStudentsInLastAcademicYear'));
+            return view('Dashboards.Main', compact('me', 'acceptedStudentNumberStatusByAcademicYear', 'allRegisteredStudentsInLastAcademicYear', 'allRegisteredApplicationsInLastAcademicYear'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
