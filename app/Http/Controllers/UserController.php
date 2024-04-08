@@ -86,21 +86,21 @@ class UserController extends Controller
             'mobile' => 'required|integer|unique:users,mobile',
             'password' => 'required|unique:users,mobile',
             'role' => 'required',
-            'school' => 'required|exists:schools,id',
+//            'school' => 'required|exists:schools,id',
         ]);
 
         $user = new User;
         $user->email = $request->email;
         $user->mobile = $request->mobile;
         $user->password = Hash::make($request->password);
-        if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and $request->role == 'Student') {
-            $additionalInformation = [
-                'school_id' => $request->school,
-            ];
-            $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-            $userAdditionalInformation = array_merge($userAdditionalInformation, $additionalInformation);
-            $user->additional_information = json_encode($userAdditionalInformation);
-        }
+//        if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and $request->role == 'Student') {
+//            $additionalInformation = [
+//                'school_id' => $request->school,
+//            ];
+//            $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
+//            $userAdditionalInformation = array_merge($userAdditionalInformation, $additionalInformation);
+//            $user->additional_information = json_encode($userAdditionalInformation);
+//        }
         if ($user->save()) {
             $generalInformation = new GeneralInformation();
             $generalInformation->user_id = $user->id;
