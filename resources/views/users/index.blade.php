@@ -162,7 +162,7 @@
                                             Edit
                                         </a>
                                         <a href="/Documents/Show/{{$user->id}}" type="button"
-                                           class="min-w-max inline-flex font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800 hover:underline">
+                                           class="min-w-max inline-flex font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:ring-cyan-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800 hover:underline">
 
                                             <svg class="w-5 h-5 mr-1" fill="currentColor"
                                                  xmlns="http://www.w3.org/2000/svg"

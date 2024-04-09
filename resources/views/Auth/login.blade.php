@@ -53,10 +53,13 @@
                     <label for="remember" class="ml-2 text-sm font-medium">Remember
                         me</label>
                 </div>
-
-
+            </div>
+            <div class="flex justify-between items-start mb-6">
                 <div class="flex items-center">
-                    <a href="{{ route('ForgetPassword') }}" class="text-blue-500">Lost Password?</a>
+                    <a href="{{ route('ForgetPassword') }}" class="text-blue-500">Lost password?</a>
+                </div>
+                <div class="flex items-center">
+                    <a href="{{ route('CreateAccount.authorization') }}" class="text-blue-500">Create account</a>
                 </div>
             </div>
 

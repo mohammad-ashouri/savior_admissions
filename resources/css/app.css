@@ -67,6 +67,9 @@
     .loginPic{
         background: url(../images/login.jpg) no-repeat;
     }
+    .signupPic{
+        background: url(../images/signup-images/create-account.jpg) no-repeat;
+    }
 }
 /* [1] The container */
 .img-hover-zoom {

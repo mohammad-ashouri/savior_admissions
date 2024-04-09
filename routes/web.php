@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthControllers\LoginController;
 use App\Http\Controllers\AuthControllers\PasswordController;
+use App\Http\Controllers\AuthControllers\SignupController;
 use App\Http\Controllers\BranchInfo\AcademicYearClassController;
 use App\Http\Controllers\BranchInfo\ApplicationTimingController;
 use App\Http\Controllers\BranchInfo\InterviewController;
@@ -23,7 +24,6 @@ use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SMSController;
-use App\Http\Controllers\Test\ChartController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Auth;
@@ -47,11 +47,8 @@ Route::get('/', function () {
 
     return redirect()->route('dashboard');
 });
-Route::get('/home', function () {
-    Auth::logout();
 
-    return redirect()->route('login');
-});
+Route::get('/create-account', [SignupController::class, 'index'])->name('CreateAccount.authorization');
 
 Route::prefix('login')->group(function () {
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -73,7 +70,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //Catalogs
-    Route::group([],function () {
+    Route::group([], function () {
         Route::resources([
             'Schools' => SchoolController::class,
             'DocumentTypes' => DocumentTypeController::class,
@@ -158,10 +155,10 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     });
 
     //Payment
-//    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
+    //    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
 
     //SMS
-//    Route::get('testsms', [SMSController::class, 'sendSMS']);
+    //    Route::get('testsms', [SMSController::class, 'sendSMS']);
 
 });
 //Route::get('/import-excel', [ExcelController::class, 'index']);
