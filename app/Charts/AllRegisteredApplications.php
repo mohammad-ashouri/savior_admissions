@@ -26,7 +26,7 @@ class AllRegisteredApplications
             ->where('application_reservations.payment_status',1)
             ->select('application_timings.academic_year')
             ->get();
-        dd($applications);
+//        dd($applications);
 
 
         $academicYearLabels = [];

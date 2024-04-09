@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="flex w-full">
-                    @include('Dashboards.Roles.Charts.AllRegisteredApplications')
+{{--                    @include('Dashboards.Roles.Charts.AllRegisteredApplications')--}}
                 </div>
             </div>
         </div>
