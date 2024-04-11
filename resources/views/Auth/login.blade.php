@@ -11,6 +11,8 @@
 <body class="bg-light-theme-color-nav-base flex items-center justify-center h-screen">
 
 <div class="bg-light-theme-color-base lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
+    <div class="lg:w-2/5 pr-8 lg:inline-block loginPic">
+    </div>
     @if( session()->has('success') )
         <div class="bg-green-100 border-t-4 border-green-500 rounded-b text-green-900 px-4 py-3 shadow-md"
              role="alert">
@@ -28,9 +30,8 @@
             </div>
         </div>
     @endif
-    <div class="lg:w-2/5 pr-8 lg:inline-block loginPic">
-    </div>
     <div class="lg:w-1/2 w-full flex flex-col justify-center items-center p-8">
+
         <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left ">Sign in to savior school</h2>
         <form id="login-form" class="space-y-4 w-full">
             <div class="mb-6">

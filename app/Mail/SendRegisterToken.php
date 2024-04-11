@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use App\Models\Auth\RegisterToken;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
@@ -42,12 +41,12 @@ class SendRegisterToken extends Mailable
      */
     public function content(): Content
     {
-        $token = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(20)));
+        $token = preg_replace('/[\/\\.]/', '', Str::random(32));
 
         $tokenEntry = new RegisterToken();
         $tokenEntry->register_method = 'Email';
         $tokenEntry->value = $this->email;
-        $tokenEntry->token = preg_replace('/[\/\\.]/', '', Str::random(32));
+        $tokenEntry->token = $token;
         $tokenEntry->status = 0;
         $tokenEntry->save();
 

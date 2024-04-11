@@ -25,6 +25,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\CheckIfProfileRegistered;
 use App\Http\Middleware\CheckLoginMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -162,7 +163,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     //    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
 
     //SMS
-        Route::get('testsms', [SMSController::class, 'sendSMS']);
+        Route::post('sendSMS', [SMSController::class, 'sendSMS'])->name('sms.send');
 
 });
 //Route::get('/import-excel', [ExcelController::class, 'index']);

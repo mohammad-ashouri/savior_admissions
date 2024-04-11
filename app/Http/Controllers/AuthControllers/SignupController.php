@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class SignupController extends Controller
 {
@@ -60,7 +61,21 @@ class SignupController extends Controller
 
         switch (request('signup-method')) {
             case 'Mobile':
+                $token = preg_replace('/[\/\\.]/', '', Str::random(32));
+                $tokenEntry = new RegisterToken();
+                $tokenEntry->register_method = 'Mobile';
+                $tokenEntry->value = $request->mobile;
+                $tokenEntry->token = $token;
+                $tokenEntry->status = 0;
+                $tokenEntry->save();
 
+                $valueToSend = 'Your registration link is: '.env('APP_URL').'/new-account/'.$token.' <br> You have one hour to register.';
+                $routeName = 'sms.send';
+                $routeParameters = ['message' => $valueToSend, 'mobile' => $request->mobile];
+                route($routeName, $routeParameters, false);
+
+                return redirect()->route('login')
+                    ->with('success', 'Check your SMS inbox for a registration email.');
                 break;
             case 'Email':
                 $email = $request->email;
