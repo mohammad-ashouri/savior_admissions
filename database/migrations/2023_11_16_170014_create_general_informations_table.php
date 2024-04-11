@@ -35,6 +35,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('postal_code')->nullable();
+            $table->boolean('status')->default(0);
             $table->string('adder')->nullable();
             $table->string('editor')->nullable();
             $table->timestamps();
