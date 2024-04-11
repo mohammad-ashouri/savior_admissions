@@ -77,7 +77,6 @@ class SignupController extends Controller
 
                 return redirect()->route('login')
                     ->with('success', 'Check your SMS inbox for a registration email.');
-                break;
             case 'Email':
                 $email = $request->email;
 
@@ -91,17 +90,15 @@ class SignupController extends Controller
                     $mailSend = Mail::to($email)->send(
                         new SendRegisterToken($email)
                     );
-                    dd($mailSend);
 
-                    //                    $errorMessage = 'Check your inbox for a registration email.';
-                    //
-                    //                    return response()->json(['error' => $errorMessage], 422);
                     if ($mailSend) {
                         return redirect()->route('login')
                             ->with('success', 'Check your inbox for a registration email.');
+                    }else{
+                        return redirect()->route('login')
+                            ->withErrors(['errors', "Error on sending email! Try again later."]);
                     }
                 }
-                break;
         }
 
         abort(422);
