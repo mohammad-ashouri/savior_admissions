@@ -48,7 +48,8 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-Route::get('/create-account', [SignupController::class, 'index'])->name('CreateAccount.authorization');
+Route::get('/create-account', [SignupController::class, 'index'])->name('CreateAccount');
+Route::post('/create-account', [SignupController::class, 'authorization'])->name('CreateAccount.authorization');
 
 Route::prefix('login')->group(function () {
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -67,93 +68,94 @@ Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(CheckLoginMiddleware::class)->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::middleware(CheckIfProfileRegistered::class)->group(function () {
 
-    //Catalogs
-    Route::group([], function () {
-        Route::resources([
-            'Schools' => SchoolController::class,
-            'DocumentTypes' => DocumentTypeController::class,
-            'EducationTypes' => EducationTypeController::class,
-            'Levels' => LevelController::class,
-            'AcademicYears' => AcademicYearController::class,
-        ]);
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        $resources = ['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
-        foreach ($resources as $resource) {
-            Route::get("$resource/search", [ucfirst($resource).'Controller', 'search'])->name("$resource.search");
-        }
+        //Catalogs
+        Route::group([], function () {
+            Route::resources([
+                'Schools' => SchoolController::class,
+                'DocumentTypes' => DocumentTypeController::class,
+                'EducationTypes' => EducationTypeController::class,
+                'Levels' => LevelController::class,
+                'AcademicYears' => AcademicYearController::class,
+            ]);
+
+            $resources = ['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
+            foreach ($resources as $resource) {
+                Route::get("$resource/search", [ucfirst($resource).'Controller', 'search'])->name("$resource.search");
+            }
+        });
+
+        //Search routes
+        Route::get('/SearchRoles', [RoleController::class, 'search'])->name('Roles.search');
+
+        //Branch Info
+        Route::resource('AcademicYearClasses', AcademicYearClassController::class);
+        Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
+        Route::get('/GetAcademicYearStarttimeAndEndtime', [AcademicYearClassController::class, 'academicYearStarttimeAndEndtime']);
+        Route::resource('ApplicationTimings', ApplicationTimingController::class);
+        Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
+        Route::resource('Interviews', InterviewController::class);
+        Route::get('/SetInterview/{id}', [InterviewController::class, 'GetInterviewForm']);
+        Route::post('/SetInterview', [InterviewController::class, 'SetInterview']);
+
+        //Finance
+        Route::resource('ReservationInvoices', ApplicationReservationController::class);
+        Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class, 'changeApplicationPaymentStatus']);
+        Route::get('SearchReservationInvoices', [ApplicationReservationController::class, 'searchReservationInvoices'])->name('SearchReservationInvoices');
+        Route::resource('Tuition', TuitionController::class);
+        Route::post('ChangeTuitionPrice', [TuitionController::class, 'changeTuitionPrice']);
+        Route::resource('Discounts', DiscountsController::class);
+        Route::post('ChangeDiscountPercentage', [DiscountsController::class, 'changeDiscountPercentage']);
+        Route::post('ChangeDiscountStatus', [DiscountsController::class, 'changeDiscountStatus']);
+        Route::get('GetDiscountPercentage', [DiscountsController::class, 'getDiscountPercentage']);
+
+        Route::resource('roles', RoleController::class);
+        Route::resource('users', UserController::class);
+        Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-Principal');
+        Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-Principal');
+        Route::post('users/change_rules', [ProfileController::class, 'changeUserRole']);
+        Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
+        Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
+
+        Route::resource('Students', StudentController::class);
+
+        //Applications
+        Route::resource('Applications', ApplicationController::class);
+        Route::post('Applications/RemoveFromReserve/{id}', [ApplicationController::class, 'removeFromReserve']);
+        Route::post('Applications/ChangeInterviewStatus/{id}', [ApplicationController::class, 'changeApplicationStatus']);
+        Route::get('GetAcademicYearsByLevel', [ApplicationController::class, 'getAcademicYearsByLevel']);
+        Route::get('GetApplicationsByAcademicYear', [ApplicationController::class, 'getApplicationsByAcademicYear']);
+        Route::get('CheckDateAndTimeToBeFreeApplication', [ApplicationController::class, 'checkDateAndTimeToBeFreeApplication']);
+        Route::post('ApplicationPayment', [ApplicationController::class, 'preparationForApplicationPayment']);
+        Route::get('PrepareToPayApplication/{application_id}', [ApplicationController::class, 'prepareToPay'])->name('PrepareToPayApplication');
+        Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
+
+        Route::post('student/change_information', [StudentController::class, 'changeInformation']);
+
+        Route::prefix('Documents')->group(function () {
+            Route::get('/', [DocumentController::class, 'index']);
+            Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
+            Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-Principal');
+            Route::post('/Create', [DocumentController::class, 'createDocument']);
+            Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
+            Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
+        });
+        Route::get('UploadStudentDocumentByParent/{student_id}', [DocumentController::class, 'uploadStudentDocumentByParent'])->name('Document.UploadByParent');
+        Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
+
+        //Exports
+        //PDF
+        Route::prefix('PDF')->group(function () {
+            Route::get('/tuition_card', [PDFExportController::class, 'tuitionCardExport']);
+        });
     });
-
-    //Search routes
-    Route::get('/SearchRoles', [RoleController::class, 'search'])->name('Roles.search');
-
-    //Branch Info
-    Route::resource('AcademicYearClasses', AcademicYearClassController::class);
-    Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
-    Route::get('/GetAcademicYearStarttimeAndEndtime', [AcademicYearClassController::class, 'academicYearStarttimeAndEndtime']);
-    Route::resource('ApplicationTimings', ApplicationTimingController::class);
-    Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
-    Route::resource('Interviews', InterviewController::class);
-    Route::get('/SetInterview/{id}', [InterviewController::class, 'GetInterviewForm']);
-    Route::post('/SetInterview', [InterviewController::class, 'SetInterview']);
-
-    //Finance
-    Route::resource('ReservationInvoices', ApplicationReservationController::class);
-    Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class, 'changeApplicationPaymentStatus']);
-    Route::get('SearchReservationInvoices', [ApplicationReservationController::class, 'searchReservationInvoices'])->name('SearchReservationInvoices');
-    Route::resource('Tuition', TuitionController::class);
-    Route::post('ChangeTuitionPrice', [TuitionController::class, 'changeTuitionPrice']);
-    Route::resource('Discounts', DiscountsController::class);
-    Route::post('ChangeDiscountPercentage', [DiscountsController::class, 'changeDiscountPercentage']);
-    Route::post('ChangeDiscountStatus', [DiscountsController::class, 'changeDiscountStatus']);
-    Route::get('GetDiscountPercentage', [DiscountsController::class, 'getDiscountPercentage']);
-
-    Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
-    Route::post('users/change_password', [UserController::class, 'changeUserPassword'])->middleware('can:access-SuperAdmin-and-Principal');
-    Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-Principal');
-    Route::post('users/change_rules', [ProfileController::class, 'changeUserRole']);
-    Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
-    Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
-
-    Route::resource('Students', StudentController::class);
-
-    //Applications
-    Route::resource('Applications', ApplicationController::class);
-    Route::post('Applications/RemoveFromReserve/{id}', [ApplicationController::class, 'removeFromReserve']);
-    Route::post('Applications/ChangeInterviewStatus/{id}', [ApplicationController::class, 'changeApplicationStatus']);
-    Route::get('GetAcademicYearsByLevel', [ApplicationController::class, 'getAcademicYearsByLevel']);
-    Route::get('GetApplicationsByAcademicYear', [ApplicationController::class, 'getApplicationsByAcademicYear']);
-    Route::get('CheckDateAndTimeToBeFreeApplication', [ApplicationController::class, 'checkDateAndTimeToBeFreeApplication']);
-    Route::post('ApplicationPayment', [ApplicationController::class, 'preparationForApplicationPayment']);
-    Route::get('PrepareToPayApplication/{application_id}', [ApplicationController::class, 'prepareToPay'])->name('PrepareToPayApplication');
-    Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
-
-    Route::post('student/change_information', [StudentController::class, 'changeInformation']);
-
-    Route::prefix('Documents')->group(function () {
-        Route::get('/', [DocumentController::class, 'index']);
-        Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
-        Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-Principal');
-        Route::post('/Create', [DocumentController::class, 'createDocument']);
-        Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
-        Route::post('/Delete/{document_id}', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
-    });
-    Route::get('UploadStudentDocumentByParent/{student_id}', [DocumentController::class, 'uploadStudentDocumentByParent'])->name('Document.UploadByParent');
-    Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
-
     Route::prefix('Profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile');
         Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
     });
-
-    //Exports
-    //PDF
-    Route::prefix('PDF')->group(function () {
-        Route::get('/tuition_card', [PDFExportController::class, 'tuitionCardExport']);
-    });
-
     //Payment
     //    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
 
