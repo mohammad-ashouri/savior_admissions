@@ -24,9 +24,19 @@ function validateIranianMobile(mobile) {
 }
 
 $(document).ready(function () {
+
     var fullPath = window.location.pathname;
     if (fullPath.includes('/create-account')) {
         // Hide the initial two divs
+        $('#signup-method').val('');
+        $('#mobile').val('');
+        $('#email').val('');
+        $('#captcha').val('');
+
+        $('#captchaImg').click(function () {
+            reloadCaptcha();
+        });
+
         $('#email').closest('div').hide();
         $('#mobile').closest('div').hide();
 
@@ -93,6 +103,7 @@ $(document).ready(function () {
                 return;
             }
 
+            $('#signup').off('submit').submit();
 
         });
     }

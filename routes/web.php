@@ -50,6 +50,8 @@ Route::get('/', function () {
 
 Route::get('/create-account', [SignupController::class, 'index'])->name('CreateAccount');
 Route::post('/create-account', [SignupController::class, 'authorization'])->name('CreateAccount.authorization');
+Route::get('/new-account/{token}', [SignupController::class, 'newAccount'])->name('CreateAccount.new-account');
+Route::post('/new-account', [SignupController::class, 'createAccount'])->name('CreateAccount.createAccount');
 
 Route::prefix('login')->group(function () {
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -160,7 +162,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     //    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
 
     //SMS
-    //    Route::get('testsms', [SMSController::class, 'sendSMS']);
+        Route::get('testsms', [SMSController::class, 'sendSMS']);
 
 });
 //Route::get('/import-excel', [ExcelController::class, 'index']);
