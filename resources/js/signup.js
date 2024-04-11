@@ -17,6 +17,12 @@ function reloadCaptcha() {
     captchaImg.src = captchaUrl + '?' + Date.now();
 }
 
+function validateIranianMobile(mobile) {
+    var iranianMobilePattern = /^(\+98|0)?9\d{9}$/;
+
+    return iranianMobilePattern.test(mobile);
+}
+
 $(document).ready(function () {
     var fullPath = window.location.pathname;
     if (fullPath.includes('/create-account')) {
@@ -49,28 +55,45 @@ $(document).ready(function () {
         // When the form submitted
         $('#signup').submit(function (e) {
             e.preventDefault();
-            switch ($('#signup-method').val()) {
-                case null:
-                    swalFire('Error', "The signup method is not selected", 'error', 'Try again');
-                    reloadCaptcha();
-                    break;
+            // Get the value of signup method
+            let signupMethod = $('#signup-method').val();
+
+            // Check the value of signup method
+            switch (signupMethod) {
                 case 'Email':
-                    if ($('#email').val() == '') {
+                    var email = $('#email').val();
+                    if (email === '') {
                         swalFire('Error', "Email field is empty!", 'error', 'Try again');
                         reloadCaptcha();
+                        return;
                     }
                     break;
                 case 'Mobile':
-                    if ($('#mobile').val() == '') {
+                    var mobile = $('#mobile').val();
+                    if (mobile === '') {
                         swalFire('Error', "Mobile field is empty!", 'error', 'Try again');
                         reloadCaptcha();
+                        return;
+                    } else if (!validateIranianMobile(mobile)) {
+                        swalFire('Error', "Mobile value is not validated!", 'error', 'Try again');
+                        return;
                     }
                     break;
+                default:
+                    swalFire('Error', "The signup method is not selected", 'error', 'Try again');
+                    reloadCaptcha();
+                    return;
             }
-            if ($('#captcha').val() == '') {
+
+            // Check the value of captcha field
+            let captcha = $('#captcha').val();
+            if (captcha === '') {
                 swalFire('Error', "Captcha field is empty!", 'error', 'Try again');
                 reloadCaptcha();
+                return;
             }
+
+
         });
     }
 });
