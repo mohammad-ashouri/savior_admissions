@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Kavenegar\Exceptions\ApiException;
+use Kavenegar\Exceptions\HttpException;
+use Kavenegar\Laravel\Facade as Kavenegar;
 
 class SignupController extends Controller
 {
@@ -70,9 +73,7 @@ class SignupController extends Controller
                 $tokenEntry->save();
 
                 $valueToSend = 'Your registration link is: '.env('APP_URL').'/new-account/'.$token.' <br> You have one hour to register.';
-                $routeName = 'sms.send';
-                $routeParameters = ['message' => $valueToSend, 'mobile' => $request->mobile];
-                route($routeName, $routeParameters, false);
+                $this->sendSms($request->mobile, $valueToSend);
 
                 return redirect()->route('login')
                     ->with('success', 'Check your SMS inbox for a registration email.');
@@ -90,6 +91,7 @@ class SignupController extends Controller
                     $mailSend = Mail::to($email)->send(
                         new SendRegisterToken($email)
                     );
+                    dd($mailSend);
 
                     //                    $errorMessage = 'Check your inbox for a registration email.';
                     //
@@ -149,4 +151,7 @@ class SignupController extends Controller
         return redirect()->route('login')
             ->with('success', 'You registered successfully. Please login.');
     }
+
+
+
 }

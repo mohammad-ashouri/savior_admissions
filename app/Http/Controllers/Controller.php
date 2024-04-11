@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\ActivityLog;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Jenssegers\Agent\Agent;
+use Kavenegar\Exceptions\ApiException;
+use Kavenegar\Exceptions\HttpException;
+use Kavenegar\Laravel\Facade as Kavenegar;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+    const FORMAT = '%s = %s <br/>';
 
     public function logActivity($activity, $ip_address, $user_agent, $user_id = null): void
     {
@@ -109,5 +114,39 @@ class Controller extends BaseController
         }
 
         return array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
+    }
+
+    public function sendSMS($mobile,$messageText): void
+    {
+        try {
+            $sender = '+9890005085';
+            $message = $messageText;
+            $receptor = [$mobile];
+            $result = Kavenegar::Send($sender, $receptor, $message);
+            $this->format($result);
+        } catch (ApiException $e) {
+            echo $e->errorMessage();
+        } catch (HttpException $e) {
+            echo $e->errorMessage();
+        }
+    }
+
+    private function format($result): void
+    {
+        if ($result) {
+            echo '<pre>';
+            foreach ($result as $r) {
+                echo sprintf(self::FORMAT, 'messageid', $r->messageid);
+                echo sprintf(self::FORMAT, 'message', $r->message);
+                echo sprintf(self::FORMAT, 'status', $r->status);
+                echo sprintf(self::FORMAT, 'statustext', $r->statustext);
+                echo sprintf(self::FORMAT, 'sender', $r->sender);
+                echo sprintf(self::FORMAT, 'receptor', $r->receptor);
+                echo sprintf(self::FORMAT, 'date', $r->date);
+                echo sprintf(self::FORMAT, 'cost', $r->cost);
+                echo '<hr/>';
+            }
+            echo '</pre>';
+        }
     }
 }
