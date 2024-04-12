@@ -12,7 +12,7 @@
     class="mx-5 sm:mx-0 w-full max-w-2xl p-8 text-center border-gray-200 rounded-lg shadow sm:p-6 md:p-16 dark:bg-gray-800 dark:border-gray-700">
     <div class="space-y-2">
         <p class="font-normal text-gray-900 dark:text-gray-400 mb-4">
-            Click the button below to complete the registration process.
+            Click the button below to complete the registration process. You have one hour to register!
         </p>
         <a href="{{$register_link}}">
             <button
