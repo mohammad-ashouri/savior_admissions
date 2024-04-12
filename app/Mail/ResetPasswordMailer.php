@@ -32,7 +32,7 @@ class ResetPasswordMailer extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('info@savioradmissions.com', 'Savior support'),
+            from: new Address('support@saviorschools.com', 'Savior support'),
             subject: 'Reset Password',
         );
     }
