@@ -11,9 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Kavenegar\Exceptions\ApiException;
-use Kavenegar\Exceptions\HttpException;
-use Kavenegar\Laravel\Facade as Kavenegar;
 
 class SignupController extends Controller
 {
@@ -59,7 +56,7 @@ class SignupController extends Controller
                 $errorMessage = 'An internal server error occurred.';
             }
 
-            return response()->json(['error' => $errorMessage], 422);
+            return redirect()->route('login')->withErrors(['errors' => $errorMessage]);
         }
 
         switch (request('signup-method')) {
@@ -73,10 +70,10 @@ class SignupController extends Controller
                 $tokenEntry->save();
 
                 $valueToSend = 'Your registration link is: '.env('APP_URL').'/new-account/'.$token."\nYou have one hour to register.\nSavior Schools Support";
+
                 $this->sendSms($request->mobile, $valueToSend);
 
-                return redirect()->route('login')
-                    ->with('success', 'Check your SMS inbox for a registration email.');
+                return redirect()->route('login')->with(['SMSSent' => 'SMSSent']);
             case 'Email':
                 $email = $request->email;
 
@@ -84,19 +81,17 @@ class SignupController extends Controller
                 if ($checkIfEmailExists) {
                     $errorMessage = 'The entered email address already exists.';
 
-                    return redirect()->route('login')
-                        ->withErrors(['errors', $errorMessage]);
+                    return redirect()->route('login')->withErrors(['errors' => $errorMessage]);
+
                 } else {
                     $mailSend = Mail::to($email)->send(
                         new SendRegisterToken($email)
                     );
 
                     if ($mailSend) {
-                        return redirect()->route('login')
-                            ->with('success', 'Check your inbox for a registration email.');
-                    }else{
-                        return redirect()->route('login')
-                            ->withErrors(['errors', "Error on sending email! Try again later."]);
+                        return redirect()->route('login')->with(['EmailSent' => 'EmailSent']);
+                    } else {
+                        return redirect()->route('login')->with(['EmailSendingFailed' => 'EmailSendingFailed']);
                     }
                 }
         }
@@ -148,7 +143,4 @@ class SignupController extends Controller
         return redirect()->route('login')
             ->with('success', 'You registered successfully. Please login.');
     }
-
-
-
 }
