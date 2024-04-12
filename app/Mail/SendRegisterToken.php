@@ -31,7 +31,7 @@ class SendRegisterToken extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('support@savioradmissions.com', 'Savior Schools Support'),
+            from: new Address('support@saviorschools.com', 'Savior Schools Support'),
             subject: 'Create Savior Schools Account',
         );
     }
