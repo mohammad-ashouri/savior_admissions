@@ -15,24 +15,6 @@ class PrincipalSeeder extends Seeder
     public function run(): void
     {
         $user = User::query()->create([
-            'mobile' => '+989055555555',
-            'email' => 'm.shafiee@saviorschools.com',
-            'password' => bcrypt('sahfiee1461'),
-            'status' => 1,
-        ]);
-        $generalInformation = GeneralInformation::create(
-            [
-                'user_id' => $user->id,
-                'first_name_fa' => 'محمدحسین',
-                'last_name_fa' => 'شفیعی',
-                'first_name_en' => 'Mohammad Hossain',
-                'last_name_en' => 'Shafiee',
-            ]
-        );
-        $role = Role::where('name', 'Principal')->first();
-        $user->assignRole([$role->id]);
-
-        $user = User::query()->create([
             'mobile' => '+989014995225',
             'email' => 'z.hosseini@saviorschools.com',
             'password' => bcrypt('hosseini2432'),
