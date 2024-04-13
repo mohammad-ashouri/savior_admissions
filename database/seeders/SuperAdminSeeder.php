@@ -55,6 +55,7 @@ class SuperAdminSeeder extends Seeder
             'mobile' => '+989011111111',
             'email' => 'a.alavian@saviorschools.com',
             'password' => bcrypt('alavian1247'),
+            'status' => 1,
         ]);
         $generalInformation = GeneralInformation::create(
             [
@@ -72,6 +73,7 @@ class SuperAdminSeeder extends Seeder
             'mobile' => '+989107542570',
             'email' => 'm.jalilian@saviorschools.com',
             'password' => bcrypt('jalilian9475'),
+            'status' => 1,
         ]);
         $generalInformation = GeneralInformation::create(
             [
@@ -80,6 +82,24 @@ class SuperAdminSeeder extends Seeder
                 'last_name_fa' => 'جلیلیان',
                 'first_name_en' => 'Mahmood',
                 'last_name_en' => 'Jalilian',
+            ]
+        );
+        $role = Role::where('name', 'Super Admin')->first();
+        $user->assignRole([$role->id]);
+
+        $user = User::query()->create([
+            'mobile' => '+989102044120',
+            'email' => 'r.ghanavati@saviorschools.com',
+            'password' => bcrypt('ghanavati9475'),
+            'status' => 1,
+        ]);
+        $generalInformation = GeneralInformation::create(
+            [
+                'user_id' => $user->id,
+                'first_name_fa' => 'رضوان',
+                'last_name_fa' => 'قنواتی',
+                'first_name_en' => 'Rezvan',
+                'last_name_en' => 'Ghanavati',
             ]
         );
         $role = Role::where('name', 'Super Admin')->first();

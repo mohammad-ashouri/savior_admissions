@@ -18,17 +18,36 @@ class AdmissionOfficerSeeder extends Seeder
          * @var User $user
          */
         $user = User::query()->create([
-            'mobile' => '+989152465487',
-            'email' => 'test@sa.com',
-            'password' => bcrypt(12345678),
+            'mobile' => '+988122099434',
+            'email' => 'f.naseri@saviorschools.com',
+            'password' => bcrypt('naseri6342'),
+            'status' => 1,
         ]);
         $generalInformation = GeneralInformation::create(
             [
                 'user_id' => $user->id,
-                'first_name_fa' => 'حمید',
-                'last_name_fa' => 'مدیر آموزش',
-                'first_name_en' => 'Hamid',
-                'last_name_en' => 'AdmissionOfficer',
+                'first_name_fa' => 'فرنوش',
+                'last_name_fa' => 'ناصری',
+                'first_name_en' => 'Farnoush',
+                'last_name_en' => 'Naseri',
+            ]
+        );
+        $role = Role::where('name', 'Admissions Officer')->first();
+        $user->assignRole([$role->id]);
+
+        $user = User::query()->create([
+            'mobile' => '+989360630908',
+            'email' => 'm.khoshdel@saviorschools.com',
+            'password' => bcrypt('khoshdel9865'),
+            'status' => 1,
+        ]);
+        $generalInformation = GeneralInformation::create(
+            [
+                'user_id' => $user->id,
+                'first_name_fa' => 'محمدرضا',
+                'last_name_fa' => 'خوشدل',
+                'first_name_en' => 'Mohammad Reza',
+                'last_name_en' => 'Khoshdel',
             ]
         );
         $role = Role::where('name', 'Admissions Officer')->first();

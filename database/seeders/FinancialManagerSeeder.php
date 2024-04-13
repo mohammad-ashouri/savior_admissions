@@ -21,6 +21,7 @@ class FinancialManagerSeeder extends Seeder
             'mobile' => '+989022222222',
             'email' => 'n.ahamadi@saviorschools.com',
             'password' => bcrypt('ahmadi444'),
+            'status' => 1,
         ]);
         $generalInformation = GeneralInformation::create(
             [
@@ -39,6 +40,7 @@ class FinancialManagerSeeder extends Seeder
             'mobile' => '+989033333333',
             'email' => 'r.ahmadi@saviorschools.com',
             'password' => bcrypt('ahmadi1314'),
+            'status' => 1,
         ]);
         $generalInformation = GeneralInformation::create(
             [
