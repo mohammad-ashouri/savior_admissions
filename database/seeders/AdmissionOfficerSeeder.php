@@ -30,6 +30,7 @@ class AdmissionOfficerSeeder extends Seeder
                 'last_name_fa' => 'ناصری',
                 'first_name_en' => 'Farnoush',
                 'last_name_en' => 'Naseri',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Admissions Officer')->first();
@@ -48,6 +49,7 @@ class AdmissionOfficerSeeder extends Seeder
                 'last_name_fa' => 'خوشدل',
                 'first_name_en' => 'Mohammad Reza',
                 'last_name_en' => 'Khoshdel',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Admissions Officer')->first();

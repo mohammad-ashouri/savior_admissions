@@ -30,6 +30,7 @@ class FinancialManagerSeeder extends Seeder
                 'last_name_fa' => 'احمدی',
                 'first_name_en' => 'Nesa',
                 'last_name_en' => 'Ahmadi',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Financial Manager')->first();
@@ -49,6 +50,7 @@ class FinancialManagerSeeder extends Seeder
                 'last_name_fa' => 'احمدی',
                 'first_name_en' => 'Reza',
                 'last_name_en' => 'Ahmadi',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Financial Manager')->first();
@@ -67,6 +69,7 @@ class FinancialManagerSeeder extends Seeder
                 'last_name_fa' => 'نجاری',
                 'first_name_en' => 'Fatemeh',
                 'last_name_en' => 'Najari',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Financial Manager')->first();

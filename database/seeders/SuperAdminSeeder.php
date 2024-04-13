@@ -64,6 +64,7 @@ class SuperAdminSeeder extends Seeder
                 'last_name_fa' => 'علویان',
                 'first_name_en' => 'Ali',
                 'last_name_en' => 'Alavian',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Super Admin')->first();
@@ -82,6 +83,7 @@ class SuperAdminSeeder extends Seeder
                 'last_name_fa' => 'جلیلیان',
                 'first_name_en' => 'Mahmood',
                 'last_name_en' => 'Jalilian',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Super Admin')->first();
@@ -100,6 +102,7 @@ class SuperAdminSeeder extends Seeder
                 'last_name_fa' => 'قنواتی',
                 'first_name_en' => 'Rezvan',
                 'last_name_en' => 'Ghanavati',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Super Admin')->first();

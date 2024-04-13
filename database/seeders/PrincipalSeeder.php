@@ -27,6 +27,7 @@ class PrincipalSeeder extends Seeder
                 'last_name_fa' => 'حسینی',
                 'first_name_en' => 'Zahra',
                 'last_name_en' => 'Hosseini',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Principal')->first();
@@ -45,6 +46,7 @@ class PrincipalSeeder extends Seeder
                 'last_name_fa' => 'پژمان',
                 'first_name_en' => 'Afsaneh',
                 'last_name_en' => 'Pejhman',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Principal')->first();
@@ -63,6 +65,7 @@ class PrincipalSeeder extends Seeder
                 'last_name_fa' => 'شفیعی',
                 'first_name_en' => 'Mohammad Hossein',
                 'last_name_en' => 'Shafiee',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Principal')->first();

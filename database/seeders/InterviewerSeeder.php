@@ -29,6 +29,7 @@ class InterviewerSeeder extends Seeder
                 'last_name_fa' => 'دارایی',
                 'first_name_en' => 'Nasrin',
                 'last_name_en' => 'Daraei',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();
@@ -46,6 +47,7 @@ class InterviewerSeeder extends Seeder
                 'last_name_fa' => 'قوسی',
                 'first_name_en' => 'Yeganeh',
                 'last_name_en' => 'Ghosi',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();
@@ -63,6 +65,7 @@ class InterviewerSeeder extends Seeder
                 'last_name_fa' => 'البطاط',
                 'first_name_en' => 'Sakinah',
                 'last_name_en' => 'Albattat',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();
@@ -80,6 +83,7 @@ class InterviewerSeeder extends Seeder
                 'last_name_fa' => 'آبیار',
                 'first_name_en' => 'Najmeh',
                 'last_name_en' => 'Abyar',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();
@@ -97,6 +101,7 @@ class InterviewerSeeder extends Seeder
                 'last_name_fa' => 'رحیمی',
                 'first_name_en' => 'Tahereh',
                 'last_name_en' => 'Rahimi',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();
@@ -114,6 +119,7 @@ class InterviewerSeeder extends Seeder
                 'last_name_fa' => 'بلالی',
                 'first_name_en' => 'Peyman',
                 'last_name_en' => 'Balali',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();
@@ -131,6 +137,7 @@ class InterviewerSeeder extends Seeder
                 'last_name_fa' => 'بحرانی',
                 'first_name_en' => 'Mohammad Ali',
                 'last_name_en' => 'Bahrani',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();
@@ -148,6 +155,7 @@ class InterviewerSeeder extends Seeder
                 'last_name_fa' => 'سراجه حسنی',
                 'first_name_en' => 'Alireza',
                 'last_name_en' => 'Seraje Hasani',
+                'status' => 1,
             ]
         );
         $role = Role::where('name', 'Interviewer')->first();
