@@ -107,5 +107,13 @@ $(document).ready(function () {
 
         });
     }
+    else if (fullPath.includes('new-account')){
+        $('#password').val('');
+        $('#repeat-password').val('');
+        $('#first_name').val('');
+        $('#last_name').val('');
+        $('#gender').val('');
+        $('#captcha').val('');
+    }
 });
 

@@ -97,7 +97,7 @@
                     <a href="{{ route('ForgetPassword') }}" class="text-blue-500">Lost password?</a>
                 </div>
                 <div class="flex items-center">
-                    <a href="{{ route('CreateAccount') }}" class="text-blue-500">Create account</a>
+                    <a href="{{ route('CreateAccount') }}" class="text-blue-500">Create account (parents)</a>
                 </div>
             </div>
 

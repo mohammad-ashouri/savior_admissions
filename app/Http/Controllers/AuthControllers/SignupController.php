@@ -117,11 +117,13 @@ class SignupController extends Controller
             'repeat-password' => 'required|same:password',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
+            'gender' => 'required|string|in:male,female',
             'token' => 'required|exists:register_tokens,token',
         ]);
 
         if ($validator->fails()) {
-            //            $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+
             return redirect()->route('login')
                 ->withErrors(['errors', $validator->errors()]);
         }
@@ -135,10 +137,23 @@ class SignupController extends Controller
             $user->mobile = $registerToken->value;
         }
         $user->save();
+
+        $gender = $request->gender;
+
         $generalInformations = new GeneralInformation();
         $generalInformations->first_name_en = $request->first_name;
         $generalInformations->last_name_en = $request->last_name;
+        $generalInformations->gender = $gender;
         $generalInformations->save();
+
+        switch ($gender) {
+            case 'male':
+                $user->assignRole('Parent(Father)');
+                break;
+            case 'female':
+                $user->assignRole('Parent(Mother)');
+                break;
+        }
 
         return redirect()->route('login')
             ->with('success', 'You registered successfully. Please login.');
