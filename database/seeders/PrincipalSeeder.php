@@ -67,5 +67,23 @@ class PrincipalSeeder extends Seeder
         );
         $role = Role::where('name', 'Principal')->first();
         $user->assignRole([$role->id]);
+
+        $user = User::query()->create([
+            'mobile' => '+989373667166',
+            'email' => 'm.shafiee@saviorschools.com',
+            'password' => bcrypt('shafiee0654'),
+            'status' => 1,
+        ]);
+        $generalInformation = GeneralInformation::create(
+            [
+                'user_id' => $user->id,
+                'first_name_fa' => 'محمدحسین',
+                'last_name_fa' => 'شفیعی',
+                'first_name_en' => 'Mohammad Hossein',
+                'last_name_en' => 'Shafiee',
+            ]
+        );
+        $role = Role::where('name', 'Principal')->first();
+        $user->assignRole([$role->id]);
     }
 }

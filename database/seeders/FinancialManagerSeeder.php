@@ -56,7 +56,7 @@ class FinancialManagerSeeder extends Seeder
 
 
         $user = User::query()->create([
-            'mobile' => '+989044444444',
+            'mobile' => '+989109707302',
             'email' => 'f.najari@saviorschooslc.om',
             'password' => bcrypt('najari574'),
         ]);
