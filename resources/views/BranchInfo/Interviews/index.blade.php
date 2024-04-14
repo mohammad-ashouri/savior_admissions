@@ -76,6 +76,9 @@
                                     Reservatore
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
+                                    Interviewer
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
                                     Status
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
@@ -127,6 +130,13 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            <div
+                                                class="text-base font-semibold">{{ $interview->interviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->interviewerInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
