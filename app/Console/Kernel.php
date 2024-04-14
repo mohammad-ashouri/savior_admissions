@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:unreserve-applications')->everyMinute();
+        $schedule->command('app:remove-signup-tokens')->everyMinute();
     }
 
     /**
