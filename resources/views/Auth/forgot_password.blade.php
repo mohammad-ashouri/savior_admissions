@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html class="" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -10,10 +10,10 @@
     <title>Forget password</title>
 </head>
 
-<body class=" bg-light-theme-color-base dark:bg-gray-800 flex items-center justify-center h-screen">
+<body class=" bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center h-screen">
 
     <div
-        class="mx-5 sm:mx-0 w-full max-w-2xl p-8 border-gray-200 rounded-lg shadow sm:p-6 md:p-16 dark:bg-gray-800 dark:border-gray-700">
+        class="bg-light-theme-color-base mx-5 sm:mx-0 w-full max-w-2xl p-8 border-gray-200 rounded-lg shadow sm:p-6 md:p-16 dark:bg-gray-800 dark:border-gray-700">
         <form class="space-y-6 " id="forget-password">
             <div class="space-y-2">
                 <h2 class="sm:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Forgot your password?</h2>
