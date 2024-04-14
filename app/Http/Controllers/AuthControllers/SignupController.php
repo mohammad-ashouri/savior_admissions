@@ -72,8 +72,7 @@ class SignupController extends Controller
                 $tokenEntry->status = 0;
                 $tokenEntry->save();
 
-//                $valueToSend = 'Your registration link is: '.env('APP_URL').'/new-account/'.$token."\nYou have one hour to register.\nSavior Schools Support";
-                $valueToSend = '1';
+                $valueToSend = 'Your registration link is: '.'portal.saviorschools.com/new-account/'.$token."\nYou have one hour to register.\nSavior Schools Support";
 
                 $this->sendSms($request->mobile, $valueToSend);
 
