@@ -107,7 +107,9 @@ class SignupController extends Controller
 
             return view('Auth.Signup.signup', ['tokenInfo' => $tokenInfo]);
         }
-        abort(403);
+
+        return redirect()->route('login')
+            ->withErrors(['WrongToken' => 'WrongToken']);
     }
 
     public function createAccount(Request $request)

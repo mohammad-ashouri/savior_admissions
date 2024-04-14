@@ -15,6 +15,7 @@ export default defineConfig({
                 'resources/js/Swals/EmailSent.js',
                 'resources/js/Swals/SMSSendingFailed.js',
                 'resources/js/Swals/EmailSendingFailed.js',
+                'resources/js/Swals/WrongToken.js',
             ],
             refresh: true,
         }),
