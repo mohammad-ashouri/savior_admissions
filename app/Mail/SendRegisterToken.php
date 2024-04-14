@@ -43,6 +43,9 @@ class SendRegisterToken extends Mailable
     {
         $token = preg_replace('/[\/\\.]/', '', Str::random(32));
 
+        //Remove previous token
+        RegisterToken::where('value', $this->email)->where('register_method', 'Email')->where('status', 0)->delete();
+
         $tokenEntry = new RegisterToken();
         $tokenEntry->register_method = 'Email';
         $tokenEntry->value = $this->email;

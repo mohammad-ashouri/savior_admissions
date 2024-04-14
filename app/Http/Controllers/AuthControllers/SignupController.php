@@ -62,6 +62,9 @@ class SignupController extends Controller
         switch (request('signup-method')) {
             case 'Mobile':
                 $token = preg_replace('/[\/\\.]/', '', Str::random(32));
+                //Remove previous token
+                RegisterToken::where('value', $request->mobile)->where('register_method', 'Mobile')->where('status', 0)->delete();
+
                 $tokenEntry = new RegisterToken();
                 $tokenEntry->register_method = 'Mobile';
                 $tokenEntry->value = $request->mobile;
