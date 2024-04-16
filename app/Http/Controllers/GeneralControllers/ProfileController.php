@@ -61,6 +61,7 @@ class ProfileController extends Controller
                 'address' => $request->input('address'),
                 'phone' => $request->input('phone'),
                 'postal_code' => $request->input('zip/postalcode'),
+                'status' => 1,
                 'adder' => session('id'),
                 'editor' => session('id'),
             ]
