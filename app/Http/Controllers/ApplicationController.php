@@ -73,15 +73,35 @@ class ApplicationController extends Controller
 
     }
 
-    public function create()
+    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $myStudents = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
             $levels = Level::where('status', 1)->get();
 
-            return view('Applications.create', compact('myStudents', 'levels'));
+        } elseif ($me->hasRole('Super Admin')) {
+            $levels = Level::where('status', 1)->get();
+            $myStudents = StudentInformation::with('generalInformations')->orderBy('id')->get();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+
+            // Finding levels by accessing academic year levels
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            $levels = [];
+            foreach ($academicYears as $academicYear) {
+                $levels[] = json_decode($academicYear['levels'], true);
+            }
+            $flattenedLevels = array_unique(array_merge(...$levels));
+            $myStudents = StudentInformation::with('generalInformations')->orderBy('id')->get();
+
+            $levels = Level::whereIn('id', $flattenedLevels)->get();
         }
+
+        return view('Applications.create', compact('myStudents', 'levels'));
+
     }
 
     public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -425,7 +445,7 @@ class ApplicationController extends Controller
 
                 $document = new Document();
                 $document->user_id = $applicationInformation->student_id;
-                $document->document_type_id = DocumentType::where('name','Deposit slip')->first()->id;
+                $document->document_type_id = DocumentType::where('name', 'Deposit slip')->first()->id;
                 $document->src = $path;
                 $document->save();
 
