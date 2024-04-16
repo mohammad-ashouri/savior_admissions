@@ -43,34 +43,92 @@ class LoginController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function login(Request $request): \Illuminate\Http\JsonResponse
+    public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required',
-            'captcha' => 'required', // Uncomment if you want to include captcha validation
+            'login-method' => 'required|in:mobile,email', // Uncomment if you want to include captcha validation
         ]);
-
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => $validator->errors()]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => $validator->errors()]), request()->ip(), request()->userAgent());
 
             return response()->json([
                 'success' => false,
-                'errors' => $validator->errors(),
+                'errors' => ['validator_errors' => $validator->errors()],
             ]);
         }
 
-        // Uncomment if you want to include captcha validation
-        $captcha = $request->input('captcha');
-        $sessionCaptcha = session('captcha')['key'];
-        if (! password_verify($captcha, $sessionCaptcha)) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Captcha)', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
+        switch (request('login-method')) {
+            case 'email':
+                $validator = Validator::make($request->all(), [
+                    'email' => 'required|email|exists:users,email',
+                    'password' => 'required', // Uncomment if you want to include captcha validation
+                ]);
+
+                if ($validator->fails()) {
+                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'validator_errors' => $validator->errors()]), request()->ip(), request()->userAgent());
+
+                    return response()->json([
+                        'success' => false,
+                        'validator_errors' => $validator->errors(),
+                    ]);
+                }
+                $user = User::where('email', $request->input('email'))->first();
+                if (! password_verify($request->password, $user->password)) {
+                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
+
+                    return response()->json([
+                        'success' => false,
+                        'errors' => 'password',
+                    ]);
+                }
+                break;
+            case 'mobile':
+                $validator = Validator::make($request->all(), [
+                    'mobile' => 'required|exists:users,mobile',
+                    'password' => 'required', // Uncomment if you want to include captcha validation
+                ]);
+
+                if ($validator->fails()) {
+                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'validator_errors' => $validator->errors()]), request()->ip(), request()->userAgent());
+
+                    return response()->json([
+                        'success' => false,
+                        'validator_errors' => $validator->errors(),
+                    ]);
+                }
+                $user = User::where('mobile', $request->input('mobile'))->first();
+                if (! password_verify($request->password, $user->password)) {
+                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
+
+                    return response()->json([
+                        'success' => false,
+                        'errors' => 'password',
+                    ]);
+                }
+                break;
+        }
+
+        $validator = Validator::make($request->all(), [
+            'captcha' => 'required', // Uncomment if you want to include captcha validation
+        ]);
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Wrong Captcha', 'errors' => $validator->errors()]), request()->ip(), request()->userAgent());
 
             return response()->json([
                 'success' => false,
-                'errors' => [
-                    'captcha' => ['Captcha code is wrong or null!'],
-                ],
+                'validator_errors' => $validator->errors(),
+            ]);
+        }
+        $captcha = $request->input('captcha');
+
+        // Uncomment if you want to include captcha validation
+        $sessionCaptcha = session('captcha')['key'];
+        if (! password_verify($captcha, $sessionCaptcha)) {
+            $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Captcha)', 'entered_values' => json_encode($request->all())]), request()->ip(), request()->userAgent());
+
+            return response()->json([
+                'success' => false,
+                'errors' => ['captcha'=>'Captcha is wrong!'],
             ]);
         }
 
@@ -78,27 +136,14 @@ class LoginController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            $user = User::where('email', $request->input('email'))->first();
-            $userID = $user['id'];
-            Session::put('id', $userID);
-            Session::put('type', $user['type']);
+            Session::put('id', $user->id);
             $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
 
             return response()->json([
                 'success' => true,
                 'redirect' => route('dashboard'),
-                'message' => 'Login successful',
             ]);
         }
-
-        $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Email Or Password)', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
-
-        return response()->json([
-            'success' => false,
-            'errors' => [
-                'loginError' => ['Invalid email or password'],
-            ],
-        ]);
     }
 
     public function logout(): \Illuminate\Http\RedirectResponse
