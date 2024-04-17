@@ -195,6 +195,9 @@ class SignupController extends Controller
         }
         $this->logActivity(json_encode(['activity' => 'User Registered Successfully', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
 
+        $registerToken = RegisterToken::where('token', $request->token)->delete();
+        $this->logActivity(json_encode(['activity' => 'Token Deleted', 'token_id' => $registerToken->id]), request()->ip(), request()->userAgent());
+
         return redirect()->route('login')
             ->with('success', 'You registered successfully. Please login.');
     }
