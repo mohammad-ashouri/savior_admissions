@@ -172,6 +172,8 @@ class SignupController extends Controller
         } elseif ($registerToken->register_method == 'Mobile') {
             $user->mobile = $registerToken->value;
         }
+        $user->password = $request->password;
+
         $user->save();
 
         $gender = $request->gender;
