@@ -16,6 +16,8 @@ class SignupController extends Controller
 {
     public function index()
     {
+        $this->logActivity(json_encode(['activity' => 'Getting Signup Authorization Index Page']), request()->ip(), request()->userAgent());
+
         return view('Auth.Signup.authorization');
     }
 
@@ -44,7 +46,7 @@ class SignupController extends Controller
         }
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
             $errors = $validator->errors();
             $errorMessage = '';
 
@@ -75,6 +77,7 @@ class SignupController extends Controller
                 $valueToSend = 'Your registration link is: '.env('APP_URL').'/new-account/'.$token."\nYou have one hour to register.\nSavior Schools Support";
 
                 $this->sendSms($request->mobile, $valueToSend);
+                $this->logActivity(json_encode(['activity' => 'SMS Token Sent', 'values' => json_encode([$tokenEntry, $valueToSend])]), request()->ip(), request()->userAgent());
 
                 return redirect()->route('login')->with(['SMSSent' => 'SMSSent']);
             case 'Email':
@@ -83,6 +86,7 @@ class SignupController extends Controller
                 $checkIfEmailExists = User::where('email', $email)->exists();
                 if ($checkIfEmailExists) {
                     $errorMessage = 'The entered email address already exists.';
+                    $this->logActivity(json_encode(['activity' => 'Email Token Sending Failed', 'errors' => $errorMessage]), request()->ip(), request()->userAgent());
 
                     return redirect()->route('login')->withErrors(['errors' => $errorMessage]);
 
@@ -92,24 +96,33 @@ class SignupController extends Controller
                     );
 
                     if ($mailSend) {
+                        $this->logActivity(json_encode(['activity' => 'Email Token Sent', 'email' => $email]), request()->ip(), request()->userAgent());
+
                         return redirect()->route('login')->with(['EmailSent' => 'EmailSent']);
                     } else {
+                        $this->logActivity(json_encode(['activity' => 'Email Token Sending Failed', 'email' => $email]), request()->ip(), request()->userAgent());
+
                         return redirect()->route('login')->with(['EmailSendingFailed' => 'EmailSendingFailed']);
                     }
                 }
         }
+        $this->logActivity(json_encode(['activity' => 'Authorization Aborted']), request()->ip(), request()->userAgent());
 
         abort(422);
     }
 
     public function newAccount($token)
     {
+        $this->logActivity(json_encode(['activity' => 'Checking New Account Token']), request()->ip(), request()->userAgent());
+
         $checkToken = RegisterToken::where('token', $token)->where('status', 0)->exists();
         if ($checkToken) {
             $tokenInfo = RegisterToken::where('token', $token)->first();
+            $this->logActivity(json_encode(['activity' => 'Getting New Account Page']), request()->ip(), request()->userAgent());
 
             return view('Auth.Signup.signup', ['tokenInfo' => $tokenInfo]);
         }
+        $this->logActivity(json_encode(['activity' => 'Getting New Account Page Failed', 'errors' => 'Token Is Wrong']), request()->ip(), request()->userAgent());
 
         return redirect()->route('login')
             ->withErrors(['WrongToken' => 'WrongToken']);
@@ -127,7 +140,7 @@ class SignupController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
 
             return redirect()->route('login')
                 ->withErrors(['errors', $validator->errors()]);
@@ -146,6 +159,7 @@ class SignupController extends Controller
         $gender = $request->gender;
 
         $generalInformations = new GeneralInformation();
+        $generalInformations->user_id = $user->id;
         $generalInformations->first_name_en = $request->first_name;
         $generalInformations->last_name_en = $request->last_name;
         $generalInformations->gender = $gender;
@@ -159,6 +173,7 @@ class SignupController extends Controller
                 $user->assignRole('Parent(Mother)');
                 break;
         }
+        $this->logActivity(json_encode(['activity' => 'User Registered Successfully', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('login')
             ->with('success', 'You registered successfully. Please login.');
