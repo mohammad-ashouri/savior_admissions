@@ -38,6 +38,7 @@
         {{--                </div>--}}
         {{--            </div>--}}
         {{--        @endif--}}
+
         <div>
             @if ($errors->has('WrongToken'))
                 @vite(['resources/js/Swals/WrongToken.js'])

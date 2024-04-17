@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AuthControllers;
 use App\Http\Controllers\Controller;
 use App\Mail\SendRegisterToken;
 use App\Models\Auth\RegisterToken;
+use App\Models\Catalogs\CountryPhoneCodes;
 use App\Models\GeneralInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,9 @@ class SignupController extends Controller
     {
         $this->logActivity(json_encode(['activity' => 'Getting Signup Authorization Index Page']), request()->ip(), request()->userAgent());
 
-        return view('Auth.Signup.authorization');
+        $countryPhoneCodes = CountryPhoneCodes::where('phonecode', '!=', 0)->get();
+
+        return view('Auth.Signup.authorization', compact('countryPhoneCodes'));
     }
 
     public function authorization(Request $request)
@@ -26,13 +29,31 @@ class SignupController extends Controller
         switch (request('signup-method')) {
             case 'Mobile':
                 $validator = Validator::make($request->all(), [
+                    'phone_code' => [
+                        'required',
+                        'exists:country_phone_codes,id',
+                    ],
                     'mobile' => [
                         'required',
                         'numeric',
-                        'digits:11',
                     ],
                 ]);
+
+                if ($validator->fails()) {
+                    if ($validator->errors()->first('mobile')) {
+                        $errorMessage = $validator->errors()->first('mobile', 'MobileInvalid');
+                        $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+                        return redirect()->back()->withErrors(['MobileInvalid' => $errorMessage])->withInput();
+                    }
+                    if ($validator->errors()->first('phone_code')) {
+                        $errorMessage = $validator->errors()->first('phone_code', 'PhoneCodeInvalid');
+                        $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+                        return redirect()->back()->withErrors(['PhoneCodeInvalid' => $errorMessage])->withInput();
+                    }
+
+                }
                 break;
+
             case 'Email':
                 $validator = Validator::make($request->all(), [
                     'email' => [
@@ -40,44 +61,41 @@ class SignupController extends Controller
                         'email',
                     ],
                 ]);
+
+                if ($validator->fails()) {
+                    $errorMessage = $validator->errors()->first('email', 'EmailInvalid');
+                    $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+
+                    return redirect()->back()->withErrors(['EmailInvalid' => $errorMessage])->withInput();
+                }
                 break;
+
             default:
                 abort(500);
-        }
-
-        if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-            $errors = $validator->errors();
-            $errorMessage = '';
-
-            if ($errors->has('mobile')) {
-                $errorMessage = 'The entered mobile number is not valid.';
-            } elseif ($errors->has('email')) {
-                $errorMessage = 'The entered email address is not valid.';
-            } else {
-                $errorMessage = 'An internal server error occurred.';
-            }
-
-            return redirect()->route('login')->withErrors(['errors' => $errorMessage]);
         }
 
         switch (request('signup-method')) {
             case 'Mobile':
                 $token = preg_replace('/[\/\\.]/', '', Str::random(32));
-                //Remove previous token
-                RegisterToken::where('value', $request->mobile)->where('register_method', 'Mobile')->where('status', 0)->delete();
+                $prefix = CountryPhoneCodes::find($request->phone_code);
+                $mobile = '+'.$prefix->phonecode.$request->mobile;
 
+                //Remove previous token
+                RegisterToken::where('value', $mobile)->where('register_method', 'Mobile')->where('status', 0)->delete();
+
+                //Make new token
                 $tokenEntry = new RegisterToken();
                 $tokenEntry->register_method = 'Mobile';
-                $tokenEntry->value = $request->mobile;
+                $tokenEntry->value = $mobile;
                 $tokenEntry->token = $token;
                 $tokenEntry->status = 0;
                 $tokenEntry->save();
 
                 $valueToSend = 'Your registration link is: '.env('APP_URL').'/new-account/'.$token."\nYou have one hour to register.\nSavior Schools Support";
 
-                $this->sendSms($request->mobile, $valueToSend);
-                $this->logActivity(json_encode(['activity' => 'SMS Token Sent', 'values' => json_encode([$tokenEntry, $valueToSend])]), request()->ip(), request()->userAgent());
+                //Send token
+                $this->sendSms($mobile, $valueToSend);
+                $this->logActivity(json_encode(['activity' => 'SMS Token Sent', 'mobile' => $mobile, 'values' => json_encode([$tokenEntry, $valueToSend])]), request()->ip(), request()->userAgent());
 
                 return redirect()->route('login')->with(['SMSSent' => 'SMSSent']);
             case 'Email':

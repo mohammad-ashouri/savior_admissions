@@ -39,6 +39,7 @@ $(document).ready(function () {
 
         $('#email').closest('div').hide();
         $('#mobile').closest('div').hide();
+        $('#phone-code').closest('div').hide();
 
         // When the select option changes
         $('#signup-method').change(function () {
@@ -46,6 +47,7 @@ $(document).ready(function () {
             if ($(this).val() === 'Mobile') {
                 // Show the mobile div and hide the email div
                 $('#mobile').closest('div').show();
+                $('#phone-code').closest('div').show();
                 $('#email').closest('div').hide();
             }
             // If Email option is selected
