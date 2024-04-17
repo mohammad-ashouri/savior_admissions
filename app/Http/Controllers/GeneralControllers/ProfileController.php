@@ -33,9 +33,9 @@ class ProfileController extends Controller
     {
         $this->validate($request, [
             'father-name' => 'required|string',
-            'gender' => 'required|string',
-            'Birthdate' => 'required|string',
-            'Nationality' => 'required|exists:countries,id',
+//            'gender' => 'required|string',
+//            'Birthdate' => 'required|date',
+            'nationality' => 'required|exists:countries,id',
             'birthplace' => 'required|exists:countries,id',
             'PassportNumber' => 'required|string',
             'FaragirCode' => 'required|string',
@@ -49,10 +49,12 @@ class ProfileController extends Controller
         $generalInformation = GeneralInformation::where('user_id', session('id'))->update(
             [
                 'user_id' => session('id'),
+                'first_name_fa' => $request->input('first_name_fa'),
+                'last_name_fa' => $request->input('last_name_fa'),
                 'father_name' => $request->input('father-name'),
-                'gender' => $request->input('gender'),
-                'birthdate' => $request->input('Birthdate'),
-                'nationality' => $request->input('Nationality'),
+//                'gender' => $request->input('gender'),
+//                'birthdate' => $request->input('Birthdate'),
+                'nationality' => $request->input('nationality'),
                 'birthplace' => $request->input('birthplace'),
                 'faragir_code' => $request->input('FaragirCode'),
                 'passport_number' => $request->input('PassportNumber'),
