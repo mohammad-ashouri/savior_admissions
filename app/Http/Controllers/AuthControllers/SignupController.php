@@ -83,6 +83,11 @@ class SignupController extends Controller
                 $prefix = CountryPhoneCodes::find($request->phone_code);
                 $mobile = '+'.$prefix->phonecode.$request->mobile;
 
+                $checkIfMobileExists=User::where('mobile',$mobile)->exists();
+                if ($checkIfMobileExists) {
+                    return redirect()->back()->withErrors(['MobileExists' => 'MobileExists'])->withInput();
+                }
+
                 //Remove previous token
                 RegisterToken::where('value', $mobile)->where('register_method', 'Mobile')->where('status', 0)->delete();
 

@@ -21,6 +21,9 @@
         @if(session()->has('errors') && session('errors')->has('EmailInvalid'))
             @vite(['resources/js/Swals/EmailInvalid.js'])
         @endif
+        @if(session()->has('errors') && session('errors')->has('MobileExists'))
+            @vite(['resources/js/Swals/MobileExists.js'])
+        @endif
         <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left dark:text-white">Create an Account
         </h2>
         <form id="signup" method="post" action="{{ route('CreateAccount.authorization') }}" class="space-y-4 w-full">

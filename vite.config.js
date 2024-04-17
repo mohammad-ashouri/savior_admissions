@@ -19,6 +19,7 @@ export default defineConfig({
                 'resources/js/Swals/MobileInvalid.js',
                 'resources/js/Swals/EmailInvalid.js',
                 'resources/js/Swals/PhoneCodeInvalid.js',
+                'resources/js/Swals/MobileExists.js',
             ],
             refresh: true,
         }),
