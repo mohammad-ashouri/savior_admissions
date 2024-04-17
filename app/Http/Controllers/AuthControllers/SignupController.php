@@ -161,7 +161,8 @@ class SignupController extends Controller
             'repeat-password' => 'required|same:password',
             'first_name' => 'required|string',
             'last_name' => 'required|string',
-            'gender' => 'required|string|in:male,female',
+            'gender' => 'required|string|in:Male,Female',
+            'birthdate' => 'required|date',
             'token' => 'required|exists:register_tokens,token',
         ]);
 
@@ -191,13 +192,14 @@ class SignupController extends Controller
         $generalInformations->first_name_en = $request->first_name;
         $generalInformations->last_name_en = $request->last_name;
         $generalInformations->gender = $gender;
+        $generalInformations->birthdate = $request->birthdate;
         $generalInformations->save();
 
         switch ($gender) {
-            case 'male':
+            case 'Male':
                 $user->assignRole('Parent(Father)');
                 break;
-            case 'female':
+            case 'Female':
                 $user->assignRole('Parent(Mother)');
                 break;
         }
