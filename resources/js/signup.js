@@ -64,6 +64,23 @@ $(document).ready(function () {
             }
         });
 
+        //Mobile validator
+        $('#mobile').on('input', function() {
+            let mobileNumber = $(this).val();
+            let phone_code = $('#phone_code').val();
+
+            if (phone_code===101){
+
+            }
+
+            // Check if the input starts with '+'
+            if (mobileNumber.startsWith('+')) {
+                // Remove the leading characters
+                mobileNumber = mobileNumber.substring(1);
+                $(this).val(mobileNumber);
+            }
+        });
+
         // When the form submitted
         $('#signup').submit(function (e) {
             e.preventDefault();

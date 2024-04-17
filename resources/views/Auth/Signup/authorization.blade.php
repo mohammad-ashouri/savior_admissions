@@ -48,7 +48,8 @@
                        placeholder="name@gmail.com">
             </div>
             <div class="mb-6">
-                <label for="phone-code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select country phone
+                <label for="phone-code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
+                    country phone
                     prefix</label>
                 <select name="phone_code" id="phone-code" required
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -64,7 +65,7 @@
                 <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 ">Enter your mobile</label>
                 <input type="text" id="mobile" name="mobile"
                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Enter like this: 9123456789">
+                       placeholder="Enter without + or country prefix">
             </div>
 
             <div class="mb-6">

@@ -22,14 +22,12 @@
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Your
                         email</label>
                     <input type="email" id="email" name="email" value="{{ $tokenInfo->value }}" disabled required
-                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                           placeholder="name@gmail.com">
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
             @elseif($tokenInfo->register_method=='Mobile')
                 <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 ">Your mobile</label>
                 <input type="text" id="mobile" name="mobile" value="{{ $tokenInfo->value }}" disabled required
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Enter like this: 09123456789">
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
             @endif
             <div class="flex mb-6">
                 <div>
@@ -39,7 +37,7 @@
                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            placeholder="••••••••">
                 </div>
-                <div>
+                <div class="ml-2">
                     <label for="repeat-password" class="block mb-2 text-sm font-medium text-gray-900">Repeat
                         password</label>
                     <input type="password" id="repeat-password" name="repeat-password" required minlength="8"

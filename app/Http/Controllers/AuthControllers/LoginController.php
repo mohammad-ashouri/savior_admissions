@@ -31,14 +31,13 @@ class LoginController extends Controller
 
     public function showLoginForm(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
-        if (! Auth::check()) {
+        if (! \session('id')) {
             return view('Auth.login');
         }
         //        $nationalities=Country::select('id','nationality')->get();
         //        if (!Auth::check()) {
         //            return view('Auth.fake_signup',compact('nationalities'));
         //        }
-        Auth::logout();
 
         return redirect()->route('dashboard');
     }
@@ -128,7 +127,7 @@ class LoginController extends Controller
 
             return response()->json([
                 'success' => false,
-                'errors' => ['captcha'=>'Captcha is wrong!'],
+                'errors' => ['captcha' => 'Captcha is wrong!'],
             ]);
         }
 
@@ -149,6 +148,7 @@ class LoginController extends Controller
     public function logout(): \Illuminate\Http\RedirectResponse
     {
         Auth::logout();
+        session()->flush();
 
         return redirect()->route('login');
     }

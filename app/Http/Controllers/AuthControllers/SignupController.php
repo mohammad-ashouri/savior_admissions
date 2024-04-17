@@ -10,6 +10,7 @@ use App\Models\GeneralInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -43,11 +44,13 @@ class SignupController extends Controller
                     if ($validator->errors()->first('mobile')) {
                         $errorMessage = $validator->errors()->first('mobile', 'MobileInvalid');
                         $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+
                         return redirect()->back()->withErrors(['MobileInvalid' => $errorMessage])->withInput();
                     }
                     if ($validator->errors()->first('phone_code')) {
                         $errorMessage = $validator->errors()->first('phone_code', 'PhoneCodeInvalid');
                         $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+
                         return redirect()->back()->withErrors(['PhoneCodeInvalid' => $errorMessage])->withInput();
                     }
 
@@ -195,10 +198,13 @@ class SignupController extends Controller
         }
         $this->logActivity(json_encode(['activity' => 'User Registered Successfully', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
 
-        $registerToken = RegisterToken::where('token', $request->token)->delete();
         $this->logActivity(json_encode(['activity' => 'Token Deleted', 'token_id' => $registerToken->id]), request()->ip(), request()->userAgent());
 
-        return redirect()->route('login')
-            ->with('success', 'You registered successfully. Please login.');
+        RegisterToken::where('token', $request->token)->delete();
+
+        Session::put('id', $user->id);
+        $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
+
+        return redirect()->route('dashboard');
     }
 }
