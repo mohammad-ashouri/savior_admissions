@@ -90,6 +90,7 @@
                 </div>
             </div>
             <div class="flex justify-between items-center">
+                <input type="hidden" value="{{ $tokenInfo->token }}" name="token">
                 <button type="submit"
                         class="lg:w-1/2 w-full bg-blue-700 text-white rounded-lg py-2 hover:bg-blue-800 transition duration-300">
                     Register
