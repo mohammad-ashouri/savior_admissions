@@ -4,6 +4,7 @@ import $ from 'jquery';
 import Swal from 'sweetalert2';
 import 'ionicons';
 import moment from 'moment';
+
 window.moment = moment;
 window.Swal = Swal;
 
@@ -257,11 +258,9 @@ $(document).ready(function () {
             }
         });
 
-    }
-    else if (fullPath.includes('DocumentTypes')) {
+    } else if (fullPath.includes('DocumentTypes')) {
         pageTitle = 'Document Types Manager';
-    }
-    else if (fullPath.includes('Levels')) {
+    } else if (fullPath.includes('Levels')) {
         pageTitle = 'Levels Manager';
         $('#new-level').submit(function (e) {
             e.preventDefault();
@@ -278,8 +277,7 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else if (fullPath.includes('AcademicYears')) {
+    } else if (fullPath.includes('AcademicYears')) {
         pageTitle = 'Academic Years Manager';
         $('#new-academic-year').submit(function (e) {
             e.preventDefault();
@@ -311,11 +309,9 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else if (fullPath.includes('searchUsers')) {
+    } else if (fullPath.includes('searchUsers')) {
         pageTitle = 'Search users';
-    }
-    else if (fullPath.includes('AcademicYearClasses')) {
+    } else if (fullPath.includes('AcademicYearClasses')) {
         pageTitle = 'Academic Year Classes';
         $('#academic_year').change(function (e) {
             $.ajax({
@@ -340,74 +336,85 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else if (fullPath.includes('Documents')) {
+    } else if (fullPath.includes('Documents')) {
         pageTitle = 'Documents';
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
         resetFields();
         $('#create-document').submit(function (e) {
             e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Your document will be added permanently!',
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: 'No',
-                confirmButtonText: 'Yes',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var form = $(this);
-                    var formData = new FormData(form[0]);
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Documents/Create',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        headers: {
-                            'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                        }, success: function (response) {
-                            location.reload();
-                        }, error: function (xhr, textStatus, errorThrown) {
-                            swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                        }
-                    });
-                }
-            });
+            if ($('#document_type').val('')) {
+                swalFire('Error', "Select document type!", 'error', 'Try again');
+            } else if ($('#document_file').val() == '') {
+                swalFire('Error', "Select document file!", 'error', 'Try again');
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Your document will be added permanently!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = $(this);
+                        var formData = new FormData(form[0]);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Documents/Create',
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                            }, success: function (response) {
+                                location.reload();
+                            }, error: function (xhr, textStatus, errorThrown) {
+                                swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                            }
+                        });
+                    }
+                });
+            }
         });
         $('#create-document-for-user').submit(function (e) {
             e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'User\'s document will be added permanently!',
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: 'No',
-                confirmButtonText: 'Yes',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var form = $(this);
-                    var formData = new FormData(form[0]);
-                    var currentUrl = window.location.href;
-                    var parts = currentUrl.split('/');
-                    var urlLastPart = parts[parts.length - 1];
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Documents/Create/' + urlLastPart,
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        headers: {
-                            'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                        }, success: function (response) {
-                            location.reload();
-                        }, error: function (xhr, textStatus, errorThrown) {
-                            swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                        }
-                    });
-                }
-            });
+            if ($('#document_type').val('')) {
+                swalFire('Error', "Select document type!", 'error', 'Try again');
+            } else if ($('#document_file').val() == '') {
+                swalFire('Error', "Select document file!", 'error', 'Try again');
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'User\'s document will be added permanently!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = $(this);
+                        var formData = new FormData(form[0]);
+                        var currentUrl = window.location.href;
+                        var parts = currentUrl.split('/');
+                        var urlLastPart = parts[parts.length - 1];
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Documents/Create/' + urlLastPart,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                            }, success: function (response) {
+                                location.reload();
+                            }, error: function (xhr, textStatus, errorThrown) {
+                                swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                            }
+                        });
+                    }
+                });
+            }
         });
 
         $('.type-filter').click(function () {
@@ -489,8 +496,7 @@ $(document).ready(function () {
             $('#openImage').addClass('hidden');
         });
 
-    }
-    else if (fullPath.includes('EducationYears')) {
+    } else if (fullPath.includes('EducationYears')) {
         pageTitle = 'Education Years';
         $('#new-education-year').submit(function (e) {
             e.preventDefault();
@@ -523,8 +529,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('EducationTypes')) {
+    } else if (fullPath.includes('EducationTypes')) {
         pageTitle = 'Education Types';
         $('#new-education-type').submit(function (e) {
             e.preventDefault();
@@ -542,8 +547,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('ApplicationTimings')) {
+    } else if (fullPath.includes('ApplicationTimings')) {
         pageTitle = 'Application Timings Manager';
         // resetAllInputValues();
         resetAllSelectValues();
@@ -653,8 +657,7 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else if (fullPath.includes('PrepareToPayApplication')) {
+    } else if (fullPath.includes('PrepareToPayApplication')) {
         pageTitle = 'Pay Application';
         resetAllSelectValues();
         resetAllInputValues();
@@ -735,8 +738,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('Applications')) {
+    } else if (fullPath.includes('Applications')) {
         pageTitle = 'Applications';
 
         if (fullPath.includes('Applications/create')) {
@@ -832,14 +834,11 @@ $(document).ready(function () {
             });
         }
 
-    }
-    else if (fullPath.includes('roles')) {
+    } else if (fullPath.includes('roles')) {
         pageTitle = 'Roles';
-    }
-    else if (fullPath.includes('Schools')) {
+    } else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
-    }
-    else if (fullPath.includes('Students')) {
+    } else if (fullPath.includes('Students')) {
         pageTitle = 'Students';
         $('#new-student').submit(function (e) {
             e.preventDefault();
@@ -857,11 +856,9 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('Interviews')) {
+    } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
-    }
-    else if (fullPath.includes('SetInterview')) {
+    } else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
 
         $('#set-interview').submit(function (e) {
@@ -933,8 +930,7 @@ $(document).ready(function () {
 
         });
 
-    }
-    else if (fullPath.includes('ReservationInvoices')) {
+    } else if (fullPath.includes('ReservationInvoices')) {
         pageTitle = 'Reservation Invoices';
 
         $('#payment_status').change(function () {
@@ -957,8 +953,7 @@ $(document).ready(function () {
                 });
             }
         });
-    }
-    else if (fullPath.includes('Tuition')) {
+    } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 
         $('.price').change(function () {
@@ -982,8 +977,7 @@ $(document).ready(function () {
                 });
             }
         });
-    }
-    else if (fullPath.includes('UploadStudentDocumentByParent')) {
+    } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
         $('#upload-student-documents').submit(function (e) {
             e.preventDefault();
@@ -1001,8 +995,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('Discounts')) {
+    } else if (fullPath.includes('Discounts')) {
         pageTitle = 'Discounts Manager';
 
         $('#discounts-table').on('click', '.delete-row', function () {
@@ -1053,8 +1046,7 @@ $(document).ready(function () {
                 }
             });
         });
-    }
-    else {
+    } else {
         switch (fullPath) {
             case '/dashboard':
                 pageTitle = 'Dashboard';
