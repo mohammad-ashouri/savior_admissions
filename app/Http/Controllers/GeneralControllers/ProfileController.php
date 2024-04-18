@@ -13,28 +13,28 @@ use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:access-user-role', ['only' => ['changeUserRole']]);
     }
-
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
         $myGeneralInformation = GeneralInformation::where('user_id', $me->id)->with('user')->first();
-        $personnelPhotoType=DocumentType::where('name','Personal picture')->first();
-        $myDocuments = Document::where('user_id', $me->id)->where('document_type_id',$personnelPhotoType->id)->latest()->first();
-        $countries=Country::get();
-        return view('GeneralPages.profile', compact('myGeneralInformation','myDocuments','countries'));
+        $personnelPhotoType = DocumentType::where('name', 'Personal picture')->first();
+        $myDocuments = Document::where('user_id', $me->id)->where('document_type_id', $personnelPhotoType->id)->latest()->first();
+        $countries = Country::get();
+
+        return view('GeneralPages.profile', compact('myGeneralInformation', 'myDocuments', 'countries'));
     }
 
     public function editMyProfile(Request $request)
     {
         $this->validate($request, [
             'father-name' => 'required|string',
-//            'gender' => 'required|string',
-//            'Birthdate' => 'required|date',
+            //            'gender' => 'required|string',
+            //            'Birthdate' => 'required|date',
             'nationality' => 'required|exists:countries,id',
             'birthplace' => 'required|exists:countries,id',
             'PassportNumber' => 'required|string',
@@ -44,6 +44,7 @@ class ProfileController extends Controller
             'address' => 'required|string',
             'phone' => 'required|string',
             'zip/postalcode' => 'required|string',
+            'email' => 'email',
         ]);
 
         $generalInformation = GeneralInformation::where('user_id', session('id'))->update(
@@ -52,8 +53,8 @@ class ProfileController extends Controller
                 'first_name_fa' => $request->input('first_name_fa'),
                 'last_name_fa' => $request->input('last_name_fa'),
                 'father_name' => $request->input('father-name'),
-//                'gender' => $request->input('gender'),
-//                'birthdate' => $request->input('Birthdate'),
+                //                'gender' => $request->input('gender'),
+                //                'birthdate' => $request->input('Birthdate'),
                 'nationality' => $request->input('nationality'),
                 'birthplace' => $request->input('birthplace'),
                 'faragir_code' => $request->input('FaragirCode'),
@@ -95,7 +96,7 @@ class ProfileController extends Controller
             'address' => 'required|string|max:100',
             'phone' => 'required',
             'postalcode' => 'required|integer',
-            'email' => 'required|email',
+            'email' => 'email',
             'user_id' => 'required|exists:users,id',
         ]);
 
@@ -131,12 +132,12 @@ class ProfileController extends Controller
 
         $user->email = $input['email'];
         $user->mobile = $input['mobile'];
-        $user->editor = session('id');
         $user->save();
 
         $userGeneralInformation->editor = session('id');
         $userGeneralInformation->save();
-        $this->logActivity(json_encode(['activity' => 'Profile Updated By Admin','user_id'=>$user->id]), request()->ip(), request()->userAgent());
+        $this->logActivity(json_encode(['activity' => 'Profile Updated By Admin', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
+
         return response()->json(['success' => 'Profile updated!'], 200);
     }
 
@@ -145,7 +146,8 @@ class ProfileController extends Controller
         $user = User::find($request->input('user_id'));
         DB::table('model_has_roles')->where('model_id', $user->id)->delete();
         $user->syncRoles($request->input('role'));
-        $this->logActivity(json_encode(['activity' => 'Rules Updated By Admin','user_id'=>$user->id]), request()->ip(), request()->userAgent());
+        $this->logActivity(json_encode(['activity' => 'Rules Updated By Admin', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
+
         return response()->json(['success' => 'Rules updated! <br> Please refresh the page to display additional information'], 200);
     }
 }
