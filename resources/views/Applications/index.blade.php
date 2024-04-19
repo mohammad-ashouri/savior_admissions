@@ -89,9 +89,6 @@
                                     Ends To
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Interviewer
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
                                     Reservatore
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
@@ -133,13 +130,6 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ $application->applicationInfo->ends_to }}</div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->interviewerInfo->generalInformationInfo->first_name_en }} {{ $application->applicationInfo->interviewerInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
