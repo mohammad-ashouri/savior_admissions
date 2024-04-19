@@ -50,7 +50,7 @@ Route::get('/', function () {
 });
 
 Route::get('/create-account', [SignupController::class, 'index'])->name('CreateAccount');
-Route::post('/create-account', [SignupController::class, 'authorization'])->name('CreateAccount.authorization');
+Route::post('/create-account', [SignupController::class, 'register'])->name('CreateAccount.register');
 Route::get('/new-account/{token}', [SignupController::class, 'newAccount'])->name('CreateAccount.new-account');
 Route::post('/new-account', [SignupController::class, 'createAccount'])->name('CreateAccount.createAccount');
 

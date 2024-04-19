@@ -22,10 +22,10 @@ class SignupController extends Controller
 
         $countryPhoneCodes = CountryPhoneCodes::where('phonecode', '!=', 0)->get();
 
-        return view('Auth.Signup.authorization', compact('countryPhoneCodes'));
+        return view('Auth.Signup.register', compact('countryPhoneCodes'));
     }
 
-    public function authorization(Request $request)
+    public function register(Request $request)
     {
         switch (request('signup-method')) {
             case 'Mobile':
