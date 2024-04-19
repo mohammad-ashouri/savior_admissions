@@ -76,7 +76,10 @@
                                     Reservatore
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Interviewer
+                                    First Interviewer
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Second Interviewer
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Status
@@ -136,7 +139,14 @@
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->interviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->interviewerInfo->generalInformationInfo->last_name_en }}</div>
+                                                class="text-base font-semibold">{{ $interview->firstInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->firstInterviewerInfo->generalInformationInfo->last_name_en }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            <div
+                                                class="text-base font-semibold">{{ $interview->secondInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->secondInterviewerInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"

@@ -35,7 +35,8 @@ class InterviewController extends Controller
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
             $interviews = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->whereIn('id', $reservations)
@@ -45,7 +46,8 @@ class InterviewController extends Controller
                 ->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
             $interviews = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->orderBy('date', 'desc')
@@ -65,7 +67,8 @@ class InterviewController extends Controller
 
             // Finding applications related to the application timings
             $interviews = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
@@ -77,7 +80,8 @@ class InterviewController extends Controller
 
         } elseif ($me->hasRole('Interviewer')) {
             $interviews = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->where('interviewer', $me->id)
@@ -103,7 +107,8 @@ class InterviewController extends Controller
         $interview = [];
         if ($me->hasRole('Super Admin')) {
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->where('reserved', 1)
                 ->where('id', $id)
                 ->orderBy('date', 'desc')
@@ -123,7 +128,8 @@ class InterviewController extends Controller
 
             // Finding applications related to the application timings
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
@@ -135,7 +141,8 @@ class InterviewController extends Controller
 
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->where('interviewer', $me->id)
@@ -167,7 +174,8 @@ class InterviewController extends Controller
         $interview = [];
         if ($me->hasRole('Super Admin')) {
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->where('reserved', 1)
                 ->where('id', $request->application_id)
                 ->orderBy('date', 'desc')
@@ -187,7 +195,8 @@ class InterviewController extends Controller
 
             // Finding applications related to the application timings
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
@@ -199,7 +208,8 @@ class InterviewController extends Controller
 
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->where('interviewer', $me->id)
@@ -274,7 +284,8 @@ class InterviewController extends Controller
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
                 ->whereIn('id', $reservations)
@@ -284,7 +295,8 @@ class InterviewController extends Controller
                 ->first();
         } elseif ($me->hasRole('Super Admin')) {
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('interview')
                 ->where('reserved', 1)
                 ->where('Interviewed', 1)
@@ -306,7 +318,8 @@ class InterviewController extends Controller
 
             // Finding applications related to the application timings
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('interview')
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
@@ -320,7 +333,8 @@ class InterviewController extends Controller
 
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
-                ->with('interviewerInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
                 ->where('reserved', 1)
