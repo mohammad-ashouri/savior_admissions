@@ -7,7 +7,6 @@ use App\Mail\ResetPasswordMailer;
 use App\Models\Auth\PasswordResetToken;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -25,22 +24,22 @@ class PasswordController extends Controller
         switch ($option) {
             case 'Mobile':
                 $mobile = $request->input('mobile');
-                if (!$mobile) {
+                if (! $mobile) {
                     $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Null Mobile)']), request()->ip(), request()->userAgent());
 
                     return response()->json([
                         'success' => false,
                         'errors' => [
-                            'Mobile' => ['Mobile is required']
-                        ]
+                            'Mobile' => ['Mobile is required'],
+                        ],
                     ]);
                 }
                 $validator = Validator::make($request->all(), [
                     'mobile' => [
                         'required',
                         function ($attribute, $value, $fail) {
-                            if (!preg_match('/^\+989\d{9}$/', $value)) {
-                                $fail('The ' . $attribute . ' is not in the correct format.');
+                            if (! preg_match('/^\+989\d{9}$/', $value)) {
+                                $fail('The '.$attribute.' is not in the correct format.');
                             }
                         },
                     ],
@@ -49,43 +48,65 @@ class PasswordController extends Controller
                     return response()->json([
                         'success' => false,
                         'errors' => [
-                            'WrongMobile' => ['Mobile is entered in the wrong format']
-                        ]
+                            'WrongMobile' => ['Mobile is entered in the wrong format'],
+                        ],
                     ]);
                 }
+                $token = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(10)));
+                $userInfo = User::where('mobile', $mobile)->first();
+
+                //Delete previous tokens
+                PasswordResetToken::where('user_id', $userInfo->id)->delete();
+
+                //Make new token
+                $tokenEntry = new PasswordResetToken();
+                $tokenEntry->user_id = $userInfo->id;
+                $tokenEntry->type = 2;
+                $tokenEntry->token = $token;
+                $tokenEntry->save();
+
+                $valueToSend = 'Your reset password link is: '.env('APP_URL').'/password/reset/'.$token."\nPlease don't share this to anyone!\nSavior Schools Support";
+
+                //Send token
+                $this->sendSms($mobile, $valueToSend);
+
+                return response()->json([
+                    'success' => true,
+                    'redirect' => route('login'),
+                ]);
                 break;
             case 'Email':
                 $email = $request->input('email');
-                if (!$email) {
+                if (! $email) {
                     $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Null Email)']), request()->ip(), request()->userAgent());
 
                     return response()->json([
                         'success' => false,
                         'errors' => [
-                            'Email' => ['Email is required']
-                        ]
+                            'Email' => ['Email is required'],
+                        ],
                     ]);
                 }
 
                 $user = User::where('email', $email)->first();
-                if (!$user) {
-                    $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Wrong Email)','email'=>$email]), request()->ip(), request()->userAgent());
+                if (! $user) {
+                    $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Wrong Email)', 'email' => $email]), request()->ip(), request()->userAgent());
 
                     return response()->json([
                         'success' => false,
                         'errors' => [
-                            'WrongEmail' => ['Email is not found']
-                        ]
+                            'WrongEmail' => ['Email is not found'],
+                        ],
                     ]);
                 }
 
-                Mail::to('m.ashouri.wdev@gmail.com')->send(
+                Mail::to($email)->send(
                     new ResetPasswordMailer($email)
                 );
 
                 return response()->json([
                     'success' => true,
-                    'redirect' => route('login')
+                    'redirect' => route('login'),
                 ]);
                 break;
         }
@@ -99,6 +120,7 @@ class PasswordController extends Controller
         ]);
         if ($validator->fails()) {
             $this->logActivity(json_encode(['activity' => 'Failed Resetting Password', 'errors' => $validator->errors()->first()]), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
+
             return response()->json(['error' => $validator->errors()->first()], 422);
         }
         $user = User::find($resetTokenInfo->user_id);
@@ -107,6 +129,7 @@ class PasswordController extends Controller
             $resetTokenInfo->active = 0;
             $resetTokenInfo->save();
             $this->logActivity(json_encode(['activity' => 'Password Reset Successfully', 'email' => $request->input('email')]), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
+
             return response()->json([
                 'success' => true,
                 'redirect' => route('login'),
@@ -114,6 +137,7 @@ class PasswordController extends Controller
             ]);
         }
         $this->logActivity(json_encode(['activity' => 'Failed Resetting Password', 'errors' => $validator->errors()->first()]), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
+
         return response()->json(['error' => 'Unknown error'], 422);
     }
 
@@ -133,10 +157,11 @@ class PasswordController extends Controller
             'New_password' => 'required|min:8|max:20',
             'Confirm_password' => 'required_with:New_password|same:New_password|min:8|max:20',
         ]);
-        $user=User::find(session('id'));
+        $user = User::find(session('id'));
         if (password_verify($request->input('Current_password'), $user->password)) {
-            $user->password=Hash::make($request->input('New_password'));
+            $user->password = Hash::make($request->input('New_password'));
             $user->save();
+
             return redirect()->back()->withSuccess('Password updated successfully!');
         }
     }

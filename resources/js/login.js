@@ -161,8 +161,10 @@ $(document).ready(function () {
                             type: 'POST', url: '/password/sendToken', data: data, headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                             }, success: function (response) {
+                                console.log(response);
+
                                 if (response.success) {
-                                    // window.location.href = response.redirect;
+                                    window.location.href = response.redirect;
                                 } else {
                                     if (response.errors.Email) {
                                         swalFire('Email Error', response.errors.Email[0], 'error', 'Try again');
