@@ -100,7 +100,7 @@
                     {{--                                class="h-10 p-1 bg-gray-300 hover:bg-gray-400 rounded mt-2">--}}
                     {{--                            <i class="fas fa-sync-alt"></i>--}}
                     {{--                        </button>--}}
-                    <input name="captcha"
+                    <input name="captcha" required
                            class="bg-gray-50 border border-gray-300 h-10 mt-2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            id="captcha" placeholder="Enter captcha" type="text">
                 </div>
