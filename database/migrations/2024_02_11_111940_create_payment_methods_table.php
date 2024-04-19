@@ -26,7 +26,7 @@ return new class extends Migration
             "bank_account_number" => "021125456487"
         ]);
 
-        $query = "INSERT INTO payment_methods (name, description) VALUES ('Offline Payment', ?), ('Online Gateway (Iran Bank)', NULL), ('Online Gateway (Paypal)', NULL)";
+        $query = "INSERT INTO payment_methods (name, description) VALUES ('Offline Payment', ?), ('Online Gateway (Iran Bank)', NULL)";
         DB::statement($query, [$offlinePaymentDescription]);
 
     }
