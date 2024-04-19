@@ -174,7 +174,7 @@
                         <div class="grid grid-cols-1 gap-4 mb-4">
                             <h1 class="text-xl font-semibold text-black dark:text-white ">Application Status </h1>
                         </div>
-                        @if($applicationStatuses->isNotEmpty())
+                        @if(!empty($applicationStatuses) and$applicationStatuses->isNotEmpty())
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

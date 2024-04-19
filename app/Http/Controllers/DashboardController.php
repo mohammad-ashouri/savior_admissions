@@ -44,13 +44,15 @@ class DashboardController extends Controller
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
                 ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
-        } elseif ($me->hasRole('Super Admin')) {
+        }
+        if ($me->hasRole('Super Admin')) {
             $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear->build();
             $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear->build();
             $allRegisteredApplicationsInLastAcademicYear = $this->allRegisteredApplicationsInLastAcademicYear->build();
 
             return view('Dashboards.Main', compact('me', 'acceptedStudentNumberStatusByAcademicYear', 'allRegisteredStudentsInLastAcademicYear', 'allRegisteredApplicationsInLastAcademicYear'));
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        }
+        if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -73,9 +75,11 @@ class DashboardController extends Controller
         if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $applicationStatuses = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('student_id', $myStudents)->orderByDesc('academic_year')->get();
-        } elseif ($me->hasRole('Super Admin')) {
+        }
+        if ($me->hasRole('Super Admin')) {
             $applicationStatuses = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        }
+        if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
