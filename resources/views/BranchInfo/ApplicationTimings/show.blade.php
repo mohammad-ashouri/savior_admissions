@@ -70,17 +70,16 @@
                                     Reserve: </p> {{ $applicationTiming->delay_between_reserve }}
                             </div>
                             <div>
-                                <p class="font-bold">Interviewers: </p>
-                                @foreach(json_decode($applicationTiming->interviewers,true) as $applicationer)
-                                    @php
-                                        $applicationerInfo=\App\Models\User::with('generalInformationInfo')->find($applicationer);
-                                    @endphp
-                                    * {{ $applicationerInfo->generalInformationInfo->first_name_en . " " . $applicationerInfo->generalInformationInfo->last_name_en }}
-                                    <br/>
-                                @endforeach
+                                <p class="font-bold">First Interviewer </p>
+                                {{ $applicationTiming->firstInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->firstInterviewer->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
-                                <p class="font-bold">Interview Fee: </p> {{ number_format($applicationTiming->fee) . ' Rials' }}
+                                <p class="font-bold">Second Interviewer </p>
+                                {{ $applicationTiming->secondInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->secondInterviewer->generalInformationInfo->last_name_en }}
+                            </div>
+                            <div>
+                                <p class="font-bold">Interview
+                                    Fee: </p> {{ number_format($applicationTiming->fee) . ' Rials' }}
                             </div>
                         </div>
                         <a href="{{ url()->previous() }}">
@@ -127,7 +126,12 @@
                                     </th>
                                     <th scope="col" class="p-4">
                                         <div class=" items-center">
-                                            Interviewer
+                                            First Interviewer
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="p-4">
+                                        <div class=" items-center">
+                                            Second Interviewer
                                         </div>
                                     </th>
                                     <th scope="col" class="p-4">
@@ -186,10 +190,20 @@
                                             class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 @php
-                                                    $applicationerInfo=\App\Models\User::with('generalInformationInfo')->find($application->interviewer);
+                                                    $interviewer=\App\Models\User::with('generalInformationInfo')->find($application->first_interviewer );
                                                 @endphp
                                                 class="text-base font-semibold">
-                                                {{ $applicationerInfo->generalInformationInfo->first_name_en . " " . $applicationerInfo->generalInformationInfo->last_name_en }}
+                                                {{ $interviewer->generalInformationInfo->first_name_en . " " . $interviewer->generalInformationInfo->last_name_en }}
+                                            </div>
+                                        </th>
+                                        <th scope="row"
+                                            class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                            <div
+                                                @php
+                                                    $interviewer=\App\Models\User::with('generalInformationInfo')->find($application->second_interviewer );
+                                                @endphp
+                                                class="text-base font-semibold">
+                                                {{ $interviewer->generalInformationInfo->first_name_en . " " . $interviewer->generalInformationInfo->last_name_en }}
                                             </div>
                                         </th>
                                         <th scope="row"

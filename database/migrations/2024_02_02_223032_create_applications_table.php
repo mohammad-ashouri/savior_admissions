@@ -18,8 +18,10 @@ return new class extends Migration
             $table->date('date');
             $table->time('start_from');
             $table->time('ends_to');
-            $table->unsignedBigInteger('interviewer');
-            $table->foreign('interviewer')->references('id')->on('users');
+            $table->unsignedBigInteger('first_interviewer');
+            $table->foreign('first_interviewer')->references('id')->on('users');
+            $table->unsignedBigInteger('second_interviewer');
+            $table->foreign('second_interviewer')->references('id')->on('users');
             $table->boolean('reserved')->default(0);
             $table->boolean('Interviewed')->default(0);
             $table->boolean('status')->default(1);

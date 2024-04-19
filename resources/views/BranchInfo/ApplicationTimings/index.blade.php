@@ -80,9 +80,6 @@
                                     Academic Year
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Students Application Type
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
                                     Start Date and Time
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
@@ -96,6 +93,12 @@
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Fee
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    First Interviewer
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Second Interviewer
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Action
@@ -117,13 +120,6 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->academicYearInfo->name }}</div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $applicationTiming->students_application_type }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
@@ -159,6 +155,20 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ number_format($applicationTiming->fee) . ' Rials' }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            <div
+                                                class="text-base font-semibold">{{ $applicationTiming->firstInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->firstInterviewer->generalInformationInfo->last_name_en }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            <div
+                                                class="text-base font-semibold">{{ $applicationTiming->secondInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->secondInterviewer->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">

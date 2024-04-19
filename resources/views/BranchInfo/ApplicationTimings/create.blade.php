@@ -46,22 +46,6 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="student_application_type"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Student Application Type</label>
-                                    <select id="student_application_type" name="student_application_type"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            title="Select student application type" required>
-                                        <option selected disabled value="">Select student application type</option>
-                                        <option @if(old('student_application_type')=='All') selected @endif value="All">
-                                            All
-                                        </option>
-                                        <option @if(old('student_application_type')=='Presently Studying') selected
-                                                @endif value="Presently Studying">Presently Studying
-                                        </option>
-                                    </select>
-                                </div>
-                                <div>
                                     <label for="start_date"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         App Begins At</label>
@@ -70,20 +54,20 @@
                                            title="Select start date" required>
                                 </div>
                                 <div>
-                                    <label for="start_time"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        App Start Time</label>
-                                    <input type="time" id="start_time" value="{{ old('start_time') }}" name="start_time"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           title="Select start time" required>
-                                </div>
-                                <div>
                                     <label for="end_date"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         App Ends At</label>
                                     <input type="date" id="end_date" value="{{ old('end_date') }}" name="end_date"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            title="Select end date" required>
+                                </div>
+                                <div>
+                                    <label for="start_time"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        App Start Time</label>
+                                    <input type="time" id="start_time" value="{{ old('start_time') }}" name="start_time"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           title="Select start time" required>
                                 </div>
                                 <div>
                                     <label for="end_time"
@@ -122,11 +106,20 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label for="interviewers"
+                                    <label for="first_interviewer"
                                            class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                        Interviewers</label>
-                                    <select id="interviewers" name="interviewers[]" multiple="multiple"
-                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        First Interviewer</label>
+                                    <select id="first_interviewer" name="first_interviewer"
+                                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            required>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="second_interviewer"
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                        Second Interviewer</label>
+                                    <select id="second_interviewer" name="second_interviewer"
+                                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                     </select>
                                 </div>

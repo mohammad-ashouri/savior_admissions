@@ -3,6 +3,7 @@
 namespace App\Models\Branch;
 
 use App\Models\Catalogs\AcademicYear;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,14 +15,14 @@ class ApplicationTiming extends Model
 
     protected $fillable = [
         'academic_year',
-        'students_application_type',
         'start_date',
         'start_time',
         'end_date',
         'end_time',
         'interview_time',
         'delay_between_reserve',
-        'interviewers',
+        'first_interviewer',
+        'second_interviewer',
         'fee',
     ];
 
@@ -45,5 +46,13 @@ class ApplicationTiming extends Model
     public function applications()
     {
         return $this->hasMany(Applications::class,'application_timing_id');
+    }
+    public function firstInterviewer()
+    {
+        return $this->belongsTo(User::class, 'first_interviewer', 'id');
+    }
+    public function secondInterviewer()
+    {
+        return $this->belongsTo(User::class, 'second_interviewer', 'id');
     }
 }

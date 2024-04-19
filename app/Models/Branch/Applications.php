@@ -18,7 +18,8 @@ class Applications extends Model
         'date',
         'start_from',
         'ends_to',
-        'interviewer',
+        'first_interviewer',
+        'second_interviewer',
         'reserved',
         'Interviewed',
         'status',
@@ -41,9 +42,13 @@ class Applications extends Model
         return $this->belongsTo(ApplicationTiming::class, 'application_timing_id', 'id');
     }
 
-    public function interviewerInfo()
+    public function firstInterviewerInfo()
     {
-        return $this->belongsTo(User::class, 'interviewer', 'id');
+        return $this->belongsTo(User::class, 'first_interviewer', 'id');
+    }
+    public function secondInterviewerInfo()
+    {
+        return $this->belongsTo(User::class, 'second_interviewer', 'id');
     }
     public function reservationInfo()
     {

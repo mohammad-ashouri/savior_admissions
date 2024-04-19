@@ -16,6 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('application_id');
             $table->foreign('application_id')->references('id')->on('applications');
             $table->json('interview_form');
+            $table->unsignedBigInteger('interviewer');
+            $table->foreign('interviewer')->references('id')->on('users');
+            $table->enum('interview_type', [1, 2, 3])->comment('1 for first interview - 2 for second interview - 3 for admissions officer interview');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -28,14 +28,19 @@ class ApplicationTimingController extends Controller
         $me = User::find(session('id'));
         $applicationTimings = [];
         if ($me->hasRole('Super Admin')) {
-            $applicationTimings = ApplicationTiming::with('academicYearInfo')->orderBy('id', 'desc')->paginate(20);
+            $applicationTimings = ApplicationTiming::with('academicYearInfo')->with('firstInterviewer')->with('secondInterviewer')->orderBy('id', 'desc')->paginate(20);
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
+            $this->logActivity(json_encode(['activity' => 'Getting Application Timings']), request()->ip(), request()->userAgent());
+
+            return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
         } elseif (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $applicationTimings = ApplicationTiming::with('academicYearInfo')
+                ->with('firstInterviewer')
+                ->with('secondInterviewer')
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                 ->whereIn('academic_years.school_id', $filteredArray)
                 ->orderBy('application_timings.id', 'desc')
@@ -44,10 +49,10 @@ class ApplicationTimingController extends Controller
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
-        }
-        $this->logActivity(json_encode(['activity' => 'Getting Application Timings']), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Getting Application Timings']), request()->ip(), request()->userAgent());
 
-        return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
+            return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
+        }
     }
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -56,6 +61,7 @@ class ApplicationTimingController extends Controller
         $academicYears = [];
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::where('status', 1)->get();
+            return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -63,28 +69,32 @@ class ApplicationTimingController extends Controller
             if ($academicYears->count() == 0) {
                 $academicYears = [];
             }
+            return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
         }
 
-        return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
     }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
-            'student_application_type' => 'required|string|in:All,Presently Studying',
             'start_date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
             'end_date' => 'required|date|after_or_equal:start_date',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'interview_time' => 'required|integer|min:1',
             'delay_between_reserve' => 'required|integer|min:1',
-            'interviewers' => 'required|exists:users,id',
+            'first_interviewer' => 'required|exists:users,id',
+            'second_interviewer' => 'required|exists:users,id',
             'interview_fee' => 'required|min:0',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        if ($request->first_interviewer==$request->second_interviewer){
+            return redirect()->back()->withErrors(['errors'=>'The first and second interviewers cannot be equal.'])->withInput();
         }
 
         $me = User::find(session('id'));
@@ -103,14 +113,14 @@ class ApplicationTimingController extends Controller
         if (! empty($academicYears)) {
             $applicationTiming = new ApplicationTiming();
             $applicationTiming->academic_year = $request->academic_year;
-            $applicationTiming->students_application_type = $request->student_application_type;
             $applicationTiming->start_date = $request->start_date;
             $applicationTiming->start_time = $request->start_time;
             $applicationTiming->end_date = $request->end_date;
             $applicationTiming->end_time = $request->end_time;
             $applicationTiming->interview_time = $request->interview_time;
             $applicationTiming->delay_between_reserve = $request->delay_between_reserve;
-            $applicationTiming->interviewers = json_encode($request->interviewers, true);
+            $applicationTiming->first_interviewer = $request->first_interviewer;
+            $applicationTiming->second_interviewer = $request->second_interviewer;
             $applicationTiming->fee = $request->interview_fee;
 
             if ($applicationTiming->save()) {
@@ -125,7 +135,7 @@ class ApplicationTimingController extends Controller
                 }
 
                 foreach ($daysBetween as $day) {
-                    foreach ($request->interviewers as $interviewer) {
+//                    foreach ($request->interviewers as $interviewer) {
                         $duration = $request->interview_time;
                         $breakTime = $request->delay_between_reserve;
                         $startTime = Carbon::createFromFormat('H:i', $request->start_time);
@@ -142,11 +152,12 @@ class ApplicationTimingController extends Controller
                             $currentDateTime->addMinutes($duration);
                             $ends_to = $currentDateTime->format('H:i');
                             $interview->ends_to = $ends_to;
-                            $interview->interviewer = $interviewer;
+                            $interview->first_interviewer = $request->first_interviewer;
+                            $interview->second_interviewer = $request->second_interviewer;
                             $currentDateTime->addMinutes($breakTime);
                             $interview->save();
                         }
-                    }
+//                    }
                 }
             } else {
                 $this->logActivity(json_encode(['activity' => 'Creating Application Timing Failed']), request()->ip(), request()->userAgent());
@@ -171,11 +182,16 @@ class ApplicationTimingController extends Controller
         $me = User::find(session('id'));
         $applicationTiming = [];
         if ($me->hasRole('Super Admin')) {
-            $applicationTiming = ApplicationTiming::with('applications')->find($id);
+            $applicationTiming = ApplicationTiming::with('applications')
+                ->with('firstInterviewer')
+                ->with('secondInterviewer')
+                ->find($id);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $applicationTiming = ApplicationTiming::with('academicYearInfo')
+                ->with('firstInterviewer')
+                ->with('secondInterviewer')
                 ->with('applications')
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                 ->whereIn('academic_years.school_id', $filteredArray)

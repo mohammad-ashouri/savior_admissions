@@ -563,11 +563,16 @@ $(document).ready(function () {
                 headers: {
                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                 }, success: function (response) {
-                    var selectInterviewer = $('#interviewers');
-                    selectInterviewer.empty();
+                    var selectFirstInterviewer = $('#first_interviewer');
+                    selectFirstInterviewer.empty();
+                    var selectSecondInterviewer = $('#second_interviewer');
+                    selectSecondInterviewer.empty();
                     resetAllInputValues();
                     $.each(response, function (index, Interviewer) {
-                        selectInterviewer.append('<option value="' + Interviewer.id + '">' + Interviewer.general_information_info.first_name_en + ' ' + Interviewer.general_information_info.last_name_en + '( ' + Interviewer.general_information_info.first_name_fa + ' ' + Interviewer.general_information_info.last_name_fa + ' )' + '</option>');
+                        selectFirstInterviewer.append('<option value="' + Interviewer.id + '">' + Interviewer.general_information_info.first_name_en + ' ' + Interviewer.general_information_info.last_name_en + '( ' + Interviewer.general_information_info.first_name_fa + ' ' + Interviewer.general_information_info.last_name_fa + ' )' + '</option>');
+                    });
+                    $.each(response, function (index, Interviewer) {
+                        selectSecondInterviewer.append('<option value="' + Interviewer.id + '">' + Interviewer.general_information_info.first_name_en + ' ' + Interviewer.general_information_info.last_name_en + '( ' + Interviewer.general_information_info.first_name_fa + ' ' + Interviewer.general_information_info.last_name_fa + ' )' + '</option>');
                     });
                 }, error: function (xhr, textStatus, errorThrown) {
                     swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
