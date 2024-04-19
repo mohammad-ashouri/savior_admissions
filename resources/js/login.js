@@ -100,7 +100,7 @@ $(document).ready(function () {
                                         reloadCaptcha();
                                         captcha.value = '';
                                     } else if (response.errors.loginError) {
-                                        swalFire('Wrong email or password', response.errors.loginError, 'error', 'Try again');
+                                        swalFire('Login Error', response.errors.loginError, 'error', 'Try again');
                                         reloadCaptcha();
                                         captcha.value = '';
                                     } else if (response.errors.captcha) {

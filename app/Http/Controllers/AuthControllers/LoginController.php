@@ -77,7 +77,7 @@ class LoginController extends Controller
 
                     return response()->json([
                         'success' => false,
-                        'errors' => 'password',
+                        'errors' => ['loginError'=>'Wrong email or password'],
                     ]);
                 }
                 break;
