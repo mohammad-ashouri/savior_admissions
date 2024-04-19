@@ -166,6 +166,14 @@ class StudentController extends Controller
                 ->with('extraInformations')
                 ->where('student_id', $id)
                 ->first();
+            if (empty($studentInformations)) {
+                $this->logActivity(json_encode(['activity' => 'Failed Access To Student Information', 'student_id' => $id]), request()->ip(), request()->userAgent());
+
+                abort(403);
+            }
+            $this->logActivity(json_encode(['activity' => 'Getting Student Information', 'id' => $studentInformations->student_id]), request()->ip(), request()->userAgent());
+
+            return view('Students.show', compact('studentInformations'));
         } elseif ($me->hasRole('Super Admin')) {
             $studentInformations = StudentInformation::with('studentInfo')
                 ->with('nationalityInfo')
@@ -174,6 +182,14 @@ class StudentController extends Controller
                 ->with('extraInformations')
                 ->where('student_id', $id)
                 ->first();
+            if (empty($studentInformations)) {
+                $this->logActivity(json_encode(['activity' => 'Failed Access To Student Information', 'student_id' => $id]), request()->ip(), request()->userAgent());
+
+                abort(403);
+            }
+            $this->logActivity(json_encode(['activity' => 'Getting Student Information', 'id' => $studentInformations->student_id]), request()->ip(), request()->userAgent());
+
+            return view('Students.show', compact('studentInformations'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
@@ -191,16 +207,17 @@ class StudentController extends Controller
                 ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
                 ->whereIn('application_timings.academic_year', $academicYears)
                 ->first();
+            if (empty($studentInformations)) {
+                $this->logActivity(json_encode(['activity' => 'Failed Access To Student Information', 'student_id' => $id]), request()->ip(), request()->userAgent());
+
+                abort(403);
+            }
+            $this->logActivity(json_encode(['activity' => 'Getting Student Information', 'id' => $studentInformations->student_id]), request()->ip(), request()->userAgent());
+
+            return view('Students.show', compact('studentInformations'));
         }
 
-        if (empty($studentInformations)) {
-            $this->logActivity(json_encode(['activity' => 'Failed Access To Student Information', 'student_id' => $id]), request()->ip(), request()->userAgent());
-
-            abort(403);
-        }
-        $this->logActivity(json_encode(['activity' => 'Getting Student Information', 'id' => $studentInformations->student_id]), request()->ip(), request()->userAgent());
-
-        return view('Students.show', compact('studentInformations'));
+        abort(403);
     }
 
     public function changeInformation(Request $request): \Illuminate\Http\JsonResponse
