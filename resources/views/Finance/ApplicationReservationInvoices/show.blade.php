@@ -32,8 +32,12 @@
                                 <p class="font-bold"> Ends To : </p>{{ $applicationInfo->applicationInfo->ends_to }}
                             </div>
                             <div>
-                                <p class="font-bold"> Interviewer
-                                    : </p>{{ $applicationInfo->applicationInfo->interviewerInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->applicationInfo->interviewerInfo->generalInformationInfo->last_name_en }}
+                                <p class="font-bold"> First Interviewer
+                                    : </p>{{ $applicationInfo->applicationInfo->firstInterviewerInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->applicationInfo->firstInterviewerInfo->generalInformationInfo->last_name_en }}
+                            </div>
+                            <div>
+                                <p class="font-bold"> Second Interviewer
+                                    : </p>{{ $applicationInfo->applicationInfo->secondInterviewerInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->applicationInfo->secondInterviewerInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
                                 <p class="font-bold"> Reservatore
