@@ -33,21 +33,22 @@ class StudentController extends Controller
     {
         $me = User::find(session('id'));
 
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Super Admin')) {
+            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
+                ->where('tuition_payment_status', 'Paid')
+                ->distinct('student_id')
+                ->orderBy('academic_year', 'desc')->paginate(15);
+            $academicYears = AcademicYear::get();
+            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
+
+            return view('Students.index', compact('students', 'academicYears'));
+        } elseif ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
             $students = StudentInformation::where('guardian', session('id'))
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
                 ->orderBy('student_id', 'asc')->paginate(15);
-        } elseif ($me->hasRole('Super Admin')) {
-            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
-                ->where('tuition_payment_status', 'Paid')
-                ->distinct('student_id')
-                ->orderBy('academic_year', 'desc')->paginate(15);
-            $academicYears = AcademicYear::get();
-
-            return view('Students.index', compact('students', 'academicYears'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
@@ -61,6 +62,7 @@ class StudentController extends Controller
                 ->distinct('student_id')
                 ->orderBy('academic_year', 'desc')->paginate(15);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
             return view('Students.index', compact('students', 'academicYears'));
 
