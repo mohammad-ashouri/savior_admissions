@@ -73,11 +73,11 @@ class LoginController extends Controller
                 }
                 $user = User::where('email', $request->input('email'))->first();
                 if (! password_verify($request->password, $user->password)) {
-                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
+                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
 
                     return response()->json([
                         'success' => false,
-                        'errors' => ['loginError'=>'Wrong email or password'],
+                        'errors' => ['loginError' => 'Wrong email or password'],
                     ]);
                 }
                 break;
@@ -88,7 +88,7 @@ class LoginController extends Controller
                 ]);
 
                 if ($validator->fails()) {
-                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'validator_errors' => $validator->errors()]), request()->ip(), request()->userAgent());
+                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'validator_errors' => $validator->errors()]), request()->ip(), request()->userAgent());
 
                     return response()->json([
                         'success' => false,
@@ -101,7 +101,7 @@ class LoginController extends Controller
 
                     return response()->json([
                         'success' => false,
-                        'errors' => 'password',
+                        'errors' => ['loginError' => 'Wrong mobile or password'],
                     ]);
                 }
                 break;
