@@ -136,6 +136,53 @@
                             </tr>
                             </tbody>
                         </table>
+                        <!-- Script for Table 4 -->
+                        <script>
+                            // Function to calculate product and update cell for Table 4
+                            function updateProductTable4(row) {
+                                // Get the coefficient value from the third column
+                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
+
+                                // Get the user-entered rating from the input field in the fourth column
+                                const ratingInput = row.querySelector('td:nth-child(4) input');
+                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
+
+                                // Calculate the product of coefficient and rating
+                                // Display the product in the fifth column
+                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
+
+                                // Update total for Table 4
+                                updateTotalTable4();
+                            }
+
+                            // Function to update total for Table 4
+                            function updateTotalTable4() {
+                                // Get all the product values from the fifth column
+                                const products = Array.from(document.querySelectorAll('#table4 tbody td:nth-child(5) label')).map(label => {
+                                    const value = parseInt(label.textContent);
+                                    return isNaN(value) ? 0 : value;
+                                });
+
+                                // Calculate total for Table 4
+                                // Display total in the last row for Table 4
+                                document.getElementById('s4_total').textContent = products.reduce((acc, value) => acc + value, 0);
+                            }
+
+                            // Get all the rows in Table 4, excluding the header row
+                            const rowsTable4 = document.querySelectorAll('#table4 tbody tr');
+
+                            // Loop through each row of Table 4
+                            rowsTable4.forEach(row => {
+                                // Add event listener to input field in the fourth column
+                                const input = row.querySelector('td:nth-child(4) input');
+                                input.addEventListener('input', () => {
+                                    updateProductTable4(row);
+                                });
+                            });
+
+                            // Call updateTotalTable4 function initially
+                            updateTotalTable4();
+                        </script>
                         <div class="mt-5">
                             <label for="s4_q1"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
