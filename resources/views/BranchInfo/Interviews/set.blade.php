@@ -52,11 +52,17 @@
                                 @else
                                     @include('BranchInfo.Interviews.Forms.1.Levels.Set.interviewer1')
                                 @endif
-                            @elseif ($interview->second_interviewer == $me->id)
+                            @elseif ($me->hasRole('Interviewer') and !$me->hasRole('Admissions Officer') and $interview->second_interviewer == $me->id)
                                 @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                     @include('BranchInfo.Interviews.Forms.1.KG.Set.interviewer2')
                                 @else
                                     @include('BranchInfo.Interviews.Forms.1.Levels.Set.interviewer2')
+                                @endif
+                            @elseif ($me->hasRole('Admissions Officer'))
+                                @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
+                                    @include('BranchInfo.Interviews.Forms.1.KG.Set.admissions_officer')
+                                @else
+                                    @include('BranchInfo.Interviews.Forms.1.Levels.Set.admissions_officer')
                                 @endif
                             @endif
                         </form>

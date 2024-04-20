@@ -115,6 +115,58 @@
                             </tr>
                             </tbody>
                         </table>
+                        <!-- Script for Table 5 -->
+                        <script>
+                            // Function to calculate product and update cell for Table 5
+                            function updateProductTable5(row) {
+                                // Get the coefficient value from the third column
+                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
+
+                                // Get the user-entered rating from the input field in the fourth column
+                                const ratingInput = row.querySelector('td:nth-child(4) input');
+                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
+
+                                // Calculate the product of coefficient and rating
+                                const product = coefficient * rating;
+
+                                // Display the product in the fifth column
+                                row.querySelector('td:nth-child(5) label').textContent = product;
+
+                                // Update total for Table 5
+                                updateTotalTable5();
+                            }
+
+                            // Function to update total for Table 5
+                            function updateTotalTable5() {
+                                // Get all the product values from the fifth column
+                                const products = Array.from(document.querySelectorAll('#table5 tbody td:nth-child(5) label')).map(label => {
+                                    const value = parseInt(label.textContent);
+                                    return isNaN(value) ? 0 : value;
+                                });
+
+                                // Calculate total for Table 5
+                                const total = products.reduce((acc, value) => acc + value, 0);
+
+                                // Display total in the last row for Table 5
+                                document.getElementById('s5_total').textContent = total;
+                            }
+
+                            // Get all the rows in Table 5, excluding the header row
+                            const rowsTable5 = document.querySelectorAll('#table5 tbody tr');
+
+                            // Loop through each row of Table 5
+                            rowsTable5.forEach(row => {
+                                // Add event listener to input field in the fourth column
+                                const input = row.querySelector('td:nth-child(4) input');
+                                input.addEventListener('input', () => {
+                                    updateProductTable5(row);
+                                });
+                            });
+
+                            // Call updateTotalTable5 function initially
+                            updateTotalTable5();
+                        </script>
+
                         <div class="mt-5">
                             <label for="s5_1"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
