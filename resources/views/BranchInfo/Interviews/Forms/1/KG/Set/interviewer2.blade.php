@@ -165,6 +165,66 @@
                             </tr>
                             </tbody>
                         </table>
+                        <script>
+                            // Function to calculate product and update cell
+                            function updateProduct(row) {
+                                // Get the coefficient value from the third column
+                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
+
+                                // Get the user-entered rating from the input field in the fourth column
+                                const ratingInput = row.querySelector('td:nth-child(4) input');
+                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
+
+                                // Calculate the product of coefficient and rating
+                                // Display the product in the fifth column
+                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
+
+                                // Update total
+                                updateTotal();
+                            }
+
+                            // Function to update total
+                            function updateTotal() {
+                                // Get all the product values from the fifth column
+                                const products = Array.from(document.querySelectorAll('#table5 tbody td:nth-child(5) label')).map(label => {
+                                    const value = parseInt(label.textContent);
+                                    return isNaN(value) ? 0 : value;
+                                });
+
+                                // Calculate total
+                                // Display total in the last row
+                                document.getElementById('s5_total').textContent = products.reduce((acc, value) => acc + value, 0);
+
+                                // Update column totals
+                                const columnTotals = Array.from(document.querySelectorAll('#table5 tbody tr:not(:last-child) td:not(:last-child):not(:first-child)')).reduce((acc, cell, index) => {
+                                    const value = cell.textContent.trim() === '' ? 0 : parseInt(cell.textContent);
+                                    const columnIndex = index % 4;
+                                    acc[columnIndex] = (acc[columnIndex] || 0) + value;
+                                    return acc;
+                                }, []);
+
+                                // Display column totals
+                                columnTotals.forEach((total, index) => {
+                                    document.getElementById('column_total_' + (index + 1)).textContent = total;
+                                });
+                            }
+
+                            // Get all the rows in the table, excluding the header row
+                            const rows = document.querySelectorAll('#table5 tbody tr');
+
+                            // Loop through each row
+                            rows.forEach(row => {
+                                // Add event listener to input field in the fourth column
+                                const input = row.querySelector('td:nth-child(4) input');
+                                input.addEventListener('input', () => {
+                                    updateProduct(row);
+                                });
+                            });
+
+                            // Call updateTotal function initially
+                            updateTotal();
+                        </script>
+
                     </div>
                 </div>
                 <div class="mb-8" id="tab6">
@@ -187,7 +247,7 @@
                             <tbody>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     1
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -196,7 +256,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_1" required placeholder="Enter remarks"
+                                          name="s6_table_1"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     2
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -206,7 +274,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_2" required placeholder="Enter remarks"
+                                          name="s6_table_2"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     3
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -216,7 +292,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_3" required placeholder="Enter remarks"
+                                          name="s6_table_3"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     4
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -226,7 +310,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_4" required placeholder="Enter remarks"
+                                          name="s6_table_4"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     5
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -236,7 +328,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_5" required placeholder="Enter remarks"
+                                          name="s6_table_5"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     6
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -246,7 +346,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_6" required placeholder="Enter remarks"
+                                          name="s6_table_6"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     7
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -256,7 +364,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_7" required placeholder="Enter remarks"
+                                          name="s6_table_7"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     8
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -266,7 +382,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_8" required placeholder="Enter remarks"
+                                          name="s6_table_8"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     9
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -276,7 +400,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_9" required placeholder="Enter remarks"
+                                          name="s6_table_9"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     10
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -286,7 +418,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_10" required placeholder="Enter remarks"
+                                          name="s6_table_10"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     11
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -297,7 +437,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_11" required placeholder="Enter remarks"
+                                          name="s6_table_11"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     12
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -308,7 +456,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_12" required placeholder="Enter remarks"
+                                          name="s6_table_12"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     13
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -318,7 +474,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_13" required placeholder="Enter remarks"
+                                          name="s6_table_13"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     14
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -328,7 +492,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_14" required placeholder="Enter remarks"
+                                          name="s6_table_14"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     15
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -338,7 +510,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_15" required placeholder="Enter remarks"
+                                          name="s6_table_15"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     16
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -349,7 +529,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_16" required placeholder="Enter remarks"
+                                          name="s6_table_16"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     17
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -359,7 +547,15 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_17" required placeholder="Enter remarks"
+                                          name="s6_table_17"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     18
                                 </td>
                                 <td class="w-full p-4 text-center">
@@ -369,12 +565,28 @@
                             </tr>
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_18" required placeholder="Enter remarks"
+                                          name="s6_table_18"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td rowspan="2" class="w-4 p-4 text-center">
                                     19
                                 </td>
                                 <td class="w-full p-4 text-center">
                                     Health quarantine (not sending new students to school during illness and infectious
                                     health issues (skin fungus, etc.)
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td colspan="2" class="w-full p-4 text-center">
+                                <textarea id="s6_table_19" required placeholder="Enter remarks"
+                                          name="s6_table_19"
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                                 </td>
                             </tr>
                             </tbody>
