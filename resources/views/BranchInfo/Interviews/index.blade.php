@@ -1,4 +1,4 @@
-@php use App\Models\Branch\StudentApplianceStatus; @endphp
+@php use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -165,13 +165,6 @@
                                                                 @break
                                                             @case(1)
                                                                 Interviewed
-                                                                @php
-                                                                    $interviewStatus=StudentApplianceStatus::where('student_id',$interview->reservationInfo->student_id)->where('academic_year',$interview->applicationTimingInfo->academic_year)->first();
-
-                                                                @endphp
-                                                                @if ($interviewStatus->interview_status)
-                                                                    ({{$interviewStatus->interview_status}})
-                                                                @endif
                                                                 @break
                                                         @endswitch
                                                         @break
@@ -187,14 +180,28 @@
                                         @if($interview->reservationInfo->payment_status==1)
                                             @switch($interview->Interviewed)
                                                 @case(0)
-                                                    @can('interview-set')
-                                                        <a href="/SetInterview/{{ $interview->id }}"
-                                                           type="button"
-                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                            Set
-                                                        </a>
-                                                    @endcan
+                                                    @php
+                                                        $checkInterviewed=Interview::where('application_id',$interview->id)->where('interviewer',session('id'))->exists();
+                                                    @endphp
+                                                    @if(!$checkInterviewed)
+                                                        @can('interview-set')
+                                                            <a href="/SetInterview/{{ $interview->id }}"
+                                                               type="button"
+                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                Set
+                                                            </a>
+                                                        @endcan
+                                                    @else
+                                                        @can('interview-show')
+                                                            <a href="{{ route('Interviews.show',$interview->id) }}"
+                                                               type="button"
+                                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                Details
+                                                            </a>
+                                                        @endcan
+                                                    @endif
                                                     @break
                                                 @case(1)
                                                     @can('interview-show')

@@ -58,7 +58,7 @@
                                 @else
                                     @include('BranchInfo.Interviews.Forms.1.Levels.Set.interviewer2')
                                 @endif
-                            @elseif ($me->hasRole('Admissions Officer'))
+                            @elseif (!$me->hasRole('Interviewer'))
                                 @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                     @include('BranchInfo.Interviews.Forms.1.KG.Set.admissions_officer')
                                 @else
