@@ -100,9 +100,11 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::get('/GetAcademicYearStarttimeAndEndtime', [AcademicYearClassController::class, 'academicYearStarttimeAndEndtime']);
         Route::resource('ApplicationTimings', ApplicationTimingController::class);
         Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
-        Route::resource('Interviews', InterviewController::class);
+        Route::resource('Interviews', InterviewController::class)->names([
+            'index' => 'interviews.index',
+        ]);
         Route::get('/SetInterview/{id}', [InterviewController::class, 'GetInterviewForm']);
-        Route::post('/SetInterview', [InterviewController::class, 'SetInterview']);
+        Route::post('/SetInterview', [InterviewController::class, 'SetInterview'])->name('interviews.SetInterview');
 
         //Finance
         Route::resource('ReservationInvoices', ApplicationReservationController::class);

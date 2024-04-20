@@ -84,7 +84,10 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
-                ->where('interviewer', $me->id)
+                ->where(function ($query) use ($me) {
+                    $query->where('first_interviewer', $me->id)
+                        ->orWhere('second_interviewer', $me->id);
+                })
                 ->orderBy('Interviewed', 'desc')
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -145,7 +148,10 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->where('reserved', 1)
-                ->where('interviewer', $me->id)
+                ->where(function ($query) use ($me) {
+                    $query->where('first_interviewer', $me->id)
+                        ->orWhere('second_interviewer', $me->id);
+                })
                 ->where('Interviewed', 0)
                 ->where('id', $id)
                 ->orderBy('date', 'desc')
@@ -263,10 +269,12 @@ class InterviewController extends Controller
                 }
                 $studentStatus->save();
                 $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
+
                 return redirect()->route('Interviews.index')
                     ->with('success', 'The interview was successfully recorded');
             }
             $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
+
             return redirect()->route('Interviews.index')
                 ->withErrors(['errors' => 'Recording the interview failed!']);
         }
@@ -350,6 +358,7 @@ class InterviewController extends Controller
             abort(403);
         }
         $this->logActivity(json_encode(['activity' => 'Getting Interview', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
+
         return view('BranchInfo.Interviews.show', compact('interview'));
     }
 }
