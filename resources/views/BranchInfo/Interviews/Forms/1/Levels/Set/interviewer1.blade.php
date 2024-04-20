@@ -273,6 +273,53 @@
                             </tr>
                             </tbody>
                         </table>
+                        <!-- Script for Table 2 -->
+                        <script>
+                            // Function to calculate product and update cell for Table 2
+                            function updateProductTable2(row) {
+                                // Get the coefficient value from the third column
+                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
+
+                                // Get the user-entered rating from the input field in the fourth column
+                                const ratingInput = row.querySelector('td:nth-child(4) input');
+                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
+
+                                // Calculate the product of coefficient and rating
+                                // Display the product in the fifth column
+                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
+
+                                // Update total for Table 2
+                                updateTotalTable2();
+                            }
+
+                            // Function to update total for Table 2
+                            function updateTotalTable2() {
+                                // Get all the product values from the fifth column
+                                const products = Array.from(document.querySelectorAll('#table2 tbody td:nth-child(5) label')).map(label => {
+                                    const value = parseInt(label.textContent);
+                                    return isNaN(value) ? 0 : value;
+                                });
+
+                                // Calculate total for Table 2
+                                // Display total in the last row for Table 2
+                                document.getElementById('s2_total').textContent = products.reduce((acc, value) => acc + value, 0);
+                            }
+
+                            // Get all the rows in Table 2, excluding the header row
+                            const rowsTable2 = document.querySelectorAll('#table2 tbody tr');
+
+                            // Loop through each row of Table 2
+                            rowsTable2.forEach(row => {
+                                // Add event listener to input field in the fourth column
+                                const input = row.querySelector('td:nth-child(4) input');
+                                input.addEventListener('input', () => {
+                                    updateProductTable2(row);
+                                });
+                            });
+
+                            // Call updateTotalTable2 function initially
+                            updateTotalTable2();
+                        </script>
 
                         <div class="mt-3">
                             <label for="s2_d"
@@ -642,6 +689,54 @@
                             </tr>
                             </tbody>
                         </table>
+                        <!-- Script for Table 3 -->
+                        <script>
+                            // Function to calculate product and update cell for Table 3
+                            function updateProductTable3(row) {
+                                // Get the coefficient value from the third column
+                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
+
+                                // Get the user-entered rating from the input field in the fourth column
+                                const ratingInput = row.querySelector('td:nth-child(4) input');
+                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
+
+                                // Calculate the product of coefficient and rating
+                                // Display the product in the fifth column
+                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
+
+                                // Update total for Table 3
+                                updateTotalTable3();
+                            }
+
+                            // Function to update total for Table 3
+                            function updateTotalTable3() {
+                                // Get all the product values from the fifth column
+                                const products = Array.from(document.querySelectorAll('#table3 tbody td:nth-child(5) label')).map(label => {
+                                    const value = parseInt(label.textContent);
+                                    return isNaN(value) ? 0 : value;
+                                });
+
+                                // Calculate total for Table 3
+                                // Display total in the last row for Table 3
+                                document.getElementById('s3_total').textContent = products.reduce((acc, value) => acc + value, 0);
+                            }
+
+                            // Get all the rows in Table 3, excluding the header row
+                            const rowsTable3 = document.querySelectorAll('#table3 tbody tr');
+
+                            // Loop through each row of Table 3
+                            rowsTable3.forEach(row => {
+                                // Add event listener to input field in the fourth column
+                                const input = row.querySelector('td:nth-child(4) input');
+                                input.addEventListener('input', () => {
+                                    updateProductTable3(row);
+                                });
+                            });
+
+                            // Call updateTotalTable3 function initially
+                            updateTotalTable3();
+                        </script>
+
                         <div class="mt-5">
                             <label for="s3_q1"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
