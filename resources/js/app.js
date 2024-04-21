@@ -357,6 +357,7 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        $('#defaultModal').hide();
                         $(".page-spinner").show();
                         var form = $(this);
                         var formData = new FormData(form[0]);
