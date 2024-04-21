@@ -4,6 +4,7 @@ namespace Database\Seeders\RoleSeeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class AdmissionsOfficer extends Seeder
@@ -44,6 +45,7 @@ class AdmissionsOfficer extends Seeder
             'academic-year-classes-menu-access',
             'application-timings-menu-access',
             'students-menu-access',
+            'interviews-menu-access',
             'students-list',
             'students-edit',
             'students-delete',
