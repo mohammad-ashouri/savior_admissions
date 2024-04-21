@@ -343,7 +343,7 @@ $(document).ready(function () {
         resetFields();
         $('#create-document').submit(function (e) {
             e.preventDefault();
-            if ($('#document_type').val('')) {
+            if ($('#document_type').val()=='') {
                 swalFire('Error', "Select document type!", 'error', 'Try again');
             } else if ($('#document_file').val() == '') {
                 swalFire('Error', "Select document file!", 'error', 'Try again');
