@@ -1,5 +1,6 @@
 @php use App\Models\User;
  $me=User::find(session('id'));
+$interviewFields=json_decode($interview->interview->interview_form,true);
 @endphp
 @extends('Layouts.panel')
 

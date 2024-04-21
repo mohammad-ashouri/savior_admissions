@@ -35,7 +35,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s7_table_1" required placeholder="Enter remarks"
                                           name="s7_table_1"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_1']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -52,7 +52,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s7_table_2" required placeholder="Enter remarks"
                                           name="s7_table_2"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_2']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -69,7 +69,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s7_table_3" required placeholder="Enter remarks"
                                           name="s7_table_3"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_3']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -86,7 +86,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s7_table_4" required placeholder="Enter remarks"
                                           name="s7_table_4"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_4']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -104,7 +104,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s7_table_5" required placeholder="Enter remarks"
                                           name="s7_table_5"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_5']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -122,7 +122,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s7_table_6" required placeholder="Enter remarks"
                                           name="s7_table_6"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_6']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -139,7 +139,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s7_table_7" required placeholder="Enter remarks"
                                           name="s7_table_7"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_7']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -159,7 +159,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s7_table_8" required placeholder="Enter remarks"
                                           name="s7_table_8"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_8']}}</textarea>
                                 </td>
                             </tr>
                             </tbody>
@@ -172,11 +172,10 @@
                             <select id="s7_1" name="s7_1"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
-                                <option selected disabled value="">Select an option</option>
-                                <option value="poor">poor</option>
-                                <option value="average">average</option>
-                                <option value="good">good</option>
-                                <option value="very good">very good</option>
+                                <option @if($interviewFields['s7_1']=='poor') selected @endif value="poor">poor</option>
+                                <option @if($interviewFields['s7_1']=='average') selected @endif value="average">average</option>
+                                <option @if($interviewFields['s7_1']=='good') selected @endif value="good">good</option>
+                                <option @if($interviewFields['s7_1']=='very good') selected @endif value="very good">very good</option>
                             </select>
                         </div>
 
@@ -190,9 +189,8 @@
                             <select id="s7_2" name="s7_2"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
-                                <option selected disabled value="">Select an option</option>
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
+                                <option @if($interviewFields['s7_2']=='No') selected @endif value="No">No</option>
+                                <option @if($interviewFields['s7_2']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
                             <textarea id="s7_2_r" required placeholder="Name of the institution (If Yes)"
                                       name="s7_2_r"
@@ -207,9 +205,8 @@
                             <select id="s7_3" name="s7_3"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
-                                <option selected disabled value="">Select an option</option>
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
+                                <option @if($interviewFields['s7_3']=='No') selected @endif value="No">No</option>
+                                <option @if($interviewFields['s7_3']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
                         </div>
                         <div class="mt-5">
@@ -221,9 +218,8 @@
                             <select id="s7_4" name="s7_4"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
-                                <option selected disabled value="">Select an option</option>
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
+                                <option @if($interviewFields['s7_4']=='No') selected @endif value="No">No</option>
+                                <option @if($interviewFields['s7_4']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
                         </div>
                         <div class="mt-5">
@@ -232,7 +228,7 @@
                                 5- Financial administrative suggestions and criticisms:</label>
                             <textarea id="s7_5" required placeholder="Enter remarks"
                                       name="s7_5"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_5']}}</textarea>
                         </div>
                     </div>
                 </div>

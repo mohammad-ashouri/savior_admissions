@@ -44,13 +44,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_1" name="s5_1" value="" min="0" max="5"
+                                    <input type="text" id="s5_1" name="s5_1" value="{{$interviewFields['s5_1']}}"
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s5_1']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -70,13 +71,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_2" name="s5_2" value="" min="0" max="5"
+                                    <input type="text" id="s5_2" name="s5_2" value="{{$interviewFields['s5_2']}}"
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_2_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s5_2']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -94,13 +96,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_3" name="s5_3" value="" min="0" max="5"
+                                    <input type="text" id="s5_3" name="s5_3" value="{{$interviewFields['s5_3']}}"
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s5_3']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -118,13 +121,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_4" name="s5_4" value="" min="0" max="5"
+                                    <input type="text" id="s5_4" name="s5_4" value="{{$interviewFields['s5_4']}}"
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_4_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s5_4']}}
                                     </label>
                                 </td>
                             </tr>
@@ -142,13 +146,14 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_5" name="s5_5" value="" min="0" max="5"
+                                    <input type="text" id="s5_5" name="s5_5" value="{{$interviewFields['s5_5']}}"
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s5_5_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s5_5']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -159,7 +164,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s5_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s5_1']*3)+($interviewFields['s5_2']*3)+($interviewFields['s5_3']*2)+($interviewFields['s5_4'])+($interviewFields['s5_5']*2)}}
                                     </label>
                                 </td>
                             </tr>
@@ -259,7 +264,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_1" required placeholder="Enter remarks"
                                           name="s6_table_1"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_1']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -277,7 +282,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_2" required placeholder="Enter remarks"
                                           name="s6_table_2"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_2']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -295,7 +300,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_3" required placeholder="Enter remarks"
                                           name="s6_table_3"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_3']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -313,7 +318,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_4" required placeholder="Enter remarks"
                                           name="s6_table_4"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_4']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -331,7 +336,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_5" required placeholder="Enter remarks"
                                           name="s6_table_5"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_5']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -349,7 +354,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_6" required placeholder="Enter remarks"
                                           name="s6_table_6"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_6']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -367,7 +372,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_7" required placeholder="Enter remarks"
                                           name="s6_table_7"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_7']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -385,7 +390,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_8" required placeholder="Enter remarks"
                                           name="s6_table_8"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_8']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -403,7 +408,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_9" required placeholder="Enter remarks"
                                           name="s6_table_9"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_9']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -421,7 +426,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_10" required placeholder="Enter remarks"
                                           name="s6_table_10"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_10']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -440,7 +445,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_11" required placeholder="Enter remarks"
                                           name="s6_table_11"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_11']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -459,7 +464,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_12" required placeholder="Enter remarks"
                                           name="s6_table_12"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_12']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -477,7 +482,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_13" required placeholder="Enter remarks"
                                           name="s6_table_13"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_13']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -495,7 +500,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_14" required placeholder="Enter remarks"
                                           name="s6_table_14"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_14']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -513,7 +518,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_15" required placeholder="Enter remarks"
                                           name="s6_table_15"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_15']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -532,7 +537,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_16" required placeholder="Enter remarks"
                                           name="s6_table_16"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_16']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -550,7 +555,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_17" required placeholder="Enter remarks"
                                           name="s6_table_17"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_17']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -568,7 +573,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_18" required placeholder="Enter remarks"
                                           name="s6_table_18"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_18']}}</textarea>
                                 </td>
                             </tr>
                             <tr
@@ -586,7 +591,7 @@
                                 <td colspan="2" class="w-full p-4 text-center">
                                 <textarea id="s6_table_19" required placeholder="Enter remarks"
                                           name="s6_table_19"
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_table_19']}}</textarea>
                                 </td>
                             </tr>
                             </tbody>
@@ -598,7 +603,7 @@
                                 interest </label>
                             <textarea id="s6_1_r" required placeholder="Enter remarks"
                                       name="s6_1_r"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_1_r']}}</textarea>
                         </div>
                         <div class="mt-5">
                             <label for="s6_2_r"
@@ -608,7 +613,7 @@
                             </label>
                             <textarea id="s6_2_r" required placeholder="Enter remarks"
                                       name="s6_2_r"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_2_r']}}</textarea>
                         </div>
                         <div class="mt-5">
                             <label for="s6_3_r"
@@ -618,19 +623,19 @@
                             </label>
                             <textarea id="s6_3_r" required placeholder="Enter remarks"
                                       name="s6_3_r"
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s6_3_r']}}</textarea>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <input type="hidden" name="application_id" id="application_id"
-                           value="{{ $interview->id }}">
-                    <input type="hidden" name="form_type" id="form_type"
-                           value="kg3">
-                    <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Submit
-                    </button>
+{{--                    <input type="hidden" name="application_id" id="application_id"--}}
+{{--                           value="{{ $interview->id }}">--}}
+{{--                    <input type="hidden" name="form_type" id="form_type"--}}
+{{--                           value="kg2">--}}
+{{--                    <button type="submit"--}}
+{{--                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">--}}
+{{--                        Submit--}}
+{{--                    </button>--}}
                     <a href="{{ route('interviews.index') }}">
                         <button type="button"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

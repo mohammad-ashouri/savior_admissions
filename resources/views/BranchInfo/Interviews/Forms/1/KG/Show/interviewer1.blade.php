@@ -1,6 +1,3 @@
-@php
-$interviewFields=json_decode($interview->interview->interview_form,true);
-@endphp
 <div class="container mx-auto mt-8">
     <div class="flex justify-center">
         <div class="border border-gray-700 rounded-lg w-full ">
@@ -20,9 +17,15 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                         <select id="s1_1_s" name="s1_1_s" disabled
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option" required>
-                            <option @if($interviewFields['s1_1_s']=='Admitted') selected @endif value="Admitted">Admitted</option>
-                            <option @if($interviewFields['s1_1_s']=='Conditional') selected @endif value="Conditional">Conditional</option>
-                            <option @if($interviewFields['s1_1_s']=='Rejected') selected @endif value="Rejected">Rejected</option>
+                            <option @if($interviewFields['s1_1_s']=='Admitted') selected @endif value="Admitted">
+                                Admitted
+                            </option>
+                            <option @if($interviewFields['s1_1_s']=='Conditional') selected @endif value="Conditional">
+                                Conditional
+                            </option>
+                            <option @if($interviewFields['s1_1_s']=='Rejected') selected @endif value="Rejected">
+                                Rejected
+                            </option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_1_r"
@@ -41,9 +44,15 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                         <select id="s1_2_s" name="s1_2_s" disabled
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option" required>
-                            <option @if($interviewFields['s1_2_s']=='Admitted') selected @endif value="Admitted">Admitted</option>
-                            <option @if($interviewFields['s1_2_s']=='Conditional') selected @endif value="Conditional">Conditional</option>
-                            <option @if($interviewFields['s1_2_s']=='Rejected') selected @endif value="Rejected">Rejected</option>
+                            <option @if($interviewFields['s1_2_s']=='Admitted') selected @endif value="Admitted">
+                                Admitted
+                            </option>
+                            <option @if($interviewFields['s1_2_s']=='Conditional') selected @endif value="Conditional">
+                                Conditional
+                            </option>
+                            <option @if($interviewFields['s1_2_s']=='Rejected') selected @endif value="Rejected">
+                                Rejected
+                            </option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_2_r"
@@ -62,9 +71,15 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                         <select id="s1_3_s" name="s1_3_s" disabled
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option" required>
-                            <option @if($interviewFields['s1_3_s']=='Admitted') selected @endif value="Admitted">Admitted</option>
-                            <option @if($interviewFields['s1_3_s']=='Conditional') selected @endif value="Conditional">Conditional</option>
-                            <option @if($interviewFields['s1_3_s']=='Rejected') selected @endif value="Rejected">Rejected</option>
+                            <option @if($interviewFields['s1_3_s']=='Admitted') selected @endif value="Admitted">
+                                Admitted
+                            </option>
+                            <option @if($interviewFields['s1_3_s']=='Conditional') selected @endif value="Conditional">
+                                Conditional
+                            </option>
+                            <option @if($interviewFields['s1_3_s']=='Rejected') selected @endif value="Rejected">
+                                Rejected
+                            </option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_3_r"
@@ -83,9 +98,15 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                         <select id="s1_4_s" name="s1_4_s" disabled
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option" required>
-                            <option @if($interviewFields['s1_4_s']=='Admitted') selected @endif value="Admitted">Admitted</option>
-                            <option @if($interviewFields['s1_4_s']=='Conditional') selected @endif value="Conditional">Conditional</option>
-                            <option @if($interviewFields['s1_4_s']=='Rejected') selected @endif value="Rejected">Rejected</option>
+                            <option @if($interviewFields['s1_4_s']=='Admitted') selected @endif value="Admitted">
+                                Admitted
+                            </option>
+                            <option @if($interviewFields['s1_4_s']=='Conditional') selected @endif value="Conditional">
+                                Conditional
+                            </option>
+                            <option @if($interviewFields['s1_4_s']=='Rejected') selected @endif value="Rejected">
+                                Rejected
+                            </option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_4_r"
@@ -139,13 +160,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_1" name="s2_1" value="{{$interviewFields['s2_1']}}" min="0" max="5" disabled
+                                    <input type="text" id="s2_1" name="s2_1" value="{{$interviewFields['s2_1']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_1']*5}}
                                     </label>
                                 </td>
                             </tr>
@@ -163,13 +185,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_2" name="s2_2" value="{{$interviewFields['s2_2']}}" min="0" max="5" disabled
+                                    <input type="text" id="s2_2" name="s2_2" value="{{$interviewFields['s2_2']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_2_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_2']*4}}
                                     </label>
                                 </td>
                             </tr>
@@ -187,13 +210,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_3" name="s2_3" value="{{$interviewFields['s2_3']}}" min="0" max="3" disabled
+                                    <input type="text" id="s2_3" name="s2_3" value="{{$interviewFields['s2_3']}}"
+                                           min="0" max="3" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_3']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -212,13 +236,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_4" name="s2_4" value="{{$interviewFields['s2_4']}}" min="0" max="5" disabled
+                                    <input type="text" id="s2_4" name="s2_4" value="{{$interviewFields['s2_4']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_4_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_4']*4}}
                                     </label>
                                 </td>
                             </tr>
@@ -236,13 +261,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_5" name="s2_5" value="{{$interviewFields['s2_5']}}" min="0" max="5" disabled
+                                    <input type="text" id="s2_5" name="s2_5" value="{{$interviewFields['s2_5']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_5_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_5']*4}}
                                     </label>
                                 </td>
                             </tr>
@@ -261,13 +287,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_6" name="s2_6" value="{{$interviewFields['s2_6']}}" min="0" max="3" disabled
+                                    <input type="text" id="s2_6" name="s2_6" value="{{$interviewFields['s2_6']}}"
+                                           min="0" max="3" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_6_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_6']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -285,13 +312,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_7" name="s2_7" value="{{$interviewFields['s2_7']}}" min="0" max="2" disabled
+                                    <input type="text" id="s2_7" name="s2_7" value="{{$interviewFields['s2_7']}}"
+                                           min="0" max="2" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_7_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_7']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -302,7 +330,8 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s2_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        {{($interviewFields['s2_1']*5)+($interviewFields['s2_2']*4)+($interviewFields['s2_3']*3)+($interviewFields['s2_4']*4)+($interviewFields['s2_5']*4)+($interviewFields['s2_6']*3)+($interviewFields['s2_7']*2)}}
                                     </label>
                                 </td>
                             </tr>
@@ -353,13 +382,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_1" name="s3_1" value="" min="0" max="5" disabled
+                                    <input type="text" id="s3_1" name="s3_1" value="{{$interviewFields['s3_1']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_1']*5}}
                                     </label>
                                 </td>
                             </tr>
@@ -378,13 +408,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_2" name="s3_2" value="" min="0" max="5" disabled
+                                    <input type="text" id="s3_2" name="s3_2" value="{{$interviewFields['s3_2']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_2_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_2']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -403,13 +434,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_3" name="s3_3" value="" min="0" max="5" disabled
+                                    <input type="text" id="s3_3" name="s3_3" value="{{$interviewFields['s3_3']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_3']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -428,13 +460,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_4" name="s3_4" value="" min="0" max="5" disabled
+                                    <input type="text" id="s3_4" name="s3_4" value="{{$interviewFields['s3_4']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_4_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_4']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -452,13 +485,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_5" name="s3_5" value="" min="0" max="5" disabled
+                                    <input type="text" id="s3_5" name="s3_5" value="{{$interviewFields['s3_5']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_5_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_5']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -476,13 +510,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_6" name="s3_6" value="" min="0" max="5" disabled
+                                    <input type="text" id="s3_6" name="s3_6" value="{{$interviewFields['s3_6']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_6_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_6']*4}}
                                     </label>
                                 </td>
                             </tr>
@@ -493,7 +528,7 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s3_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s3_1']*5)+($interviewFields['s3_2']*3)+($interviewFields['s3_3']*2)+($interviewFields['s3_4']*3)+($interviewFields['s3_5']*3)+($interviewFields['s3_6']*4)}}
                                     </label>
                                 </td>
                             </tr>
@@ -544,13 +579,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_1" name="s4_1" value="" min="0" max="5" disabled
+                                    <input type="text" id="s4_1" name="s4_1" value="{{$interviewFields['s4_1']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_1']*5}}
                                     </label>
                                 </td>
                             </tr>
@@ -567,13 +603,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_2" name="s4_2" value="" min="0" max="5" disabled
+                                    <input type="text" id="s4_2" name="s4_2" value="{{$interviewFields['s4_2']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_2_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_2']*5}}
                                     </label>
                                 </td>
                             </tr>
@@ -590,13 +627,14 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_3" name="s4_3" value="" min="0" max="5" disabled
+                                    <input type="text" id="s4_3" name="s4_3" value="{{$interviewFields['s4_3']}}"
+                                           min="0" max="5" disabled
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_3']*4}}
                                     </label>
                                 </td>
                             </tr>
@@ -607,7 +645,7 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s4_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">0
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s4_1']*5)+($interviewFields['s4_2']*5)+($interviewFields['s4_3']*4)}}
                                     </label>
                                 </td>
                             </tr>
@@ -619,19 +657,19 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                                 Remarks</label>
                             <textarea id="s4_r" required placeholder="Enter remarks"
                                       name="s4_r" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_r']}}</textarea>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <input type="hidden" name="application_id" id="application_id"
-                           value="{{ $interview->id }}">
-                    <input type="hidden" name="form_type" id="form_type"
-                           value="kg1">
-                    <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Submit
-                    </button>
+{{--                    <input type="hidden" name="application_id" id="application_id"--}}
+{{--                           value="{{ $interview->id }}">--}}
+{{--                    <input type="hidden" name="form_type" id="form_type"--}}
+{{--                           value="kg1">--}}
+{{--                    <button type="submit"--}}
+{{--                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">--}}
+{{--                        Submit--}}
+{{--                    </button>--}}
                     <a href="{{ route('interviews.index') }}">
                         <button type="button"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
