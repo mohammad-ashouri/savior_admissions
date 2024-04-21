@@ -119,7 +119,7 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -143,6 +143,35 @@ class InterviewController extends Controller
                 ->orderBy('start_from', 'desc')
                 ->first();
 
+        } elseif ($me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $interview = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->where('reserved', 1)
+                ->whereIn('application_timing_id', $applicationTimings)
+                ->where('reserved', 1)
+                ->where('id', $id)
+                ->orderBy('date', 'desc')
+                ->orderBy('ends_to', 'desc')
+                ->orderBy('start_from', 'desc')
+                ->first();
+            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+
+            if ($studentApplianceStatus->interview_status != 'Pending Admissions Officer Interview') {
+                abort(403);
+            }
+
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -159,6 +188,23 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
+
+            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+
+            switch ($studentApplianceStatus->interview_status) {
+                case 'Pending First Interview':
+                    if ($me->id == $interview->first_interviewer) {
+                        abort(403);
+                    }
+                    break;
+                case 'Pending Second Interview':
+                    if ($me->id == $interview->second_interviewer) {
+                        abort(403);
+                    }
+                    break;
+                default:
+                    abort(403);
+            }
         }
         if (empty($interview)) {
             abort(403);
@@ -178,9 +224,9 @@ class InterviewController extends Controller
     public function SetInterview(Request $request): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
-        $interview = [];
+        $application = [];
         if ($me->hasRole('Super Admin')) {
-            $interview = Applications::with('applicationTimingInfo')
+            $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->where('reserved', 1)
@@ -201,7 +247,7 @@ class InterviewController extends Controller
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
 
             // Finding applications related to the application timings
-            $interview = Applications::with('applicationTimingInfo')
+            $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->where('reserved', 1)
@@ -214,7 +260,7 @@ class InterviewController extends Controller
                 ->first();
 
         } elseif ($me->hasRole('Interviewer')) {
-            $interview = Applications::with('applicationTimingInfo')
+            $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
@@ -230,29 +276,42 @@ class InterviewController extends Controller
                 ->orderBy('start_from', 'desc')
                 ->first();
         }
-        if (empty($interview)) {
+        if (empty($application)) {
             abort(403);
         }
-
         $interview = new Interview();
         $interview->application_id = $request->application_id;
         $interview->interview_form = json_encode($request->all(), true);
         $interview->interviewer = session('id');
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
         switch ($request->form_type) {
             case 'kg1':
-            case 'l1':
                 $interview->interview_type = 1;
+                if ($request->s1_1_s == 'Admitted' and $request->s1_2_s == 'Admitted' and $request->s1_3_s == 'Admitted' and $request->s1_4_s == 'Admitted') {
+                    $studentApplianceStatus->interview_status = 'Pending Second Interview';
+                } else {
+                    $studentApplianceStatus->interview_status = 'Rejected';
+                }
+                break;
+            case 'l1':
+                if ($request->s1_1_s == 'Admissible' and $request->s1_2_s == 'Admissible' and $request->s1_3_s == 'Admissible') {
+                    $studentApplianceStatus->interview_status = 'Pending Second Interview';
+                } else {
+                    $studentApplianceStatus->interview_status = 'Rejected';
+                }
                 break;
             case 'kg2':
             case 'l2':
                 $interview->interview_type = 2;
+                $studentApplianceStatus->interview_status = 'Pending Admissions Officer Interview';
                 break;
             case 'kga':
             case 'la':
                 $interview->interview_type = 3;
+                $studentApplianceStatus->interview_status = 'Interviewed';
                 break;
         }
-
+        $studentApplianceStatus->save();
         if ($interview->save()) {
             $application = Applications::with('applicationTimingInfo')->with('reservationInfo')->find($request->application_id);
             switch ($request->form_type) {
