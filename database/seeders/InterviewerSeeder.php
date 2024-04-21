@@ -167,5 +167,11 @@ class InterviewerSeeder extends Seeder
         $user=User::where('email','a.pejhman@saviorschools.com')->first();
         $role = Role::where('name', 'Interviewer')->first();
         $user->assignRole([$role->id]);
+
+        //Add temporary mrs.hosseini to default interviewers
+
+        $user=User::where('email','z.hosseini@saviorschools.com')->first();
+        $role = Role::where('name', 'Interviewer')->first();
+        $user->assignRole([$role->id]);
     }
 }
