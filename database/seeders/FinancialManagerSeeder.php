@@ -55,24 +55,5 @@ class FinancialManagerSeeder extends Seeder
         );
         $role = Role::where('name', 'Financial Manager')->first();
         $user->assignRole([$role->id]);
-
-
-        $user = User::query()->create([
-            'mobile' => '+989109707302',
-            'email' => 'f.najari@saviorschooslc.om',
-            'password' => bcrypt('najari574'),
-        ]);
-        $generalInformation = GeneralInformation::create(
-            [
-                'user_id' => $user->id,
-                'first_name_fa' => 'فاطمه',
-                'last_name_fa' => 'نجاری',
-                'first_name_en' => 'Fatemeh',
-                'last_name_en' => 'Najari',
-                'status' => 1,
-            ]
-        );
-        $role = Role::where('name', 'Financial Manager')->first();
-        $user->assignRole([$role->id]);
     }
 }
