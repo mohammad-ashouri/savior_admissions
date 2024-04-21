@@ -150,7 +150,7 @@
                             <!-- Modal footer -->
                             <div
                                 class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                <button data-modal-hide="defaultModal" type="submit"
+                                <button type="submit"
                                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Save
                                 </button>
@@ -171,7 +171,7 @@
                         class="mr-10 previous-button text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:text-white">
                     <!-- Previous icon or text -->
                     <!-- Example using an SVG icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:serif="http://www.serif.com/"
+                    <svg xmlns="http://www.w3.org/2000/svg"
                          xmlns:xlink="http://www.w3.org/1999/xlink" fill="white" width="800px"
                          height="800px" viewBox="0 0 32 32"
                          style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
