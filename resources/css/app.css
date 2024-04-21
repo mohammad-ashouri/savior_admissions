@@ -147,3 +147,15 @@
     background-color: #f9fafb;
 
 }
+
+.pdf-documents-icons {
+    /* Set the dimensions of the element */
+    width: 100px; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    /* Set the background image */
+    background-image: url('../images/Icons/PDF_For_Documents.png'); /* Replace 'path/to/your/image.png' with the actual path to your image */
+    /* Center the background image */
+    background-position: center;
+    /* Scale the background image to cover the entire element */
+    background-size: cover;
+}

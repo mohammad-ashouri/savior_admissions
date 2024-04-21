@@ -64,18 +64,25 @@
                     <div data-type-id="{{ $document->document_type_id }}"
                          class="grid grid-cols-1 md:grid-cols-1 gap-4 document-div">
                         <div>
-                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                            >
-                                <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                        data-image-src="{{ env('APP_URL')}}/{{ $document->src }}"
-                                        data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}"
-                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                        type="button">
-                                    <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                         src="{{ env('APP_URL')}}/{{$document->src }}" alt="Document Not Found!">
-
-                                </button>
-                            </div>
+                            @if(substr($document->src,-4)=='.pdf')
+                                <div class="flex justify-center items-center">
+                                    <a target="_blank" href="{{ env('APP_URL')}}/{{ $document->src }}">
+                                        <img class="pdf-documents-icons">
+                                    </a>
+                                </div>
+                            @else
+                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                >
+                                    <button data-modal-target="openImage" data-modal-toggle="openImage"
+                                            data-image-src="{{ env('APP_URL')}}/{{ $document->src }}"
+                                            data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}"
+                                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                                            type="button">
+                                        <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"
+                                             src="{{ env('APP_URL')}}/{{$document->src }}" alt="Document Not Found!">
+                                    </button>
+                                </div>
+                            @endif
                             <p class="text-center font-normal text-gray-700 dark:text-gray-400">
                                 {{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}
                             </p>
