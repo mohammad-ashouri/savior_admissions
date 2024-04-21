@@ -343,7 +343,7 @@ $(document).ready(function () {
         resetFields();
         $('#create-document').submit(function (e) {
             e.preventDefault();
-            if ($('#document_type').val()===null) {
+            if ($('#document_type').val() === null) {
                 swalFire('Error', "Select document type!", 'error', 'Try again');
             } else if ($('#document_file').val() == '') {
                 swalFire('Error', "Select document file!", 'error', 'Try again');
@@ -357,6 +357,7 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        $(".page-spinner").show();
                         var form = $(this);
                         var formData = new FormData(form[0]);
                         $.ajax({
