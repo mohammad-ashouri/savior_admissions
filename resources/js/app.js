@@ -395,6 +395,8 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        $('#defaultModal').hide();
+                        $(".page-spinner").show();
                         var form = $(this);
                         var formData = new FormData(form[0]);
                         var currentUrl = window.location.href;
@@ -582,23 +584,23 @@ $(document).ready(function () {
             });
 
             //Set app start and end date min and max attributes
-            $.ajax({
-                type: 'GET',
-                url: '/GetAcademicYearStarttimeAndEndtime',
-                data: {
-                    academic_year: $(this).val()
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                }, success: function (response) {
-                    $("#start_date, #end_date").prop({
-                        "min": response.start_date,
-                        "max": response.end_date
-                    });
-                }, error: function (xhr, textStatus, errorThrown) {
-                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                }
-            });
+            // $.ajax({
+            //     type: 'GET',
+            //     url: '/GetAcademicYearStarttimeAndEndtime',
+            //     data: {
+            //         academic_year: $(this).val()
+            //     },
+            //     headers: {
+            //         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+            //     }, success: function (response) {
+            //         $("#start_date, #end_date").prop({
+            //             "min": response.start_date,
+            //             "max": response.end_date
+            //         });
+            //     }, error: function (xhr, textStatus, errorThrown) {
+            //         swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+            //     }
+            // });
         });
 
         $('#new-application-timing').submit(function (e) {
