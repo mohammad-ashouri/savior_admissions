@@ -17,6 +17,7 @@ use App\Models\UserAccessInformation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Shetabit\Multipay\Invoice;
 
 class ApplicationController extends Controller
 {
@@ -467,6 +468,19 @@ class ApplicationController extends Controller
                         return redirect()->route('Applications.index')->with('success', 'Application reserved successfully!');
                     }
                 }
+                break;
+            case 2:
+                // Create new invoice.
+                $invoice = (new Invoice)->amount(1000);
+
+                // Purchase the given invoice.
+                (new \Shetabit\Multipay\Payment)->via('behpardakht')->callbackUrl(env('APP_URL'))->purchase(
+                    $invoice,
+                    function ($driver, $transactionId) {
+                        dd($transactionId);
+                        // We can store $transactionId in database.
+                    }
+                );
                 break;
             default:
                 $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
