@@ -113,7 +113,12 @@ class StudentController extends Controller
         $gender = $request->gender;
 
         $me = User::find(session('id'));
+        $lastStudent = User::whereHas('roles', function ($query) {
+            $query->where('name', 'Student');
+        })->orderByDesc('id')->first();
+
         $user = new User();
+        $user->id = $lastStudent->id + 1;
         $user->password = Hash::make('Aa12345678');
         $user->status = 0;
         $user->save();
