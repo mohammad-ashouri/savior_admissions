@@ -66,9 +66,9 @@ return [
             'apiPurchaseUrl' => 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl',
             'apiPaymentUrl' => 'https://bpm.shaparak.ir/pgwchannel/startpay.mellat',
             'apiVerificationUrl' => 'https://bpm.shaparak.ir/pgwchannel/services/pgw?wsdl',
-            'terminalId' => '7015208',
-            'username' => '7015208',
-            'password' => '14119342',
+            'terminalId' => env('BEHPARDAKHT_TERMINAL_ID'),
+            'username' => env('BEHPARDAKHT_USERNAME'),
+            'password' => env('BEHPARDAKHT_PASSWORD'),
             'callbackUrl' => env('APP_URL'),
             'description' => 'payment using behpardakht',
             'currency' => 'R', //Can be R, T (Rial, Toman)
