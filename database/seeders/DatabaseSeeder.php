@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             InterviewerSeeder::class,
             AdmissionOfficerSeeder::class,
             FinancialManagerSeeder::class,
+            IDChanger::class,
             //            ParentFatherSeeder::class,
             //            ParentMotherSeeder::class,
             //            StudentSeeder::class,
