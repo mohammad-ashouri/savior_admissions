@@ -18,7 +18,8 @@
         "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.3",
         "shetabit/payment": "^5.6",
-        "spatie/laravel-permission": "^6.1"
+        "spatie/laravel-permission": "^6.1",
+        "ext-soap": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
