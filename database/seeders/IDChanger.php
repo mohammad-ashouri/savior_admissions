@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Document;
 use App\Models\GeneralInformation;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -40,6 +41,9 @@ class IDChanger extends Seeder
 
             // Update guardian in StudentInformation table
             StudentInformation::where('guardian', $oldUserID)->update(['guardian' => $user->id]);
+
+            // Update user_id in Documents table
+            Document::where('user_id', $oldUserID)->update(['user_id' => $user->id]);
 
             // Update model_id in model_has_roles table
             DB::table('model_has_roles')->where('model_id', $oldUserID)->update(['model_id' => $user->id]);
