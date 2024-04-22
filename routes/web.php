@@ -91,6 +91,9 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
             }
         });
 
+        //Get school educational charter
+        Route::get('GetEducationalCharter',[SchoolController::class,'EducationalCharter'])->name('EducationalCharter');
+
         //Search routes
         Route::get('/SearchRoles', [RoleController::class, 'search'])->name('Roles.search');
 

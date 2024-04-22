@@ -797,7 +797,25 @@ $(document).ready(function () {
                         $.each(response, function (index, date_and_time) {
                             selectDateAndTime.append('<option value="' + date_and_time.id + '">' + date_and_time.date + " - " + date_and_time.start_from + " - " + date_and_time.ends_to + '</option>');
                         });
+                        $('.AgreementDIV').show();
                     }, error: function (xhr, textStatus, errorThrown) {
+                        $('.AgreementDIV').hide();
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                    }
+                });
+                $.ajax({
+                    type: 'GET',
+                    url: '/GetEducationalCharter',
+                    data: {
+                        academic_year: $(this).val()
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                    }, success: function (response) {
+                        $('.CharterText').val(response);
+                        $('.AgreementDIV').show();
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        $('.AgreementDIV').hide();
                         swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
                     }
                 });
@@ -813,7 +831,7 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, error: function (xhr, textStatus, errorThrown) {
-                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
                     }
                 });
             });
