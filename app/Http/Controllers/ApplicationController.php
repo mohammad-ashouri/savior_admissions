@@ -15,9 +15,11 @@ use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Shetabit\Multipay\Invoice;
+use Shetabit\Payment\Facade\Payment;
 
 class ApplicationController extends Controller
 {
@@ -417,6 +419,9 @@ class ApplicationController extends Controller
         return view('Applications.application_payment', compact('checkApplication', 'deadline', 'paymentMethods'));
     }
 
+    /**
+     * @throws Exception
+     */
     public function payApplicationFee(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -474,9 +479,9 @@ class ApplicationController extends Controller
                 $invoice = (new Invoice)->amount(1000);
 
                 // Purchase the given invoice.
-                (new \Shetabit\Multipay\Payment)->via('behpardakht')->callbackUrl(env('APP_URL'))->purchase(
+                Payment::callbackUrl(env('APP_URL'))->purchase(
                     $invoice,
-                    function ($driver, $transactionId) {
+                    function($driver, $transactionId) {
                         dd($transactionId);
                         // We can store $transactionId in database.
                     }
