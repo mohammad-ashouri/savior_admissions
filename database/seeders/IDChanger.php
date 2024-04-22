@@ -18,7 +18,7 @@ class IDChanger extends Seeder
         // Retrieve all users whose role is not "student"
         $usersToUpdate = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'student');
-        })->get();
+        })->where('id','!=',1)->where('id','!=',2)->get();
 
         // Increment the IDs of users by 100,000
         foreach ($usersToUpdate as $user) {
