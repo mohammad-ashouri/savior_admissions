@@ -162,7 +162,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
     });
     //Payment
-    //    Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
+        Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
 
     //SMS
         Route::post('sendSMS', [SMSController::class, 'sendSMS'])->name('sms.send');

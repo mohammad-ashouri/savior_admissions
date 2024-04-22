@@ -14,6 +14,7 @@ class School extends Model
     protected $fillable = [
         'name',
         'gender',
+        'educational_charter',
         'status',
     ];
     protected $hidden = [
