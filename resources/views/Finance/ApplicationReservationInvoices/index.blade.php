@@ -212,11 +212,13 @@
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
-                                            @php
-                                                $method=PaymentMethod::find(json_decode($application->applicationInvoiceInfo->payment_information,true)['payment_method']);
-                                            @endphp
-                                            <div
-                                                class="text-base font-semibold">{{ $method->name }}</div>
+                                            @if($application->applicationInvoiceInfo)
+                                                @php
+                                                    $method=PaymentMethod::find(json_decode($application->applicationInvoiceInfo->payment_information,true)['payment_method']);
+                                                @endphp
+                                                <div
+                                                    class="text-base font-semibold">{{ $method->name }}</div>
+                                            @endif
                                         </div>
                                     </th>
                                     <th scope="row"
