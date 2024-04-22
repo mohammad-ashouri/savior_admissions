@@ -15,31 +15,35 @@ class IDChanger extends Seeder
      */
     public function run(): void
     {
-        // Retrieve all users whose role is not "student"
         $usersToUpdate = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'student');
         })->where('id','!=',1)->where('id','!=',2)->get();
 
-        // Increment the IDs of users by 100,000
         foreach ($usersToUpdate as $user) {
-            $generalInformationUserIDs=GeneralInformation::where('user_id', $user->id)->first();
-            $lastUserID=$user->id;
+            // Store the current user ID
+            $oldUserID = $user->id;
+
+            // Increment the user ID by 100,000
             $user->id += 100000;
-            $studentInformationsParentFather=StudentInformation::where('parent_father_id', $lastUserID)->update([
-                'parent_father_id' => $user->id,
-            ]);
-            $studentInformationsParentMother=StudentInformation::where('parent_mother_id',$lastUserID)->update([
-                'parent_mother_id' => $user->id,
-            ]);
-            $studentInformationsGuardian=StudentInformation::where('guardian',$lastUserID)->update([
-                'guardian' => $user->id,
-            ]);
-            $roles=DB::table('model_has_roles')->where('model_id',$lastUserID)->update([
-                'model_id' => $user->id,
-            ]);
-            $generalInformationUserIDs->user_id=$user->id;
+
+            // Save the updated user record
             $user->save();
-            $generalInformationUserIDs->save();
+
+            // Update the related records in other tables
+            GeneralInformation::where('user_id', $oldUserID)->update(['user_id' => $user->id]);
+
+            // Update parent_father_id in StudentInformation table
+            StudentInformation::where('parent_father_id', $oldUserID)->update(['parent_father_id' => $user->id]);
+
+            // Update parent_mother_id in StudentInformation table
+            StudentInformation::where('parent_mother_id', $oldUserID)->update(['parent_mother_id' => $user->id]);
+
+            // Update guardian in StudentInformation table
+            StudentInformation::where('guardian', $oldUserID)->update(['guardian' => $user->id]);
+
+            // Update model_id in model_has_roles table
+            DB::table('model_has_roles')->where('model_id', $oldUserID)->update(['model_id' => $user->id]);
         }
+
     }
 }
