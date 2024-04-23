@@ -15,9 +15,6 @@
             Your registration code is : <span>{{$register_token}}</span>
         </p>
         <p class="font-normal text-gray-900 dark:text-gray-400 mb-4">
-            You have one hour to register!
-        </p>
-        <p class="font-normal text-gray-900 dark:text-gray-400 mb-4">
             Don't share this to anyone!
         </p>
     </div>
