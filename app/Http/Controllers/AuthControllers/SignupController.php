@@ -229,51 +229,33 @@ class SignupController extends Controller
             case 'Email':
                 $email = $request->email;
 
-                $checkIfEmailExists = User::where('email', $email)->exists();
-                if ($checkIfEmailExists) {
-                    $errorMessage = 'The entered email address already exists.';
-                    $this->logActivity(json_encode(['activity' => 'Email Token Sending Failed', 'errors' => $errorMessage]), request()->ip(), request()->userAgent());
+                //Remove previous token
+                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                RegisterToken::where('value', $email)
+                    ->where('register_method', 'Email')
+                    ->where('status', 0)
+                    ->where('created_at', '<=', $twoMinutesAgo)
+                    ->delete();
 
-                    return redirect()->route('login')->withErrors(['errors' => $errorMessage]);
+                $checkAuthorizationCode = RegisterToken::where('register_method', 'Email')->where('value', $email)->where('token', $verificationCode)->first();
 
-                } else {
-                    //Remove previous token
-                    $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                    RegisterToken::where('value', $email)
-                        ->where('register_method', 'Email')
-                        ->where('status', 0)
-                        ->where('created_at', '<=', $twoMinutesAgo)
-                        ->delete();
+                if (empty($checkAuthorizationCode)) {
+                    $this->logActivity(json_encode(['activity' => 'Authorization Aborted', 'errors' => 'Verification Code Is Wrong']), request()->ip(), request()->userAgent());
 
-                    $lastToken = RegisterToken::where('value', $email)
-                        ->where('register_method', 'Email')
-                        ->where('status', 0)
-                        ->where('created_at', '>', $twoMinutesAgo)
-                        ->first();
-
-                    if (empty($lastToken)) {
-                        $mailSend = Mail::to($email)->send(
-                            new SendRegisterToken($email)
-                        );
-                        $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                        $createdTime = Carbon::parse($lastToken->created_at);
-
-                        if ($mailSend) {
-                            $this->logActivity(json_encode(['activity' => 'Email Token Sent', 'email' => $email]), request()->ip(), request()->userAgent());
-
-                            return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
-                        } else {
-                            $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                            $createdTime = Carbon::parse($lastToken->created_at);
-
-                            return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
-                        }
-                    } else {
-                        $this->logActivity(json_encode(['activity' => 'Email Token Sending Failed', 'email' => $email]), request()->ip(), request()->userAgent());
-
-                        return redirect()->route('login')->with(['EmailSendingFailed' => 'EmailSendingFailed']);
-                    }
+                    return ['error' => 'Verification code is invalid.'];
                 }
+
+                $tokenCreated = preg_replace('/[\/\\.]/', '', Str::random(32));
+
+                $token = new RegisterToken();
+                $token->register_method = 'Email';
+                $token->value = $email;
+                $token->token = $tokenCreated;
+                $token->status = 0;
+                $token->save();
+
+                return response()->json(['redirect_url' => env('APP_URL')."/new-account/$tokenCreated"]);
+                break;
         }
 
         return redirect()->route('CreateAccount.register');
