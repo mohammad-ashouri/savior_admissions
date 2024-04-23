@@ -8,6 +8,7 @@ use App\Models\Auth\RegisterToken;
 use App\Models\Catalogs\CountryPhoneCodes;
 use App\Models\GeneralInformation;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -72,40 +73,159 @@ class SignupController extends Controller
                     return redirect()->back()->withErrors(['EmailInvalid' => $errorMessage])->withInput();
                 }
                 break;
-
             default:
                 abort(500);
         }
 
+        $captcha = $request->input('captcha');
+
+        // Uncomment if you want to include captcha validation
+        $sessionCaptcha = session('captcha')['key'];
+        if (! password_verify($captcha, $sessionCaptcha)) {
+            $this->logActivity(json_encode(['activity' => 'Register Failed (Wrong Captcha)', 'entered_values' => json_encode($request->all())]), request()->ip(), request()->userAgent());
+
+            return ['error' => 'Captcha is invalid.'];
+        }
+
         switch (request('signup-method')) {
             case 'Mobile':
-                $token = preg_replace('/[\/\\.]/', '', Str::random(32));
+
+                $token = rand(14235, 64584);
                 $prefix = CountryPhoneCodes::find($request->phone_code);
                 $mobile = '+'.$prefix->phonecode.$request->mobile;
 
-                $checkIfMobileExists=User::where('mobile',$mobile)->exists();
+                $checkIfMobileExists = User::where('mobile', $mobile)->exists();
                 if ($checkIfMobileExists) {
-                    return redirect()->back()->withErrors(['MobileExists' => 'MobileExists'])->withInput();
+                    return ['error' => 'Mobile Exists. Please login!'];
                 }
 
                 //Remove previous token
-                RegisterToken::where('value', $mobile)->where('register_method', 'Mobile')->where('status', 0)->delete();
+                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                RegisterToken::where('value', $mobile)
+                    ->where('register_method', 'Mobile')
+                    ->where('status', 0)
+                    ->where('created_at', '<=', $twoMinutesAgo)
+                    ->delete();
 
-                //Make new token
-                $tokenEntry = new RegisterToken();
-                $tokenEntry->register_method = 'Mobile';
-                $tokenEntry->value = $mobile;
-                $tokenEntry->token = $token;
-                $tokenEntry->status = 0;
-                $tokenEntry->save();
+                $lastToken = RegisterToken::where('value', $mobile)
+                    ->where('register_method', 'Mobile')
+                    ->where('status', 0)
+                    ->where('created_at', '>', $twoMinutesAgo)
+                    ->first();
 
-                $valueToSend = 'Your registration link is: '.env('APP_URL').'/new-account/'.$token."\nYou have one hour to register.\nSavior Schools Support";
+                if (empty($lastToken)) {
+                    //Make new token
+                    $tokenEntry = new RegisterToken();
+                    $tokenEntry->register_method = 'Mobile';
+                    $tokenEntry->value = $mobile;
+                    $tokenEntry->token = $token;
+                    $tokenEntry->status = 0;
+                    $tokenEntry->save();
 
-                //Send token
-                $this->sendSms($mobile, $valueToSend);
-                $this->logActivity(json_encode(['activity' => 'SMS Token Sent', 'mobile' => $mobile, 'values' => json_encode([$tokenEntry, $valueToSend])]), request()->ip(), request()->userAgent());
+                    $valueToSend = 'Your registration code is: '.$token."\nDont share it to anyone!\nSavior Schools Support";
 
-                return redirect()->route('login')->with(['SMSSent' => 'SMSSent']);
+                    //Send token
+                    //                    $this->sendSms($mobile, $valueToSend);
+
+                    $this->logActivity(json_encode(['activity' => 'SMS Token Sent', 'mobile' => $mobile, 'values' => json_encode([$tokenEntry, $valueToSend])]), request()->ip(), request()->userAgent());
+                    $method = 'mobile';
+                    $value = $mobile;
+
+                    return ['status' => 200, 'method' => $method, 'value' => $value];
+                }
+
+                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                $createdTime = Carbon::parse($lastToken->created_at);
+
+                return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
+
+                break;
+            case 'Email':
+                $email = $request->email;
+
+                $checkIfEmailExists = User::where('email', $email)->exists();
+                if ($checkIfEmailExists) {
+                    $this->logActivity(json_encode(['activity' => 'Email Token Sending Failed', 'errors' => $errorMessage]), request()->ip(), request()->userAgent());
+
+                    return ['error' => 'The entered email address already exists.'];
+                } else {
+                    //Remove previous token
+                    $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                    RegisterToken::where('value', $email)
+                        ->where('register_method', 'Email')
+                        ->where('status', 0)
+                        ->where('created_at', '<=', $twoMinutesAgo)
+                        ->delete();
+
+                    $lastToken = RegisterToken::where('value', $email)
+                        ->where('register_method', 'Email')
+                        ->where('status', 0)
+                        ->where('created_at', '>', $twoMinutesAgo)
+                        ->first();
+
+                    if (empty($lastToken)) {
+                        $mailSend = Mail::to($email)->send(
+                            new SendRegisterToken($email)
+                        );
+
+                        if ($mailSend) {
+                            $this->logActivity(json_encode(['activity' => 'Email Token Sent', 'email' => $email]), request()->ip(), request()->userAgent());
+                            $method = 'email';
+                            $value = $email;
+
+                            return ['status' => 200, 'method' => $method, 'value' => $value];
+                        } else {
+                            return redirect()->back()->withErrors(['EmailSendingFailed' => 'EmailSendingFailed'])->withInput();
+                        }
+                    } else {
+                        $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                        $createdTime = Carbon::parse($lastToken->created_at);
+
+                        return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
+                    }
+                }
+                break;
+        }
+        $this->logActivity(json_encode(['activity' => 'Authorization Aborted']), request()->ip(), request()->userAgent());
+
+        abort(422);
+    }
+
+    public function authorization(Request $request)
+    {
+        $verificationCode = $request->verification_code;
+        switch (request('signup-method')) {
+            case 'Mobile':
+                $prefix = CountryPhoneCodes::find($request->phone_code);
+                $mobile = '+'.$prefix->phonecode.$request->mobile;
+
+                //Remove previous token
+                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                RegisterToken::where('value', $mobile)
+                    ->where('register_method', 'Mobile')
+                    ->where('status', 0)
+                    ->where('created_at', '<=', $twoMinutesAgo)
+                    ->delete();
+
+                $checkAuthorizationCode = RegisterToken::where('register_method', 'Mobile')->where('value', $mobile)->where('token', $verificationCode)->first();
+
+                if (empty($checkAuthorizationCode)) {
+                    $this->logActivity(json_encode(['activity' => 'Authorization Aborted', 'errors' => 'Verification Code Is Wrong']), request()->ip(), request()->userAgent());
+
+                    return ['error' => 'Verification code is invalid.'];
+                }
+
+                $tokenCreated = preg_replace('/[\/\\.]/', '', Str::random(32));
+
+                $token = new RegisterToken();
+                $token->register_method = 'Mobile';
+                $token->value = $mobile;
+                $token->token = $tokenCreated;
+                $token->status = 0;
+                $token->save();
+
+                return response()->json(['redirect_url' => env('APP_URL')."/new-account/$tokenCreated"]);
+                break;
             case 'Email':
                 $email = $request->email;
 
@@ -117,14 +237,37 @@ class SignupController extends Controller
                     return redirect()->route('login')->withErrors(['errors' => $errorMessage]);
 
                 } else {
-                    $mailSend = Mail::to($email)->send(
-                        new SendRegisterToken($email)
-                    );
+                    //Remove previous token
+                    $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                    RegisterToken::where('value', $email)
+                        ->where('register_method', 'Email')
+                        ->where('status', 0)
+                        ->where('created_at', '<=', $twoMinutesAgo)
+                        ->delete();
 
-                    if ($mailSend) {
-                        $this->logActivity(json_encode(['activity' => 'Email Token Sent', 'email' => $email]), request()->ip(), request()->userAgent());
+                    $lastToken = RegisterToken::where('value', $email)
+                        ->where('register_method', 'Email')
+                        ->where('status', 0)
+                        ->where('created_at', '>', $twoMinutesAgo)
+                        ->first();
 
-                        return redirect()->route('login')->with(['EmailSent' => 'EmailSent']);
+                    if (empty($lastToken)) {
+                        $mailSend = Mail::to($email)->send(
+                            new SendRegisterToken($email)
+                        );
+                        $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                        $createdTime = Carbon::parse($lastToken->created_at);
+
+                        if ($mailSend) {
+                            $this->logActivity(json_encode(['activity' => 'Email Token Sent', 'email' => $email]), request()->ip(), request()->userAgent());
+
+                            return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
+                        } else {
+                            $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                            $createdTime = Carbon::parse($lastToken->created_at);
+
+                            return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
+                        }
                     } else {
                         $this->logActivity(json_encode(['activity' => 'Email Token Sending Failed', 'email' => $email]), request()->ip(), request()->userAgent());
 
@@ -132,9 +275,8 @@ class SignupController extends Controller
                     }
                 }
         }
-        $this->logActivity(json_encode(['activity' => 'Authorization Aborted']), request()->ip(), request()->userAgent());
 
-        abort(422);
+        return redirect()->route('CreateAccount.register');
     }
 
     public function newAccount($token)

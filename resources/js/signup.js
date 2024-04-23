@@ -23,7 +23,28 @@ function validateIranianMobile(mobile) {
     return iranianMobilePattern.test(mobile);
 }
 
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.text(minutes + ":" + seconds);
+
+        if (--timer < 0) {
+            timer = duration;
+            location.reload();
+        }
+    }, 1000);
+
+}
+
+
 $(document).ready(function () {
+    let csrf_token = 'meta[name="csrf-token"]';
 
     var fullPath = window.location.pathname;
     if (fullPath.includes('/create-account')) {
@@ -32,6 +53,7 @@ $(document).ready(function () {
         $('#mobile').val('');
         $('#email').val('');
         $('#captcha').val('');
+        $('#verification_code').val('');
 
         $('#captchaImg').click(function () {
             reloadCaptcha();
@@ -65,11 +87,11 @@ $(document).ready(function () {
         });
 
         //Mobile validator
-        $('#mobile').on('input', function() {
+        $('#mobile').on('input', function () {
             let mobileNumber = $(this).val();
             let phone_code = $('#phone_code').val();
 
-            if (phone_code===101){
+            if (phone_code === 101) {
 
             }
 
@@ -82,7 +104,7 @@ $(document).ready(function () {
         });
 
         // When the form submitted
-        $('#signup').submit(function (e) {
+        $(document).on('submit', '#send-code', function (e) {
             e.preventDefault();
             // Get the value of signup method
             let signupMethod = $('#signup-method').val();
@@ -122,11 +144,87 @@ $(document).ready(function () {
                 return;
             }
 
-            $('#signup').off('submit').submit();
+
+            var form = $(this);
+            var data = form.serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/create-account',
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                }, success: function (response) {
+                    if (response.error) {
+                        swalFire('Error', response.error, 'error', 'Try again');
+                        reloadCaptcha();
+                    } else if (response.status === 200) {
+                        $('#signup-method').prop('readonly', true);
+                        $('#phone-code').prop('readonly', true);
+                        $('#mobile').prop('readonly', true);
+                        $('#email').prop('readonly', true);
+                        $('.CaptchaDiv').hide();
+                        $('.VerificationCodeDiv').show();
+
+                        $('#send-code').attr({
+                            'id': 'authorize',
+                            'action': '/authorization'
+                        });
+
+                        var twoMinutes = 120, display = $('#timer');
+                        startTimer(twoMinutes, display);
+                    } else if (response.timer) {
+                        $('#signup-method').prop('readonly', true);
+                        $('#phone-code').prop('readonly', true);
+                        $('#mobile').prop('readonly', true);
+                        $('#email').prop('readonly', true);
+                        $('.CaptchaDiv').hide();
+                        $('.VerificationCodeDiv').show();
+
+                        $('#send-code').attr({
+                            'id': 'authorize',
+                            'action': '/authorization'
+                        });
+
+                        var remindedTime = response.timer, display = $('#timer');
+
+                        startTimer(remindedTime, display);
+                        $('.CaptchaDiv').hide();
+                        $('.VerificationCodeDiv').show();
+                    }
+
+                }, error: function (xhr, textStatus, errorThrown) {
+                    swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                }
+            });
+
+
+            // $('#signup').off('submit').submit();
 
         });
-    }
-    else if (fullPath.includes('new-account')){
+
+        $(document).on('submit', '#authorize', function (e) {
+            e.preventDefault();
+            var form = $(this);
+            var data = form.serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/authorization',
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                }, success: function (response) {
+                    if (response.error) {
+                        swalFire('Error', response.error, 'error', 'Try again');
+                    } else if (response.redirect_url) {
+                        window.location.href = response.redirect_url;
+                    }
+                }, error: function (xhr, textStatus, errorThrown) {
+                    swalFire('Error', xhr.responseText.message, 'error', 'Try again');
+                }
+            });
+        });
+
+    } else if (fullPath.includes('new-account')) {
         $('#password').val('');
         $('#repeat-password').val('');
         $('#first_name').val('');

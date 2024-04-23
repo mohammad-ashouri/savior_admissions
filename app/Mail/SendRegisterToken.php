@@ -16,6 +16,7 @@ class SendRegisterToken extends Mailable
     use Queueable, SerializesModels;
 
     public $email;
+    public $token;
 
     /**
      * Create a new message instance.
@@ -23,6 +24,7 @@ class SendRegisterToken extends Mailable
     public function __construct($email)
     {
         $this->email = $email;
+        $this->token = rand(14235, 64584);
     }
 
     /**
@@ -41,7 +43,6 @@ class SendRegisterToken extends Mailable
      */
     public function content(): Content
     {
-        $token = preg_replace('/[\/\\.]/', '', Str::random(32));
 
         //Remove previous token
         RegisterToken::where('value', $this->email)->where('register_method', 'Email')->where('status', 0)->delete();
@@ -49,7 +50,7 @@ class SendRegisterToken extends Mailable
         $tokenEntry = new RegisterToken();
         $tokenEntry->register_method = 'Email';
         $tokenEntry->value = $this->email;
-        $tokenEntry->token = $token;
+        $tokenEntry->token = $this->token;
         $tokenEntry->status = 0;
         $tokenEntry->save();
 
@@ -57,7 +58,7 @@ class SendRegisterToken extends Mailable
             return new Content(
                 view: 'Auth.Signup.RegisterToken',
                 with: [
-                    'register_link' => env('APP_URL').'/new-account/'.$token,
+                    'register_token' => $this->token,
                 ]
             );
         }
