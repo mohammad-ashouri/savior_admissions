@@ -125,7 +125,7 @@ class SignupController extends Controller
                     $valueToSend = 'Your registration code is: '.$token."\nDont share it to anyone!\nSavior Schools Support";
 
                     //Send token
-                    //                    $this->sendSms($mobile, $valueToSend);
+                    $this->sendSms($mobile, $valueToSend);
 
                     $this->logActivity(json_encode(['activity' => 'SMS Token Sent', 'mobile' => $mobile, 'values' => json_encode([$tokenEntry, $valueToSend])]), request()->ip(), request()->userAgent());
                     $method = 'mobile';
