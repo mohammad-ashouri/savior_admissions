@@ -27,9 +27,9 @@
             @elseif($tokenInfo->register_method=='Mobile')
                 <div class="mb-6">
                     <div>
-                    <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 ">Your mobile</label>
-                    <input type="text" id="mobile" name="mobile" value="{{ $tokenInfo->value }}" disabled required
-                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 ">Your mobile</label>
+                        <input type="text" id="mobile" name="mobile" value="{{ $tokenInfo->value }}" disabled required
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
                 </div>
             @endif
@@ -42,8 +42,10 @@
                                placeholder="Min: 8 characters | Max: 24 characters">
                     </div>
                     <div class="w-full md:ml-2">
-                        <label for="repeat-password" class="block mb-2 text-sm font-medium text-gray-900">Repeat password</label>
-                        <input type="password" id="repeat-password" name="repeat-password" required minlength="8" maxlength="24"
+                        <label for="repeat-password" class="block mb-2 text-sm font-medium text-gray-900">Repeat
+                            password</label>
+                        <input type="password" id="repeat-password" name="repeat-password" required minlength="8"
+                               maxlength="24"
                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2 md:mt-0"
                                placeholder="Min: 8 characters | Max: 24 characters">
                     </div>
@@ -51,12 +53,14 @@
             </div>
             <div class="flex flex-col md:flex-row mb-6">
                 <div class="w-full mb-2 md:mb-0 md:mr-2">
-                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">First name (English)</label>
+                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">First name
+                        (English)</label>
                     <input type="text" id="first_name" name="first_name" required value="" placeholder="Like: John"
                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 </div>
                 <div class="w-full md:ml-2">
-                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Last name (English)</label>
+                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Last name
+                        (English)</label>
                     <input type="text" id="last_name" name="last_name" required value="" placeholder="Like: Doe"
                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-2 md:mt-0">
                 </div>
@@ -79,16 +83,6 @@
                 </div>
             </div>
 
-
-            <div class="mb-6">
-                <div class="flex justify-evenly md:justify-normal">
-                    <img id="captchaImg" src="{{ route('captcha') }}" alt="Captcha" class="w-32 h-10  mt-2 rounded"
-                         title="Click on image for reload">
-                    <input name="captcha" required
-                           class="bg-gray-50 border border-gray-300 h-10 mt-2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                           id="captcha" placeholder="Enter captcha" type="text">
-                </div>
-            </div>
             <div class="flex justify-between items-center">
                 <input type="hidden" value="{{ $tokenInfo->token }}" name="token">
                 <button type="submit"

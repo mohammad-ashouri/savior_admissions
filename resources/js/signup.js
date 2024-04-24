@@ -23,6 +23,42 @@ function validateIranianMobile(mobile) {
     return iranianMobilePattern.test(mobile);
 }
 
+function isEnglish(text) {
+    var englishRegex = /^[a-zA-Z]+$/;
+    return englishRegex.test(text);
+}
+
+function validateEnglishInput(elementId, elementName) {
+    var inputValue = $("#" + elementId).val();
+    if (!isEnglish(inputValue)) {
+        $("#" + elementId).val("");
+        return false;
+    }
+    return true;
+}
+
+function validatePasswordEntry(elementId, elementName) {
+    var inputValue = $("#" + elementId).val();
+    var englishRegex = /^[a-zA-Z0-9!@#$%^&*()_+-=]+$/;
+    if (!englishRegex.test(inputValue)) {
+        $("#" + elementId).val("");
+        return false;
+    }
+    return true;
+}
+
+function checkAge(birthDate) {
+    var today = new Date();
+    var birthDateObj = new Date(birthDate);
+    var age = today.getFullYear() - birthDateObj.getFullYear();
+    var monthDiff = today.getMonth() - birthDateObj.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+        age--;
+    }
+    return age >= 15;
+}
+
+
 function startTimer(duration, display) {
     var timer = duration, minutes, seconds;
     setInterval(function () {
@@ -225,12 +261,68 @@ $(document).ready(function () {
         });
 
     } else if (fullPath.includes('new-account')) {
-        $('#password').val('');
-        $('#repeat-password').val('');
-        $('#first_name').val('');
-        $('#last_name').val('');
-        $('#gender').val('');
-        $('#captcha').val('');
+        $('#password,#repeat-password,#first_name,#last_name,#gender,#birthdate').val('');
+
+        $(document).on('submit', '#signup-form', function (e) {
+            e.preventDefault();
+
+            // Initialize error flag
+            var hasError = false;
+
+            // Validate first name and last name
+            var firstNameValid = validateEnglishInput("first_name", 'first name');
+            var lastNameValid = validateEnglishInput("last_name", 'last name');
+
+            // Validate password and repeat password
+            var validatePasswordInput = validatePasswordEntry('password', 'password');
+            var validateRepeatPasswordInput = validatePasswordEntry('repeat-password', 'repeat password');
+
+            // Validate age if user age is under 15
+            var birthDate = $("#birthdate").val();
+            var isUnderFifteen = checkAge(birthDate);
+
+            // Check validation results
+            if (!firstNameValid || !lastNameValid || !validatePasswordInput || !validateRepeatPasswordInput || !isUnderFifteen) {
+                // Set error flag
+                hasError = true;
+
+                // Display only one error message
+                if (!validatePasswordInput) {
+                    swalFire('Error', 'Please use only English letters, numbers, and allowed symbols in password.', 'error', 'Try again');
+                } else if (!validateRepeatPasswordInput) {
+                    swalFire('Error', 'Please use only English letters, numbers, and allowed symbols in repeat password.', 'error', 'Try again');
+                } else if (!firstNameValid) {
+                    swalFire('Error', 'Please enter english characters in first name.', 'error', 'Try again');
+                } else if (!lastNameValid) {
+                    swalFire('Error', 'Please enter english characters in last name.', 'error', 'Try again');
+                } else if (!isUnderFifteen) {
+                    swalFire('Error', 'You must be over fifteen years old.', 'error', 'Try again');
+                }
+            }
+
+            if ($('#password').val() !== $('#repeat-password').val()) {
+                // Set error flag
+                hasError = true;
+
+                swalFire('Error', 'Passwords are not equal.', 'error', 'Try again');
+            }
+
+            // If no error, display confirmation message
+            if (!hasError) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Your information will be added permanently!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#signup-form')[0].submit();
+                    }
+                });
+            }
+        });
     }
 });
 
