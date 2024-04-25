@@ -14,7 +14,7 @@ class DocumentController extends Controller
 {
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $documentTypes = DocumentType::orderBy('name', 'asc')->get();
+        $documentTypes = DocumentType::where('status', '1')->orderBy('name')->get();
         $myDocuments = Document::with('documentType')->where('user_id', session('id'))->orderBy('id', 'desc')->get();
         $myDocumentTypes = Document::with('documentType')->where('user_id', session('id'))->pluck('document_type_id')->all();
         $myDocumentTypes = array_unique($myDocumentTypes);
