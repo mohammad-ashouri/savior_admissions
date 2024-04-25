@@ -34,7 +34,7 @@ class UnreserveApplications extends Command
      */
     public function handle()
     {
-        $applicationReservations=ApplicationReservation::where('created_at', '<=', now()->subMinutes(1))->where('payment_status',0)->get();
+        $applicationReservations=ApplicationReservation::where('created_at', '<=', now()->subHours(1))->where('payment_status',0)->get();
         foreach ($applicationReservations as $applicationReservation){
             $application=Applications::find($applicationReservation->application_id);
             $application->reserved=0;
