@@ -111,3 +111,11 @@ export function checkEnglishDigits(inputValue) {
         return true; // Contains only English digits
     }
 }
+
+export function resetAllSelectValues() {
+    // Select all select elements on the page
+    $('select').each(function() {
+        // Set the value of each select element to an empty string
+        $(this).val("");
+    });
+}

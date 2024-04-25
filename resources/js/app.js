@@ -13,7 +13,8 @@ import {
     resetFields,
     checkPersianCharacters,
     checkEnglishCharacters,
-    checkEnglishDigits
+    checkEnglishDigits,
+    resetAllSelectValues,
 } from './MainJsFunctionsAndImports.js';
 
 
