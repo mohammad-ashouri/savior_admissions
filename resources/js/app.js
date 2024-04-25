@@ -1,39 +1,17 @@
-import './bootstrap';
 import 'flowbite';
 import $ from 'jquery';
-import Swal from 'sweetalert2';
 import 'ionicons';
 import moment from 'moment';
-
 window.moment = moment;
-window.Swal = Swal;
-
-function swalFire(title = null, text, icon, confirmButtonText) {
-    Swal.fire({
-        title: title, html: text, icon: icon, confirmButtonText: confirmButtonText,
-    });
-}
-
-function resetAllInputValues() {
-    $('input:not([name="_token"]):not([name="id"])').each(function () {
-        $(this).val(null);
-    });
-}
-
-function resetAllSelectValues() {
-    $('select').each(function () {
-        $(this).val(null);
-    });
-}
-
-function resetFields() {
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => input.value = "");
-    const selectors = document.querySelectorAll('select');
-    selectors.forEach(select => select.value = "");
-    const textareas = document.querySelectorAll('textarea');
-    textareas.forEach(textarea => textarea.value = "");
-}
+import {
+    swalFire,
+    validateIranianMobile,
+    validateEnglishInput,
+    validatePasswordEntry,
+    checkAge,
+    resetAllInputValues,
+    resetFields
+} from './MainJsFunctionsAndImports.js';
 
 
 $(document).ready(function () {
@@ -83,8 +61,8 @@ $(document).ready(function () {
     }
 
 // config dark mode
-    var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-    var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
 // Change the icons inside the button based on previous settings
     if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -93,7 +71,7 @@ $(document).ready(function () {
         themeToggleLightIcon.classList.remove('hidden');
     }
 
-    var themeToggleBtn = document.getElementById('theme-toggle');
+    let themeToggleBtn = document.getElementById('theme-toggle');
 
     themeToggleBtn.addEventListener('click', function () {
 
@@ -134,8 +112,8 @@ $(document).ready(function () {
             pageTitle = 'Edit User Profile';
             $('#changeUserGeneralInformation').submit(function (e) {
                 e.preventDefault();
-                var form = $(this);
-                var data = form.serialize();
+                let form = $(this);
+                let data = form.serialize();
                 $.ajax({
                     type: 'POST',
                     url: '/users/change_user_general_information',
@@ -152,8 +130,8 @@ $(document).ready(function () {
 
             $('#changeUserPassword').submit(function (e) {
                 e.preventDefault();
-                var form = $(this);
-                var data = form.serialize();
+                let form = $(this);
+                let data = form.serialize();
                 $.ajax({
                     type: 'POST',
                     url: '/users/change_password',
@@ -172,8 +150,8 @@ $(document).ready(function () {
 
             $('#change-rules').submit(function (e) {
                 e.preventDefault();
-                var form = $(this);
-                var data = form.serialize();
+                let form = $(this);
+                let data = form.serialize();
                 $.ajax({
                     type: 'POST',
                     url: '/users/change_rules',
@@ -190,8 +168,8 @@ $(document).ready(function () {
 
             $('#changeStudentInformation').submit(function (e) {
                 e.preventDefault();
-                var form = $(this);
-                var data = form.serialize();
+                let form = $(this);
+                let data = form.serialize();
                 $.ajax({
                     type: 'POST',
                     url: '/student/change_information',
@@ -208,8 +186,8 @@ $(document).ready(function () {
 
             $('#changePrincipalInformation').submit(function (e) {
                 e.preventDefault();
-                var form = $(this);
-                var data = form.serialize();
+                let form = $(this);
+                let data = form.serialize();
                 $.ajax({
                     type: 'POST',
                     url: '/users/change_school_admin_information',
@@ -229,7 +207,7 @@ $(document).ready(function () {
             });
 
             $('.add-row').on('click', function () {
-                var newRow = '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">' +
+                let newRow = '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">' +
                     '<td class="p-4">' +
                     '<input type="text" name="title[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>' +
                     '</td>' +
@@ -323,7 +301,7 @@ $(document).ready(function () {
                 headers: {
                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                 }, success: function (response) {
-                    var selectLevel = $('#level');
+                    let selectLevel = $('#level');
                     selectLevel.empty();
 
                     selectLevel.append('<option selected disabled value="">Select level</option>');
@@ -359,8 +337,8 @@ $(document).ready(function () {
                     if (result.isConfirmed) {
                         $('#defaultModal').hide();
                         $(".page-spinner").show();
-                        var form = $(this);
-                        var formData = new FormData(form[0]);
+                        let form = $(this);
+                        let formData = new FormData(form[0]);
                         $.ajax({
                             type: 'POST',
                             url: '/Documents/Create',
@@ -397,11 +375,11 @@ $(document).ready(function () {
                     if (result.isConfirmed) {
                         $('#defaultModal').hide();
                         $(".page-spinner").show();
-                        var form = $(this);
-                        var formData = new FormData(form[0]);
-                        var currentUrl = window.location.href;
-                        var parts = currentUrl.split('/');
-                        var urlLastPart = parts[parts.length - 1];
+                        let form = $(this);
+                        let formData = new FormData(form[0]);
+                        let currentUrl = window.location.href;
+                        let parts = currentUrl.split('/');
+                        let urlLastPart = parts[parts.length - 1];
                         $.ajax({
                             type: 'POST',
                             url: '/Documents/Create/' + urlLastPart,
@@ -422,7 +400,7 @@ $(document).ready(function () {
         });
 
         $('.type-filter').click(function () {
-            var typeId = $(this).data('type-id');
+            let typeId = $(this).data('type-id');
 
             $(this).addClass('text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300');
 
@@ -567,9 +545,9 @@ $(document).ready(function () {
                 headers: {
                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                 }, success: function (response) {
-                    var selectFirstInterviewer = $('#first_interviewer');
+                    let selectFirstInterviewer = $('#first_interviewer');
                     selectFirstInterviewer.empty();
-                    var selectSecondInterviewer = $('#second_interviewer');
+                    let selectSecondInterviewer = $('#second_interviewer');
                     selectSecondInterviewer.empty();
                     resetAllInputValues();
                     $.each(response, function (index, Interviewer) {
@@ -671,17 +649,17 @@ $(document).ready(function () {
         resetAllSelectValues();
         resetAllInputValues();
 
-        var dateTimeString = document.getElementById('deadline').innerText;
-        var now = new Date();
-        var deadline = new Date(dateTimeString);
-        var remainingTime = (deadline - now) / 1000;
+        let dateTimeString = document.getElementById('deadline').innerText;
+        let now = new Date();
+        let deadline = new Date(dateTimeString);
+        let remainingTime = (deadline - now) / 1000;
 
         function countdownTimer() {
-            var hours = Math.floor(remainingTime / 3600);
-            var minutes = Math.floor((remainingTime % 3600) / 60);
-            var seconds = Math.floor(remainingTime % 60);
+            let hours = Math.floor(remainingTime / 3600);
+            let minutes = Math.floor((remainingTime % 3600) / 60);
+            let seconds = Math.floor(remainingTime % 60);
 
-            var timerElement = document.getElementById('timer');
+            let timerElement = document.getElementById('timer');
             timerElement.innerText = hours.toString().padStart(2, '0') + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
 
             remainingTime--;
@@ -762,9 +740,9 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
-                        var selectAcademicYear = $('#academic_year');
+                        let selectAcademicYear = $('#academic_year');
                         selectAcademicYear.empty();
-                        var selectDateAndTime = $('#date_and_time');
+                        let selectDateAndTime = $('#date_and_time');
                         selectDateAndTime.empty();
 
                         selectAcademicYear.append('<option selected disabled value="">Select academic year</option>');
@@ -789,7 +767,7 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
-                        var selectDateAndTime = $('#date_and_time');
+                        let selectDateAndTime = $('#date_and_time');
                         selectDateAndTime.empty();
 
                         selectDateAndTime.append('<option selected disabled value="">Select date and time</option>');
@@ -1030,7 +1008,7 @@ $(document).ready(function () {
         });
 
         $('.add-row').on('click', function () {
-            var newRow = '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">' +
+            let newRow = '<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">' +
                 '<td class="p-4">' +
                 '<input type="text" name="name[]" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>' +
                 '</td>' +
@@ -1082,8 +1060,8 @@ $(document).ready(function () {
                 pageTitle = 'Profile';
                 $('#reset-password').submit(function (e) {
                     e.preventDefault();
-                    var form = $(this);
-                    var data = form.serialize();
+                    let form = $(this);
+                    let data = form.serialize();
                     $.ajax({
                         type: 'POST',
                         url: '/password/change',

@@ -1,88 +1,18 @@
-import './bootstrap';
-// import '@fortawesome/fontawesome-free/css/all.css';
 import $ from 'jquery';
-import Swal from 'sweetalert2';
-
-window.Swal = Swal;
-
-function swalFire(title = null, text, icon, confirmButtonText) {
-    Swal.fire({
-        title: title, text: text, icon: icon, confirmButtonText: confirmButtonText,
-    });
-}
-
-function reloadCaptcha() {
-    var captchaImg = document.getElementById('captchaImg');
-    var captchaUrl = "/captcha";
-    captchaImg.src = captchaUrl + '?' + Date.now();
-}
-
-function validateIranianMobile(mobile) {
-    var iranianMobilePattern = /^(\+98|0)?9\d{9}$/;
-
-    return iranianMobilePattern.test(mobile);
-}
-
-function isEnglish(text) {
-    var englishRegex = /^[a-zA-Z]+$/;
-    return englishRegex.test(text);
-}
-
-function validateEnglishInput(elementId, elementName) {
-    var inputValue = $("#" + elementId).val();
-    if (!isEnglish(inputValue)) {
-        $("#" + elementId).val("");
-        return false;
-    }
-    return true;
-}
-
-function validatePasswordEntry(elementId, elementName) {
-    var inputValue = $("#" + elementId).val();
-    var englishRegex = /^[a-zA-Z0-9!@#$%^&*()_+-=]+$/;
-    if (!englishRegex.test(inputValue)) {
-        $("#" + elementId).val("");
-        return false;
-    }
-    return true;
-}
-
-function checkAge(birthDate) {
-    var today = new Date();
-    var birthDateObj = new Date(birthDate);
-    var age = today.getFullYear() - birthDateObj.getFullYear();
-    var monthDiff = today.getMonth() - birthDateObj.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
-        age--;
-    }
-    return age >= 15;
-}
-
-
-function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.text(minutes + ":" + seconds);
-
-        if (--timer < 0) {
-            timer = duration;
-            location.reload();
-        }
-    }, 1000);
-
-}
-
+import {
+    swalFire,
+    reloadCaptcha,
+    validateIranianMobile,
+    validateEnglishInput,
+    validatePasswordEntry,
+    checkAge,
+    startTimer
+} from './MainJsFunctionsAndImports.js';
 
 $(document).ready(function () {
     let csrf_token = 'meta[name="csrf-token"]';
 
-    var fullPath = window.location.pathname;
+    let fullPath = window.location.pathname;
     if (fullPath.includes('/create-account')) {
         // Hide the initial two divs
         $('#signup-method').val('');
@@ -148,7 +78,7 @@ $(document).ready(function () {
             // Check the value of signup method
             switch (signupMethod) {
                 case 'Email':
-                    var email = $('#email').val();
+                    let email = $('#email').val();
                     if (email === '') {
                         swalFire('Error', "Email field is empty!", 'error', 'Try again');
                         reloadCaptcha();
@@ -156,7 +86,7 @@ $(document).ready(function () {
                     }
                     break;
                 case 'Mobile':
-                    var mobile = $('#mobile').val();
+                    let mobile = $('#mobile').val();
                     if (mobile === '') {
                         swalFire('Error', "Mobile field is empty!", 'error', 'Try again');
                         reloadCaptcha();
@@ -181,8 +111,8 @@ $(document).ready(function () {
             }
 
 
-            var form = $(this);
-            var data = form.serialize();
+            let form = $(this);
+            let data = form.serialize();
             $.ajax({
                 type: 'POST',
                 url: '/create-account',
@@ -206,7 +136,7 @@ $(document).ready(function () {
                             'action': '/authorization'
                         });
 
-                        var twoMinutes = 120, display = $('#timer');
+                        let twoMinutes = 120, display = $('#timer');
                         startTimer(twoMinutes, display);
                     } else if (response.timer) {
                         $('#signup-method').prop('readonly', true);
@@ -221,7 +151,7 @@ $(document).ready(function () {
                             'action': '/authorization'
                         });
 
-                        var remindedTime = response.timer, display = $('#timer');
+                        let remindedTime = response.timer, display = $('#timer');
 
                         startTimer(remindedTime, display);
                         $('.CaptchaDiv').hide();
@@ -240,8 +170,8 @@ $(document).ready(function () {
 
         $(document).on('submit', '#authorize', function (e) {
             e.preventDefault();
-            var form = $(this);
-            var data = form.serialize();
+            let form = $(this);
+            let data = form.serialize();
             $.ajax({
                 type: 'POST',
                 url: '/authorization',
@@ -267,19 +197,19 @@ $(document).ready(function () {
             e.preventDefault();
 
             // Initialize error flag
-            var hasError = false;
+            let hasError = false;
 
             // Validate first name and last name
-            var firstNameValid = validateEnglishInput("first_name", 'first name');
-            var lastNameValid = validateEnglishInput("last_name", 'last name');
+            let firstNameValid = validateEnglishInput("first_name", 'first name');
+            let lastNameValid = validateEnglishInput("last_name", 'last name');
 
             // Validate password and repeat password
-            var validatePasswordInput = validatePasswordEntry('password', 'password');
-            var validateRepeatPasswordInput = validatePasswordEntry('repeat-password', 'repeat password');
+            let validatePasswordInput = validatePasswordEntry('password', 'password');
+            let validateRepeatPasswordInput = validatePasswordEntry('repeat-password', 'repeat password');
 
             // Validate age if user age is under 15
-            var birthDate = $("#birthdate").val();
-            var isUnderFifteen = checkAge(birthDate);
+            let birthDate = $("#birthdate").val();
+            let isUnderFifteen = checkAge(birthDate);
 
             // Check validation results
             if (!firstNameValid || !lastNameValid || !validatePasswordInput || !validateRepeatPasswordInput || !isUnderFifteen) {

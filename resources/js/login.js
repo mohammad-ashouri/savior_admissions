@@ -1,29 +1,13 @@
-import './bootstrap';
-// import '@fortawesome/fontawesome-free/css/all.css';
 import $ from 'jquery';
-import Swal from 'sweetalert2';
-
-window.Swal = Swal;
-
-function swalFire(title = null, text, icon, confirmButtonText) {
-    Swal.fire({
-        title: title, text: text, icon: icon, confirmButtonText: confirmButtonText,
-    });
-}
-
-function reloadCaptcha() {
-    var captchaImg = document.getElementById('captchaImg');
-    var captchaUrl = "/captcha";
-    captchaImg.src = captchaUrl + '?' + Date.now();
-}
+import {swalFire, reloadCaptcha} from './MainJsFunctionsAndImports.js';
 
 $(document).ready(function () {
-    var fullPath = window.location.pathname;
+    let fullPath = window.location.pathname;
     if (fullPath.includes('/password/reset')) {
         $('#reset-password').submit(function (e) {
             e.preventDefault();
-            var form = $(this);
-            var data = form.serialize();
+            let form = $(this);
+            let data = form.serialize();
             $.ajax({
                 type: 'POST', url: '/password/reset', data: data, headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -73,8 +57,8 @@ $(document).ready(function () {
                     if ($('#login-method').val() == null) {
                         swalFire('Error', 'Login method is not selected!', 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
                     } else {
-                        var form = $(this);
-                        var data = form.serialize();
+                        let form = $(this);
+                        let data = form.serialize();
 
                         $.ajax({
                             type: 'POST',
@@ -88,12 +72,12 @@ $(document).ready(function () {
                                     window.location.href = response.redirect;
                                 } else {
                                     if (response.validator_errors) {
-                                        var errorList = response.validator_errors;
+                                        let errorList = response.validator_errors;
 
                                         // Iterate through the error list and display each error
-                                        for (var key in errorList) {
+                                        for (let key in errorList) {
                                             if (errorList.hasOwnProperty(key)) {
-                                                var errorMessage = errorList[key][0]; // Assuming each field has only one error message
+                                                let errorMessage = errorList[key][0]; // Assuming each field has only one error message
                                                 swalFire('Error', errorMessage, 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
                                             }
                                         }
@@ -154,8 +138,8 @@ $(document).ready(function () {
                     if (resetOption.value == null || resetOption.value === '') {
                         swalFire('Error', 'Please choose an option', 'error', 'Try again');
                     } else {
-                        var form = $(this);
-                        var data = form.serialize();
+                        let form = $(this);
+                        let data = form.serialize();
 
                         $.ajax({
                             type: 'POST', url: '/password/sendToken', data: data, headers: {

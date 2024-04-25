@@ -1,3 +1,3 @@
-import swalFire from './SwalMain.js';
+import {swalFire} from '../MainJsFunctionsAndImports.js';
 
 swalFire('Failed!', 'Your token is invalid or expired!', 'error', 'Ok');
