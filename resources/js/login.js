@@ -61,13 +61,9 @@ $(document).ready(function () {
                         let data = form.serialize();
 
                         $.ajax({
-                            type: 'POST',
-                            url: '/login',
-                            data: data,
-                            headers: {
+                            type: 'POST', url: '/login', data: data, headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            },
-                            success: function (response) {
+                            }, success: function (response) {
                                 if (response.success) {
                                     window.location.href = response.redirect;
                                 } else {
@@ -93,8 +89,7 @@ $(document).ready(function () {
                                         captcha.value = '';
                                     }
                                 }
-                            },
-                            error: function (xhr, textStatus, errorThrown) {
+                            }, error: function (xhr, textStatus, errorThrown) {
                                 if (xhr.responseJSON && xhr.responseJSON['YouAreLocked']) {
                                     swalFire('Access is forbidden', 'Your IP has been blocked. Please provide to your admin', 'error', 'Done!');
                                     const fields = [email, password, captcha];

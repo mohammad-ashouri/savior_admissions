@@ -2,15 +2,18 @@ import 'flowbite';
 import $ from 'jquery';
 import 'ionicons';
 import moment from 'moment';
+
 window.moment = moment;
 import {
     swalFire,
     validateIranianMobile,
-    validateEnglishInput,
     validatePasswordEntry,
     checkAge,
     resetAllInputValues,
-    resetFields
+    resetFields,
+    checkPersianCharacters,
+    checkEnglishCharacters,
+    checkEnglishDigits
 } from './MainJsFunctionsAndImports.js';
 
 
@@ -1058,6 +1061,53 @@ $(document).ready(function () {
                 break;
             case '/Profile':
                 pageTitle = 'Profile';
+
+                // Event handler for input event on elements with IDs first_name_fa and last_name_fa
+                $('#first_name_fa, #last_name_fa').on('keyup', function (event) {
+                    // Validate input using the checkPersianCharacters function
+                    if (!checkPersianCharacters(event)) {
+                        // If input is not valid, prevent typing of unauthorized character
+                        event.preventDefault();
+                        //Remove all field values
+                        $(this).val('');
+                        // Display an error message using swalFire
+                        swalFire('Error', 'Your entry must contain Persian characters.', 'error', 'Try again');
+                    }
+                });
+
+                $('#father-name,#city,#address').on('keyup', function (event) {
+                    // Validate input
+                    if (!checkEnglishCharacters(event)) {
+                        event.preventDefault(); // Prevent typing of unauthorized character
+                        //Remove all field values
+                        $(this).val('');
+                        // Display an error message using swalFire
+                        swalFire('Error', 'Your entry must contain English characters.', 'error', 'Try again');
+                    }
+                });
+
+                $('#Birthdate').on('change', function (event) {
+                    // Validate input
+                    if (!checkAge($(this).val())) {
+                        event.preventDefault(); // Prevent typing of unauthorized character
+                        //Remove all field values
+                        $(this).val('');
+                        // Display an error message using swalFire
+                        swalFire('Error', 'You must be over fifteen years old.', 'error', 'Try again');
+                    }
+                });
+
+                $("#postal-code").on('input', function (event) {
+                    // Validate input
+                    if (!checkEnglishDigits($(this).val())) {
+                        event.preventDefault(); // Prevent typing of unauthorized character
+                        //Remove all field values
+                        $(this).val('');
+                        // Display an error message using swalFire
+                        swalFire('Error', 'Your entry must contain numbers.', 'error', 'Try again');
+                    }
+                });
+
                 $('#reset-password').submit(function (e) {
                     e.preventDefault();
                     let form = $(this);
@@ -1069,9 +1119,9 @@ $(document).ready(function () {
                         headers: {
                             'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                         }, success: function (response) {
-                            Current_password.value = '';
-                            New_password.value = '';
-                            Confirm_password.value = '';
+                            $('#Current_password').val("");
+                            $('#New_password').val("");
+                            $('#Confirm_password').val("");
                             swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
                         }, error: function (xhr, textStatus, errorThrown) {
                             swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');

@@ -1,6 +1,7 @@
 import './bootstrap';
 import Swal from "sweetalert2";
 import $ from "jquery";
+
 window.Swal = Swal;
 
 export function swalFire(title = null, text, icon, confirmButtonText) {
@@ -22,21 +23,29 @@ export function validateIranianMobile(mobile) {
     return iranianMobilePattern.test(mobile);
 }
 
-export function isEnglish(text) {
-    let englishRegex = /^[a-zA-Z]+$/;
-    return englishRegex.test(text);
-}
+// Function to check input for English characters
+export function checkEnglishCharacters(event) {
+    // Get the input value from the event target
+    let inputValue = event.target.value;
 
-export function validateEnglishInput(elementId, elementName) {
-    let inputValue = $("#" + elementId).val();
-    if (!isEnglish(inputValue)) {
-        $("#" + elementId).val("");
-        return false;
+    // Check if the input contains characters other than English letters
+    if (/[^a-zA-Z\s]/.test(inputValue)) {
+        return false; // Contains non-English characters
+    } else {
+        return true; // Contains only English characters
     }
-    return true;
 }
 
-export function validatePasswordEntry(elementId, elementName) {
+// Function to check input for Persian characters
+export function checkPersianCharacters(event) {
+    // Get the input value from the event target
+    let inputValue = event.target.value;
+
+    // Check if the input contains characters other than Persian letters
+    return !/[^آ-ی\s]/.test(inputValue);
+}
+
+export function validatePasswordEntry(elementId) {
     let inputValue = $("#" + elementId).val();
     let englishRegex = /^[a-zA-Z0-9!@#$%^&*()_+-=]+$/;
     if (!englishRegex.test(inputValue)) {
@@ -76,6 +85,7 @@ export function startTimer(duration, display) {
     }, 1000);
 
 }
+
 export function resetAllInputValues() {
     $('input:not([name="_token"]):not([name="id"])').each(function () {
         $(this).val(null);
@@ -89,4 +99,15 @@ export function resetFields() {
     selectors.forEach(select => select.value = "");
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => textarea.value = "");
+}
+
+export function checkEnglishDigits(inputValue) {
+    // Regular expression to match English digits
+    let englishDigitsRegex = /^[0-9]*$/;
+    // Check if the input contains anything other than English digits
+    if (!englishDigitsRegex.test(inputValue)) {
+        return false; // Contains non-English digits
+    } else {
+        return true; // Contains only English digits
+    }
 }

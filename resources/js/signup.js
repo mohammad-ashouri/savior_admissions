@@ -3,10 +3,9 @@ import {
     swalFire,
     reloadCaptcha,
     validateIranianMobile,
-    validateEnglishInput,
     validatePasswordEntry,
     checkAge,
-    startTimer
+    startTimer, checkEnglishCharacters
 } from './MainJsFunctionsAndImports.js';
 
 $(document).ready(function () {
@@ -200,12 +199,12 @@ $(document).ready(function () {
             let hasError = false;
 
             // Validate first name and last name
-            let firstNameValid = validateEnglishInput("first_name", 'first name');
-            let lastNameValid = validateEnglishInput("last_name", 'last name');
+            let firstNameValid = checkEnglishCharacters($("first_name").val());
+            let lastNameValid = checkEnglishCharacters($("last_name").val());
 
             // Validate password and repeat password
-            let validatePasswordInput = validatePasswordEntry('password', 'password');
-            let validateRepeatPasswordInput = validatePasswordEntry('repeat-password', 'repeat password');
+            let validatePasswordInput = validatePasswordEntry('password');
+            let validateRepeatPasswordInput = validatePasswordEntry('repeat-password');
 
             // Validate age if user age is under 15
             let birthDate = $("#birthdate").val();
@@ -223,8 +222,10 @@ $(document).ready(function () {
                     swalFire('Error', 'Please use only English letters, numbers, and allowed symbols in repeat password.', 'error', 'Try again');
                 } else if (!firstNameValid) {
                     swalFire('Error', 'Please enter english characters in first name.', 'error', 'Try again');
+                    $("first_name").val("");
                 } else if (!lastNameValid) {
                     swalFire('Error', 'Please enter english characters in last name.', 'error', 'Try again');
+                    $("last_name").val("");
                 } else if (!isUnderFifteen) {
                     swalFire('Error', 'You must be over fifteen years old.', 'error', 'Try again');
                 }

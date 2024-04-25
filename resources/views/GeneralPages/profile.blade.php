@@ -167,7 +167,7 @@
                                             name="nationality" @if($myGeneralInformation->status===1) disabled @endif
                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
-                                        <option selected disabled value=""></option>
+                                        <option selected disabled value="">Select an option</option>
                                         @foreach($countries as $nationality)
                                             <option @if($myGeneralInformation->nationality==$nationality->id) selected
                                                     @endif value="{{ $nationality->id }}">{{$nationality->nationality}}</option>
@@ -181,7 +181,7 @@
                                             name="birthplace" @if($myGeneralInformation->status===1) disabled @endif
                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
-                                        <option selected disabled value=""></option>
+                                        <option selected disabled value="">Select an option</option>
                                         @foreach($countries as $birthplaces)
                                             <option @if($myGeneralInformation->birthplace==$birthplaces->id) selected
                                                     @endif value="{{ $birthplaces->id }}">{{$birthplaces->en_short_name}}</option>
@@ -216,7 +216,7 @@
                                             @endif
                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
-                                        <option selected disabled value=""></option>
+                                        <option selected disabled value="">Select an option</option>
                                         @foreach($countries as $country)
                                             <option @if($myGeneralInformation->country==$country->id) selected
                                                     @endif value="{{ $country->id }}">{{$country->en_short_name}}</option>
@@ -237,7 +237,8 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
                                         address</label>
                                     <input type="email" id="email" value="{{ $myGeneralInformation->user->email }}"
-                                           @if($myGeneralInformation->status===1) disabled @endif
+                                           @if($myGeneralInformation->status===1 or $myGeneralInformation->user->email) disabled
+                                           @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="@if($myGeneralInformation->status===0) Like: john.doe@company.com @endif">
                                 </div>
@@ -246,9 +247,10 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile
                                         number</label>
                                     <input type="tel" id="mobile" value="{{ $myGeneralInformation->user->mobile }}"
-                                           @if($myGeneralInformation->user->mobile) disabled @endif
+                                           @if($myGeneralInformation->status===1 or $myGeneralInformation->user->mobile) disabled
+                                           @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                                           placeholder="Enter like this: +989123456789" required>
                                 </div>
                                 <div>
                                     <label for="address"
@@ -258,7 +260,7 @@
                                                disabled @endif
                                            value="{{ $myGeneralInformation->address }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Qom, moallem st, 4th alley, no 433" required>
+                                           placeholder="Enter like this: Qom, moallem st, 43th alley, no 1546" required>
                                 </div>
                                 <div>
                                     <label for="phone"
@@ -272,14 +274,14 @@
                                            placeholder="For example: +982531234567" required>
                                 </div>
                                 <div>
-                                    <label for="zip/postal code"
+                                    <label for="postal-code"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">zip/postal
                                         code</label>
-                                    <input type="text" id="zip/postal code" name="zip/postalcode"
+                                    <input type="text" id="postal-code" name="zip/postalcode"
                                            @if($myGeneralInformation->status===1)
                                                disabled @endif value="{{ $myGeneralInformation->postal_code }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           pattern="[0-9]{10}" placeholder="1234567890" required>
+                                           pattern="[0-9]{10}" placeholder="For example: 1234567890" required>
                                 </div>
                                 <div>
                                     <label for="Role"
