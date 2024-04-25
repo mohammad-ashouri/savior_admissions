@@ -1097,7 +1097,7 @@ $(document).ready(function () {
                     }
                 });
 
-                $("#postal-code").on('input', function (event) {
+                $("#postal-code,#faragir-code,#passport-number").on('input', function (event) {
                     // Validate input
                     if (!checkEnglishDigits($(this).val())) {
                         event.preventDefault(); // Prevent typing of unauthorized character
