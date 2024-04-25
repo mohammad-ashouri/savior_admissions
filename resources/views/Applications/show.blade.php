@@ -89,6 +89,9 @@
                                         @case(2)
                                             Awaiting confirmation
                                             @break
+                                        @case(3)
+                                            Rejected
+                                            @break
                                     @endswitch
                                 </div>
                                 <div>
