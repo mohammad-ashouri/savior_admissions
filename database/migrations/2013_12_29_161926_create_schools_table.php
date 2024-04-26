@@ -23,8 +23,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        $query="insert into schools (name,gender) values ('Kawthar International School',2),('Tāhā International School',1),('Tūba International School',3)";
-        DB::statement($query);
+
+//        $query="insert into schools (name,gender) values ('Kawthar International School',2),('Tāhā International School',1),('Tūba International School',3)";
+//        DB::statement($query);
     }
 
     /**
