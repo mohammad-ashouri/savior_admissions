@@ -75,7 +75,7 @@
                                 >
                                     <button data-modal-target="openImage" data-modal-toggle="openImage"
                                             data-image-src="{{ env('APP_URL')}}/{{ $document->src }}"
-                                            data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}"
+                                            data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->description .' - ' . $document->created_at }}"
                                             class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
                                             type="button">
                                         <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"

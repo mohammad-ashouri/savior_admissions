@@ -6,8 +6,8 @@
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
-            <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium"> Profile of {{ $user->generalInformationInfo->first_name }} {{ $user->generalInformationInfo->last_name }}</h1>
+            <div class="grid grid-cols-1 gap-4 mb-4 mt-2 text-black dark:text-white">
+                <h1 class="text-xl font-medium"> Profile of {{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }} with user id: {{ $user->generalInformationInfo->user_id }}</h1>
             </div>
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-1 col-span-3 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
