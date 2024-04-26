@@ -850,21 +850,57 @@ $(document).ready(function () {
         pageTitle = 'Schools';
     } else if (fullPath.includes('Students')) {
         pageTitle = 'Students';
-        $('#new-student').submit(function (e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Your student will be added permanently.',
-                icon: 'warning',
-                showCancelButton: true,
-                cancelButtonText: 'No',
-                confirmButtonText: 'Yes',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#new-student').off('submit').submit();
+
+        if (fullPath.includes('Students/create')) {
+            $('#first_name_en,#last_name_en').on('keyup', function (event) {
+                // Validate input
+                if (!checkEnglishCharacters(event)) {
+                    event.preventDefault(); // Prevent typing of unauthorized character
+                    //Remove all field values
+                    $(this).val('');
+                    // Display an error message using swalFire
+                    swalFire('Error', 'Your entry must contain English characters.', 'error', 'Try again');
                 }
             });
-        });
+            $('#first_name_fa,#last_name_fa').on('keyup', function (event) {
+                // Validate input
+                if (!checkPersianCharacters(event)) {
+                    event.preventDefault(); // Prevent typing of unauthorized character
+                    //Remove all field values
+                    $(this).val('');
+                    // Display an error message using swalFire
+                    swalFire('Error', 'Your entry must contain Persian characters.', 'error', 'Try again');
+                }
+            });
+
+            $('#birthdate').on('change', function (event) {
+                // Validate input
+                if (!checkAge($(this).val(),5)) {
+                    event.preventDefault(); // Prevent typing of unauthorized character
+                    //Remove all field values
+                    $(this).val('');
+                    // Display an error message using swalFire
+                    swalFire('Error', 'Your student must be over five years old.', 'error', 'Try again');
+                }
+            });
+
+            $('#new-student').submit(function (e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Your student will be added permanently.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#new-student').off('submit').submit();
+                    }
+                });
+            });
+        }
 
     } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';

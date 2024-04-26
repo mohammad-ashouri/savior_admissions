@@ -55,7 +55,7 @@ export function validatePasswordEntry(elementId) {
     return true;
 }
 
-export function checkAge(birthDate) {
+export function checkAge(birthDate,ageInput=15) {
     let today = new Date();
     let birthDateObj = new Date(birthDate);
     let age = today.getFullYear() - birthDateObj.getFullYear();
@@ -63,7 +63,7 @@ export function checkAge(birthDate) {
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
         age--;
     }
-    return age >= 15;
+    return age >= ageInput;
 }
 
 
