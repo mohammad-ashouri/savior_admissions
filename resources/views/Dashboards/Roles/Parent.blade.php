@@ -216,8 +216,14 @@
                                                         $statusPercent=0;
                                                         $statusText='';
                                                         $statusColor='green';
-                                                         if ($applicationStatus->interview_status=='Pending Interview'){
-                                                             $statusText='Pending Interview';
+                                                         if ($applicationStatus->interview_status=='Pending First Interview'){
+                                                             $statusText='Pending First Interview';
+                                                         }
+                                                         if ($applicationStatus->interview_status=='Pending Second Interview'){
+                                                             $statusText='Pending Second Interview';
+                                                         }
+                                                         if ($applicationStatus->interview_status=='Pending Admissions Officer Interview'){
+                                                             $statusText='Pending Admissions Officer Interview';
                                                          }
                                                          if ($applicationStatus->interview_status=='Admitted'){
                                                              $statusPercent+=25;
