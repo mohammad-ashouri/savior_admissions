@@ -19,6 +19,7 @@
                 title: title, html: text, icon: icon, confirmButtonText: confirmButtonText,
             });
         }
+
         $(document).ready(function () {
             $('.select2').select2({
                 placeholder: 'Choose an option',
@@ -30,7 +31,8 @@
 
 <body class=" bg-light-theme-color-base dark:bg-gray-800 ">
 
-<nav class="fixed top-0 z-50 w-full bg-light-theme-color-nav-base border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+<nav
+    class="fixed top-0 z-50 w-full bg-light-theme-color-nav-base border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start space-x-0 sm:space-x-5">
@@ -62,9 +64,11 @@
                 </button>
 
                 <a href="" class="flex ml-2 md:mr-24">
-                    <div class="h-10 w-14 md:h-14 md:w-24 mr-3 mainLogo"></div>
+                    <div class="rounded-full bg-white mr-3 text-center p-1">
+                        <div class="h-8 w-14 md:h-14 md:w-24 mainLogo"></div>
+                    </div>
                     <span
-                        class=" hidden md:inline-block self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Savior School</span>
+                        class=" hidden md:inline-block self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">Savior School</span>
                 </a>
             </div>
             <div class="flex items-center">
@@ -248,7 +252,8 @@
                             <li>
                                 <a href="/Tuition"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span class="menulist"><i class="las la la-file-invoice" style="font-size: 24px"></i>
+                                    <span class="menulist"><i class="las la la-file-invoice"
+                                                              style="font-size: 24px"></i>
                                         Tuition</span>
                                 </a>
                             </li>

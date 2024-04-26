@@ -12,8 +12,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                'light-theme-color-nav-base': '#D2E69C',
-                'light-theme-color-base': '#F3F2C9',
+                'light-theme-color-nav-base': '#409ca3',
+                'light-theme-color-base': '#9ddae0',
             },
         },
     },
