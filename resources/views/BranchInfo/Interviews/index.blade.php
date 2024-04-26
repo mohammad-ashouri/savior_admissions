@@ -94,7 +94,9 @@
 
                             <tbody>
                             @foreach($interviews as $interview)
-                                @if($interview->reservationInfo->payment_status!==1) @continue @endif
+                                @if($interview->reservationInfo->payment_status!==1)
+                                    @continue
+                                @endif
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
@@ -209,6 +211,16 @@
                                                                        class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                         <i class="las la-eye mt-1 mr-1"></i>
                                                                         Set
+                                                                    </a>
+                                                                @endcan
+                                                            @endif
+                                                            @if(($me->hasRole('Interviewer') and $interview->interview->interviewer==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
+                                                                @can('interview-show')
+                                                                    <a href="/Interviews/{{ $interview->id }}"
+                                                                       type="button"
+                                                                       class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                        <i class="las la-eye mt-1 mr-1"></i>
+                                                                        Show
                                                                     </a>
                                                                 @endcan
                                                             @endif

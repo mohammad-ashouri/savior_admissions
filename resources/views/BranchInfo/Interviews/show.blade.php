@@ -61,12 +61,33 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Show.interviewer2')
                             @endif
-                        @elseif (!$me->hasRole('Interviewer'))
+                        @elseif ($me->hasRole('Admissions Officer'))
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                 @include('BranchInfo.Interviews.Forms.1.KG.Show.admissions_officer')
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Show.admissions_officer')
                             @endif
+                        @elseif ($me->hasRole('Super Admin') or $me->hasRole('Principal'))
+                            @switch($interviewForm['form_type'])
+                                @case('kg1')
+                                    @include('BranchInfo.Interviews.Forms.1.KG.Show.interviewer1')
+                                    @break
+                                @case('l1')
+                                    @include('BranchInfo.Interviews.Forms.1.Levels.Show.interviewer1')
+                                    @break
+                                @case('kg2')
+                                    @include('BranchInfo.Interviews.Forms.1.KG.Show.interviewer2')
+                                    @break
+                                @case('l2')
+                                    @include('BranchInfo.Interviews.Forms.1.Levels.Show.interviewer2')
+                                    @break
+                                @case('kga')
+                                    @include('BranchInfo.Interviews.Forms.1.KG.Show.admissions_officer')
+                                    @break
+                                @case('la')
+                                    @include('BranchInfo.Interviews.Forms.1.Levels.Show.admissions_officer')
+                                    @break
+                            @endswitch
                         @endif
                         <div id="last-step" class="text-center hidden">
                             <a href="{{ url()->previous() }}">

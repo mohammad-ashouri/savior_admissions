@@ -38,6 +38,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
+                ->with('interview')
                 ->where('reserved', 1)
                 ->whereIn('id', $reservations)
                 ->orderBy('date', 'desc')
@@ -49,6 +50,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
+                ->with('interview')
                 ->where('reserved', 1)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -70,6 +72,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
+                ->with('interview')
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
@@ -83,6 +86,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
+                ->with('interview')
                 ->where('reserved', 1)
                 ->where(function ($query) use ($me) {
                     $query->where('first_interviewer', $me->id)
@@ -376,13 +380,32 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('interview')
                 ->where('reserved', 1)
-                ->where('Interviewed', 1)
                 ->where('id', $id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $interview = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->with('interview')
+                ->where('reserved', 1)
+                ->whereIn('application_timing_id', $applicationTimings)
+                ->where('id', $id)
+                ->first();
+        } elseif ($me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -401,13 +424,8 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->where('Interviewed', 1)
                 ->where('id', $id)
-                ->orderBy('date', 'desc')
-                ->orderBy('ends_to', 'desc')
-                ->orderBy('start_from', 'desc')
                 ->first();
-
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -420,9 +438,6 @@ class InterviewController extends Controller
                         ->orWhere('second_interviewer', $me->id);
                 })
                 ->where('id', $id)
-                ->orderBy('date', 'desc')
-                ->orderBy('ends_to', 'desc')
-                ->orderBy('start_from', 'desc')
                 ->first();
         }
         if (empty($interview)) {
