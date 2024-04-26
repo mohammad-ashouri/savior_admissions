@@ -1,5 +1,7 @@
+@php use App\Models\User;
+ $me = User::find(session('id'));
+ @endphp
 @extends('Layouts.panel')
-
 @section('content')
     <div id="content" class="p-4 md:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
@@ -30,13 +32,27 @@
                                            placeholder="Enter last name">
                                 </div>
                                 <div>
+                                    <select name="role" id="role"
+                                            class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option value="" selected disabled>Select role</option>
+                                        @foreach ($roles as $role)
+                                            @if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and ($role->name == 'Super Admin' or $role->name == 'Principal' or $role->name == 'Admissions Officer' or $role->name == 'Financial Manager' or $role->name == 'Interviewer' or $role->name == 'Student'))
+                                                @continue
+                                            @endif
+
+                                            <option value="{{ $role->name }}" @if($role->name == @$_GET['role']) selected @endif>{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
                                     <button type="submit"
                                             class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <i class="fas fa-search mr-2" aria-hidden="true"></i>
                                         Filter
                                     </button>
                                 </div>
-                                @if(isset($_GET['search-edu-code']) || isset($_GET['search-first-name']) || isset($_GET['search-last-name']))
+                                @if(isset($_GET['search-edu-code']) || isset($_GET['search-first-name']) || isset($_GET['search-last-name']) || isset($_GET['role']))
                                     <div class="ml-3">
                                         <a href="/users">
                                             <button type="button"

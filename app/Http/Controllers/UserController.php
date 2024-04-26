@@ -31,6 +31,8 @@ class UserController extends Controller
     public function index()
     {
         $me = User::find(session('id'));
+        $roles = Role::orderBy('name', 'asc')->get();
+
         $data = [];
         if ($me) {
             if ($me->hasRole('Super Admin')) {
@@ -49,7 +51,7 @@ class UserController extends Controller
                 }
             }
 
-            return view('users.index', compact('data'));
+            return view('users.index', compact('data', 'roles'));
         }
         abort(403);
     }
@@ -86,21 +88,21 @@ class UserController extends Controller
             'mobile' => 'required|integer|unique:users,mobile',
             'password' => 'required|unique:users,mobile',
             'role' => 'required',
-//            'school' => 'required|exists:schools,id',
+            //            'school' => 'required|exists:schools,id',
         ]);
 
         $user = new User;
         $user->email = $request->email;
         $user->mobile = $request->mobile;
         $user->password = Hash::make($request->password);
-//        if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and $request->role == 'Student') {
-//            $additionalInformation = [
-//                'school_id' => $request->school,
-//            ];
-//            $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
-//            $userAdditionalInformation = array_merge($userAdditionalInformation, $additionalInformation);
-//            $user->additional_information = json_encode($userAdditionalInformation);
-//        }
+        //        if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and $request->role == 'Student') {
+        //            $additionalInformation = [
+        //                'school_id' => $request->school,
+        //            ];
+        //            $userAdditionalInformation = json_decode($user->additional_information, true) ?? [];
+        //            $userAdditionalInformation = array_merge($userAdditionalInformation, $additionalInformation);
+        //            $user->additional_information = json_encode($userAdditionalInformation);
+        //        }
         if ($user->save()) {
             $generalInformation = new GeneralInformation();
             $generalInformation->user_id = $user->id;
@@ -198,9 +200,13 @@ class UserController extends Controller
 
     public function searchUser(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $me = User::find(session('id'));
+        $roles = Role::orderBy('name', 'asc')->get();
+
         $searchEduCode = $request->input('search-user-code');
         $searchFirstName = $request->input('search-first-name');
         $searchLastName = $request->input('search-last-name');
+        $selectedRole = $request->role;
         $query = GeneralInformation::where('first_name_en', 'like', "%$searchFirstName%");
         $users = $query->where(function ($query) use ($searchEduCode, $searchFirstName, $searchLastName) {
             if ($searchEduCode != null) {
@@ -214,23 +220,38 @@ class UserController extends Controller
             }
         })->get()->pluck('user_id')->toArray();
 
-        $query = User::with('generalInformationInfo')
-            ->where('status', 1)
-            ->whereIn('id', $users)
-            ->where(function ($query) {
-                $query->whereHas('roles', function ($query) {
-                    $query->where('name', 'Parent(Father)');
-                })->orWhereHas('roles', function ($query) {
-                    $query->where('name', 'Parent(Mother)');
+        if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            $query = User::with('generalInformationInfo')
+                ->where('status', 1)
+                ->whereIn('id', $users)
+                ->where(function ($query) {
+                    $query->whereHas('roles', function ($query) {
+                        $query->where('name', 'Parent(Father)');
+                    })->orWhereHas('roles', function ($query) {
+                        $query->where('name', 'Parent(Mother)');
+                    });
                 });
-            });
+            if (! empty($selectedRole)) {
+                $query->whereHas('roles', function ($query) use ($selectedRole) {
+                    $query->where('name', $selectedRole);
+                });
+            }
+        } else {
+            $query = User::with('generalInformationInfo')
+                ->whereIn('id', $users);
+            if (! empty($selectedRole)) {
+                $query->whereHas('roles', function ($query) use ($selectedRole) {
+                    $query->where('name', $selectedRole);
+                });
+            }
+        }
         $data = $query->paginate(20);
         $data->appends(request()->query())->links();
         if ($data->isEmpty()) {
             $data = [];
         }
 
-        return view('users.index', compact('data'));
+        return view('users.index', compact('data', 'roles', 'searchEduCode', 'searchFirstName', 'searchLastName', 'selectedRole'));
     }
 
     public function changePrincipalInformation(Request $request): \Illuminate\Http\JsonResponse

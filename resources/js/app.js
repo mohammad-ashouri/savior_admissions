@@ -233,7 +233,8 @@ $(document).ready(function () {
             e.preventDefault();
             if (($('#search-user-code').val() == null || $('#search-user-code').val() == '') &&
                 ($('#search-first-name').val() == null || $('#search-first-name').val() == '') &&
-                ($('#search-last-name').val() == null || $('#search-last-name').val() == '')) {
+                ($('#search-last-name').val() == null || $('#search-last-name').val() == '') &&
+                ($('#role').val() == null || $('#role').val() == '')) {
                 swalFire('Error', 'Fields are empty', 'error', 'Ok');
             } else {
                 this.submit();
