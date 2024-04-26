@@ -321,10 +321,8 @@ class SignupController extends Controller
 
         switch ($gender) {
             case 'Male':
-                $user->assignRole('Parent(Father)');
-                break;
             case 'Female':
-                $user->assignRole('Parent(Mother)');
+                $user->assignRole('Parent');
                 break;
         }
         $this->logActivity(json_encode(['activity' => 'User Registered Successfully', 'user_id' => $user->id]), request()->ip(), request()->userAgent());

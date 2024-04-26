@@ -141,7 +141,7 @@
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->
-                                        @if(($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) and $application->payment_status!=0)
+                                        @if($me->hasRole('Parent') and $application->payment_status!=0)
                                             @can('show-application-reserve')
                                                 <a href="{{ route('Applications.show',$application->id) }}"
                                                    type="button"
@@ -152,7 +152,7 @@
                                                     Payment Details
                                                 </a>
                                             @endcan
-                                        @elseif((!$me->hasRole('Parent(Father)') and !$me->hasRole('Parent(Mother)')))
+                                        @elseif((!$me->hasRole('Parent')))
                                             @can('show-application-reserve')
                                                 <a href="{{ route('Applications.show',$application->id) }}"
                                                    type="button"

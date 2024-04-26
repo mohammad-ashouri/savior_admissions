@@ -38,7 +38,7 @@ class ApplicationController extends Controller
     {
         $me = User::find(session('id'));
         $applications = [];
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myStudents)->paginate(30);
         } elseif ($me->hasRole('Super Admin')) {
@@ -79,7 +79,7 @@ class ApplicationController extends Controller
     public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
             $levels = Level::where('status', 1)->get();
 
@@ -118,7 +118,7 @@ class ApplicationController extends Controller
             abort(403);
         }
 
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->where('id', $id)->first();
         } elseif ($me->hasRole('Super Admin')) {
@@ -402,7 +402,7 @@ class ApplicationController extends Controller
     {
         $me = User::find(session('id'));
         $checkApplication = null;
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $checkApplication = ApplicationReservation::with('applicationInfo')->where('reservatore', $me->id)->find($application_id);
             if (empty($checkApplication)) {
                 $this->logActivity(json_encode(['activity' => 'Prepare To Pay Application Failed', 'application_id' => $application_id, 'errors' => 'Access Denied']), request()->ip(), request()->userAgent());

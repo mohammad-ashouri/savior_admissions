@@ -21,7 +21,7 @@ class ParentsFatherImport implements ToModel
                 'password' => 'Aa16001600',
             ]);
             $user->save();
-            $user->assignRole('Parent(Father)');
+            $user->assignRole('Parent');
 
             $generalInformation=new GeneralInformation([
                 'user_id' => $user->id,

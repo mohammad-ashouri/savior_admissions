@@ -13,12 +13,8 @@ class ParentFather extends Seeder
      */
     public function run(): void
     {
-        $parentFatherRole = Role::create(['name' => 'Parent(Father)']);
+        $parentFatherRole = Role::create(['name' => 'Parent']);
         $parentFatherRole->givePermissionTo([
-            'document-list',
-            'document-create',
-            'document-edit',
-            'document-delete',
             'students-menu-access',
             'students-list',
             'students-create',

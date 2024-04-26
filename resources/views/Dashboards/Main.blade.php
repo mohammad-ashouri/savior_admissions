@@ -10,7 +10,7 @@
             @if($me->hasRole('Super Admin'))
                 @include('Dashboards.Roles.SuperAdmin')
             @endif
-            @if($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)'))
+            @if($me->hasRole('Parent'))
                 @include('Dashboards.Roles.Parent')
             @endif
 

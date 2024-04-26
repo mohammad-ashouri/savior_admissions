@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeders\FinancialManager::class,
             RoleSeeders\Interviewer::class,
             RoleSeeders\ParentFather::class,
-            RoleSeeders\ParentMother::class,
             RoleSeeders\Student::class,
             RoleSeeders\AdmissionsOfficer::class,
             RoleSeeders\Principal::class,

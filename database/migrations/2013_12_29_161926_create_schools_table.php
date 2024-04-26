@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('gender');
             $table->foreign('gender')->references('id')->on('genders');
-            $table->longText('educational_charter');
+            $table->longText('educational_charter')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

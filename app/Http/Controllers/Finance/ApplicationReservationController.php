@@ -97,7 +97,7 @@ class ApplicationReservationController extends Controller
     public function create()
     {
         $me = User::find(session('id'));
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
             $levels = Level::where('status', 1)->get();
 
@@ -118,7 +118,7 @@ class ApplicationReservationController extends Controller
             abort(403);
         }
 
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->where('id', $id)->first();
         } elseif ($me->hasRole('Super Admin')) {

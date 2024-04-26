@@ -42,7 +42,7 @@ class StudentController extends Controller
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
             return view('Students.index', compact('students', 'academicYears'));
-        } elseif ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::where('guardian', session('id'))
                 ->with('studentInfo')
                 ->with('nationalityInfo')
@@ -142,15 +142,6 @@ class StudentController extends Controller
         $studentInformation->current_nationality = $nationality;
         $studentInformation->current_identification_type = $current_identification_type;
         $studentInformation->current_identification_code = $current_identification_code;
-        if ($me->hasRole('Parent(Father)')) {
-            $studentInformation->parent_father_id = $me->id;
-            $studentInformation->guardian_student_relationship = 1;
-        } elseif ($me->hasRole('Parent(Mother)')) {
-            $studentInformation->parent_mother_id = $me->id;
-            $studentInformation->guardian_student_relationship = 2;
-        } else {
-            $studentInformation->guardian_student_relationship = 3;
-        }
         $studentInformation->save();
         $this->logActivity(json_encode(['activity' => 'Student Saved', 'id' => $studentInformation->user_id]), request()->ip(), request()->userAgent());
 
@@ -162,7 +153,7 @@ class StudentController extends Controller
     {
         $me = User::find(session('id'));
 
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $studentInformations = StudentInformation::where('guardian', session('id'))
                 ->with('studentInfo')
                 ->with('nationalityInfo')

@@ -31,7 +31,7 @@ class InterviewController extends Controller
     {
         $me = User::find(session('id'));
         $interviews = [];
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
             $interviews = Applications::with('applicationTimingInfo')
@@ -357,7 +357,7 @@ class InterviewController extends Controller
     {
         $me = User::find(session('id'));
         $interview = [];
-        if ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')) {
+        if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
             $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
             $interview = Applications::with('applicationTimingInfo')

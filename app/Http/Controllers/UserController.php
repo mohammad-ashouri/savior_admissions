@@ -40,10 +40,7 @@ class UserController extends Controller
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
                 $data = User::where('status', 1)
                     ->WhereHas('roles', function ($query) {
-                        $query->where('name', 'Parent(Father)');
-                    })
-                    ->orWhereHas('roles', function ($query) {
-                        $query->where('name', 'Parent(Mother)');
+                        $query->where('name', 'Parent');
                     })
                     ->paginate(20);
                 if ($data->isEmpty()) {
@@ -139,7 +136,7 @@ class UserController extends Controller
         $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
         $countries = Country::get();
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct('nationality')->get();
-        $parents = Role::where('name', 'Parent(Father)')->orWhere('name', 'Parent(Mother)')->with(['users' => function ($query) {
+        $parents = Role::where('name', 'Parent')->with(['users' => function ($query) {
             $query->orderBy('id', 'desc');
         }])->get();
         $guardianStudentRelationships = GuardianStudentRelationship::get();
@@ -226,9 +223,7 @@ class UserController extends Controller
                 ->whereIn('id', $users)
                 ->where(function ($query) {
                     $query->whereHas('roles', function ($query) {
-                        $query->where('name', 'Parent(Father)');
-                    })->orWhereHas('roles', function ($query) {
-                        $query->where('name', 'Parent(Mother)');
+                        $query->where('name', 'Parent');
                     });
                 });
             if (! empty($selectedRole)) {
