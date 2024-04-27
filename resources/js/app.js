@@ -707,6 +707,8 @@ $(document).ready(function () {
                 reader.onload = function (e) {
                     imagePreview.attr('src', e.target.result);
                     imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', '200px');
                 };
 
                 reader.readAsDataURL(fileInput[0].files[0]);
