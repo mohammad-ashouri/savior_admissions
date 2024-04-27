@@ -33,7 +33,7 @@
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td colspan="2" class="w-full p-4 text-center">
-                                <textarea id="s7_table_1" required placeholder="Enter remarks" disabled
+                                <textarea id="s7_table_1" required placeholder="Enter remarks"
                                           name="s7_table_1"
                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_1']}}</textarea>
                                 </td>
@@ -50,7 +50,7 @@
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td colspan="2" class="w-full p-4 text-center">
-                                <textarea id="s7_table_2" required placeholder="Enter remarks" disabled
+                                <textarea id="s7_table_2" required placeholder="Enter remarks"
                                           name="s7_table_2"
                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_2']}}</textarea>
                                 </td>
@@ -67,7 +67,7 @@
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td colspan="2" class="w-full p-4 text-center">
-                                <textarea id="s7_table_3" required placeholder="Enter remarks" disabled
+                                <textarea id="s7_table_3" required placeholder="Enter remarks"
                                           name="s7_table_3"
                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_3']}}</textarea>
                                 </td>
@@ -84,7 +84,7 @@
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td colspan="2" class="w-full p-4 text-center">
-                                <textarea id="s7_table_4" required placeholder="Enter remarks" disabled
+                                <textarea id="s7_table_4" required placeholder="Enter remarks"
                                           name="s7_table_4"
                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_4']}}</textarea>
                                 </td>
@@ -102,7 +102,7 @@
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td colspan="2" class="w-full p-4 text-center">
-                                <textarea id="s7_table_5" required placeholder="Enter remarks" disabled
+                                <textarea id="s7_table_5" required placeholder="Enter remarks"
                                           name="s7_table_5"
                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_5']}}</textarea>
                                 </td>
@@ -120,7 +120,7 @@
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td colspan="2" class="w-full p-4 text-center">
-                                <textarea id="s7_table_6" required placeholder="Enter remarks" disabled
+                                <textarea id="s7_table_6" required placeholder="Enter remarks"
                                           name="s7_table_6"
                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_6']}}</textarea>
                                 </td>
@@ -137,7 +137,7 @@
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td colspan="2" class="w-full p-4 text-center">
-                                <textarea id="s7_table_7" required placeholder="Enter remarks" disabled
+                                <textarea id="s7_table_7" required placeholder="Enter remarks"
                                           name="s7_table_7"
                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_7']}}</textarea>
                                 </td>
@@ -157,7 +157,7 @@
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td colspan="2" class="w-full p-4 text-center">
-                                <textarea id="s7_table_8" required placeholder="Enter remarks" disabled
+                                <textarea id="s7_table_8" required placeholder="Enter remarks"
                                           name="s7_table_8"
                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_table_8']}}</textarea>
                                 </td>
@@ -169,7 +169,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 1- The economic status of the family:
                             </label>
-                            <select id="s7_1" name="s7_1" disabled
+                            <select id="s7_1" name="s7_1"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
                                 <option @if($interviewFields['s7_1']=='poor') selected @endif value="poor">poor</option>
@@ -186,7 +186,7 @@
                             </label>
                         </div>
                         <div class="flex">
-                            <select id="s7_2" name="s7_2" disabled
+                            <select id="s7_2" name="s7_2"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
                                 <option @if($interviewFields['s7_2']=='No') selected @endif value="No">No</option>
@@ -202,7 +202,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 3- Is the family willing to help poor students financially?
                             </label>
-                            <select id="s7_3" name="s7_3" disabled
+                            <select id="s7_3" name="s7_3"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
                                 <option @if($interviewFields['s7_3']=='No') selected @endif value="No">No</option>
@@ -215,7 +215,7 @@
                                 4- Is the family interested to participate financially in holding ceremonies and
                                 extracurricular activities of the school?
                             </label>
-                            <select id="s7_4" name="s7_4" disabled
+                            <select id="s7_4" name="s7_4"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option" required>
                                 <option @if($interviewFields['s7_4']=='No') selected @endif value="No">No</option>
@@ -227,7 +227,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 5- Financial administrative suggestions and criticisms:</label>
                             <textarea id="s7_5" required placeholder="Enter remarks"
-                                      name="s7_5" disabled
+                                      name="s7_5"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s7_5']}}</textarea>
                         </div>
                     </div>
@@ -338,6 +338,8 @@
                         <div>
                             <input type="hidden" name="application_id" id="application_id"
                                    value="{{ $interview->id }}">
+                            <input type="hidden" name="interview_id" id="interview_id"
+                                   value="{{ $interview->interview->id }}">
                             <input type="hidden" name="form_type" id="form_type"
                                    value="kga">
                             <button type="submit"

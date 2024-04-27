@@ -4,102 +4,124 @@
             <div class="p-4">
                 <div class="mb-8" id="tab1">
                     <p class="font-bold">
-                        First step: Admission Prerequisites
+                        First step: admission prerequisites
                     </p>
                     <p>
-                        Admission will be revoked if the student's status is inadmissible in any of the following
-                        sections.
+                        If the student's status is not allowed in any of the following clauses, the admission is
+                        rejected.
                     </p>
                     <div class="mt-5">
-                        <div class="flex mb-5">
-                            <label for="s1_1_s" class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                1- GPA of Previous year:
-                            </label>
-                            <input type="text" id="gpa_p_y" name="gpa_p_y" value="{{$interviewFields['gpa_p_y']}}"
-                                   placeholder="Enter GPA of previous year" disabled
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full sm:w-48 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        </div>
-                        <select id="s1_1_s" name="s1_1_s" disabled
+                        <label for="s1_1_s"
+                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                            1- Control and independence in using the bathroom, incontinence:</label>
+                        <select id="s1_1_s" name="s1_1_s"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                title="Select an option">
-                            <option @if($interviewFields['s1_1_s']=='Admissible') selected @endif value="Admissible">
-                                Admissible
-                            </option>
-                            <option @if($interviewFields['s1_1_s']=='Inadmissible') selected
-                                    @endif value="Inadmissible">Inadmissible
+                                title="Select an option" required>
+                            <option @if($interviewFields['s1_1_s']=='Admitted') selected @endif value="Admitted">
+                                Admitted
                             </option>
                             <option @if($interviewFields['s1_1_s']=='Conditional') selected @endif value="Conditional">
                                 Conditional
                             </option>
+                            <option @if($interviewFields['s1_1_s']=='Rejected') selected @endif value="Rejected">
+                                Rejected
+                            </option>
                         </select>
                         <div class="mt-3">
-                            <label for="s1_1_d"
+                            <label for="s1_1_r"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                Description</label>
-                            <textarea id="s1_1_d" placeholder="Enter description"
-                                      name="s1_1_d" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_1_d']}}</textarea>
+                                Remarks</label>
+                            <textarea id="s1_1_r" required placeholder="Enter remarks"
+                                      name="s1_1_r"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_1_r']}}</textarea>
                         </div>
                     </div>
                     <div class="mt-5">
                         <label for="s1_2_s"
                                class="block mb-2  font-bold text-gray-900 dark:text-white">
-                            2-General knowledge of English:
+                            2-Severe emotional dependence:
                         </label>
-                        <select id="s1_2_s" name="s1_2_s" disabled
+                        <select id="s1_2_s" name="s1_2_s"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                title="Select an option">
-                            <option @if($interviewFields['s1_2_s']=='Admissible') selected @endif value="Admissible">
-                                Admissible
-                            </option>
-                            <option @if($interviewFields['s1_2_s']=='Inadmissible') selected
-                                    @endif value="Inadmissible">Inadmissible
+                                title="Select an option" required>
+                            <option @if($interviewFields['s1_2_s']=='Admitted') selected @endif value="Admitted">
+                                Admitted
                             </option>
                             <option @if($interviewFields['s1_2_s']=='Conditional') selected @endif value="Conditional">
                                 Conditional
                             </option>
+                            <option @if($interviewFields['s1_2_s']=='Rejected') selected @endif value="Rejected">
+                                Rejected
+                            </option>
                         </select>
                         <div class="mt-3">
-                            <label for="s1_2_d"
+                            <label for="s1_2_r"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                Description</label>
-                            <textarea id="s1_2_d" placeholder="Enter description"
-                                      name="s1_2_d" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_2_d']}}</textarea>
+                                Remarks</label>
+                            <textarea id="s1_2_r" required placeholder="Enter remarks"
+                                      name="s1_2_r"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_2_r']}}</textarea>
                         </div>
                     </div>
                     <div class="mt-5">
                         <label for="s1_3_s"
                                class="block mb-2  font-bold text-gray-900 dark:text-white">
-                            3- Special cases (disciplinary / ideological / family, etc.):
+                            3- Severe physical disability:
                         </label>
-                        <select id="s1_3_s" name="s1_3_s" disabled
+                        <select id="s1_3_s" name="s1_3_s"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                title="Select an option">
-                            <option @if($interviewFields['s1_3_s']=='Admissible') selected @endif value="Admissible">
-                                Admissible
-                            </option>
-                            <option @if($interviewFields['s1_3_s']=='Inadmissible') selected
-                                    @endif value="Inadmissible">Inadmissible
+                                title="Select an option" required>
+                            <option @if($interviewFields['s1_3_s']=='Admitted') selected @endif value="Admitted">
+                                Admitted
                             </option>
                             <option @if($interviewFields['s1_3_s']=='Conditional') selected @endif value="Conditional">
                                 Conditional
                             </option>
+                            <option @if($interviewFields['s1_3_s']=='Rejected') selected @endif value="Rejected">
+                                Rejected
+                            </option>
                         </select>
                         <div class="mt-3">
-                            <label for="s1_3_d"
+                            <label for="s1_3_r"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                Description</label>
-                            <textarea id="s1_3_d" placeholder="Enter description"
-                                      name="s1_3_d" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_3_d']}}</textarea>
+                                Remarks</label>
+                            <textarea id="s1_3_r" required placeholder="Enter remarks"
+                                      name="s1_3_r"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_3_r']}}</textarea>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <label for="s1_4_s"
+                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                            4.Special cases (disciplinary/ideological/family etc.):
+                        </label>
+                        <select id="s1_4_s" name="s1_4_s"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                title="Select an option" required>
+                            <option @if($interviewFields['s1_4_s']=='Admitted') selected @endif value="Admitted">
+                                Admitted
+                            </option>
+                            <option @if($interviewFields['s1_4_s']=='Conditional') selected @endif value="Conditional">
+                                Conditional
+                            </option>
+                            <option @if($interviewFields['s1_4_s']=='Rejected') selected @endif value="Rejected">
+                                Rejected
+                            </option>
+                        </select>
+                        <div class="mt-3">
+                            <label for="s1_4_r"
+                                   class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                Remarks</label>
+                            <textarea id="s1_4_r" required placeholder="Enter remarks"
+                                      name="s1_4_r"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_4_r']}}</textarea>
                         </div>
                     </div>
                 </div>
                 <hr>
                 <div class="mb-8" id="tab2">
                     <p class="font-bold mb-4">
-                        Second step: Learning and Education
+                        Second step: Social Domain
                     </p>
                     <div class="overflow-x-auto">
                         <table id="table2" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -130,7 +152,7 @@
                                     1
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Student's Educational Status (Academic Achievement and Transcript Review)
+                                    Brief introduction (name and surname)
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s2_1_c">
@@ -139,9 +161,9 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_1" name="s2_1" value="{{$interviewFields['s2_1']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_1_rs"
@@ -155,9 +177,7 @@
                                     2
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Homework and class exercises (timely presentation of homework, class and educational
-                                    projects, class presentation and participation in scientific and educational
-                                    activities)
+                                    Age expression (knowing age)
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_2_c">
@@ -166,9 +186,9 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_2" name="s2_2" value="{{$interviewFields['s2_2']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_2_rs"
@@ -182,7 +202,7 @@
                                     3
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Attendance of compensatory-reinforcement classes
+                                    Expressing ones gender
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_3_c">
@@ -191,9 +211,9 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_3" name="s2_3" value="{{$interviewFields['s2_3']}}"
-                                           min="0" max="3" disabled
+                                           min="0" max="3"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_3_rs"
@@ -207,10 +227,8 @@
                                     4
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Assessing the level of specialized English according to the student's educational
-                                    level (reading a part of the text of the book and checking the student's
-                                    comprehension and familiarity with specialized vocabulary, asking a few specialized
-                                    questions from the student's favorite subject)
+                                    Knowing family members and family roles (asking the name and number of people in
+                                    family)
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_4_c">
@@ -219,9 +237,9 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_4" name="s2_4" value="{{$interviewFields['s2_4']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_4_rs"
@@ -235,8 +253,7 @@
                                     5
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Checking the level of Persian language (knowledge ability in this course at the
-                                    basic level is - conversation, comprehension)
+                                    Ability to communicate with others (greeting when entering a new environment)
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_5_c">
@@ -245,9 +262,9 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_5" name="s2_5" value="{{$interviewFields['s2_5']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_5_rs"
@@ -261,23 +278,48 @@
                                     6
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Assessing the level of Arabic language (knowledge ability in this course at the
-                                    basic level is - Conversation, comprehension)
+                                    Getting to know some jobs and social roles (teacher, police, student, cleric,
+                                    doctor, etc.)
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_6_c">
-                                        4
+                                        3
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_6" name="s2_6" value="{{$interviewFields['s2_6']}}"
-                                           min="0" max="3" disabled
+                                           min="0" max="3"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_6_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_6']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_6']*3}}
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4 text-center">
+                                    7
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    Knowing the address of the residence
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <p id="s2_7_c">
+                                        2
+                                    </p>
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <input type="text" id="s2_7" name="s2_7" value="{{$interviewFields['s2_7']}}"
+                                           min="0" max="2"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           required>
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <label for="s2_7_rs"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_7']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -288,74 +330,19 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s2_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s2_1']*5)+($interviewFields['s2_2']*4)+($interviewFields['s2_3']*3)+($interviewFields['s2_4']*4)+($interviewFields['s2_5']*4)+($interviewFields['s2_6']*4)}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        {{($interviewFields['s2_1']*5)+($interviewFields['s2_2']*4)+($interviewFields['s2_3']*3)+($interviewFields['s2_4']*4)+($interviewFields['s2_5']*4)+($interviewFields['s2_6']*3)+($interviewFields['s2_7']*2)}}
                                     </label>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-                        <!-- Script for Table 2 -->
-                        <script>
-                            // Function to calculate product and update cell for Table 2
-                            function updateProductTable2(row) {
-                                // Get the coefficient value from the third column
-                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
-
-                                // Get the user-entered rating from the input field in the fourth column
-                                const ratingInput = row.querySelector('td:nth-child(4) input');
-                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
-
-                                // Calculate the product of coefficient and rating
-                                // Display the product in the fifth column
-                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
-
-                                // Update total for Table 2
-                                updateTotalTable2();
-                            }
-
-                            // Function to update total for Table 2
-                            function updateTotalTable2() {
-                                // Get all the product values from the fifth column
-                                const products = Array.from(document.querySelectorAll('#table2 tbody td:nth-child(5) label')).map(label => {
-                                    const value = parseInt(label.textContent);
-                                    return isNaN(value) ? 0 : value;
-                                });
-
-                                // Calculate total for Table 2
-                                // Display total in the last row for Table 2
-                                document.getElementById('s2_total').textContent = products.reduce((acc, value) => acc + value, 0);
-                            }
-
-                            // Get all the rows in Table 2, excluding the header row
-                            const rowsTable2 = document.querySelectorAll('#table2 tbody tr');
-
-                            // Loop through each row of Table 2
-                            rowsTable2.forEach(row => {
-                                // Add event listener to input field in the fourth column
-                                const input = row.querySelector('td:nth-child(4) input');
-                                input.addEventListener('input', () => {
-                                    updateProductTable2(row);
-                                });
-                            });
-
-                            // Call updateTotalTable2 function initially
-                            updateTotalTable2();
-                        </script>
-
-                        <div class="mt-3">
-                            <label for="s2_d"
-                                   class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                Description</label>
-                            <textarea id="s2_d" placeholder="Enter description"
-                                      name="s2_d" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s2_d']}}</textarea>
-                        </div>
                     </div>
                 </div>
                 <hr>
                 <div class="mb-8" id="tab3">
                     <p class="font-bold mb-4">
-                        Third step: Educational-Disciplinary
+                        Third step: Cognitive Domain
                     </p>
                     <div class="overflow-x-auto">
                         <table id="table3" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -386,8 +373,8 @@
                                     1
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Disciplinary warnings (referral to the office, verbal and written warning, violation
-                                    of the rules ...)
+                                    Sorting objects from small to large (the novice should be asked to arrange objects
+                                    of different sizes in proportion to small and large)
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_1_c">
@@ -396,9 +383,9 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_1" name="s3_1" value="{{$interviewFields['s3_1']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_1_rs"
@@ -412,7 +399,8 @@
                                     2
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    How the student interacts with teachers, classmates, administrative teaching staff
+                                    Saying the names of household items (by showing the texts, the novice should say the
+                                    names of the items)
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_2_c">
@@ -421,9 +409,9 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_2" name="s3_2" value="{{$interviewFields['s3_2']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_2_rs"
@@ -437,22 +425,23 @@
                                     3
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Attendance Status
+                                    Sorting the cards of the same color (the novice separates the cards of the same
+                                    color and puts them together)
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_3_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_3" name="s3_3" value="{{$interviewFields['s3_3']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_3']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_3']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -462,22 +451,23 @@
                                     4
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Order of School and Classes Attendance
+                                    Completing an incomplete drawing (the learner completes an incomplete drawing, for
+                                    example, a car without wheels)
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_4_c">
-                                        4
+                                        3
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_4" name="s3_4" value="{{$interviewFields['s3_4']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_4_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_4']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_4']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -487,22 +477,22 @@
                                     5
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Student dress and appearance (student hairstyle (boys), hijab and makeup (girls))
+                                    Knowing the body parts (showing the body parts card and asking their names)
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_5_c">
-                                        5
+                                        3
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_5" name="s3_5" value="{{$interviewFields['s3_5']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_5_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_5']*5}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_5']*3}}
                                     </label>
                                 </td>
                             </tr>
@@ -512,201 +502,22 @@
                                     6
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    Degree of adherence to religious issues and sharia rules
+                                    Recognition of colors, geometric shapes, animals and fruits
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_6_c">
-                                        5
+                                        4
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_6" name="s3_6" value="{{$interviewFields['s3_6']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
+                                           required>
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_6_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_6']*5}}
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
-                                    7
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    Participation in school programs (ceremonies and occasions
-                                </td>
-                                <td class="w-2 p-4 text-center">
-                                    <p id="s3_7_c">
-                                        4
-                                    </p>
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_7" name="s3_7" value="{{$interviewFields['s3_7']}}"
-                                           min="0" max="5" disabled
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <label for="s3_7_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_7']*4}}
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
-                                    8
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    Level of moral development (presenting moral challenges and dipoles, emotion control
-                                    in interpersonal relationships
-                                </td>
-                                <td class="w-2 p-4 text-center">
-                                    <p id="s3_8_c">
-                                        3
-                                    </p>
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_8" name="s3_8" value="{{$interviewFields['s3_8']}}"
-                                           min="0" max="5" disabled
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <label for="s3_8_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_8']*3}}
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
-                                    9
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    Motivation for personal growth and development (goals and plans)
-                                </td>
-                                <td class="w-2 p-4 text-center">
-                                    <p id="s3_9_c">
-                                        4
-                                    </p>
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_9" name="s3_9" value="{{$interviewFields['s3_9']}}"
-                                           min="0" max="5" disabled
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <label for="s3_9_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_9']*4}}
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
-                                    10
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    Observance of the official language of the school (English conversation while
-                                    attending school)
-                                </td>
-                                <td class="w-2 p-4 text-center">
-                                    <p id="s3_10_c">
-                                        4
-                                    </p>
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_10" name="s3_10" value="{{$interviewFields['s3_10']}}"
-                                           min="0" max="5" disabled
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <label for="s3_10_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_10']*4}}
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
-                                    11
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    Uniform
-                                </td>
-                                <td class="w-2 p-4 text-center">
-                                    <p id="s3_11_c">
-                                        4
-                                    </p>
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_11" name="s3_11" value="{{$interviewFields['s3_11']}}"
-                                           min="0" max="5" disabled
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <label for="s3_11_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_11']*4}}
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
-                                    12
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    Use of electronic and digital devices (Prohibition of carrying and using any digital
-                                    devices without school permit)
-                                </td>
-                                <td class="w-2 p-4 text-center">
-                                    <p id="s3_12_c">
-                                        5
-                                    </p>
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_12" name="s3_12" value="{{$interviewFields['s3_12']}}"
-                                           min="0" max="5" disabled
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <label for="s3_12_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_12']*5}}
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4 text-center">
-                                    13
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    Correct observance and use of school property and facilities (in case of any damage,
-                                    the family is obliged to compensate the damage)
-                                </td>
-                                <td class="w-2 p-4 text-center">
-                                    <p id="s3_13_c">
-                                        4
-                                    </p>
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_13" name="s3_13" value="{{$interviewFields['s3_13']}}"
-                                           min="0" max="5" disabled
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                </td>
-                                <td class="w-4 p-4 text-center">
-                                    <label for="s3_13_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_13']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_6']*4}}
                                     </label>
                                 </td>
                             </tr>
@@ -717,99 +528,150 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s3_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s3_1']*5)+($interviewFields['s3_2']*3)+($interviewFields['s3_3']*4)+($interviewFields['s3_4']*4)+($interviewFields['s3_5']*5)+($interviewFields['s3_6']*5)+($interviewFields['s3_7']*4)+($interviewFields['s3_8']*3)+($interviewFields['s3_9']*4)+($interviewFields['s3_10']*4)+($interviewFields['s3_11']*4)+($interviewFields['s3_12']*5)+($interviewFields['s3_13']*4)}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s3_1']*5)+($interviewFields['s3_2']*3)+($interviewFields['s3_3']*2)+($interviewFields['s3_4']*3)+($interviewFields['s3_5']*3)+($interviewFields['s3_6']*4)}}
                                     </label>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-                        <!-- Script for Table 3 -->
-                        <script>
-                            // Function to calculate product and update cell for Table 3
-                            function updateProductTable3(row) {
-                                // Get the coefficient value from the third column
-                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
-
-                                // Get the user-entered rating from the input field in the fourth column
-                                const ratingInput = row.querySelector('td:nth-child(4) input');
-                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
-
-                                // Calculate the product of coefficient and rating
-                                // Display the product in the fifth column
-                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
-
-                                // Update total for Table 3
-                                updateTotalTable3();
-                            }
-
-                            // Function to update total for Table 3
-                            function updateTotalTable3() {
-                                // Get all the product values from the fifth column
-                                const products = Array.from(document.querySelectorAll('#table3 tbody td:nth-child(5) label')).map(label => {
-                                    const value = parseInt(label.textContent);
-                                    return isNaN(value) ? 0 : value;
-                                });
-
-                                // Calculate total for Table 3
-                                // Display total in the last row for Table 3
-                                document.getElementById('s3_total').textContent = products.reduce((acc, value) => acc + value, 0);
-                            }
-
-                            // Get all the rows in Table 3, excluding the header row
-                            const rowsTable3 = document.querySelectorAll('#table3 tbody tr');
-
-                            // Loop through each row of Table 3
-                            rowsTable3.forEach(row => {
-                                // Add event listener to input field in the fourth column
-                                const input = row.querySelector('td:nth-child(4) input');
-                                input.addEventListener('input', () => {
-                                    updateProductTable3(row);
-                                });
-                            });
-
-                            // Call updateTotalTable3 function initially
-                            updateTotalTable3();
-                        </script>
-
-                        <div class="mt-5">
-                            <label for="s3_q1"
-                                   class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                1. Express your areas of interest in case you want to collaborate with the
-                                school.</label>
-                            <textarea id="s3_q1" placeholder="Enter description"
-                                      name="s3_q1" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s3_q1']}}</textarea>
-                        </div>
-                        <div class="mt-5">
-                            <label for="s3_q2"
-                                   class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                2. Description of the student's scientific, educational and cultural personality from
-                                the interviewer’s viewpoint: (3 short sentences)
-                            </label>
-                            <textarea id="s3_q2" placeholder="Enter description"
-                                      name="s3_q2" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s3_q2']}}</textarea>
-                        </div>
-                        <div class="mt-5">
-                            <label for="s3_q3"
-                                   class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                3. Special skills and talents (art, Quran, sports, technology, etc.)
-                            </label>
-                            <textarea id="s3_q3" placeholder="Enter description"
-                                      name="s3_q3" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s3_q3']}}</textarea>
-                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="mb-8" id="tab4">
+                    <p class="font-bold mb-4">
+                        Fourth step: Physical Health
+                    </p>
+                    <div class="overflow-x-auto">
+                        <table id="table4" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="p-4 text-center">
+                                    Series
+                                </th>
+                                <th scope="col" class="p-4 text-center">
+                                    Evaluation Criteria
+                                </th>
+                                <th scope="col" class="p-4 text-center">
+                                    Coefficient
+                                </th>
+                                <th scope="col" class="p-4 text-center">
+                                    Rating (0 - 5)
+                                </th>
+                                <th scope="col" class="p-4 text-center">
+                                    Rating Sum with Coefficient
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4 text-center">
+                                    1
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    Measuring physical motor ability (checking the health of hands and feet, picking up
+                                    an object with the hand, opening and closing a button, etc.)
+                                </td>
+                                <td class="w-2 p-4 text-center">
+                                    <p id="s4_1_c">
+                                        5
+                                    </p>
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <input type="text" id="s4_1" name="s4_1" value="{{$interviewFields['s4_1']}}"
+                                           min="0" max="5"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           required>
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <label for="s4_1_rs"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_1']*5}}
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4 text-center">
+                                    2
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    Vision test
+                                <td class="w-2 p-4 text-center">
+                                    <p id="s4_2_c">
+                                        5
+                                    </p>
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <input type="text" id="s4_2" name="s4_2" value="{{$interviewFields['s4_2']}}"
+                                           min="0" max="5"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           required>
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <label for="s4_2_rs"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_2']*5}}
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="w-4 p-4 text-center">
+                                    3
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    Hearing test
+                                <td class="w-2 p-4 text-center">
+                                    <p id="s4_3_c">
+                                        4
+                                    </p>
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <input type="text" id="s4_3" name="s4_3" value="{{$interviewFields['s4_3']}}"
+                                           min="0" max="5"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           required>
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <label for="s4_3_rs"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_3']*4}}
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr
+                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 ">
+                                <td class="w-4 p-4 text-right" colspan="4">
+                                    Total
+                                </td>
+                                <td class="w-4 p-4 text-center">
+                                    <label id="s4_total"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s4_1']*5)+($interviewFields['s4_2']*5)+($interviewFields['s4_3']*4)}}
+                                    </label>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                         <div class="mt-3">
-                            <label for="s3_d"
+                            <label for="s4_r"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                Description</label>
-                            <textarea id="s3_d" placeholder="Enter description"
-                                      name="s3_d" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s3_d']}}</textarea>
+                                Remarks</label>
+                            <textarea id="s4_r" required placeholder="Enter remarks"
+                                      name="s4_r"
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_r']}}</textarea>
                         </div>
                     </div>
                 </div>
                 <div>
+                    <input type="hidden" name="application_id" id="application_id"
+                           value="{{ $interview->id }}">
+                    <input type="hidden" name="interview_id" id="interview_id"
+                           value="{{ $interview->interview->id }}">
+                    <input type="hidden" name="form_type" id="form_type"
+                           value="kg1">
+                    <button type="submit"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Submit
+                    </button>
                     <a href="{{ route('interviews.index') }}">
                         <button type="button"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
@@ -817,6 +679,151 @@
                         </button>
                     </a>
                 </div>
+
+                <!-- Script for Table 2 -->
+                <script>
+                    // Function to calculate product and update cell for Table 2
+                    function updateProductTable2(row) {
+                        // Get the coefficient value from the third column
+                        const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
+
+                        // Get the user-entered rating from the input field in the fourth column
+                        const ratingInput = row.querySelector('td:nth-child(4) input');
+                        const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
+
+                        // Calculate the product of coefficient and rating
+                        // Display the product in the fifth column
+                        row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
+
+                        // Update total for Table 2
+                        updateTotalTable2();
+                    }
+
+                    // Function to update total for Table 2
+                    function updateTotalTable2() {
+                        // Get all the product values from the fifth column
+                        const products = Array.from(document.querySelectorAll('#table2 tbody td:nth-child(5) label')).map(label => {
+                            const value = parseInt(label.textContent);
+                            return isNaN(value) ? 0 : value;
+                        });
+
+                        // Calculate total for Table 2
+                        // Display total in the last row for Table 2
+                        document.getElementById('s2_total').textContent = products.reduce((acc, value) => acc + value, 0);
+                    }
+
+                    // Get all the rows in Table 2, excluding the header row
+                    const rowsTable2 = document.querySelectorAll('#table2 tbody tr');
+
+                    // Loop through each row of Table 2
+                    rowsTable2.forEach(row => {
+                        // Add event listener to input field in the fourth column
+                        const input = row.querySelector('td:nth-child(4) input');
+                        input.addEventListener('input', () => {
+                            updateProductTable2(row);
+                        });
+                    });
+
+                    // Call updateTotalTable2 function initially
+                    updateTotalTable2();
+                </script>
+
+                <!-- Script for Table 3 -->
+                <script>
+                    // Function to calculate product and update cell for Table 3
+                    function updateProductTable3(row) {
+                        // Get the coefficient value from the third column
+                        const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
+
+                        // Get the user-entered rating from the input field in the fourth column
+                        const ratingInput = row.querySelector('td:nth-child(4) input');
+                        const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
+
+                        // Calculate the product of coefficient and rating
+                        // Display the product in the fifth column
+                        row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
+
+                        // Update total for Table 3
+                        updateTotalTable3();
+                    }
+
+                    // Function to update total for Table 3
+                    function updateTotalTable3() {
+                        // Get all the product values from the fifth column
+                        const products = Array.from(document.querySelectorAll('#table3 tbody td:nth-child(5) label')).map(label => {
+                            const value = parseInt(label.textContent);
+                            return isNaN(value) ? 0 : value;
+                        });
+
+                        // Calculate total for Table 3
+                        // Display total in the last row for Table 3
+                        document.getElementById('s3_total').textContent = products.reduce((acc, value) => acc + value, 0);
+                    }
+
+                    // Get all the rows in Table 3, excluding the header row
+                    const rowsTable3 = document.querySelectorAll('#table3 tbody tr');
+
+                    // Loop through each row of Table 3
+                    rowsTable3.forEach(row => {
+                        // Add event listener to input field in the fourth column
+                        const input = row.querySelector('td:nth-child(4) input');
+                        input.addEventListener('input', () => {
+                            updateProductTable3(row);
+                        });
+                    });
+
+                    // Call updateTotalTable3 function initially
+                    updateTotalTable3();
+                </script>
+
+                <!-- Script for Table 4 -->
+                <script>
+                    // Function to calculate product and update cell for Table 4
+                    function updateProductTable4(row) {
+                        // Get the coefficient value from the third column
+                        const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
+
+                        // Get the user-entered rating from the input field in the fourth column
+                        const ratingInput = row.querySelector('td:nth-child(4) input');
+                        const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
+
+                        // Calculate the product of coefficient and rating
+                        // Display the product in the fifth column
+                        row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
+
+                        // Update total for Table 4
+                        updateTotalTable4();
+                    }
+
+                    // Function to update total for Table 4
+                    function updateTotalTable4() {
+                        // Get all the product values from the fifth column
+                        const products = Array.from(document.querySelectorAll('#table4 tbody td:nth-child(5) label')).map(label => {
+                            const value = parseInt(label.textContent);
+                            return isNaN(value) ? 0 : value;
+                        });
+
+                        // Calculate total for Table 4
+                        // Display total in the last row for Table 4
+                        document.getElementById('s4_total').textContent = products.reduce((acc, value) => acc + value, 0);
+                    }
+
+                    // Get all the rows in Table 4, excluding the header row
+                    const rowsTable4 = document.querySelectorAll('#table4 tbody tr');
+
+                    // Loop through each row of Table 4
+                    rowsTable4.forEach(row => {
+                        // Add event listener to input field in the fourth column
+                        const input = row.querySelector('td:nth-child(4) input');
+                        input.addEventListener('input', () => {
+                            updateProductTable4(row);
+                        });
+                    });
+
+                    // Call updateTotalTable4 function initially
+                    updateTotalTable4();
+                </script>
+
             </div>
         </div>
     </div>

@@ -16,10 +16,10 @@
                                 1- GPA of Previous year:
                             </label>
                             <input type="text" id="gpa_p_y" name="gpa_p_y" value="{{$interviewFields['gpa_p_y']}}"
-                                   placeholder="Enter GPA of previous year" disabled
+                                   placeholder="Enter GPA of previous year"
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full sm:w-48 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
-                        <select id="s1_1_s" name="s1_1_s" disabled
+                        <select id="s1_1_s" name="s1_1_s"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option">
                             <option @if($interviewFields['s1_1_s']=='Admissible') selected @endif value="Admissible">
@@ -37,7 +37,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 Description</label>
                             <textarea id="s1_1_d" placeholder="Enter description"
-                                      name="s1_1_d" disabled
+                                      name="s1_1_d"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_1_d']}}</textarea>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                             2-General knowledge of English:
                         </label>
-                        <select id="s1_2_s" name="s1_2_s" disabled
+                        <select id="s1_2_s" name="s1_2_s"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option">
                             <option @if($interviewFields['s1_2_s']=='Admissible') selected @endif value="Admissible">
@@ -64,7 +64,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 Description</label>
                             <textarea id="s1_2_d" placeholder="Enter description"
-                                      name="s1_2_d" disabled
+                                      name="s1_2_d"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_2_d']}}</textarea>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                             3- Special cases (disciplinary / ideological / family, etc.):
                         </label>
-                        <select id="s1_3_s" name="s1_3_s" disabled
+                        <select id="s1_3_s" name="s1_3_s"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 title="Select an option">
                             <option @if($interviewFields['s1_3_s']=='Admissible') selected @endif value="Admissible">
@@ -91,7 +91,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 Description</label>
                             <textarea id="s1_3_d" placeholder="Enter description"
-                                      name="s1_3_d" disabled
+                                      name="s1_3_d"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s1_3_d']}}</textarea>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_1" name="s2_1" value="{{$interviewFields['s2_1']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -166,7 +166,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_2" name="s2_2" value="{{$interviewFields['s2_2']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -191,7 +191,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_3" name="s2_3" value="{{$interviewFields['s2_3']}}"
-                                           min="0" max="3" disabled
+                                           min="0" max="3"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -219,7 +219,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_4" name="s2_4" value="{{$interviewFields['s2_4']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -245,7 +245,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_5" name="s2_5" value="{{$interviewFields['s2_5']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -271,7 +271,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s2_6" name="s2_6" value="{{$interviewFields['s2_6']}}"
-                                           min="0" max="3" disabled
+                                           min="0" max="3"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -347,7 +347,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 Description</label>
                             <textarea id="s2_d" placeholder="Enter description"
-                                      name="s2_d" disabled
+                                      name="s2_d"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s2_d']}}</textarea>
                         </div>
                     </div>
@@ -396,7 +396,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_1" name="s3_1" value="{{$interviewFields['s3_1']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -421,7 +421,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_2" name="s3_2" value="{{$interviewFields['s3_2']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -446,7 +446,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_3" name="s3_3" value="{{$interviewFields['s3_3']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -471,7 +471,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_4" name="s3_4" value="{{$interviewFields['s3_4']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -496,7 +496,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_5" name="s3_5" value="{{$interviewFields['s3_5']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -521,7 +521,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_6" name="s3_6" value="{{$interviewFields['s3_6']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -546,7 +546,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_7" name="s3_7" value="{{$interviewFields['s3_7']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -572,7 +572,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_8" name="s3_8" value="{{$interviewFields['s3_8']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -597,7 +597,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_9" name="s3_9" value="{{$interviewFields['s3_9']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -623,7 +623,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_10" name="s3_10" value="{{$interviewFields['s3_10']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -648,7 +648,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_11" name="s3_11" value="{{$interviewFields['s3_11']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -674,7 +674,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_12" name="s3_12" value="{{$interviewFields['s3_12']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -700,7 +700,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s3_13" name="s3_13" value="{{$interviewFields['s3_13']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -777,7 +777,7 @@
                                 1. Express your areas of interest in case you want to collaborate with the
                                 school.</label>
                             <textarea id="s3_q1" placeholder="Enter description"
-                                      name="s3_q1" disabled
+                                      name="s3_q1"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s3_q1']}}</textarea>
                         </div>
                         <div class="mt-5">
@@ -787,7 +787,7 @@
                                 the interviewer’s viewpoint: (3 short sentences)
                             </label>
                             <textarea id="s3_q2" placeholder="Enter description"
-                                      name="s3_q2" disabled
+                                      name="s3_q2"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s3_q2']}}</textarea>
                         </div>
                         <div class="mt-5">
@@ -796,7 +796,7 @@
                                 3. Special skills and talents (art, Quran, sports, technology, etc.)
                             </label>
                             <textarea id="s3_q3" placeholder="Enter description"
-                                      name="s3_q3" disabled
+                                      name="s3_q3"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s3_q3']}}</textarea>
                         </div>
                         <div class="mt-3">
@@ -804,12 +804,22 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 Description</label>
                             <textarea id="s3_d" placeholder="Enter description"
-                                      name="s3_d" disabled
+                                      name="s3_d"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s3_d']}}</textarea>
                         </div>
                     </div>
                 </div>
                 <div>
+                    <input type="hidden" name="application_id" id="application_id"
+                           value="{{ $interview->id }}">
+                    <input type="hidden" name="interview_id" id="interview_id"
+                           value="{{ $interview->interview->id }}">
+                    <input type="hidden" name="form_type" id="form_type"
+                           value="l1">
+                    <button type="submit"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Submit
+                    </button>
                     <a href="{{ route('interviews.index') }}">
                         <button type="button"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

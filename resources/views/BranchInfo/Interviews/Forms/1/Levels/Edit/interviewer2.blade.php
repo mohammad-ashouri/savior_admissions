@@ -44,7 +44,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s4_1" name="s4_1" value="{{$interviewFields['s4_1']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -68,7 +68,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s4_2" name="s4_2" value="{{$interviewFields['s4_2']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -92,7 +92,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s4_3" name="s4_3" value="{{$interviewFields['s4_3']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -117,7 +117,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <input type="text" id="s4_4" name="s4_4" value="{{$interviewFields['s4_4']}}"
-                                           min="0" max="5" disabled
+                                           min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -193,7 +193,7 @@
                                 1. Express your areas of interest in case you want to collaborate with the school.
                             </label>
                             <textarea id="s4_q1" placeholder="Enter description"
-                                      name="s4_q1" disabled
+                                      name="s4_q1"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_q1']}}</textarea>
                         </div>
                         <div class="mt-5">
@@ -203,7 +203,7 @@
                                 family’s perspective: (in 3 short sentences)
                             </label>
                             <textarea id="s4_q2" placeholder="Enter description"
-                                      name="s4_q2" disabled
+                                      name="s4_q2"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_q2']}}</textarea>
                         </div>
                         <div class="mt-5">
@@ -213,7 +213,7 @@
                                 short sentences)
                             </label>
                             <textarea id="s4_q3" placeholder="Enter description"
-                                      name="s4_q3" disabled
+                                      name="s4_q3"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_q3']}}</textarea>
                         </div>
                         <div class="mt-5">
@@ -223,7 +223,7 @@
                                 real and virtual activities by the family)
                             </label>
                             <textarea id="s4_q4" placeholder="Enter description"
-                                      name="s4_q4" disabled
+                                      name="s4_q4"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_q4']}}</textarea>
                         </div>
                         <div class="mt-5">
@@ -233,7 +233,7 @@
                                 provide educational needs and a favorable psychological environment)
                             </label>
                             <textarea id="s4_q5" placeholder="Enter description"
-                                      name="s4_q5" disabled
+                                      name="s4_q5"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_q5']}}</textarea>
                         </div>
                         <div class="mt-5">
@@ -243,7 +243,7 @@
                                 knowledge ability in language courses at the basic level)
                             </label>
                             <textarea id="s4_q6" placeholder="Enter description"
-                                      name="s4_q6" disabled
+                                      name="s4_q6"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_q6']}}</textarea>
                         </div>
                         <div class="mt-5">
@@ -255,7 +255,7 @@
                                 are not carefully studied)
                             </label>
                             <textarea id="s4_q7" placeholder="Enter description"
-                                      name="s4_q7" disabled
+                                      name="s4_q7"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_q7']}}</textarea>
                         </div>
                         <div class="mt-3">
@@ -263,12 +263,23 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 Description</label>
                             <textarea id="s4_d" placeholder="Enter description"
-                                      name="s4_d" disabled
+                                      name="s4_d"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s4_q8']}}</textarea>
                         </div>
                     </div>
                 </div>
+
                 <div>
+                    <input type="hidden" name="application_id" id="application_id"
+                           value="{{ $interview->id }}">
+                    <input type="hidden" name="interview_id" id="interview_id"
+                           value="{{ $interview->interview->id }}">
+                    <input type="hidden" name="form_type" id="form_type"
+                           value="l2">
+                    <button type="submit"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Submit
+                    </button>
                     <a href="{{ route('interviews.index') }}">
                         <button type="button"
                                 class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

@@ -448,4 +448,158 @@ class InterviewController extends Controller
 
         return view('BranchInfo.Interviews.show', compact('interview'));
     }
+
+    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
+        $me = User::find(session('id'));
+        $interview = [];
+        if ($me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $interview = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->with('interview')
+                ->where('reserved', 1)
+                ->whereIn('application_timing_id', $applicationTimings)
+                ->where('reserved', 1)
+                ->where('id', $id)
+                ->first();
+        } elseif ($me->hasRole('Interviewer')) {
+            $interview = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->with('reservationInfo')
+                ->with('interview')
+                ->where('reserved', 1)
+                ->where(function ($query) use ($me) {
+                    $query->where('first_interviewer', $me->id)
+                        ->orWhere('second_interviewer', $me->id);
+                })
+                ->where('id', $id)
+                ->first();
+        }
+        if (empty($interview)) {
+            abort(403);
+        }
+
+        $this->logActivity(json_encode(['activity' => 'Getting Interview For Edit', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
+
+        return view('BranchInfo.Interviews.edit', compact('interview'));
+    }
+    public function update(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $me = User::find(session('id'));
+        $application = [];
+        if ($me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $application = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->where('reserved', 1)
+                ->whereIn('application_timing_id', $applicationTimings)
+                ->where('reserved', 1)
+                ->where('id', $request->application_id)
+                ->orderBy('date', 'desc')
+                ->orderBy('ends_to', 'desc')
+                ->orderBy('start_from', 'desc')
+                ->first();
+
+        } elseif ($me->hasRole('Interviewer')) {
+            $application = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->with('reservationInfo')
+                ->where('reserved', 1)
+                ->where(function ($query) use ($me) {
+                    $query->where('first_interviewer', $me->id)
+                        ->orWhere('second_interviewer', $me->id);
+                })
+                ->where('Interviewed', 0)
+                ->where('id', $request->application_id)
+                ->orderBy('date', 'desc')
+                ->orderBy('ends_to', 'desc')
+                ->orderBy('start_from', 'desc')
+                ->first();
+        }
+        if (empty($application)) {
+            abort(403);
+        }
+        $interview = Interview::find($request->interview_id);
+        $interview->interview_form = json_encode($request->all(), true);
+        $interview->interviewer = session('id');
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        switch ($request->form_type) {
+            case 'kg1':
+                $interview->interview_type = 1;
+                if ($request->s1_1_s == 'Admitted' and $request->s1_2_s == 'Admitted' and $request->s1_3_s == 'Admitted' and $request->s1_4_s == 'Admitted') {
+                    $studentApplianceStatus->interview_status = 'Pending Second Interview';
+                } else {
+                    $studentApplianceStatus->interview_status = 'Rejected';
+                }
+                break;
+            case 'l1':
+                if ($request->s1_1_s == 'Admissible' and $request->s1_2_s == 'Admissible' and $request->s1_3_s == 'Admissible') {
+                    $studentApplianceStatus->interview_status = 'Pending Second Interview';
+                } else {
+                    $studentApplianceStatus->interview_status = 'Rejected';
+                }
+                break;
+            case 'kg2':
+            case 'l2':
+                $interview->interview_type = 2;
+                $studentApplianceStatus->interview_status = 'Pending Admissions Officer Interview';
+                break;
+            case 'kga':
+            case 'la':
+                $interview->interview_type = 3;
+                $studentApplianceStatus->interview_status = 'Interviewed';
+                break;
+        }
+        $studentApplianceStatus->save();
+        if ($interview->save()) {
+            $application = Applications::with('applicationTimingInfo')->with('reservationInfo')->find($request->application_id);
+            switch ($request->form_type) {
+                case 'kga':
+                case 'la':
+                    $application->interviewed = 1;
+                    break;
+            }
+
+            if ($application->save()) {
+                $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
+
+                return redirect()->route('interviews.index')
+                    ->with('success', 'The interview was successfully recorded');
+            }
+            $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
+
+            return redirect()->route('interviews.index')
+                ->withErrors(['errors' => 'Recording the interview failed!']);
+        }
+        $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
+
+        return redirect()->route('interviews.index')
+            ->withErrors(['errors' => 'Recording the interview failed!']);
+    }
+
 }

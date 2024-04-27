@@ -911,6 +911,74 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
+        $('#update-interview').submit(function (e) {
+            e.preventDefault();
+
+            function getDiscountDetail(id) {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/GetDiscountPercentage',
+                        data: {
+                            discount_id: id,
+                        },
+                        success: function (response) {
+                            resolve(response);
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            reject('Unprocessable Entity');
+                        }
+                    });
+                });
+            }
+
+            if ($('.discount-checks:checked').length > 0) {
+                let promises = [];
+
+                $('.discount-checks:checked').each(function () {
+                    promises.push(getDiscountDetail($(this).val()));
+                });
+
+                Promise.all(promises).then(function (responses) {
+                    let totalDiscounts = 0;
+                    responses.forEach(function (response) {
+                        totalDiscounts += parseInt(response);
+                    });
+                    if (totalDiscounts > 30) {
+                        swalFire('Error', "The discount amount selected by you is higher than 30%", 'error', 'Try again');
+                    } else {
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'Your interview will be submit.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            cancelButtonText: 'No',
+                            confirmButtonText: 'Yes',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#update-interview').off('submit').submit();
+                            }
+                        });
+                    }
+                }).catch(function (error) {
+                    swalFire('Error', error, 'error', 'Try again');
+                });
+            } else {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Your interview will be submit.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#update-interview').off('submit').submit();
+                    }
+                });
+            }
+
+        });
     } else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
 
@@ -952,7 +1020,7 @@ $(document).ready(function () {
                     } else {
                         Swal.fire({
                             title: 'Are you sure?',
-                            text: 'Your interview will be submitted permanently.',
+                            text: 'Your interview will be submit.',
                             icon: 'warning',
                             showCancelButton: true,
                             cancelButtonText: 'No',
@@ -969,7 +1037,7 @@ $(document).ready(function () {
             } else {
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: 'Your interview will be submitted permanently.',
+                    text: 'Your interview will be submit.',
                     icon: 'warning',
                     showCancelButton: true,
                     cancelButtonText: 'No',
