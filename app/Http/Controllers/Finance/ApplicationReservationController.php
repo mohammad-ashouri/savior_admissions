@@ -250,7 +250,7 @@ class ApplicationReservationController extends Controller
                 $applianceStatus->student_id = $applicationReservation->student_id;
                 $applianceStatus->academic_year = $applicationReservation->applicationInfo->applicationTimingInfo->academic_year;
                 $applianceStatus->interview_status = 'Pending First Interview';
-            } elseif ($applianceStatus->interview_status == 'Rejected') {
+            } else {
                 $applianceStatus->interview_status = 'Pending First Interview';
             }
             $applianceStatus->save();
@@ -261,7 +261,7 @@ class ApplicationReservationController extends Controller
 
             $message="Your payment has been successfully verified.\n
             Your application has been reserved for this date and time:\n
-            " .$applicationReservation->applicationInfo->date." ".$applicationReservation->applicationInfo->start_from;
+            " .$applicationReservation->applicationInfo->date." ".$applicationReservation->applicationInfo->start_from . " \nSavior Schools";
 
             $reservatoreMobile=$applicationReservation->reservatore;
             $this->sendSMS($reservatoreMobile, $message);
@@ -274,7 +274,7 @@ class ApplicationReservationController extends Controller
             $application->reserved=0;
             $application->save();
 
-            $message="Your payment has been rejected.";
+            $message="Your payment has been rejected. \nSavior Schools";
             $reservatoreMobile=$applicationReservation->reservatore;
             $this->sendSMS($reservatoreMobile, $message);
         }
