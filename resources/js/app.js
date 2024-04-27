@@ -14,6 +14,7 @@ import {
     checkPersianCharacters,
     checkEnglishCharacters,
     checkEnglishDigits,
+    validateAddressEntry,
     resetAllSelectValues,
 } from './MainJsFunctionsAndImports.js';
 
@@ -1121,6 +1122,17 @@ $(document).ready(function () {
                         $(this).val('');
                         // Display an error message using swalFire
                         swalFire('Error', 'Your entry must contain English characters.', 'error', 'Try again');
+                    }
+                });
+
+                $('#address').on('keyup', function (event) {
+                    // Validate input
+                    if (!validateAddressEntry(event)) {
+                        event.preventDefault(); // Prevent typing of unauthorized character
+                        //Remove all field values
+                        $(this).val('');
+                        // Display an error message using swalFire
+                        swalFire('Error', 'Your entry must contain English characters and - or _', 'error', 'Try again');
                     }
                 });
 
