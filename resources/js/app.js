@@ -1120,7 +1120,7 @@ $(document).ready(function () {
                     }
                 });
 
-                $('#father-name,#city,#address').on('keyup', function (event) {
+                $('#father-name,#city').on('keyup', function (event) {
                     // Validate input
                     if (!checkEnglishCharacters(event)) {
                         event.preventDefault(); // Prevent typing of unauthorized character

@@ -45,14 +45,11 @@ export function checkPersianCharacters(event) {
     return !/[^آ-ی\s]/.test(inputValue);
 }
 
-export function validateAddressEntry(elementId) {
-    let inputValue = $("#" + elementId).val();
-    let englishRegex = /^[a-zA-Z0-9_-]+$/;
-    if (!englishRegex.test(inputValue)) {
-        $("#" + elementId).val("");
-        return false;
-    }
-    return true;
+export function validateAddressEntry(event) {
+    let inputValue = event.target.value;
+    let englishRegex = /^[a-zA-Z0-9-_ ]+$/;
+    return englishRegex.test(inputValue);
+
 }
 export function validatePasswordEntry(elementId) {
     let inputValue = $("#" + elementId).val();
