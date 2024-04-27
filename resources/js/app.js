@@ -736,12 +736,16 @@ $(document).ready(function () {
 
         if (fullPath.includes('Applications/create')) {
             resetAllSelectValues();
+            $('#student').change(function () {
+                $('#level').val('');
+            });
             $('#level').change(function () {
                 $.ajax({
                     type: 'GET',
                     url: '/GetAcademicYearsByLevel',
                     data: {
-                        level: $(this).val()
+                        level: $(this).val(),
+                        student: $('#student').val()
                     },
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),

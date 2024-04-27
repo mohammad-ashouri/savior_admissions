@@ -9,8 +9,10 @@ use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\DocumentType;
 use App\Models\Catalogs\Level;
 use App\Models\Catalogs\PaymentMethod;
+use App\Models\Catalogs\School;
 use App\Models\Document;
 use App\Models\Finance\ApplicationReservationsInvoices;
+use App\Models\GeneralInformation;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
@@ -277,14 +279,36 @@ class ApplicationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'level' => 'required|exists:levels,id',
+            'student' => 'required|exists:general_informations,id',
         ]);
+        if (! $request->student) {
+            $this->logActivity(json_encode(['activity' => 'Getting Academic Years By Level Failed', 'errors' => 'Student Not Chosen']), request()->ip(), request()->userAgent());
+
+            return response()->json(['error' => 'Select student first!'], 422);
+        }
         if ($validator->fails()) {
             $this->logActivity(json_encode(['activity' => 'Getting Academic Years By Level Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
 
             return response()->json(['error' => 'Error on choosing level!'], 422);
         }
         $level = $request->level;
-        $academicYears = AcademicYear::where('status', 1)->whereJsonContains('levels', $level)->select('id', 'name')->get()->toArray();
+
+        $studentGender = GeneralInformation::find($request->student)->gender;
+
+        switch ($studentGender) {
+            case 'Male':
+                $gender = 1;
+                break;
+            case 'Female':
+                $gender = 2;
+                break;
+        }
+        $schoolWithGender = School::where('gender', $gender)->get()->pluck('id')->toArray();
+        $query = AcademicYear::where('status', 1)->whereJsonContains('levels', $level);
+        if ($level != 1 and $level != 2) {
+            $query->whereIn('school_id', $schoolWithGender);
+        }
+        $academicYears = $query->select('id', 'name')->get()->toArray();
         $this->logActivity(json_encode(['activity' => 'Getting Academic Years By Level', 'entered_level' => $level]), request()->ip(), request()->userAgent());
 
         return $academicYears;
@@ -481,7 +505,7 @@ class ApplicationController extends Controller
                 // Purchase the given invoice.
                 Payment::callbackUrl(env('APP_URL'))->purchase(
                     $invoice,
-                    function($driver, $transactionId) {
+                    function ($driver, $transactionId) {
                         dd($transactionId);
                         // We can store $transactionId in database.
                     }
