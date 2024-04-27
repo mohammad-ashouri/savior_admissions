@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckLoginMiddleware
 {
@@ -14,7 +15,7 @@ class CheckLoginMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (session('id')) {
+        if (session('id') and Auth::loginUsingId(session('id'))) {
             return $next($request);
         }
 

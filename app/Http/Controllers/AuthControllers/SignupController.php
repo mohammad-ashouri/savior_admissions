@@ -10,6 +10,7 @@ use App\Models\GeneralInformation;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -327,6 +328,7 @@ class SignupController extends Controller
         RegisterToken::where('token', $request->token)->delete();
 
         Session::put('id', $user->id);
+        Auth::loginUsingId(session('id'));
         $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('dashboard');
