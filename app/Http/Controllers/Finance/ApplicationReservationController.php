@@ -232,7 +232,7 @@ class ApplicationReservationController extends Controller
             return response()->json(['message' => $applicationInfo], 422);
         }
 
-        $applicationReservation = ApplicationReservation::with('applicationInfo')->find($applicationID);
+        $applicationReservation = ApplicationReservation::with('applicationInfo')->with('reservatoreInfo')->find($applicationID);
         if (empty($applicationReservation)) {
             $this->logActivity(json_encode(['activity' => 'Changing Application Payment Status Failed', 'application_id' => $applicationID, 'application_status' => $applicationStatus, 'message' => $applicationInfo]), request()->ip(), request()->userAgent());
 
@@ -255,6 +255,28 @@ class ApplicationReservationController extends Controller
             }
             $applianceStatus->save();
 
+            $application=Applications::find($applicationReservation->application_id);
+            $application->reserved=1;
+            $application->save();
+
+            $message="Your payment has been successfully verified.\n
+            Your application has been reserved for this date and time:\n
+            " .$applicationReservation->applicationInfo->date." ".$applicationReservation->applicationInfo->start_from;
+
+            $reservatoreMobile=$applicationReservation->reservatore;
+            $this->sendSMS($reservatoreMobile, $message);
+        }elseif ($applicationStatus == 3){
+            $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->first();
+            $applianceStatus->interview_status = null;
+            $applianceStatus->save();
+
+            $application=Applications::find($applicationReservation->application_id);
+            $application->reserved=0;
+            $application->save();
+
+            $message="Your payment has been rejected.";
+            $reservatoreMobile=$applicationReservation->reservatore;
+            $this->sendSMS($reservatoreMobile, $message);
         }
 
         return response()->json(['message' => 'Application payment status changed!'], 200);
