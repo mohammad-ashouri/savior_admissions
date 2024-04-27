@@ -298,6 +298,7 @@ class SignupController extends Controller
         }
 
         $registerToken = RegisterToken::where('token', $request->token)->first();
+        $gender = $request->gender;
 
         $user = new User();
         if ($registerToken->register_method == 'Email') {
@@ -309,7 +310,7 @@ class SignupController extends Controller
 
         $user->save();
 
-        $gender = $request->gender;
+        $user->assignRole('Parent');
 
         $generalInformations = new GeneralInformation();
         $generalInformations->user_id = $user->id;
@@ -319,12 +320,6 @@ class SignupController extends Controller
         $generalInformations->birthdate = $request->birthdate;
         $generalInformations->save();
 
-        switch ($gender) {
-            case 'Male':
-            case 'Female':
-                $user->assignRole('Parent');
-                break;
-        }
         $this->logActivity(json_encode(['activity' => 'User Registered Successfully', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
 
         $this->logActivity(json_encode(['activity' => 'Token Deleted', 'token_id' => $registerToken->id]), request()->ip(), request()->userAgent());
