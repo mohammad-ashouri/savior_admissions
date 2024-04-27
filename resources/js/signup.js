@@ -193,26 +193,40 @@ $(document).ready(function () {
     } else if (fullPath.includes('new-account')) {
         $('#password,#repeat-password,#first_name,#last_name,#gender,#birthdate').val('');
 
+        $('#first_name,#last_name').on('keyup', function (event) {
+            // Validate input
+            if (!checkEnglishCharacters(event)) {
+                event.preventDefault(); // Prevent typing of unauthorized character
+                //Remove all field values
+                $(this).val('');
+                // Display an error message using swalFire
+                swalFire('Error', 'Your entry must contain English characters.', 'error', 'Try again');
+            }
+        });
+
+        $('#birthdate').on('change', function (event) {
+            // Validate input
+            if (!checkAge($(this).val(),5)) {
+                event.preventDefault(); // Prevent typing of unauthorized character
+                //Remove all field values
+                $(this).val('');
+                // Display an error message using swalFire
+                swalFire('Error', 'You must be over fifteen years old.', 'error', 'Try again');
+            }
+        });
+
         $(document).on('submit', '#signup-form', function (e) {
             e.preventDefault();
 
             // Initialize error flag
             let hasError = false;
 
-            // Validate first name and last name
-            let firstNameValid = checkEnglishCharacters($("first_name").val());
-            let lastNameValid = checkEnglishCharacters($("last_name").val());
-
             // Validate password and repeat password
             let validatePasswordInput = validatePasswordEntry('password');
             let validateRepeatPasswordInput = validatePasswordEntry('repeat-password');
 
-            // Validate age if user age is under 15
-            let birthDate = $("#birthdate").val();
-            let isUnderFifteen = checkAge(birthDate);
-
             // Check validation results
-            if (!firstNameValid || !lastNameValid || !validatePasswordInput || !validateRepeatPasswordInput || !isUnderFifteen) {
+            if (!validatePasswordInput || !validateRepeatPasswordInput) {
                 // Set error flag
                 hasError = true;
 
@@ -221,14 +235,6 @@ $(document).ready(function () {
                     swalFire('Error', 'Please use only English letters, numbers, and allowed symbols in password.', 'error', 'Try again');
                 } else if (!validateRepeatPasswordInput) {
                     swalFire('Error', 'Please use only English letters, numbers, and allowed symbols in repeat password.', 'error', 'Try again');
-                } else if (!firstNameValid) {
-                    swalFire('Error', 'Please enter english characters in first name.', 'error', 'Try again');
-                    $("first_name").val("");
-                } else if (!lastNameValid) {
-                    swalFire('Error', 'Please enter english characters in last name.', 'error', 'Try again');
-                    $("last_name").val("");
-                } else if (!isUnderFifteen) {
-                    swalFire('Error', 'You must be over fifteen years old.', 'error', 'Try again');
                 }
             }
 
