@@ -129,6 +129,7 @@ $(document).ready(function () {
                         $('#email').prop('readonly', true);
                         $('.CaptchaDiv').hide();
                         $('.VerificationCodeDiv').show();
+                        $('#get-code').text('submit');
 
                         $('#send-code').attr({
                             'id': 'authorize',
