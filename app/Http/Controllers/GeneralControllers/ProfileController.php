@@ -47,6 +47,17 @@ class ProfileController extends Controller
             'email' => 'email',
         ]);
 
+        if (isset($request->mobile)){
+            $user = User::where('id', session('id'))->update([
+                'mobile' => $request->mobile,
+            ]);
+        }
+        if (isset($request->email)){
+            $user = User::where('id', session('id'))->update([
+                'email' => $request->email,
+            ]);
+        }
+
         $generalInformation = GeneralInformation::where('user_id', session('id'))->update(
             [
                 'user_id' => session('id'),
