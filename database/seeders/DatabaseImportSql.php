@@ -22,7 +22,5 @@ class DatabaseImportSql extends Seeder
         //        DB::unprepared(file_get_contents('database/migrations/role_has_permissions.sql'));
         DB::unprepared(file_get_contents('database/migrations/documents.sql'));
         DB::unprepared(file_get_contents('database/migrations/schools.sql'));
-
-
     }
 }

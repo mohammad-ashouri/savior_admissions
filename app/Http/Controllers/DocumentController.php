@@ -12,6 +12,15 @@ use Illuminate\Validation\Rule;
 
 class DocumentController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:document-list', ['only' => ['index','showUserDocuments']]);
+        $this->middleware('permission:document-create', ['only' => ['createDocument','createDocumentForUser']]);
+        $this->middleware('permission:document-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:document-delete', ['only' => ['destroy']]);
+    }
+
+
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $documentTypes = DocumentType::where('status', '1')->orderBy('name')->get();

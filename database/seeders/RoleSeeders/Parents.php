@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
-class ParentFather extends Seeder
+class Parents extends Seeder
 {
     /**
      * Run the database seeds.
