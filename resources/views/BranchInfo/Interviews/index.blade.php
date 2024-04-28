@@ -205,7 +205,7 @@
                                                                 @endif
                                                                 @break
                                                             @case('Pending Second Interview')
-                                                                @if($interview->firstInterviewerInfo->id==$me->id)
+                                                                @if($interview->secondInterviewerInfo->id==$me->id)
                                                                     @can('interview-set')
                                                                         <a href="/SetInterview/{{ $interview->id }}"
                                                                            type="button"
@@ -252,16 +252,6 @@
                                                                            class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                             <i class="las la-eye mt-1 mr-1"></i>
                                                                             Set
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @if(($interview->firstInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
-                                                                    @can('interview-show')
-                                                                        <a href="/Interviews/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Show
                                                                         </a>
                                                                     @endcan
                                                                 @endif

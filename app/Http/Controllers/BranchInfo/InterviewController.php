@@ -470,7 +470,7 @@ class InterviewController extends Controller
             if ($studentApplianceStatus->interview_status != 'Pending Second Interview' and $interview->first_interviewer == $me->id) {
                 abort(403);
             }
-            if ($studentApplianceStatus->interview_status != 'Pending For Admissions Officer Interview' and $interview->second_interviewer == $me->id) {
+            if ($studentApplianceStatus->interview_status != 'Pending Admissions Officer Interview' and $interview->second_interviewer == $me->id) {
                 abort(403);
             }
         }
@@ -570,7 +570,7 @@ class InterviewController extends Controller
         }
         $studentApplianceStatus->save();
         if ($interview->save()) {
-            $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Interview Updated Successfully', 'interview_id' => $interview->id, 'values' => $request->all()]), request()->ip(), request()->userAgent());
 
             return redirect()->route('interviews.index')
                 ->with('success', 'The interview was successfully recorded');
