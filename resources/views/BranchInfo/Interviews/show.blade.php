@@ -4,7 +4,7 @@ if($interview->firstInterviewerInfo->id==$me->id){
     $interviewFields=json_decode($interview->interview[0]->interview_form,true);
 }elseif($interview->secondInterviewerInfo->id==$me->id){
     $interviewFields=json_decode($interview->interview[1]->interview_form,true);
-}else{
+}elseif($me->hasRole('Admissions Officer')){
     $interviewFields=json_decode($interview->interview[2]->interview_form,true);
 }
 @endphp
@@ -59,7 +59,7 @@ if($interview->firstInterviewerInfo->id==$me->id){
                             }elseif($interview->secondInterviewerInfo->id==$me->id){
                                 $interviewForm=json_decode($interview->interview[1]->interview_form,true);
                                 $interviewID=$interview->interview[1]->id;
-                            }else{
+                            }elseif($me->hasRole('Admissions Officer')){
                                 $interviewForm=json_decode($interview->interview[2]->interview_form,true);
                                 $interviewID=$interview->interview[2]->id;
                             }
