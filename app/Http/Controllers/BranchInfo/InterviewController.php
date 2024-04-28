@@ -447,6 +447,11 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->where('id', $id)
                 ->first();
+            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+
+            if ($studentApplianceStatus->interview_status != 'Pending For Principal Confirmation') {
+                abort(403);
+            }
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -460,6 +465,14 @@ class InterviewController extends Controller
                 })
                 ->where('id', $id)
                 ->first();
+            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+
+            if ($studentApplianceStatus->interview_status != 'Pending Second Interview' and $interview->first_interviewer == $me->id) {
+                abort(403);
+            }
+            if ($studentApplianceStatus->interview_status != 'Pending For Admissions Officer Interview' and $interview->second_interviewer == $me->id) {
+                abort(403);
+            }
         }
         if (empty($interview)) {
             abort(403);
