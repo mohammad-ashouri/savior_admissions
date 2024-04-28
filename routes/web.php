@@ -158,7 +158,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
 
         //Application confirmation
         Route::get('ConfirmApplication', [ApplicationController::class, 'confirmApplication'])->name('Application.ConfirmApplicationList');
-        Route::get('ConfirmApplication/{application_id}', [ApplicationController::class, 'confirmApplication']);
+        Route::get('ConfirmApplication/{application_id}/{appliance_id}', [ApplicationController::class, 'showApplicationConfirmation']);
         Route::post('ConfirmApplication', [ApplicationController::class, 'confirmStudentAppliance'])->name('Application.ConfirmApplication');
 
 

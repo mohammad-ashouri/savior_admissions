@@ -116,6 +116,18 @@ class Controller extends BaseController
         return array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess)));
     }
 
+    //Getting principal accesses
+    public function getFilteredAccessesP($userAccessInfo): array
+    {
+        $principalAccess = [];
+
+        if (! empty($userAccessInfo->principal)) {
+            $principalAccess = explode('|', $userAccessInfo->principal);
+        }
+
+        return array_filter(array_unique(array_merge($principalAccess)));
+    }
+
     public function sendSMS($mobile, $messageText): void
     {
         try {

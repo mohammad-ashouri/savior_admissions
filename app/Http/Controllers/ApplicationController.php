@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
+use App\Models\Branch\Interview;
+use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\DocumentType;
 use App\Models\Catalogs\Level;
@@ -12,6 +14,7 @@ use App\Models\Catalogs\PaymentMethod;
 use App\Models\Catalogs\School;
 use App\Models\Document;
 use App\Models\Finance\ApplicationReservationsInvoices;
+use App\Models\Finance\Discount;
 use App\Models\GeneralInformation;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -34,6 +37,7 @@ class ApplicationController extends Controller
         $this->middleware('permission:remove-application', ['only' => ['destroy']]);
         $this->middleware('permission:remove-application-from-reserve', ['only' => ['removeFromReserve']]);
         $this->middleware('permission:change-status-of-application', ['only' => ['changeInterviewStatus']]);
+        $this->middleware('permission:application-confirmation-menu-access', ['only' => ['confirmApplication']]);
     }
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -516,5 +520,56 @@ class ApplicationController extends Controller
 
                 abort(403);
         }
+    }
+
+    public function confirmApplication()
+    {
+        $me = User::find(session('id'));
+        if ($me->hasRole('Super Admin')){
+            $academicYears = AcademicYear::pluck('id')->toArray();
+        }elseif($me->hasRole('Principal')){
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesP($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+        }
+        $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('interview_status', 'Pending For Principal Confirmation')->paginate(30);
+
+        return view('BranchInfo.ConfirmAppliance.index', compact('studentAppliances'));
+    }
+
+    public function showApplicationConfirmation($application_id, $appliance_id)
+    {
+        $me = User::find(session('id'));
+        if ($me->hasRole('Super Admin')){
+            $academicYears = AcademicYear::pluck('id')->toArray();
+        }elseif($me->hasRole('Principal')){
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesP($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+        }        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('id', $appliance_id)->where('interview_status', 'Pending For Principal Confirmation')->first();
+
+        if (empty($studentAppliance)) {
+            abort(403);
+        }
+        $interviewsForms = Interview::where('application_id', $application_id)->pluck('interview_form')->toArray();
+        $interviewFields = [];
+        foreach ($interviewsForms as $interviewFormArray) {
+            $interviewFormData = json_decode($interviewFormArray, true);
+
+            $interviewFields = array_merge($interviewFields, $interviewFormData);
+        }
+        $applicationReservation = ApplicationReservation::with('levelInfo')->with('studentInfo')->where('student_id', $studentAppliance->studentInfo->id)->where('payment_status', 1)->latest()->first();
+        $discounts = Discount::with('allDiscounts')
+            ->where('academic_year', $studentAppliance->academicYearInfo->id)
+            ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+            ->where('discount_details.status', 1)
+            ->where('discount_details.interviewer_permission', 1)
+            ->get();
+
+        return view('BranchInfo.Interviews.Forms.1.ApplianceConfirmation.Show', compact('studentAppliance', 'interviewFields', 'applicationReservation', 'discounts'));
     }
 }

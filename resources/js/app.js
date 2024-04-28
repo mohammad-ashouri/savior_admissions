@@ -1074,6 +1074,8 @@ $(document).ready(function () {
                 });
             }
         });
+    } else if (fullPath.includes('ConfirmApplication')) {
+        pageTitle = 'Application Confirmation';
     } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 
