@@ -665,7 +665,7 @@
                     <input type="hidden" name="application_id" id="application_id"
                            value="{{ $interview->id }}">
                     <input type="hidden" name="interview_id" id="interview_id"
-                           value="{{ $interview->interview->id }}">
+                           value="{{ $interviewID }}">
                     <input type="hidden" name="form_type" id="form_type"
                            value="kg1">
                     <button type="submit"

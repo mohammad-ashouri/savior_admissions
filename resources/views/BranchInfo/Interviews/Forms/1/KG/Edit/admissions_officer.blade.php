@@ -192,7 +192,7 @@
                                 <option @if($interviewFields['s7_2']=='No') selected @endif value="No">No</option>
                                 <option @if($interviewFields['s7_2']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
-                            <textarea id="s7_2_r" required placeholder="Name of the institution (If Yes)"
+                            <textarea id="s7_2_r" placeholder="Name of the institution (If Yes)"
                                       name="s7_2_r"
                                       class="bg-gray-50 border border-gray-300 h-11 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
@@ -339,7 +339,7 @@
                             <input type="hidden" name="application_id" id="application_id"
                                    value="{{ $interview->id }}">
                             <input type="hidden" name="interview_id" id="interview_id"
-                                   value="{{ $interview->interview->id }}">
+                                   value="{{ $interviewID }}">
                             <input type="hidden" name="form_type" id="form_type"
                                    value="kga">
                             <button type="submit"

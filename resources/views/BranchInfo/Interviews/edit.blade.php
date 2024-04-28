@@ -1,6 +1,12 @@
 @php use App\Models\User;
- $me=User::find(session('id'));
-$interviewFields=json_decode($interview->interview->interview_form,true);
+$me=User::find(session('id'));
+if($interview->firstInterviewerInfo->id==$me->id){
+    $interviewFields=json_decode($interview->interview[0]->interview_form,true);
+}elseif($interview->secondInterviewerInfo->id==$me->id){
+    $interviewFields=json_decode($interview->interview[1]->interview_form,true);
+}else{
+    $interviewFields=json_decode($interview->interview[2]->interview_form,true);
+}
 @endphp
 @extends('Layouts.panel')
 
@@ -33,72 +39,60 @@ $interviewFields=json_decode($interview->interview->interview_form,true);
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         {!! Form::model($interview, ['method' => 'PATCH','id'=>'update-interview','route' => ['Interviews.update', $interview->id]]) !!}
-                            @csrf
-                            <div class="grid gap-6 mb-6 md:grid-cols-2">
-                                <div>
-                                    <label
-                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Name And Surname: </label>
-                                    {{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}
-                                </div>
-                                <div>
-                                    <label
-                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Class: </label>
-                                    {{ $interview->reservationInfo->levelInfo->name }}
-                                </div>
+                        @csrf
+                        <div class="grid gap-6 mb-6 md:grid-cols-2">
+                            <div>
+                                <label
+                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Name And Surname: </label>
+                                {{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}
                             </div>
-                            @php
-                                $interviewForm=json_decode($interview->interview->interview_form,true);
-                            @endphp
-                            @if ($interview->first_interviewer == $me->id)
-                                @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
-                                    @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer1')
-                                @else
-                                    @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer1')
-                                @endif
-                            @elseif ($me->hasRole('Interviewer') and !$me->hasRole('Admissions Officer') and $interview->second_interviewer == $me->id)
-                                @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
-                                    @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer2')
-                                @else
-                                    @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer2')
-                                @endif
-                            @elseif ($me->hasRole('Admissions Officer'))
-                                @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
-                                    @include('BranchInfo.Interviews.Forms.1.KG.Edit.admissions_officer')
-                                @else
-                                    @include('BranchInfo.Interviews.Forms.1.Levels.Edit.admissions_officer')
-                                @endif
-                            @elseif ($me->hasRole('Super Admin') or $me->hasRole('Principal'))
-                                @switch($interviewForm['form_type'])
-                                    @case('kg1')
-                                        @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer1')
-                                        @break
-                                    @case('l1')
-                                        @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer1')
-                                        @break
-                                    @case('kg2')
-                                        @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer2')
-                                        @break
-                                    @case('l2')
-                                        @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer2')
-                                        @break
-                                    @case('kga')
-                                        @include('BranchInfo.Interviews.Forms.1.KG.Edit.admissions_officer')
-                                        @break
-                                    @case('la')
-                                        @include('BranchInfo.Interviews.Forms.1.Levels.Edit.admissions_officer')
-                                        @break
-                                @endswitch
+                            <div>
+                                <label
+                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Class: </label>
+                                {{ $interview->reservationInfo->levelInfo->name }}
+                            </div>
+                        </div>
+                        @php
+                            if($interview->firstInterviewerInfo->id==$me->id){
+                                $interviewForm=json_decode($interview->interview[0]->interview_form,true);
+                                $interviewID=$interview->interview[0]->id;
+                            }elseif($interview->secondInterviewerInfo->id==$me->id){
+                                $interviewForm=json_decode($interview->interview[1]->interview_form,true);
+                                $interviewID=$interview->interview[1]->id;
+                            }else{
+                                $interviewForm=json_decode($interview->interview[2]->interview_form,true);
+                                $interviewID=$interview->interview[2]->id;
+                            }
+                        @endphp
+                        @if ($interview->first_interviewer == $me->id)
+                            @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
+                                @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer1')
+                            @else
+                                @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer1')
                             @endif
-                            <div id="last-step" class="text-center hidden">
-                                <a href="{{ url()->previous() }}">
-                                    <button type="button"
-                                            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                                        Back
-                                    </button>
-                                </a>
-                            </div>
+                        @elseif ($me->hasRole('Interviewer') and !$me->hasRole('Admissions Officer') and $interview->second_interviewer == $me->id)
+                            @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
+                                @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer2')
+                            @else
+                                @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer2')
+                            @endif
+                        @elseif ($me->hasRole('Admissions Officer'))
+                            @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
+                                @include('BranchInfo.Interviews.Forms.1.KG.Edit.admissions_officer')
+                            @else
+                                @include('BranchInfo.Interviews.Forms.1.Levels.Edit.admissions_officer')
+                            @endif
+                        @endif
+                        <div id="last-step" class="text-center hidden">
+                            <a href="{{ url()->previous() }}">
+                                <button type="button"
+                                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                    Back
+                                </button>
+                            </a>
+                        </div>
                         {!! Form::close() !!}
                     </div>
                 </div>

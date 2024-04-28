@@ -57,7 +57,7 @@ class Applications extends Model
 
     public function interview()
     {
-        return $this->hasOne(Interview::class, 'application_id');
+        return $this->hasMany(Interview::class, 'application_id');
     }
 
 }

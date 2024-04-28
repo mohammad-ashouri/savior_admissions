@@ -188,21 +188,18 @@ class InterviewController extends Controller
                 })
                 ->where('Interviewed', 0)
                 ->where('id', $id)
-                ->orderBy('date', 'desc')
-                ->orderBy('ends_to', 'desc')
-                ->orderBy('start_from', 'desc')
                 ->first();
 
             $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
             switch ($studentApplianceStatus->interview_status) {
                 case 'Pending First Interview':
-                    if ($me->id == $interview->first_interviewer) {
+                    if ($me->id != $interview->first_interviewer) {
                         abort(403);
                     }
                     break;
                 case 'Pending Second Interview':
-                    if ($me->id == $interview->second_interviewer) {
+                    if ($me->id != $interview->second_interviewer) {
                         abort(403);
                     }
                     break;
@@ -312,44 +309,15 @@ class InterviewController extends Controller
             case 'kga':
             case 'la':
                 $interview->interview_type = 3;
-                $studentApplianceStatus->interview_status = 'Interviewed';
+                $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
                 break;
         }
         $studentApplianceStatus->save();
         if ($interview->save()) {
-            $application = Applications::with('applicationTimingInfo')->with('reservationInfo')->find($request->application_id);
-            switch ($request->form_type) {
-                case 'kga':
-                case 'la':
-                    $application->interviewed = 1;
-                    break;
-            }
-
-            if ($application->save()) {
-                //                $studentStatus = StudentApplianceStatus::where('student_id', $application->reservationInfo->student_id)->where('academic_year', $application->applicationTimingInfo->academic_year)->first();
-                //                if (empty($studentStatus)) {
-                //                    $studentStatus = new StudentApplianceStatus();
-                //                    $studentStatus->student_id = $application->reservationInfo->student_id;
-                //                    $studentStatus->academic_year = $application->applicationTimingInfo->academic_year;
-                //                    $studentStatus->interview_status = $interviewStatus;
-                //                } else {
-                //                    $studentStatus->student_id = $application->reservationInfo->student_id;
-                //                    $studentStatus->application_id = $application->applicationTimingInfo->academic_year;
-                //                    $studentStatus->interview_status = $interviewStatus;
-                //                }
-                //                if ($interviewStatus == 'Admitted') {
-                //                    $studentStatus->documents_uploaded = 0;
-                //                }
-                //                $studentStatus->save();
-                $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
-
-                return redirect()->route('interviews.index')
-                    ->with('success', 'The interview was successfully recorded');
-            }
-            $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
 
             return redirect()->route('interviews.index')
-                ->withErrors(['errors' => 'Recording the interview failed!']);
+                ->with('success', 'The interview was successfully recorded');
         }
         $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
 
@@ -385,7 +353,7 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -443,10 +411,15 @@ class InterviewController extends Controller
         if (empty($interview)) {
             abort(403);
         }
-
+        $discounts = Discount::with('allDiscounts')
+            ->where('academic_year', $interview->applicationTimingInfo->academic_year)
+            ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+            ->where('discount_details.status', 1)
+            ->where('discount_details.interviewer_permission', 1)
+            ->get();
         $this->logActivity(json_encode(['activity' => 'Getting Interview', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
 
-        return view('BranchInfo.Interviews.show', compact('interview'));
+        return view('BranchInfo.Interviews.show', compact('interview', 'discounts'));
     }
 
     public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
@@ -492,10 +465,17 @@ class InterviewController extends Controller
             abort(403);
         }
 
+        $discounts = Discount::with('allDiscounts')
+            ->where('academic_year', $interview->applicationTimingInfo->academic_year)
+            ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+            ->where('discount_details.status', 1)
+            ->where('discount_details.interviewer_permission', 1)
+            ->get();
         $this->logActivity(json_encode(['activity' => 'Getting Interview For Edit', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
 
-        return view('BranchInfo.Interviews.edit', compact('interview'));
+        return view('BranchInfo.Interviews.edit', compact('interview', 'discounts'));
     }
+
     public function update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(session('id'));
@@ -572,34 +552,19 @@ class InterviewController extends Controller
             case 'kga':
             case 'la':
                 $interview->interview_type = 3;
-                $studentApplianceStatus->interview_status = 'Interviewed';
+                $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
                 break;
         }
         $studentApplianceStatus->save();
         if ($interview->save()) {
-            $application = Applications::with('applicationTimingInfo')->with('reservationInfo')->find($request->application_id);
-            switch ($request->form_type) {
-                case 'kga':
-                case 'la':
-                    $application->interviewed = 1;
-                    break;
-            }
-
-            if ($application->save()) {
-                $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
-
-                return redirect()->route('interviews.index')
-                    ->with('success', 'The interview was successfully recorded');
-            }
-            $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
 
             return redirect()->route('interviews.index')
-                ->withErrors(['errors' => 'Recording the interview failed!']);
+                ->with('success', 'The interview was successfully recorded');
         }
         $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('interviews.index')
             ->withErrors(['errors' => 'Recording the interview failed!']);
     }
-
 }
