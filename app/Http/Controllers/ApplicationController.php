@@ -21,6 +21,7 @@ use App\Models\User;
 use App\Models\UserAccessInformation;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Console\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Shetabit\Multipay\Invoice;
@@ -525,9 +526,9 @@ class ApplicationController extends Controller
     public function confirmApplication()
     {
         $me = User::find(session('id'));
-        if ($me->hasRole('Super Admin')){
+        if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
-        }elseif($me->hasRole('Principal')){
+        } elseif ($me->hasRole('Principal')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesP($myAllAccesses);
 
@@ -535,6 +536,7 @@ class ApplicationController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
         $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('interview_status', 'Pending For Principal Confirmation')->paginate(30);
+        $this->logActivity(json_encode(['activity' => 'Getting Appliance List']), request()->ip(), request()->userAgent());
 
         return view('BranchInfo.ConfirmAppliance.index', compact('studentAppliances'));
     }
@@ -542,17 +544,20 @@ class ApplicationController extends Controller
     public function showApplicationConfirmation($application_id, $appliance_id)
     {
         $me = User::find(session('id'));
-        if ($me->hasRole('Super Admin')){
+        if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
-        }elseif($me->hasRole('Principal')){
+        } elseif ($me->hasRole('Principal')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesP($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-        }        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('id', $appliance_id)->where('interview_status', 'Pending For Principal Confirmation')->first();
+        }
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('id', $appliance_id)->where('interview_status', 'Pending For Principal Confirmation')->first();
 
         if (empty($studentAppliance)) {
+            $this->logActivity(json_encode(['activity' => 'Getting Appliance Interview Form Failed']), request()->ip(), request()->userAgent());
+
             abort(403);
         }
         $interviewsForms = Interview::where('application_id', $application_id)->pluck('interview_form')->toArray();
@@ -569,7 +574,38 @@ class ApplicationController extends Controller
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
             ->get();
+        $this->logActivity(json_encode(['activity' => 'Getting Appliance Interview Form']), request()->ip(), request()->userAgent());
 
         return view('BranchInfo.Interviews.Forms.1.ApplianceConfirmation.Show', compact('studentAppliance', 'interviewFields', 'applicationReservation', 'discounts'));
+    }
+
+    public function confirmStudentAppliance(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'appliance_id' => 'required|exists:student_appliance_statuses,id',
+            'application_id' => 'required|exists:applications,id',
+            'type' => 'required|in:Accept,Reject',
+        ]);
+
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Confirm Student Appliance Failed', 'values' => $request->all(), 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        switch ($request->type) {
+            case 'Accept':
+                StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Interviewed', 'documents_uploaded' => 0]);
+                break;
+            case 'Reject':
+                StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Rejected']);
+                break;
+        }
+        Applications::find($request->application_id)->update(['Interviewed' => 1]);
+
+        $applianceStatus = StudentApplianceStatus::with('studentInfo')->find($request->appliance_id);
+
+        return view('BranchInfo.ConfirmAppliance.index')
+            ->with('success', 'Appliance Status Confirmed For This Student: '.$applianceStatus->studentInfo->generalInformationInfo->first_name_en.' '.$applianceStatus->studentInfo->generalInformationInfo->last_name_en.' Status: '.$request->type.'ed');
     }
 }

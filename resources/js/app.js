@@ -1076,6 +1076,23 @@ $(document).ready(function () {
         });
     } else if (fullPath.includes('ConfirmApplication')) {
         pageTitle = 'Application Confirmation';
+
+        $('.confirm-appliance').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your confirmation will be set permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('.confirm-appliance').off('submit').submit();
+                }
+            });
+        });
+
     } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 

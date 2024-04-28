@@ -27,7 +27,7 @@
                 @endif
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    @if($studentAppliances->isEmpty())
+                    @if(!isset($studentAppliances) or $studentAppliances->isEmpty())
                         <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                              role="alert">
                             <div class="flex">
@@ -65,6 +65,9 @@
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Interview Form
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Action
                                 </th>
                             </tr>
                             </thead>
@@ -110,6 +113,34 @@
                                             Show
                                         </a>
                                     </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="flex">
+                                        <form class="confirm-appliance" method="post" action="{{ route('Application.ConfirmApplication') }}">
+                                            @csrf
+                                            <input type="hidden" value="{{$applicationReservation->application_id}}" name="application_id">
+                                            <input type="hidden" value="{{$appliance->id}}" name="appliance_id">
+                                            <input type="hidden" value="Accept" name="type">
+                                            <button
+                                               type="submit"
+                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                Accept
+                                            </button>
+                                        </form>
+                                        <form class="confirm-appliance" method="post" action="{{ route('Application.ConfirmApplication') }}">
+                                            @csrf
+                                            <input type="hidden" value="{{$applicationReservation->application_id}}" name="application_id">
+                                            <input type="hidden" value="{{$appliance->id}}" name="appliance_id">
+                                            <input type="hidden" value="Reject" name="type">
+                                            <button
+                                               type="submit"
+                                               class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">
+                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                Reject
+                                            </button>
+                                        </form>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -119,7 +150,7 @@
 
             </div>
         </div>
-        @if($studentAppliances->isNotEmpty())
+        @if(isset($studentAppliances) and $studentAppliances->isNotEmpty())
             <div class="pagination text-center">
                 {{ $studentAppliances->onEachSide(5)->links() }}
             </div>
