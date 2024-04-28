@@ -473,8 +473,7 @@ class InterviewController extends Controller
                 ->where('id', $id)
                 ->first();
             $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
-
-            if ($studentApplianceStatus->interview_status != 'Pending Second Interview' and $interview->first_interviewer == $me->id) {
+            if ($studentApplianceStatus->interview_status != 'Pending Second Interview' and $studentApplianceStatus->interview_status != 'Rejected' and $interview->first_interviewer == $me->id) {
                 abort(403);
             }
             if ($studentApplianceStatus->interview_status != 'Pending Admissions Officer Interview' and $interview->second_interviewer == $me->id) {
@@ -548,6 +547,7 @@ class InterviewController extends Controller
         $interview->interview_form = json_encode($request->all(), true);
         $interview->interviewer = session('id');
 
+        $reservatoreMobile = $application->reservationInfo->reservatoreInfo->mobile;
         $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
         switch ($request->form_type) {
             case 'kg1':
@@ -555,6 +555,8 @@ class InterviewController extends Controller
                 if ($request->s1_1_s == 'Admitted' and $request->s1_2_s == 'Admitted' and $request->s1_3_s == 'Admitted' and $request->s1_4_s == 'Admitted') {
                     $studentApplianceStatus->interview_status = 'Pending Second Interview';
                 } else {
+                    $student = $application->reservationInfo->studentInfo->generalInformationInfo->first_name_en.' '.$application->reservationInfo->studentInfo->generalInformationInfo->last_name_en;
+                    $this->sendSMS($reservatoreMobile, "The application for your student was rejected. ($student) Savior Schools");
                     $studentApplianceStatus->interview_status = 'Rejected';
                 }
                 break;
@@ -562,6 +564,8 @@ class InterviewController extends Controller
                 if ($request->s1_1_s == 'Admissible' and $request->s1_2_s == 'Admissible' and $request->s1_3_s == 'Admissible') {
                     $studentApplianceStatus->interview_status = 'Pending Second Interview';
                 } else {
+                    $student = $application->reservationInfo->studentInfo->generalInformationInfo->first_name_en.' '.$application->reservationInfo->studentInfo->generalInformationInfo->last_name_en;
+                    $this->sendSMS($reservatoreMobile, "The application for your student was rejected. ($student) Savior Schools");
                     $studentApplianceStatus->interview_status = 'Rejected';
                 }
                 break;
