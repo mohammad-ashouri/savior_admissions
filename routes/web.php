@@ -129,6 +129,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
         Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
 
+        //Students management
         Route::resource('Students', StudentController::class);
 
         //Applications
@@ -154,6 +155,12 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         });
         Route::get('UploadStudentDocumentByParent/{student_id}', [DocumentController::class, 'uploadStudentDocumentByParent'])->name('Document.UploadByParent');
         Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
+
+        //Application confirmation
+        Route::get('ConfirmApplication', [ApplicationController::class, 'confirmApplication'])->name('Application.ConfirmApplicationList');
+        Route::get('ConfirmApplication/{application_id}', [ApplicationController::class, 'confirmApplication']);
+        Route::post('ConfirmApplication', [ApplicationController::class, 'confirmStudentAppliance'])->name('Application.ConfirmApplication');
+
 
         //Exports
         //PDF
