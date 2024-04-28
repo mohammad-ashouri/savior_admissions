@@ -296,8 +296,7 @@
                                                                             Show
                                                                         </a>
                                                                     @endcan
-                                                                @endif
-                                                                @if(($interview->secondInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
+                                                                @elseif(($interview->secondInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
                                                                     @can('interview-show')
                                                                         <a href="/Interviews/{{ $interview->id }}"
                                                                            type="button"
