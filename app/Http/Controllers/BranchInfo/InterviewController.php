@@ -284,13 +284,18 @@ class InterviewController extends Controller
         $interview->application_id = $request->application_id;
         $interview->interview_form = json_encode($request->all(), true);
         $interview->interviewer = session('id');
+
         $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+
+        $reservatoreMobile = $application->reservationInfo->reservatoreInfo->mobile;
         switch ($request->form_type) {
             case 'kg1':
                 $interview->interview_type = 1;
                 if ($request->s1_1_s == 'Admitted' and $request->s1_2_s == 'Admitted' and $request->s1_3_s == 'Admitted' and $request->s1_4_s == 'Admitted') {
                     $studentApplianceStatus->interview_status = 'Pending Second Interview';
                 } else {
+                    $student = $application->reservationInfo->studentInfo->generalInformationInfo->first_name_en.' '.$application->reservationInfo->studentInfo->generalInformationInfo->last_name_en;
+                    $this->sendSMS($reservatoreMobile, "The application for your student was rejected. ($student) Savior Schools");
                     $studentApplianceStatus->interview_status = 'Rejected';
                 }
                 break;
@@ -298,6 +303,8 @@ class InterviewController extends Controller
                 if ($request->s1_1_s == 'Admissible' and $request->s1_2_s == 'Admissible' and $request->s1_3_s == 'Admissible') {
                     $studentApplianceStatus->interview_status = 'Pending Second Interview';
                 } else {
+                    $student = $application->reservationInfo->studentInfo->generalInformationInfo->first_name_en.' '.$application->reservationInfo->studentInfo->generalInformationInfo->last_name_en;
+                    $this->sendSMS($reservatoreMobile, "The application for your student was rejected. ($student) Savior Schools");
                     $studentApplianceStatus->interview_status = 'Rejected';
                 }
                 break;
@@ -540,6 +547,7 @@ class InterviewController extends Controller
         $interview = Interview::find($request->interview_id);
         $interview->interview_form = json_encode($request->all(), true);
         $interview->interviewer = session('id');
+
         $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
         switch ($request->form_type) {
             case 'kg1':
