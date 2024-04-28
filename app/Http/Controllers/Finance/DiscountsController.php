@@ -93,38 +93,30 @@ class DiscountsController extends Controller
 
             abort(403);
         }
+
         if (count($request->name) != count($request->percentage)) {
             $this->logActivity(json_encode(['activity' => 'Saving Discounts Failed', 'errors' => 'Data Count Is Not Equal', 'discount_id' => $request->discount_id]), request()->ip(), request()->userAgent());
-
             abort(503);
         }
-        if ($discounts->allDiscounts->isNotEmpty()) {
-            foreach ($request->id as $key => $id) {
-                $discount_details = DiscountDetail::where('discount_id', $request->discount_id)->where('id', $id)->first();
-                if (empty($discount_details)) {
-                    $discount_details = new DiscountDetail();
-                    $discount_details->discount_id = $request->discount_id;
-                    $discount_details->name = $request->name[$key];
-                    $discount_details->percentage = $request->percentage[$key];
-                    $discount_details->interviewer_permission = $request->display_in_form[$key];
-                } else {
-                    $discount_details->name = $request->name[$key];
-                    $discount_details->percentage = $request->percentage[$key];
-                    $discount_details->interviewer_permission = $request->display_in_form[$key];
-                    $discount_details->status = $request->status[$key];
-                }
-                $discount_details->save();
-            }
-        } else {
-            foreach ($request->name as $key => $id) {
+        //        dd(request()->all());
+
+        foreach ($request->name as $key => $name) {
+            $discount_details = DiscountDetail::where('discount_id', $request->discount_id)->where('name', $name)->first();
+            if (empty($discount_details)) {
                 $discount_details = new DiscountDetail();
                 $discount_details->discount_id = $request->discount_id;
-                $discount_details->name = $request->name[$key];
+                $discount_details->name = $name;
                 $discount_details->percentage = $request->percentage[$key];
                 $discount_details->interviewer_permission = $request->display_in_form[$key];
-                $discount_details->save();
+            } else {
+                $discount_details->name = $name;
+                $discount_details->percentage = $request->percentage[$key];
+                $discount_details->interviewer_permission = $request->display_in_form[$key];
+                $discount_details->status = $request->status[$key];
             }
+            $discount_details->save();
         }
+
         $this->logActivity(json_encode(['activity' => 'Discounts Saved', 'discount_id' => $request->discount_id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('Discounts.index')
