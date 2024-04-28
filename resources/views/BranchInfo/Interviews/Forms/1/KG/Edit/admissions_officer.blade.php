@@ -326,6 +326,8 @@
                                             <td class="font-bold p-4 text-center">
                                                 <input class="discount-checks" type="checkbox"
                                                        value="{{ $discount->id }}"
+                                                       @if(in_array($discount->id,$interviewFields['discount'])) checked
+                                                       @endif
                                                        name="discount[]">
                                             </td>
                                         </tr>

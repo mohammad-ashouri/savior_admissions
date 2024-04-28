@@ -222,10 +222,11 @@ class InterviewController extends Controller
         return view('BranchInfo.Interviews.set', compact('interview', 'discounts'));
     }
 
-    public function SetInterview(Request $request): \Illuminate\Http\RedirectResponse
+    public function SetInterview(Request $request)
     {
         $me = User::find(session('id'));
         $application = [];
+
         if ($me->hasRole('Super Admin')) {
             $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -236,7 +237,7 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -280,6 +281,18 @@ class InterviewController extends Controller
         if (empty($application)) {
             abort(403);
         }
+        if (isset($request->discount) and ! empty($request->discount)) {
+            $discountsPercentage = Discount::
+            join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+                ->where('discounts.academic_year', $application->applicationTimingInfo->academic_year)
+                ->where('discount_details.status', 1)
+                ->whereIn('discount_details.id', $request->discount)
+                ->sum('discount_details.percentage');
+            if ($discountsPercentage>30){
+                redirect()->back()->withErrors(['The total percentage of selected discounts must be lower or equal to 30%.'])->withInput();
+            }
+        }
+
         $interview = new Interview();
         $interview->application_id = $request->application_id;
         $interview->interview_form = json_encode($request->all(), true);
@@ -542,6 +555,17 @@ class InterviewController extends Controller
         }
         if (empty($application)) {
             abort(403);
+        }
+        if (isset($request->discount) and ! empty($request->discount)) {
+            $discountsPercentage = Discount::
+            join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+                ->where('discounts.academic_year', $application->applicationTimingInfo->academic_year)
+                ->where('discount_details.status', 1)
+                ->whereIn('discount_details.id', $request->discount)
+                ->sum('discount_details.percentage');
+            if ($discountsPercentage>30){
+                redirect()->back()->withErrors(['The total percentage of selected discounts must be lower or equal to 30%.'])->withInput();
+            }
         }
         $interview = Interview::find($request->interview_id);
         $interview->interview_form = json_encode($request->all(), true);

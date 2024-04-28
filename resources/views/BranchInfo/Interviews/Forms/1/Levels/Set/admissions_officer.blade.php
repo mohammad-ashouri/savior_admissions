@@ -44,7 +44,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_1" name="s5_1" value="" min="0" max="5"
+                                    <input type="text" id="s5_1" name="s5_1" value="{{old('s5_1')}}" min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -168,11 +168,11 @@
                         </script>
 
                         <div class="mt-5">
-                            <label for="s5_1"
+                            <label for="s5_q1"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 1. Economic status of the family:
                             </label>
-                            <select id="s5_1" name="s5_1"
+                            <select id="s5_q1" name="s5_q1"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
                                 <option selected disabled value="">Select an option</option>
@@ -183,29 +183,29 @@
                             </select>
                         </div>
                         <div class="mt-5">
-                            <label for="s5_2"
+                            <label for="s5_q2"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 2. Is the family covered by the Relief and Charitable Institution?
                             </label>
                         </div>
                         <div class="flex">
-                            <select id="s5_2" name="s5_2"
+                            <select id="s5_q2" name="s5_q2"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
                                 <option selected disabled value="">Select an option</option>
                                 <option value="No">No</option>
                                 <option value="Yes">Yes</option>
                             </select>
-                            <input type="text" id="s5_2_d" name="s5_2_d" value=""
+                            <input type="text" id="s5_q2_d" name="s5_q2_d" value=""
                                    placeholder="Name of the institution (If Yes)"
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="mt-5">
-                            <label for="s5_3"
+                            <label for="s5_q3"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 3. Is the family willing to donate money to needy students?
                             </label>
-                            <select id="s5_3" name="s5_3"
+                            <select id="s5_q3" name="s5_q3"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
                                 <option selected disabled value="">Select an option</option>
@@ -214,12 +214,12 @@
                             </select>
                         </div>
                         <div class="mt-5">
-                            <label for="s5_4"
+                            <label for="s5_q4"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 4. Would you like to contribute financially to the school's extracurricular activities
                                 and activities?
                             </label>
-                            <select id="s5_4" name="s5_4"
+                            <select id="s5_q4" name="s5_q4"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
                                 <option selected disabled value="">Select an option</option>
@@ -228,12 +228,12 @@
                             </select>
                         </div>
                         <div class="mt-5">
-                            <label for="s5_5_d"
+                            <label for="s5_q5_d"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 5. Financial administrative suggestions and criticisms
                             </label>
-                            <textarea id="s5_5_d" placeholder="Enter description"
-                                      name="s5_5_d"
+                            <textarea id="s5_q5_d" placeholder="Enter description"
+                                      name="s5_q5_d"
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-3">
@@ -252,7 +252,7 @@
                         <p class="font-bold mt-4">
                             Discount <u>(Check only when needed)</u>
                         </p>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-auto mb-3">
                             @if($discounts->isEmpty())
                                 <div
                                     class="bg-teal-100 border-t-4 border-teal-500 mt-4 rounded-b text-teal-900 px-4 py-3 shadow-md"
@@ -290,7 +290,7 @@
                                             Percentage
                                         </th>
                                         <th scope="col" class="p-4 text-center">
-                                            Action
+                                            Select
                                         </th>
                                     </tr>
                                     </thead>
