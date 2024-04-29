@@ -42,4 +42,8 @@ class StudentApplianceStatus extends Model
     {
         return $this->belongsTo(AcademicYear::class, 'academic_year', 'id');
     }
+    public function evidences()
+    {
+        return $this->belongsTo(StudentApplianceStatus::class, 'appliance_id', 'id');
+    }
 }

@@ -232,6 +232,16 @@
                                 </a>
                             </li>
                         @endcan
+                        @can('evidences-confirmation')
+                            <li>
+                                <a href="{{route('Evidences')}}"
+                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span class="menulist"><i class="nav-icon la la-id-card"
+                                                              style="font-size: 24px"></i>
+                                        Evidences</span>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
             @endcan

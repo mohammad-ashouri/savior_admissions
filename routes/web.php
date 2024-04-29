@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthControllers\PasswordController;
 use App\Http\Controllers\AuthControllers\SignupController;
 use App\Http\Controllers\BranchInfo\AcademicYearClassController;
 use App\Http\Controllers\BranchInfo\ApplicationTimingController;
+use App\Http\Controllers\BranchInfo\EvidenceController;
 use App\Http\Controllers\BranchInfo\InterviewController;
 use App\Http\Controllers\BranchInfo\StudentController;
 use App\Http\Controllers\Catalogs\AcademicYearController;
@@ -161,6 +162,9 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::get('ConfirmApplication/{application_id}/{appliance_id}', [ApplicationController::class, 'showApplicationConfirmation']);
         Route::post('ConfirmApplication', [ApplicationController::class, 'confirmStudentAppliance'])->name('Application.ConfirmApplication');
 
+        //Evidences confirmation
+        Route::get('ConfirmEvidences', [EvidenceController::class, 'index'])->name('Evidences');
+        Route::get('ConfirmEvidences/{appliance_id}', [EvidenceController::class, 'show'])->name('Evidences.show');
 
         //Exports
         //PDF
