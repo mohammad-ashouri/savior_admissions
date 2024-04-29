@@ -592,12 +592,19 @@ class ApplicationController extends Controller
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        $applicationInfo = Applications::find($request->application_id);
+        $reservatoreMobile = $applicationInfo->reservationInfo->reservatoreInfo->mobile;
 
         switch ($request->type) {
             case 'Accept':
                 StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Admitted', 'documents_uploaded' => 0]);
+                $messageText = "Your interview has been successfully accepted. You have up to 72 hours to upload documents. Please upload documents on the dashboard page.\nSavior Schools";
+                $this->sendSMS($reservatoreMobile, $messageText);
                 break;
             case 'Reject':
+                $reservationID = $applicationInfo->reservationInfo->id;
+                $messageText = "Your application with reservation id ($reservationID) has been rejected.\nSavior Schools";
+                $this->sendSMS($reservatoreMobile, $messageText);
                 StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Rejected']);
                 break;
         }
