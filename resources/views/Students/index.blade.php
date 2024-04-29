@@ -104,12 +104,6 @@
                                     Gender
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Birthplace
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Nationality
-                                </th>
-                                <th scope="col" class="px-6 py-3 text-center">
                                     Action
                                 </th>
                             </tr>
@@ -150,20 +144,6 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ $student->generalInformations->gender }}</div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $student->generalInformations->birthplaceInfo->en_short_name }}</div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $student->generalInformations->nationalityInfo->nationality }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">

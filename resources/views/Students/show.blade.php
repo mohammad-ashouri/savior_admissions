@@ -28,22 +28,6 @@
                             <div>
                                 <p class="font-bold">Gender: </p> {{ $studentInformations->generalInformations->gender }}
                             </div>
-                            <div>
-                                <p class="font-bold">
-                                    Birthplace: </p> {{ $studentInformations->generalInformations->birthplaceInfo->en_short_name }}
-                            </div>
-                            <div>
-                                <p class="font-bold">
-                                    Nationality: </p> {{ $studentInformations->generalInformations->nationalityInfo->nationality }}
-                            </div>
-                            <div>
-                                <p class="font-bold">Identification
-                                    Type: </p> {{ @$studentInformations->identificationTypeInfo->name }}
-                            </div>
-                            <div>
-                                <p class="font-bold">Identification
-                                    Code: </p> {{ $studentInformations->current_identification_code }}
-                            </div>
                         </div>
                         <a href="{{ url()->previous() }}">
                             <button type="button"
