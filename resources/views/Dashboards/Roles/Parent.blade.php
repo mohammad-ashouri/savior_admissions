@@ -62,9 +62,6 @@
                                         Birthdate
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Birthplace
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
                                         Show
                                     </th>
                                 </tr>
@@ -104,15 +101,6 @@
                                                 <div
                                                     class="text-base font-semibold">
                                                     {{ $student->generalInformations->birthdate }}
-                                                </div>
-                                            </div>
-                                        </th>
-                                        <th scope="row"
-                                            class=" items-center text-center px-6 py-3 text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div>
-                                                <div
-                                                    class="text-base font-semibold">
-                                                    {{ $student->generalInformations->birthplaceInfo->en_short_name }}
                                                 </div>
                                             </div>
                                         </th>
