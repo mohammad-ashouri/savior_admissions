@@ -103,15 +103,17 @@ class DocumentController extends Controller
 
     public function uploadStudentDocuments(Request $request): \Illuminate\Http\RedirectResponse
     {
-        dd($request->all());
         $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', session('id'))->first();
         if (empty($studentInformation)) {
             abort(403);
         }
         $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $request->student_id)->where('documents_uploaded', 0)->first();
         if (empty($checkStudentApplianceStatus)) {
-            return redirect()->back()->withErrors('Student documents are uploaded or under review');
+            abort(403);
         }
+
+        dd($request->all());
+
 
         $studentAppliance = StudentApplianceStatus::where('student_id', $request->student_id)->first();
         $studentAppliance->documents_uploaded = 1;

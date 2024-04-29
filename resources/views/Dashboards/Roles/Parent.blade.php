@@ -241,6 +241,11 @@
                                                              $statusColor='red';
                                                              $statusText='Rejected Documents Uploaded';
                                                          }
+                                                         if ($applicationStatus->documents_uploaded_approval==3){
+                                                             $statusPercent-=25;
+                                                             $statusColor='red';
+                                                             $statusText='Automatic Rejected (Documents could not be uploaded after 72 hours)';
+                                                         }
                                                          if ($applicationStatus->tuition_payment_status==1){
                                                              $statusPercent+=25;
                                                              $statusText='Tuition Paid. Application Done!';

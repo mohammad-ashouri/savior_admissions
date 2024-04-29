@@ -150,6 +150,9 @@
                                                     @case(2)
                                                         Pending For Review
                                                         @break
+                                                    @case(3)
+                                                        Rejected
+                                                        @break
                                                     @default
                                                         -
                                                 @endswitch
