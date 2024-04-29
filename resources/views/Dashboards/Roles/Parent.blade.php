@@ -218,12 +218,23 @@
                                                         $statusColor='green';
                                                          if ($applicationStatus->interview_status=='Pending First Interview'){
                                                              $statusText='Pending First Interview';
+                                                             $statusPercent+=5;
                                                          }
                                                          if ($applicationStatus->interview_status=='Pending Second Interview'){
                                                              $statusText='Pending Second Interview';
+                                                             $statusPercent+=5;
                                                          }
                                                          if ($applicationStatus->interview_status=='Pending Admissions Officer Interview'){
                                                              $statusText='Pending Admissions Officer Interview';
+                                                             $statusPercent+=5;
+                                                         }
+                                                         if ($applicationStatus->interview_status=='Pending For Principal Confirmation'){
+                                                             $statusText='Pending For Principal Confirmation';
+                                                             $statusPercent+=5;
+                                                         }
+                                                         if ($applicationStatus->interview_status=='Rejected'){
+                                                             $statusText='Rejected Interview';
+                                                             $statusColor='red';
                                                          }
                                                          if ($applicationStatus->interview_status=='Admitted'){
                                                              $statusPercent+=25;
@@ -240,6 +251,7 @@
                                                          if ($applicationStatus->documents_uploaded_approval==2){
                                                              $statusPercent-=25;
                                                              $statusColor='red';
+                                                             $statusText='Rejected Documents Uploaded';
                                                          }
                                                          if ($applicationStatus->tuition_payment_status==1){
                                                              $statusPercent+=25;
@@ -251,10 +263,17 @@
                                                     <span
                                                         class="text-sm font-medium text-{{$statusColor}}-700 dark:text-white">{{$statusPercent}}%</span>
                                                 </div>
-                                                <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                                    <div class="bg-{{$statusColor}}-600 h-2.5 rounded-full"
-                                                         style="width: {{$statusPercent}}%"></div>
-                                                </div>
+                                                @if($statusColor=='green')
+                                                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                                        <div class="bg-green-600 h-2.5 rounded-full"
+                                                             style="width: {{$statusPercent}}%"></div>
+                                                    </div>
+                                                @elseif($statusColor=='red')
+                                                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                                        <div class="bg-red-600 h-2.5 rounded-full"
+                                                             style="width: {{$statusPercent}}%"></div>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </th>
                                         <th scope="row"

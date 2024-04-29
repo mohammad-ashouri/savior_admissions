@@ -36,18 +36,27 @@ $(document).ready(function () {
                         // Show the mobile div and hide the email div
                         $('#mobile').closest('div').show();
                         $('#email').closest('div').hide();
+                        $('#email').val('');
+                        $('#mobile').val('');
+                        $('#password').val('');
                     }
                     // If Email option is selected
                     else if ($(this).val() === 'email') {
                         // Show the email div and hide the mobile div
                         $('#email').closest('div').show();
                         $('#mobile').closest('div').hide();
+                        $('#email').val('');
+                        $('#mobile').val('');
+                        $('#password').val('');
                     }
                     // If no option is selected
                     else {
                         // Hide both divs
                         $('#email').closest('div').hide();
                         $('#mobile').closest('div').hide();
+                        $('#email').val('');
+                        $('#mobile').val('');
+                        $('#password').val('');
                     }
                 });
 

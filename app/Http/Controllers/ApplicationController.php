@@ -595,7 +595,7 @@ class ApplicationController extends Controller
 
         switch ($request->type) {
             case 'Accept':
-                StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Interviewed', 'documents_uploaded' => 0]);
+                StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Admitted', 'documents_uploaded' => 0]);
                 break;
             case 'Reject':
                 StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Rejected']);
@@ -605,7 +605,7 @@ class ApplicationController extends Controller
 
         $applianceStatus = StudentApplianceStatus::with('studentInfo')->find($request->appliance_id);
 
-        return view('BranchInfo.ConfirmAppliance.index')
-            ->with('success', 'Appliance Status Confirmed For This Student: '.$applianceStatus->studentInfo->generalInformationInfo->first_name_en.' '.$applianceStatus->studentInfo->generalInformationInfo->last_name_en.' Status: '.$request->type.'ed');
+        return redirect()->route('Application.ConfirmApplicationList')
+            ->with('success', 'Appliance Status Confirmed For This Student: '.$applianceStatus->studentInfo->generalInformationInfo->first_name_en.' '.$applianceStatus->studentInfo->generalInformationInfo->last_name_en.' - Chosen status: '.$request->type.'ed');
     }
 }
