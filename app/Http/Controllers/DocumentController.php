@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch\StudentApplianceStatus;
+use App\Models\Catalogs\BloodGroup;
 use App\Models\Catalogs\DocumentType;
+use App\Models\Catalogs\GuardianStudentRelationship;
+use App\Models\Country;
 use App\Models\Document;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -81,7 +84,7 @@ class DocumentController extends Controller
 
     public function uploadStudentDocumentByParent($student_id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
     {
-        $studentInformation = StudentInformation::where('student_id', $student_id)->where('guardian', session('id'))->first();
+        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->where('guardian', session('id'))->first();
         if (empty($studentInformation)) {
             abort(403);
         }
@@ -90,7 +93,11 @@ class DocumentController extends Controller
             return redirect()->back()->withErrors('Student documents are uploaded or under review');
         }
 
-        return view('Documents.UploadDocumentsParent.create', compact('studentInformation'));
+        $bloodGroups=BloodGroup::get();
+        $guardianStudentRelationships=GuardianStudentRelationship::get();
+        $countries=Country::orderBy('en_short_name','asc')->get();
+        $nationalities=Country::orderBy('nationality','asc')->get();
+        return view('Documents.UploadDocumentsParent.create', compact('studentInformation','bloodGroups','guardianStudentRelationships','countries','nationalities'));
 
     }
 

@@ -279,7 +279,7 @@
                                         <th scope="row"
                                             class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                             <div>
-                                                @if($applicationStatus->documents_uploaded==0 and $applicationStatus->documents_uploaded!=null)
+                                                @if($applicationStatus->documents_uploaded==0)
                                                     <div
                                                         class="text-base font-semibold">
                                                         <a href="{{ route('Document.UploadByParent',$student->student_id) }}"
