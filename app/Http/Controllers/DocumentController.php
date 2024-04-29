@@ -103,6 +103,7 @@ class DocumentController extends Controller
 
     public function uploadStudentDocuments(Request $request): \Illuminate\Http\RedirectResponse
     {
+        dd($request->all());
         $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', session('id'))->first();
         if (empty($studentInformation)) {
             abort(403);

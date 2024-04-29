@@ -79,7 +79,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="ml-2" id="martial-status-div" hidden="">
+                                        <div class="ml-2" id="martial-status-div">
                                             <label for="martial_status"
                                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                                 Marital status</label>
@@ -97,7 +97,7 @@
                                                 Relation name</label>
                                             <input type="text" id="relation_name" name="relation_name" value=""
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="example: Grandfather">
+                                                   placeholder="example: Grandfather">
                                         </div>
                                     </div>
                                     <div id="father-div">
@@ -133,7 +133,7 @@
                                                 <label for="father_email"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                     Father's email</label>
-                                                <input type="text" id="father_email" name="father_email" value=""
+                                                <input type="email" id="father_email" name="father_email" value=""
                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                        required placeholder="Enter Father's Email">
                                             </div>
@@ -202,6 +202,12 @@
                                                     </ul>
                                                 </div>
                                             </div>
+                                            <div class="mt-3 ml-2">
+                                                <label for="father_passport_file_preview"
+                                                       class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                    Father passport file preview</label>
+                                                <img id="father_passport_file_preview">
+                                            </div>
                                         </div>
                                     </div>
                                     <div id="mother-div" class="">
@@ -237,7 +243,7 @@
                                                 <label for="mother_email"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                     Mother's email</label>
-                                                <input type="text" id="mother_email" name="mother_email" value=""
+                                                <input type="email" id="mother_email" name="mother_email" value=""
                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                        required placeholder="Enter Mother's Email">
                                             </div>
@@ -306,6 +312,12 @@
                                                     </ul>
                                                 </div>
                                             </div>
+                                            <div class="mt-3 ml-2">
+                                                <label for="mother_passport_file_preview"
+                                                       class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                    Father passport file preview</label>
+                                                <img id="mother_passport_file_preview">
+                                            </div>
                                         </div>
                                     </div>
                                     {{--                                    Educational Informations--}}
@@ -320,7 +332,7 @@
                                             <input type="text" id="previous_school_name" name="previous_school_name"
                                                    value=""
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter previous school name">
+                                                   placeholder="Enter previous school name">
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="previous_school_country"
@@ -328,7 +340,7 @@
                                                 Previous school country</label>
                                             <select id="previous_school_country" name="previous_school_country"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    title="Select previous school country" required>
+                                                    title="Select previous school country">
                                                 <option selected disabled value="">Select an option</option>
                                                 @foreach($countries as $country)
                                                     <option
@@ -340,7 +352,7 @@
                                             <label for="student_skills"
                                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                                 Student skills</label>
-                                            <textarea id="student_skills" required
+                                            <textarea id="student_skills"
                                                       placeholder="please enter student's skill and abilities..."
                                                       name="student_skills"
                                                       class="bg-gray-50 border border-gray-300 text-gray-900 h-48 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
@@ -348,7 +360,7 @@
                                         <div class="mt-3 ml-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
                                                    for="latest_report_card">Latest report card</label>
-                                            <input required
+                                            <input
                                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                                 id="latest_report_card" name="latest_report_card" type="file"
                                                 accept=".pdf,.jpg,.bpm,.jpeg,.png">
@@ -408,42 +420,42 @@
                                             <label for="student_passport_number"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Passport number</label>
-                                            <input type="text" value="" placeholder="ID Number for Iranian students" name="student_passport_number" id="student_passport_number"
+                                            <input required type="text" value="" placeholder="ID Number for Iranian students" name="student_passport_number" id="student_passport_number"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="passport_expiry_date"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Passport expiry date</label>
-                                            <input type="date" value="" name="passport_expiry_date" id="passport_expiry_date"
+                                            <input required type="date" value="" name="passport_expiry_date" id="passport_expiry_date"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="student_iranian_visa"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Iranian visa/Residence number</label>
-                                            <input type="text" value="" placeholder="Please enter student's iranian visa..." name="student_iranian_visa" id="student_passport_number"
+                                            <input required type="text" value="" placeholder="Please enter student's iranian visa..." name="student_iranian_visa" id="student_passport_number"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="iranian_residence_expiry"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Iranian visa/Residence expiry</label>
-                                            <input type="date" value="" name="iranian_residence_expiry" id="iranian_residence_expiry"
+                                            <input required type="date" value="" name="iranian_residence_expiry" id="iranian_residence_expiry"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="student_iranian_faragir_code"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Iranian faragir code</label>
-                                            <input type="text" value="" placeholder="Please enter student's iranian faragir code ..." name="student_iranian_faragir_code" id="student_iranian_faragir_code"
+                                            <input required type="text" value="" placeholder="Please enter student's iranian faragir code ..." name="student_iranian_faragir_code" id="student_iranian_faragir_code"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="student_iranian_sanad_code"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Iranian sanad code</label>
-                                            <input type="text" value="" placeholder="Please enter student's iranian sanad code ..." name="student_iranian_sanad_code" id="student_iranian_sanad_code"
+                                            <input required type="text" value="" placeholder="Please enter student's iranian sanad code ..." name="student_iranian_sanad_code" id="student_iranian_sanad_code"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 mr-2">
@@ -469,6 +481,12 @@
                                                     </li>
                                                 </ul>
                                             </div>
+                                        </div>
+                                        <div class="mt-3 ml-2">
+                                            <label for="student_passport_file_preview"
+                                                   class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                Student passport file preview</label>
+                                            <img id="student_passport_file_preview">
                                         </div>
                                     </div>
                                 </div>
