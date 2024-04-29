@@ -82,6 +82,8 @@ class Principal extends Seeder
             'students-delete',
             'students-search',
             'students-show',
+            'student-statuses-menu-access',
+            'student-statuses-list',
         ]);
     }
 }

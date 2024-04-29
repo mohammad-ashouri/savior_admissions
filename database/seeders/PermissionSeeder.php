@@ -135,6 +135,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'change-status-of-application']);
         Permission::create(['name' => 'remove-application-from-reserve']);
 
+        Permission::create(['name' => 'student-statuses-list']);
+
+        Permission::create(['name' => 'evidences-confirmation']);
+
         //menus access
         Permission::create(['name' => 'catalogs-menu-access']);
         Permission::create(['name' => 'branch-info-menu-access']);
@@ -146,6 +150,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'interviews-menu-access']);
         Permission::create(['name' => 'finance-menu-access']);
         Permission::create(['name' => 'application-confirmation-menu-access']);
+        Permission::create(['name' => 'student-statuses-menu-access']);
 
     }
 }

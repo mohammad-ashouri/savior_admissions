@@ -51,6 +51,9 @@ class AdmissionsOfficer extends Seeder
             'students-delete',
             'students-search',
             'students-show',
+            'evidences-confirmation',
+            'student-statuses-menu-access',
+            'student-statuses-list',
         ]);
     }
 }
