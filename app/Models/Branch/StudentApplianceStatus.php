@@ -21,6 +21,7 @@ class StudentApplianceStatus extends Model
         'documents_uploaded_approval',
         'documents_uploaded_seconder',
         'tuition_payment_status',
+        'description',
     ];
 
     protected $casts = [
@@ -41,6 +42,11 @@ class StudentApplianceStatus extends Model
     public function academicYearInfo()
     {
         return $this->belongsTo(AcademicYear::class, 'academic_year', 'id');
+    }
+
+    public function documentSeconder()
+    {
+        return $this->belongsTo(User::class, 'documents_uploaded_seconder', 'id');
     }
     public function evidences()
     {

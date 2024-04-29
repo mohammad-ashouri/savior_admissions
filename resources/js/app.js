@@ -1112,6 +1112,9 @@ $(document).ready(function () {
             });
         });
 
+    } else if (fullPath.includes('StudentStatuses')) {
+        pageTitle = 'Student Statuses';
+
     } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 

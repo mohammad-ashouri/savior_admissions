@@ -27,6 +27,7 @@ class StudentController extends Controller
         $this->middleware('permission:students-search', ['only' => ['search']]);
         $this->middleware('permission:students-show', ['only' => ['show']]);
         $this->middleware('permission:change-student-information', ['only' => ['changeInformation']]);
+        $this->middleware('permission:student-statuses-list', ['only' => ['studentStatusIndex']]);
     }
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -267,5 +268,52 @@ class StudentController extends Controller
         $this->logActivity(json_encode(['activity' => 'Student information saved successfully', 'user_id' => $request->user_id]), request()->ip(), request()->userAgent());
 
         return response()->json(['success' => 'Student information saved successfully!'], 200);
+    }
+
+    public function studentStatusIndex()
+    {
+        $me = User::find(session('id'));
+
+        $students=[];
+        if ($me->hasRole('Super Admin')) {
+            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+                ->where('tuition_payment_status', 'Paid')
+                ->distinct('student_id')
+                ->orderBy('academic_year', 'desc')->paginate(20);
+            $academicYears = AcademicYear::get();
+            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
+
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears'));
+        } elseif ($me->hasRole('Parent')) {
+            $students = StudentInformation::where('guardian', session('id'))
+                ->with('studentInfo')
+                ->with('nationalityInfo')
+                ->with('identificationTypeInfo')
+                ->with('generalInformations')
+                ->orderBy('student_id', 'asc')->paginate(10);
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+                ->whereIn('academic_year', $academicYears)
+                ->distinct('student_id')
+                ->orderBy('academic_year', 'desc')->paginate(20);
+            $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
+
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears'));
+
+        }
+
+        if ($students->isEmpty() or empty($students)) {
+            $students = [];
+        }
+        $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
+
+        return view('BranchInfo.StudentStatuses.index', compact('students'));
     }
 }

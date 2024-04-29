@@ -166,6 +166,10 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::get('ConfirmEvidences', [EvidenceController::class, 'index'])->name('Evidences');
         Route::get('ConfirmEvidences/{appliance_id}', [EvidenceController::class, 'show'])->name('Evidences.show');
 
+        //Student status
+        Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
+
+
         //Exports
         //PDF
         Route::prefix('PDF')->group(function () {
