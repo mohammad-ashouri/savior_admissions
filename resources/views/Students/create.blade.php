@@ -102,47 +102,47 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div>
-                                    <label for="nationality"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Nationality</label>
-                                    <select id="nationality" name="nationality"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            title="Select student nationality" required>
-                                        <option selected disabled value="">Select student nationality</option>
-                                        @foreach($nationalities as $nationality)
-                                            <option @if(old('nationality')==$nationality->id) selected
-                                                    @endif value="{{$nationality->id}}">{{$nationality->nationality}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="current_identification_type"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Current Identification Type</label>
-                                    <select id="current_identification_type" name="current_identification_type"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            title="Select student identification type" required>
-                                        <option selected disabled value="">Select student identification type</option>
-                                        @foreach($identificationTypes as $identificationType)
-                                            <option
-                                                @if(old('current_identification_type')==$identificationType->id) selected
-                                                @endif value="{{$identificationType->id}}">{{$identificationType->name}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="current_identification_code"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Current Identification Code</label>
-                                    <input type="text" id="current_identification_code"
-                                           value="{{ old('current_identification_code') }}"
-                                           name="current_identification_code"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter current identification code of your student" required>
-                                </div>
+{{--                                <div>--}}
+{{--                                    <label for="nationality"--}}
+{{--                                           class="block mb-2  font-bold text-gray-900 dark:text-white">--}}
+{{--                                        Nationality</label>--}}
+{{--                                    <select id="nationality" name="nationality"--}}
+{{--                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+{{--                                            title="Select student nationality" required>--}}
+{{--                                        <option selected disabled value="">Select student nationality</option>--}}
+{{--                                        @foreach($nationalities as $nationality)--}}
+{{--                                            <option @if(old('nationality')==$nationality->id) selected--}}
+{{--                                                    @endif value="{{$nationality->id}}">{{$nationality->nationality}}--}}
+{{--                                            </option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
+{{--                                <div>--}}
+{{--                                    <label for="current_identification_type"--}}
+{{--                                           class="block mb-2  font-bold text-gray-900 dark:text-white">--}}
+{{--                                        Current Identification Type</label>--}}
+{{--                                    <select id="current_identification_type" name="current_identification_type"--}}
+{{--                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+{{--                                            title="Select student identification type" required>--}}
+{{--                                        <option selected disabled value="">Select student identification type</option>--}}
+{{--                                        @foreach($identificationTypes as $identificationType)--}}
+{{--                                            <option--}}
+{{--                                                @if(old('current_identification_type')==$identificationType->id) selected--}}
+{{--                                                @endif value="{{$identificationType->id}}">{{$identificationType->name}}--}}
+{{--                                            </option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
+{{--                                <div>--}}
+{{--                                    <label for="current_identification_code"--}}
+{{--                                           class="block mb-2  font-bold text-gray-900 dark:text-white">--}}
+{{--                                        Current Identification Code</label>--}}
+{{--                                    <input type="text" id="current_identification_code"--}}
+{{--                                           value="{{ old('current_identification_code') }}"--}}
+{{--                                           name="current_identification_code"--}}
+{{--                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+{{--                                           placeholder="Enter current identification code of your student" required>--}}
+{{--                                </div>--}}
                             </div>
                             <button type="submit"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">

@@ -89,9 +89,9 @@ class StudentController extends Controller
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
-            'nationality' => 'required|exists:countries,id',
-            'birthplace' => 'required|exists:countries,id',
-            'current_identification_type' => 'required|exists:current_identification_types,id',
+//            'nationality' => 'required|exists:countries,id',
+//            'birthplace' => 'required|exists:countries,id',
+//            'current_identification_type' => 'required|exists:current_identification_types,id',
             'first_name_fa' => 'required|string',
             'last_name_fa' => 'required|string',
             'first_name_en' => 'required|string',
@@ -105,11 +105,11 @@ class StudentController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $nationality = $request->nationality;
-        $current_identification_type = $request->current_identification_type;
-        $birthplace = $request->birthplace;
+//        $nationality = $request->nationality;
+//        $current_identification_type = $request->current_identification_type;
+//        $birthplace = $request->birthplace;
         $birthdate = $request->birthdate;
-        $current_identification_code = $request->current_identification_code;
+//        $current_identification_code = $request->current_identification_code;
         $gender = $request->gender;
 
         $me = User::find(session('id'));
@@ -131,17 +131,17 @@ class StudentController extends Controller
         $generalInformation->first_name_en = $request->first_name_en;
         $generalInformation->last_name_en = $request->last_name_en;
         $generalInformation->birthdate = $birthdate;
-        $generalInformation->birthplace = $birthplace;
-        $generalInformation->nationality = $nationality;
+//        $generalInformation->birthplace = $birthplace;
+//        $generalInformation->nationality = $nationality;
         $generalInformation->gender = $gender;
         $generalInformation->save();
 
         $studentInformation = new StudentInformation();
         $studentInformation->student_id = $user->id;
         $studentInformation->guardian = $me->id;
-        $studentInformation->current_nationality = $nationality;
-        $studentInformation->current_identification_type = $current_identification_type;
-        $studentInformation->current_identification_code = $current_identification_code;
+//        $studentInformation->current_nationality = $nationality;
+//        $studentInformation->current_identification_type = $current_identification_type;
+//        $studentInformation->current_identification_code = $current_identification_code;
         $studentInformation->save();
         $this->logActivity(json_encode(['activity' => 'Student Saved', 'id' => $studentInformation->user_id]), request()->ip(), request()->userAgent());
 
