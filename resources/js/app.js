@@ -1142,6 +1142,13 @@ $(document).ready(function () {
     } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
 
+        $('#relationship').change(function (){
+            if ($(this).val()==3){
+                $('#relation-name-div').show();
+                $('#relation_name').attr('required',true);
+            }
+        });
+
         $('#father_passport_file').change(function () {
             const fileInput = $('#father_passport_file');
             const imagePreview = $('#father_passport_file_preview');

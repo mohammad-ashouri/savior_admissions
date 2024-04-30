@@ -232,6 +232,15 @@
                                                              $statusPercent+=25;
                                                              $statusText='Waiting For Documents Approval';
                                                          }
+                                                         if ($applicationStatus->documents_uploaded==2){
+                                                             $statusPercent+=25;
+                                                             $statusText='Pending For Documents Approval';
+                                                         }
+                                                         if ($applicationStatus->documents_uploaded==3){
+                                                             $statusPercent-=25;
+                                                             $statusText='Documents Rejected';
+                                                             $statusColor='red';
+                                                         }
                                                          if ($applicationStatus->documents_uploaded_approval==1){
                                                              $statusPercent+=25;
                                                              $statusText='Waiting For Tuition Payment';

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch\Evidence;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\BloodGroup;
 use App\Models\Catalogs\DocumentType;
@@ -15,14 +16,13 @@ use Illuminate\Validation\Rule;
 
 class DocumentController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
-        $this->middleware('permission:document-list', ['only' => ['index','showUserDocuments']]);
-        $this->middleware('permission:document-create', ['only' => ['createDocument','createDocumentForUser']]);
+        $this->middleware('permission:document-list', ['only' => ['index', 'showUserDocuments']]);
+        $this->middleware('permission:document-create', ['only' => ['createDocument', 'createDocumentForUser']]);
         $this->middleware('permission:document-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:document-delete', ['only' => ['destroy']]);
     }
-
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
@@ -93,11 +93,12 @@ class DocumentController extends Controller
             return redirect()->back()->withErrors('Student documents are uploaded or under review');
         }
 
-        $bloodGroups=BloodGroup::get();
-        $guardianStudentRelationships=GuardianStudentRelationship::get();
-        $countries=Country::orderBy('en_short_name','asc')->get();
-        $nationalities=Country::orderBy('nationality','asc')->get();
-        return view('Documents.UploadDocumentsParent.create', compact('studentInformation','bloodGroups','guardianStudentRelationships','countries','nationalities'));
+        $bloodGroups = BloodGroup::get();
+        $guardianStudentRelationships = GuardianStudentRelationship::get();
+        $countries = Country::orderBy('en_short_name', 'asc')->get();
+        $nationalities = Country::orderBy('nationality', 'asc')->get();
+
+        return view('Documents.UploadDocumentsParent.create', compact('studentInformation', 'bloodGroups', 'guardianStudentRelationships', 'countries', 'nationalities'));
 
     }
 
@@ -107,16 +108,54 @@ class DocumentController extends Controller
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $request->student_id)->where('documents_uploaded', 0)->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $request->student_id)->where('documents_uploaded', 0)->latest()->first();
         if (empty($checkStudentApplianceStatus)) {
             abort(403);
         }
 
-        dd($request->all());
+        $fatherPassportFileName = 'FatherPassportScan_'.now()->format('Y-m-d_H-i-s');
+        $fatherPassportFile = $request->file('father_passport_file')->storeAs(
+            'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+            "$fatherPassportFileName.jpg"
+        );
 
+        $motherPassportFileName = 'MotherPassportScan_'.now()->format('Y-m-d_H-i-s');
+        $motherPassportFileName = $request->file('mother_passport_file')->storeAs(
+            'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+            "$motherPassportFileName.jpg"
+        );
+
+        $studentPassportFileName = 'StudentPassportFile_'.now()->format('Y-m-d_H-i-s');
+        $studentPassportFileName = $request->file('student_passport_file')->storeAs(
+            'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+            "$studentPassportFileName.jpg"
+        );
+
+        $latestReportCard_FileName = '';
+        if ($request->hasFile('latest_report_card')) {
+            $latestReportCard_FileName = 'LatestReportCard_'.now()->format('Y-m-d_H-i-s');
+            $latestReportCard_FileName = $request->file('latest_report_card')->storeAs(
+                'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+                "$latestReportCard_FileName.jpg"
+            );
+        }
+
+        $files = json_encode(
+            [
+                'father_passport_file' => $fatherPassportFile,
+                'mother_passport_file' => $motherPassportFileName,
+                'latest_report_card' => $latestReportCard_FileName,
+                'student_passport_file' => $studentPassportFileName,
+            ], true);
+
+        $evidences = new Evidence();
+        $evidences->appliance_id = $checkStudentApplianceStatus->id;
+        $evidences->informations = json_encode($request->all(), true);
+        $evidences->files = $files;
+        $evidences->save();
 
         $studentAppliance = StudentApplianceStatus::where('student_id', $request->student_id)->first();
-        $studentAppliance->documents_uploaded = 1;
+        $studentAppliance->documents_uploaded = 2;
         $studentAppliance->save();
 
         return redirect()->route('dashboard')->with('success', 'Documents Uploaded successfully!');

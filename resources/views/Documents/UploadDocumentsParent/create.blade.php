@@ -91,7 +91,7 @@
                                                 <option value="Divorced">Divorced</option>
                                             </select>
                                         </div>
-                                        <div class="ml-2" id="relation-name-div" hidden="">
+                                        <div class="mt-3 mr-2" id="relation-name-div" hidden="hidden">
                                             <label for="relation_name"
                                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                                 Relation name</label>

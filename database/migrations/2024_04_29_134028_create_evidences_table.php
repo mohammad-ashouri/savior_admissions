@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evidence', function (Blueprint $table) {
+        Schema::create('evidences', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('appliance_id');
+            $table->foreign('appliance_id')->references('id')->on('student_appliance_statuses');
+            $table->json('informations');
+            $table->json('files');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('evidence');
+        Schema::dropIfExists('evidences');
     }
 };
