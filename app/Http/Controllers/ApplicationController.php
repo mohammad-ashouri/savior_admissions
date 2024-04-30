@@ -508,13 +508,20 @@ class ApplicationController extends Controller
                 $invoice = (new Invoice)->amount(1000);
 
                 // Purchase the given invoice.
-                Payment::callbackUrl(env('APP_URL'))->purchase(
+                $transactionID=Payment::callbackUrl(env('APP_URL'))->purchase(
                     $invoice,
                     function ($driver, $transactionId) {
-                        dd($transactionId);
                         // We can store $transactionId in database.
                     }
                 );
+
+                return Payment::purchase(
+                    (new Invoice)->amount(1000),
+                    function($driver, $transactionID) {
+                        // Store transactionId in database.
+                        // We need the transactionId to verify payment in the future.
+                    }
+                )->pay()->render();
                 break;
             default:
                 $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
