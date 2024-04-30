@@ -88,14 +88,16 @@ $(document).ready(function () {
                                         }
                                         reloadCaptcha();
                                         captcha.value = '';
-                                    } else if (response.errors.loginError) {
-                                        swalFire('Login Error', response.errors.loginError, 'error', 'Try again');
-                                        reloadCaptcha();
-                                        captcha.value = '';
-                                    } else if (response.errors.captcha) {
-                                        swalFire('Error', response.errors.captcha, 'error', 'Try again');
-                                        reloadCaptcha();
-                                        captcha.value = '';
+                                    } else if (response.errors) {
+                                        if (response.errors.loginError) {
+                                            swalFire('Login Error', response.errors.loginError, 'error', 'Try again');
+                                            reloadCaptcha();
+                                            captcha.value = '';
+                                        } else if (response.errors.captcha) {
+                                            swalFire('Error', response.errors.captcha, 'error', 'Try again');
+                                            reloadCaptcha();
+                                            captcha.value = '';
+                                        }
                                     }
                                 }
                             }, error: function (xhr, textStatus, errorThrown) {

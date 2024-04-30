@@ -80,6 +80,8 @@ class LoginController extends Controller
                         'errors' => ['loginError' => 'Wrong email or password'],
                     ]);
                 }
+                $credentials = $request->only('email', 'password');
+
                 break;
             case 'mobile':
                 $validator = Validator::make($request->all(), [
@@ -104,6 +106,8 @@ class LoginController extends Controller
                         'errors' => ['loginError' => 'Wrong mobile or password'],
                     ]);
                 }
+                $credentials = $request->only('mobile', 'password');
+
                 break;
         }
 
@@ -131,10 +135,9 @@ class LoginController extends Controller
             ]);
         }
 
-        $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::attempt($credentials,$remember)) {
             Session::put('id', $user->id);
             $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
 
@@ -143,8 +146,10 @@ class LoginController extends Controller
                 'redirect' => route('dashboard'),
             ]);
         }
-
-//        return response()->json(['att']);
+        return response()->json([
+            'success' => false,
+            'errors' => ['captcha' => 'Server Error!'],
+        ]);
     }
 
     public function logout(): \Illuminate\Http\RedirectResponse
