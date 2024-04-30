@@ -154,4 +154,8 @@ class Controller extends BaseController
 //        return json_encode($statuses);
     }
 
+    public function payment($amount,)
+    {
+
+    }
 }

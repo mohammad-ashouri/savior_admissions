@@ -463,7 +463,7 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $applicationInformation = ApplicationReservation::find($request->id);
+        $applicationInformation = ApplicationReservation::with('applicationInfo')->find($request->id);
 
         switch ($request->payment_method) {
             case 1:
@@ -504,16 +504,23 @@ class ApplicationController extends Controller
                 }
                 break;
             case 2:
+                $amount=$applicationInformation->applicationInfo->applicationTimingInfo->fee;
                 // Create new invoice.
-                $invoice = (new Invoice)->amount(1000);
+                $invoice = (new Invoice)->amount($amount);
+
+                $dataInvoice=new \App\Models\Invoice();
 
                 // Purchase the given invoice.
-                $transactionID=Payment::callbackUrl(env('APP_URL'))->purchase(
+                $transactionID = Payment::callbackUrl(env('APP_URL'))->purchase(
                     $invoice,
-                    function ($driver, $transactionId) {
-                        // We can store $transactionId in database.
+                    function ($driver, $transactionId) use ($dataInvoice) {
+                        $dataInvoice->driver = $driver;
+                        $dataInvoice->transaction_id = $driver;
+                        $dataInvoice->save();
+                        dd($transactionId);
                     }
                 );
+
 
                 return Payment::purchase(
                     (new Invoice)->amount(1000),
