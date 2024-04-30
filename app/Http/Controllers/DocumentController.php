@@ -158,7 +158,7 @@ class DocumentController extends Controller
         $studentAppliance->documents_uploaded = 2;
         $studentAppliance->save();
 
-        return redirect()->route('dashboard')->with('success', 'Documents Uploaded successfully!');
-
+        $this->sendSMS($studentInformation->guradianInfo->mobile,"Documents uploaded successfully. Please wait for the confirmation of the documents sent.\nSavior Schools");
+        return redirect()->route('dashboard')->with('success', 'Documents Uploaded Successfully!');
     }
 }
