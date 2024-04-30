@@ -22,7 +22,6 @@ use App\Http\Controllers\Finance\DiscountsController;
 use App\Http\Controllers\Finance\TuitionController;
 use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
@@ -72,7 +71,7 @@ Route::prefix('password')->group(function () {
 Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware(CheckLoginMiddleware::class)->group(function () {
+Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(function () {
     Route::middleware(CheckIfProfileRegistered::class)->group(function () {
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -94,7 +93,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         });
 
         //Get school educational charter
-        Route::get('GetEducationalCharter',[SchoolController::class,'EducationalCharter'])->name('EducationalCharter');
+        Route::get('GetEducationalCharter', [SchoolController::class, 'EducationalCharter'])->name('EducationalCharter');
 
         //Search routes
         Route::get('/SearchRoles', [RoleController::class, 'search'])->name('Roles.search');
@@ -142,7 +141,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::get('CheckDateAndTimeToBeFreeApplication', [ApplicationController::class, 'checkDateAndTimeToBeFreeApplication']);
         Route::post('ApplicationPayment', [ApplicationController::class, 'preparationForApplicationPayment']);
         Route::get('PrepareToPayApplication/{application_id}', [ApplicationController::class, 'prepareToPay'])->name('PrepareToPayApplication');
-        Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
+
 
         Route::post('student/change_information', [StudentController::class, 'changeInformation']);
 
@@ -171,7 +170,6 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         //Student status
         Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
 
-
         //Exports
         //PDF
         Route::prefix('PDF')->group(function () {
@@ -182,14 +180,15 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile');
         Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
     });
-    //Payment
-        Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
-        Route::post('verifyPay', [PaymentController::class, 'verify'])->name('PaymentVerification');
 
     //SMS
-        Route::post('sendSMS', [SMSController::class, 'sendSMS'])->name('sms.send');
+    Route::post('sendSMS', [SMSController::class, 'sendSMS'])->name('sms.send');
 
 });
+
+Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
+Route::post('/verifyPay', [ApplicationController::class, 'verifyPayment']);
+
 //Route::get('/import-excel', [ExcelController::class, 'index']);
 //Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
 //Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');
