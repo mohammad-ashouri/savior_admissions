@@ -50,6 +50,6 @@ class StudentApplianceStatus extends Model
     }
     public function evidences()
     {
-        return $this->belongsTo(StudentApplianceStatus::class, 'appliance_id', 'id');
+        return $this->belongsTo(Evidence::class, 'id', 'appliance_id');
     }
 }

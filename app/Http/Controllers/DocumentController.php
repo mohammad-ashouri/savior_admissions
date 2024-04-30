@@ -108,7 +108,7 @@ class DocumentController extends Controller
         $validator = Validator::make($request->all(), [
             'blood_group' => 'required|exists:blood_groups,id',
             'relationship' => 'required|exists:guardian_student_relationships,id',
-            'martial_status' => 'required|in:Married,Divorced',
+            'marital_status' => 'required|in:Married,Divorced',
             'father_name' => 'required|string',
             'father_family' => 'required|string',
             'father_mobile' => 'required',

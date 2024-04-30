@@ -80,10 +80,10 @@
                                             </select>
                                         </div>
                                         <div class="ml-2" id="martial-status-div">
-                                            <label for="martial_status"
+                                            <label for="marital_status"
                                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                                 Marital status</label>
-                                            <select id="martial_status" name="martial_status"
+                                            <select id="marital_status" name="marital_status"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     title="Select blood group" required>
                                                 <option selected disabled value="">Select an option</option>
