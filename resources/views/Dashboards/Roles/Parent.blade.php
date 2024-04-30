@@ -1,5 +1,5 @@
 @if (count($errors) > 0)
-    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 mb-3 shadow-md"
          role="alert">
         <div class="flex">
             <div class="py-1">
@@ -18,7 +18,7 @@
     </div>
 @endif
 @if( session()->has('success') )
-    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 mb-3 py-3 shadow-md"
          role="alert">
         <div class="flex">
             <div class="py-1">
