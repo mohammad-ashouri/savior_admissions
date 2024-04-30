@@ -465,6 +465,7 @@ class ApplicationController extends Controller
 
         $applicationInformation = ApplicationReservation::with('applicationInfo')->find($request->id);
 
+//        dd($applicationInformation);
         switch ($request->payment_method) {
             case 1:
                 $validator = Validator::make($request->all(), [
@@ -505,30 +506,21 @@ class ApplicationController extends Controller
                 break;
             case 2:
                 $amount=$applicationInformation->applicationInfo->applicationTimingInfo->fee;
+                $amount=15000;
                 // Create new invoice.
                 $invoice = (new Invoice)->amount($amount);
 
-                $dataInvoice=new \App\Models\Invoice();
-
-                // Purchase the given invoice.
-                $transactionID = Payment::callbackUrl(env('APP_URL'))->purchase(
+                return Payment::callbackUrl(env('APP_URL').'/verifyPay')->via('behpardakht')->purchase(
                     $invoice,
-                    function ($driver, $transactionId) use ($dataInvoice) {
-                        $dataInvoice->driver = $driver;
-                        $dataInvoice->transaction_id = $driver;
+                    function($driver, $transactionID) use ($amount,$applicationInformation) {
+                        $dataInvoice=new \App\Models\Invoice();
+                        $dataInvoice->type = "Application Reservation";
+                        $dataInvoice->description = json_encode(['amount'=>$amount,'reservation_id'=>$applicationInformation->id],true);
+                        $dataInvoice->transaction_id = $transactionID;
                         $dataInvoice->save();
-                        dd($transactionId);
-                    }
-                );
-
-
-                return Payment::purchase(
-                    (new Invoice)->amount(1000),
-                    function($driver, $transactionID) {
-                        // Store transactionId in database.
-                        // We need the transactionId to verify payment in the future.
                     }
                 )->pay()->render();
+
                 break;
             default:
                 $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('driver');
+            $table->string('type');
+            $table->json('description');
             $table->string('transaction_id');
             $table->timestamps();
         });

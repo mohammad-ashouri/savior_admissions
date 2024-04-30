@@ -69,7 +69,7 @@ return [
             'terminalId' => env('BEHPARDAKHT_TERMINAL_ID'),
             'username' => env('BEHPARDAKHT_USERNAME'),
             'password' => env('BEHPARDAKHT_PASSWORD'),
-            'callbackUrl' => env('APP_URL'),
+            'callbackUrl' => env('APP_URL').'/verifyPay',
             'description' => 'payment using behpardakht',
             'currency' => 'R', //Can be R, T (Rial, Toman)
             'cumulativeDynamicPayStatus' => false,

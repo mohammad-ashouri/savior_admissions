@@ -184,6 +184,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
     });
     //Payment
         Route::post('testpay', [PaymentController::class, 'behpardakhtPayment']);
+        Route::post('verifyPay', [PaymentController::class, 'verify'])->name('PaymentVerification');
 
     //SMS
         Route::post('sendSMS', [SMSController::class, 'sendSMS'])->name('sms.send');
