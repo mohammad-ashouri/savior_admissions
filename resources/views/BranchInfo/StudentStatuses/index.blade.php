@@ -164,7 +164,7 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">
-                                                @switch($student->document_approval_status)
+                                                @switch($student->documents_uploaded_approval)
                                                     @case(1)
                                                         Approved
                                                         @break
@@ -201,6 +201,9 @@
                                                         @break
                                                     @case('Paid')
                                                         Paid
+                                                        @break
+                                                    @case('Pending')
+                                                        Pending For Pay
                                                         @break
                                                     @default
                                                         -

@@ -534,7 +534,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex">
+                            <div class="flex w-full">
                                 <form class="confirm-evidences" method="post"
                                       action="{{ route('Evidences.confirm') }}">
                                     <div class="flex">
@@ -550,7 +550,16 @@
                                                 <option value="Reject">Reject</option>
                                             </select>
                                         </div>
-                                        <div class="mt-8">
+                                        <div>
+                                        <label for="description"
+                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                            Description</label>
+                                        <textarea id="description"
+                                                  placeholder="example: rejected for false informations"
+                                                  name="description"
+                                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                        </div>
+                                        <div class="mt-8 ml-2">
                                             <input type="hidden" value="{{$studentAppliance->id}}" name="appliance_id">
                                             <button
                                                 type="submit"

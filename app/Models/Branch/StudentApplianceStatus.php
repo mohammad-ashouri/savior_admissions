@@ -20,6 +20,7 @@ class StudentApplianceStatus extends Model
         'documents_uploaded',
         'documents_uploaded_approval',
         'documents_uploaded_seconder',
+        'seconder_description',
         'tuition_payment_status',
         'description',
     ];

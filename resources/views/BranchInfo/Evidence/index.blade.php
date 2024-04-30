@@ -66,9 +66,6 @@
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Evidence Form
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
-                                    Action
-                                </th>
                             </tr>
                             </thead>
 
