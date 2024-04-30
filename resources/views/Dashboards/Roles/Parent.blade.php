@@ -295,6 +295,21 @@
                                                         </a>
                                                     </div>
                                                 @endif
+
+                                                    @if($applicationStatus->documents_uploaded==2 and $applicationStatus->documents_uploaded_approval==2)
+                                                        <div
+                                                            class="text-base font-semibold">
+                                                            <a href="{{ route('Document.EditUploadedEvidences',$student->student_id) }}"
+                                                               type="button"
+                                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                                <div class="text-center">
+                                                                    <i title="Click for upload documents"
+                                                                       class="las la-cloud-upload-alt "
+                                                                       style="font-size: 20px"></i>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    @endif
                                             </div>
                                         </th>
                                     </tr>

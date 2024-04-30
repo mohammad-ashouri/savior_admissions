@@ -210,4 +210,26 @@ class DocumentController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Documents Uploaded Successfully!');
     }
+
+    public function editUploadedEvidences($student_id)
+    {
+        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->where('guardian', session('id'))->first();
+        if (empty($studentInformation)) {
+            abort(403);
+        }
+        $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $student_id)->where('documents_uploaded', 2)->where('documents_uploaded_approval', 2)->first();
+        if (empty($checkStudentApplianceStatus)) {
+            return redirect()->back()->withErrors('Student documents are uploaded or under review');
+        }
+
+        $studentAppliance=StudentApplianceStatus::with('evidences')->where('student_id',$student_id)->latest()->first();
+
+        $bloodGroups = BloodGroup::get();
+        $guardianStudentRelationships = GuardianStudentRelationship::get();
+        $countries = Country::orderBy('en_short_name', 'asc')->get();
+        $nationalities = Country::orderBy('nationality', 'asc')->get();
+
+        return view('Documents.UploadDocumentsParent.edit',compact('studentInformation','studentAppliance','checkStudentApplianceStatus','bloodGroups','guardianStudentRelationships','countries','nationalities'));
+
+    }
 }

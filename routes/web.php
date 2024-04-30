@@ -156,6 +156,7 @@ Route::middleware(CheckLoginMiddleware::class)->group(function () {
         });
         Route::get('UploadStudentDocumentByParent/{student_id}', [DocumentController::class, 'uploadStudentDocumentByParent'])->name('Document.UploadByParent');
         Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
+        Route::get('EditUploadedEvidences/{student_id}', [DocumentController::class, 'editUploadedEvidences'])->name('Document.EditUploadedEvidences');
 
         //Application confirmation
         Route::get('ConfirmApplication', [ApplicationController::class, 'confirmApplication'])->name('Application.ConfirmApplicationList');

@@ -73,6 +73,7 @@ $(document).ready(function () {
                             type: 'POST', url: '/login', data: data, headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                             }, success: function (response) {
+                                console.log(response);
                                 if (response.success) {
                                     window.location.href = response.redirect;
                                 } else {

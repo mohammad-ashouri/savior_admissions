@@ -315,7 +315,7 @@
                                             <div class="mt-3 ml-2">
                                                 <label for="mother_passport_file_preview"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                    Father passport file preview</label>
+                                                    Mother passport file preview</label>
                                                 <img id="mother_passport_file_preview">
                                             </div>
                                         </div>

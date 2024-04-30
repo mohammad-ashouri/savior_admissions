@@ -1151,6 +1151,63 @@ $(document).ready(function () {
             });
         });
 
+    }  else if (fullPath.includes('EditUploadedEvidences')) {
+        pageTitle = 'Edit Documents';
+
+        const images = []; // Array to store image URLs
+        let currentIndex = 0; // Variable to track the current image index
+
+        $('.show-image').click(function () {
+            let imageSrc = $(this).data('image-src');
+            console.log(imageSrc);
+            $('#image-for-show').attr('src', imageSrc);
+        });
+
+        // Function to show the image at the given index
+        const showImage = index => {
+            $('#image-for-show').attr('src', images[index]);
+            let imageTitle = $('[data-image-src="' + images[index] + '"]').data('image-title');
+            $('.DocumentTitle').text(imageTitle);
+            currentIndex = index;
+        };
+
+        $('[data-modal-toggle="openImage"]').on('click', function () {
+            const imageUrl = $(this).data('image-src');
+            $('#image-for-show').attr('src', imageUrl);
+
+            images.length = 0;
+            $('[data-modal-toggle="openImage"]').each(function () {
+                images.push($(this).data('image-src'));
+            });
+
+            currentIndex = images.indexOf(imageUrl);
+
+            $('#openImage').removeClass('hidden');
+
+            let initialImageTitle = $('[data-image-src="' + imageUrl + '"]').data('image-title');
+            $('.DocumentTitle').text(initialImageTitle);
+        });
+
+        $('[data-modal-hide="openImage"]').on('click', function () {
+            $('#openImage').addClass('hidden');
+        });
+
+        $('.confirm-evidences').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your confirmation will be set permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('.confirm-evidences').off('submit').submit();
+                }
+            });
+        });
+
     } else if (fullPath.includes('StudentStatuses')) {
         pageTitle = 'Student Statuses';
 

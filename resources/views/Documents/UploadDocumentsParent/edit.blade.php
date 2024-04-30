@@ -9,6 +9,21 @@
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 <h1 class="text-2xl font-medium"> Upload Student's Documents And Informations</h1>
             </div>
+            <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 mb-3 shadow-md"
+                 role="alert">
+                <div class="flex">
+                    <div class="py-1">
+                        <svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 20 20">
+                            <path
+                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-bold">{{ $studentAppliance->seconder_description }}</p>
+                    </div>
+                </div>
+            </div>
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class=" bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
@@ -23,7 +38,7 @@
                                     <label for="blood_group"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         Student blood group</label>
-                                    <select id="blood_group" name="blood_group" disabled
+                                    <select id="blood_group" name="blood_group"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             title="Select blood group" required>
                                         <option selected disabled value="">Select an option</option>
@@ -40,7 +55,7 @@
                                     <label for="other_considerations"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         Other considerations</label>
-                                    <textarea id="other_considerations" disabled
+                                    <textarea id="other_considerations"
                                               placeholder="example: hospitalisations, surgery, allergies, accidents"
                                               name="other_considerations"
                                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$informations['other_considerations']}}</textarea>
@@ -54,7 +69,7 @@
                                         <label for="relationship"
                                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                                             Your relationship with the child</label>
-                                        <select id="relationship" name="relationship" disabled
+                                        <select id="relationship" name="relationship"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 title="Select blood group" required>
                                             <option selected disabled value="">Select an option</option>
@@ -70,7 +85,7 @@
                                         <label for="marital_status"
                                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                                             Marital status</label>
-                                        <select id="marital_status" name="marital_status" disabled
+                                        <select id="marital_status" name="marital_status"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 title="Select blood group" required>
                                             <option selected disabled value="">Select an option</option>
@@ -86,7 +101,7 @@
                                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                                             Relation name</label>
                                         <input type="text" id="relation_name" name="relation_name"
-                                               value="{{$informations['relation_name']}}" disabled
+                                               value="{{$informations['relation_name']}}"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                placeholder="example: Grandfather">
                                     </div>
@@ -101,7 +116,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's name</label>
                                             <input type="text" id="father_name" name="father_name"
-                                                   value="{{$informations['father_name']}}" disabled
+                                                   value="{{$informations['father_name']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter Father's Name">
                                         </div>
@@ -110,7 +125,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's family</label>
                                             <input type="text" id="father_family" name="father_family"
-                                                   value="{{$informations['father_family']}}" disabled
+                                                   value="{{$informations['father_family']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter Father's Family">
                                         </div>
@@ -119,7 +134,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's mobile</label>
                                             <input type="text" id="father_mobile" name="father_mobile"
-                                                   value="{{$informations['father_mobile']}}" disabled
+                                                   value="{{$informations['father_mobile']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter Father's Mobile">
                                         </div>
@@ -128,7 +143,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's email</label>
                                             <input type="email" id="father_email" name="father_email"
-                                                   value="{{$informations['father_email']}}" disabled
+                                                   value="{{$informations['father_email']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter Father's Email">
                                         </div>
@@ -137,7 +152,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's occupation</label>
                                             <input type="text" id="father_occupation" name="father_occupation"
-                                                   value="{{$informations['father_occupation']}}" disabled
+                                                   value="{{$informations['father_occupation']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter Father's Occupation">
                                         </div>
@@ -146,7 +161,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's qualification</label>
                                             <input type="text" id="father_qualification" name="father_qualification"
-                                                   value="{{$informations['father_qualification']}}" disabled
+                                                   value="{{$informations['father_qualification']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter Father's Qualification">
                                         </div>
@@ -155,7 +170,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's passport number</label>
                                             <input type="text" id="father_passport_number" name="father_passport_number"
-                                                   value="{{$informations['father_passport_number']}}" disabled
+                                                   value="{{$informations['father_passport_number']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter father's passport number">
                                         </div>
@@ -163,7 +178,7 @@
                                             <label for="father_nationality"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father nationality</label>
-                                            <select id="father_nationality" name="father_nationality" disabled
+                                            <select id="father_nationality" name="father_nationality"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     title="Select father nationality" required>
                                                 <option selected disabled value="">Select an option</option>
@@ -173,6 +188,31 @@
                                                         value="{{$nationality->id}}">{{$nationality->nationality}}</option>
                                                 @endforeach
                                             </select>
+                                        </div>
+                                        <div class="mt-3 mr-2">
+                                            <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                                   for="father_passport_file">Father's passport Bio-Data page scan
+                                                (file)</label>
+                                            <input required
+                                                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                   id="father_passport_file" name="father_passport_file" type="file"
+                                                   accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                            <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
+                                                <div class="dark:text-white font-medium mb-1">File requirements</div>
+                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                    these
+                                                    requirements
+                                                    are met:
+                                                </div>
+                                                <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                    <li>
+                                                        The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                    </li>
+                                                    <li>
+                                                        Maximum size: 2 MB
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="father_passport_file_preview"
@@ -213,7 +253,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 mother's name</label>
                                             <input type="text" id="mother_name" name="mother_name"
-                                                   value="{{$informations['mother_name']}}" disabled
+                                                   value="{{$informations['mother_name']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter mother's Name">
                                         </div>
@@ -222,7 +262,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 mother's family</label>
                                             <input type="text" id="mother_family" name="mother_family"
-                                                   value="{{$informations['mother_family']}}" disabled
+                                                   value="{{$informations['mother_family']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter mother's Family">
                                         </div>
@@ -231,7 +271,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 mother's mobile</label>
                                             <input type="text" id="mother_mobile" name="mother_mobile"
-                                                   value="{{$informations['mother_mobile']}}" disabled
+                                                   value="{{$informations['mother_mobile']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter mother's Mobile">
                                         </div>
@@ -240,7 +280,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 mother's email</label>
                                             <input type="email" id="mother_email" name="mother_email"
-                                                   value="{{$informations['mother_email']}}" disabled
+                                                   value="{{$informations['mother_email']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter mother's Email">
                                         </div>
@@ -249,7 +289,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 mother's occupation</label>
                                             <input type="text" id="mother_occupation" name="mother_occupation"
-                                                   value="{{$informations['mother_occupation']}}" disabled
+                                                   value="{{$informations['mother_occupation']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter mother's Occupation">
                                         </div>
@@ -258,7 +298,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 mother's qualification</label>
                                             <input type="text" id="mother_qualification" name="mother_qualification"
-                                                   value="{{$informations['mother_qualification']}}" disabled
+                                                   value="{{$informations['mother_qualification']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter mother's Qualification">
                                         </div>
@@ -267,7 +307,7 @@
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 mother's passport number</label>
                                             <input type="text" id="mother_passport_number" name="mother_passport_number"
-                                                   value="{{$informations['mother_passport_number']}}" disabled
+                                                   value="{{$informations['mother_passport_number']}}"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    required placeholder="Enter mother's passport number">
                                         </div>
@@ -275,7 +315,7 @@
                                             <label for="mother_nationality"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 mother nationality</label>
-                                            <select id="mother_nationality" name="mother_nationality" disabled
+                                            <select id="mother_nationality" name="mother_nationality"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     title="Select mother nationality" required>
                                                 <option selected disabled value="">Select an option</option>
@@ -286,7 +326,32 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="mt-3">
+                                        <div class="mt-3 mr-2">
+                                            <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                                   for="mother_passport_file">Mother's passport Bio-Data page scan
+                                                (file)</label>
+                                            <input required
+                                                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                   id="mother_passport_file" name="mother_passport_file" type="file"
+                                                   accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                            <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
+                                                <div class="dark:text-white font-medium mb-1">File requirements</div>
+                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                    these
+                                                    requirements
+                                                    are met:
+                                                </div>
+                                                <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                    <li>
+                                                        The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                    </li>
+                                                    <li>
+                                                        Maximum size: 2 MB
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3 ml-2">
                                             <label for="mother_passport_file_preview"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Mother passport file preview</label>
@@ -325,7 +390,7 @@
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Previous school name</label>
                                         <input type="text" id="previous_school_name" name="previous_school_name"
-                                               value="{{$informations['previous_school_name']}}" disabled
+                                               value="{{$informations['previous_school_name']}}"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                placeholder="Enter previous school name">
                                     </div>
@@ -333,7 +398,7 @@
                                         <label for="previous_school_country"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Previous school country</label>
-                                        <select id="previous_school_country" name="previous_school_country" disabled
+                                        <select id="previous_school_country" name="previous_school_country"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 title="Select previous school country">
                                             <option selected disabled value="">Select an option</option>
@@ -348,12 +413,36 @@
                                         <label for="student_skills"
                                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                                             Student skills</label>
-                                        <textarea id="student_skills" disabled
+                                        <textarea id="student_skills"
                                                   placeholder="please enter student's skill and abilities..."
                                                   name="student_skills"
                                                   class="bg-gray-50 border border-gray-300 text-gray-900 h-48 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$informations['student_skills']}}</textarea>
                                     </div>
                                     <div class="mt-3 ml-2">
+                                        <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                               for="latest_report_card">Latest report card</label>
+                                        <input
+                                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                            id="latest_report_card" name="latest_report_card" type="file"
+                                            accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                        <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
+                                            <div class="dark:text-white font-medium mb-1">File requirements</div>
+                                            <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                these
+                                                requirements
+                                                are met:
+                                            </div>
+                                            <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                <li>
+                                                    The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                </li>
+                                                <li>
+                                                    Maximum size: 2 MB
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
                                         <label for="latest_report_card"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Latest report card preview</label>
@@ -389,7 +478,7 @@
                                         <label for="miscellaneous"
                                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                                             Miscellaneous</label>
-                                        <textarea id="miscellaneous" disabled
+                                        <textarea id="miscellaneous"
                                                   placeholder="Enter miscellaneous informations"
                                                   name="miscellaneous"
                                                   class="bg-gray-50 border border-gray-300 text-gray-900 h-48 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$informations['miscellaneous']}}</textarea>
@@ -423,7 +512,7 @@
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Passport number</label>
                                         <input required type="text" value="{{$informations['student_passport_number']}}"
-                                               placeholder="ID Number for Iranian students" disabled
+                                               placeholder="ID Number for Iranian students"
                                                name="student_passport_number" id="student_passport_number"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
@@ -433,7 +522,7 @@
                                             Passport expiry date</label>
                                         <input required type="date" value="{{$informations['passport_expiry_date']}}"
                                                name="passport_expiry_date"
-                                               id="passport_expiry_date" disabled
+                                               id="passport_expiry_date"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
                                     <div class="mt-3 mr-2">
@@ -441,7 +530,7 @@
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Iranian visa/Residence number</label>
                                         <input required type="text" value="{{$informations['student_passport_number']}}"
-                                               placeholder="Please enter student's iranian visa..." disabled
+                                               placeholder="Please enter student's iranian visa..."
                                                name="student_iranian_visa" id="student_passport_number"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
@@ -452,7 +541,7 @@
                                         <input required type="date"
                                                value="{{$informations['iranian_residence_expiry']}}"
                                                name="iranian_residence_expiry"
-                                               id="iranian_residence_expiry" disabled
+                                               id="iranian_residence_expiry"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
                                     <div class="mt-3 mr-2">
@@ -461,7 +550,7 @@
                                             Iranian faragir code</label>
                                         <input required type="text"
                                                value="{{$informations['student_iranian_faragir_code']}}"
-                                               placeholder="Please enter student's iranian faragir code ..." disabled
+                                               placeholder="Please enter student's iranian faragir code ..."
                                                name="student_iranian_faragir_code" id="student_iranian_faragir_code"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
@@ -469,11 +558,36 @@
                                         <label for="student_iranian_sanad_code"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Iranian sanad code</label>
-                                        <input required type="text" disabled
+                                        <input required type="text"
                                                value="{{$informations['student_iranian_sanad_code']}}"
                                                placeholder="Please enter student's iranian sanad code ..."
                                                name="student_iranian_sanad_code" id="student_iranian_sanad_code"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    </div>
+                                    <div class="mt-3 mr-2">
+                                        <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                               for="student_passport_file">Student's passport Bio-Data page scan
+                                            (file)</label>
+                                        <input required
+                                               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                               id="student_passport_file" name="student_passport_file" type="file"
+                                               accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                        <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
+                                            <div class="dark:text-white font-medium mb-1">File requirements</div>
+                                            <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                these
+                                                requirements
+                                                are met:
+                                            </div>
+                                            <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                <li>
+                                                    The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                </li>
+                                                <li>
+                                                    Maximum size: 2 MB
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                     <div class="mt-3 ml-2">
                                         <label for="student_passport_file_preview"
@@ -551,13 +665,13 @@
                                             </select>
                                         </div>
                                         <div>
-                                        <label for="description"
-                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                            Description</label>
-                                        <textarea id="description"
-                                                  placeholder="example: rejected for false informations"
-                                                  name="description"
-                                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                            <label for="description"
+                                                   class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                                Description</label>
+                                            <textarea id="description"
+                                                      placeholder="example: rejected for false informations"
+                                                      name="description"
+                                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                                         </div>
                                         <div class="mt-8 ml-2">
                                             <input type="hidden" value="{{$studentAppliance->id}}" name="appliance_id">
