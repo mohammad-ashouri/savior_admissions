@@ -15,7 +15,7 @@ class CheckLoginMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (session('id')) {
+        if (session()->has('id')) {
             return $next($request);
         }
 
