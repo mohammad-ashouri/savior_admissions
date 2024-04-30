@@ -122,6 +122,7 @@ class ApplicationTimingController extends Controller
             $applicationTiming->first_interviewer = $request->first_interviewer;
             $applicationTiming->second_interviewer = $request->second_interviewer;
             $applicationTiming->fee = $request->interview_fee;
+            $applicationTiming->status = 1;
 
             if ($applicationTiming->save()) {
                 $startDate = Carbon::parse($request->start_date);
