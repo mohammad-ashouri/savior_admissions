@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
+use App\Models\Catalogs\AcademicYear;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -157,5 +158,14 @@ class Controller extends BaseController
     public function payment($amount,)
     {
 
+    }
+
+    public function getActiveAcademicYears()
+    {
+        $academicYears = AcademicYear::where('status',1)->get()->pluck('id')->toArray();
+        if (empty($academicYears)) {
+            return false;
+        }
+        return $academicYears;
     }
 }

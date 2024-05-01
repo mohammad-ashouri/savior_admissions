@@ -168,6 +168,9 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         Route::get('ConfirmEvidences/{appliance_id}', [EvidenceController::class, 'show'])->name('Evidences.show');
         Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
 
+        //Pay Tuition
+        Route::get('PayTuition/{student_id}', [TuitionController::class, 'payTuition'])->name('Tuitions.PayTuition');
+
         //Student status
         Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
 
@@ -191,6 +194,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
 
 //Payments
 Route::post('/VerifyApplicationPayment', [PaymentController::class, 'verifyApplicationPayment']);
+Route::post('/VerifyTuitionPayment', [PaymentController::class, 'verifyTuitionPayment']);
 
 //Route::get('/import-excel', [ExcelController::class, 'index']);
 //Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');

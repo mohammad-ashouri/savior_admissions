@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TuitionInvoices extends Model
+class TuitionInvoiceDetails extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $table = 'tuition_invoices';
+    protected $table = 'tuition_invoice_details';
 
     protected $fillable = [
-        'appliance_id',
-        'payment_type',
+        'tuition_invoice_id',
+        'invoice_id',
+        'amount',
+        'is_paid',
     ];
 
     protected $hidden = [

@@ -883,7 +883,7 @@ $(document).ready(function () {
 
             $('#birthdate').on('change', function (event) {
                 // Validate input
-                if (!checkAge($(this).val(),5)) {
+                if (!checkAge($(this).val(), 5)) {
                     event.preventDefault(); // Prevent typing of unauthorized character
                     //Remove all field values
                     $(this).val('');
@@ -1094,7 +1094,7 @@ $(document).ready(function () {
             });
         });
 
-    }  else if (fullPath.includes('ConfirmEvidences')) {
+    } else if (fullPath.includes('ConfirmEvidences')) {
         pageTitle = 'Evidence Confirmation';
 
         const images = []; // Array to store image URLs
@@ -1151,7 +1151,7 @@ $(document).ready(function () {
             });
         });
 
-    }  else if (fullPath.includes('EditUploadedEvidences')) {
+    } else if (fullPath.includes('EditUploadedEvidences')) {
         pageTitle = 'Edit Documents';
 
         const images = []; // Array to store image URLs
@@ -1235,16 +1235,31 @@ $(document).ready(function () {
                 });
             }
         });
+
+        if (fullPath.includes('PayTuition')) {
+            pageTitle = 'Prepare To Pay Tuition';
+
+            $('#payment_type').change(function () {
+                if ($(this).val() == 1) {
+                    $('#full-payment-div').show();
+                    $('#installment-div').hide();
+                } else if ($(this).val() == 2) {
+                    $('#full-payment-div').hide();
+                    $('#installment-div').show();
+                }
+            });
+
+        }
     } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
 
-        $('#relationship').change(function (){
-            if ($(this).val()==3){
+        $('#relationship').change(function () {
+            if ($(this).val() == 3) {
                 $('#relation-name-div').show();
-                $('#relation_name').attr('required',true);
-            }else{
+                $('#relation_name').attr('required', true);
+            } else {
                 $('#relation-name-div').hide();
-                $('#relation_name').attr('required',false);
+                $('#relation_name').attr('required', false);
             }
         });
 

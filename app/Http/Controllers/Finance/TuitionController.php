@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch\ApplicationReservation;
+use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Catalogs\PaymentMethod;
+use App\Models\Finance\Discount;
+use App\Models\Finance\DiscountDetail;
 use App\Models\Finance\Tuition;
 use App\Models\Finance\TuitionDetail;
 use App\Models\User;
@@ -84,5 +89,66 @@ class TuitionController extends Controller
         $this->logActivity(json_encode(['activity' => 'Tuition Fee Changed', 'tuition_id' => $request->tuition_id, 'price' => $request->price]), request()->ip(), request()->userAgent());
 
         return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
+    }
+
+    public function payTuition($student_id)
+    {
+        if (empty($this->getActiveAcademicYears())) {
+            abort(403);
+        }
+
+        $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->where('student_id', $student_id)->where('tuition_payment_status', 'Pending')->whereIn('academic_year', $this->getActiveAcademicYears())->first();
+
+        if (empty($studentApplianceStatus)) {
+            abort(403);
+        }
+
+        $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
+            ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+            ->join('interviews', 'applications.id', '=', 'interviews.application_id')
+            ->where('application_reservations.student_id', $student_id)
+            ->where('applications.reserved', 1)
+            ->where('application_reservations.payment_status', 1)
+            ->where('applications.interviewed', 1)
+            ->where('interviews.interview_type', 3)
+            ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
+            ->orderByDesc('application_reservations.id')
+            ->first();
+
+        //Get tuition price
+        $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+            ->where('tuitions.academic_year', $applicationInfo->academic_year)
+            ->where('tuition_details.level', $applicationInfo->level)
+            ->first();
+
+        $paymentMethod = PaymentMethod::find(2);
+
+        //Discount Percentages
+        $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
+        $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
+
+        //Get all students with paid status in all active academic years
+        $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
+            ->with('academicYearInfo')
+            ->where('student_id', '!=', $student_id)
+            ->where('tuition_payment_status', 'Paid')
+            ->whereIn('academic_year', $this->getActiveAcademicYears())
+            ->count();
+
+        $familyDiscount = 0;
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 1) {
+            $familyDiscount = 30;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
+            $familyDiscount = 35;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
+            $familyDiscount = 40;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear > 3) {
+            $familyDiscount = 45;
+        }
+
+        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethod', 'discountPercentages', 'familyDiscount'));
     }
 }

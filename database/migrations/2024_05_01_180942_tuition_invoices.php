@@ -13,8 +13,13 @@ return new class extends Migration
     {
         Schema::create('tuition_invoices', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('appliance_id');
+            $table->foreign('appliance_id')->references('id')->on('student_appliance_statuses');
+            $table->string('payment_type');
             $table->timestamps();
+            $table->softDeletes();
         });
+
     }
 
     /**
