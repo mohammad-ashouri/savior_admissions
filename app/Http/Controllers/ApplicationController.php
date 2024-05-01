@@ -531,8 +531,6 @@ class ApplicationController extends Controller
         }
     }
 
-
-
     public function confirmApplication()
     {
         $me = User::find(session('id'));

@@ -105,21 +105,59 @@
                                     </div>
                                 @endif
                             </div>
-                            <div>
-                                <div class="mb-2">
-                                    <p class="font-bold"> Receipt: </p>
-                                </div>
-                                @php
-                                    $paymentMethod=Document::find(json_decode($applicationInfo->applicationInvoiceInfo->payment_information,true)['document_id']);
-                                    $paymentMethod->src = str_replace('public', 'storage', $paymentMethod->src);
-                                @endphp
-                                <img class="w-96" src="{{ env('APP_URL')}}/{{$paymentMethod->src }}" alt="Payment image not found!">
+                            @switch($paymentMethod->id)
+                                @case(1)
+                                    <div>
+                                        <div class="mb-2">
+                                            <p class="font-bold"> Receipt: </p>
+                                        </div>
+                                        @php
+                                            $paymentMethod=Document::find(json_decode($applicationInfo->applicationInvoiceInfo->payment_information,true)['document_id']);
+                                            $paymentMethod->src = str_replace('public', 'storage', $paymentMethod->src);
+                                        @endphp
+                                        <img class="w-96" src="{{ env('APP_URL')}}/{{$paymentMethod->src }}"
+                                             alt="Payment image not found!">
+                                    </div>
+                                    @break
+                                @case(2)
+                                    <div>
+                                        <div class="mb-2">
+                                            <p class="font-bold mb-2"> Payment Information </p>
+                                            <hr>
+                                            <div class="flex">
+                                                @foreach(json_decode(json_decode($applicationInfo->applicationInvoiceInfo->payment_information,true)[0],true) as $key=>$value)
+                                                    @switch($key)
+                                                        @case('SaleOrderId')
+                                                            <div class="mt-2">
+                                                                <p class="font-bold">
+                                                                    Sale Order Id</p> {{ $value }}
+                                                            </div>
+                                                            @break
+                                                        @case('SaleReferenceId')
+                                                            <div class="mt-2 ml-8">
+                                                                <p class="font-bold">
+                                                                    Sale Reference Id</p> {{ $value }}
+                                                            </div>
+                                                            @break
+                                                        @case('CardHolderPan')
+                                                            <div class="mt-2 ml-8">
+                                                                <p class="font-bold">
+                                                                    Card Info</p> {{ $value }}
+                                                            </div>
+                                                            @break
+                                                    @endswitch
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                            @endswitch
                         </div>
                     </div>
                 </div>
 
-            </div>
-            @endcan
         </div>
+
+        @endcan
+    </div>
     </div>
 @endsection

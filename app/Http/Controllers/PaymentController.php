@@ -45,7 +45,7 @@ class PaymentController extends Controller
 
                     $applicationReservationInvoice = new ApplicationReservationsInvoices();
                     $applicationReservationInvoice->a_reservation_id = $applicationReservation->id;
-                    $applicationReservationInvoice->payment_information = json_encode($request->all(), true);
+                    $applicationReservationInvoice->payment_information = json_encode(['payment_method'=>2,json_encode($request->all(), true)],true);
                     $applicationReservationInvoice->save();
 
                     $application = Applications::find($applicationReservation->application_id);
