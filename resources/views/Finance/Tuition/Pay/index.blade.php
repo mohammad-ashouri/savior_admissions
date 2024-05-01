@@ -49,7 +49,7 @@
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                             <h1 class="text-2xl font-medium"></h1>
                         </div>
-                        <form id="pay-tuition" method="post" action="{{ route('Discounts.store') }}">
+                        <form id="pay-tuition" method="post" action="{{ route('Tuitions.Pay') }}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
@@ -295,7 +295,8 @@
                                     </table>
                                 </div>
                             </div>
-                            <input type="hidden" value="{{$studentApplianceStatus->student_id}}" name="appliance_id">
+                            <input type="hidden" value="{{$studentApplianceStatus->student_id}}" name="student_id">
+                            <input type="hidden" value="{{$studentApplianceStatus->id}}" name="appliance_id">
                             <button type="submit"
                                     class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                 Payment

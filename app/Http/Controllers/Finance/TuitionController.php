@@ -14,6 +14,9 @@ use App\Models\Finance\TuitionDetail;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Shetabit\Multipay\Invoice;
+use Shetabit\Payment\Facade\Payment;
 
 class TuitionController extends Controller
 {
@@ -148,6 +151,109 @@ class TuitionController extends Controller
         if ($allStudentsWithPaidStatusInActiveAcademicYear > 3) {
             $familyDiscount = 45;
         }
+
+        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethod', 'discountPercentages', 'familyDiscount'));
+    }
+
+    public function tuitionPayment(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'payment_type' => 'required|in:1,2',
+            'appliance_id' => 'required|exists:student_appliance_statuses,id',
+        ]);
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+
+        if (empty($this->getActiveAcademicYears())) {
+            abort(403);
+        }
+        $appliance_id = $request->appliance_id;
+
+        $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')
+            ->with('academicYearInfo')
+            ->where('id', $appliance_id)
+            ->where('tuition_payment_status', 'Pending')
+            ->whereIn('academic_year', $this->getActiveAcademicYears())
+            ->first();
+        dd($studentApplianceStatus);
+        $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
+            ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+            ->join('interviews', 'applications.id', '=', 'interviews.application_id')
+            ->where('application_reservations.student_id', $student_id)
+            ->where('applications.reserved', 1)
+            ->where('application_reservations.payment_status', 1)
+            ->where('applications.interviewed', 1)
+            ->where('interviews.interview_type', 3)
+            ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
+            ->orderByDesc('application_reservations.id')
+            ->first();
+
+        //Get tuition price
+        $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+            ->where('tuitions.academic_year', $applicationInfo->academic_year)
+            ->where('tuition_details.level', $applicationInfo->level)
+            ->first();
+
+        $paymentMethod = PaymentMethod::find(2);
+
+        //Discount Percentages
+        $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
+        $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
+
+        //Get all students with paid status in all active academic years
+        $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
+            ->with('academicYearInfo')
+            ->where('student_id', '!=', $student_id)
+            ->where('tuition_payment_status', 'Paid')
+            ->whereIn('academic_year', $this->getActiveAcademicYears())
+            ->count();
+
+        $familyDiscount = 0;
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 1) {
+            $familyDiscount = 30;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
+            $familyDiscount = 35;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
+            $familyDiscount = 40;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear > 3) {
+            $familyDiscount = 45;
+        }
+
+
+        if (empty($studentApplianceStatus)) {
+            abort(403);
+        }
+
+        switch ($request->payment_method) {
+            case 1:
+                break;
+            case 2:
+                $amount = $applicationInformation->applicationInfo->applicationTimingInfo->fee;
+                // Create new invoice.
+                $invoice = (new Invoice)->amount($amount);
+
+                return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyApplicationPayment')->purchase(
+                    $invoice,
+                    function ($driver, $transactionID) use ($amount, $applicationInformation) {
+                        $dataInvoice = new \App\Models\Invoice();
+                        $dataInvoice->user_id = auth()->user()->id;
+                        $dataInvoice->type = 'Application Reservation';
+                        $dataInvoice->amount = $amount;
+                        $dataInvoice->description = json_encode(['amount' => $amount, 'reservation_id' => $applicationInformation->id], true);
+                        $dataInvoice->transaction_id = $transactionID;
+                        $dataInvoice->save();
+                    }
+                )->pay()->render();
+        }
+
+
 
         return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethod', 'discountPercentages', 'familyDiscount'));
     }

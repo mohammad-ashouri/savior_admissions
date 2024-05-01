@@ -115,8 +115,13 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         Route::resource('ReservationInvoices', ApplicationReservationController::class);
         Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class, 'changeApplicationPaymentStatus']);
         Route::get('SearchReservationInvoices', [ApplicationReservationController::class, 'searchReservationInvoices'])->name('SearchReservationInvoices');
+
         Route::resource('Tuition', TuitionController::class);
         Route::post('ChangeTuitionPrice', [TuitionController::class, 'changeTuitionPrice']);
+        //Pay Tuition
+        Route::get('PayTuition/{student_id}', [TuitionController::class, 'payTuition'])->name('Tuitions.PayTuition');
+        Route::post('PayTuition', [TuitionController::class, 'tuitionPayment'])->name('Tuitions.Pay');
+
         Route::resource('Discounts', DiscountsController::class);
         Route::post('ChangeDiscountPercentage', [DiscountsController::class, 'changeDiscountPercentage']);
         Route::post('ChangeDiscountStatus', [DiscountsController::class, 'changeDiscountStatus']);
@@ -168,8 +173,6 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         Route::get('ConfirmEvidences/{appliance_id}', [EvidenceController::class, 'show'])->name('Evidences.show');
         Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
 
-        //Pay Tuition
-        Route::get('PayTuition/{student_id}', [TuitionController::class, 'payTuition'])->name('Tuitions.PayTuition');
 
         //Student status
         Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');

@@ -1249,6 +1249,22 @@ $(document).ready(function () {
                 }
             });
 
+            $('.pay-tuition').submit(function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'After confirmation, you will be taken to the payment page. Your payment type cannot be changed.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('.pay-tuition').off('submit').submit();
+                    }
+                });
+            });
+
         }
     } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
