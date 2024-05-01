@@ -467,7 +467,6 @@ class ApplicationController extends Controller
 
         $applicationInformation = ApplicationReservation::with('applicationInfo')->find($request->id);
 
-        //        dd($applicationInformation);
         switch ($request->payment_method) {
             case 1:
                 $validator = Validator::make($request->all(), [
@@ -508,16 +507,16 @@ class ApplicationController extends Controller
                 break;
             case 2:
                 $amount = $applicationInformation->applicationInfo->applicationTimingInfo->fee;
-                $amount = 15000;
                 // Create new invoice.
                 $invoice = (new Invoice)->amount($amount);
 
-                return Payment::callbackUrl(env('APP_URL').'/verifyPay')->via('behpardakht')->purchase(
+                return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyApplicationPayment')->purchase(
                     $invoice,
                     function ($driver, $transactionID) use ($amount, $applicationInformation) {
                         $dataInvoice = new \App\Models\Invoice();
                         $dataInvoice->user_id = auth()->user()->id;
                         $dataInvoice->type = 'Application Reservation';
+                        $dataInvoice->amount = $amount;
                         $dataInvoice->description = json_encode(['amount' => $amount, 'reservation_id' => $applicationInformation->id], true);
                         $dataInvoice->transaction_id = $transactionID;
                         $dataInvoice->save();
@@ -531,6 +530,8 @@ class ApplicationController extends Controller
                 abort(403);
         }
     }
+
+
 
     public function confirmApplication()
     {
@@ -625,32 +626,4 @@ class ApplicationController extends Controller
             ->with('success', 'Appliance Status Confirmed For This Student: '.$applianceStatus->studentInfo->generalInformationInfo->first_name_en.' '.$applianceStatus->studentInfo->generalInformationInfo->last_name_en.' - Chosen status: '.$request->type.'ed');
     }
 
-    public function verifyPayment(Request $request)
-    {
-        $transaction_id = \App\Models\Invoice::where('type', 'Application Reservation')->where('transaction_id', $request->RefId)->latest()->first();
-        $user = User::find($transaction_id->user_id);
-        $credentials = $user->only('mobile','password');
-        if ( Auth::loginUsingId($transaction_id->user_id)) {
-            Session::put('id', $transaction_id->user_id);
-        }
-        dd($request->all());
-
-        try {
-            $receipt = Payment::transactionId($transaction_id)->verify();
-            dd($receipt);
-            return redirect()->route('dashboard');
-            // You can show payment referenceId to the user.
-
-        } catch (InvalidPaymentException $exception) {
-            /**
-            when payment is not verified, it will throw an exception.
-            We can catch the exception to handle invalid payments.
-            getMessage method, returns a suitable message that can be used in user interface.
-             **/
-
-            return redirect()->route('dashboard');
-
-            echo $exception->getMessage();
-        }
-    }
 }

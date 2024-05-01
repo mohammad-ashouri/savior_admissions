@@ -22,6 +22,7 @@ use App\Http\Controllers\Finance\DiscountsController;
 use App\Http\Controllers\Finance\TuitionController;
 use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
@@ -141,7 +142,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         Route::get('CheckDateAndTimeToBeFreeApplication', [ApplicationController::class, 'checkDateAndTimeToBeFreeApplication']);
         Route::post('ApplicationPayment', [ApplicationController::class, 'preparationForApplicationPayment']);
         Route::get('PrepareToPayApplication/{application_id}', [ApplicationController::class, 'prepareToPay'])->name('PrepareToPayApplication');
-
+        Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
 
         Route::post('student/change_information', [StudentController::class, 'changeInformation']);
 
@@ -170,6 +171,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         //Student status
         Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
 
+
         //Exports
         //PDF
         Route::prefix('PDF')->group(function () {
@@ -186,8 +188,9 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
 
 });
 
-Route::post('PayApplicationFee', [ApplicationController::class, 'payApplicationFee']);
-Route::post('/verifyPay', [ApplicationController::class, 'verifyPayment']);
+
+//Payments
+Route::post('/VerifyApplicationPayment', [PaymentController::class, 'verifyApplicationPayment']);
 
 //Route::get('/import-excel', [ExcelController::class, 'index']);
 //Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
