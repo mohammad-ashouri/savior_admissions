@@ -45,7 +45,7 @@ class PaymentController extends Controller
 
                     $applicationReservationInvoice = new ApplicationReservationsInvoices();
                     $applicationReservationInvoice->a_reservation_id = $applicationReservation->id;
-                    $applicationReservationInvoice->payment_information = json_encode(['payment_method'=>2,json_encode($request->all(), true)],true);
+                    $applicationReservationInvoice->payment_information = json_encode(['payment_method' => 2, json_encode($request->all(), true)], true);
                     $applicationReservationInvoice->save();
 
                     $application = Applications::find($applicationReservation->application_id);
@@ -58,11 +58,15 @@ class PaymentController extends Controller
                     $applianceStatus->interview_status = 'Pending First Interview';
                     $applianceStatus->save();
 
+                    $reservatoreMobile = $user->mobile;
+                    $transactionRefId = $request->SaleOrderId;
+                    $messageText = "You have successfully made your payment. Your application has been reserved.\nTransaction number: $transactionRefId \nSavior Schools";
+                    $this->sendSMS($reservatoreMobile, $messageText);
                 } else {
                     return redirect()->route('Applications.index')->withErrors(['Failed to verify application payment.']);
                 }
 
-                return redirect()->route('Applications.index')->with(['success' => 'You have successfully paid for your application. Transaction number:'.$request->SaleOrderId]);
+                return redirect()->route('Applications.index')->with(['success' => "You have successfully paid for your application. Transaction number: $transactionRefId"]);
                 break;
             case 17:
                 return redirect()->route('Applications.index')->withErrors(['You refused to pay application amount!']);
