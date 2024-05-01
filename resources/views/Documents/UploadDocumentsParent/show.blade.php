@@ -339,7 +339,7 @@
                                             <option selected disabled value="">Select an option</option>
                                             @foreach($countries as $country)
                                                 <option
-                                                    {{ $informations['previous_school_country'] == $country->id ? 'selected' : '' }}
+                                                    {{ @$informations['previous_school_country'] == $country->id ? 'selected' : '' }}
                                                     value="{{$country->id}}">{{$country->en_short_name}}</option>
                                             @endforeach
                                         </select>

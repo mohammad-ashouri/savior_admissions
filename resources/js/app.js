@@ -1242,6 +1242,9 @@ $(document).ready(function () {
             if ($(this).val()==3){
                 $('#relation-name-div').show();
                 $('#relation_name').attr('required',true);
+            }else{
+                $('#relation-name-div').hide();
+                $('#relation_name').attr('required',false);
             }
         });
 

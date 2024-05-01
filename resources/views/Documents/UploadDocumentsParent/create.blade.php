@@ -54,7 +54,7 @@
                                     <div class="mt-3">
                                         <label for="other_considerations"
                                                class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                            Other considerations</label>
+                                            Other considerations (Optional)</label>
                                         <textarea id="other_considerations"
                                                   placeholder="example: hospitalisations, surgery, allergies, accidents"
                                                   name="other_considerations"
@@ -132,10 +132,10 @@
                                             <div class="mt-3 ml-2">
                                                 <label for="father_email"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                    Father's email</label>
+                                                    Father's email (Optional)</label>
                                                 <input type="email" id="father_email" name="father_email" value=""
                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                       required placeholder="Enter Father's Email">
+                                                       placeholder="Enter Father's Email">
                                             </div>
                                             <div class="mt-3 mr-2">
                                                 <label for="father_occupation"
@@ -242,10 +242,10 @@
                                             <div class="mt-3 ml-2">
                                                 <label for="mother_email"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                    Mother's email</label>
+                                                    Mother's email (Optional)</label>
                                                 <input type="email" id="mother_email" name="mother_email" value=""
                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                       required placeholder="Enter Mother's Email">
+                                                       placeholder="Enter Mother's Email">
                                             </div>
                                             <div class="mt-3 mr-2">
                                                 <label for="mother_occupation"
@@ -328,7 +328,7 @@
                                         <div class="mt-3 mr-2">
                                             <label for="previous_school_name"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                Previous school name</label>
+                                                Previous school name (Optional for KG1 and KG2)</label>
                                             <input type="text" id="previous_school_name" name="previous_school_name"
                                                    value=""
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -337,7 +337,7 @@
                                         <div class="mt-3 ml-2">
                                             <label for="previous_school_country"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                Previous school country</label>
+                                                Previous school country (Optional for KG1 and KG2)</label>
                                             <select id="previous_school_country" name="previous_school_country"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     title="Select previous school country">
@@ -351,7 +351,7 @@
                                         <div class="mt-3 mr-2">
                                             <label for="student_skills"
                                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                                Student skills</label>
+                                                Student skills (Optional for KG1 and KG2)</label>
                                             <textarea id="student_skills"
                                                       placeholder="please enter student's skill and abilities..."
                                                       name="student_skills"
@@ -359,7 +359,7 @@
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
-                                                   for="latest_report_card">Latest report card</label>
+                                                   for="latest_report_card">Latest report card (Optional for KG1 and KG2)</label>
                                             <input
                                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                                 id="latest_report_card" name="latest_report_card" type="file"
@@ -390,7 +390,7 @@
                                         <div class="mt-3 mr-2">
                                             <label for="miscellaneous"
                                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                                Miscellaneous</label>
+                                                Miscellaneous (Optional)</label>
                                             <textarea id="miscellaneous"
                                                       placeholder="Enter miscellaneous informations"
                                                       name="miscellaneous"
