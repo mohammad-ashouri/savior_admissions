@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreign('tuition_id')->references('id')->on('tuitions');
             $table->unsignedBigInteger('level');
             $table->foreign('level')->references('id')->on('levels');
-            $table->float('price')->nullable();
+            $table->json('total_payment')->nullable();
+            $table->json('two_installment_payment')->nullable();
+            $table->json('four_installment_payment')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
