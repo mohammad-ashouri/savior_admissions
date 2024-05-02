@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tuition_invoice_id');
             $table->foreign('tuition_invoice_id')->references('id')->on('tuition_invoices')->cascadeOnDelete();
             $table->unsignedBigInteger('invoice_id');
-            $table->foreign('invoice_id')->references('id')->on('invoices_id');
+            $table->foreign('invoice_id')->references('id')->on('invoices');
             $table->integer('amount');
             $table->boolean('is_paid')->default(2);
             $table->timestamps();
