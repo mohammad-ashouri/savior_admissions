@@ -15,6 +15,7 @@ class ChangeUsersMobileFormatToInternational extends Seeder
     {
         User::where(function ($query) {
             $query->where('mobile', 'REGEXP', '[^0-9]') // حذف کاراکترهای غیر عددی
+                ->where('mobile', 'REGEXP', '^[^09]')
                 ->orWhere('mobile', 'LIKE', '09%')
                 ->orWhere('mobile', 'LIKE', '0%');
         })
