@@ -23,15 +23,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeders\Principal::class,
             DatabaseImportSql::class,
             RevokeDocumentPermissionFromParentRole::class,
-//            SuperAdminSeeder::class,
-//            PrincipalSeeder::class,
-//            InterviewerSeeder::class,
-//            AdmissionOfficerSeeder::class,
-//            FinancialManagerSeeder::class,
-//            IDChanger::class,
-            //            ParentFatherSeeder::class,
-            //            ParentMotherSeeder::class,
-            //            StudentSeeder::class,
+            DeleteParentsAndStudentsEmail::class,
         ]);
     }
 }
