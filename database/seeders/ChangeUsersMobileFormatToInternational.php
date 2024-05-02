@@ -13,13 +13,14 @@ class ChangeUsersMobileFormatToInternational extends Seeder
      */
     public function run(): void
     {
-        User::where('mobile', 'LIKE', '09%')
+        User::where('mobile', 'REGEXP', '[^0-9]')
+        ->orWhere('mobile', 'LIKE', '09%')
             ->orWhere('mobile', 'LIKE', '0%')
             ->whereHas('roles', function($query) {
                 $query->where('name', 'Student')->orWhere('name', 'Parent');
             })
             ->update([
-                'mobile' => DB::raw("CASE WHEN LEFT(mobile, 2) = '09' THEN CONCAT('+98', SUBSTRING(mobile, 3)) ELSE CONCAT('+', SUBSTRING(mobile, 2)) END"),
+                'mobile' => DB::raw("CASE WHEN LEFT(mobile, 2) = '09' THEN CONCAT('+98', SUBSTRING(mobile, 3)) ELSE CONCAT('+', mobile) END")
             ]);
     }
 }
