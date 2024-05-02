@@ -1226,10 +1226,9 @@ $(document).ready(function () {
                 headers: {
                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                 }, success: function (response) {
-                    console.log(response);
-                    // swalFire('Done', response.message, 'success', 'Ok');
+                    swalFire('Done', response.message, 'success', 'Ok');
                 }, error: function (xhr, textStatus, errorThrown) {
-                    // swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
                 }
             });
         });

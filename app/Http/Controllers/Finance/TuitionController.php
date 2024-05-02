@@ -140,9 +140,8 @@ class TuitionController extends Controller
         ], true);
         $tuition->save();
         $this->logActivity(json_encode(['activity' => 'Tuition Fee Changed', 'tuition_id' => $request->tuition_id, 'price' => $request->price]), request()->ip(), request()->userAgent());
-        dd($request->all());
 
-        //        return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
+        return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
     }
 
     public function payTuition($student_id)
