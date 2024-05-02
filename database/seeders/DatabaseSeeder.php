@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             RevokeDocumentPermissionFromParentRole::class,
             DeleteParentsAndStudentsEmail::class,
             ChangeUsersMobileFormatToInternational::class,
+            RemoveAllStudentsMobiles::class,
         ]);
     }
 }
