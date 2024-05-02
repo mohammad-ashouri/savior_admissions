@@ -13,7 +13,9 @@ class TuitionDetail extends Model
     protected $fillable = [
         'tuition_id',
         'level',
-        'price',
+        'full_payment',
+        'two_installment_payment',
+        'four_installment_payment',
         'status',
     ];
 
