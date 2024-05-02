@@ -19,6 +19,7 @@ class ChangeUsersMobileFormatToInternational extends Seeder
             ->update([
                 'mobile' => DB::raw("CASE
                                 WHEN LEFT(mobile, 3) = '009' THEN CONCAT('+98', SUBSTRING(mobile, 4))
+                                WHEN LEFT(mobile, 2) = '00' THEN CONCAT('+', SUBSTRING(mobile, 2))
                                 WHEN LEFT(mobile, 1) = '0' THEN CONCAT('+98', SUBSTRING(mobile, 2))
                                 ELSE CONCAT('+', REPLACE(mobile, '+', ''))
                             END"),
