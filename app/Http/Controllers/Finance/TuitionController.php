@@ -81,7 +81,13 @@ class TuitionController extends Controller
 
     public function changeTuitionPrice(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $requestData = $request->all();
+
+        foreach ($requestData as $key => $value) {
+            $requestData[$key] = preg_replace('/[^0-9]/', '', $value);
+        }
+
+        $validator = Validator::make($requestData, [
             'tuition_details_id' => 'required|integer|exists:tuition_details,id',
             'full_payment_irr' => 'required|integer',
             'full_payment_usd' => 'required|integer',
@@ -110,8 +116,9 @@ class TuitionController extends Controller
 
             return response()->json([
                 'success' => false,
-                'validator_errors' => $validator->errors(),
-            ]);
+                'message' => 'An error occurred',
+                'errors' => $validator->errors(),
+            ], 419);
         }
 
         $tuition = TuitionDetail::find($request->tuition_details_id);

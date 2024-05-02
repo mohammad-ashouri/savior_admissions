@@ -2,22 +2,20 @@ import 'flowbite';
 import $ from 'jquery';
 import 'ionicons';
 import moment from 'moment';
-
-window.moment = moment;
 import {
-    swalFire,
-    validateIranianMobile,
-    validatePasswordEntry,
     checkAge,
-    resetAllInputValues,
-    resetFields,
-    checkPersianCharacters,
     checkEnglishCharacters,
     checkEnglishDigits,
-    validateAddressEntry,
+    checkPersianCharacters,
+    formatNumber,
+    resetAllInputValues,
     resetAllSelectValues,
+    resetFields,
+    swalFire,
+    validateAddressEntry,
 } from './MainJsFunctionsAndImports.js';
-import {image} from "ionicons/icons";
+
+window.moment = moment;
 
 
 $(document).ready(function () {
@@ -1214,6 +1212,27 @@ $(document).ready(function () {
     } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 
+        //Find all elements on the page
+        let allElements = document.getElementsByTagName("*");
+
+        // Loop through each element
+        for (let i = 0; i < allElements.length; i++) {
+            let element = allElements[i];
+
+            // Check if the current element is of type number
+            if (element.tagName === "INPUT" && element.type === "text") {
+                // Convert the number to a formatted number with comma separators for every three digits
+                // Set the new value to the current element
+                element.value = formatNumber(element.value);
+            }
+        }
+
+        // For each text input, when its value changes, call the formatNumber function
+        $('input[type="text"]').on('input', function () {
+            $(this).val(formatNumber($(this).val()));
+        });
+
+
         $('.tuition-details').submit(function (e) {
             e.preventDefault();
             let form = $(this);
@@ -1227,8 +1246,23 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                 }, success: function (response) {
                     swalFire('Done', response.message, 'success', 'Ok');
-                }, error: function (xhr, textStatus, errorThrown) {
-                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                },error: function (xhr, textStatus, errorThrown) {
+                    // Parse the JSON response to access error data
+                    var errorData = JSON.parse(xhr.responseText);
+
+                    // Access the first error message
+                    var firstErrorMessage = '';
+                    var foundFirstError = false; // Flag to track whether the first error is found
+
+                    for (var key in errorData.errors) {
+                        if (errorData.errors.hasOwnProperty(key) && !foundFirstError) {
+                            firstErrorMessage = errorData.errors[key];
+                            foundFirstError = true; // Set the flag to true to stop the loop
+                        }
+                    }
+
+                    // Display the first error message
+                    swalFire('Error', firstErrorMessage, 'error', 'Try again');
                 }
             });
         });

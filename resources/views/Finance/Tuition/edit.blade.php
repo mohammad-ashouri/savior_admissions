@@ -87,8 +87,11 @@
                                                                 <label
                                                                     class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">The
                                                                     amount of full payment</label>
+                                                                <script>
+
+                                                                </script>
                                                                 <div class="flex justify-between">
-                                                                    <input type="number"
+                                                                    <input type="text"
                                                                            value="{{@$fullPaymentDetails['full_payment_irr']}}"
                                                                            id="full_payment_irr"
                                                                            name="full_payment_irr"
@@ -99,7 +102,7 @@
                                                                         class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
                                                                 </div>
                                                                 <div class="flex justify-between mt-3">
-                                                                    <input type="number"
+                                                                    <input type="text"
                                                                            value="{{@$fullPaymentDetails['full_payment_usd']}}"
                                                                            id="full_payment_usd"
                                                                            name="full_payment_usd"
@@ -124,7 +127,7 @@
                                                                         amount of two payment installment</label>
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$twoInstallmentDetails['two_installment_amount_irr']}}"
                                                                                    id="two_installment_amount_irr"
                                                                                    name="two_installment_amount_irr"
@@ -135,7 +138,7 @@
                                                                                 class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
                                                                         </div>
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$twoInstallmentDetails['two_installment_amount_usd']}}"
                                                                                    id="two_installment_amount_usd"
                                                                                    name="two_installment_amount_usd"
@@ -151,7 +154,7 @@
                                                                         payment in two installments</label>
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$twoInstallmentDetails['two_installment_advance_irr']}}"
                                                                                    id="two_installment_advance_irr"
                                                                                    name="two_installment_advance_irr"
@@ -162,7 +165,7 @@
                                                                                 class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
                                                                         </div>
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$twoInstallmentDetails['two_installment_advance_usd']}}"
                                                                                    id="two_installment_advance_usd"
                                                                                    name="two_installment_advance_usd"
@@ -178,7 +181,7 @@
                                                                         amount of each installment</label>
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
                                                                         <div class="flex">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$twoInstallmentDetails['two_installment_each_installment_irr']}}"
                                                                                    id="two_installment_each_installment_irr"
                                                                                    name="two_installment_each_installment_irr"
@@ -189,7 +192,7 @@
                                                                                 class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
                                                                         </div>
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$twoInstallmentDetails['two_installment_each_installment_usd']}}"
                                                                                    id="two_installment_each_installment_usd"
                                                                                    name="two_installment_each_installment_usd"
@@ -255,7 +258,7 @@
                                                                         amount of four payment installment</label>
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$fourInstallmentDetails['four_installment_amount_irr']}}"
                                                                                    id="four_installment_amount_irr"
                                                                                    name="four_installment_amount_irr"
@@ -266,7 +269,7 @@
                                                                                 class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
                                                                         </div>
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$fourInstallmentDetails['four_installment_amount_usd']}}"
                                                                                    id="four_installment_amount_usd"
                                                                                    name="four_installment_amount_usd"
@@ -282,7 +285,7 @@
                                                                         payment in four installments</label>
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$fourInstallmentDetails['four_installment_advance_irr']}}"
                                                                                    id="four_installment_advance_irr"
                                                                                    name="four_installment_advance_irr"
@@ -293,7 +296,7 @@
                                                                                 class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
                                                                         </div>
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$fourInstallmentDetails['four_installment_advance_usd']}}"
                                                                                    id="four_installment_advance_usd"
                                                                                    name="four_installment_advance_usd"
@@ -309,7 +312,7 @@
                                                                         amount of each installment</label>
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
                                                                         <div class="flex">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$fourInstallmentDetails['four_installment_each_installment_irr']}}"
                                                                                    id="four_installment_each_installment_irr"
                                                                                    name="four_installment_each_installment_irr"
@@ -320,7 +323,7 @@
                                                                                 class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
                                                                         </div>
                                                                         <div class="flex ">
-                                                                            <input type="number"
+                                                                            <input type="text"
                                                                                    value="{{@$fourInstallmentDetails['four_installment_each_installment_usd']}}"
                                                                                    id="four_installment_each_installment_usd"
                                                                                    name="four_installment_each_installment_usd"

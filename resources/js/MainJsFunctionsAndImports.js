@@ -125,3 +125,18 @@ export function resetAllSelectValues() {
         $(this).val("");
     });
 }
+
+// Function to format the number with comma separators
+export function formatNumber(number) {
+    // Check if the input value is null or NaN
+    if (number === null || isNaN(parseFloat(number))) {
+        return ''; // Return empty string if the input value is null or NaN
+    }
+
+    // Remove any non-digit characters from the input value
+    let cleanNumber = number.replace(/[^\d.]/g, '');
+
+    // Format the number with comma separators
+    return parseFloat(cleanNumber).toLocaleString('en-US');
+}
+
