@@ -15,6 +15,9 @@ class ChangeUsersMobileFormatToInternational extends Seeder
     {
         User::where('mobile', 'LIKE', '09%')
             ->orWhere('mobile', 'LIKE', '0%')
+            ->whereHas('roles', function($query) {
+                $query->where('name', 'Student')->orWhere('name', 'Parent');
+            })
             ->update([
                 'mobile' => DB::raw("CASE WHEN LEFT(mobile, 2) = '09' THEN CONCAT('+98', SUBSTRING(mobile, 3)) ELSE CONCAT('+', SUBSTRING(mobile, 2)) END"),
             ]);
