@@ -269,7 +269,7 @@ INSERT INTO `users` (`id`, `mobile`, `email`, `password`, `additional_informatio
 (67532, '09354964754', 'GA6809452@saviorschool.ir', '$2y$10$zOF2ImYwT2tpKGbxdRa3/evDDpYvqsMUl70cBIHoadi3i6efALYCK', NULL, 1, NULL, NULL, '2024-03-13 17:35:17', '2024-03-13 17:35:17', NULL),
 (67511, '09129387466', 'CZ1791323@saviorschool.ir', '$2y$10$hHSfnU93aOBSZWhyFcdgCuG8cBeYgEhEb7cMiQJDURs7lu.Xswu9q', NULL, 1, NULL, NULL, '2024-03-13 17:35:17', '2024-03-13 17:35:17', NULL);
 INSERT INTO `users` (`id`, `mobile`, `email`, `password`, `additional_information`, `status`, `remember_token`, `email_verified_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(67728, '0911426831609033233403', '0@saviorschool.ir', '$2y$10$UavKzJFiU2FeobVx5alEvehZC5B/kfOu5PpizQNMcrpoCUaL20zKC', NULL, 1, NULL, NULL, '2024-03-13 17:35:17', '2024-03-13 17:35:17', NULL),
+(67728, '09114268316', '0@saviorschool.ir', '$2y$10$UavKzJFiU2FeobVx5alEvehZC5B/kfOu5PpizQNMcrpoCUaL20zKC', NULL, 1, NULL, NULL, '2024-03-13 17:35:17', '2024-03-13 17:35:17', NULL),
 (67470, '09123536490', '0374056552@saviorschool.ir', '$2y$10$h0maxQrQzvb.0k24P5mJhuGChfMOUGd3Nxd7d/NY3ixb5ncD22zGW', NULL, 1, NULL, NULL, '2024-03-13 17:35:17', '2024-03-13 17:35:17', NULL),
 (67427, '09354758364', '5066643@saviorschool.ir', '$2y$10$broIVjEljgy7J3NtWtYXfuBI/eciWLIYM1/LWgwOFuCwWMoq8uumS', NULL, 1, NULL, NULL, '2024-03-13 17:35:17', '2024-03-13 17:35:17', NULL),
 (67727, '09354758364', 'AB1780764@saviorschool.ir', '$2y$10$7JTH.BiyHA0eSxrnBKhjSOoiIQrbKTvdMXDKev8SpSbC7uA0xmbXG', NULL, 1, NULL, NULL, '2024-03-13 17:35:18', '2024-03-13 17:35:18', NULL),
@@ -1367,7 +1367,7 @@ INSERT INTO `users` (`id`, `mobile`, `email`, `password`, `additional_informatio
 (170544, '09371538919', 'ParentFather67717@saviorschool.com', '$2y$10$rTk8DilLkV.awPaBzR4hvefkmuUoLf9EEfKVk8mufNjfA/2Pbdy6i', NULL, 1, NULL, NULL, '2024-03-13 17:38:25', '2024-04-22 17:14:05', NULL),
 (170545, NULL, 'ParentFather67718@saviorschool.com', '$2y$10$ddd389MDsWsiq07gpyzeGekMmhMj.NBsLftJe7yb1VJ7FvTkTsMmK', NULL, 1, NULL, NULL, '2024-03-13 17:38:25', '2024-04-22 17:14:05', NULL),
 (170546, '006421842091', 'ParentFather67726@saviorschool.com', '$2y$10$ujcZObnChV/LtxKAjEaQj.sLLsHrf76WJDSfRoo1Rg.YNSQichccG', NULL, 1, NULL, NULL, '2024-03-13 17:38:25', '2024-04-22 17:14:05', NULL),
-(170547, '0911426831609033233403', 'ParentFather67728@saviorschool.com', '$2y$10$SqikMAJCPgwTrPvJH4ernOMLRkgO7hnm3dZfB94U8EejhIbcm1E3S', NULL, 1, NULL, NULL, '2024-03-13 17:38:25', '2024-04-22 17:14:05', NULL),
+(170547, '09114268316', 'ParentFather67728@saviorschool.com', '$2y$10$SqikMAJCPgwTrPvJH4ernOMLRkgO7hnm3dZfB94U8EejhIbcm1E3S', NULL, 1, NULL, NULL, '2024-03-13 17:38:25', '2024-04-22 17:14:05', NULL),
 (170548, NULL, 'ParentFather67729@saviorschool.com', '$2y$10$etkqoowsSnQyCsU/zcl6teT7WWH2co2ceg03bhiAI1Rm5jHNXp1KK', NULL, 1, NULL, NULL, '2024-03-13 17:38:25', '2024-04-22 17:14:05', NULL),
 (170549, '09198678035', 'ParentFather67730@saviorschool.com', '$2y$10$bRUkKuFmlzzin7a3DKOqH.3SCWX/ZDNFc6bq6KCmcDXN5L4Pwn.Im', NULL, 1, NULL, NULL, '2024-03-13 17:38:25', '2024-04-22 17:14:05', NULL),
 (170550, NULL, 'ParentFather67732@saviorschool.com', '$2y$10$bjCqNMC21G9L/abeYJq1duV7d3wxb2C31AzV8hjwdtm5eba3TAn9a', NULL, 1, NULL, NULL, '2024-03-13 17:38:25', '2024-04-22 17:14:05', NULL),

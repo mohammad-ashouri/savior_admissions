@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             DatabaseImportSql::class,
             RevokeDocumentPermissionFromParentRole::class,
             DeleteParentsAndStudentsEmail::class,
+            ChangeUsersMobileFormatToInternational::class,
         ]);
     }
 }
