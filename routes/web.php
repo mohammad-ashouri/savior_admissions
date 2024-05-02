@@ -117,7 +117,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         Route::get('SearchReservationInvoices', [ApplicationReservationController::class, 'searchReservationInvoices'])->name('SearchReservationInvoices');
 
         Route::resource('Tuition', TuitionController::class);
-        Route::post('ChangeTuitionPrice', [TuitionController::class, 'changeTuitionPrice']);
+        Route::post('ChangeTuitionPrice', [TuitionController::class, 'changeTuitionPrice'])->name('changeTuitionPrice');
         //Pay Tuition
         Route::get('PayTuition/{student_id}', [TuitionController::class, 'payTuition'])->name('Tuitions.PayTuition');
         Route::post('PayTuition', [TuitionController::class, 'tuitionPayment'])->name('Tuitions.Pay');

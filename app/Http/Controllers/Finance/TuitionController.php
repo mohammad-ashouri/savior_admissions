@@ -79,19 +79,70 @@ class TuitionController extends Controller
 
     }
 
-    public function changeTuitionPrice(Request $request): \Illuminate\Http\JsonResponse
+    public function changeTuitionPrice(Request $request)
     {
-        $this->validate($request, [
-            'tuition_id' => 'required|exists:tuition_details,id',
-            'price' => 'required|integer',
+        $validator = Validator::make($request->all(), [
+            'tuition_details_id' => 'required|integer|exists:tuition_details,id',
+            'full_payment_irr' => 'required|integer',
+            'full_payment_usd' => 'required|integer',
+            'two_installment_amount_irr' => 'required|integer',
+            'two_installment_amount_usd' => 'required|integer',
+            'two_installment_advance_irr' => 'required|integer',
+            'two_installment_advance_usd' => 'required|integer',
+            'two_installment_each_installment_irr' => 'required|integer',
+            'two_installment_each_installment_usd' => 'required|integer',
+            'date_of_installment1_two' => 'required|date',
+            'date_of_installment2_two' => 'required|date',
+            'four_installment_amount_irr' => 'required|integer',
+            'four_installment_amount_usd' => 'required|integer',
+            'four_installment_advance_irr' => 'required|integer',
+            'four_installment_advance_usd' => 'required|integer',
+            'four_installment_each_installment_irr' => 'required|integer',
+            'four_installment_each_installment_usd' => 'required|integer',
+            'date_of_installment1_four' => 'required|date',
+            'date_of_installment2_four' => 'required|date',
+            'date_of_installment3_four' => 'required|date',
+            'date_of_installment4_four' => 'required|date',
         ]);
 
-        $tuition = TuitionDetail::find($request->tuition_id);
-        $tuition->price = $request->price;
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Change Tuition Price Failed', 'values' => $request, 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
+
+            return response()->json([
+                'success' => false,
+                'validator_errors' => $validator->errors(),
+            ]);
+        }
+
+        $tuition = TuitionDetail::find($request->tuition_details_id);
+        $tuition->full_payment = json_encode(['full_payment_irr' => $request->full_payment_irr, 'full_payment_usd' => $request->full_payment_usd], true);
+        $tuition->two_installment_payment = json_encode([
+            'two_installment_amount_irr' => $request->two_installment_amount_irr,
+            'two_installment_amount_usd' => $request->two_installment_amount_usd,
+            'two_installment_advance_irr' => $request->two_installment_advance_irr,
+            'two_installment_advance_usd' => $request->two_installment_advance_usd,
+            'two_installment_each_installment_irr' => $request->two_installment_each_installment_irr,
+            'two_installment_each_installment_usd' => $request->two_installment_each_installment_usd,
+            'date_of_installment1_two' => $request->date_of_installment1_two,
+            'date_of_installment2_two' => $request->date_of_installment2_two,
+        ], true);
+        $tuition->four_installment_payment = json_encode([
+            'four_installment_amount_irr' => $request->four_installment_amount_irr,
+            'four_installment_amount_usd' => $request->four_installment_amount_usd,
+            'four_installment_advance_irr' => $request->four_installment_advance_irr,
+            'four_installment_advance_usd' => $request->four_installment_advance_usd,
+            'four_installment_each_installment_irr' => $request->four_installment_each_installment_irr,
+            'four_installment_each_installment_usd' => $request->four_installment_each_installment_usd,
+            'date_of_installment1_four' => $request->date_of_installment1_four,
+            'date_of_installment2_four' => $request->date_of_installment2_four,
+            'date_of_installment3_four' => $request->date_of_installment3_four,
+            'date_of_installment4_four' => $request->date_of_installment4_four,
+        ], true);
         $tuition->save();
         $this->logActivity(json_encode(['activity' => 'Tuition Fee Changed', 'tuition_id' => $request->tuition_id, 'price' => $request->price]), request()->ip(), request()->userAgent());
+        dd($request->all());
 
-        return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
+        //        return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
     }
 
     public function payTuition($student_id)
@@ -167,7 +218,6 @@ class TuitionController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-
         if (empty($this->getActiveAcademicYears())) {
             abort(403);
         }
@@ -226,7 +276,6 @@ class TuitionController extends Controller
             $familyDiscount = 45;
         }
 
-
         if (empty($studentApplianceStatus)) {
             abort(403);
         }
@@ -252,8 +301,6 @@ class TuitionController extends Controller
                     }
                 )->pay()->render();
         }
-
-
 
         return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethod', 'discountPercentages', 'familyDiscount'));
     }

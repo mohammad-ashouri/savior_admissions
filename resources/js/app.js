@@ -1214,26 +1214,24 @@ $(document).ready(function () {
     } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 
-        $('.price').change(function () {
-            let price = $(this).val();
-            let tuition_id = $(this).data('tuition-id');
-            if (price != null) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/ChangeTuitionPrice',
-                    data: {
-                        tuition_id: tuition_id,
-                        price: price,
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                    }, success: function (response) {
-                        swalFire('Done', response.message, 'success', 'Ok');
-                    }, error: function (xhr, textStatus, errorThrown) {
-                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                    }
-                });
-            }
+        $('.tuition-details').submit(function (e) {
+            e.preventDefault();
+            let form = $(this);
+            let data = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/ChangeTuitionPrice',
+                data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                }, success: function (response) {
+                    console.log(response);
+                    // swalFire('Done', response.message, 'success', 'Ok');
+                }, error: function (xhr, textStatus, errorThrown) {
+                    // swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                }
+            });
         });
 
         if (fullPath.includes('PayTuition')) {
