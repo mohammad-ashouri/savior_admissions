@@ -152,8 +152,6 @@ $(document).ready(function () {
                             type: 'POST', url: '/password/sendToken', data: data, headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                             }, success: function (response) {
-                                console.log(response);
-
                                 if (response.success) {
                                     $('#reset-options').prop('readonly', true);
                                     $('#phone_code').prop('readonly', true);
