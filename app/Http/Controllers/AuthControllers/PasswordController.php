@@ -25,6 +25,17 @@ class PasswordController extends Controller
 
     public function sendToken(Request $request)
     {
+        $captcha = $request->input('captcha');
+
+        // Uncomment if you want to include captcha validation
+        $sessionCaptcha = session('captcha')['key'];
+        if (! password_verify($captcha, $sessionCaptcha)) {
+            $this->logActivity(json_encode(['activity' => 'Register Failed (Wrong Captcha)', 'entered_values' => json_encode($request->all())]), request()->ip(), request()->userAgent());
+            return response()->json([
+                'error' => 'Captcha is invalid.'
+            ]);
+        }
+
         $option = $request->input('reset-options');
         switch ($option) {
             case 'Mobile':
