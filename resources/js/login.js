@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {swalFire, reloadCaptcha} from './MainJsFunctionsAndImports.js';
+import {swalFire, reloadCaptcha, startTimer,} from './MainJsFunctionsAndImports.js';
 
 $(document).ready(function () {
     let fullPath = window.location.pathname;
@@ -138,7 +138,8 @@ $(document).ready(function () {
                     }
                 });
 
-                $('#forget-password').submit(function (e) {
+                $(document).on('submit', '#forget-password', function (e) {
+
                     e.preventDefault();
                     let resetOption = document.getElementById('reset-options');
                     if (resetOption.value == null || resetOption.value === '') {
@@ -154,16 +155,41 @@ $(document).ready(function () {
                                 console.log(response);
 
                                 if (response.success) {
-                                    window.location.href = response.redirect;
+                                    $('#reset-options').prop('readonly', true);
+                                    $('#phone_code').prop('readonly', true);
+                                    $('#mobile').prop('readonly', true);
+                                    $('#email').prop('readonly', true);
+                                    $('.CaptchaDiv').hide();
+                                    $('.VerificationCodeDiv').show();
+                                    $('#get_code').text('submit');
+
+                                    $('#forget-password').attr({
+                                        'id': 'authorize',
+                                    });
+
+                                    let twoMinutes = 120, display = $('#timer');
+                                    startTimer(twoMinutes, display);
+                                } else if (response.timer) {
+                                    $('#reset-options').prop('readonly', true);
+                                    $('#phone_code').prop('readonly', true);
+                                    $('#mobile').prop('readonly', true);
+                                    $('#email').prop('readonly', true);
+                                    $('.CaptchaDiv').hide();
+                                    $('.VerificationCodeDiv').show();
+                                    $('#get_code').text('submit');
+
+                                    $('#forget-password').attr({
+                                        'id': 'authorize',
+                                    });
+
+                                    let remindedTime = response.timer, display = $('#timer');
+
+                                    startTimer(remindedTime, display);
+                                    $('.CaptchaDiv').hide();
+                                    $('.VerificationCodeDiv').show();
                                 } else {
-                                    if (response.errors.Email) {
-                                        swalFire('Email Error', response.errors.Email[0], 'error', 'Try again');
-                                    } else if (response.errors.Mobile) {
-                                        swalFire('Mobile Error', response.errors.Mobile[0], 'error', 'Try again');
-                                    } else if (response.errors.WrongMobile) {
-                                        swalFire('Mobile Error', response.errors.WrongMobile[0], 'error', 'Try again');
-                                    } else if (response.errors.WrongEmail) {
-                                        swalFire('Email Error', response.errors.WrongEmail[0], 'error', 'Try again');
+                                    if (response.errors) {
+                                        swalFire('Email Error', response.errors, 'error', 'Try again');
                                     }
                                 }
                             }, error: function (xhr, textStatus, errorThrown) {
@@ -173,8 +199,30 @@ $(document).ready(function () {
                     }
 
                 });
+                $(document).on('submit', '#authorize', function (e) {
+                    e.preventDefault();
+                    let form = $(this);
+                    let data = form.serialize();
+
+                        $.ajax({
+                            type: 'POST', url: '/password/authorize', data: data, headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }, success: function (response) {
+                                if (response.success) {
+                                    window.location.href = response.redirect_url;
+                                }else {
+                                    if (response.errors) {
+                                        swalFire('Email Error', response.errors, 'error', 'Try again');
+                                    }
+                                }
+                            }, error: function (xhr, textStatus, errorThrown) {
+                                swalFire('Server Error', 'Server connectivity failed', 'error', 'Try again');
+                            }
+                        });
+                });
                 break;
         }
     }
 });
+
 

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\AuthControllers;
 use App\Http\Controllers\Controller;
 use App\Mail\ResetPasswordMailer;
 use App\Models\Auth\PasswordResetToken;
+use App\Models\Catalogs\CountryPhoneCodes;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -15,7 +17,10 @@ class PasswordController extends Controller
 {
     public function showForgetPassword(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('Auth.forgot_password');
+        $countryPhoneCodes = CountryPhoneCodes::where('phonecode', '!=', 0)->get();
+        $this->logActivity(json_encode(['activity' => 'Getting Forget Password Index Page']), request()->ip(), request()->userAgent());
+
+        return view('Auth.ForgotPassword.forgot_password', compact('countryPhoneCodes'));
     }
 
     public function sendToken(Request $request)
@@ -23,93 +28,263 @@ class PasswordController extends Controller
         $option = $request->input('reset-options');
         switch ($option) {
             case 'Mobile':
-                $mobile = $request->input('mobile');
-                if (! $mobile) {
-                    $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Null Mobile)']), request()->ip(), request()->userAgent());
-
+                $validator = Validator::make($request->all(), [
+                    'phone_code' => [
+                        'required',
+                        'exists:country_phone_codes,id',
+                    ],
+                    'mobile' => [
+                        'required',
+                        'numeric',
+                    ],
+                ]);
+                if ($validator->fails()) {
                     return response()->json([
-                        'success' => false,
+                        'errors' => $validator->errors(),
+                    ]);
+                }
+                $prefix = CountryPhoneCodes::find($request->phone_code);
+
+                $mobile = '+'.$prefix->phonecode.$request->mobile;
+
+                $userInfo = User::where('mobile', $mobile)->first();
+
+                if (empty($userInfo)) {
+                    return response()->json([
                         'errors' => [
-                            'Mobile' => ['Mobile is required'],
+                            'Mobile is not found!',
                         ],
                     ]);
                 }
+
+                //Make token
+                $token = rand(15424, 98546);
+
+                //Delete previous tokens
+                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                PasswordResetToken::where('user_id', $userInfo->id)
+                    ->where('created_at', '<=', $twoMinutesAgo)
+                    ->delete();
+
+                $lastToken = PasswordResetToken::where('user_id', $userInfo->id)
+                    ->where('created_at', '>', $twoMinutesAgo)
+                    ->first();
+
+                if (empty($lastToken)) {
+                    //Make new token
+                    $tokenEntry = new PasswordResetToken();
+                    $tokenEntry->user_id = $userInfo->id;
+                    $tokenEntry->type = 2;
+                    $tokenEntry->token = $token;
+                    $tokenEntry->save();
+
+                    $messageText = "Your reset password authentication code: $token\nPlease don't share this to anyone!\nSavior Schools Support";
+
+                    //Send token
+                    $this->sendSms($mobile, $messageText);
+
+                    return response()->json([
+                        'success' => true,
+                    ], 200);
+                }
+
+                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                $createdTime = Carbon::parse($lastToken->created_at);
+
+                return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
+
+                break;
+            case 'Email':
                 $validator = Validator::make($request->all(), [
+                    'email' => [
+                        'required', 'email', 'exists:users,email',
+                    ],
+                ]);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'errors' => $validator->errors(),
+                    ]);
+                }
+                $email = request('email');
+                $userInfo = User::where('email', $email)->first();
+
+                //Delete previous tokens
+                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                PasswordResetToken::where('user_id', $userInfo->id)
+                    ->where('created_at', '<=', $twoMinutesAgo)
+                    ->delete();
+
+                $lastToken = PasswordResetToken::where('user_id', $userInfo->id)
+                    ->where('created_at', '>', $twoMinutesAgo)
+                    ->first();
+
+                if (empty($lastToken)) {
+                    //Send token
+                    Mail::to($email)->send(
+                        new ResetPasswordMailer($email)
+                    );
+
+                    return response()->json([
+                        'success' => true,
+                    ], 200);
+                }
+
+                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+                $createdTime = Carbon::parse($lastToken->created_at);
+
+                return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
+
+                break;
+        }
+
+        return response()->json([
+            'errors' => 'Server Error!',
+        ]);
+    }
+
+    public function authorization(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'reset-options' => [
+                'required',
+                'in:Mobile,Email',
+            ],
+            'verification_code' => [
+                'required',
+                'integer',
+            ],
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
+        $token = $request->verification_code;
+        $option = $request->input('reset-options');
+        switch ($option) {
+            case 'Mobile':
+                $validator = Validator::make($request->all(), [
+                    'phone_code' => [
+                        'required',
+                        'exists:country_phone_codes,id',
+                    ],
                     'mobile' => [
                         'required',
-                        function ($attribute, $value, $fail) {
-                            if (! preg_match('/^\+989\d{9}$/', $value)) {
-                                $fail('The '.$attribute.' is not in the correct format.');
-                            }
-                        },
+                        'numeric',
                     ],
                 ]);
                 if ($validator->fails()) {
                     return response()->json([
                         'success' => false,
+                        'errors' => $validator->errors(),
+                    ]);
+                }
+                $prefix = CountryPhoneCodes::find($request->phone_code);
+
+                $mobile = '+'.$prefix->phonecode.$request->mobile;
+
+                $userInfo = User::where('mobile', $mobile)->first();
+
+                if (empty($userInfo)) {
+                    return response()->json([
+                        'success' => false,
                         'errors' => [
-                            'WrongMobile' => ['Mobile is entered in the wrong format'],
+                            'Mobile is not found!',
                         ],
                     ]);
                 }
-                $token = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(10)));
-                $userInfo = User::where('mobile', $mobile)->first();
 
                 //Delete previous tokens
-                PasswordResetToken::where('user_id', $userInfo->id)->delete();
+                $deletedToken = PasswordResetToken::where('user_id', $userInfo->id)->where('token', $token)->where('type', 2)->delete();
 
-                //Make new token
-                $tokenEntry = new PasswordResetToken();
-                $tokenEntry->user_id = $userInfo->id;
-                $tokenEntry->type = 2;
-                $tokenEntry->token = $token;
-                $tokenEntry->save();
-
-                $valueToSend = 'Your reset password link is: '.env('APP_URL').'/password/reset/'.$token."\nPlease don't share this to anyone!\nSavior Schools Support";
-
-                //Send token
-                $this->sendSms($mobile, $valueToSend);
+                if (! $deletedToken) {
+                    return response()->json([
+                        'errors' => [
+                            'Failed To Reset Password!',
+                        ],
+                    ]);
+                }
+                $lastToken = new PasswordResetToken();
+                $lastToken->user_id = $userInfo->id;
+                $lastToken->type = 2;
+                $newToken = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(20)));
+                $lastToken->token = $newToken;
+                $lastToken->save();
 
                 return response()->json([
                     'success' => true,
-                    'redirect' => route('login'),
+                    'redirect_url' => [
+                        env('APP_URL')."/password/reset/$newToken",
+                    ],
                 ]);
                 break;
             case 'Email':
-                $email = $request->input('email');
-                if (! $email) {
-                    $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Null Email)']), request()->ip(), request()->userAgent());
+                $validator = Validator::make($request->all(), [
+                    'email' => [
+                        'required',
+                        'email',
+                    ],
+                ]);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'success' => false,
+                        'errors' => $validator->errors(),
+                    ]);
+                }
 
+                $email = $request->email;
+
+                $userInfo = User::where('email', $email)->first();
+
+                if (empty($userInfo)) {
                     return response()->json([
                         'success' => false,
                         'errors' => [
-                            'Email' => ['Email is required'],
+                            'Email is not found!',
                         ],
                     ]);
                 }
 
-                $user = User::where('email', $email)->first();
-                if (! $user) {
-                    $this->logActivity(json_encode(['activity' => 'Password Reset Failed (Wrong Email)', 'email' => $email]), request()->ip(), request()->userAgent());
+                //Delete previous tokens
+                $deletedToken = PasswordResetToken::where('user_id', $userInfo->id)->where('token', $token)->where('type', 1)->delete();
 
+                if (! $deletedToken) {
                     return response()->json([
-                        'success' => false,
                         'errors' => [
-                            'WrongEmail' => ['Email is not found'],
+                            'Failed To Reset Password!',
                         ],
                     ]);
                 }
-
-                Mail::to($email)->send(
-                    new ResetPasswordMailer($email)
-                );
+                $lastToken = new PasswordResetToken();
+                $lastToken->user_id = $userInfo->id;
+                $lastToken->type = 1;
+                $newToken = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(20)));
+                $lastToken->token = $newToken;
+                $lastToken->save();
 
                 return response()->json([
                     'success' => true,
-                    'redirect' => route('login'),
+                    'redirect_url' => [
+                        env('APP_URL')."/password/reset/$newToken",
+                    ],
                 ]);
                 break;
         }
+
+        return response()->json([
+            'success' => false,
+            'errors' => 'Server Error!',
+        ]);
+    }
+
+    public function showResetPassword($token)
+    {
+        $password_reset_tokens = PasswordResetToken::where('token', $token)->where('active', 1)->first();
+        if ($password_reset_tokens) {
+            return view('Auth.ForgotPassword.reset_password', compact('token'));
+        }
+        abort(403);
     }
 
     public function resetPassword(Request $request): \Illuminate\Http\JsonResponse
@@ -126,8 +301,7 @@ class PasswordController extends Controller
         $user = User::find($resetTokenInfo->user_id);
         $user->password = Hash::make($request->input('password'));
         if ($user->save()) {
-            $resetTokenInfo->active = 0;
-            $resetTokenInfo->save();
+            $resetTokenInfo->delete();
             $this->logActivity(json_encode(['activity' => 'Password Reset Successfully', 'email' => $request->input('email')]), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
 
             return response()->json([
@@ -139,15 +313,6 @@ class PasswordController extends Controller
         $this->logActivity(json_encode(['activity' => 'Failed Resetting Password', 'errors' => $validator->errors()->first()]), request()->ip(), request()->userAgent(), $resetTokenInfo->user_id);
 
         return response()->json(['error' => 'Unknown error'], 422);
-    }
-
-    public function showResetPassword($token)
-    {
-        $password_reset_tokens = PasswordResetToken::where('token', $token)->where('active', 1)->first();
-        if ($password_reset_tokens) {
-            return view('Auth.reset_password', compact('token'));
-        }
-        abort(403);
     }
 
     public function changePassword(Request $request)

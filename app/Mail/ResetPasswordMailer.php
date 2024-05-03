@@ -18,12 +18,15 @@ class ResetPasswordMailer extends Mailable
 
     public $email;
 
+    public $token;
+
     /**
      * Create a new message instance.
      */
     public function __construct($email)
     {
         $this->email = $email;
+        $this->token = rand(15424, 98546);
     }
 
     /**
@@ -45,7 +48,6 @@ class ResetPasswordMailer extends Mailable
     public function content(): Content
     {
 
-        $token = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(20)));
         $userInfo = User::where('email', $this->email)->first();
 
         PasswordResetToken::where('user_id', $userInfo->id)->update(['active' => 0]);
@@ -53,17 +55,18 @@ class ResetPasswordMailer extends Mailable
         $tokenEntry = new PasswordResetToken();
         $tokenEntry->user_id = $userInfo->id;
         $tokenEntry->type = 1;
-        $tokenEntry->token = $token;
+        $tokenEntry->token = $this->token;
         $tokenEntry->save();
 
         if ($tokenEntry) {
             return new Content(
-                view: 'Auth.showToken',
+                view: 'Auth.ForgotPassword.showToken',
                 with: [
-                    'resetLink' => env('APP_URL').'/password/reset/'.$token,
+                    'token' => $this->token,
                 ]
             );
         }
+        abort(403);
     }
 
     /**

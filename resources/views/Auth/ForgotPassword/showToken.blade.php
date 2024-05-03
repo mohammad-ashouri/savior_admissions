@@ -13,14 +13,14 @@
     <form class="space-y-6 " id="forget-password">
         <div class="space-y-2">
             <p class="font-normal text-gray-900 dark:text-gray-400 mb-4">
-                To reset your password, please click on the button below
+                Your reset password authentication code: {{ $token }}
             </p>
-            <a href="{{ $resetLink }}">
-                <button
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Reset password
-                </button>
-            </a>
+            <p>
+                Please don't share this to anyone!
+            </p>
+            <p>
+                Savior Schools Support
+            </p>
         </div>
     </form>
 </div>
