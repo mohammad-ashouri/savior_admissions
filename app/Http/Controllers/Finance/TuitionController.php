@@ -11,6 +11,7 @@ use App\Models\Finance\Discount;
 use App\Models\Finance\DiscountDetail;
 use App\Models\Finance\Tuition;
 use App\Models\Finance\TuitionDetail;
+use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
@@ -181,35 +182,36 @@ class TuitionController extends Controller
             ->where('tuition_details.level', $applicationInfo->level)
             ->first();
 
-        $paymentMethod = PaymentMethod::find(2);
+        $paymentMethods = PaymentMethod::get();
 
         //Discount Percentages
         $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
         $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
 
         //Get all students with paid status in all active academic years
+        $me=auth()->user()->id;
+
+        $allStudentsWithMyGuardian=StudentInformation::where('guardian',$me)->pluck('student_id')->toArray();
         $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
-            ->where('student_id', '!=', $student_id)
+            ->whereIn('student_id', $allStudentsWithMyGuardian)
             ->where('tuition_payment_status', 'Paid')
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->count();
 
+
         $familyDiscount = 0;
-        if ($allStudentsWithPaidStatusInActiveAcademicYear == 1) {
-            $familyDiscount = 30;
-        }
         if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
-            $familyDiscount = 35;
+            $familyDiscount = 25;
         }
         if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
+            $familyDiscount = 30;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear > 4) {
             $familyDiscount = 40;
         }
-        if ($allStudentsWithPaidStatusInActiveAcademicYear > 3) {
-            $familyDiscount = 45;
-        }
 
-        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethod', 'discountPercentages', 'familyDiscount'));
+        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'familyDiscount'));
     }
 
     public function tuitionPayment(Request $request)

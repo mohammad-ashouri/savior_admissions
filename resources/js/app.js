@@ -1246,7 +1246,7 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                 }, success: function (response) {
                     swalFire('Done', response.message, 'success', 'Ok');
-                },error: function (xhr, textStatus, errorThrown) {
+                }, error: function (xhr, textStatus, errorThrown) {
                     // Parse the JSON response to access error data
                     var errorData = JSON.parse(xhr.responseText);
 
@@ -1270,13 +1270,84 @@ $(document).ready(function () {
         if (fullPath.includes('PayTuition')) {
             pageTitle = 'Prepare To Pay Tuition';
 
-            $('#payment_type').change(function () {
-                if ($(this).val() == 1) {
-                    $('#full-payment-div').show();
-                    $('#installment-div').hide();
-                } else if ($(this).val() == 2) {
-                    $('#full-payment-div').hide();
-                    $('#installment-div').show();
+            $('.get-invoice').on('click', function () {
+                let paymentMethod = $('#payment_method').val();
+
+                $('#full-payment-div').hide();
+                $('#full-payment-invoice').hide();
+                $('#offline-full-payment-div').hide();
+                $('#full-payment-online').hide();
+
+                $('#installment2-div').hide();
+                $('#installment2-payment-invoice').hide();
+
+                $('#installment4-div').hide();
+                $('#installment4-payment-invoice').hide();
+
+                switch ($('#payment_type').val()) {
+                    case '1':
+                        $('#full-payment-div').show();
+                        $('#full-payment-invoice').show();
+
+                        switch (paymentMethod) {
+                            case '1':
+                                $('#offline-full-payment-div').show();
+                                $('#full-payment-online').hide();
+                                break;
+                            case '2':
+                                $('#offline-full-payment-div').hide();
+                                $('#full-payment-online').show();
+                                break;
+                        }
+                        break;
+                    case '2':
+                        $('#installment2-div').show();
+                        $('#installment2-payment-invoice').show();
+                        switch (paymentMethod) {
+                            case '1':
+                                $('#offline-payment-div').show();
+                                $('#full-payment-online').hide();
+                                break;
+                            case '2':
+                                $('#offline-payment-div').hide();
+                                $('#full-payment-online').show();
+                                break;
+                        }
+                        break;
+                    case '3':
+                        $('#installment4-div').show();
+                        $('#installment4-payment-invoice').show();
+                        switch (paymentMethod) {
+                            case '1':
+                                $('#offline-payment-div').show();
+                                $('#full-payment-online').hide();
+                                break;
+                            case '2':
+                                $('#offline-payment-div').hide();
+                                $('#full-payment-online').show();
+                                break;
+                        }
+                        break;
+                }
+            });
+
+            $('#document_file').change(function () {
+                const fileInput = $('#document_file');
+                const imagePreview = $('#image_preview');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
                 }
             });
 

@@ -69,26 +69,55 @@
                             </div>
                             <hr>
                             <div class="grid gap-6 mb-6 md:grid-cols-2 ">
-                                <div class="">
-                                    <label for="payment_type"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Select Payment Type</label>
-                                    <select id="payment_type" name="payment_type"
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            title="Select student" required>
-                                        <option selected disabled value="">Select type</option>
-                                        <option value="1">Full payment</option>
-                                        <option value="2">Installment</option>
-                                    </select>
+                                <div class="grid gap-6 mb-6 md:grid-cols-3">
+                                    <div>
+                                        <label for="payment_type"
+                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                            Select Payment Type</label>
+                                        <select id="payment_type" name="payment_type"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                title="Select student" required>
+                                            <option selected disabled value="">Select type</option>
+                                            <option value="1">Full payment</option>
+                                            <option value="2">Two installments</option>
+                                            <option value="3">Four installments</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="payment_method"
+                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                            Select Payment Method</label>
+                                        <select id="payment_method" name="payment_method"
+                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                title="Select student" required>
+                                            <option selected disabled value="">Select payment method</option>
+                                            @foreach($paymentMethods as $paymentMethod)
+                                                <option value="{{$paymentMethod->id}}">{{$paymentMethod->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mt-8">
+                                        <button type="button"
+                                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 get-invoice">
+                                            Get Invoice
+                                        </button>
+                                    </div>
                                 </div>
                                 <div>
-
+                                    @php
+                                        $fullPayment=json_decode($tuition->full_payment,true);
+                                        $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr']);
+                                        $twoInstallmentPayment=json_decode($tuition->two_installment_payment,true);
+                                        $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']);
+                                        $fourInstallmentPayment=json_decode($tuition->four_installment_payment,true);
+                                        $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr']);
+                                    @endphp
                                 </div>
                                 <div>
                                     <div id="full-payment-div" hidden="">
-                                        <div
-                                            class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                                            role="alert">
+                                        <div id="full-payment-online" hidden=""
+                                             class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                             role="alert">
                                             <div class="flex">
                                                 <div class="py-1">
                                                     <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
@@ -106,7 +135,104 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="installment-div" hidden="">
+                                    <div id="full-payment-online" hidden=""
+                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         role="alert">
+                                        <div class="flex">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold">You must pay the total fee through the online
+                                                    (Iranian) payment portal.<br> After payment, you will be
+                                                    transferred to the invoices page.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="offline-full-payment-div" hidden=""
+                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         role="alert">
+                                        <div>
+                                            <div class="flex mb-4">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    You must deposit
+                                                    total fee amount using one of the following methods (bank
+                                                    account number, bank card
+                                                    number or Shaba number) and upload the image of your bank slip
+                                                    from the box
+                                                    below.
+                                                </div>
+                                            </div>
+                                            <div>
+                                                @foreach($paymentMethods as $methods)
+                                                    @if(empty($methods->description))
+                                                        @continue
+                                                    @endif
+                                                    @php
+                                                        $descriptions = null;
+                                                        if ($methods->description) {
+                                                            $descriptions = json_decode($methods->description, true);
+                                                        }
+                                                    @endphp
+
+                                                    @if ($descriptions)
+                                                        @foreach($descriptions as $title => $description)
+                                                            <label
+                                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                                {{ $title }}: {{ $description }}
+                                                            </label>
+                                                        @endforeach
+                                                    @else
+                                                        <p>No descriptions available</p>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="grid gap-6 mb-6 md:grid-cols-1">
+                                            <label
+                                                class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file">Upload your bank slip </label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                                id="document_file" name="document_file" type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
+
+                                            <img id="image_preview" class="w-full h-auto" src="" alt="Preview Image"
+                                                 style="display:none; ">
+                                            <div class="info mb-5">
+                                                <div class="dark:text-white font-medium mb-1">File requirements:
+                                                </div>
+                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                    these
+                                                    requirements
+                                                    are met:
+                                                </div>
+                                                <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                    <li>
+                                                        The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                    </li>
+                                                    <li>
+                                                        Maximum size: 5 MB
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+@dd($twoInstallmentPayment)
+                                    <div id="installment2-div" hidden="">
                                         <div
                                             class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                             role="alert">
@@ -128,10 +254,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-4">
-                                            @php
-                                                $firstPayPrice=$tuition->price/5;
-                                                $tuitionInstallments=(($tuition->price-(($tuition->price*$discountPercentages)/100)-(($tuition->price*$familyDiscount)/100))-$firstPayPrice)/4;
-                                            @endphp
+
                                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                                 <thead
                                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -160,91 +283,13 @@
                                                         1
                                                     </td>
                                                     <td class="w-4 p-4 text-center">
-                                                        @php
-                                                            $date = new DateTime($studentApplianceStatus->updated_at);
-                                                        @endphp
-                                                        {{$date->format('Y/m/d')}}
+
                                                     </td>
                                                     <td class="w-4 p-4 text-center">
-                                                        @php
-                                                            $date->modify('+72 hours')
-                                                        @endphp
-                                                        {{$date->format('Y/m/d')}}
+
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{number_format($firstPayPrice)}}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        2
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @php
-                                                            $date = new DateTime($studentApplianceStatus->updated_at);
-                                                        @endphp
-                                                        {{$date->format('Y/m/d')}}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        2024/10/26
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{number_format($tuitionInstallments)}}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        3
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @php
-                                                            $date = new DateTime($studentApplianceStatus->updated_at);
-                                                        @endphp
-                                                        {{$date->format('Y/m/d')}}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        2024/11/26
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{number_format($tuitionInstallments)}}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        4
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @php
-                                                            $date = new DateTime($studentApplianceStatus->updated_at);
-                                                        @endphp
-                                                        {{$date->format('Y/m/d')}}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        2024/12/26
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{number_format($tuitionInstallments)}}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        5
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @php
-                                                            $date = new DateTime($studentApplianceStatus->updated_at);
-                                                        @endphp
-                                                        {{$date->format('Y/m/d')}}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        2025/01/26
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{number_format($tuitionInstallments)}}
+
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -253,46 +298,132 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                        <tbody>
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th scope="col" class="p-4">
-                                                Fee:
-                                            </th>
-                                            <td class="p-4 w-56 items-center">
-                                                IRR {{ number_format($tuition->price) }}
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th scope="col" class="p-4">
-                                                Discount:
-                                            </th>
-                                            <td class="p-4 w-56 items-center">
-                                                IRR {{ number_format(($tuition->price*$discountPercentages)/100) }}
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th scope="col" class="p-4">
-                                                Family Discount:
-                                            </th>
-                                            <td class="w-56 p-4">
-                                                IRR {{ number_format(($tuition->price*$familyDiscount)/100) }}
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <th scope="col" class="p-4">
-                                                Total Fee:
-                                            </th>
-                                            <td class="w-56 p-4">
-                                                IRR {{ number_format($tuition->price-(($tuition->price*$discountPercentages)/100)-(($tuition->price*$familyDiscount)/100)) }}
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                    <div hidden="" id="full-payment-invoice">
+                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                            <tbody>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Fee:
+                                                </th>
+                                                <td class="p-4 w-56 items-center">
+                                                    IRR {{ number_format($fullPaymentAmount) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Discount:
+                                                </th>
+                                                <td class="p-4 w-56 items-center">
+                                                    IRR {{ number_format(($fullPaymentAmount*$discountPercentages)/100) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Family Discount:
+                                                </th>
+                                                <td class="w-56 p-4">
+                                                    IRR {{ number_format(($fullPaymentAmount*$familyDiscount)/100) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Total Fee:
+                                                </th>
+                                                <td class="w-56 p-4">
+                                                    IRR {{ number_format($fullPaymentAmount-((($fullPaymentAmount*$familyDiscount)/100)+(($fullPaymentAmount*$discountPercentages)/100))) }}
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div hidden="" id="installment2-payment-invoice">
+                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                            <tbody>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Fee:
+                                                </th>
+                                                <td class="p-4 w-56 items-center">
+                                                    IRR {{ number_format($twoInstallmentPaymentAmount) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Discount:
+                                                </th>
+                                                <td class="p-4 w-56 items-center">
+                                                    IRR {{ number_format(($twoInstallmentPaymentAmount*$discountPercentages)/100) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Family Discount:
+                                                </th>
+                                                <td class="w-56 p-4">
+                                                    IRR {{ number_format(($twoInstallmentPaymentAmount*$familyDiscount)/100) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Total Fee:
+                                                </th>
+                                                <td class="w-56 p-4">
+                                                    IRR {{ number_format($twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$familyDiscount)/100)+(($twoInstallmentPaymentAmount*$discountPercentages)/100))) }}
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div hidden="" id="installment4-payment-invoice">
+                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                            <tbody>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Fee:
+                                                </th>
+                                                <td class="p-4 w-56 items-center">
+                                                    IRR {{ number_format($fourInstallmentPaymentAmount) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Discount:
+                                                </th>
+                                                <td class="p-4 w-56 items-center">
+                                                    IRR {{ number_format(($fourInstallmentPaymentAmount*$discountPercentages)/100) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Family Discount:
+                                                </th>
+                                                <td class="w-56 p-4">
+                                                    IRR {{ number_format(($fourInstallmentPaymentAmount*$familyDiscount)/100) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Total Fee:
+                                                </th>
+                                                <td class="w-56 p-4">
+                                                    IRR {{ number_format($fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$familyDiscount)/100)+(($fourInstallmentPaymentAmount*$discountPercentages)/100))) }}
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <input type="hidden" value="{{$studentApplianceStatus->student_id}}" name="student_id">
