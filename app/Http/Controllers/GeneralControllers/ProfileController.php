@@ -31,59 +31,83 @@ class ProfileController extends Controller
 
     public function editMyProfile(Request $request)
     {
-        $this->validate($request, [
-            'father-name' => 'required|string',
-            //            'gender' => 'required|string',
-            //            'Birthdate' => 'required|date',
-            'nationality' => 'required|exists:countries,id',
-            'birthplace' => 'required|exists:countries,id',
-            'PassportNumber' => 'required|string',
-            'FaragirCode' => 'required|string',
-            'Country' => 'required|exists:countries,id',
-            'city' => 'required|string',
-            'address' => 'required|string',
-            'phone' => 'required|string',
-            'zip/postalcode' => 'required|string',
-            'email' => 'email',
-        ]);
+        $generalInformation = GeneralInformation::where('user_id', session('id'))->first();
 
-        if (isset($request->mobile)){
+        if ($generalInformation->status == 0) {
+            $this->validate($request, [
+                'father-name' => 'required|string',
+                'nationality' => 'required|exists:countries,id',
+                'birthplace' => 'required|exists:countries,id',
+                'PassportNumber' => 'required|string',
+                'FaragirCode' => 'required|string',
+                'Country' => 'required|exists:countries,id',
+                'city' => 'required|string',
+                'address' => 'required|string',
+                'phone' => 'required|string',
+                'zip/postalcode' => 'required|string',
+                'email' => 'nullable|email',
+            ]);
+            $generalInformation = GeneralInformation::where('user_id', session('id'))->update(
+                [
+                    'first_name_fa' => $request->input('first_name_fa'),
+                    'last_name_fa' => $request->input('last_name_fa'),
+                    'father_name' => $request->input('father-name'),
+                    'nationality' => $request->input('nationality'),
+                    'birthplace' => $request->input('birthplace'),
+                    'faragir_code' => $request->input('FaragirCode'),
+                    'passport_number' => $request->input('PassportNumber'),
+                    'country' => $request->input('Country'),
+                    'state_city' => $request->input('city'),
+                    'address' => $request->input('address'),
+                    'phone' => $request->input('phone'),
+                    'postal_code' => $request->input('zip/postalcode'),
+                    'status' => 1,
+                    'adder' => session('id'),
+                    'editor' => session('id'),
+                ]
+            );
+        } else {
+            $this->validate($request, [
+                'PassportNumber' => 'required|string',
+                'FaragirCode' => 'required|string',
+                'Country' => 'required|exists:countries,id',
+                'city' => 'required|string',
+                'address' => 'required|string',
+                'phone' => 'required|string',
+                'zip/postalcode' => 'required|string',
+                'email' => 'nullable|email',
+            ]);
+            $generalInformation = GeneralInformation::where('user_id', session('id'))->update(
+                [
+                    'faragir_code' => $request->input('FaragirCode'),
+                    'passport_number' => $request->input('PassportNumber'),
+                    'country' => $request->input('Country'),
+                    'state_city' => $request->input('city'),
+                    'address' => $request->input('address'),
+                    'phone' => $request->input('phone'),
+                    'postal_code' => $request->input('zip/postalcode'),
+                    'status' => 1,
+                    'adder' => session('id'),
+                    'editor' => session('id'),
+                ]
+            );
+        }
+
+        if (isset($request->mobile)) {
             $user = User::where('id', session('id'))->update([
                 'mobile' => $request->mobile,
             ]);
         }
-        if (isset($request->email)){
+        if (isset($request->email)) {
             $user = User::where('id', session('id'))->update([
                 'email' => $request->email,
             ]);
         }
 
-        $generalInformation = GeneralInformation::where('user_id', session('id'))->update(
-            [
-                'user_id' => session('id'),
-                'first_name_fa' => $request->input('first_name_fa'),
-                'last_name_fa' => $request->input('last_name_fa'),
-                'father_name' => $request->input('father-name'),
-                //                'gender' => $request->input('gender'),
-                //                'birthdate' => $request->input('Birthdate'),
-                'nationality' => $request->input('nationality'),
-                'birthplace' => $request->input('birthplace'),
-                'faragir_code' => $request->input('FaragirCode'),
-                'passport_number' => $request->input('PassportNumber'),
-                'country' => $request->input('Country'),
-                'state_city' => $request->input('city'),
-                'address' => $request->input('address'),
-                'phone' => $request->input('phone'),
-                'postal_code' => $request->input('zip/postalcode'),
-                'status' => 1,
-                'adder' => session('id'),
-                'editor' => session('id'),
-            ]
-        );
         if ($generalInformation) {
             $this->logActivity(json_encode(['activity' => 'Profile Updated']), request()->ip(), request()->userAgent());
 
-            return redirect()->back()->withSuccess('Profile updated successfully!');
+            return redirect()->back()->withSuccess("Profile updated successfully!");
         }
     }
 
@@ -107,7 +131,7 @@ class ProfileController extends Controller
             'address' => 'required|string|max:100',
             'phone' => 'required',
             'postalcode' => 'required|integer',
-            'email' => 'email',
+            'email' => 'nullable|email',
             'user_id' => 'required|exists:users,id',
         ]);
 

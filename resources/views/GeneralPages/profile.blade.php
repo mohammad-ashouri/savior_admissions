@@ -7,17 +7,7 @@
                 <h1 class="text-2xl font-medium"> Profile</h1>
             </div>
             @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <strong>Whoops!</strong> Something went wrong.<br><br>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            @if( session()->has('success') )
-                <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md mb-3"
                      role="alert">
                     <div class="flex">
                         <div class="py-1">
@@ -28,7 +18,29 @@
                             </svg>
                         </div>
                         <div>
-                            <p class="font-bold">{{ session()->get('success') }}</p>
+                            <strong>Whoops!</strong> Something went wrong.<br><br>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if( session()->has('success') )
+                <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md mb-3"
+                     role="alert">
+                    <div class="flex">
+                        <div class="py-1">
+                            <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                                 viewBox="0 0 20 20">
+                                <path
+                                    d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-bold">{{ session()->get('success') }} <a class="underline" href="{{route('dashboard')}}"> Click here to open dashboard page</a></p>
                         </div>
                     </div>
                 </div>
@@ -52,25 +64,25 @@
                 </div>
             @endif
             <div class="grid grid-cols-3 gap-4 mb-4">
-                <div class="lg:col-span-1 col-span-3 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
-                    <div>
-                        <div class="lg:flex grid lg:items-center items-start lg:space-x-4">
-                            <img class="w-28 h-28 rounded-lg"
-                                 src="
-                                 @if($myDocuments)
-                                 {{ str_replace('public','storage',$myDocuments->src) }}
-                                 @else
-                                    {{Vite::asset('resources/images/Panel/default_user_icon.png')}}
-                                 @endif
-                                 "
-                                 alt="">
-                            <div class="font-bold dark:text-white">
-                                <div
-                                    class="text-l">{{ $myGeneralInformation->first_name_en }} {{ $myGeneralInformation->last_name_en }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {{--                <div class="lg:col-span-1 col-span-3 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">--}}
+                {{--                    <div>--}}
+                {{--                        <div class="lg:flex grid lg:items-center items-start lg:space-x-4">--}}
+                {{--                            <img class="w-28 h-28 rounded-lg"--}}
+                {{--                                 src="--}}
+                {{--                                 @if($myDocuments)--}}
+                {{--                                 {{ str_replace('public','storage',$myDocuments->src) }}--}}
+                {{--                                 @else--}}
+                {{--                                    {{Vite::asset('resources/images/Panel/default_user_icon.png')}}--}}
+                {{--                                 @endif--}}
+                {{--                                 "--}}
+                {{--                                 alt="">--}}
+                {{--                            <div class="font-bold dark:text-white">--}}
+                {{--                                <div--}}
+                {{--                                    class="text-l">{{ $myGeneralInformation->first_name_en }} {{ $myGeneralInformation->last_name_en }}</div>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
+                {{--                    </div>--}}
+                {{--                </div>--}}
 
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
@@ -193,8 +205,7 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Passport
                                         number</label>
                                     <input type="text" id="passport-number" name="PassportNumber"
-                                           @if($myGeneralInformation->status===1) disabled
-                                           @endif value="{{ $myGeneralInformation->passport_number }}"
+                                           value="{{ $myGeneralInformation->passport_number }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="If not, enter 0" required>
                                 </div>
@@ -203,17 +214,16 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Faragir
                                         code</label>
                                     <input type="text" id="faragir-code" name="FaragirCode"
-                                           @if($myGeneralInformation->status===1) disabled
-                                           @endif value="{{ $myGeneralInformation->faragir_code }}"
+                                           value="{{ $myGeneralInformation->faragir_code }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="If not, enter 0" required>
                                 </div>
                                 <div>
                                     <label for="Country"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Residence
+                                        Country</label>
                                     <select required id="Country"
-                                            name="Country" @if($myGeneralInformation->status===1) disabled
-                                            @endif
+                                            name="Country"
                                             class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                         <option selected disabled value="">Select an option</option>
@@ -225,20 +235,19 @@
                                 </div>
                                 <div>
                                     <label for="city"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">State/City</label>
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Residence
+                                        State/City</label>
                                     <input type="text" id="city" name="city"
-                                           @if($myGeneralInformation->status===1)
-                                               disabled @endif value="{{ $myGeneralInformation->state_city }}"
+                                           value="{{ $myGeneralInformation->state_city }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Qom" required>
                                 </div>
                                 <div>
                                     <label for="email"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
-                                        address</label>
-                                    <input type="email" name="email" id="email" value="{{ $myGeneralInformation->user->email }}"
-                                           @if($myGeneralInformation->status===1 or $myGeneralInformation->user->email) disabled
-                                           @endif
+                                        address (Optional)</label>
+                                    <input type="email" name="email" id="email"
+                                           value="{{ $myGeneralInformation->user->email }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="@if($myGeneralInformation->status===0) Like: john.doe@company.com @endif">
                                 </div>
@@ -246,7 +255,8 @@
                                     <label for="mobile"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile
                                         number</label>
-                                    <input type="tel" id="mobile" name="mobile" value="{{ $myGeneralInformation->user->mobile }}"
+                                    <input type="tel" id="mobile" name="mobile"
+                                           value="{{ $myGeneralInformation->user->mobile }}"
                                            @if($myGeneralInformation->status===1 or $myGeneralInformation->user->mobile) disabled
                                            @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -254,10 +264,9 @@
                                 </div>
                                 <div>
                                     <label for="address"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Residence
+                                        Address</label>
                                     <input type="text" id="address" name="address"
-                                           @if($myGeneralInformation->status===1)
-                                               disabled @endif
                                            value="{{ $myGeneralInformation->address }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Enter like this: Qom, moallem st, 43th alley, no 1546" required>
@@ -267,8 +276,6 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone
                                         number</label>
                                     <input type="tel" id="phone" name="phone"
-                                           @if($myGeneralInformation->status===1)
-                                               disabled @endif
                                            value="{{ $myGeneralInformation->phone }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="For example: +982531234567" required>
@@ -278,8 +285,7 @@
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">zip/postal
                                         code</label>
                                     <input type="text" id="postal-code" name="zip/postalcode"
-                                           @if($myGeneralInformation->status===1)
-                                               disabled @endif value="{{ $myGeneralInformation->postal_code }}"
+                                           value="{{ $myGeneralInformation->postal_code }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            pattern="[0-9]{10}" placeholder="For example: 1234567890" required>
                                 </div>
@@ -296,77 +302,77 @@
                                 </div>
                             </div>
 
-                            @if($myGeneralInformation->status===0)
-                                <button type="submit"
-                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Save all
-                                </button>
-                            @endif
-                        </form>
-
-                    </div>
-
-                    <div class="Password-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
-                        <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-                            <h1 class="text-2xl font-medium"> Password information</h1>
-                        </div>
-
-
-                        <form id="reset-password">
-                            <div class="grid gap-6 mb-6 md:grid-cols-2">
-                                <div>
-                                    <label for="Current_password"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current
-                                        password</label>
-                                    <input type="password" id="Current_password" name="Current_password"
-                                           autocomplete="new-password"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="••••••••" required>
-                                </div>
-                                <div>
-                                    <label for="New_password"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New
-                                        password</label>
-                                    <input type="password" id="New_password" name="New_password"
-                                           autocomplete="new-password"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="••••••••" required>
-                                </div>
-                                <div>
-                                    <label for="Confirm_password"
-                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
-                                        password</label>
-                                    <input type="password" id="Confirm_password" name="Confirm_password"
-                                           autocomplete="new-password"
-                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="••••••••" required>
-                                </div>
-
-
-                            </div>
-                            <div class="info mb-5">
-                                <div class="dark:text-white font-medium mb-1">Password requirements:</div>
-                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that these requirements
-                                    are met:
-                                </div>
-                                <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
-                                    <li>
-                                        At least 8 characters (and up to 20 characters)
-                                    </li>
-                                    <li>
-                                        At least one english character
-                                    </li>
-                                </ul>
-
-                            </div>
-
+                            {{--                            @if($myGeneralInformation->status===0)--}}
                             <button type="submit"
                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Save all
                             </button>
+                            {{--                            @endif--}}
                         </form>
 
                     </div>
+
+                    {{--                    <div class="Password-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">--}}
+                    {{--                        <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">--}}
+                    {{--                            <h1 class="text-2xl font-medium"> Password information</h1>--}}
+                    {{--                        </div>--}}
+
+
+                    {{--                        <form id="reset-password">--}}
+                    {{--                            <div class="grid gap-6 mb-6 md:grid-cols-2">--}}
+                    {{--                                <div>--}}
+                    {{--                                    <label for="Current_password"--}}
+                    {{--                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current--}}
+                    {{--                                        password</label>--}}
+                    {{--                                    <input type="password" id="Current_password" name="Current_password"--}}
+                    {{--                                           autocomplete="new-password"--}}
+                    {{--                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+                    {{--                                           placeholder="••••••••" required>--}}
+                    {{--                                </div>--}}
+                    {{--                                <div>--}}
+                    {{--                                    <label for="New_password"--}}
+                    {{--                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New--}}
+                    {{--                                        password</label>--}}
+                    {{--                                    <input type="password" id="New_password" name="New_password"--}}
+                    {{--                                           autocomplete="new-password"--}}
+                    {{--                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+                    {{--                                           placeholder="••••••••" required>--}}
+                    {{--                                </div>--}}
+                    {{--                                <div>--}}
+                    {{--                                    <label for="Confirm_password"--}}
+                    {{--                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm--}}
+                    {{--                                        password</label>--}}
+                    {{--                                    <input type="password" id="Confirm_password" name="Confirm_password"--}}
+                    {{--                                           autocomplete="new-password"--}}
+                    {{--                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+                    {{--                                           placeholder="••••••••" required>--}}
+                    {{--                                </div>--}}
+
+
+                    {{--                            </div>--}}
+                    {{--                            <div class="info mb-5">--}}
+                    {{--                                <div class="dark:text-white font-medium mb-1">Password requirements:</div>--}}
+                    {{--                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that these requirements--}}
+                    {{--                                    are met:--}}
+                    {{--                                </div>--}}
+                    {{--                                <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">--}}
+                    {{--                                    <li>--}}
+                    {{--                                        At least 8 characters (and up to 20 characters)--}}
+                    {{--                                    </li>--}}
+                    {{--                                    <li>--}}
+                    {{--                                        At least one english character--}}
+                    {{--                                    </li>--}}
+                    {{--                                </ul>--}}
+
+                    {{--                            </div>--}}
+
+                    {{--                            <button type="submit"--}}
+                    {{--                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">--}}
+                    {{--                                Save all--}}
+                    {{--                            </button>--}}
+                    {{--                        </form>--}}
+
+                    {{--                    </div>--}}
 
                 </div>
 
