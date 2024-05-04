@@ -22,10 +22,7 @@ use App\Models\UserAccessInformation;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
 
@@ -89,7 +86,9 @@ class ApplicationController extends Controller
     {
         $me = User::find(session('id'));
         if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
+            $myStudents = StudentInformation::with('generalInformations')
+                ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->where('guardian', $me->id)->orderBy('student_informations.student_id')->get();
             $levels = Level::where('status', 1)->get();
 
         } elseif ($me->hasRole('Super Admin')) {
@@ -391,6 +390,16 @@ class ApplicationController extends Controller
         $interviewType = $request->interview_type;
 
         $studentInfo = StudentInformation::where('guardian', $me->id)->where('id', $student)->first();
+        $studentInfo = StudentInformation::with('generalInformations')
+            ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+            ->where('guardian', $me->id)
+            ->where('student_id', $student)
+            ->where(function ($query) {
+                $query->where('interview_status', '!=', 'Rejected');
+                $query->orWhere('interview_status', '!=', null);
+            })
+            ->orderBy('student_informations.student_id')
+            ->first();
 
         if (empty($studentInfo)) {
             $this->logActivity(json_encode(['activity' => 'Preparation For Application Payment Failed', 'errors' => 'Access To Student Denied', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
@@ -623,5 +632,4 @@ class ApplicationController extends Controller
         return redirect()->route('Application.ConfirmApplicationList')
             ->with('success', 'Appliance Status Confirmed For This Student: '.$applianceStatus->studentInfo->generalInformationInfo->first_name_en.' '.$applianceStatus->studentInfo->generalInformationInfo->last_name_en.' - Chosen status: '.$request->type.'ed');
     }
-
 }

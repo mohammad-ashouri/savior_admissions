@@ -40,9 +40,9 @@
                                             title="Select student" required>
                                         <option selected disabled value="">Select student</option>
                                         @foreach($myStudents as $student)
-                                            <option @if(old('student')==$student->id) selected
+                                            <option @if($student->interview_status!='Rejected' or $student->interview_status!=null) disabled @endif @if(old('student')==$student->id) selected
                                                     @endif value="{{$student->id}}">
-                                                {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }}
+                                                {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }} @if($student->interview_status!='Rejected' or $student->interview_status!=null) (On interview) @endif
                                             </option>
                                         @endforeach
                                     </select>
