@@ -14,9 +14,11 @@ class TuitionInvoiceDetails extends Model
 
     protected $fillable = [
         'tuition_invoice_id',
+        'payment_method',
         'invoice_id',
         'amount',
         'is_paid',
+        'description',
     ];
 
     protected $hidden = [

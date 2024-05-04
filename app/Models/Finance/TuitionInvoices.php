@@ -22,4 +22,9 @@ class TuitionInvoices extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function invoiceDetails()
+    {
+        return $this->hasMany(TuitionInvoiceDetails::class, 'tuition_invoice_id');
+    }
 }

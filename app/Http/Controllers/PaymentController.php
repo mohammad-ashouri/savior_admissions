@@ -6,11 +6,12 @@ use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Finance\ApplicationReservationsInvoices;
+use App\Models\Finance\TuitionInvoiceDetails;
+use App\Models\Finance\TuitionInvoices;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 use Shetabit\Payment\Facade\Payment;
 
 class PaymentController extends Controller
@@ -79,6 +80,70 @@ class PaymentController extends Controller
 
     public function verifyTuitionPayment(Request $request)
     {
-        dd($request->all());
+        $transaction_id = \App\Models\Invoice::where('type', 'Tuition Payment')->where('transaction_id', $request->RefId)->latest()->first();
+        $user = User::find($transaction_id->user_id);
+
+        if (Auth::loginUsingId($user->id)) {
+            Session::put('id', $user->id);
+        } else {
+            abort(419);
+        }
+
+        switch ($request->ResCode) {
+            case 0:
+                $receipt = Payment::transactionId($request->RefId)->verify();
+
+                if ($receipt) {
+                    $transactionDetail = \App\Models\Invoice::where('type', 'Tuition Payment')->where('transaction_id', $request->RefId)->latest()->first();
+
+                    if (empty($transactionDetail)) {
+                        abort(419);
+                    }
+
+                    $invoiceDescription = json_decode($transactionDetail->description, true);
+
+                    $tuitionInvoiceDetails = TuitionInvoiceDetails::find($invoiceDescription['invoice_details_id']);
+                    $tuitionInvoiceDetails->is_paid = 1;
+                    $tuitionInvoiceDetails->invoice_id = $transactionDetail->id;
+                    $tuitionInvoiceDetails->payment_details = $request->all();
+                    $tuitionInvoiceDetails->save();
+
+                    $tuitionInvoiceInfo=TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+                    $studentAppliance=StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+                    $studentAppliance->tuition_payment_status='Paid';
+                    $studentAppliance->approved=1;
+                    $studentAppliance->save();
+
+                    $reservatoreMobile = $user->mobile;
+                    $transactionRefId = $request->SaleOrderId;
+                    $messageText = "You have successfully paid tuition. \nTransaction number: $transactionRefId \nSavior Schools";
+                    $this->sendSMS($reservatoreMobile, $messageText);
+                } else {
+                    return redirect()->route('dashboard')->withErrors(['Failed to verify application payment.']);
+                }
+
+                return redirect()->route('TuitionInvoices.index')->with(['success' => "You have successfully paid tuition amount. Transaction number: $transactionRefId"]);
+                break;
+            case 17:
+                $transactionDetail = \App\Models\Invoice::where('type', 'Tuition Payment')->where('transaction_id', $request->RefId)->latest()->first();
+                $invoiceDescription = json_decode($transactionDetail->description, true);
+                $tuitionInvoiceDetail = TuitionInvoiceDetails::find($invoiceDescription['invoice_details_id']);
+
+                if ($tuitionInvoiceDetail) {
+                    $tuitionInvoiceInfo=TuitionInvoices::find($tuitionInvoiceDetail->tuition_invoice_id);
+                    $tuitionInvoiceInfo->delete();
+
+                    $tuitionInvoiceDetail->delete();
+                }
+
+                $transactionDetail->delete();
+
+
+                return redirect()->route('dashboard')->withErrors(['You refused to pay application amount!']);
+
+                break;
+            default:
+                abort(419);
+        }
     }
 }

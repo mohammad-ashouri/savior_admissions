@@ -34,7 +34,7 @@ class EvidenceController extends Controller
         }
         $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('documents_uploaded', '2')->where('interview_status', 'Admitted')->orderBy('documents_uploaded', 'asc')->paginate(30);
 
-        return view('branchInfo.Evidence.index', compact('studentAppliances'));
+        return view('BranchInfo.Evidence.index', compact('studentAppliances'));
     }
 
     public function show($appliance_id)

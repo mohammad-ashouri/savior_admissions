@@ -11,6 +11,7 @@ use Jenssegers\Agent\Agent;
 use Kavenegar\Exceptions\ApiException;
 use Kavenegar\Exceptions\HttpException;
 use Kavenegar\Laravel\Facade as Kavenegar;
+use Shetabit\Payment\Facade\Payment;
 
 class Controller extends BaseController
 {
@@ -153,11 +154,6 @@ class Controller extends BaseController
 //            }
 //        }
 //        return json_encode($statuses);
-    }
-
-    public function payment($amount,)
-    {
-
     }
 
     public function getActiveAcademicYears()

@@ -7,10 +7,13 @@ use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\PaymentMethod;
+use App\Models\Document;
 use App\Models\Finance\Discount;
 use App\Models\Finance\DiscountDetail;
 use App\Models\Finance\Tuition;
 use App\Models\Finance\TuitionDetail;
+use App\Models\Finance\TuitionInvoiceDetails;
+use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
@@ -189,16 +192,15 @@ class TuitionController extends Controller
         $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
 
         //Get all students with paid status in all active academic years
-        $me=auth()->user()->id;
+        $me = auth()->user()->id;
 
-        $allStudentsWithMyGuardian=StudentInformation::where('guardian',$me)->pluck('student_id')->toArray();
+        $allStudentsWithMyGuardian = StudentInformation::where('guardian', $me)->pluck('student_id')->toArray();
         $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
             ->whereIn('student_id', $allStudentsWithMyGuardian)
             ->where('tuition_payment_status', 'Paid')
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->count();
-
 
         $familyDiscount = 0;
         if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
@@ -217,11 +219,15 @@ class TuitionController extends Controller
     public function tuitionPayment(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'payment_type' => 'required|in:1,2',
+            'payment_type' => 'required|in:1,2,3',
+            'payment_method' => 'required|exists:payment_methods,id',
+            'student_id' => 'required|exists:student_appliance_statuses,student_id',
             'appliance_id' => 'required|exists:student_appliance_statuses,id',
+            'accept' => 'required|accepted',
+            'description' => 'nullable|string',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -230,14 +236,19 @@ class TuitionController extends Controller
             abort(403);
         }
         $appliance_id = $request->appliance_id;
-
+        $student_id = $request->student_id;
+        $description = $request->description;
         $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
             ->where('id', $appliance_id)
             ->where('tuition_payment_status', 'Pending')
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->first();
-        dd($studentApplianceStatus);
+
+        if (empty($studentApplianceStatus)) {
+            abort(403);
+        }
+
         $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
             ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
             ->join('interviews', 'applications.id', '=', 'interviews.application_id')
@@ -250,13 +261,18 @@ class TuitionController extends Controller
             ->orderByDesc('application_reservations.id')
             ->first();
 
+        if (empty($applicationInfo)) {
+            abort(403);
+        }
+
         //Get tuition price
         $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
             ->where('tuitions.academic_year', $applicationInfo->academic_year)
             ->where('tuition_details.level', $applicationInfo->level)
             ->first();
 
-        $paymentMethod = PaymentMethod::find(2);
+        $paymentMethod = $request->payment_method;
+        $paymentType = $request->payment_type;
 
         //Discount Percentages
         $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
@@ -271,44 +287,216 @@ class TuitionController extends Controller
             ->count();
 
         $familyDiscount = 0;
-        if ($allStudentsWithPaidStatusInActiveAcademicYear == 1) {
-            $familyDiscount = 30;
-        }
         if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
-            $familyDiscount = 35;
+            $familyDiscount = 25;
         }
         if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
+            $familyDiscount = 30;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear > 4) {
             $familyDiscount = 40;
         }
-        if ($allStudentsWithPaidStatusInActiveAcademicYear > 3) {
-            $familyDiscount = 45;
+
+        //Amount information
+        $fullPayment = json_decode($tuition->full_payment, true);
+        $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr']);
+        $fullPaymentAmountWithDiscounts = $fullPaymentAmount - ((($fullPaymentAmount * $familyDiscount) / 100) + (($fullPaymentAmount * $discountPercentages) / 100));
+
+        $twoInstallmentPayment = json_decode($tuition->two_installment_payment, true);
+        $twoInstallmentPaymentAmount = str_replace(',', '', $twoInstallmentPayment['two_installment_amount_irr']);
+        $twoInstallmentPaymentAmountWithDiscounts = $twoInstallmentPaymentAmount - ((($twoInstallmentPaymentAmount * $familyDiscount) / 100) + (($twoInstallmentPaymentAmount * $discountPercentages) / 100));
+
+        $fourInstallmentPayment = json_decode($tuition->four_installment_payment, true);
+        $fourInstallmentPaymentAmount = str_replace(',', '', $fourInstallmentPayment['four_installment_amount_irr']);
+        $fourInstallmentPaymentAmountWithDiscounts = $fourInstallmentPaymentAmount - ((($fourInstallmentPaymentAmount * $familyDiscount) / 100) + (($fourInstallmentPaymentAmount * $discountPercentages) / 100));
+
+        /*
+         * Payment Types:
+        1 for full payment
+        2 for 2 installments
+        3 for 3 installments
+         */
+
+        //Save files if payment method is offline
+        if ($paymentMethod == 1) {
+            switch ($paymentType) {
+                case 1:
+                    $validator = Validator::make($request->all(), [
+                        'document_file_full_payment1' => 'required|mimes:png,jpg,jpeg,pdf,bmp',
+                        'document_file_full_payment2' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
+                        'document_file_full_payment3' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
+                    ]);
+                    if ($validator->fails()) {
+                        $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
+
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+
+                    if ($request->file('document_file_full_payment1') !== null) {
+                        $extension = $request->file('document_file_full_payment1')->getClientOriginalExtension();
+
+                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $documentFileFullPayment1Src = $request->file('document_file_full_payment1')->storeAs(
+                            'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                            $bankSlip1
+                        );
+                    }
+                    if ($request->file('document_file_full_payment2') !== null) {
+                        $extension = $request->file('document_file_full_payment2')->getClientOriginalExtension();
+
+                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $documentFileFullPayment2Src = $request->file('document_file_full_payment1')->storeAs(
+                            'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                            $bankSlip1
+                        );
+                    }
+                    if ($request->file('document_file_full_payment3') !== null) {
+                        $extension = $request->file('document_file_full_payment3')->getClientOriginalExtension();
+
+                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $documentFileFullPayment3Src = $request->file('document_file_full_payment1')->storeAs(
+                            'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                            $bankSlip1
+                        );
+                    }
+                    $filesSrc = [];
+
+                    if (isset($documentFileFullPayment1Src) and $documentFileFullPayment1Src !== null) {
+                        $filesSrc['file1'] = $documentFileFullPayment1Src;
+                    }
+
+                    if (isset($documentFileFullPayment2Src) and $documentFileFullPayment2Src !== null) {
+                        $filesSrc['file2'] = $documentFileFullPayment2Src;
+                    }
+
+                    if (isset($documentFileFullPayment3Src) and $documentFileFullPayment3Src !== null) {
+                        $filesSrc['file3'] = $documentFileFullPayment3Src;
+                    }
+
+                    break;
+                case 2:
+                case 3:
+                    $validator = Validator::make($request->all(), [
+                        'document_file_offline_installment1' => 'required|mimes:png,jpg,jpeg,pdf,bmp',
+                        'document_file_offline_installment2' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
+                        'document_file_offline_installment3' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
+                    ]);
+                    if ($validator->fails()) {
+                        $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
+
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+                    if ($request->file('document_file_offline_installment1') !== null) {
+                        $extension = $request->file('document_file_offline_installment1')->getClientOriginalExtension();
+
+                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $documentFileOfflineInstallment1Src = $request->file('document_file_offline_installment1')->storeAs(
+                            'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                            $bankSlip1
+                        );
+                    }
+                    if ($request->file('document_file_offline_installment2') !== null) {
+                        $extension = $request->file('document_file_offline_installment2')->getClientOriginalExtension();
+
+                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $documentFileOfflineInstallment2Src = $request->file('document_file_offline_installment2')->storeAs(
+                            'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                            $bankSlip1
+                        );
+                    }
+                    if ($request->file('document_file_offline_installment3') !== null) {
+                        $extension = $request->file('document_file_offline_installment3')->getClientOriginalExtension();
+
+                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $documentFileOfflineInstallment3Src = $request->file('document_file_offline_installment3')->storeAs(
+                            'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                            $bankSlip1
+                        );
+                    }
+
+                    $filesSrc = [];
+
+                    if (isset($documentFileOfflineInstallment1Src) and $documentFileOfflineInstallment1Src !== null) {
+                        $filesSrc['file1'] = $documentFileOfflineInstallment1Src;
+                    }
+
+                    if (isset($documentFileOfflineInstallment2Src) and $documentFileOfflineInstallment2Src !== null) {
+                        $filesSrc['file2'] = $documentFileOfflineInstallment2Src;
+                    }
+
+                    if (isset($documentFileOfflineInstallment3Src) and $documentFileOfflineInstallment3Src !== null) {
+                        $filesSrc['file3'] = $documentFileOfflineInstallment3Src;
+                    }
+
+                    break;
+            }
+
+            foreach ($filesSrc as $file){
+                $document=Document::create([
+                    'user_id'=>auth()->user()->id,
+                    'document_type_id'=>7,
+                    'src'=>$file,
+                    'description'=>$description,
+                ]);
+            }
         }
 
-        if (empty($studentApplianceStatus)) {
-            abort(403);
-        }
+        //Make new tuition invoice
+        $tuitionInvoice = TuitionInvoices::firstOrCreate([
+            'appliance_id' => $appliance_id,
+            'payment_type' => $paymentType,
+        ]);
 
-        switch ($request->payment_method) {
+        //Make invoice details by payment type
+        switch ($paymentType){
             case 1:
+                switch ($paymentMethod){
+                    case 1:
+                        $tuitionInvoiceDetails=new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails->tuition_invoice_id=$tuitionInvoice->id;
+                        $tuitionInvoiceDetails->amount=$fullPaymentAmountWithDiscounts;
+                        $tuitionInvoiceDetails->payment_method=$paymentMethod;
+                        $tuitionInvoiceDetails->is_paid=2;
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc],true);
+                        $tuitionInvoiceDetails->save();
+
+                        $studentApplianceStatus->tuition_payment_status='Pending For Review';
+                        $studentApplianceStatus->save();
+                        return redirect()->route('TuitionInvoices.index')->with(['success' => "You have successfully paid tuition amount. Please wait for financial approval!"]);
+                        break;
+                    case 2:
+                        $tuitionInvoiceDetails=new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails->tuition_invoice_id=$tuitionInvoice->id;
+                        $tuitionInvoiceDetails->amount=$fullPaymentAmountWithDiscounts;
+                        $tuitionInvoiceDetails->payment_method=$paymentMethod;
+                        $tuitionInvoiceDetails->is_paid=0;
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description],true);
+                        $tuitionInvoiceDetails->save();
+
+                        $invoice = (new Invoice)->amount($fullPaymentAmountWithDiscounts);
+
+                        return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionPayment')->purchase(
+                            $invoice,
+                            function ($driver, $transactionID) use ($fullPaymentAmountWithDiscounts, $tuitionInvoiceDetails) {
+                                $dataInvoice = new \App\Models\Invoice();
+                                $dataInvoice->user_id = auth()->user()->id;
+                                $dataInvoice->type = 'Tuition Payment';
+                                $dataInvoice->amount = $fullPaymentAmountWithDiscounts;
+                                $dataInvoice->description = json_encode(['amount' => $fullPaymentAmountWithDiscounts, 'invoice_details_id' => $tuitionInvoiceDetails->id], true);
+                                $dataInvoice->transaction_id = $transactionID;
+                                $dataInvoice->save();
+                            }
+                        )->pay()->render();
+                        break;
+                }
                 break;
             case 2:
-                $amount = $applicationInformation->applicationInfo->applicationTimingInfo->fee;
-                // Create new invoice.
-                $invoice = (new Invoice)->amount($amount);
-
-                return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyApplicationPayment')->purchase(
-                    $invoice,
-                    function ($driver, $transactionID) use ($amount, $applicationInformation) {
-                        $dataInvoice = new \App\Models\Invoice();
-                        $dataInvoice->user_id = auth()->user()->id;
-                        $dataInvoice->type = 'Application Reservation';
-                        $dataInvoice->amount = $amount;
-                        $dataInvoice->description = json_encode(['amount' => $amount, 'reservation_id' => $applicationInformation->id], true);
-                        $dataInvoice->transaction_id = $transactionID;
-                        $dataInvoice->save();
-                    }
-                )->pay()->render();
+                break;
+            case 3:
+                break;
         }
+
+        dd($request->all());
 
         return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethod', 'discountPercentages', 'familyDiscount'));
     }

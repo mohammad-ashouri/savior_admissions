@@ -50,7 +50,8 @@
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                             <h1 class="text-2xl font-medium"></h1>
                         </div>
-                        <form id="pay-tuition" method="post" action="{{ route('Tuitions.Pay') }}">
+                        <form id="pay-tuition" method="post" enctype="multipart/form-data"
+                              action="{{ route('Tuitions.Pay') }}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
@@ -69,6 +70,24 @@
                                 </div>
                             </div>
                             <hr>
+                            <div
+                                class="bg-teal-100 border-t-4 border-teal-500 rounded-b md:w-1/2 mb-4 mt-3 text-teal-900 px-4 py-3 shadow-md"
+                                role="alert">
+                                <div class="flex">
+                                    <div class="py-1">
+                                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 20 20">
+                                            <path
+                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold">Choose your payment type and method and click on the get
+                                            invoice button.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="grid gap-6 mb-6 md:grid-cols-2 ">
                                 <div class="grid gap-6 mb-6 md:grid-cols-3">
                                     <div>
@@ -132,7 +151,8 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">You have to pay the entire fee through the online payment portal (Iranian) within the next 72 hours
+                                                    <p class="font-bold">You have to pay the entire fee through the
+                                                        online payment portal (Iranian) within the next 72 hours
                                                         .<br> After payment, you will be
                                                         It will take you to the invoices page.</p>
                                                 </div>
@@ -174,7 +194,10 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">In the installment method, you are allowed to pay the first row of the table below within the next 72 hours. After payment, you can pay other rows separately in the payments section.</p>
+                                                    <p class="font-bold">In the installment method, you are allowed to
+                                                        pay the first row of the table below within the next 72 hours.
+                                                        After payment, you can pay other rows separately in the payments
+                                                        section.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -305,7 +328,10 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">In the installment method, you are allowed to pay the first row of the table below within the next 72 hours. After payment, you can pay other rows separately in the payments section.</p>
+                                                    <p class="font-bold">In the installment method, you are allowed to
+                                                        pay the first row of the table below within the next 72 hours.
+                                                        After payment, you can pay other rows separately in the payments
+                                                        section.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -451,7 +477,7 @@
                                         </div>
                                     </div>
 
-
+                                    {{--                                    File divs--}}
                                     <div id="offline-full-payment-div" hidden=""
                                          class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                          role="alert">
@@ -502,14 +528,38 @@
                                         <div class="grid gap-6 mb-6 md:grid-cols-1">
                                             <label
                                                 class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                                for="document_file_full_payment">Select your bank slip file </label>
+                                                for="document_file_full_payment1">Select your bank slip file 1
+                                                (Required)</label>
                                             <input
                                                 class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                                name="document_file_full_payment" id="document_file_full_payment"
+                                                name="document_file_full_payment1" id="document_file_full_payment1"
                                                 type="file"
                                                 accept=".png,.jpg,.jpeg,.pdf,.bmp">
-
-                                            <img class="w-full h-auto" id="image_preview_full_payment" src=""
+                                            <img class="w-full h-auto" id="image_preview_full_payment1" src=""
+                                                 alt="Preview Image"
+                                                 style="display:none; ">
+                                            <label
+                                                class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file_full_payment2">Select your bank slip file 2
+                                                (Optional)</label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                                name="document_file_full_payment2" id="document_file_full_payment2"
+                                                type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                            <img class="w-full h-auto" id="image_preview_full_payment2" src=""
+                                                 alt="Preview Image"
+                                                 style="display:none; ">
+                                            <label
+                                                class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file_full_payment3">Select your bank slip file 3
+                                                (Optional)</label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                                name="document_file_full_payment3" id="document_file_full_payment3"
+                                                type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                            <img class="w-full h-auto" id="image_preview_full_payment3" src=""
                                                  alt="Preview Image"
                                                  style="display:none; ">
                                             <div class="info mb-5">
@@ -581,16 +631,42 @@
                                         <div class="grid gap-6 mb-6 md:grid-cols-1">
                                             <label
                                                 class="block mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                                for="document_file_offline_installment">Select your bank slip
-                                                file </label>
+                                                for="document_file_offline_installment1">Select your bank slip
+                                                file 1 (Required)</label>
                                             <input
                                                 class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 document_file"
-                                                name="document_file_offline_installment"
-                                                id="document_file_offline_installment" type="file"
+                                                name="document_file_offline_installment1"
+                                                id="document_file_offline_installment1" type="file"
                                                 accept=".png,.jpg,.jpeg,.pdf,.bmp">
 
                                             <img class="w-full h-auto image_preview"
-                                                 id="image_preview_offline_installment" src="" alt="Preview Image"
+                                                 id="image_preview_offline_installment1" src="" alt="Preview Image"
+                                                 style="display:none; ">
+                                            <label
+                                                class="block mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file_offline_installment2">Select your bank slip 2 file
+                                                (Optional)
+                                            </label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 document_file"
+                                                name="document_file_offline_installment2"
+                                                id="document_file_offline_installment2" type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                            <img class="w-full h-auto image_preview"
+                                                 id="image_preview_offline_installment2" src="" alt="Preview Image"
+                                                 style="display:none; ">
+                                            <label
+                                                class="block mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file_offline_installment3">Select your bank slip 3 file
+                                                (Optional)
+                                            </label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 document_file"
+                                                name="document_file_offline_installment3"
+                                                id="document_file_offline_installment3" type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                            <img class="w-full h-auto image_preview"
+                                                 id="image_preview_offline_installment3" src="" alt="Preview Image"
                                                  style="display:none; ">
                                             <div class="info mb-5">
                                                 <div class="dark:text-white font-medium mb-1">File requirements:
@@ -612,7 +688,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>
+                                <div class="overflow-x-auto">
                                     <div hidden="" id="full-payment-invoice">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <tbody>

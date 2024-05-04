@@ -1271,6 +1271,9 @@ $(document).ready(function () {
             pageTitle = 'Prepare To Pay Tuition';
 
             $('#payment_type,#payment_method').val('');
+            $('#document_file_full_payment1,#document_file_offline_installment1').val('');
+            $('#document_file_full_payment2,#document_file_offline_installment2').val('');
+            $('#document_file_full_payment3,#document_file_offline_installment3').val('');
 
             $('.get-invoice').on('click', function () {
                 let paymentMethod = $('#payment_method').val();
@@ -1283,7 +1286,7 @@ $(document).ready(function () {
                 $('#accept-div').addClass('hidden');
                 $('#payment-button').hide();
 
-                $('#document_file_full_payment,#document_file_offline_installment').attr('required', false);
+                $('#document_file_full_payment1,#document_file_offline_installment1').attr('required', false);
 
                 let paymentType = $('#payment_type').val();
 
@@ -1311,16 +1314,17 @@ $(document).ready(function () {
                                 case '1':
                                     $('#offline-full-payment-div').show();
                                     $('#full-payment-online').hide();
-                                    $('#document_file_full_payment').attr('required', true);
+                                    $('#document_file_full_payment1').attr('required', true);
                                     break;
                                 case '2':
                                     $('#offline-installment-div').show();
                                     $('#installment2-online').hide();
-                                    $('#document_file_offline_installment').attr('required', true);
+                                    $('#document_file_offline_installment1').attr('required', true);
                                     break;
                                 case '3':
                                     $('#offline-installment-div').show();
                                     $('#installment4-online').hide();
+                                    $('#document_file_offline_installment1').attr('required', true);
                                     break;
                             }
                             break;
@@ -1329,12 +1333,10 @@ $(document).ready(function () {
                                 case '1':
                                     $('#offline-full-payment-div').hide();
                                     $('#full-payment-online').show();
-                                    $('#document_file_full_payment').attr('required', false);
                                     break;
                                 case '2':
                                     $('#offline-installment-div').hide();
                                     $('#installment2-online').show();
-                                    $('#document_file_offline_installment').attr('required', false);
                                     break;
                                 case '3':
                                     $('#offline-installment-div').hide();
@@ -1351,9 +1353,47 @@ $(document).ready(function () {
                 }
             });
 
-            $('#document_file_full_payment').change(function () {
-                const fileInput = $('#document_file_full_payment');
-                const imagePreview = $('#image_preview_full_payment');
+            $('#document_file_full_payment1').change(function () {
+                const fileInput = $('#document_file_full_payment1');
+                const imagePreview = $('#image_preview_full_payment1');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
+                }
+            });
+            $('#document_file_full_payment2').change(function () {
+                const fileInput = $('#document_file_full_payment2');
+                const imagePreview = $('#image_preview_full_payment2');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
+                }
+            });
+            $('#document_file_full_payment3').change(function () {
+                const fileInput = $('#document_file_full_payment3');
+                const imagePreview = $('#image_preview_full_payment3');
 
                 if (fileInput[0].files && fileInput[0].files[0]) {
                     const reader = new FileReader();
@@ -1371,9 +1411,47 @@ $(document).ready(function () {
                 }
             });
 
-            $('#document_file_offline_installment').change(function () {
-                const fileInput = $('#document_file_offline_installment');
-                const imagePreview = $('#image_preview_offline_installment');
+            $('#document_file_offline_installment1').change(function () {
+                const fileInput = $('#document_file_offline_installment1');
+                const imagePreview = $('#image_preview_offline_installment1');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
+                }
+            });
+            $('#document_file_offline_installment2').change(function () {
+                const fileInput = $('#document_file_offline_installment2');
+                const imagePreview = $('#image_preview_offline_installment2');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
+                }
+            });
+            $('#document_file_offline_installment3').change(function () {
+                const fileInput = $('#document_file_offline_installment3');
+                const imagePreview = $('#image_preview_offline_installment3');
 
                 if (fileInput[0].files && fileInput[0].files[0]) {
                     const reader = new FileReader();
@@ -1391,18 +1469,18 @@ $(document).ready(function () {
                 }
             });
 
-            $('.pay-tuition').submit(function (e) {
+            $('#pay-tuition').submit(function (e) {
                 e.preventDefault();
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: 'After confirmation, you will be taken to the payment page. Your payment type cannot be changed.',
+                    text: 'After confirmation, you will be taken to the payment page.',
                     icon: 'warning',
                     showCancelButton: true,
                     cancelButtonText: 'No',
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('.pay-tuition').off('submit').submit();
+                        $('#pay-tuition').off('submit').submit();
                     }
                 });
             });

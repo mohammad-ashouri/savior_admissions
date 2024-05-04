@@ -20,6 +20,7 @@ use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\Finance\ApplicationReservationController;
 use App\Http\Controllers\Finance\DiscountsController;
 use App\Http\Controllers\Finance\TuitionController;
+use App\Http\Controllers\Finance\TuitionPaymentController;
 use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\PaymentController;
@@ -122,6 +123,8 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         //Pay Tuition
         Route::get('PayTuition/{student_id}', [TuitionController::class, 'payTuition'])->name('Tuitions.PayTuition');
         Route::post('PayTuition', [TuitionController::class, 'tuitionPayment'])->name('Tuitions.Pay');
+        //Payment list
+        Route::resource('TuitionInvoices', TuitionPaymentController::class);
 
         Route::resource('Discounts', DiscountsController::class);
         Route::post('ChangeDiscountPercentage', [DiscountsController::class, 'changeDiscountPercentage']);
