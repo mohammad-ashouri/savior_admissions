@@ -123,7 +123,6 @@ return new class extends Migration
 (101, 'Iran, Islamic Republic of', '98', NULL, NULL),
 (102, 'Iraq', '964', NULL, NULL),
 (103, 'Ireland', '353', NULL, NULL),
-(104, 'Israel', '972', NULL, NULL),
 (105, 'Italy', '39', NULL, NULL),
 (106, 'Jamaica', '1876', NULL, NULL),
 (107, 'Japan', '81', NULL, NULL),
