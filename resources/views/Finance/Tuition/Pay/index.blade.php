@@ -1,3 +1,4 @@
+@php use Carbon\Carbon; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -111,9 +112,12 @@
                                         $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']);
                                         $fourInstallmentPayment=json_decode($tuition->four_installment_payment,true);
                                         $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr']);
+                                        $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
+                                        $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
                                     @endphp
                                 </div>
-                                <div>
+                                <div class="overflow-x-auto">
+                                    {{--                                    Full payment divs--}}
                                     <div id="full-payment-div" hidden="">
                                         <div id="full-payment-online" hidden=""
                                              class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
@@ -128,9 +132,9 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">You must pay the total fee through the online
-                                                        (Iranian) payment portal.<br> After payment, you will be
-                                                        transferred to the invoices page.</p>
+                                                    <p class="font-bold">You have to pay the entire fee through the online payment portal (Iranian) within the next 72 hours
+                                                        .<br> After payment, you will be
+                                                        It will take you to the invoices page.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,6 +158,300 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    {{--                                    2 installments divs--}}
+                                    <div id="installment2-div" hidden="">
+                                        <div
+                                            class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                            role="alert">
+                                            <div class="flex">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">In the installment method, you are allowed to pay the first row of the table below within the next 72 hours. After payment, you can pay other rows separately in the payments section.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4">
+
+                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                                <thead
+                                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                <tr>
+                                                    <th scope="col" class="p-4">
+                                                        <div class="flex items-center">
+                                                            #
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-1 text-center">
+                                                        Date Created
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-1 text-center">
+                                                        Due Date
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-1 text-center">
+                                                        Due Amount
+                                                    </th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="w-4 p-4 text-center">
+                                                        1
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $dateOfModified }}
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{$dateOfDueAdvance}}
+                                                    </td>
+                                                    <td class="w-20 p-4 text-center">
+                                                        IRR {{ $twoInstallmentPayment['two_installment_advance_irr'] }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="w-4 p-4 text-center">
+                                                        2
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $dateOfModified }}
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $twoInstallmentPayment['date_of_installment1_two'] }}
+                                                    </td>
+                                                    <td class="w-20 p-4 text-center">
+                                                        IRR {{ $twoInstallmentPayment['two_installment_each_installment_irr'] }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="w-4 p-4 text-center">
+                                                        3
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $dateOfModified }}
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $twoInstallmentPayment['date_of_installment2_two'] }}
+                                                    </td>
+                                                    <td class="w-20 p-4 text-center">
+                                                        IRR {{ $twoInstallmentPayment['two_installment_each_installment_irr'] }}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="installment2-online" hidden=""
+                                         class="bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md"
+                                         role="alert">
+                                        <div class="flex">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold">You must pay your first installment through the
+                                                    direct banking portal. <br>
+                                                    After payment, you will be automatically redirected to your payment
+                                                    list page.<br>
+                                                    If you wish, you can pay your installments ahead of time on that
+                                                    page.</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex mt-4">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold">When paying, note that the deposit amount is the
+                                                    same amount as your first installment.<br>
+                                                    In case of discrepancy, prevent the payment and inform the financial
+                                                    unit of your school.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{--                                    4 installments divs--}}
+                                    <div id="installment4-div" hidden="">
+                                        <div
+                                            class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                            role="alert">
+                                            <div class="flex">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">In the installment method, you are allowed to pay the first row of the table below within the next 72 hours. After payment, you can pay other rows separately in the payments section.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4">
+
+                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                                <thead
+                                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                <tr>
+                                                    <th scope="col" class="p-4">
+                                                        <div class="flex items-center">
+                                                            #
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-1 text-center">
+                                                        Date Created
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-1 text-center">
+                                                        Due Date
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-1 text-center">
+                                                        Due Amount
+                                                    </th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="w-4 p-4 text-center">
+                                                        1
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $dateOfModified }}
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{$dateOfDueAdvance}}
+                                                    </td>
+                                                    <td class="w-20 p-4 text-center">
+                                                        IRR {{ $fourInstallmentPayment['four_installment_advance_irr'] }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="w-4 p-4 text-center">
+                                                        2
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $dateOfModified }}
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $fourInstallmentPayment['date_of_installment1_four'] }}
+                                                    </td>
+                                                    <td class="w-20 p-4 text-center">
+                                                        IRR {{ $fourInstallmentPayment['four_installment_each_installment_irr'] }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="w-4 p-4 text-center">
+                                                        3
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $dateOfModified }}
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $fourInstallmentPayment['date_of_installment2_four'] }}
+                                                    </td>
+                                                    <td class="w-20 p-4 text-center">
+                                                        IRR {{ $fourInstallmentPayment['four_installment_each_installment_irr'] }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="w-4 p-4 text-center">
+                                                        4
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $dateOfModified }}
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $fourInstallmentPayment['date_of_installment3_four'] }}
+                                                    </td>
+                                                    <td class="w-20 p-4 text-center">
+                                                        IRR {{ $fourInstallmentPayment['four_installment_each_installment_irr'] }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="w-4 p-4 text-center">
+                                                        5
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $dateOfModified }}
+                                                    </td>
+                                                    <td class="w-4 p-4 text-center">
+                                                        {{ $fourInstallmentPayment['date_of_installment4_four'] }}
+                                                    </td>
+                                                    <td class="w-20 p-4 text-center">
+                                                        IRR {{ $fourInstallmentPayment['four_installment_each_installment_irr'] }}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="installment4-online" hidden=""
+                                         class="bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md"
+                                         role="alert">
+                                        <div class="flex">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold">You must pay your first installment through the
+                                                    direct banking portal. <br>
+                                                    After payment, you will be automatically redirected to your payment
+                                                    list page.<br>
+                                                    If you wish, you can pay your installments ahead of time on that
+                                                    page.</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex mt-4">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold">When paying, note that the deposit amount is the
+                                                    same amount as your first installment.<br>
+                                                    In case of discrepancy, prevent the payment and inform the financial
+                                                    unit of your school.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <div id="offline-full-payment-div" hidden=""
                                          class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                          role="alert">
@@ -204,13 +502,15 @@
                                         <div class="grid gap-6 mb-6 md:grid-cols-1">
                                             <label
                                                 class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                                for="document_file">Upload your bank slip </label>
+                                                for="document_file_full_payment">Select your bank slip file </label>
                                             <input
                                                 class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                                id="document_file" name="document_file" type="file"
+                                                name="document_file_full_payment" id="document_file_full_payment"
+                                                type="file"
                                                 accept=".png,.jpg,.jpeg,.pdf,.bmp">
 
-                                            <img id="image_preview" class="w-full h-auto" src="" alt="Preview Image"
+                                            <img class="w-full h-auto" id="image_preview_full_payment" src=""
+                                                 alt="Preview Image"
                                                  style="display:none; ">
                                             <div class="info mb-5">
                                                 <div class="dark:text-white font-medium mb-1">File requirements:
@@ -231,12 +531,11 @@
                                             </div>
                                         </div>
                                     </div>
-@dd($twoInstallmentPayment)
-                                    <div id="installment2-div" hidden="">
-                                        <div
-                                            class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                                            role="alert">
-                                            <div class="flex">
+                                    <div id="offline-installment-div" hidden=""
+                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         role="alert">
+                                        <div>
+                                            <div class="flex mb-4">
                                                 <div class="py-1">
                                                     <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
                                                          xmlns="http://www.w3.org/2000/svg"
@@ -246,54 +545,70 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">In the installment method, you must pay your
-                                                        tuition according to the table below. After paying the first
-                                                        tuition, you can pay each tuition separately on your tuition
-                                                        page.</p>
+                                                    You must deposit the advance payment amount (the amount of the first
+                                                    row) using one of the following methods (bank account number, bank
+                                                    card number or Shaba number) and upload the image of your bank slip
+                                                    from the box below.
+                                                    <p class="font-bold text-red-600">Avoid depositing more than the
+                                                        first row.</p>
                                                 </div>
                                             </div>
+                                            <div>
+                                                @foreach($paymentMethods as $methods)
+                                                    @if(empty($methods->description))
+                                                        @continue
+                                                    @endif
+                                                    @php
+                                                        $descriptions = null;
+                                                        if ($methods->description) {
+                                                            $descriptions = json_decode($methods->description, true);
+                                                        }
+                                                    @endphp
+
+                                                    @if ($descriptions)
+                                                        @foreach($descriptions as $title => $description)
+                                                            <label
+                                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                                {{ $title }}: {{ $description }}
+                                                            </label>
+                                                        @endforeach
+                                                    @else
+                                                        <p>No descriptions available</p>
+                                                    @endif
+                                                @endforeach
+                                            </div>
                                         </div>
-                                        <div class="mt-4">
+                                        <div class="grid gap-6 mb-6 md:grid-cols-1">
+                                            <label
+                                                class="block mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file_offline_installment">Select your bank slip
+                                                file </label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 document_file"
+                                                name="document_file_offline_installment"
+                                                id="document_file_offline_installment" type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
 
-                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                <thead
-                                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th scope="col" class="p-4">
-                                                        <div class="flex items-center">
-                                                            #
-                                                        </div>
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Date Created
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Due Date
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Due Amount
-                                                    </th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        1
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                            <img class="w-full h-auto image_preview"
+                                                 id="image_preview_offline_installment" src="" alt="Preview Image"
+                                                 style="display:none; ">
+                                            <div class="info mb-5">
+                                                <div class="dark:text-white font-medium mb-1">File requirements:
+                                                </div>
+                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                    these
+                                                    requirements
+                                                    are met:
+                                                </div>
+                                                <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                    <li>
+                                                        The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                    </li>
+                                                    <li>
+                                                        Maximum size: 5 MB
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -428,7 +743,16 @@
                             </div>
                             <input type="hidden" value="{{$studentApplianceStatus->student_id}}" name="student_id">
                             <input type="hidden" value="{{$studentApplianceStatus->id}}" name="appliance_id">
-                            <button type="submit"
+                            <div id="accept-div" class="flex justify-between items-start mb-3 hidden">
+                                <div class="flex items-center h-5">
+                                    <input id="accept" type="checkbox" name="accept" required
+                                           class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300  dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+                                    >
+                                    <label for="accept" class="ml-2 text-sm font-medium">I have read all the contents of
+                                        the page and I accept it.</label>
+                                </div>
+                            </div>
+                            <button type="submit" id="payment-button" hidden=""
                                     class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
                                 Payment
                             </button>

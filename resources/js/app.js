@@ -1270,70 +1270,110 @@ $(document).ready(function () {
         if (fullPath.includes('PayTuition')) {
             pageTitle = 'Prepare To Pay Tuition';
 
+            $('#payment_type,#payment_method').val('');
+
             $('.get-invoice').on('click', function () {
                 let paymentMethod = $('#payment_method').val();
 
-                $('#full-payment-div').hide();
-                $('#full-payment-invoice').hide();
-                $('#offline-full-payment-div').hide();
-                $('#full-payment-online').hide();
+                $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
+                $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
+                $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
+                $('#offline-full-payment-div, #offline-installment-div').hide();
 
-                $('#installment2-div').hide();
-                $('#installment2-payment-invoice').hide();
+                $('#accept-div').addClass('hidden');
+                $('#payment-button').hide();
 
-                $('#installment4-div').hide();
-                $('#installment4-payment-invoice').hide();
+                $('#document_file_full_payment,#document_file_offline_installment').attr('required', false);
 
-                switch ($('#payment_type').val()) {
-                    case '1':
-                        $('#full-payment-div').show();
-                        $('#full-payment-invoice').show();
+                let paymentType = $('#payment_type').val();
 
-                        switch (paymentMethod) {
-                            case '1':
-                                $('#offline-full-payment-div').show();
-                                $('#full-payment-online').hide();
-                                break;
-                            case '2':
-                                $('#offline-full-payment-div').hide();
-                                $('#full-payment-online').show();
-                                break;
-                        }
-                        break;
-                    case '2':
-                        $('#installment2-div').show();
-                        $('#installment2-payment-invoice').show();
-                        switch (paymentMethod) {
-                            case '1':
-                                $('#offline-payment-div').show();
-                                $('#full-payment-online').hide();
-                                break;
-                            case '2':
-                                $('#offline-payment-div').hide();
-                                $('#full-payment-online').show();
-                                break;
-                        }
-                        break;
-                    case '3':
-                        $('#installment4-div').show();
-                        $('#installment4-payment-invoice').show();
-                        switch (paymentMethod) {
-                            case '1':
-                                $('#offline-payment-div').show();
-                                $('#full-payment-online').hide();
-                                break;
-                            case '2':
-                                $('#offline-payment-div').hide();
-                                $('#full-payment-online').show();
-                                break;
-                        }
-                        break;
+                // Hide all elements initially
+                $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online, #installment2-div, #installment2-payment-invoice, #installment2-online, #installment4-div, #installment4-payment-invoice, #installment4-online, #offline-full-payment-div, #offline-installment-div').hide();
+
+                if (paymentType!=null && paymentMethod!=null) {
+                    // Show elements based on payment type
+                    switch (paymentType) {
+                        case '1':
+                            $('#full-payment-div, #full-payment-invoice').show();
+                            break;
+                        case '2':
+                            $('#installment2-div, #installment2-payment-invoice').show();
+                            break;
+                        case '3':
+                            $('#installment4-div, #installment4-payment-invoice').show();
+                            break;
+                    }
+
+                    // Show or hide elements based on payment method
+                    switch (paymentMethod) {
+                        case '1':
+                            switch (paymentType) {
+                                case '1':
+                                    $('#offline-full-payment-div').show();
+                                    $('#full-payment-online').hide();
+                                    $('#document_file_full_payment').attr('required', true);
+                                    break;
+                                case '2':
+                                    $('#offline-installment-div').show();
+                                    $('#installment2-online').hide();
+                                    $('#document_file_offline_installment').attr('required', true);
+                                    break;
+                                case '3':
+                                    $('#offline-installment-div').show();
+                                    $('#installment4-online').hide();
+                                    break;
+                            }
+                            break;
+                        case '2':
+                            switch (paymentType) {
+                                case '1':
+                                    $('#offline-full-payment-div').hide();
+                                    $('#full-payment-online').show();
+                                    $('#document_file_full_payment').attr('required', false);
+                                    break;
+                                case '2':
+                                    $('#offline-installment-div').hide();
+                                    $('#installment2-online').show();
+                                    $('#document_file_offline_installment').attr('required', false);
+                                    break;
+                                case '3':
+                                    $('#offline-installment-div').hide();
+                                    $('#installment4-online').show();
+                                    break;
+                            }
+                            break;
+                    }
+
+                    $('#accept-div').removeClass('hidden');
+                    $('#payment-button').show();
+                }else{
+                    swalFire('Error', 'Please select both of fields.', 'error', 'Try again');
                 }
             });
 
-            $('#document_file').change(function () {
-                const fileInput = $('#document_file');
-                const imagePreview = $('#image_preview');
+            $('#document_file_full_payment').change(function () {
+                const fileInput = $('#document_file_full_payment');
+                const imagePreview = $('#image_preview_full_payment');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
+                }
+            });
+
+            $('#document_file_offline_installment').change(function () {
+                const fileInput = $('#document_file_offline_installment');
+                const imagePreview = $('#image_preview_offline_installment');
 
                 if (fileInput[0].files && fileInput[0].files[0]) {
                     const reader = new FileReader();
