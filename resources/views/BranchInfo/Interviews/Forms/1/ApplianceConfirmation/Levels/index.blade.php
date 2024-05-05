@@ -1244,11 +1244,13 @@
                             <select id="s5_q1" name="s5_q1" disabled
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
-                                <option @if($interviewFields['s5_q1']=='poor') selected @endif value="poor">poor</option>
+                                <option @if($interviewFields['s5_q1']=='poor') selected @endif value="poor">poor
+                                </option>
                                 <option @if($interviewFields['s5_q1']=='average') selected @endif value="average">
                                     average
                                 </option>
-                                <option @if($interviewFields['s5_q1']=='good') selected @endif value="good">good</option>
+                                <option @if($interviewFields['s5_q1']=='good') selected @endif value="good">good
+                                </option>
                                 <option @if($interviewFields['s5_q1']=='very good') selected @endif value="very good">
                                     very good
                                 </option>
@@ -1315,7 +1317,36 @@
                         </div>
                     </div>
                 </div>
+                <hr>
+                <div class="mb-8" id="tab8">
+                    <p class="font-bold mb-4">
+                        Final step: Interview result
+                    </p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="w-1/3 p-4 text-center">
+                                    Sum of points with coefficient
+                                </th>
+                                <td class="font-bold p-4 text-center">
+                                    <p id="sum-of-points"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="col" class="w-1/3 p-4 text-center">
+                                    Result (admitted, conditional, rejected)
+                                </th>
+                                <td class="font-bold p-4 text-center">
 
+                                </td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <hr>
                 <div id="last-step" class="text-center">
                     <div class="text-left mb-4">
                         <p class="font-bold mt-4">

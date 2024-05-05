@@ -1527,9 +1527,6 @@
                                 <td class="font-bold p-4 text-center">
                                     <p id="sum-of-points"></p>
                                 </td>
-                                <td class=" p-4 text-center" rowspan="2">
-                                    Acceptance conditions (to be completed if the conditional option is selected)
-                                </td>
                             </tr>
                             <tr>
                                 <th scope="col" class="w-1/3 p-4 text-center">
