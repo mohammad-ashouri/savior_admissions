@@ -372,7 +372,7 @@ class ApplicationController extends Controller
             'date_and_time' => 'required|exists:applications,id',
             'academic_year' => 'required|exists:academic_years,id',
             'level' => 'required|exists:levels,id',
-            'student' => 'required|exists:student_informations,id',
+            'student' => 'required|exists:student_informations,student_id',
             'interview_type' => 'required',
         ]);
         if ($validator->fails()) {
@@ -388,7 +388,7 @@ class ApplicationController extends Controller
         $dateAndTime = $request->date_and_time;
         $interviewType = $request->interview_type;
 
-        $studentInfo = StudentInformation::where('guardian', $me->id)->where('id', $student)->first();
+        $studentInfo = StudentInformation::where('guardian', $me->id)->where('student_id', $student)->first();
 //        $studentInfo = StudentInformation::with('generalInformations')
 //            ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
 //            ->where('guardian', $me->id)
