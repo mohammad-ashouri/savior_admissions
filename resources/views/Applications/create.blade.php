@@ -1,4 +1,4 @@
-@php use App\Models\Branch\StudentApplianceStatus; @endphp
+@php use App\Models\Branch\ApplicationReservation;use App\Models\Branch\StudentApplianceStatus; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -43,15 +43,20 @@
                                         @foreach($myStudents as $student)
                                             <option
                                                 @php
-                                                    $studentsOnInterview=StudentApplianceStatus::whereIn('academic_year',$activeAcademicYears)->where(function ($query){
-                                                                                $query->where('interview_status','!=','Rejected');
-                                                                                $query->orWhere('interview_status','!=',null);
-                                                                            })->where('student_id',$student->student_id)->exists();
+                                                    $studentsOnInterview=ApplicationReservation::join('applications','application_reservations.application_id','=','applications.id')
+                                                    ->join('application_timings','applications.application_timing_id','=','application_timings.id')
+                                                    ->whereIn('application_timings.academic_year',$activeAcademicYears)
+                                                    ->where('applications.reserved',1)
+                                                    ->where('application_reservations.student_id',$student->student_id)
+                                                    ->where('applications.interviewed',0)
+                                                    ->exists();
                                                 @endphp
                                                 @if($studentsOnInterview) disabled @endif
-                                            @if(old('student')==$student->id) selected
-                                                    @endif value="{{$student->student_id}}">
-                                                {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }} @if($studentsOnInterview) (On interview) @endif
+                                                @if(old('student')==$student->id) selected
+                                                @endif value="{{$student->student_id}}">
+                                                {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }} @if($studentsOnInterview)
+                                                    (On interview)
+                                                @endif
                                             </option>
                                         @endforeach
                                     </select>
