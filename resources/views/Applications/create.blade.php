@@ -1,3 +1,4 @@
+@php use App\Models\Branch\StudentApplianceStatus; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -40,9 +41,17 @@
                                             title="Select student" required>
                                         <option selected disabled value="">Select student</option>
                                         @foreach($myStudents as $student)
-                                            <option @if($student->interview_status!='Rejected' or $student->interview_status!=null) disabled @endif @if(old('student')==$student->id) selected
-                                                    @endif value="{{$student->id}}">
-                                                {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }} @if($student->interview_status!='Rejected' or $student->interview_status!=null) (On interview) @endif
+                                            <option
+                                                @php
+                                                    $studentsOnInterview=StudentApplianceStatus::whereIn('academic_year',$activeAcademicYears)->where(function ($query){
+                                                                                $query->where('interview_status','!=','Rejected');
+                                                                                $query->orWhere('interview_status','!=',null);
+                                                                            })->where('student_id',$student->student_id)->exists();
+                                                @endphp
+                                                @if($studentsOnInterview) disabled @endif
+                                            @if(old('student')==$student->id) selected
+                                                    @endif value="{{$student->student_id}}">
+                                                {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }} @if($studentsOnInterview) (On interview) @endif
                                             </option>
                                         @endforeach
                                     </select>
