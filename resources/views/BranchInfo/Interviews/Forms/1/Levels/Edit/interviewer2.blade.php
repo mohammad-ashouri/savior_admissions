@@ -39,7 +39,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_1_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -50,7 +50,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_1']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_1']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -87,7 +87,7 @@
                                     Timely notification of emergencies (travel, illness, early exams, etc.)
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_3_c">
-                                        2
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -98,7 +98,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_3']*2}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_3']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -112,7 +112,7 @@
                                     news and information
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_4_c">
-                                        3
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -123,7 +123,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s4_4_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_4']*3}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s4_4']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -134,7 +134,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s4_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s4_1']*4)+($interviewFields['s4_2']*2)+($interviewFields['s4_3']*2)+($interviewFields['s4_4']*3)}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s4_1']*2)+($interviewFields['s4_2']*2)+($interviewFields['s4_3']*1)+($interviewFields['s4_4']*1)}}
                                     </label>
                                 </td>
                             </tr>

@@ -19,7 +19,6 @@
                                 title="Select an option" required>
                             <option selected disabled value="">Select an option</option>
                             <option value="Admitted">Admitted</option>
-                            <option value="Conditional">Conditional</option>
                             <option value="Rejected">Rejected</option>
                         </select>
                         <div class="mt-3">
@@ -41,7 +40,6 @@
                                 title="Select an option" required>
                             <option selected disabled value="">Select an option</option>
                             <option value="Admitted">Admitted</option>
-                            <option value="Conditional">Conditional</option>
                             <option value="Rejected">Rejected</option>
                         </select>
                         <div class="mt-3">
@@ -63,7 +61,6 @@
                                 title="Select an option" required>
                             <option selected disabled value="">Select an option</option>
                             <option value="Admitted">Admitted</option>
-                            <option value="Conditional">Conditional</option>
                             <option value="Rejected">Rejected</option>
                         </select>
                         <div class="mt-3">
@@ -85,7 +82,6 @@
                                 title="Select an option" required>
                             <option selected disabled value="">Select an option</option>
                             <option value="Admitted">Admitted</option>
-                            <option value="Conditional">Conditional</option>
                             <option value="Rejected">Rejected</option>
                         </select>
                         <div class="mt-3">
@@ -136,7 +132,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s2_1_c">
-                                        5
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -160,7 +156,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_2_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -184,7 +180,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_3_c">
-                                        3
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -209,7 +205,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_4_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -233,7 +229,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_5_c">
-                                        4
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -258,7 +254,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_6_c">
-                                        3
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -350,7 +346,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_1_c">
-                                        5
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -375,7 +371,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_2_c">
-                                        3
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -425,7 +421,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_4_c">
-                                        3
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -449,7 +445,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_5_c">
-                                        3
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -473,7 +469,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_6_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -541,7 +537,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_1_c">
-                                        5
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -564,7 +560,7 @@
                                     Vision test
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_2_c">
-                                        5
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -587,7 +583,7 @@
                                     Hearing test
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_3_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">

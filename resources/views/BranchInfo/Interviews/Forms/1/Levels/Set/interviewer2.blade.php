@@ -39,7 +39,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_1_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -85,7 +85,7 @@
                                     Timely notification of emergencies (travel, illness, early exams, etc.)
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_3_c">
-                                        2
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -109,7 +109,7 @@
                                     news and information
                                 <td class="w-2 p-4 text-center">
                                     <p id="s4_4_c">
-                                        3
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">

@@ -28,9 +28,6 @@
                             <option @if($interviewFields['s1_1_s']=='Inadmissible') selected
                                     @endif value="Inadmissible">Inadmissible
                             </option>
-                            <option @if($interviewFields['s1_1_s']=='Conditional') selected @endif value="Conditional">
-                                Conditional
-                            </option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_1_d"
@@ -55,9 +52,6 @@
                             <option @if($interviewFields['s1_2_s']=='Inadmissible') selected
                                     @endif value="Inadmissible">Inadmissible
                             </option>
-                            <option @if($interviewFields['s1_2_s']=='Conditional') selected @endif value="Conditional">
-                                Conditional
-                            </option>
                         </select>
                         <div class="mt-3">
                             <label for="s1_2_d"
@@ -81,9 +75,6 @@
                             </option>
                             <option @if($interviewFields['s1_3_s']=='Inadmissible') selected
                                     @endif value="Inadmissible">Inadmissible
-                            </option>
-                            <option @if($interviewFields['s1_3_s']=='Conditional') selected @endif value="Conditional">
-                                Conditional
                             </option>
                         </select>
                         <div class="mt-3">
@@ -134,7 +125,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s2_1_c">
-                                        5
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -145,7 +136,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_1']*5}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_1']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -161,7 +152,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_2_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -172,7 +163,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_2_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_2']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_2']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -186,7 +177,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_3_c">
-                                        3
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -197,7 +188,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_3']*3}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_3']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -214,7 +205,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_4_c">
-                                        4
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -225,7 +216,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_4_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_4']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_4']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -240,7 +231,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_5_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -251,7 +242,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_5_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_5']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_5']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -266,7 +257,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s2_6_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -277,7 +268,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s2_6_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_6']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s2_6']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -288,7 +279,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s2_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s2_1']*5)+($interviewFields['s2_2']*4)+($interviewFields['s2_3']*3)+($interviewFields['s2_4']*4)+($interviewFields['s2_5']*4)+($interviewFields['s2_6']*4)}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s2_1']*2)+($interviewFields['s2_2']*2)+($interviewFields['s2_3']*1)+($interviewFields['s2_4']*1)+($interviewFields['s2_5']*2)+($interviewFields['s2_6']*2)}}
                                     </label>
                                 </td>
                             </tr>
@@ -391,7 +382,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_1_c">
-                                        5
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -402,7 +393,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_1_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_1']*5}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_1']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -416,7 +407,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_2_c">
-                                        3
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -427,7 +418,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_2_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_2']*3}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_2']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -441,7 +432,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_3_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -452,7 +443,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_3_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_3']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_3']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -466,7 +457,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_4_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -477,7 +468,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_4_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_4']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_4']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -491,7 +482,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_5_c">
-                                        5
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -502,7 +493,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_5_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_5']*5}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_5']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -516,7 +507,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_6_c">
-                                        5
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -527,7 +518,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_6_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_6']*5}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_6']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -541,7 +532,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_7_c">
-                                        4
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -552,7 +543,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_7_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_7']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_7']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -567,7 +558,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_8_c">
-                                        3
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -578,7 +569,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_8_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_8']*3}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_8']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -592,7 +583,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_9_c">
-                                        4
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -603,7 +594,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_9_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_9']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_9']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -618,7 +609,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_10_c">
-                                        4
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -629,7 +620,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_10_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_10']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_10']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -643,7 +634,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_11_c">
-                                        4
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -654,7 +645,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_11_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_11']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_11']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -669,7 +660,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_12_c">
-                                        5
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -680,7 +671,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_12_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_12']*5}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_12']*2}}
                                     </label>
                                 </td>
                             </tr>
@@ -695,7 +686,7 @@
                                 </td>
                                 <td class="w-2 p-4 text-center">
                                     <p id="s3_13_c">
-                                        4
+                                        1
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -706,7 +697,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label for="s3_13_rs"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_13']*4}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{$interviewFields['s3_13']*1}}
                                     </label>
                                 </td>
                             </tr>
@@ -717,7 +708,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <label id="s3_total"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s3_1']*5)+($interviewFields['s3_2']*3)+($interviewFields['s3_3']*4)+($interviewFields['s3_4']*4)+($interviewFields['s3_5']*5)+($interviewFields['s3_6']*5)+($interviewFields['s3_7']*4)+($interviewFields['s3_8']*3)+($interviewFields['s3_9']*4)+($interviewFields['s3_10']*4)+($interviewFields['s3_11']*4)+($interviewFields['s3_12']*5)+($interviewFields['s3_13']*4)}}
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">{{($interviewFields['s3_1']*2)+($interviewFields['s3_2']*2)+($interviewFields['s3_3']*2)+($interviewFields['s3_4']*2)+($interviewFields['s3_5']*1)+($interviewFields['s3_6']*1)+($interviewFields['s3_7']*1)+($interviewFields['s3_8']*1)+($interviewFields['s3_9']*1)+($interviewFields['s3_10']*2)+($interviewFields['s3_11']*1)+($interviewFields['s3_12']*2)+($interviewFields['s3_13']*1)}}
                                     </label>
                                 </td>
                             </tr>

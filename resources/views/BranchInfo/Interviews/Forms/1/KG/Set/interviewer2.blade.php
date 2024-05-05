@@ -40,7 +40,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s5_1_c">
-                                        3
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -66,7 +66,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s5_2_c">
-                                        3
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
@@ -114,7 +114,7 @@
                                 </td>
                                 <td class="w-4 p-4 text-center">
                                     <p id="s5_4_c">
-                                        1
+                                        2
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
