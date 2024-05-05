@@ -141,16 +141,16 @@
                                             <div
                                                 class="text-base font-semibold">
                                                 @switch($student->documents_uploaded)
-                                                    @case(0)
+                                                    @case('0')
                                                         Pending For Upload
                                                         @break
-                                                    @case(1)
+                                                    @case('1')
                                                         Admitted
                                                         @break
-                                                    @case(2)
+                                                    @case('2')
                                                         Pending For Review
                                                         @break
-                                                    @case(3)
+                                                    @case('3')
                                                         Rejected
                                                         @break
                                                     @default
