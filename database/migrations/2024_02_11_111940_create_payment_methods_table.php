@@ -21,9 +21,9 @@ return new class extends Migration
 
         $offlinePaymentDescription = json_encode([
             "bank_name" => 'Mellat',
-            "card_number" => "6104 1234 4566 7897",
-            "shaba" => "IR123456789456789456789465",
-            "bank_account_number" => "021125456487"
+            "card_number" => "6104 3388 0014 6892",
+            "shaba" => "IR880120000000009651522568",
+            "bank_account_number" => "9651522568"
         ]);
 
         $query = "INSERT INTO payment_methods (name, description) VALUES ('Offline Payment', ?), ('Online Gateway (Iran Bank)', NULL)";
