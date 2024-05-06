@@ -370,7 +370,9 @@ class AcademicYearController extends Controller
             'academic_year' => $academicYear->id,
         ]);
 
-        $tuition = Tuition::where('academic_year', $academicYear->id)->first();
+        $tuition = Tuition::firstOrCreate([
+            'academic_year' => $academicYear->id,
+        ]);
 
         //For deactivate all tuitions
         TuitionDetail::where('tuition_id', $tuition->id)->update(['status' => 0]);
