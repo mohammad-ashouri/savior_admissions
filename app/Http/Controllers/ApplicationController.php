@@ -484,6 +484,12 @@ class ApplicationController extends Controller
                 $document->src = $path;
                 $document->save();
 
+                $document = new Document();
+                $document->user_id = auth()->user()->id;
+                $document->document_type_id = DocumentType::where('name', 'Deposit slip')->first()->id;
+                $document->src = $path;
+                $document->save();
+
                 if ($document) {
                     $applicationReservationInvoice = new ApplicationReservationsInvoices();
                     $applicationReservationInvoice->a_reservation_id = $request->id;
