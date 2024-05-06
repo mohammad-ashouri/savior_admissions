@@ -27,14 +27,14 @@ $(document).ready(function () {
                 $('#captcha').val('');
 
                 $('#email').closest('div').hide();
-                $('#mobile').closest('div').hide();
+                $('#mobileDiv').hide();
 
                 // When the select option changes
                 $('#login-method').change(function () {
                     // If Mobile option is selected
                     if ($(this).val() === 'mobile') {
                         // Show the mobile div and hide the email div
-                        $('#mobile').closest('div').show();
+                        $('#mobileDiv').show();
                         $('#email').closest('div').hide();
                         $('#email').val('');
                         $('#mobile').val('');
@@ -44,7 +44,7 @@ $(document).ready(function () {
                     else if ($(this).val() === 'email') {
                         // Show the email div and hide the mobile div
                         $('#email').closest('div').show();
-                        $('#mobile').closest('div').hide();
+                        $('#mobileDiv').hide();
                         $('#email').val('');
                         $('#mobile').val('');
                         $('#password').val('');
@@ -53,12 +53,33 @@ $(document).ready(function () {
                     else {
                         // Hide both divs
                         $('#email').closest('div').hide();
-                        $('#mobile').closest('div').hide();
+                        $('#mobileDiv').hide();
                         $('#email').val('');
                         $('#mobile').val('');
                         $('#password').val('');
                     }
                 });
+
+                // Find the input element
+                let inputElement = document.getElementById('mobile');
+
+                // Add an event listener for the input event
+                inputElement.addEventListener('input', function(event) {
+                    // Get the current value of the input
+                    let value = event.target.value;
+
+                    // Check if the value starts with a zero or a plus sign
+                    if (value.charAt(0) === '0' || value.charAt(0) === '+') {
+                        // Remove the zero or the plus sign
+                        value = value.slice(1);
+
+                        // Set the new value for the input
+                        event.target.value = value;
+
+                        swalFire('Error', 'Dont use 0 or + or your country code!', 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
+                    }
+                });
+
 
                 $('#login-form').submit(function (e) {
                     e.preventDefault();

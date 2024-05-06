@@ -77,11 +77,20 @@
                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                        placeholder="name@gmail.com">
             </div>
-            <div class="mb-6">
+            <div class="mb-6" id="mobileDiv">
                 <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 ">Your mobile</label>
+                <div class="flex">
+                    <select name="phone_code" id="phone_code" required
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-bl-md rounded-tl-md focus:ring-blue-500 focus:border-blue-500 block w-1/10 p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                        @foreach($countryPhoneCodes as $phoneCodes)
+                            <option value="{{$phoneCodes->id}}" @if($phoneCodes->id==101) selected @endif>+{{$phoneCodes->phonecode}}</option>
+                        @endforeach
+                    </select>
                 <input type="text" id="mobile" name="mobile"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Enter like this: +989123456789 - No 0 at the beginning of it ">
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-br-md rounded-tr-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                       placeholder="Enter without 0 or phone code at the beginning of it ">
+                </div>
             </div>
 
             <div class="mb-6">
@@ -96,10 +105,6 @@
                 <div class="flex justify-evenly md:justify-normal">
                     <img id="captchaImg" src="{{ route('captcha') }}" alt="Captcha" class="w-32 h-10  mt-2 rounded"
                          title="Click on image for reload">
-                    {{--                        <button type="button" onclick="reloadCaptcha()" title="Reload"--}}
-                    {{--                                class="h-10 p-1 bg-gray-300 hover:bg-gray-400 rounded mt-2">--}}
-                    {{--                            <i class="fas fa-sync-alt"></i>--}}
-                    {{--                        </button>--}}
                     <input name="captcha" required
                            class="bg-gray-50 border border-gray-300 h-10 mt-2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            id="captcha" placeholder="Enter captcha" type="text">

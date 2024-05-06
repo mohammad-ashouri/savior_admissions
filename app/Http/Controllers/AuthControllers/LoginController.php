@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\AuthControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogs\CountryPhoneCodes;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -31,8 +32,14 @@ class LoginController extends Controller
 
     public function showLoginForm(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
-        if (! \session('id')) {
-            return view('Auth.login');
+        if (! \session('id') or ! Auth::check()) {
+
+            $countryPhoneCodes = CountryPhoneCodes::where('phonecode', '!=', 0)
+                ->orderBy('phonecode', 'asc')
+                ->groupBy('phonecode')
+                ->get();
+
+            return view('Auth.login', compact('countryPhoneCodes'));
         }
         //        $nationalities=Country::select('id','nationality')->get();
         //        if (!Auth::check()) {
@@ -85,7 +92,8 @@ class LoginController extends Controller
                 break;
             case 'mobile':
                 $validator = Validator::make($request->all(), [
-                    'mobile' => 'required|exists:users,mobile',
+                    'phone_code' => 'required|exists:country_phone_codes,id',
+                    'mobile' => 'required',
                     'password' => 'required', // Uncomment if you want to include captcha validation
                 ]);
 
@@ -97,7 +105,10 @@ class LoginController extends Controller
                         'validator_errors' => $validator->errors(),
                     ]);
                 }
-                $user = User::where('mobile', $request->input('mobile'))->first();
+
+                $phoneCode = CountryPhoneCodes::find($request->input('phone_code'));
+                $user = User::where('mobile', '+'.$phoneCode->phonecode.$request->input('mobile'))->first();
+
                 if (! password_verify($request->password, $user->password)) {
                     $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
 
@@ -106,6 +117,8 @@ class LoginController extends Controller
                         'errors' => ['loginError' => 'Wrong mobile or password'],
                     ]);
                 }
+
+                $request['mobile'] = "+" . $phoneCode->phonecode . $request->mobile;
                 $credentials = $request->only('mobile', 'password');
 
                 break;
@@ -137,7 +150,7 @@ class LoginController extends Controller
 
         $remember = $request->has('remember');
 
-        if (Auth::attempt($credentials,$remember)) {
+        if (Auth::attempt($credentials, $remember)) {
             Session::put('id', $user->id);
             $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
 
@@ -146,6 +159,7 @@ class LoginController extends Controller
                 'redirect' => route('dashboard'),
             ]);
         }
+
         return response()->json([
             'success' => false,
             'errors' => ['captcha' => 'Server Error!'],
