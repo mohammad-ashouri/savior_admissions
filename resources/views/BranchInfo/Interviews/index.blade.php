@@ -235,6 +235,14 @@
                                                                 @endif
                                                                 @break
                                                         @endswitch
+                                                        @if($interview->reservationInfo->interview_type=='On-Sight' and $me->hasRole('Parent'))
+                                                            <a href="{{$interview->applicationTimingInfo->meeting_link}}"
+                                                               type="button"
+                                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                Interview Meeting
+                                                            </a>
+                                                        @endif
                                                         @break
                                                     @case('1')
                                                         @can('interview-show')

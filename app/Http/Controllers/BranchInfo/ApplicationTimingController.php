@@ -87,6 +87,7 @@ class ApplicationTimingController extends Controller
             'first_interviewer' => 'required|exists:users,id',
             'second_interviewer' => 'required|exists:users,id',
             'interview_fee' => 'required|min:0',
+            'meeting_link' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -123,6 +124,7 @@ class ApplicationTimingController extends Controller
             $applicationTiming->second_interviewer = $request->second_interviewer;
             $applicationTiming->fee = $request->interview_fee;
             $applicationTiming->status = 1;
+            $applicationTiming->meeting_link = $request->meeting_link;
 
             if ($applicationTiming->save()) {
                 $startDate = Carbon::parse($request->start_date);

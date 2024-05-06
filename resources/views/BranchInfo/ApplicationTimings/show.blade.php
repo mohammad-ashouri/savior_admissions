@@ -81,6 +81,9 @@
                                 <p class="font-bold">Interview
                                     Fee: </p> {{ number_format($applicationTiming->fee) . ' Rials' }}
                             </div>
+                            <div>
+                                <p class="font-bold">Meeting Link: </p> <a class="text-blue-500 underline" href="{{ $applicationTiming->meeting_link }}">{{ $applicationTiming->meeting_link }}</a>
+                            </div>
                         </div>
                         <a href="{{ url()->previous() }}">
                             <button type="button"
