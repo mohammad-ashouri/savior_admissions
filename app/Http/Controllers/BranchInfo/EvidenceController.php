@@ -92,6 +92,7 @@ class EvidenceController extends Controller
                 $studentAppliance->documents_uploaded = 1;
                 $studentAppliance->documents_uploaded_approval = 1;
                 $studentAppliance->tuition_payment_status = 'Pending';
+                $studentAppliance->description = null;
                 $this->sendSMS($guardianMobile,"Your documents have been approved. Please pay the tuition within the next 72 hours.\nSavior Schools");
                 break;
             case 'Reject':
