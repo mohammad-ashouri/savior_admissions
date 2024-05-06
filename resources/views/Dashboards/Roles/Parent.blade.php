@@ -223,6 +223,7 @@
                                                          if ($applicationStatus->interview_status=='Rejected'){
                                                              $statusText='Rejected Interview';
                                                              $statusColor='red';
+                                                             $statusPercent=100;
                                                          }
                                                          if ($applicationStatus->interview_status=='Admitted'){
                                                              $statusPercent+=25;
@@ -237,7 +238,7 @@
                                                              $statusText='Pending For Documents Approval';
                                                          }
                                                          if ($applicationStatus->documents_uploaded==3){
-                                                             $statusPercent-=25;
+                                                             $statusPercent=100;
                                                              $statusText='Documents Rejected';
                                                              $statusColor='red';
                                                          }
@@ -246,7 +247,7 @@
                                                              $statusText='Waiting For Tuition Payment';
                                                          }
                                                          if ($applicationStatus->documents_uploaded_approval==2){
-                                                             $statusPercent-=25;
+                                                             $statusPercent=100;
                                                              $statusColor='red';
                                                              $statusText='Rejected Documents Uploaded';
                                                          }
@@ -296,15 +297,15 @@
                                                     </div>
                                                 @endif
 
-                                                @if($applicationStatus->documents_uploaded==2 and $applicationStatus->documents_uploaded_approval==2)
+                                                @if($applicationStatus->documents_uploaded==3 and $applicationStatus->documents_uploaded_approval==2)
                                                     <div
                                                         class="text-base font-semibold">
                                                         <a href="{{ route('Document.EditUploadedEvidences',$student->student_id) }}"
                                                            type="button"
                                                            class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                             <div class="text-center">
-                                                                <i title="Click for upload documents"
-                                                                   class="las la-cloud-upload-alt "
+                                                                <i title="Click for upload documents again"
+                                                                   class="las la-pen "
                                                                    style="font-size: 20px"></i>
                                                             </div>
                                                         </a>

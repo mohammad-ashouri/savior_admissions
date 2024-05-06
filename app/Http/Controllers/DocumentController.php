@@ -150,13 +150,13 @@ class DocumentController extends Controller
 
         $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', session('id'))->first();
         if (empty($studentInformation)) {
-            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed','errors'=>'Student information is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student information is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
 
             abort(403);
         }
         $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $request->student_id)->where('documents_uploaded', 0)->latest()->first();
         if (empty($checkStudentApplianceStatus)) {
-            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed','errors'=>'Student appliance status is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student appliance status is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
 
             abort(403);
         }
@@ -167,17 +167,53 @@ class DocumentController extends Controller
             "$fatherPassportFileName.jpg"
         );
 
+        $document = new Document();
+        $document->user_id = auth()->user()->id;
+        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->src = $fatherPassportFile;
+        $document->save();
+
+        $document = new Document();
+        $document->user_id = $checkStudentApplianceStatus->student_id;
+        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->src = $fatherPassportFile;
+        $document->save();
+
         $motherPassportFileName = 'MotherPassportScan_'.now()->format('Y-m-d_H-i-s');
         $motherPassportFileName = $request->file('mother_passport_file')->storeAs(
             'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
             "$motherPassportFileName.jpg"
         );
 
+        $document = new Document();
+        $document->user_id = auth()->user()->id;
+        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->src = $motherPassportFileName;
+        $document->save();
+
+        $document = new Document();
+        $document->user_id = $checkStudentApplianceStatus->student_id;
+        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->src = $motherPassportFileName;
+        $document->save();
+
         $studentPassportFileName = 'StudentPassportFile_'.now()->format('Y-m-d_H-i-s');
         $studentPassportFileName = $request->file('student_passport_file')->storeAs(
             'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
             "$studentPassportFileName.jpg"
         );
+
+        $document = new Document();
+        $document->user_id = auth()->user()->id;
+        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->src = $studentPassportFileName;
+        $document->save();
+
+        $document = new Document();
+        $document->user_id = $checkStudentApplianceStatus->student_id;
+        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->src = $studentPassportFileName;
+        $document->save();
 
         $latestReportCard_FileName = '';
         if ($request->hasFile('latest_report_card')) {
@@ -186,6 +222,17 @@ class DocumentController extends Controller
                 'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
                 "$latestReportCard_FileName.jpg"
             );
+            $document = new Document();
+            $document->user_id = auth()->user()->id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $latestReportCard_FileName;
+            $document->save();
+
+            $document = new Document();
+            $document->user_id = $checkStudentApplianceStatus->student_id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $latestReportCard_FileName;
+            $document->save();
         }
 
         $files = json_encode(
@@ -217,19 +264,189 @@ class DocumentController extends Controller
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $student_id)->where('documents_uploaded', 2)->where('documents_uploaded_approval', 2)->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $student_id)->where('documents_uploaded', 3)->where('documents_uploaded_approval', 2)->first();
         if (empty($checkStudentApplianceStatus)) {
             return redirect()->back()->withErrors('Student documents are uploaded or under review');
         }
 
-        $studentAppliance=StudentApplianceStatus::with('evidences')->where('student_id',$student_id)->latest()->first();
+        $studentAppliance = StudentApplianceStatus::with('evidences')->where('student_id', $student_id)->latest()->first();
 
         $bloodGroups = BloodGroup::get();
         $guardianStudentRelationships = GuardianStudentRelationship::get();
         $countries = Country::orderBy('en_short_name', 'asc')->get();
         $nationalities = Country::orderBy('nationality', 'asc')->get();
 
-        return view('Documents.UploadDocumentsParent.edit',compact('studentInformation','studentAppliance','checkStudentApplianceStatus','bloodGroups','guardianStudentRelationships','countries','nationalities'));
+        return view('Documents.UploadDocumentsParent.edit', compact('studentInformation', 'studentAppliance', 'checkStudentApplianceStatus', 'bloodGroups', 'guardianStudentRelationships', 'countries', 'nationalities'));
 
+    }
+
+    public function updateStudentDocuments(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'blood_group' => 'required|exists:blood_groups,id',
+            'relationship' => 'required|exists:guardian_student_relationships,id',
+            'marital_status' => 'required|in:Married,Divorced',
+            'father_name' => 'required|string',
+            'father_family' => 'required|string',
+            'father_mobile' => 'required',
+            'father_email' => 'nullable|email',
+            'father_occupation' => 'required|string',
+            'father_qualification' => 'required|string',
+            'father_passport_number' => 'required|string',
+            'father_nationality' => 'required|exists:countries,id',
+            'mother_name' => 'required|string',
+            'mother_family' => 'required|string',
+            'mother_mobile' => 'required',
+            'mother_email' => 'nullable|email',
+            'mother_occupation' => 'required|string',
+            'mother_qualification' => 'required|string',
+            'mother_passport_number' => 'required|string',
+            'mother_nationality' => 'required|exists:countries,id',
+            'previous_school_name' => 'nullable|string',
+            'previous_school_country' => 'nullable|exists:countries,id',
+            'student_skills' => 'nullable|string',
+            'miscellaneous' => 'nullable|string',
+            'student_passport_number' => 'required|string',
+            'passport_expiry_date' => 'required|date',
+            'student_iranian_visa' => 'required|string',
+            'iranian_residence_expiry' => 'required|date',
+            'student_iranian_faragir_code' => 'required|string',
+            'student_iranian_sanad_code' => 'required|string',
+            'student_id' => 'required|exists:users,id',
+            'father_passport_file' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
+            'mother_passport_file' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
+            'student_passport_file' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
+            'latest_report_card' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Upload Student Documents Failed', 'errors' => json_encode($validator), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', session('id'))->first();
+        if (empty($studentInformation)) {
+            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student information is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
+
+            abort(403);
+        }
+        $checkStudentApplianceStatus = StudentApplianceStatus::with('evidences')->where('student_id', $request->student_id)->whereIn('academic_year', $this->getActiveAcademicYears())->where('documents_uploaded', 3)->latest()->first();
+        if (empty($checkStudentApplianceStatus)) {
+            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student appliance status is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
+
+            abort(403);
+        }
+
+        $evidences = Evidence::find($checkStudentApplianceStatus->evidences->id);
+        $files = json_decode($checkStudentApplianceStatus->evidences->files, true);
+
+        if ($request->hasFile('father_passport_file')) {
+            $fatherPassportFileName = 'FatherPassportScan_'.now()->format('Y-m-d_H-i-s');
+            $fatherPassportFile = $request->file('father_passport_file')->storeAs(
+                'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+                "$fatherPassportFileName.jpg"
+            );
+            $document = new Document();
+            $document->user_id = auth()->user()->id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $fatherPassportFile;
+            $document->save();
+
+            $document = new Document();
+            $document->user_id = $checkStudentApplianceStatus->student_id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $fatherPassportFile;
+            $document->save();
+        } else {
+            $fatherPassportFile = $files['father_passport_file'];
+        }
+
+        if ($request->hasFile('mother_passport_file')) {
+            $motherPassportFileName = 'MotherPassportScan_'.now()->format('Y-m-d_H-i-s');
+            $motherPassportFileName = $request->file('mother_passport_file')->storeAs(
+                'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+                "$motherPassportFileName.jpg"
+            );
+
+            $document = new Document();
+            $document->user_id = auth()->user()->id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $motherPassportFileName;
+            $document->save();
+
+            $document = new Document();
+            $document->user_id = $checkStudentApplianceStatus->student_id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $motherPassportFileName;
+            $document->save();
+        } else {
+            $motherPassportFileName = $files['mother_passport_file'];
+        }
+
+        if ($request->hasFile('student_passport_file')) {
+            $studentPassportFileName = 'StudentPassportFile_'.now()->format('Y-m-d_H-i-s');
+            $studentPassportFileName = $request->file('student_passport_file')->storeAs(
+                'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+                "$studentPassportFileName.jpg"
+            );
+
+            $document = new Document();
+            $document->user_id = auth()->user()->id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $studentPassportFileName;
+            $document->save();
+
+            $document = new Document();
+            $document->user_id = $checkStudentApplianceStatus->student_id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $studentPassportFileName;
+            $document->save();
+        } else {
+            $studentPassportFileName = $files['student_passport_file'];
+        }
+
+        $latestReportCard_FileName = '';
+        if ($request->hasFile('latest_report_card')) {
+            $latestReportCard_FileName = 'LatestReportCard_'.now()->format('Y-m-d_H-i-s');
+            $latestReportCard_FileName = $request->file('latest_report_card')->storeAs(
+                'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+                "$latestReportCard_FileName.jpg"
+            );
+            $document = new Document();
+            $document->user_id = auth()->user()->id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $latestReportCard_FileName;
+            $document->save();
+
+            $document = new Document();
+            $document->user_id = $checkStudentApplianceStatus->student_id;
+            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->src = $latestReportCard_FileName;
+            $document->save();
+        } else {
+            $latestReportCard_FileName = $files['latest_report_card'];
+        }
+
+        $files = json_encode(
+            [
+                'father_passport_file' => $fatherPassportFile,
+                'mother_passport_file' => $motherPassportFileName,
+                'latest_report_card' => $latestReportCard_FileName,
+                'student_passport_file' => $studentPassportFileName,
+            ], true);
+
+        $evidences->appliance_id = $checkStudentApplianceStatus->id;
+        $evidences->informations = json_encode($request->all(), true);
+        $evidences->files = $files;
+        $evidences->save();
+
+        $studentAppliance = StudentApplianceStatus::where('id', $checkStudentApplianceStatus->id)->first();
+        $studentAppliance->documents_uploaded = 2;
+        $studentAppliance->documents_uploaded_approval = null;
+        $studentAppliance->save();
+
+        $this->sendSMS($studentInformation->guradianInfo->mobile, "Documents uploaded successfully. Please wait for the confirmation of the documents sent.\nSavior Schools");
+
+        return redirect()->route('dashboard')->with('success', 'Documents Uploaded Successfully!');
     }
 }

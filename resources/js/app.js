@@ -1196,10 +1196,9 @@ $(document).ready(function () {
 
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
-
+        //
         $('.show-image').click(function () {
             let imageSrc = $(this).data('image-src');
-            console.log(imageSrc);
             $('#image-for-show').attr('src', imageSrc);
         });
 
@@ -1230,6 +1229,108 @@ $(document).ready(function () {
 
         $('[data-modal-hide="openImage"]').on('click', function () {
             $('#openImage').addClass('hidden');
+        });
+        $('#relationship').change(function () {
+            if ($(this).val() == 3) {
+                $('#relation-name-div').show();
+                $('#relation_name').attr('required', true);
+            } else {
+                $('#relation-name-div').hide();
+                $('#relation_name').attr('required', false);
+            }
+        });
+
+        $('#father_passport_file').change(function () {
+            const fileInput = $('#father_passport_file');
+            const imagePreview = $('#father_passport_file_preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const file = fileInput[0].files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    if (file.type === 'application/pdf') {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '200px');
+                        imagePreview.css('width', '400px');
+                        imagePreview.attr('alt', 'PDF File Chosen!');
+                    } else {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '200px');
+                        imagePreview.css('width', '400px');
+                        imagePreview.removeAttr('alt');
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.css('display', 'none');
+                imagePreview.removeAttr('alt');
+            }
+        });
+
+        $('#mother_passport_file').change(function () {
+            const fileInput = $('#mother_passport_file');
+            const imagePreview = $('#mother_passport_file_preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const file = fileInput[0].files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    if (file.type === 'application/pdf') {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '200px');
+                        imagePreview.css('width', '400px');
+                        imagePreview.attr('alt', 'PDF File Chosen!');
+                    } else {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '200px');
+                        imagePreview.css('width', '400px');
+                        imagePreview.removeAttr('alt');
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.css('display', 'none');
+                imagePreview.removeAttr('alt');
+            }
+        });
+
+        $('#student_passport_file').change(function () {
+            const fileInput = $('#student_passport_file');
+            const imagePreview = $('#student_passport_file_preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const file = fileInput[0].files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    if (file.type === 'application/pdf') {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '200px');
+                        imagePreview.css('width', '400px');
+                        imagePreview.attr('alt', 'PDF File Chosen!');
+                    } else {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '200px');
+                        imagePreview.css('width', '400px');
+                        imagePreview.removeAttr('alt');
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.css('display', 'none');
+                imagePreview.removeAttr('alt');
+            }
         });
 
         $('.confirm-evidences').submit(function (e) {
@@ -1528,7 +1629,8 @@ $(document).ready(function () {
             });
 
         }
-    } else if (fullPath.includes('UploadStudentDocumentByParent')) {
+    }
+    else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
 
         $('#relationship').change(function () {
@@ -1650,7 +1752,8 @@ $(document).ready(function () {
             });
         });
 
-    } else if (fullPath.includes('Discounts')) {
+    }
+    else if (fullPath.includes('Discounts')) {
         pageTitle = 'Discounts Manager';
 
         $('#discounts-table').on('click', '.delete-row', function () {
