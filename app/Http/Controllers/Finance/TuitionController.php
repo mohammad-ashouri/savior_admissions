@@ -188,8 +188,11 @@ class TuitionController extends Controller
         $paymentMethods = PaymentMethod::get();
 
         //Discount Percentages
-        $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
-        $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
+        $discountPercentages=0;
+        if (isset(json_decode($applicationInfo->interview_form, true)['discount'])) {
+            $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
+            $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
+        }
 
         //Get all students with paid status in all active academic years
         $me = auth()->user()->id;
@@ -275,8 +278,11 @@ class TuitionController extends Controller
         $paymentType = $request->payment_type;
 
         //Discount Percentages
-        $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
-        $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
+        $discountPercentages=0;
+        if (isset(json_decode($applicationInfo->interview_form, true)['discount'])) {
+            $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
+            $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
+        }
 
         //Get all students with paid status in all active academic years
         $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
@@ -305,10 +311,12 @@ class TuitionController extends Controller
         $twoInstallmentPayment = json_decode($tuition->two_installment_payment, true);
         $twoInstallmentPaymentAmount = str_replace(',', '', $twoInstallmentPayment['two_installment_amount_irr']);
         $twoInstallmentPaymentAmountWithDiscounts = $twoInstallmentPaymentAmount - ((($twoInstallmentPaymentAmount * $familyDiscount) / 100) + (($twoInstallmentPaymentAmount * $discountPercentages) / 100));
+        $twoInstallmentAdvance=str_replace(',', '', $twoInstallmentPayment['two_installment_advance_irr']);
 
         $fourInstallmentPayment = json_decode($tuition->four_installment_payment, true);
         $fourInstallmentPaymentAmount = str_replace(',', '', $fourInstallmentPayment['four_installment_amount_irr']);
         $fourInstallmentPaymentAmountWithDiscounts = $fourInstallmentPaymentAmount - ((($fourInstallmentPaymentAmount * $familyDiscount) / 100) + (($fourInstallmentPaymentAmount * $discountPercentages) / 100));
+        $fourInstallmentAdvance=str_replace(',', '', $fourInstallmentPayment['four_installment_advance_irr']);
 
         /*
          * Payment Types:
@@ -457,7 +465,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount=$fullPaymentAmountWithDiscounts;
                         $tuitionInvoiceDetails->payment_method=$paymentMethod;
                         $tuitionInvoiceDetails->is_paid=2;
-                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc],true);
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc,'tuition_details_id'=>$tuition->id],true);
                         $tuitionInvoiceDetails->save();
 
                         $studentApplianceStatus->tuition_payment_status='Pending For Review';
@@ -470,7 +478,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount=$fullPaymentAmountWithDiscounts;
                         $tuitionInvoiceDetails->payment_method=$paymentMethod;
                         $tuitionInvoiceDetails->is_paid=0;
-                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description],true);
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'tuition_details_id'=>$tuition->id],true);
                         $tuitionInvoiceDetails->save();
 
                         $invoice = (new Invoice)->amount($fullPaymentAmountWithDiscounts);
@@ -480,7 +488,7 @@ class TuitionController extends Controller
                             function ($driver, $transactionID) use ($fullPaymentAmountWithDiscounts, $tuitionInvoiceDetails) {
                                 $dataInvoice = new \App\Models\Invoice();
                                 $dataInvoice->user_id = auth()->user()->id;
-                                $dataInvoice->type = 'Tuition Payment';
+                                $dataInvoice->type = 'Tuition Payment (Full Payment)';
                                 $dataInvoice->amount = $fullPaymentAmountWithDiscounts;
                                 $dataInvoice->description = json_encode(['amount' => $fullPaymentAmountWithDiscounts, 'invoice_details_id' => $tuitionInvoiceDetails->id], true);
                                 $dataInvoice->transaction_id = $transactionID;
@@ -491,8 +499,86 @@ class TuitionController extends Controller
                 }
                 break;
             case 2:
+                switch ($paymentMethod){
+                    case 1:
+                        $tuitionInvoiceDetails=new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails->tuition_invoice_id=$tuitionInvoice->id;
+                        $tuitionInvoiceDetails->amount=$twoInstallmentAdvance;
+                        $tuitionInvoiceDetails->payment_method=$paymentMethod;
+                        $tuitionInvoiceDetails->is_paid=2;
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc,'tuition_type'=>'Advance','tuition_details_id'=>$tuition->id],true);
+                        $tuitionInvoiceDetails->save();
+
+                        $studentApplianceStatus->tuition_payment_status='Pending For Review';
+                        $studentApplianceStatus->save();
+                        return redirect()->route('TuitionInvoices.index')->with(['success' => "You have successfully paid tuition amount. Please wait for financial approval!"]);
+                        break;
+                    case 2:
+                        $tuitionInvoiceDetails=new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails->tuition_invoice_id=$tuitionInvoice->id;
+                        $tuitionInvoiceDetails->amount=$twoInstallmentAdvance;
+                        $tuitionInvoiceDetails->payment_method=$paymentMethod;
+                        $tuitionInvoiceDetails->is_paid=0;
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'tuition_type'=>'Advance','tuition_details_id'=>$tuition->id],true);
+                        $tuitionInvoiceDetails->save();
+
+                        $invoice = (new Invoice)->amount($twoInstallmentAdvance);
+
+                        return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionPayment')->purchase(
+                            $invoice,
+                            function ($driver, $transactionID) use ($twoInstallmentAdvance, $tuitionInvoiceDetails) {
+                                $dataInvoice = new \App\Models\Invoice();
+                                $dataInvoice->user_id = auth()->user()->id;
+                                $dataInvoice->type = 'Tuition Payment (Two Installment Advance)';
+                                $dataInvoice->amount = $twoInstallmentAdvance;
+                                $dataInvoice->description = json_encode(['amount' => $twoInstallmentAdvance, 'invoice_details_id' => $tuitionInvoiceDetails->id], true);
+                                $dataInvoice->transaction_id = $transactionID;
+                                $dataInvoice->save();
+                            }
+                        )->pay()->render();
+                        break;
+                }
                 break;
             case 3:
+                switch ($paymentMethod){
+                    case 1:
+                        $tuitionInvoiceDetails=new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails->tuition_invoice_id=$tuitionInvoice->id;
+                        $tuitionInvoiceDetails->amount=$fourInstallmentAdvance;
+                        $tuitionInvoiceDetails->payment_method=$paymentMethod;
+                        $tuitionInvoiceDetails->is_paid=2;
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc,'tuition_type'=>'Advance','tuition_details_id'=>$tuition->id],true);
+                        $tuitionInvoiceDetails->save();
+
+                        $studentApplianceStatus->tuition_payment_status='Pending For Review';
+                        $studentApplianceStatus->save();
+                        return redirect()->route('TuitionInvoices.index')->with(['success' => "You have successfully paid tuition amount. Please wait for financial approval!"]);
+                        break;
+                    case 2:
+                        $tuitionInvoiceDetails=new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails->tuition_invoice_id=$tuitionInvoice->id;
+                        $tuitionInvoiceDetails->amount=$fourInstallmentAdvance;
+                        $tuitionInvoiceDetails->payment_method=$paymentMethod;
+                        $tuitionInvoiceDetails->is_paid=0;
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'tuition_type'=>'Advance','tuition_details_id'=>$tuition->id],true);
+                        $tuitionInvoiceDetails->save();
+
+                        $invoice = (new Invoice)->amount($fourInstallmentAdvance);
+
+                        return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionPayment')->purchase(
+                            $invoice,
+                            function ($driver, $transactionID) use ($fourInstallmentAdvance, $tuitionInvoiceDetails) {
+                                $dataInvoice = new \App\Models\Invoice();
+                                $dataInvoice->user_id = auth()->user()->id;
+                                $dataInvoice->type = 'Tuition Payment (Four Installment Advance)';
+                                $dataInvoice->amount = $fourInstallmentAdvance;
+                                $dataInvoice->description = json_encode(['amount' => $fourInstallmentAdvance, 'invoice_details_id' => $tuitionInvoiceDetails->id], true);
+                                $dataInvoice->transaction_id = $transactionID;
+                                $dataInvoice->save();
+                            }
+                        )->pay()->render();
+                        break;
+                }
                 break;
         }
 

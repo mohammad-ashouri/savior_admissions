@@ -6,6 +6,7 @@ use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Finance\ApplicationReservationsInvoices;
+use App\Models\Finance\TuitionDetail;
 use App\Models\Finance\TuitionInvoiceDetails;
 use App\Models\Finance\TuitionInvoices;
 use App\Models\User;
@@ -80,7 +81,7 @@ class PaymentController extends Controller
 
     public function verifyTuitionPayment(Request $request)
     {
-        $transaction_id = \App\Models\Invoice::where('type', 'Tuition Payment')->where('transaction_id', $request->RefId)->latest()->first();
+        $transaction_id = \App\Models\Invoice::where('transaction_id', $request->RefId)->latest()->first();
         $user = User::find($transaction_id->user_id);
 
         if (Auth::loginUsingId($user->id)) {
@@ -94,7 +95,7 @@ class PaymentController extends Controller
                 $receipt = Payment::transactionId($request->RefId)->verify();
 
                 if ($receipt) {
-                    $transactionDetail = \App\Models\Invoice::where('type', 'Tuition Payment')->where('transaction_id', $request->RefId)->latest()->first();
+                    $transactionDetail = \App\Models\Invoice::where('transaction_id', $request->RefId)->latest()->first();
 
                     if (empty($transactionDetail)) {
                         abort(419);
@@ -108,11 +109,46 @@ class PaymentController extends Controller
                     $tuitionInvoiceDetails->payment_details = $request->all();
                     $tuitionInvoiceDetails->save();
 
-                    $tuitionInvoiceInfo=TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
-                    $studentAppliance=StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
-                    $studentAppliance->tuition_payment_status='Paid';
-                    $studentAppliance->approved=1;
+                    $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+
+                    $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+                    $studentAppliance->tuition_payment_status = 'Paid';
+                    $studentAppliance->approval_status = 1;
                     $studentAppliance->save();
+
+                    switch ($tuitionInvoiceInfo->payment_type) {
+                        case 2:
+                            $counter = 1;
+                            $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description,true)['tuition_details_id']);
+                            $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
+                            $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_each_installment_irr']);
+                            while ($counter < 3) {
+                                $newInvoice = new TuitionInvoiceDetails();
+                                $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
+                                $newInvoice->amount = $amountOfEachInstallments;
+                                $newInvoice->is_paid = 0;
+                                $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
+                                $newInvoice->save();
+                                $counter++;
+                            }
+                            break;
+                        case 3:
+                            $counter = 1;
+                            $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description,true)['tuition_details_id']);
+                            $tuitionDetailsForFourInstallments = json_decode($tuitionDetails->four_installment_payment, true);
+                            $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_each_installment_irr']);
+
+                            while ($counter < 5) {
+                                $newInvoice = new TuitionInvoiceDetails();
+                                $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
+                                $newInvoice->amount = $amountOfEachInstallments;
+                                $newInvoice->is_paid = 0;
+                                $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
+                                $newInvoice->save();
+                                $counter++;
+                            }
+                            break;
+                    }
 
                     $reservatoreMobile = $user->mobile;
                     $transactionRefId = $request->SaleOrderId;
@@ -122,22 +158,21 @@ class PaymentController extends Controller
                     return redirect()->route('dashboard')->withErrors(['Failed to verify application payment.']);
                 }
 
-                return redirect()->route('TuitionInvoices.index')->with(['success' => "You have successfully paid tuition amount. Transaction number: $transactionRefId"]);
+                return redirect()->route('dashboard')->with(['success' => "You have successfully paid tuition amount. Transaction number: $transactionRefId"]);
                 break;
             case 17:
-                $transactionDetail = \App\Models\Invoice::where('type', 'Tuition Payment')->where('transaction_id', $request->RefId)->latest()->first();
+                $transactionDetail = \App\Models\Invoice::where('transaction_id', $request->RefId)->latest()->first();
                 $invoiceDescription = json_decode($transactionDetail->description, true);
                 $tuitionInvoiceDetail = TuitionInvoiceDetails::find($invoiceDescription['invoice_details_id']);
 
                 if ($tuitionInvoiceDetail) {
-                    $tuitionInvoiceInfo=TuitionInvoices::find($tuitionInvoiceDetail->tuition_invoice_id);
+                    $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetail->tuition_invoice_id);
                     $tuitionInvoiceInfo->delete();
 
                     $tuitionInvoiceDetail->delete();
                 }
 
                 $transactionDetail->delete();
-
 
                 return redirect()->route('dashboard')->withErrors(['You refused to pay application amount!']);
 
