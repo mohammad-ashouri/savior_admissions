@@ -32,6 +32,14 @@ class FinancialManager extends Seeder
             'tuition-edit',
             'tuition-change-price',
             'tuition-show',
+            'branch-info-menu-access',
+            'interviews-menu-access',
+            'interview-list',
+            'interview-set',
+            'interview-edit',
+            'interview-delete',
+            'interview-search',
+            'interview-show',
         ]);
     }
 }
