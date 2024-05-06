@@ -109,6 +109,14 @@ class LoginController extends Controller
                 $phoneCode = CountryPhoneCodes::find($request->input('phone_code'));
                 $user = User::where('mobile', '+'.$phoneCode->phonecode.$request->input('mobile'))->first();
 
+                if (empty($user)){
+                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'errors' => 'Wrong mobile']), request()->ip(), request()->userAgent());
+
+                    return response()->json([
+                        'success' => false,
+                        'errors' => ['loginError' => 'Wrong mobile or password'],
+                    ]);
+                }
                 if (! password_verify($request->password, $user->password)) {
                     $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
 
