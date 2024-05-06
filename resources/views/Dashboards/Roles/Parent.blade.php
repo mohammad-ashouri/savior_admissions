@@ -256,7 +256,7 @@
                                                              $statusColor='red';
                                                              $statusText='Automatic Rejected (Documents could not be uploaded after 72 hours)';
                                                          }
-                                                         if ($applicationStatus->tuition_payment_status==1){
+                                                         if ($applicationStatus->tuition_payment_status=='Paid'){
                                                              $statusPercent+=25;
                                                              $statusText='Tuition Paid. Application Done!';
                                                          }
