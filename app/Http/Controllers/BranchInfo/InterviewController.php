@@ -56,10 +56,10 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->paginate(30);
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -147,10 +147,10 @@ class InterviewController extends Controller
                 ->orderBy('start_from', 'desc')
                 ->first();
 
-        } elseif ($me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -172,8 +172,10 @@ class InterviewController extends Controller
                 ->first();
             $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
-            if ($studentApplianceStatus->interview_status != 'Pending Admissions Officer Interview') {
-                abort(403);
+            switch ($studentApplianceStatus->interview_status) {
+                case 'Accepted':
+                case 'Rejected':
+                    abort(403);
             }
 
         } elseif ($me->hasRole('Interviewer')) {
@@ -193,17 +195,8 @@ class InterviewController extends Controller
             $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
             switch ($studentApplianceStatus->interview_status) {
-                case 'Pending First Interview':
-                    if ($me->id != $interview->first_interviewer) {
-                        abort(403);
-                    }
-                    break;
-                case 'Pending Second Interview':
-                    if ($me->id != $interview->second_interviewer) {
-                        abort(403);
-                    }
-                    break;
-                default:
+                case 'Accepted':
+                case 'Rejected':
                     abort(403);
             }
         }
@@ -237,10 +230,10 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -282,57 +275,59 @@ class InterviewController extends Controller
             abort(403);
         }
         if (isset($request->discount) and ! empty($request->discount)) {
-            $discountsPercentage = Discount::
-            join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+            $discountsPercentage = Discount::join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
                 ->where('discounts.academic_year', $application->applicationTimingInfo->academic_year)
                 ->where('discount_details.status', 1)
                 ->whereIn('discount_details.id', $request->discount)
                 ->sum('discount_details.percentage');
-            if ($discountsPercentage>30){
+            if ($discountsPercentage > 30) {
                 redirect()->back()->withErrors(['The total percentage of selected discounts must be lower or equal to 30%.'])->withInput();
             }
+        }
+
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+
+        switch ($studentApplianceStatus->interview_status) {
+            case 'Accepted':
+            case 'Rejected':
+                abort(403);
         }
 
         $interview = new Interview();
         $interview->application_id = $request->application_id;
         $interview->interview_form = json_encode($request->all(), true);
-        $interview->interviewer = session('id');
+        $interview->interviewer = auth()->user()->id;
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        //        $reservatoreMobile = $application->reservationInfo->reservatoreInfo->mobile;
+        //        $this->sendSMS($reservatoreMobile, "The application for your student ($student) was rejected. Savior Schools");
 
-        $reservatoreMobile = $application->reservationInfo->reservatoreInfo->mobile;
         switch ($request->form_type) {
             case 'kg1':
-                $interview->interview_type = 1;
-                if ($request->s1_1_s == 'Admitted' and $request->s1_2_s == 'Admitted' and $request->s1_3_s == 'Admitted' and $request->s1_4_s == 'Admitted') {
-                    $studentApplianceStatus->interview_status = 'Pending Second Interview';
-                } else {
-                    $student = $application->reservationInfo->studentInfo->generalInformationInfo->first_name_en.' '.$application->reservationInfo->studentInfo->generalInformationInfo->last_name_en;
-                    $this->sendSMS($reservatoreMobile, "The application for your student was rejected. ($student) Savior Schools");
-                    $studentApplianceStatus->interview_status = 'Rejected';
-                }
-                break;
             case 'l1':
-                if ($request->s1_1_s == 'Admissible' and $request->s1_2_s == 'Admissible' and $request->s1_3_s == 'Admissible') {
-                    $studentApplianceStatus->interview_status = 'Pending Second Interview';
-                } else {
-                    $student = $application->reservationInfo->studentInfo->generalInformationInfo->first_name_en.' '.$application->reservationInfo->studentInfo->generalInformationInfo->last_name_en;
-                    $this->sendSMS($reservatoreMobile, "The application for your student was rejected. ($student) Savior Schools");
-                    $studentApplianceStatus->interview_status = 'Rejected';
-                }
+                $interview->interview_type = 1;
                 break;
             case 'kg2':
             case 'l2':
                 $interview->interview_type = 2;
-                $studentApplianceStatus->interview_status = 'Pending Admissions Officer Interview';
                 break;
-            case 'kga':
             case 'la':
+            case 'kga':
                 $interview->interview_type = 3;
-                $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
                 break;
         }
-        $studentApplianceStatus->save();
+
+        $interview->interview_form = json_encode($request->all(),true);
+
+        //Check if 3 interviews completed then make that to principal for confirmation
+        $checkInterviewsCompleted = Interview::where('application_id', $request->application_id)
+            ->whereIn('interview_type', [1, 2, 3])
+            ->exists();
+        if ($checkInterviewsCompleted) {
+            $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
+            $studentApplianceStatus->save();
+        }
+
+        $interview->save();
         if ($interview->save()) {
             $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
 
@@ -373,7 +368,7 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Principal')) {
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -393,10 +388,10 @@ class InterviewController extends Controller
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('id', $id)
                 ->first();
-        } elseif ($me->hasRole('Admissions Officer')) {
+        } elseif ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -446,10 +441,10 @@ class InterviewController extends Controller
     {
         $me = User::find(session('id'));
         $interview = [];
-        if ($me->hasRole('Admissions Officer')) {
+        if ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -467,11 +462,6 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->where('id', $id)
                 ->first();
-            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
-
-            if ($studentApplianceStatus->interview_status != 'Pending For Principal Confirmation') {
-                abort(403);
-            }
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -485,16 +475,17 @@ class InterviewController extends Controller
                 })
                 ->where('id', $id)
                 ->first();
-            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
-            if ($studentApplianceStatus->interview_status != 'Pending Second Interview' and $studentApplianceStatus->interview_status != 'Rejected' and $interview->first_interviewer == $me->id) {
-                abort(403);
-            }
-            if ($studentApplianceStatus->interview_status != 'Pending Admissions Officer Interview' and $interview->second_interviewer == $me->id) {
-                abort(403);
-            }
         }
         if (empty($interview)) {
             abort(403);
+        }
+
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+
+        switch ($studentApplianceStatus->interview_status) {
+            case 'Accepted':
+            case 'Rejected':
+                abort(403);
         }
 
         $discounts = Discount::with('allDiscounts')
@@ -512,10 +503,10 @@ class InterviewController extends Controller
     {
         $me = User::find(session('id'));
         $application = [];
-        if ($me->hasRole('Admissions Officer')) {
+        if ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -557,13 +548,12 @@ class InterviewController extends Controller
             abort(403);
         }
         if (isset($request->discount) and ! empty($request->discount)) {
-            $discountsPercentage = Discount::
-            join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+            $discountsPercentage = Discount::join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
                 ->where('discounts.academic_year', $application->applicationTimingInfo->academic_year)
                 ->where('discount_details.status', 1)
                 ->whereIn('discount_details.id', $request->discount)
                 ->sum('discount_details.percentage');
-            if ($discountsPercentage>30){
+            if ($discountsPercentage > 30) {
                 redirect()->back()->withErrors(['The total percentage of selected discounts must be lower or equal to 30%.'])->withInput();
             }
         }
@@ -571,39 +561,17 @@ class InterviewController extends Controller
         $interview->interview_form = json_encode($request->all(), true);
         $interview->interviewer = session('id');
 
-        $reservatoreMobile = $application->reservationInfo->reservatoreInfo->mobile;
         $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
-        switch ($request->form_type) {
-            case 'kg1':
-                $interview->interview_type = 1;
-                if ($request->s1_1_s == 'Admitted' and $request->s1_2_s == 'Admitted' and $request->s1_3_s == 'Admitted' and $request->s1_4_s == 'Admitted') {
-                    $studentApplianceStatus->interview_status = 'Pending Second Interview';
-                } else {
-                    $student = $application->reservationInfo->studentInfo->generalInformationInfo->first_name_en.' '.$application->reservationInfo->studentInfo->generalInformationInfo->last_name_en;
-                    $this->sendSMS($reservatoreMobile, "The application for your student was rejected. ($student) Savior Schools");
-                    $studentApplianceStatus->interview_status = 'Rejected';
-                }
-                break;
-            case 'l1':
-                if ($request->s1_1_s == 'Admissible' and $request->s1_2_s == 'Admissible' and $request->s1_3_s == 'Admissible') {
-                    $studentApplianceStatus->interview_status = 'Pending Second Interview';
-                } else {
-                    $student = $application->reservationInfo->studentInfo->generalInformationInfo->first_name_en.' '.$application->reservationInfo->studentInfo->generalInformationInfo->last_name_en;
-                    $this->sendSMS($reservatoreMobile, "The application for your student was rejected. ($student) Savior Schools");
-                    $studentApplianceStatus->interview_status = 'Rejected';
-                }
-                break;
-            case 'kg2':
-            case 'l2':
-                $interview->interview_type = 2;
-                $studentApplianceStatus->interview_status = 'Pending Admissions Officer Interview';
-                break;
-            case 'kga':
-            case 'la':
-                $interview->interview_type = 3;
-                $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
-                break;
+
+        //Check if 3 interviews completed then make that to principal for confirmation
+        $checkInterviewsCompleted = Interview::where('application_id', $request->application_id)
+            ->whereIn('interview_type', [1, 2, 3])
+            ->exists();
+        if ($checkInterviewsCompleted) {
+            $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
+            $studentApplianceStatus->save();
         }
+
         $studentApplianceStatus->save();
         if ($interview->save()) {
             $this->logActivity(json_encode(['activity' => 'Interview Updated Successfully', 'interview_id' => $interview->id, 'values' => $request->all()]), request()->ip(), request()->userAgent());

@@ -249,9 +249,9 @@ class ApplicationReservationController extends Controller
                 $applianceStatus = new StudentApplianceStatus();
                 $applianceStatus->student_id = $applicationReservation->student_id;
                 $applianceStatus->academic_year = $applicationReservation->applicationInfo->applicationTimingInfo->academic_year;
-                $applianceStatus->interview_status = 'Pending First Interview';
+                $applianceStatus->interview_status = 'Pending Interview';
             } else {
-                $applianceStatus->interview_status = 'Pending First Interview';
+                $applianceStatus->interview_status = 'Pending Interview';
             }
             $applianceStatus->save();
 

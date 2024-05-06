@@ -1075,6 +1075,48 @@ $(document).ready(function () {
         });
     } else if (fullPath.includes('ConfirmApplication')) {
         pageTitle = 'Application Confirmation';
+        if (fullPath.includes('ConfirmApplication/')) {
+            pageTitle = 'Interview Form';
+
+            let sumOfPoints = null;
+            switch ($('#form-type').val()) {
+                case 'kg':
+                    sumOfPoints = parseInt($('#s2_total').text()) +
+                        parseInt($('#s3_total').text()) +
+                        parseInt($('#s4_total').text()) +
+                        parseInt($('#s5_total').text());
+
+                    if ($('#s1_1_s').val() == 'Rejected' || $('#s1_2_s').val() == 'Rejected' || $('#s1_3_s').val() == 'Rejected' || $('#s1_4_s').val() == 'Rejected') {
+                        $('#interview-result').text('Rejected');
+                    } else {
+                        if (sumOfPoints < 60) {
+                            $('#interview-result').text('Rejected');
+                        } else {
+                            $('#interview-result').text('Admitted');
+                        }
+                    }
+                    break;
+                case 'l':
+                    sumOfPoints = parseInt($('#s2_total').text()) +
+                        parseInt($('#s3_total').text()) +
+                        parseInt($('#s4_total').text()) +
+                        parseInt($('#s5_total').text());
+
+                    if ($('#s1_1_s').val() == 'Inadmissible' || $('#s1_2_s').val() == 'Inadmissible' || $('#s1_3_s').val() == 'Inadmissible') {
+                        $('#interview-result').text('Rejected');
+                    } else {
+                        if (sumOfPoints < 60) {
+                            $('#interview-result').text('Rejected');
+                        } else {
+                            $('#interview-result').text('Admitted');
+                        }
+                    }
+                    break;
+                default:
+                    sumOfPoints = 0;
+            }
+            $('#sum-of-points').text(sumOfPoints);
+        }
 
         $('.confirm-appliance').submit(function (e) {
             e.preventDefault();
@@ -1293,7 +1335,7 @@ $(document).ready(function () {
                 // Hide all elements initially
                 $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online, #installment2-div, #installment2-payment-invoice, #installment2-online, #installment4-div, #installment4-payment-invoice, #installment4-online, #offline-full-payment-div, #offline-installment-div').hide();
 
-                if (paymentType!=null && paymentMethod!=null) {
+                if (paymentType != null && paymentMethod != null) {
                     // Show elements based on payment type
                     switch (paymentType) {
                         case '1':
@@ -1348,7 +1390,7 @@ $(document).ready(function () {
 
                     $('#accept-div').removeClass('hidden');
                     $('#payment-button').show();
-                }else{
+                } else {
                     swalFire('Error', 'Please select both of fields.', 'error', 'Try again');
                 }
             });

@@ -193,146 +193,45 @@
                                                         @endphp
                                                         @switch($studentApplianceStatus->interview_status)
                                                             @case('Rejected')
-                                                                @if(($interview->firstInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
-                                                                    @can('interview-show')
-                                                                        <a href="/Interviews/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Show
-                                                                        </a>
-                                                                    @endcan
-                                                                    @can('interview-edit')
-                                                                        <a href="/Interviews/{{ $interview->id }}/edit"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                                            <i class="las la-pen mt-1 mr-1"></i>
-                                                                            Edit
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
+                                                            @case('Accepted')
+                                                                {{$studentApplianceStatus->interview_status}}
                                                                 @break
-                                                            @case('Pending First Interview')
-                                                                @if($interview->firstInterviewerInfo->id==$me->id)
-                                                                    @can('interview-set')
-                                                                        <a href="/SetInterview/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Set
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @break
-                                                            @case('Pending Second Interview')
-                                                                @if($interview->secondInterviewerInfo->id==$me->id)
-                                                                    @can('interview-set')
-                                                                        <a href="/SetInterview/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Set
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @if(($interview->firstInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
-                                                                    @can('interview-show')
-                                                                        <a href="/Interviews/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Show
-                                                                        </a>
-                                                                    @endcan
-                                                                    @can('interview-edit')
-                                                                        <a href="/Interviews/{{ $interview->id }}/edit"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                                            <i class="las la-pen mt-1 mr-1"></i>
-                                                                            Edit
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @break
-                                                            @case('Pending Admissions Officer Interview')
-                                                                @if(($interview->firstInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
-                                                                    @can('interview-show')
-                                                                        <a href="/Interviews/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Show
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @if($me->hasRole('Admissions Officer'))
-                                                                    @can('interview-set')
-                                                                        <a href="/SetInterview/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Set
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @if(($interview->secondInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
-                                                                    @can('interview-show')
-                                                                        <a href="/Interviews/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Show
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @if($interview->secondInterviewerInfo->id==$me->id)
-                                                                    @can('interview-edit')
-                                                                        <a href="/Interviews/{{ $interview->id }}/edit"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                                            <i class="las la-pen mt-1 mr-1"></i>
-                                                                            Edit
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @break
-                                                            @case('Pending For Principal Confirmation')
-                                                                @if(($interview->firstInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
-                                                                    @can('interview-show')
-                                                                        <a href="/Interviews/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Show
-                                                                        </a>
-                                                                    @endcan
-                                                                @elseif(($interview->secondInterviewerInfo->id==$me->id) or ($me->hasRole('Super Admin') or $me->hasRole('Principal')))
-                                                                    @can('interview-show')
-                                                                        <a href="/Interviews/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Show
-                                                                        </a>
-                                                                    @endcan
-                                                                @endif
-                                                                @if($me->hasRole('Admissions Officer'))
-                                                                    @can('interview-show')
-                                                                        <a href="/Interviews/{{ $interview->id }}"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                            <i class="las la-eye mt-1 mr-1"></i>
-                                                                            Show
-                                                                        </a>
-                                                                    @endcan
-                                                                    @can('interview-edit')
-                                                                        <a href="/Interviews/{{ $interview->id }}/edit"
-                                                                           type="button"
-                                                                           class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                                            <i class="las la-pen mt-1 mr-1"></i>
-                                                                            Edit
-                                                                        </a>
-                                                                    @endcan
+                                                            @default
+                                                                @if($interview->firstInterviewerInfo->id==$me->id or $interview->secondInterviewerInfo->id==$me->id or $me->hasRole('Principal') or $me->hasRole('Financial Manager'))
+                                                                    @php
+                                                                        $checkInterview=Interview::where('application_id',$interview->id)
+                                                                        ->where('interviewer',auth()->user()->id)
+                                                                        ->exists();
+                                                                    @endphp
+                                                                    @if(!$checkInterview)
+                                                                        @can('interview-set')
+                                                                            <a href="/SetInterview/{{ $interview->id }}"
+                                                                               type="button"
+                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                                Set
+                                                                            </a>
+                                                                        @endcan
+                                                                    @else
+                                                                        @can('interview-show')
+                                                                            <a href="/Interviews/{{ $interview->id }}"
+                                                                               type="button"
+                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                                Show
+                                                                            </a>
+                                                                        @endcan
+                                                                        @if(!$studentApplianceStatus->interview_status!='Rejected' and !$studentApplianceStatus->interview_status!='Admitted')
+                                                                            @can('interview-edit')
+                                                                                <a href="/Interviews/{{ $interview->id }}/edit"
+                                                                                   type="button"
+                                                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                                                    <i class="las la-pen mt-1 mr-1"></i>
+                                                                                    Edit
+                                                                                </a>
+                                                                            @endcan
+                                                                        @endif
+                                                                    @endif
                                                                 @endif
                                                                 @break
                                                         @endswitch

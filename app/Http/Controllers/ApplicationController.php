@@ -85,7 +85,7 @@ class ApplicationController extends Controller
     public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(session('id'));
-        $activeAcademicYears=$this->getActiveAcademicYears();
+        $activeAcademicYears = $this->getActiveAcademicYears();
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->orderBy('student_id')->get();
             $levels = Level::where('status', 1)->get();
@@ -110,7 +110,7 @@ class ApplicationController extends Controller
             $levels = Level::whereIn('id', $flattenedLevels)->get();
         }
 
-        return view('Applications.create', compact('myStudents', 'levels','activeAcademicYears'));
+        return view('Applications.create', compact('myStudents', 'levels', 'activeAcademicYears'));
 
     }
 
@@ -298,7 +298,7 @@ class ApplicationController extends Controller
         }
         $level = $request->level;
 
-        $studentGender = GeneralInformation::where('user_id',$request->student)->value('gender');
+        $studentGender = GeneralInformation::where('user_id', $request->student)->value('gender');
 
         switch ($studentGender) {
             case 'Male':
@@ -389,16 +389,6 @@ class ApplicationController extends Controller
         $interviewType = $request->interview_type;
 
         $studentInfo = StudentInformation::where('guardian', $me->id)->where('student_id', $student)->first();
-//        $studentInfo = StudentInformation::with('generalInformations')
-//            ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
-//            ->where('guardian', $me->id)
-//            ->where('student_id', $student)
-//            ->where(function ($query) {
-//                $query->where('interview_status', '!=', 'Rejected');
-//                $query->orWhere('interview_status', '!=', null);
-//            })
-//            ->orderBy('student_informations.student_id')
-//            ->first();
 
         if (empty($studentInfo)) {
             $this->logActivity(json_encode(['activity' => 'Preparation For Application Payment Failed', 'errors' => 'Access To Student Denied', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());

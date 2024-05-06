@@ -4,7 +4,7 @@ if($interview->firstInterviewerInfo->id==$me->id){
     $interviewFields=json_decode($interview->interview[0]->interview_form,true);
 }elseif($interview->secondInterviewerInfo->id==$me->id){
     $interviewFields=json_decode($interview->interview[1]->interview_form,true);
-}elseif($me->hasRole('Admissions Officer')){
+}elseif($me->hasRole('Financial Manager')){
     $interviewFields=json_decode($interview->interview[2]->interview_form,true);
 }
 @endphp
@@ -61,7 +61,7 @@ if($interview->firstInterviewerInfo->id==$me->id){
                             }elseif($interview->secondInterviewerInfo->id==$me->id){
                                 $interviewForm=json_decode($interview->interview[1]->interview_form,true);
                                 $interviewID=$interview->interview[1]->id;
-                            }elseif($me->hasRole('Admissions Officer')){
+                            }elseif($me->hasRole('Financial Manager')){
                                 $interviewForm=json_decode($interview->interview[2]->interview_form,true);
                                 $interviewID=$interview->interview[2]->id;
                             }
@@ -78,7 +78,7 @@ if($interview->firstInterviewerInfo->id==$me->id){
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer2')
                             @endif
-                        @elseif ($me->hasRole('Admissions Officer'))
+                        @elseif ($me->hasRole('Financial Manager'))
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                 @include('BranchInfo.Interviews.Forms.1.KG.Edit.admissions_officer')
                             @else

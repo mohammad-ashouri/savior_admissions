@@ -4,7 +4,7 @@ if($interview->firstInterviewerInfo->id==$me->id){
     $interviewFields=json_decode($interview->interview[0]->interview_form,true);
 }elseif($interview->secondInterviewerInfo->id==$me->id){
     $interviewFields=json_decode($interview->interview[1]->interview_form,true);
-}elseif($me->hasRole('Admissions Officer')){
+}elseif($me->hasRole('Financial Manager')){
     $interviewFields=json_decode($interview->interview[2]->interview_form,true);
 }
 @endphp
@@ -59,7 +59,7 @@ if($interview->firstInterviewerInfo->id==$me->id){
                             }elseif($interview->secondInterviewerInfo->id==$me->id){
                                 $interviewForm=json_decode($interview->interview[1]->interview_form,true);
                                 $interviewID=$interview->interview[1]->id;
-                            }elseif($me->hasRole('Admissions Officer')){
+                            }elseif($me->hasRole('Financial Manager')){
                                 $interviewForm=json_decode($interview->interview[2]->interview_form,true);
                                 $interviewID=$interview->interview[2]->id;
                             }
@@ -76,33 +76,12 @@ if($interview->firstInterviewerInfo->id==$me->id){
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Show.interviewer2')
                             @endif
-                        @elseif ($me->hasRole('Admissions Officer'))
+                        @elseif ($me->hasRole('Financial Manager'))
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                 @include('BranchInfo.Interviews.Forms.1.KG.Show.admissions_officer')
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Show.admissions_officer')
                             @endif
-                        @elseif ($me->hasRole('Super Admin') or $me->hasRole('Principal') or !$me->hasRole('Interviewer'))
-{{--                            @switch($interviewForm['form_type'])--}}
-{{--                                @case('kg1')--}}
-{{--                                    @include('BranchInfo.Interviews.Forms.1.KG.Show.interviewer1')--}}
-{{--                                    @break--}}
-{{--                                @case('l1')--}}
-{{--                                    @include('BranchInfo.Interviews.Forms.1.Levels.Show.interviewer1')--}}
-{{--                                    @break--}}
-{{--                                @case('kg2')--}}
-{{--                                    @include('BranchInfo.Interviews.Forms.1.KG.Show.interviewer2')--}}
-{{--                                    @break--}}
-{{--                                @case('l2')--}}
-{{--                                    @include('BranchInfo.Interviews.Forms.1.Levels.Show.interviewer2')--}}
-{{--                                    @break--}}
-{{--                                @case('kga')--}}
-{{--                                    @include('BranchInfo.Interviews.Forms.1.KG.Show.admissions_officer')--}}
-{{--                                    @break--}}
-{{--                                @case('la')--}}
-{{--                                    @include('BranchInfo.Interviews.Forms.1.Levels.Show.admissions_officer')--}}
-{{--                                    @break--}}
-{{--                            @endswitch--}}
                         @endif
                         <div id="last-step" class="text-center hidden">
                             <a href="{{ url()->previous() }}">

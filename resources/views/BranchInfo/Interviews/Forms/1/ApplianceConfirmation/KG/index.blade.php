@@ -1530,10 +1530,10 @@
                             </tr>
                             <tr>
                                 <th scope="col" class="w-1/3 p-4 text-center">
-                                    Result (admitted, conditional, rejected)
+                                    Result (admitted, rejected)
                                 </th>
                                 <td class="font-bold p-4 text-center">
-
+                                    <p id="interview-result"></p>
                                 </td>
                             </tr>
                             </thead>
@@ -1615,6 +1615,7 @@
                                 </table>
                             @endif
                         </div>
+                        <input type="hidden" id="form-type" value="kg">
                         <div>
                             <a href="{{ route('Application.ConfirmApplicationList') }}">
                                 <button type="button"

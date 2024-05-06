@@ -284,63 +284,16 @@
                                 </td>
                             </tr>
                             </tbody>
+
+                            <div class="mt-3">
+                                <label for="s2_d"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Description</label>
+                                <textarea id="s2_d" placeholder="Enter description"
+                                          name="s2_d" disabled
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s2_d']}}</textarea>
+                            </div>
                         </table>
-                        <!-- Script for Table 2 -->
-                        <script>
-                            // Function to calculate product and update cell for Table 2
-                            function updateProductTable2(row) {
-                                // Get the coefficient value from the third column
-                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
-
-                                // Get the user-entered rating from the input field in the fourth column
-                                const ratingInput = row.querySelector('td:nth-child(4) input');
-                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
-
-                                // Calculate the product of coefficient and rating
-                                // Display the product in the fifth column
-                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
-
-                                // Update total for Table 2
-                                updateTotalTable2();
-                            }
-
-                            // Function to update total for Table 2
-                            function updateTotalTable2() {
-                                // Get all the product values from the fifth column
-                                const products = Array.from(document.querySelectorAll('#table2 tbody td:nth-child(5) label')).map(label => {
-                                    const value = parseInt(label.textContent);
-                                    return isNaN(value) ? 0 : value;
-                                });
-
-                                // Calculate total for Table 2
-                                // Display total in the last row for Table 2
-                                document.getElementById('s2_total').textContent = products.reduce((acc, value) => acc + value, 0);
-                            }
-
-                            // Get all the rows in Table 2, excluding the header row
-                            const rowsTable2 = document.querySelectorAll('#table2 tbody tr');
-
-                            // Loop through each row of Table 2
-                            rowsTable2.forEach(row => {
-                                // Add event listener to input field in the fourth column
-                                const input = row.querySelector('td:nth-child(4) input');
-                                input.addEventListener('input', () => {
-                                    updateProductTable2(row);
-                                });
-                            });
-
-                            // Call updateTotalTable2 function initially
-                            updateTotalTable2();
-                        </script>
-
-                        <div class="mt-3">
-                            <label for="s2_d"
-                                   class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                Description</label>
-                            <textarea id="s2_d" placeholder="Enter description"
-                                      name="s2_d" disabled
-                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$interviewFields['s2_d']}}</textarea>
-                        </div>
                     </div>
                 </div>
                 <hr>
@@ -714,54 +667,6 @@
                             </tr>
                             </tbody>
                         </table>
-                        <!-- Script for Table 3 -->
-                        <script>
-                            // Function to calculate product and update cell for Table 3
-                            function updateProductTable3(row) {
-                                // Get the coefficient value from the third column
-                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
-
-                                // Get the user-entered rating from the input field in the fourth column
-                                const ratingInput = row.querySelector('td:nth-child(4) input');
-                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
-
-                                // Calculate the product of coefficient and rating
-                                // Display the product in the fifth column
-                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
-
-                                // Update total for Table 3
-                                updateTotalTable3();
-                            }
-
-                            // Function to update total for Table 3
-                            function updateTotalTable3() {
-                                // Get all the product values from the fifth column
-                                const products = Array.from(document.querySelectorAll('#table3 tbody td:nth-child(5) label')).map(label => {
-                                    const value = parseInt(label.textContent);
-                                    return isNaN(value) ? 0 : value;
-                                });
-
-                                // Calculate total for Table 3
-                                // Display total in the last row for Table 3
-                                document.getElementById('s3_total').textContent = products.reduce((acc, value) => acc + value, 0);
-                            }
-
-                            // Get all the rows in Table 3, excluding the header row
-                            const rowsTable3 = document.querySelectorAll('#table3 tbody tr');
-
-                            // Loop through each row of Table 3
-                            rowsTable3.forEach(row => {
-                                // Add event listener to input field in the fourth column
-                                const input = row.querySelector('td:nth-child(4) input');
-                                input.addEventListener('input', () => {
-                                    updateProductTable3(row);
-                                });
-                            });
-
-                            // Call updateTotalTable3 function initially
-                            updateTotalTable3();
-                        </script>
-
                         <div class="mt-5">
                             <label for="s3_q1"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
@@ -939,53 +844,6 @@
                             </tr>
                             </tbody>
                         </table>
-                        <!-- Script for Table 4 -->
-                        <script>
-                            // Function to calculate product and update cell for Table 4
-                            function updateProductTable4(row) {
-                                // Get the coefficient value from the third column
-                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
-
-                                // Get the user-entered rating from the input field in the fourth column
-                                const ratingInput = row.querySelector('td:nth-child(4) input');
-                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
-
-                                // Calculate the product of coefficient and rating
-                                // Display the product in the fifth column
-                                row.querySelector('td:nth-child(5) label').textContent = coefficient * rating;
-
-                                // Update total for Table 4
-                                updateTotalTable4();
-                            }
-
-                            // Function to update total for Table 4
-                            function updateTotalTable4() {
-                                // Get all the product values from the fifth column
-                                const products = Array.from(document.querySelectorAll('#table4 tbody td:nth-child(5) label')).map(label => {
-                                    const value = parseInt(label.textContent);
-                                    return isNaN(value) ? 0 : value;
-                                });
-
-                                // Calculate total for Table 4
-                                // Display total in the last row for Table 4
-                                document.getElementById('s4_total').textContent = products.reduce((acc, value) => acc + value, 0);
-                            }
-
-                            // Get all the rows in Table 4, excluding the header row
-                            const rowsTable4 = document.querySelectorAll('#table4 tbody tr');
-
-                            // Loop through each row of Table 4
-                            rowsTable4.forEach(row => {
-                                // Add event listener to input field in the fourth column
-                                const input = row.querySelector('td:nth-child(4) input');
-                                input.addEventListener('input', () => {
-                                    updateProductTable4(row);
-                                });
-                            });
-
-                            // Call updateTotalTable4 function initially
-                            updateTotalTable4();
-                        </script>
                         <div class="mt-5">
                             <label for="s4_q1"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
@@ -1184,58 +1042,6 @@
                             </tr>
                             </tbody>
                         </table>
-                        <!-- Script for Table 5 -->
-                        <script>
-                            // Function to calculate product and update cell for Table 5
-                            function updateProductTable5(row) {
-                                // Get the coefficient value from the third column
-                                const coefficient = parseInt(row.querySelector('td:nth-child(3) p').textContent.trim());
-
-                                // Get the user-entered rating from the input field in the fourth column
-                                const ratingInput = row.querySelector('td:nth-child(4) input');
-                                const rating = ratingInput.value.trim() === '' ? 0 : parseInt(ratingInput.value.trim());
-
-                                // Calculate the product of coefficient and rating
-                                const product = coefficient * rating;
-
-                                // Display the product in the fifth column
-                                row.querySelector('td:nth-child(5) label').textContent = product;
-
-                                // Update total for Table 5
-                                updateTotalTable5();
-                            }
-
-                            // Function to update total for Table 5
-                            function updateTotalTable5() {
-                                // Get all the product values from the fifth column
-                                const products = Array.from(document.querySelectorAll('#table5 tbody td:nth-child(5) label')).map(label => {
-                                    const value = parseInt(label.textContent);
-                                    return isNaN(value) ? 0 : value;
-                                });
-
-                                // Calculate total for Table 5
-                                const total = products.reduce((acc, value) => acc + value, 0);
-
-                                // Display total in the last row for Table 5
-                                document.getElementById('s5_total').textContent = total;
-                            }
-
-                            // Get all the rows in Table 5, excluding the header row
-                            const rowsTable5 = document.querySelectorAll('#table5 tbody tr');
-
-                            // Loop through each row of Table 5
-                            rowsTable5.forEach(row => {
-                                // Add event listener to input field in the fourth column
-                                const input = row.querySelector('td:nth-child(4) input');
-                                input.addEventListener('input', () => {
-                                    updateProductTable5(row);
-                                });
-                            });
-
-                            // Call updateTotalTable5 function initially
-                            updateTotalTable5();
-                        </script>
-
                         <div class="mt-5">
                             <label for="s5_q1"
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
@@ -1336,10 +1142,10 @@
                             </tr>
                             <tr>
                                 <th scope="col" class="w-1/3 p-4 text-center">
-                                    Result (admitted, conditional, rejected)
+                                    Result (admitted, rejected)
                                 </th>
                                 <td class="font-bold p-4 text-center">
-
+                                    <p id="interview-result"></p>
                                 </td>
                             </tr>
                             </thead>
@@ -1421,6 +1227,7 @@
                                 </table>
                             @endif
                         </div>
+                        <input type="hidden" id="form-type" value="l">
                         <div>
                             <a href="{{ route('Application.ConfirmApplicationList') }}">
                                 <button type="button"
