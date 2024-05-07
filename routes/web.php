@@ -213,3 +213,4 @@ Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'veri
 //Route::post('/importDocuments', [ExcelController::class, 'importDocuments'])->name('excel.importDocuments');
 //Route::post('/importParentFathers', [ExcelController::class, 'importParentFathers'])->name('excel.importParentFathers');
 //Route::post('/importParentMothers', [ExcelController::class, 'importParentMothers'])->name('excel.importParentMothers');
+//Route::get('/ExportExcelFromUsersMobile', [ExcelController::class, 'exportExcelFromUsersMobile'])->name('excel.importParentMothers');

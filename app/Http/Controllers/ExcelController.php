@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ExcelExports\UsersWithMobile;
 use App\Imports\Documents;
 use App\Imports\DocumentTypesImport;
 use App\Imports\ParentsFatherImport;
@@ -72,5 +73,10 @@ class ExcelController extends Controller
         Excel::import(new ParentsMotherImport(), $file);
 
         return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
+    }
+
+    public function exportExcelFromUsersMobile()
+    {
+        return Excel::download(new UsersWithMobile(), 'users.xlsx');
     }
 }
