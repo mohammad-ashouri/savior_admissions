@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             ChangeUsersMobileFormatToInternational::class,
             RemoveAllStudentsMobiles::class,
             ChangeParentsPassword::class,
+            RemoveMobileThatUserNotGuardian::class,
         ]);
     }
 }
