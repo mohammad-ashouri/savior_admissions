@@ -1105,7 +1105,7 @@ $(document).ready(function () {
                     if ($('#s1_1_s').val() == 'Inadmissible' || $('#s1_2_s').val() == 'Inadmissible' || $('#s1_3_s').val() == 'Inadmissible') {
                         $('#interview-result').text('Rejected');
                     } else {
-                        if (sumOfPoints < 60) {
+                        if ((sumOfPoints/2) < 60) {
                             $('#interview-result').text('Rejected');
                         } else {
                             $('#interview-result').text('Admitted');
