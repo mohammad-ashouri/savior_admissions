@@ -1448,6 +1448,9 @@ $(document).ready(function () {
                         case '3':
                             $('#installment4-div, #installment4-payment-invoice').show();
                             break;
+                        case '4':
+                            $('#full-payment-with-advice-div, #full-payment-with-advice-invoice').show();
+                            break;
                     }
 
                     // Show or hide elements based on payment method
@@ -1469,6 +1472,11 @@ $(document).ready(function () {
                                     $('#installment4-online').hide();
                                     $('#document_file_offline_installment1').attr('required', true);
                                     break;
+                                case '4':
+                                    $('#offline-full-payment-div').show();
+                                    $('#full-payment-online').hide();
+                                    $('#document_file_full_payment1').attr('required', true);
+                                    break;
                             }
                             break;
                         case '2':
@@ -1484,6 +1492,10 @@ $(document).ready(function () {
                                 case '3':
                                     $('#offline-installment-div').hide();
                                     $('#installment4-online').show();
+                                    break;
+                                case '4':
+                                    $('#offline-full-payment-with-advice-div').hide();
+                                    $('#full-payment-with-advice-online').show();
                                     break;
                             }
                             break;

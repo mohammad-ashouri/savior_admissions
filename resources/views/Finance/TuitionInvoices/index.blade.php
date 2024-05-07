@@ -134,6 +134,9 @@
                                                     @case('3')
                                                         Four Installment
                                                         @break
+                                                    @case('4')
+                                                        Full Payment With Advice
+                                                        @break
                                                 @endswitch
                                             </div>
                                         </div>
@@ -152,7 +155,7 @@
                                         <div>
                                             <div
                                                 class="text-base font-semibold">
-                                                {{ json_decode($invoice->description,true)['tuition_type'] }}
+                                                {{ @json_decode($invoice->description,true)['tuition_type'] }}
                                             </div>
                                         </div>
                                     </th>

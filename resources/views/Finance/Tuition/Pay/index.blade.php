@@ -101,6 +101,7 @@
                                             <option value="1">Full payment</option>
                                             <option value="2">Two installments</option>
                                             <option value="3">Four installments</option>
+                                            <option value="4">Full payment (With 30% Advice)</option>
                                         </select>
                                     </div>
                                     <div>
@@ -477,6 +478,47 @@
                                         </div>
                                     </div>
 
+                                    {{--                                    Full payment with advice divs--}}
+                                    <div id="full-payment-with-advice-div" hidden="">
+                                        <div id="full-payment-with-advice-online" hidden=""
+                                             class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                             role="alert">
+                                            <div class="flex">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">You have to pay 30% of the total tuition fee and you have to pay the remaining 70% by the end of September.
+                                                        <br> After payment, you will be
+                                                        It will take you to the invoices page.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="full-payment-with-advice-online" hidden=""
+                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         role="alert">
+                                        <div class="flex">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-bold">You have to pay 30% of the total tuition fee and you have to pay the remaining 70% by the end of September.<br> After payment, you will be
+                                                    transferred to the invoices page.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     {{--                                    File divs--}}
                                     <div id="offline-full-payment-div" hidden=""
                                          class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
@@ -810,6 +852,48 @@
                                                 </th>
                                                 <td class="w-56 p-4">
                                                     IRR {{ number_format($fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$familyDiscount)/100)+(($fourInstallmentPaymentAmount*$discountPercentages)/100))) }}
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div hidden="" id="full-payment-with-advice-invoice">
+                                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                            <tbody>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Fee:
+                                                </th>
+                                                <td class="p-4 w-56 items-center">
+                                                    IRR {{ number_format($fullPaymentAmount) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Discount:
+                                                </th>
+                                                <td class="p-4 w-56 items-center">
+                                                    IRR {{ number_format(($fullPaymentAmount*$discountPercentages)/100) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Family Discount:
+                                                </th>
+                                                <td class="w-56 p-4">
+                                                    IRR {{ number_format(($fullPaymentAmount*$familyDiscount)/100) }}
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                <th scope="col" class="p-4">
+                                                    Total Fee:
+                                                </th>
+                                                <td class="w-56 p-4">
+                                                    IRR {{ number_format($fullPaymentAmount-((($fullPaymentAmount*$familyDiscount)/100)+(($fullPaymentAmount*$discountPercentages)/100))) }}
                                                 </td>
                                             </tr>
                                             </tbody>

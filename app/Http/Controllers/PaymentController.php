@@ -120,7 +120,7 @@ class PaymentController extends Controller
                     switch ($tuitionInvoiceInfo->payment_type) {
                         case 2:
                             $counter = 1;
-                            $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description,true)['tuition_details_id']);
+                            $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
                             $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
                             $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_each_installment_irr']);
                             while ($counter < 3) {
@@ -135,7 +135,7 @@ class PaymentController extends Controller
                             break;
                         case 3:
                             $counter = 1;
-                            $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description,true)['tuition_details_id']);
+                            $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
                             $tuitionDetailsForFourInstallments = json_decode($tuitionDetails->four_installment_payment, true);
                             $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_each_installment_irr']);
 
@@ -148,6 +148,17 @@ class PaymentController extends Controller
                                 $newInvoice->save();
                                 $counter++;
                             }
+                            break;
+                        case 4:
+                            $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
+                            $tuitionDetailsForFullPaymentWithAdvice = (str_replace(',', '', json_decode($tuitionDetails->full_payment, true)) * 70) / 100;
+
+                            $newInvoice = new TuitionInvoiceDetails();
+                            $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
+                            $newInvoice->amount = $tuitionDetailsForFullPaymentWithAdvice;
+                            $newInvoice->is_paid = 0;
+                            $newInvoice->description = json_encode(['tuition_type' => 'Full Installment With Advice - Installment'], true);
+                            $newInvoice->save();
                             break;
                     }
 
@@ -211,7 +222,7 @@ class PaymentController extends Controller
                     $tuitionInvoiceDetails->is_paid = 1;
                     $tuitionInvoiceDetails->invoice_id = $transactionDetail->id;
                     $tuitionInvoiceDetails->payment_method = $invoiceDescription['payment_method'];
-                    $tuitionInvoiceDetails->payment_details = json_encode($request->all(),true);
+                    $tuitionInvoiceDetails->payment_details = json_encode($request->all(), true);
                     $tuitionInvoiceDetails->date_of_payment = now();
                     $tuitionInvoiceDetails->save();
 
