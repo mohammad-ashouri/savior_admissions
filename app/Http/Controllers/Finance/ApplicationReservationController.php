@@ -266,7 +266,7 @@ class ApplicationReservationController extends Controller
             $reservatoreMobile=$applicationReservation->reservatore;
             $this->sendSMS($reservatoreMobile, $message);
         }elseif ($applicationStatus == 3){
-            $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->first();
+            $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->latest()->first();
             $applianceStatus->interview_status = null;
             $applianceStatus->save();
 
