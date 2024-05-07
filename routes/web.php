@@ -125,7 +125,8 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         Route::post('PayTuition', [TuitionController::class, 'tuitionPayment'])->name('Tuitions.Pay');
         //Payment list
         Route::resource('TuitionInvoices', TuitionPaymentController::class);
-        Route::get('PayTuition/{tuition_id}', [TuitionPaymentController::class,'prepareToPayTuition'])->name('TuitionInvoices.payTuition');
+        Route::get('PayTuitionInstallment/{tuition_id}', [TuitionPaymentController::class,'prepareToPayTuition']);
+        Route::post('PayTuitionInstallment', [TuitionPaymentController::class,'payTuition'])->name('TuitionInvoices.payTuition');
 
         Route::resource('Discounts', DiscountsController::class);
         Route::post('ChangeDiscountPercentage', [DiscountsController::class, 'changeDiscountPercentage']);
@@ -204,6 +205,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
 //Payments
 Route::post('/VerifyApplicationPayment', [PaymentController::class, 'verifyApplicationPayment']);
 Route::post('/VerifyTuitionPayment', [PaymentController::class, 'verifyTuitionPayment']);
+Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'verifyTuitionInstallmentPayment']);
 
 //Route::get('/import-excel', [ExcelController::class, 'index']);
 //Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');

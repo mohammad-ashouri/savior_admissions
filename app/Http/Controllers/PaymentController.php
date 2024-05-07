@@ -175,11 +175,73 @@ class PaymentController extends Controller
 
                 $transactionDetail->delete();
 
-                return redirect()->route('dashboard')->withErrors(['You refused to pay application amount!']);
+                return redirect()->route('dashboard')->withErrors(['You refused to pay tuition amount!']);
 
                 break;
             default:
                 abort(419);
         }
+    }
+
+    public function verifyTuitionInstallmentPayment(Request $request)
+    {
+        $transaction_id = \App\Models\Invoice::where('transaction_id', $request->RefId)->latest()->first();
+        $user = User::find($transaction_id->user_id);
+
+        if (Auth::loginUsingId($user->id)) {
+            Session::put('id', $user->id);
+        } else {
+            abort(419);
+        }
+
+        switch ($request->ResCode) {
+            case 0:
+                $receipt = Payment::transactionId($request->RefId)->verify();
+
+                if ($receipt) {
+                    $transactionDetail = \App\Models\Invoice::where('transaction_id', $request->RefId)->latest()->first();
+
+                    if (empty($transactionDetail)) {
+                        abort(419);
+                    }
+
+                    $invoiceDescription = json_decode($transactionDetail->description, true);
+
+                    $tuitionInvoiceDetails = TuitionInvoiceDetails::find($invoiceDescription['invoice_details_id']);
+                    $tuitionInvoiceDetails->is_paid = 1;
+                    $tuitionInvoiceDetails->invoice_id = $transactionDetail->id;
+                    $tuitionInvoiceDetails->payment_method = $invoiceDescription['payment_method'];
+                    $tuitionInvoiceDetails->payment_details = json_encode($request->all(),true);
+                    $tuitionInvoiceDetails->date_of_payment = now();
+                    $tuitionInvoiceDetails->save();
+
+                    $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+
+                    $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+                    $studentAppliance->tuition_payment_status = 'Paid';
+                    $studentAppliance->approval_status = 1;
+                    $studentAppliance->save();
+
+                    $reservatoreMobile = $user->mobile;
+                    $transactionRefId = $request->SaleOrderId;
+                    $messageText = "You have successfully paid tuition installment. \nTransaction number: $transactionRefId \nSavior Schools";
+                    $this->sendSMS($reservatoreMobile, $messageText);
+                } else {
+                    return redirect()->route('dashboard')->withErrors(['Failed to verify application payment.']);
+                }
+
+                return redirect()->route('dashboard')->with(['success' => "You have successfully paid tuition amount. Transaction number: $transactionRefId"]);
+                break;
+            case 17:
+                $transactionDetail = \App\Models\Invoice::where('transaction_id', $request->RefId)->delete();
+
+                return redirect()->route('TuitionInvoices.index')->withErrors(['You refused to pay tuition installment amount!']);
+
+                break;
+            default:
+                abort(419);
+        }
+
+        dd($request->all());
     }
 }
