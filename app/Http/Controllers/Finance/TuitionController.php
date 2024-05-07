@@ -506,7 +506,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount=$twoInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method=$paymentMethod;
                         $tuitionInvoiceDetails->is_paid=2;
-                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc,'tuition_type'=>'Advance','tuition_details_id'=>$tuition->id],true);
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc,'tuition_type'=>'Two Installment Advance','tuition_details_id'=>$tuition->id],true);
                         $tuitionInvoiceDetails->save();
 
                         $studentApplianceStatus->tuition_payment_status='Pending For Review';
@@ -519,7 +519,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount=$twoInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method=$paymentMethod;
                         $tuitionInvoiceDetails->is_paid=0;
-                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'tuition_type'=>'Advance','tuition_details_id'=>$tuition->id],true);
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'tuition_type'=>'Two Installment Advance','tuition_details_id'=>$tuition->id],true);
                         $tuitionInvoiceDetails->save();
 
                         $invoice = (new Invoice)->amount($twoInstallmentAdvance);
@@ -529,7 +529,7 @@ class TuitionController extends Controller
                             function ($driver, $transactionID) use ($twoInstallmentAdvance, $tuitionInvoiceDetails) {
                                 $dataInvoice = new \App\Models\Invoice();
                                 $dataInvoice->user_id = auth()->user()->id;
-                                $dataInvoice->type = 'Tuition Payment (Two Installment Advance)';
+                                $dataInvoice->type = 'Two Installment Advance';
                                 $dataInvoice->amount = $twoInstallmentAdvance;
                                 $dataInvoice->description = json_encode(['amount' => $twoInstallmentAdvance, 'invoice_details_id' => $tuitionInvoiceDetails->id], true);
                                 $dataInvoice->transaction_id = $transactionID;
@@ -547,7 +547,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount=$fourInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method=$paymentMethod;
                         $tuitionInvoiceDetails->is_paid=2;
-                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc,'tuition_type'=>'Advance','tuition_details_id'=>$tuition->id],true);
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'files'=>$filesSrc,'tuition_type'=>'Four Installment Advance','tuition_details_id'=>$tuition->id],true);
                         $tuitionInvoiceDetails->save();
 
                         $studentApplianceStatus->tuition_payment_status='Pending For Review';
@@ -560,7 +560,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount=$fourInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method=$paymentMethod;
                         $tuitionInvoiceDetails->is_paid=0;
-                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'tuition_type'=>'Advance','tuition_details_id'=>$tuition->id],true);
+                        $tuitionInvoiceDetails->description=json_encode(['user_description'=>$description,'tuition_type'=>'Four Installment Advance','tuition_details_id'=>$tuition->id],true);
                         $tuitionInvoiceDetails->save();
 
                         $invoice = (new Invoice)->amount($fourInstallmentAdvance);
@@ -570,7 +570,7 @@ class TuitionController extends Controller
                             function ($driver, $transactionID) use ($fourInstallmentAdvance, $tuitionInvoiceDetails) {
                                 $dataInvoice = new \App\Models\Invoice();
                                 $dataInvoice->user_id = auth()->user()->id;
-                                $dataInvoice->type = 'Tuition Payment (Four Installment Advance)';
+                                $dataInvoice->type = 'Four Installment Advance';
                                 $dataInvoice->amount = $fourInstallmentAdvance;
                                 $dataInvoice->description = json_encode(['amount' => $fourInstallmentAdvance, 'invoice_details_id' => $tuitionInvoiceDetails->id], true);
                                 $dataInvoice->transaction_id = $transactionID;

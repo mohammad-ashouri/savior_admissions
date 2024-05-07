@@ -2,6 +2,7 @@
 
 namespace App\Models\Finance;
 
+use App\Models\Branch\StudentApplianceStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,6 +23,11 @@ class TuitionInvoices extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function applianceInformation()
+    {
+        return $this->belongsTo(StudentApplianceStatus::class, 'appliance_id','id');
+    }
 
     public function invoiceDetails()
     {

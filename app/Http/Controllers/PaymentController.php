@@ -107,6 +107,7 @@ class PaymentController extends Controller
                     $tuitionInvoiceDetails->is_paid = 1;
                     $tuitionInvoiceDetails->invoice_id = $transactionDetail->id;
                     $tuitionInvoiceDetails->payment_details = $request->all();
+                    $tuitionInvoiceDetails->date_of_payment = now();
                     $tuitionInvoiceDetails->save();
 
                     $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);

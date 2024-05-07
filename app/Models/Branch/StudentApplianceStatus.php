@@ -35,6 +35,10 @@ class StudentApplianceStatus extends Model
         'updated_at',
     ];
 
+    public function applianceInformation()
+    {
+        return $this->belongsTo(User::class, 'student_id', 'id');
+    }
     public function studentInfo()
     {
         return $this->belongsTo(User::class, 'student_id', 'id');

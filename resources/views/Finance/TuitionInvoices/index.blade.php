@@ -3,7 +3,7 @@
 @section('content')
     <div id="content" class="p-4 md:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
-            <div class="grid grid-cols-1 gap-4 mb-4 mt-4">
+            <div class="grid grid-cols-1 gap-4 mb-4">
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">All Tuition Invoices</h1>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
@@ -26,7 +26,7 @@
                 @endif
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    @if(empty($invoices) or $invoices->isEmpty())
+                    @if(empty($tuitionInvoiceDetails) or $tuitionInvoiceDetails->isEmpty())
                         <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                              role="alert">
                             <div class="flex">
@@ -39,7 +39,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    There is not any tuitions to show!
+                                    <p class="font-bold">There is not any invoices to show!</p>
                                 </div>
                             </div>
                         </div>
@@ -48,16 +48,29 @@
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="p-4">
-                                    <div class="flex items-center">
-                                        #
-                                    </div>
+                                <th scope="col" class="text-center">
+                                    Invoice Id
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Academic Year
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    School
+                                    Student
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Type Of Payment
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Payment Method
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Tuition Type
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Amount
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
+                                    Status
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Action
@@ -66,31 +79,114 @@
                             </thead>
 
                             <tbody>
-                            @foreach($invoices as $invoice)
+                            @foreach($tuitionInvoiceDetails as $invoice)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
                                         <div class="flex items-center">
-                                            {{ $loop->iteration }}
+                                            {{ $invoice->id }}
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <!-- Modal toggle -->
-                                        @can('tuition-edit')
-                                            <a href="{{ route('Tuition.edit',$invoice->id) }}" type="button"
-                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                                                    </path>
-                                                    <path fill-rule="evenodd"
-                                                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                          clip-rule="evenodd"></path>
-                                                </svg>
-                                                Edit
-                                            </a>
-                                        @endcan
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div>
+                                            <div
+                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->academicYearInfo->name }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div>
+                                            <div
+                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div>
+                                            <div
+                                                class="text-base font-semibold">
+                                                @switch($invoice->tuitionInvoiceDetails->payment_type)
+                                                    @case('1')
+                                                        Full Payment
+                                                        @break
+                                                    @case('2')
+                                                        Two installment
+                                                        @break
+                                                    @case('3')
+                                                        Four Installment
+                                                        @break
+                                                @endswitch
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div>
+                                            <div
+                                                class="text-base font-semibold">
+                                                @if(isset($invoice->paymentMethodInfo->name)) {{$invoice->paymentMethodInfo->name}} @else Not Paid! @endif
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div>
+                                            <div
+                                                class="text-base font-semibold">
+                                                {{ json_decode($invoice->description,true)['tuition_type'] }}
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div>
+                                            <div
+                                                class="text-base font-semibold">
+                                                {{ number_format($invoice->amount).' IRR' }}
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div>
+                                            <div
+                                                class="text-base font-semibold">
+                                                @switch($invoice->is_paid)
+                                                    @case('1')
+                                                        Paid
+                                                        @break
+                                                    @default
+                                                        Pending To Pay
+                                                @endswitch
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <td class="px-3 py-1 text-center">
+                                        @switch($invoice->is_paid)
+                                            @case('1')
+                                                <a href="{{ route('TuitionInvoices.show',$invoice->id) }}">
+                                                    <button type="button"
+                                                            class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                        <div class="text-center">
+                                                            <i class="las la-eye mr-1"></i>
+                                                        </div>
+                                                        Details
+                                                    </button>
+                                                </a>
+                                                @break
+                                            @case('0')
+                                                <a href="/PayTuition/{{ $invoice->id }}">
+                                                    <button type="button"
+                                                            class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                        <div class="text-center">
+                                                            <i class="las la-money mr-1"></i>
+                                                        </div>
+                                                        Pay
+                                                    </button>
+                                                </a>
+                                                @break
+                                        @endswitch
                                     </td>
                                 </tr>
                             @endforeach
@@ -101,9 +197,9 @@
 
             </div>
         </div>
-        @if(!empty($invoices))
+        @if(!empty($tuitionInvoiceDetails))
             <div class="pagination text-center">
-                {{ $invoices->onEachSide(5)->links() }}
+                {{ $tuitionInvoiceDetails->onEachSide(5)->links() }}
             </div>
         @endif
     </div>
