@@ -15,7 +15,6 @@ class Parents extends Seeder
     {
         $parentFatherRole = Role::create(['name' => 'Parent']);
         $parentFatherRole->givePermissionTo([
-            'students-menu-access',
             'students-list',
             'students-create',
             'students-edit',
@@ -31,6 +30,8 @@ class Parents extends Seeder
             'applications-menu-access',
             'branch-info-menu-access',
             'interviews-menu-access',
+            'students-menu-access',
+            'finance-menu-access',
         ]);
     }
 }
