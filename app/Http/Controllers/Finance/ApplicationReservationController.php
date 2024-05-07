@@ -263,7 +263,7 @@ class ApplicationReservationController extends Controller
             Your application has been reserved for this date and time:\n
             " .$applicationReservation->applicationInfo->date." ".$applicationReservation->applicationInfo->start_from . " \nSavior Schools";
 
-            $reservatoreMobile=$applicationReservation->reservatore;
+            $reservatoreMobile=$applicationReservation->reservatoreInfo->mobile;
             $this->sendSMS($reservatoreMobile, $message);
         }elseif ($applicationStatus == 3){
             $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)
@@ -274,7 +274,7 @@ class ApplicationReservationController extends Controller
             $application->save();
 
             $message="Your payment has been rejected. \nSavior Schools";
-            $reservatoreMobile=$applicationReservation->reservatore;
+            $reservatoreMobile=$applicationReservation->reservatoreInfo->mobile;
             $this->sendSMS($reservatoreMobile, $message);
         }
 
