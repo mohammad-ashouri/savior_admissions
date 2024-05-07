@@ -28,8 +28,8 @@ class DocumentController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $documentTypes = DocumentType::where('status', '1')->orderBy('name')->get();
-        $myDocuments = Document::with('documentType')->where('user_id', session('id'))->orderBy('id', 'desc')->get();
-        $myDocumentTypes = Document::with('documentType')->where('user_id', session('id'))->pluck('document_type_id')->all();
+        $myDocuments = Document::with('documentType')->where('user_id', auth()->user()->id)->orderBy('id', 'desc')->get();
+        $myDocumentTypes = Document::with('documentType')->where('user_id', auth()->user()->id)->pluck('document_type_id')->all();
         $myDocumentTypes = array_unique($myDocumentTypes);
 
         return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes'));
@@ -41,9 +41,9 @@ class DocumentController extends Controller
             'document_type' => 'exists:document_types,id',
             'document_file' => 'required|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
         ]);
-        $path = $request->file('document_file')->store('public/uploads/Documents/'.session('id'));
+        $path = $request->file('document_file')->store('public/uploads/Documents/'.auth()->user()->id);
         $document = new Document();
-        $document->user_id = session('id');
+        $document->user_id = auth()->user()->id;
         $document->document_type_id = $request->document_type;
         $document->src = $path;
         $document->save();
@@ -61,7 +61,7 @@ class DocumentController extends Controller
                 $query->where('id', (int) $user_id);
             }),
         ]);
-        $path = $request->file('document_file')->store('public/uploads/Documents/'.session('id'));
+        $path = $request->file('document_file')->store('public/uploads/Documents/'.auth()->user()->id);
         $document = new Document();
         $document->user_id = $user_id;
         $document->document_type_id = $request->document_type;
@@ -85,7 +85,7 @@ class DocumentController extends Controller
 
     public function uploadStudentDocumentByParent($student_id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
     {
-        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->where('guardian', session('id'))->first();
+        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->where('guardian', auth()->user()->id)->first();
         if (empty($studentInformation)) {
             abort(403);
         }
@@ -148,7 +148,7 @@ class DocumentController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', session('id'))->first();
+        $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', auth()->user()->id)->first();
         if (empty($studentInformation)) {
             $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student information is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
 
@@ -260,7 +260,7 @@ class DocumentController extends Controller
 
     public function editUploadedEvidences($student_id)
     {
-        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->where('guardian', session('id'))->first();
+        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->where('guardian', auth()->user()->id)->first();
         if (empty($studentInformation)) {
             abort(403);
         }
@@ -324,7 +324,7 @@ class DocumentController extends Controller
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', session('id'))->first();
+        $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', auth()->user()->id)->first();
         if (empty($studentInformation)) {
             $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student information is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
 

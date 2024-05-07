@@ -17,7 +17,7 @@ class CheckIfProfileRegistered
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $me=User::with('generalInformationInfo')->where('id',session('id'))->first();
+        $me=User::with('generalInformationInfo')->where('id',auth()->user()->id)->first();
         if ($me->generalInformationInfo->status==0){
             return redirect()->route('profile');
         }

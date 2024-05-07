@@ -33,12 +33,12 @@ class DashboardController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::with('generalInformationInfo')->find(session('id'));
+        $me = User::with('generalInformationInfo')->find(auth()->user()->id);
 
         //Students
         $students = [];
         if ($me->hasRole('Parent')) {
-            $students = StudentInformation::where('guardian', session('id'))
+            $students = StudentInformation::where('guardian', auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')

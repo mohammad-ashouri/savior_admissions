@@ -32,7 +32,7 @@ class StudentController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
 
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
@@ -44,7 +44,7 @@ class StudentController extends Controller
 
             return view('Students.index', compact('students', 'academicYears'));
         } elseif ($me->hasRole('Parent')) {
-            $students = StudentInformation::where('guardian', session('id'))
+            $students = StudentInformation::where('guardian', auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
@@ -113,7 +113,7 @@ class StudentController extends Controller
 //        $current_identification_code = $request->current_identification_code;
         $gender = $request->gender;
 
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $lastStudent = User::whereHas('roles', function ($query) {
             $query->where('name', 'Student');
         })->orderByDesc('id')->first();
@@ -152,10 +152,10 @@ class StudentController extends Controller
 
     public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
 
         if ($me->hasRole('Parent')) {
-            $studentInformations = StudentInformation::where('guardian', session('id'))
+            $studentInformations = StudentInformation::where('guardian', auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
@@ -272,7 +272,7 @@ class StudentController extends Controller
 
     public function studentStatusIndex()
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
 
         $students=[];
         if ($me->hasRole('Super Admin')) {
@@ -285,7 +285,7 @@ class StudentController extends Controller
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears'));
         } elseif ($me->hasRole('Parent')) {
-            $students = StudentInformation::where('guardian', session('id'))
+            $students = StudentInformation::where('guardian', auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')

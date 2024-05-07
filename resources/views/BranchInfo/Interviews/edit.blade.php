@@ -1,5 +1,5 @@
 @php use App\Models\User;
-$me=User::find(session('id'));
+$me=User::find(auth()->user()->id);
 if($interview->firstInterviewerInfo->id==$me->id){
     $interviewFields=json_decode($interview->interview[0]->interview_form,true);
 }elseif($interview->secondInterviewerInfo->id==$me->id){

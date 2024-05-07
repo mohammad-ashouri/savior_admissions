@@ -25,7 +25,7 @@ class ApplicationTimingController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $applicationTimings = [];
         if ($me->hasRole('Super Admin')) {
             $applicationTimings = ApplicationTiming::with('academicYearInfo')->with('firstInterviewer')->with('secondInterviewer')->orderBy('id', 'desc')->paginate(20);
@@ -57,7 +57,7 @@ class ApplicationTimingController extends Controller
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $academicYears = [];
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::where('status', 1)->get();
@@ -98,7 +98,7 @@ class ApplicationTimingController extends Controller
             return redirect()->back()->withErrors(['errors'=>'The first and second interviewers cannot be equal.'])->withInput();
         }
 
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $academicYears = [];
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::where('status', 1)->get();
@@ -182,7 +182,7 @@ class ApplicationTimingController extends Controller
 
     public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $applicationTiming = [];
         if ($me->hasRole('Super Admin')) {
             $applicationTiming = ApplicationTiming::with('applications')
@@ -209,7 +209,7 @@ class ApplicationTimingController extends Controller
 
     public function interviewers(Request $request)
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
         ]);

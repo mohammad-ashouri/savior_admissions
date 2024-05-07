@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 @php
     use App\Models\User;
-    $me=User::with('generalInformationInfo')->find(session('id'));
+    $me=User::with('generalInformationInfo')->find(auth()->user()->id);
 @endphp
 <html class="" lang="en">
 <head>

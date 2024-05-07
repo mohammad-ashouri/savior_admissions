@@ -20,7 +20,7 @@ class ProfileController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $myGeneralInformation = GeneralInformation::where('user_id', $me->id)->with('user')->first();
         $personnelPhotoType = DocumentType::where('name', 'Personal picture')->first();
         $myDocuments = Document::where('user_id', $me->id)->where('document_type_id', $personnelPhotoType->id)->latest()->first();
@@ -31,7 +31,7 @@ class ProfileController extends Controller
 
     public function editMyProfile(Request $request)
     {
-        $generalInformation = GeneralInformation::where('user_id', session('id'))->first();
+        $generalInformation = GeneralInformation::where('user_id', auth()->user()->id)->first();
 
         if ($generalInformation->status == 0) {
             $this->validate($request, [
@@ -47,7 +47,7 @@ class ProfileController extends Controller
                 'zip/postalcode' => 'required|string',
                 'email' => 'nullable|email',
             ]);
-            $generalInformation = GeneralInformation::where('user_id', session('id'))->update(
+            $generalInformation = GeneralInformation::where('user_id', auth()->user()->id)->update(
                 [
                     'first_name_fa' => $request->input('first_name_fa'),
                     'last_name_fa' => $request->input('last_name_fa'),
@@ -62,8 +62,8 @@ class ProfileController extends Controller
                     'phone' => $request->input('phone'),
                     'postal_code' => $request->input('zip/postalcode'),
                     'status' => 1,
-                    'adder' => session('id'),
-                    'editor' => session('id'),
+                    'adder' => auth()->user()->id,
+                    'editor' => auth()->user()->id,
                 ]
             );
         } else {
@@ -77,7 +77,7 @@ class ProfileController extends Controller
                 'zip/postalcode' => 'required|string',
                 'email' => 'nullable|email',
             ]);
-            $generalInformation = GeneralInformation::where('user_id', session('id'))->update(
+            $generalInformation = GeneralInformation::where('user_id', auth()->user()->id)->update(
                 [
                     'faragir_code' => $request->input('FaragirCode'),
                     'passport_number' => $request->input('PassportNumber'),
@@ -87,19 +87,19 @@ class ProfileController extends Controller
                     'phone' => $request->input('phone'),
                     'postal_code' => $request->input('zip/postalcode'),
                     'status' => 1,
-                    'adder' => session('id'),
-                    'editor' => session('id'),
+                    'adder' => auth()->user()->id,
+                    'editor' => auth()->user()->id,
                 ]
             );
         }
 
         if (isset($request->mobile)) {
-            $user = User::where('id', session('id'))->update([
+            $user = User::where('id', auth()->user()->id)->update([
                 'mobile' => $request->mobile,
             ]);
         }
         if (isset($request->email)) {
-            $user = User::where('id', session('id'))->update([
+            $user = User::where('id', auth()->user()->id)->update([
                 'email' => $request->email,
             ]);
         }
@@ -169,7 +169,7 @@ class ProfileController extends Controller
         $user->mobile = $input['mobile'];
         $user->save();
 
-        $userGeneralInformation->editor = session('id');
+        $userGeneralInformation->editor = auth()->user()->id;
         $userGeneralInformation->save();
         $this->logActivity(json_encode(['activity' => 'Profile Updated By Admin', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
 

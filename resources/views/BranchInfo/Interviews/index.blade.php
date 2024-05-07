@@ -1,5 +1,5 @@
 @php use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\User;
- $me=User::find(session('id'));
+ $me=User::find(auth()->user()->id);
 @endphp
 @extends('Layouts.panel')
 

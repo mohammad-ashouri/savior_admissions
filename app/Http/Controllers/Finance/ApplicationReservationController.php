@@ -31,7 +31,7 @@ class ApplicationReservationController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $applications = $principalAccess = $financialManagerAccess = [];
 
         if ($me->hasRole('Super Admin')) {
@@ -96,7 +96,7 @@ class ApplicationReservationController extends Controller
 
     public function create()
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
             $levels = Level::where('status', 1)->get();
@@ -110,7 +110,7 @@ class ApplicationReservationController extends Controller
     {
         $applicationInfo = $principalAccess = $financialManagerAccess = [];
 
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $applicationReservation = ApplicationReservation::find($id);
         if (empty($applicationReservation)) {
             $this->logActivity(json_encode(['activity' => 'Access Denied To Show Application Reservation Invoice', 'application_reservation_id' => $id, 'status' => 'Not Found']), request()->ip(), request()->userAgent());
@@ -156,7 +156,7 @@ class ApplicationReservationController extends Controller
 
     public function destroy($id): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $checkAccessToApplication = [];
         if (! $me->hasRole('Super Admin')) {
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
@@ -195,7 +195,7 @@ class ApplicationReservationController extends Controller
 
     public function changeApplicationPaymentStatus(Request $request): \Illuminate\Http\JsonResponse
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $applicationID = $request->application_id;
         $applicationStatus = $request->status;
 
@@ -284,7 +284,7 @@ class ApplicationReservationController extends Controller
 
     public function searchReservationInvoices(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $applications = $academicYears = [];
 
         if ($me->hasRole('Super Admin')) {

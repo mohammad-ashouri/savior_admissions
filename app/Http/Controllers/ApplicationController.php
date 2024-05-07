@@ -42,7 +42,7 @@ class ApplicationController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $applications = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
@@ -84,7 +84,7 @@ class ApplicationController extends Controller
 
     public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $activeAcademicYears = $this->getActiveAcademicYears();
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->orderBy('student_id')->get();
@@ -116,7 +116,7 @@ class ApplicationController extends Controller
 
     public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $applicationInfo = null;
         $applicationReservation = ApplicationReservation::find($id);
         if (empty($applicationReservation)) {
@@ -165,7 +165,7 @@ class ApplicationController extends Controller
 
     public function destroy($id): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -201,7 +201,7 @@ class ApplicationController extends Controller
 
     public function removeFromReserve($id): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -241,7 +241,7 @@ class ApplicationController extends Controller
 
     public function changeApplicationStatus($id): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -381,7 +381,7 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $student = $request->student;
         $level = $request->level;
         $academic_year = $request->academic_year;
@@ -429,7 +429,7 @@ class ApplicationController extends Controller
 
     public function prepareToPay($application_id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $checkApplication = null;
         if ($me->hasRole('Parent')) {
             $checkApplication = ApplicationReservation::with('applicationInfo')->where('reservatore', $me->id)->find($application_id);
@@ -476,7 +476,7 @@ class ApplicationController extends Controller
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
 
-                $path = $request->file('document_file')->store('public/uploads/Documents/'.session('id'));
+                $path = $request->file('document_file')->store('public/uploads/Documents/'.auth()->user()->id);
 
                 $document = new Document();
                 $document->user_id = $applicationInformation->student_id;
@@ -537,7 +537,7 @@ class ApplicationController extends Controller
 
     public function confirmApplication()
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
         } elseif ($me->hasRole('Principal')) {
@@ -555,7 +555,7 @@ class ApplicationController extends Controller
 
     public function showApplicationConfirmation($application_id, $appliance_id)
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
         } elseif ($me->hasRole('Principal')) {

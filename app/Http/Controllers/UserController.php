@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $roles = Role::orderBy('name', 'asc')->get();
 
         $data = [];
@@ -55,7 +55,7 @@ class UserController extends Controller
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $schools = School::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
@@ -75,7 +75,7 @@ class UserController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $this->validate($request, [
             'first_name_fa' => 'required',
             'last_name_fa' => 'required',
@@ -117,7 +117,7 @@ class UserController extends Controller
 
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $user = User::find($id);
         $userRole = $user->roles->pluck('name', 'name')->all();
         if ($me->hasRole('Super Admin')) {
@@ -197,7 +197,7 @@ class UserController extends Controller
 
     public function searchUser(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $roles = Role::orderBy('name', 'asc')->get();
 
         $searchEduCode = $request->input('search-user-code');

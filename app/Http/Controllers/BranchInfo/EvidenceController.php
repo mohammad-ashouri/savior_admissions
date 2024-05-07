@@ -22,7 +22,7 @@ class EvidenceController extends Controller
 
     public function index()
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
         } elseif ($me->hasRole('Admissions Officer')) {
@@ -39,7 +39,7 @@ class EvidenceController extends Controller
 
     public function show($appliance_id)
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
         } elseif ($me->hasRole('Admissions Officer')) {
@@ -66,7 +66,7 @@ class EvidenceController extends Controller
 
     public function confirmEvidences(Request $request)
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
         } elseif ($me->hasRole('Admissions Officer')) {

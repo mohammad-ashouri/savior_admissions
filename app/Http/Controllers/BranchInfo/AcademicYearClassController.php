@@ -26,7 +26,7 @@ class AcademicYearClassController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $academicYearClasses = AcademicYearClass::with('academicYearInfo')->with('levelInfo')->with('educationTypeInfo')->with('educationGenderInfo')->orderBy('id', 'desc')->paginate(10);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
@@ -56,7 +56,7 @@ class AcademicYearClassController extends Controller
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::where('status', 1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
@@ -111,7 +111,7 @@ class AcademicYearClassController extends Controller
 
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $academicYearClass = AcademicYearClass::find($id);
 
         if ($me->hasRole('Super Admin')) {
@@ -169,7 +169,7 @@ class AcademicYearClassController extends Controller
 
     public function levels(Request $request)
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $academicYear = $request->academic_year;
         $academicYearLevels = [];
         if ($me->hasRole('Super Admin')) {
@@ -192,7 +192,7 @@ class AcademicYearClassController extends Controller
 
     public function academicYearStarttimeAndEndtime(Request $request)
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
         ]);

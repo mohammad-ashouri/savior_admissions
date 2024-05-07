@@ -1,7 +1,7 @@
 @extends('Layouts.panel')
 @php
     use App\Models\User;
-    $me=User::find(session('id'));
+    $me=User::find(auth()->user()->id);
 @endphp
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">

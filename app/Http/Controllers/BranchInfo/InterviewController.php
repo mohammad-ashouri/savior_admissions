@@ -29,7 +29,7 @@ class InterviewController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $interviews = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
@@ -111,7 +111,7 @@ class InterviewController extends Controller
 
     public function GetInterviewForm($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $interview = [];
         if ($me->hasRole('Super Admin')) {
             $interview = Applications::with('applicationTimingInfo')
@@ -217,7 +217,7 @@ class InterviewController extends Controller
 
     public function SetInterview(Request $request)
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $application = [];
 
         if ($me->hasRole('Super Admin')) {
@@ -342,7 +342,7 @@ class InterviewController extends Controller
 
     public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $interview = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
@@ -439,7 +439,7 @@ class InterviewController extends Controller
 
     public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $interview = [];
         if ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
@@ -501,7 +501,7 @@ class InterviewController extends Controller
 
     public function update(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(session('id'));
+        $me = User::find(auth()->user()->id);
         $application = [];
         if ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
@@ -559,7 +559,7 @@ class InterviewController extends Controller
         }
         $interview = Interview::find($request->interview_id);
         $interview->interview_form = json_encode($request->all(), true);
-        $interview->interviewer = session('id');
+        $interview->interviewer = auth()->user()->id;
 
         $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
