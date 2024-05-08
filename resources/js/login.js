@@ -22,6 +22,17 @@ $(document).ready(function () {
         switch (fullPath) {
             case '/login':
             case '/':
+                //Contact us
+                $('#close-modal,#close-modal-button').click(function (){
+                    $('#contact-us-modal').hide();
+                });
+                $('#contact-us-modal-overlay').click(function (){
+                    $('#contact-us-modal').hide();
+                });
+                $('#show-contact-us').click(function (){
+                    $('#contact-us-modal').show();
+                });
+
                 $('#login-method').val('');
                 $('#password').val();
                 $('#captcha').val('');

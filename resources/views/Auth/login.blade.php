@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html class="" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -19,26 +19,26 @@
         <div>
             <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left ">Sign in to savior school</h2>
         </div>
-{{--        {{ session('id') }}--}}
-{{--        @if (count($errors) > 0)--}}
-{{--            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"--}}
-{{--                 role="alert">--}}
-{{--                <div class="flex">--}}
-{{--                    <div class="py-1">--}}
-{{--                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"--}}
-{{--                             viewBox="0 0 20 20">--}}
-{{--                            <path--}}
-{{--                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>--}}
-{{--                        </svg>--}}
-{{--                    </div>--}}
-{{--                    <div>--}}
-{{--                        @foreach ($errors->all() as $error)--}}
-{{--                            <p class="font-bold">{{ $error }}</p>--}}
-{{--                        @endforeach--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        @endif--}}
+        {{--        {{ session('id') }}--}}
+        {{--        @if (count($errors) > 0)--}}
+        {{--            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"--}}
+        {{--                 role="alert">--}}
+        {{--                <div class="flex">--}}
+        {{--                    <div class="py-1">--}}
+        {{--                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"--}}
+        {{--                             viewBox="0 0 20 20">--}}
+        {{--                            <path--}}
+        {{--                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>--}}
+        {{--                        </svg>--}}
+        {{--                    </div>--}}
+        {{--                    <div>--}}
+        {{--                        @foreach ($errors->all() as $error)--}}
+        {{--                            <p class="font-bold">{{ $error }}</p>--}}
+        {{--                        @endforeach--}}
+        {{--                    </div>--}}
+        {{--                </div>--}}
+        {{--            </div>--}}
+        {{--        @endif--}}
 
         <div>
             @if ($errors->has('WrongToken'))
@@ -84,12 +84,13 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-bl-md rounded-tl-md focus:ring-blue-500 focus:border-blue-500 block w-1/10 p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                         @foreach($countryPhoneCodes as $phoneCodes)
-                            <option value="{{$phoneCodes->id}}" @if($phoneCodes->id==101) selected @endif>+{{$phoneCodes->phonecode}}</option>
+                            <option value="{{$phoneCodes->id}}" @if($phoneCodes->id==101) selected @endif>
+                                +{{$phoneCodes->phonecode}}</option>
                         @endforeach
                     </select>
-                <input type="text" id="mobile" name="mobile"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-br-md rounded-tr-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="Enter without 0 or phone code at the beginning of it ">
+                    <input type="text" id="mobile" name="mobile"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-br-md rounded-tr-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           placeholder="Enter without 0 or phone code at the beginning of it ">
                 </div>
             </div>
 
@@ -140,5 +141,84 @@
     </div>
 </div>
 </body>
+<div class="fixed bottom-8 right-8 z-50 flex items-center justify-center" id="show-contact-us">
+    <div class="absolute top-0 transform -translate-y-full -translate-x-1/2 text-center left-1/2">
+        <span class="inline-block p-2 rounded-lg bg-gray-800 text-white whitespace-nowrap">Contact us!</span>
+    </div>
+    <div
+        class="w-20 h-20 mt-1 rounded-full bg-yellow-500 hover:bg-blue-600 transition duration-300 ease-in-out cursor-pointer animate-pulse flex items-center justify-center">
+        <i class="las la-phone-volume" style="font-size: 35px"></i>
+    </div>
+</div>
 
+<div id="contact-us-modal" hidden="">
+    <div id="contact-us-modal-overlay" class="fixed top-0 right-0 left-0 bottom-0 bg-black opacity-50 z-40 "></div>
+    <div id="default-modal" tabindex="-1" aria-hidden="true"
+         class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 bottom-0 z-50 flex justify-center items-center w-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        Have you problem? Contact us!
+                    </h3>
+                    <button type="button" id="close-modal-button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <i class="las la-times" style="font-size: 24px"></i>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">
+                    <p class="font-bold leading-relaxed text-gray-800 dark:text-gray-400">
+                        Taha Branch-Admissions Department
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
+                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a href="tel:+989058384005">+989058384005
+                            <span class="text-blue-500">(Click to call)</span></a>
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
+                        <i class="las la-phone" style="font-size: 24px"></i>Phone number: <a href="tel:+982537727780">+982537727780
+                            <span class="text-blue-500">(Click to call)</span></a>
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
+                        <i class="las la-share-alt" style="font-size: 24px"></i>eitaa: <a
+                            class="text-blue-500 underline" href="https://eitaa.com/admissionsaviorboys">https://eitaa.com/admissionsaviorboys</a>
+                    </p>
+                    <p class="font-bold leading-relaxed text-gray-800 dark:text-gray-400">
+                        Kawthar Branch-Admissions Department
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
+                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a href="tel:+989028384002">+989028384002
+                            <span class="text-blue-500">(Click to call)</span></a>
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
+                        <i class="las la-share-alt" style="font-size: 24px"></i>eitaa: <a
+                            class="text-blue-500 underline" href="https://eitaa.com/Admissions">https://eitaa.com/Admissions</a>
+                    </p>
+                    <p class="font-bold leading-relaxed text-gray-800 dark:text-gray-400">
+                        Tuba Branch-Admissions Department
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
+                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a href="tel:+989333234105">+989333234105
+                            <span class="text-blue-500">(Click to call)</span></a>
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
+                        <i class="las la-share-alt" style="font-size: 24px"></i>eitaa: <a
+                            class="text-blue-500 underline" href="https://eitaa.com/KgSupervisor">https://eitaa.com/KgSupervisor</a>
+                    </p>
+
+
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button" id="close-modal"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Fine!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </html>
