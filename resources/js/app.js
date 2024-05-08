@@ -17,52 +17,7 @@ import {
 
 window.moment = moment;
 
-
-$(document).ready(function () {
-    // open toggled sidebar
-    const toggleButton = document.getElementById('toggleButton');
-    const logoSidebar = document.getElementById('logo-sidebar');
-    const content = document.getElementById('content');
-    const menuListItems = document.querySelectorAll('.menulist');
-    const menuListHoverItems = document.querySelectorAll('.menulist-hover');
-
-    toggleButton.addEventListener('click', function () {
-        logoSidebar.classList.toggle('expanded');
-        content.classList.toggle('ex-ml');
-        if (logoSidebar.classList.contains('expanded')) {
-            menuListItems.forEach(item => {
-                item.style.display = 'inline-block';
-            });
-            menuListHoverItems.forEach(item => {
-                item.style.display = 'none';
-            });
-        } else {
-            menuListItems.forEach(item => {
-                item.style.display = 'none';
-            });
-
-            menuListHoverItems.forEach(item => {
-                item.style.display = 'inline-block';
-            });
-        }
-    });
-
-    if (logoSidebar.classList.contains('expanded')) {
-        menuListItems.forEach(item => {
-            item.style.display = 'inline-block';
-        });
-
-        menuListHoverItems.forEach(item => {
-            // item.style.display = 'none';
-        });
-    } else {
-        menuListItems.forEach(item => {
-            item.style.display = 'none';
-        });
-        menuListHoverItems.forEach(item => {
-            item.style.display = 'inline-block';
-        });
-    }
+$(document).on('load',function (){
 
 // config dark mode
     let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -71,8 +26,10 @@ $(document).ready(function () {
 // Change the icons inside the button based on previous settings
     if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         themeToggleDarkIcon.classList.remove('hidden');
+        document.documentElement.classList.add('dark');
     } else {
         themeToggleLightIcon.classList.remove('hidden');
+        document.documentElement.classList.remove('dark')
     }
 
     let themeToggleBtn = document.getElementById('theme-toggle');
@@ -105,7 +62,54 @@ $(document).ready(function () {
         }
 
     });
+});
 
+$(document).ready(function () {
+    const toggleButton = document.getElementById('toggleButton');
+    const logoSidebar = document.getElementById('logo-sidebar');
+    const content = document.getElementById('content');
+    const menuListItems = document.querySelectorAll('.menulist');
+    const menuListHoverItems = document.querySelectorAll('.menulist-hover');
+
+    function toggleMenu() {
+        logoSidebar.classList.toggle('expanded');
+        content.classList.toggle('ex-ml');
+        if (logoSidebar.classList.contains('expanded')) {
+            menuListItems.forEach(item => {
+                item.style.display = 'inline-block';
+            });
+            menuListHoverItems.forEach(item => {
+                item.style.display = 'none';
+            });
+        } else {
+            menuListItems.forEach(item => {
+                item.style.display = 'none';
+            });
+            menuListHoverItems.forEach(item => {
+                item.style.display = 'inline-block';
+            });
+        }
+    }
+
+    toggleButton.addEventListener('click', function () {
+        toggleMenu();
+    });
+
+    function handleResize() {
+        if (window.innerWidth >= 768) {
+            // If the window width is greater than or equal to 768 pixels
+            toggleMenu(); // Execute toggleMenu to open or close the menu
+        } else {
+            // If the window width is less than 768 pixels
+            // Here you can perform other actions, such as displaying a message or performing another action
+        }
+    }
+
+// Call handleResize for initial page load
+    handleResize();
+
+// Add a listener to check for window resize events
+    window.addEventListener('resize', handleResize);
 
     let fullPath = window.location.pathname;
     let csrf_token = 'meta[name="csrf-token"]';
