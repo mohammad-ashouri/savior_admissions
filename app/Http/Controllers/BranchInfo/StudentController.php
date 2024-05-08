@@ -139,7 +139,7 @@ class StudentController extends Controller
 
         $studentInformation = new StudentInformation();
         $studentInformation->student_id = $user->id;
-        $studentInformation->guardian = $me->id;
+        $studentInformation->guardian = auth()->user()->id;
 //        $studentInformation->current_nationality = $nationality;
 //        $studentInformation->current_identification_type = $current_identification_type;
 //        $studentInformation->current_identification_code = $current_identification_code;
