@@ -17,7 +17,7 @@ import {
 
 window.moment = moment;
 
-$(document).on('load',function (){
+document.addEventListener('DOMContentLoaded', function () {
 
 // config dark mode
     let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
