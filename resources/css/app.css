@@ -5,27 +5,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@media (min-width: 768px) {
+@media only screen and  (min-width: 768px) {
     #logo-sidebar.expanded {
         transition: 0.3s;
-        width     : 16rem;
+        width: 16rem;
     }
 
     #content.ex-ml {
-        transition : 0.3s;
+        transition: 0.3s;
         margin-left: 16rem
     }
 
     #logo-sidebar:hover {
         transition: 0.3s;
-        width     : 16rem;
+        width: 16rem;
     }
 
     /* add remove menu */
     #logo-sidebar .menulist {
         transition: 0.9s;
-        display: none;
-        padding-left: 2.75rem;
+        /*display: none;*/
+        padding-left: 1rem;
         -webkit-transition: 0.9s;
         -moz-transition: 0.9s;
         -ms-transition: 0.9s;
@@ -35,13 +35,13 @@
     #logo-sidebar:hover .menulist {
         transition: 0.9s;
         display: inline-block !important;
-        padding-left: 2.75rem;
+        padding-left: 1rem;
     }
 
     #logo-sidebar:hover .menulist-hover {
-        transition  : 0.9s;
-        display     : none !important;
-        padding-left: 2.75rem;
+        transition: 0.9s;
+        /*display: none !important;*/
+        padding-left: 1rem;
 
 
     }
@@ -60,17 +60,48 @@
         transition: 0.3s;
     }
 
-    #logo-sidebar:hover+#content {
-        transition : 0.3s;
+    #logo-sidebar:hover + #content {
+        transition: 0.3s;
         margin-left: 16rem;
     }
-    .loginPic{
+
+    .loginPic {
         background: url(../images/login.jpg) no-repeat;
     }
-    .signupPic{
+
+    .signupPic {
         background: url(../images/signup-images/create-account.jpg) no-repeat;
     }
+
+
 }
+
+@media only screen and (max-width: 768px) {
+    #dropdown-branch {
+        padding-left: 1rem !important;
+    }
+
+    #dropdown-finance {
+        padding-left: 1rem !important;
+    }
+
+    #dropdown-catalog {
+        padding-left: 1rem !important;
+    }
+}
+
+#dropdown-branch {
+    padding-left: 0;
+}
+
+#dropdown-finance {
+    padding-left: 0;
+}
+
+#dropdown-catalog {
+    padding-left: 0;
+}
+
 /* [1] The container */
 .img-hover-zoom {
     overflow: hidden; /* [1.2] Hide the overflowing of child elements */
@@ -85,26 +116,30 @@
 .img-hover-zoom:hover img {
     transform: scale(1.5);
 }
-.pagination nav{
+
+.pagination nav {
     justify-content: center;
 }
 
-.pagination div.hidden{
+.pagination div.hidden {
     display: block !important;
 }
-.pagination p{
+
+.pagination p {
     padding-bottom: .8rem;
     color: rgb(118, 125, 139);
 }
-.mainLogo{
+
+.mainLogo {
     background: url(../images/Panel/logo.png) no-repeat;
     background-size: cover;
 }
 
-.defaultUserIcon{
+.defaultUserIcon {
     background: url(../images/Panel/default_user_icon.png) no-repeat;
     background-size: cover;
 }
+
 .select2-container .select2-selection--single {
     height: 35px !important;
 }
@@ -113,6 +148,7 @@
 
     background-color: #374151;
 }
+
 :is(.dark .select2-container--classic .select2-selection--multiple) {
     background-color: #374151;
     /*border: 1px solid #384250;*/
@@ -120,9 +156,11 @@
     border-radius: 6px;
 
 }
+
 :is(.dark .select2-container--classic .select2-selection--multiple .select2-selection__choice__display) {
     color: white;
 }
+
 :is(.dark .select2-container--classic .select2-selection--multiple .select2-selection__choice) {
     background-color: #433e5c;
 
@@ -133,6 +171,7 @@
 
     background-color: #f9fafb;
 }
+
 .select2-container--classic .select2-selection--multiple {
     background-color: #f9fafb;
     /*border: 1px solid #384250;*/
@@ -140,9 +179,11 @@
     border-radius: 6px;
 
 }
+
 .select2-container--classic .select2-selection--multiple .select2-selection__choice__display {
     color: black;
 }
+
 .select2-container--classic .select2-selection--multiple .select2-selection__choice {
     background-color: #f9fafb;
 

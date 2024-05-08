@@ -53,7 +53,7 @@ $(document).ready(function () {
         });
 
         menuListHoverItems.forEach(item => {
-            item.style.display = 'none';
+            // item.style.display = 'none';
         });
     } else {
         menuListItems.forEach(item => {
