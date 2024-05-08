@@ -44,7 +44,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_1" name="s5_1" value="{{old('s5_1')}}" min="0" max="5"
+                                    <input type="text" id="s5_1" name="s5_1" value="{{old('s5_1')}}" min="0" max="5" required
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -68,7 +68,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_2" name="s5_2" value="" min="0" max="5"
+                                    <input type="text" id="s5_2" name="s5_2" value="" min="0" max="5" required
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -92,7 +92,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s5_3" name="s5_3" value="" min="0" max="5"
+                                    <input type="text" id="s5_3" name="s5_3" value="" min="0" max="5" required
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                 </td>
@@ -172,7 +172,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 1. Economic status of the family:
                             </label>
-                            <select id="s5_q1" name="s5_q1"
+                            <select id="s5_q1" name="s5_q1" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
                                 <option selected disabled value="">Select an option</option>
@@ -189,7 +189,7 @@
                             </label>
                         </div>
                         <div class="flex">
-                            <select id="s5_q2" name="s5_q2"
+                            <select id="s5_q2" name="s5_q2" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
                                 <option selected disabled value="">Select an option</option>
@@ -205,7 +205,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 3. Is the family willing to donate money to needy students?
                             </label>
-                            <select id="s5_q3" name="s5_q3"
+                            <select id="s5_q3" name="s5_q3" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
                                 <option selected disabled value="">Select an option</option>
@@ -219,7 +219,7 @@
                                 4. Would you like to contribute financially to the school's extracurricular activities
                                 and activities?
                             </label>
-                            <select id="s5_q4" name="s5_q4"
+                            <select id="s5_q4" name="s5_q4" required
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
                                 <option selected disabled value="">Select an option</option>
@@ -233,7 +233,7 @@
                                 5. Financial administrative suggestions and criticisms
                             </label>
                             <textarea id="s5_q5_d" placeholder="Enter description"
-                                      name="s5_q5_d"
+                                      name="s5_q5_d" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-3">
@@ -241,7 +241,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 Description</label>
                             <textarea id="s5_d" placeholder="Enter description"
-                                      name="s5_d"
+                                      name="s5_d" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                     </div>
