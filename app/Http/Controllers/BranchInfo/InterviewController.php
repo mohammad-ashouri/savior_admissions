@@ -316,19 +316,23 @@ class InterviewController extends Controller
                 break;
         }
 
-        $interview->interview_form = json_encode($request->all(),true);
+        $interview->interview_form = json_encode($request->all(), true);
 
-        //Check if 3 interviews completed then make that to principal for confirmation
-        $checkInterviewsCompleted = Interview::where('application_id', $request->application_id)
-            ->whereIn('interview_type', [1, 2, 3])
-            ->exists();
-        if ($checkInterviewsCompleted) {
-            $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
-            $studentApplianceStatus->save();
-        }
-
-        $interview->save();
         if ($interview->save()) {
+            //Check if 3 interviews completed then make that to principal for confirmation
+            $checkInterview1Completed = Interview::where('application_id', $request->application_id)
+                ->where('interview_type', 1)
+                ->exists();
+            $checkInterview2Completed = Interview::where('application_id', $request->application_id)
+                ->where('interview_type', 2)
+                ->exists();
+            $checkInterview3Completed = Interview::where('application_id', $request->application_id)
+                ->where('interview_type', 3)
+                ->exists();
+            if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {
+                $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
+                $studentApplianceStatus->save();
+            }
             $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
 
             return redirect()->route('interviews.index')
