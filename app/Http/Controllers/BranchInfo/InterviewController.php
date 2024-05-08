@@ -56,10 +56,10 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->paginate(30);
-        } elseif ($me->hasRole('Financial Manager')) {
+        } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
@@ -100,7 +100,7 @@ class InterviewController extends Controller
 
         }
 
-        if ($interviews->isEmpty()) {
+        if (empty($interviews) or $interviews->isEmpty()) {
             $interviews = [];
         }
         $this->logActivity(json_encode(['activity' => 'Getting Interviews']), request()->ip(), request()->userAgent());

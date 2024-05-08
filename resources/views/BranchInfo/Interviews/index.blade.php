@@ -197,7 +197,7 @@
                                                                 {{$studentApplianceStatus->interview_status}}
                                                                 @break
                                                             @default
-                                                                @if($interview->firstInterviewerInfo->id==$me->id or $interview->secondInterviewerInfo->id==$me->id or $me->hasRole('Principal') or $me->hasRole('Financial Manager'))
+                                                                @if($interview->firstInterviewerInfo->id==$me->id or $interview->secondInterviewerInfo->id==$me->id or $me->hasRole('Financial Manager'))
                                                                     @php
                                                                         $checkInterview=Interview::where('application_id',$interview->id)
                                                                         ->where('interviewer',auth()->user()->id)
