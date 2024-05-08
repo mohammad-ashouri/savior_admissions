@@ -189,7 +189,7 @@
                                 1. Express your areas of interest in case you want to collaborate with the school.
                             </label>
                             <textarea id="s4_q1" placeholder="Enter description"
-                                      name="s4_q1"
+                                      name="s4_q1" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-5">
@@ -199,7 +199,7 @@
                                 family’s perspective: (in 3 short sentences)
                             </label>
                             <textarea id="s4_q2" placeholder="Enter description"
-                                      name="s4_q2"
+                                      name="s4_q2" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-5">
@@ -209,7 +209,7 @@
                                 short sentences)
                             </label>
                             <textarea id="s4_q3" placeholder="Enter description"
-                                      name="s4_q3"
+                                      name="s4_q3" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-5">
@@ -219,7 +219,7 @@
                                 real and virtual activities by the family)
                             </label>
                             <textarea id="s4_q4" placeholder="Enter description"
-                                      name="s4_q4"
+                                      name="s4_q4" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-5">
@@ -229,7 +229,7 @@
                                 provide educational needs and a favorable psychological environment)
                             </label>
                             <textarea id="s4_q5" placeholder="Enter description"
-                                      name="s4_q5"
+                                      name="s4_q5" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-5">
@@ -239,7 +239,7 @@
                                 knowledge ability in language courses at the basic level)
                             </label>
                             <textarea id="s4_q6" placeholder="Enter description"
-                                      name="s4_q6"
+                                      name="s4_q6" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-5">
@@ -251,7 +251,7 @@
                                 are not carefully studied)
                             </label>
                             <textarea id="s4_q7" placeholder="Enter description"
-                                      name="s4_q7"
+                                      name="s4_q7" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                         <div class="mt-3">
@@ -259,7 +259,7 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
                                 Description</label>
                             <textarea id="s4_d" placeholder="Enter description"
-                                      name="s4_d"
+                                      name="s4_d" required
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
                     </div>
