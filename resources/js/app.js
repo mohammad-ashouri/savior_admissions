@@ -17,7 +17,7 @@ import {
 
 window.moment = moment;
 
-document.addEventListener('DOMContentLoaded', function () {
+$(document).on('load',function (){
 
 // config dark mode
     let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -100,7 +100,6 @@ $(document).ready(function () {
             // If the window width is greater than or equal to 768 pixels
             // toggleMenu(); // Execute toggleMenu to open or close the menu
         } else {
-            // toggleMenu();
             // If the window width is less than 768 pixels
             // Here you can perform other actions, such as displaying a message or performing another action
         }
@@ -111,6 +110,9 @@ $(document).ready(function () {
 
 // Add a listener to check for window resize events
     window.addEventListener('resize', handleResize);
+
+
+
 
     let fullPath = window.location.pathname;
     let csrf_token = 'meta[name="csrf-token"]';
