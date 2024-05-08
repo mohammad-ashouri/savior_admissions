@@ -1076,7 +1076,7 @@
                                 <option @if($interviewFields['s5_q2']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
                             <input type="text" id="s5_q2_d" name="s5_q2_d" value="{{$interviewFields['s5_q2_d']}}"
-                                   placeholder="Name of the institution (If Yes)"
+                                   placeholder="Name of the institution (If Yes)" disabled
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         </div>
                         <div class="mt-5">

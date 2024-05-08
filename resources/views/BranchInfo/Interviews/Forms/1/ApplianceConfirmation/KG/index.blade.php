@@ -1472,7 +1472,7 @@
                                 <option @if($interviewFields['s7_2']=='Yes') selected @endif value="Yes">Yes</option>
                             </select>
                             <textarea id="s7_2_r" required placeholder="Name of the institution (If Yes)"
-                                      name="s7_2_r"
+                                      name="s7_2_r" disabled
                                       class="bg-gray-50 border border-gray-300 h-11 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                         </div>
 
