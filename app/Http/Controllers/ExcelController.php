@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ExcelExports\AllStudentsWithGuardians;
 use App\ExcelExports\UsersWithMobile;
 use App\Imports\Documents;
 use App\Imports\DocumentTypesImport;
@@ -78,5 +79,10 @@ class ExcelController extends Controller
     public function exportExcelFromUsersMobile()
     {
         return Excel::download(new UsersWithMobile(), 'users.xlsx');
+    }
+
+    public function exportExcelFromAllStudents()
+    {
+        return Excel::download(new AllStudentsWithGuardians(), 'students.xlsx');
     }
 }
