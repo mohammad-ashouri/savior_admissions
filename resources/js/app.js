@@ -98,8 +98,9 @@ $(document).ready(function () {
     function handleResize() {
         if (window.innerWidth >= 768) {
             // If the window width is greater than or equal to 768 pixels
-            toggleMenu(); // Execute toggleMenu to open or close the menu
+            // toggleMenu(); // Execute toggleMenu to open or close the menu
         } else {
+            // toggleMenu();
             // If the window width is less than 768 pixels
             // Here you can perform other actions, such as displaying a message or performing another action
         }
