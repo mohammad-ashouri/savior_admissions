@@ -68,7 +68,7 @@
                         <div class="h-8 w-14 md:h-14 md:w-24 mainLogo"></div>
                     </div>
                     <span
-                        class=" hidden md:inline-block self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">Savior School</span>
+                        class=" hidden md:inline-block self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">Savior International Schools</span>
                 </a>
             </div>
             <div class="flex items-center">
