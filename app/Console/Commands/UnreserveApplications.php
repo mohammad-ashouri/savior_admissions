@@ -48,12 +48,6 @@ class UnreserveApplications extends Command
             ->where('date', '<', $today)
             ->where('reserved', 0)
             ->where('status', 1)
-            ->select('id', 'date')
-            ->get();
-
-        foreach ($applications as $application) {
-            $application->status = 0;
-            $application->save();
-        }
+            ->update(['status'=>0]);
     }
 }
