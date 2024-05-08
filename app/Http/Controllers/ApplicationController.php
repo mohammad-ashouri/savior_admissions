@@ -61,8 +61,11 @@ class ApplicationController extends Controller
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
 
             // Finding applications related to the application timings
-            $applications = Applications::whereIn('application_timing_id', $applicationTimings)
-                ->pluck('id')
+            $applications = Applications::join('application_reservations', 'applications.id', '=', 'application_reservations.application_id')
+                ->whereIn('applications.application_timing_id', $applicationTimings)
+                ->where('applications.reserved', 1)
+                ->where('application_reservations.payment_status', 1)
+                ->pluck('applications.id')
                 ->toArray();
 
             // Getting reservations of applications along with related information
