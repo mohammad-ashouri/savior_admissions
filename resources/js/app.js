@@ -894,7 +894,7 @@ $(document).ready(function () {
                     //Remove all field values
                     $(this).val('');
                     // Display an error message using swalFire
-                    swalFire('Error', 'Your student must be over five years old.', 'error', 'Try again');
+                    swalFire('Error', 'Your student must be over four years old.', 'error', 'Try again');
                 }
             });
 
