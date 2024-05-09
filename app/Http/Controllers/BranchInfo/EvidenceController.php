@@ -84,8 +84,8 @@ class EvidenceController extends Controller
             abort(403);
         }
 
-        $studentInfo=StudentInformation::with('guradianInfo')->where('student_id', $studentAppliance->student_id)->first();
-        $guardianMobile=$studentInfo->guradianInfo->mobile;
+        $studentInfo=StudentInformation::with('guardianInfo')->where('student_id', $studentAppliance->student_id)->first();
+        $guardianMobile=$studentInfo->guardianInfo->mobile;
 
         switch (request('status')) {
             case 'Accept':

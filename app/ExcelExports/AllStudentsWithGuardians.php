@@ -15,7 +15,7 @@ class AllStudentsWithGuardians implements FromCollection, WithHeadings, ShouldAu
             ->with('fatherInfo')
             ->with('motherInfo')
             ->with('nationalityInfo')
-            ->with('guradianInfo')
+            ->with('guardianInfo')
             ->get()
             ->map(function ($student) {
                 return [
@@ -23,8 +23,8 @@ class AllStudentsWithGuardians implements FromCollection, WithHeadings, ShouldAu
                     'Student Name' => $student->generalInformations->first_name_en,
                     'Student Family' => $student->generalInformations->last_name_en,
                     'Guardian id' => $student->guardian,
-                    'Guardian Name' => $student->guradianInfo->generalInformationInfo->last_name_en,
-                    'Guardian Family' => $student->guradianInfo->generalInformationInfo->last_name_en,
+                    'Guardian Name' => $student->guardianInfo->generalInformationInfo->last_name_en,
+                    'Guardian Family' => $student->guardianInfo->generalInformationInfo->last_name_en,
                     // Add more columns as needed
                 ];
             })

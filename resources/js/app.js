@@ -1648,6 +1648,53 @@ $(document).ready(function () {
             });
 
         }
+
+        if (fullPath.includes('TuitionInvoices')) {
+            pageTitle = 'Tuition Invoices';
+        }
+        if (fullPath.includes('TuitionInvoices/')) {
+            pageTitle = 'Tuition Payment Details';
+
+            $('#set-payment-status').click(function (e){
+                e.preventDefault();
+                if ($('#payment_status').val()==0){
+                    swalFire('Error', "You can't change status to this!", 'error', 'Try again');
+                }
+                else if ($('#payment_status').val()==1){
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'If you set the status to Approved, installments will be made for parents. This state is irreversible. are you sure?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        cancelButtonText: 'No',
+                        confirmButtonText: 'Yes',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/TuitionInvoices/ChangeInvoiceStatus',
+                                data: {
+                                    invoice_id:$('#invoice_id').val(),
+                                    status: $('#payment_status').val()
+                                },
+                                headers: {
+                                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                                }, success: function (response) {
+                                    swalFire('Done', JSON.parse(xhr.responseText).message, 'success', 'Ok');
+                                }, error: function (xhr, textStatus, errorThrown) {
+                                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                                }
+                            });
+                        }
+                    });
+                }
+                else if ($('#payment_status').val()==2){
+                    swalFire('Error', "You can't change status to this!", 'error', 'Try again');
+                }
+
+            });
+        }
+
     }
     else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';

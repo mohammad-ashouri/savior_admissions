@@ -125,6 +125,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
         Route::post('PayTuition', [TuitionController::class, 'tuitionPayment'])->name('Tuitions.Pay');
         //Payment list
         Route::resource('TuitionInvoices', TuitionPaymentController::class);
+        Route::post('TuitionInvoices/ChangeInvoiceStatus', [TuitionPaymentController::class, 'changeTuitionInvoiceStatus']);
         Route::get('PayTuitionInstallment/{tuition_id}', [TuitionPaymentController::class,'prepareToPayTuition']);
         Route::post('PayTuitionInstallment', [TuitionPaymentController::class,'payTuition'])->name('TuitionInvoices.payTuition');
 

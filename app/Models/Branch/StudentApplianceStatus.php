@@ -3,6 +3,7 @@
 namespace App\Models\Branch;
 
 use App\Models\Catalogs\AcademicYear;
+use App\Models\StudentInformation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,11 @@ class StudentApplianceStatus extends Model
     public function studentInfo()
     {
         return $this->belongsTo(User::class, 'student_id', 'id');
+    }
+
+    public function studentInformations()
+    {
+        return $this->belongsTo(StudentInformation::class, 'student_id', 'student_id');
     }
 
     public function academicYearInfo()

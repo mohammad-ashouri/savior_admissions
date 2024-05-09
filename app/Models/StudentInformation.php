@@ -46,7 +46,7 @@ class StudentInformation extends Model
         return $this->belongsTo(User::class, 'parent_mother_id', 'id');
     }
 
-    public function guradianInfo()
+    public function guardianInfo()
     {
         return $this->belongsTo(User::class, 'guardian', 'id');
     }

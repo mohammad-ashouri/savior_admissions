@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\PaymentMethod;
+use App\Models\Finance\TuitionDetail;
 use App\Models\Finance\TuitionInvoiceDetails;
 use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
@@ -29,8 +31,7 @@ class TuitionPaymentController extends Controller
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->paginate(30);
-        }
-        else if ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
@@ -40,13 +41,13 @@ class TuitionPaymentController extends Controller
 
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
-                ->whereIn('student_appliance_statuses.academic_year',$academicYears)
+                ->whereIn('student_appliance_statuses.academic_year', $academicYears)
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->paginate(30);
         }
 
-        return view('Finance.TuitionInvoices.index', compact('tuitionInvoiceDetails','me'));
+        return view('Finance.TuitionInvoices.index', compact('tuitionInvoiceDetails', 'me'));
     }
 
     public function show($tuition_id)
@@ -61,8 +62,7 @@ class TuitionPaymentController extends Controller
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->where('id', $tuition_id)->first();
-        }
-        else if ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
@@ -72,14 +72,14 @@ class TuitionPaymentController extends Controller
 
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
-                ->whereIn('student_appliance_statuses.academic_year',$academicYears)
+                ->whereIn('student_appliance_statuses.academic_year', $academicYears)
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->where('id', $tuition_id)->first();
         }
 
-        return view('Finance.TuitionInvoices.show', compact('tuitionInvoiceDetails'));
+        return view('Finance.TuitionInvoices.show', compact('tuitionInvoiceDetails', 'me'));
     }
 
     public function prepareToPayTuition($tuition_id)
@@ -122,7 +122,7 @@ class TuitionPaymentController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $tuition_id = $request->tuition_invoice_id;
-        $paymentMethod=$request->payment_method;
+        $paymentMethod = $request->payment_method;
         $tuitionInvoiceDetails = [];
 
         if ($me->hasRole('Parent')) {
@@ -145,17 +145,17 @@ class TuitionPaymentController extends Controller
             abort(403);
         }
 
-        $tuitionAmount=$tuitionInvoiceDetails->amount;
-        switch ($paymentMethod){
+        $tuitionAmount = $tuitionInvoiceDetails->amount;
+        switch ($paymentMethod) {
             case 2:
                 $invoice = (new Invoice)->amount($tuitionAmount);
 
                 return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionInstallmentPayment')->purchase(
                     $invoice,
-                    function ($driver, $transactionID) use ($tuitionAmount, $tuitionInvoiceDetails,$paymentMethod) {
+                    function ($driver, $transactionID) use ($tuitionAmount, $tuitionInvoiceDetails, $paymentMethod) {
                         $dataInvoice = new \App\Models\Invoice();
                         $dataInvoice->user_id = auth()->user()->id;
-                        $dataInvoice->type = 'Tuition Payment '.json_decode($tuitionInvoiceDetails->description,true)['tuition_type'];
+                        $dataInvoice->type = 'Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
                         $dataInvoice->amount = $tuitionAmount;
                         $dataInvoice->description = json_encode(['amount' => $tuitionAmount, 'invoice_details_id' => $tuitionInvoiceDetails->id, 'payment_method' => $paymentMethod], true);
                         $dataInvoice->transaction_id = $transactionID;
@@ -163,6 +163,112 @@ class TuitionPaymentController extends Controller
                     }
                 )->pay()->render();
                 break;
+        }
+
+        dd($request->all());
+    }
+
+    public function changeTuitionInvoiceStatus(Request $request)
+    {
+        $me = User::find(auth()->user()->id);
+
+        $validator = Validator::make($request->all(), [
+            'invoice_id' => 'required|exists:tuition_invoice_details,id',
+            'status' => 'required|integer|in:1,3',
+        ]);
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Change Tuition Invoice Status Failed', 'values' => json_encode($request->all(), true), 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
+
+            return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
+        }
+        $tuitionInvoiceDetails = null;
+        $tuition_id = $request->invoice_id;
+        if ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->whereNotNull('tuition_payment_status')
+                ->whereIn('student_appliance_statuses.academic_year', $academicYears)
+                ->pluck('student_appliance_statuses.id')->toArray();
+            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
+                ->where('id', $tuition_id)->first();
+        }
+
+        if (empty($tuitionInvoiceDetails)) {
+            $this->logActivity(json_encode(['activity' => 'Change Tuition Invoice Status Failed', 'values' => json_encode($request->all(), true), 'errors' => 'Tuition Id Is Wrong!']), request()->ip(), request()->userAgent());
+
+            return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
+        }
+
+        switch ($request->status) {
+            case 1:
+//                $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
+//                $tuitionInvoiceDetails->is_paid = 1;
+//                $tuitionInvoiceDetails->save();
+
+                $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+
+                $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+//                $studentAppliance->tuition_payment_status = 'Paid';
+//                $studentAppliance->approval_status = 1;
+//                $studentAppliance->save();
+
+                switch ($tuitionInvoiceInfo->payment_type) {
+                    case 2:
+                        $counter = 1;
+                        $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
+                        $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
+                        $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_each_installment_irr']);
+                        while ($counter < 3) {
+                            $newInvoice = new TuitionInvoiceDetails();
+                            $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
+                            $newInvoice->amount = $amountOfEachInstallments;
+                            $newInvoice->is_paid = 0;
+                            $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
+                            $newInvoice->save();
+                            $counter++;
+                        }
+                        break;
+                    case 3:
+                        $counter = 1;
+                        $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
+                        $tuitionDetailsForFourInstallments = json_decode($tuitionDetails->four_installment_payment, true);
+                        $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_each_installment_irr']);
+
+                        while ($counter < 5) {
+                            $newInvoice = new TuitionInvoiceDetails();
+                            $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
+                            $newInvoice->amount = $amountOfEachInstallments;
+                            $newInvoice->is_paid = 0;
+                            $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
+                            $newInvoice->save();
+                            $counter++;
+                        }
+                        break;
+                    case 4:
+                        $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
+                        $tuitionDetailsForFullPaymentWithAdvice = (str_replace(',', '', json_decode($tuitionDetails->full_payment, true)) * 70) / 100;
+
+                        $newInvoice = new TuitionInvoiceDetails();
+                        $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
+                        $newInvoice->amount = $tuitionDetailsForFullPaymentWithAdvice;
+                        $newInvoice->is_paid = 0;
+                        $newInvoice->description = json_encode(['tuition_type' => 'Full Installment With Advice - Installment'], true);
+                        $newInvoice->save();
+                        break;
+                }
+
+                $guardianMobile=$studentAppliance->studentInformations->guardianInfo->mobile;
+                $message="Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
+                $this->sendSMS($guardianMobile,$message);
+
+                return response()->json(['message'=>'Installments were made!']);
         }
 
         dd($request->all());
