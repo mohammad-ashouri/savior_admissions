@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
+use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\PaymentMethod;
 use App\Models\Finance\TuitionInvoiceDetails;
 use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
+use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Shetabit\Multipay\Invoice;
@@ -28,8 +30,23 @@ class TuitionPaymentController extends Controller
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->paginate(30);
         }
+        else if ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
-        return view('Finance.TuitionInvoices.index', compact('tuitionInvoiceDetails'));
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->whereNotNull('tuition_payment_status')
+                ->whereIn('student_appliance_statuses.academic_year',$academicYears)
+                ->pluck('student_appliance_statuses.id')->toArray();
+            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->paginate(30);
+        }
+
+        return view('Finance.TuitionInvoices.index', compact('tuitionInvoiceDetails','me'));
     }
 
     public function show($tuition_id)
@@ -44,6 +61,22 @@ class TuitionPaymentController extends Controller
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->where('id', $tuition_id)->first();
+        }
+        else if ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->whereNotNull('tuition_payment_status')
+                ->whereIn('student_appliance_statuses.academic_year',$academicYears)
+                ->pluck('student_appliance_statuses.id')->toArray();
+            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
+                ->where('id', $tuition_id)->first();
         }
 
         return view('Finance.TuitionInvoices.show', compact('tuitionInvoiceDetails'));

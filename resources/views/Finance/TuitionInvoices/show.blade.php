@@ -64,10 +64,46 @@
                                 <p class="font-bold">Amount
                                     Paid: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
                             </div>
+                            <div>
+                                <p class="font-bold">Tuition
+                                    Type: </p> {{ json_decode($tuitionInvoiceDetails->description,true)['tuition_type'] }}
+                            </div>
+                            <div>
+                                <p class="font-bold">Date And Time Of
+                                    Payment: </p> {{ $tuitionInvoiceDetails->date_of_payment }}
+                            </div>
                         </div>
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
                             @switch($tuitionInvoiceDetails->paymentMethodInfo->id)
                                 @case('1')
+                                    @php
+                                        $files=@json_decode($tuitionInvoiceDetails->description,true)['files'];
+                                    @endphp
+                                    @foreach($files as $key=>$file)
+                                        @if(substr($file,-4)=='.pdf')
+                                            <div class="flex justify-center items-center">
+                                                <a target="_blank"
+                                                   href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}">
+                                                    <img class="pdf-documents-icons">
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                            >
+                                                <button data-modal-target="openImage"
+                                                        data-modal-toggle="openImage"
+                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
+                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                                                        type="button">
+                                                    <img
+                                                         class="h-96 text-blue-500 align-center max-w-full rounded-lg image-preview"
+                                                         style="width: 500px; height: 350px"
+                                                         src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
+                                                         alt="Document Not Found!">
+                                                </button>
+                                            </div>
+                                        @endif
+                                    @endforeach
                                     @break
                                 @case('2')
                                     @php

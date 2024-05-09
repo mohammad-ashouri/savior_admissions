@@ -440,8 +440,14 @@ class TuitionController extends Controller
             }
 
             foreach ($filesSrc as $file) {
-                $document = Document::create([
+                Document::create([
                     'user_id' => auth()->user()->id,
+                    'document_type_id' => 7,
+                    'src' => $file,
+                    'description' => $description,
+                ]);
+                Document::create([
+                    'user_id' => $student_id,
                     'document_type_id' => 7,
                     'src' => $file,
                     'description' => $description,
@@ -465,6 +471,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount = $fullPaymentAmountWithDiscounts;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
                         $tuitionInvoiceDetails->is_paid = 2;
+                        $tuitionInvoiceDetails->date_of_payment = now();
                         $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Installment'], true);
                         $tuitionInvoiceDetails->save();
 
@@ -507,6 +514,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount = $twoInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
                         $tuitionInvoiceDetails->is_paid = 2;
+                        $tuitionInvoiceDetails->date_of_payment = now();
                         $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_type' => 'Two Installment Advance', 'tuition_details_id' => $tuition->id], true);
                         $tuitionInvoiceDetails->save();
 
@@ -549,6 +557,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount = $fourInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
                         $tuitionInvoiceDetails->is_paid = 2;
+                        $tuitionInvoiceDetails->date_of_payment = now();
                         $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_type' => 'Four Installment Advance', 'tuition_details_id' => $tuition->id], true);
                         $tuitionInvoiceDetails->save();
 
@@ -591,6 +600,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount = ($fullPaymentAmountWithDiscounts * 30) / 100;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
                         $tuitionInvoiceDetails->is_paid = 2;
+                        $tuitionInvoiceDetails->date_of_payment = now();
                         $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Installment With Advice'], true);
                         $tuitionInvoiceDetails->save();
 

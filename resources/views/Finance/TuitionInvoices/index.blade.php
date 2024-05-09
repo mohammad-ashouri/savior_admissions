@@ -177,6 +177,9 @@
                                                     @case('1')
                                                         Paid
                                                         @break
+                                                    @case('2')
+                                                        Pending To Review
+                                                        @break
                                                     @default
                                                         Pending To Pay
                                                 @endswitch
@@ -204,6 +207,18 @@
                                                             <i class="las la-money mr-1"></i>
                                                         </div>
                                                         Pay
+                                                    </button>
+                                                </a>
+                                                @break
+                                            @case('2')
+                                                @if($me->hasRole('Financial Manager') or $me->hasRole('Principal') or $me->hasRole('Super Admin')) @endif
+                                                <a href="/TuitionInvoices/{{ $invoice->id }}">
+                                                    <button type="button"
+                                                            class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                        <div class="text-center">
+                                                            <i class="las la-money mr-1"></i>
+                                                        </div>
+                                                        Details
                                                     </button>
                                                 </a>
                                                 @break
