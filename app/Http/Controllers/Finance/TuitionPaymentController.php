@@ -208,16 +208,16 @@ class TuitionPaymentController extends Controller
 
         switch ($request->status) {
             case 1:
-//                $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
-//                $tuitionInvoiceDetails->is_paid = 1;
-//                $tuitionInvoiceDetails->save();
+                $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
+                $tuitionInvoiceDetails->is_paid = 1;
+                $tuitionInvoiceDetails->save();
 
                 $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
 
                 $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
-//                $studentAppliance->tuition_payment_status = 'Paid';
-//                $studentAppliance->approval_status = 1;
-//                $studentAppliance->save();
+                $studentAppliance->tuition_payment_status = 'Paid';
+                $studentAppliance->approval_status = 1;
+                $studentAppliance->save();
 
                 switch ($tuitionInvoiceInfo->payment_type) {
                     case 2:
