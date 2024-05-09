@@ -51,6 +51,7 @@ export function validateAddressEntry(event) {
     return englishRegex.test(inputValue);
 
 }
+
 export function validatePasswordEntry(elementId) {
     let inputValue = $("#" + elementId).val();
     let englishRegex = /^[a-zA-Z0-9!@#$%^&*()_+-=]+$/;
@@ -61,7 +62,7 @@ export function validatePasswordEntry(elementId) {
     return true;
 }
 
-export function checkAge(birthDate,ageInput=15) {
+export function checkAge(birthDate, ageInput = 15) {
     let today = new Date();
     let birthDateObj = new Date(birthDate);
     let age = today.getFullYear() - birthDateObj.getFullYear();
@@ -120,7 +121,7 @@ export function checkEnglishDigits(inputValue) {
 
 export function resetAllSelectValues() {
     // Select all select elements on the page
-    $('select').each(function() {
+    $('select').each(function () {
         // Set the value of each select element to an empty string
         $(this).val("");
     });

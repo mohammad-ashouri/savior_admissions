@@ -888,7 +888,7 @@ $(document).ready(function () {
 
             $('#birthdate').on('change', function (event) {
                 // Validate input
-                if (!checkAge($(this).val(), 5)) {
+                if (!checkAge($(this).val(), 4)) {
                     event.preventDefault(); // Prevent typing of unauthorized character
                     //Remove all field values
                     $(this).val('');
