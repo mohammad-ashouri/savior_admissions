@@ -105,9 +105,9 @@ class ProfileController extends Controller
         }
 
         if ($generalInformation) {
-            $this->logActivity(json_encode(['activity' => 'Profile Updated']), request()->ip(), request()->userAgent());
+            $this->logActivity(json_encode(['activity' => 'Profile Updated', 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
 
-            return redirect()->back()->withSuccess("Profile updated successfully!");
+            return redirect()->back()->withSuccess('Profile updated successfully!');
         }
     }
 
@@ -171,7 +171,7 @@ class ProfileController extends Controller
 
         $userGeneralInformation->editor = auth()->user()->id;
         $userGeneralInformation->save();
-        $this->logActivity(json_encode(['activity' => 'Profile Updated By Admin', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
+        $this->logActivity(json_encode(['activity' => 'Profile Updated By Admin', 'user_id' => $user->id, 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
 
         return response()->json(['success' => 'Profile updated!'], 200);
     }
