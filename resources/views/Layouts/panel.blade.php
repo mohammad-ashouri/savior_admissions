@@ -29,8 +29,12 @@
     </script>
 </head>
 
-<body class=" bg-light-theme-color-base dark:bg-gray-800 ">
+<body class="bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center min-h-screen">
 
+<div id="spinner" class="hidden fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50">
+    <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
+    <p id="spinner-text" class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite"></p>
+</div>
 <nav
     class="fixed top-0 z-50 w-full bg-light-theme-color-nav-base border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">

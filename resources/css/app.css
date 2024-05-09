@@ -90,6 +90,10 @@
     }
 }
 
+.swal2-container {
+    position: fixed !important;
+}
+
 #dropdown-branch {
     padding-left: 0;
 }

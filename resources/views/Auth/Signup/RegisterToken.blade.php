@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Make new account</title>
 </head>
-<body class=" bg-light-theme-color-base dark:bg-gray-800 flex items-center justify-center h-screen">
+<body class=" bg-light-theme-color-base dark:bg-gray-800 flex items-center justify-center min-h-screen">
 <div
     class="mx-5 sm:mx-0 w-full max-w-2xl p-8 text-center border-gray-200 rounded-lg shadow sm:p-6 md:p-16 dark:bg-gray-800 dark:border-gray-700">
     <div class="space-y-2">

@@ -1,6 +1,7 @@
 import './bootstrap';
 import Swal from "sweetalert2";
 import $ from "jquery";
+import 'animate.css';
 
 window.Swal = Swal;
 
@@ -141,3 +142,13 @@ export function formatNumber(number) {
     return parseFloat(cleanNumber).toLocaleString('en-US');
 }
 
+//Show and hide loading spinner
+export function spinner(text='Please Wait!') {
+    $('#spinner-text').text('Please Wait');
+
+    if ($('#spinner').hasClass('hidden')) {
+        $('#spinner').removeClass('hidden');
+    } else {
+        $('#spinner').addClass('hidden');
+    }
+}

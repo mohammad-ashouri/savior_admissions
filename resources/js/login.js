@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {swalFire, reloadCaptcha, startTimer,} from './MainJsFunctionsAndImports.js';
+import {swalFire, reloadCaptcha, startTimer, spinner} from './MainJsFunctionsAndImports.js';
 
 $(document).ready(function () {
     let fullPath = window.location.pathname;
@@ -23,13 +23,13 @@ $(document).ready(function () {
             case '/login':
             case '/':
                 //Contact us
-                $('#close-modal,#close-modal-button').click(function (){
+                $('#close-modal,#close-modal-button').click(function () {
                     $('#contact-us-modal').hide();
                 });
-                $('#contact-us-modal-overlay').click(function (){
+                $('#contact-us-modal-overlay').click(function () {
                     $('#contact-us-modal').hide();
                 });
-                $('#show-contact-us').click(function (){
+                $('#show-contact-us').click(function () {
                     $('#contact-us-modal').show();
                 });
 
@@ -75,7 +75,7 @@ $(document).ready(function () {
                 let inputElement = document.getElementById('mobile');
 
                 // Add an event listener for the input event
-                inputElement.addEventListener('input', function(event) {
+                inputElement.addEventListener('input', function (event) {
                     // Get the current value of the input
                     let value = event.target.value;
 
@@ -94,7 +94,7 @@ $(document).ready(function () {
 
                 $('#login-form').submit(function (e) {
                     e.preventDefault();
-
+                    spinner();
                     if ($('#login-method').val() == null) {
                         swalFire('Error', 'Login method is not selected!', 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
                     } else {
@@ -115,6 +115,7 @@ $(document).ready(function () {
                                         for (let key in errorList) {
                                             if (errorList.hasOwnProperty(key)) {
                                                 let errorMessage = errorList[key][0]; // Assuming each field has only one error message
+                                                spinner();
                                                 swalFire('Error', errorMessage, 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
                                             }
                                         }
@@ -122,10 +123,12 @@ $(document).ready(function () {
                                         captcha.value = '';
                                     } else if (response.errors) {
                                         if (response.errors.loginError) {
+                                            spinner();
                                             swalFire('Login Error', response.errors.loginError, 'error', 'Try again');
                                             reloadCaptcha();
                                             captcha.value = '';
                                         } else if (response.errors.captcha) {
+                                            spinner();
                                             swalFire('Error', response.errors.captcha, 'error', 'Try again');
                                             reloadCaptcha();
                                             captcha.value = '';
@@ -143,6 +146,7 @@ $(document).ready(function () {
                                     });
                                 } else {
                                     swalFire('Server Error', 'Server connectivity failed', 'error', 'Try again');
+                                    spinner();
                                 }
                             }
                         });
@@ -173,8 +177,10 @@ $(document).ready(function () {
                 $(document).on('submit', '#forget-password', function (e) {
 
                     e.preventDefault();
+                    spinner();
                     let resetOption = document.getElementById('reset-options');
                     if (resetOption.value == null || resetOption.value === '') {
+                        spinner();
                         swalFire('Error', 'Please choose an option', 'error', 'Try again');
                     } else {
                         let form = $(this);
@@ -185,6 +191,7 @@ $(document).ready(function () {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                             }, success: function (response) {
                                 if (response.success) {
+                                    spinner();
                                     $('#reset-options').prop('readonly', true);
                                     $('#phone_code').prop('readonly', true);
                                     $('#mobile').prop('readonly', true);
@@ -217,12 +224,19 @@ $(document).ready(function () {
                                     startTimer(remindedTime, display);
                                     $('.CaptchaDiv').hide();
                                     $('.VerificationCodeDiv').show();
+                                    spinner();
                                 } else {
                                     if (response.errors) {
+                                        spinner();
                                         swalFire('Email Error', response.errors, 'error', 'Try again');
+                                    }
+                                    if (response.error) {
+                                        spinner();
+                                        swalFire('Error', response.error, 'error', 'Try again');
                                     }
                                 }
                             }, error: function (xhr, textStatus, errorThrown) {
+                                spinner();
                                 swalFire('Server Error', 'Server connectivity failed', 'error', 'Try again');
                             }
                         });
@@ -231,24 +245,31 @@ $(document).ready(function () {
                 });
                 $(document).on('submit', '#authorize', function (e) {
                     e.preventDefault();
+                    spinner();
                     let form = $(this);
                     let data = form.serialize();
 
-                        $.ajax({
-                            type: 'POST', url: '/password/authorize', data: data, headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            }, success: function (response) {
-                                if (response.success) {
-                                    window.location.href = response.redirect_url;
-                                }else {
-                                    if (response.errors) {
-                                        swalFire('Email Error', response.errors, 'error', 'Try again');
-                                    }
+                    $.ajax({
+                        type: 'POST', url: '/password/authorize', data: data, headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        }, success: function (response) {
+                            if (response.success) {
+                                window.location.href = response.redirect_url;
+                            } else {
+                                if (response.errors) {
+                                    spinner();
+                                    swalFire('Email Error', response.errors, 'error', 'Try again');
                                 }
-                            }, error: function (xhr, textStatus, errorThrown) {
-                                swalFire('Server Error', 'Server connectivity failed', 'error', 'Try again');
+                                if (response.error) {
+                                    spinner();
+                                    swalFire('Error', response.error, 'error', 'Try again');
+                                }
                             }
-                        });
+                        }, error: function (xhr, textStatus, errorThrown) {
+                            spinner();
+                            swalFire('Server Error', 'Server connectivity failed', 'error', 'Try again');
+                        }
+                    });
                 });
                 break;
         }

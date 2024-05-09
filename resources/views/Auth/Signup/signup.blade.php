@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Savior Signup</title>
 </head>
-<body class="bg-light-theme-color-nav-base flex items-center justify-center h-screen">
+<body class="bg-light-theme-color-nav-base flex items-center justify-center min-h-screen">
 
 <div class="bg-light-theme-color-base lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
     <div class="lg:w-2/5 pr-8 lg:inline-block loginPic">

@@ -9,7 +9,7 @@
     <title>Create Account</title>
 </head>
 
-<body class=" bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center h-screen">
+<body class=" bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center min-h-screen">
 
 <div class="bg-light-theme-color-base dark:bg-gray-800 lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
     <div class="lg:w-2/5 pr-8 lg:inline-block signupPic">

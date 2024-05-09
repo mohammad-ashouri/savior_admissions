@@ -5,7 +5,9 @@ import {
     validateIranianMobile,
     validatePasswordEntry,
     checkAge,
-    startTimer, checkEnglishCharacters
+    startTimer,
+    checkEnglishCharacters,
+    spinner,
 } from './MainJsFunctionsAndImports.js';
 
 $(document).ready(function () {
@@ -71,6 +73,7 @@ $(document).ready(function () {
         // When the form submitted
         $(document).on('submit', '#send-code', function (e) {
             e.preventDefault();
+            spinner();
             // Get the value of signup method
             let signupMethod = $('#signup-method').val();
 
@@ -81,6 +84,7 @@ $(document).ready(function () {
                     if (email === '') {
                         swalFire('Error', "Email field is empty!", 'error', 'Try again');
                         reloadCaptcha();
+                        spinner();
                         return;
                     }
                     break;
@@ -89,15 +93,18 @@ $(document).ready(function () {
                     if (mobile === '') {
                         swalFire('Error', "Mobile field is empty!", 'error', 'Try again');
                         reloadCaptcha();
+                        spinner();
                         return;
                     } else if (!validateIranianMobile(mobile)) {
                         swalFire('Error', "Mobile value is not validated!", 'error', 'Try again');
+                        spinner();
                         return;
                     }
                     break;
                 default:
                     swalFire('Error', "The signup method is not selected", 'error', 'Try again');
                     reloadCaptcha();
+                    spinner();
                     return;
             }
 
@@ -106,6 +113,7 @@ $(document).ready(function () {
             if (captcha === '') {
                 swalFire('Error', "Captcha field is empty!", 'error', 'Try again');
                 reloadCaptcha();
+                spinner();
                 return;
             }
 
@@ -160,17 +168,15 @@ $(document).ready(function () {
                     }
 
                 }, error: function (xhr, textStatus, errorThrown) {
-                    swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                    swalFire('Error', 'Error on sending verification code', 'error', 'Try again');
                 }
             });
-
-
-            // $('#signup').off('submit').submit();
-
+            spinner();
         });
 
         $(document).on('submit', '#authorize', function (e) {
             e.preventDefault();
+            spinner();
             let form = $(this);
             let data = form.serialize();
             $.ajax({
@@ -189,6 +195,7 @@ $(document).ready(function () {
                     swalFire('Error', xhr.responseText.message, 'error', 'Try again');
                 }
             });
+            spinner();
         });
 
     } else if (fullPath.includes('new-account')) {
@@ -207,7 +214,7 @@ $(document).ready(function () {
 
         $('#birthdate').on('change', function (event) {
             // Validate input
-            if (!checkAge($(this).val(),5)) {
+            if (!checkAge($(this).val(), 5)) {
                 event.preventDefault(); // Prevent typing of unauthorized character
                 //Remove all field values
                 $(this).val('');
@@ -219,6 +226,7 @@ $(document).ready(function () {
         $(document).on('submit', '#signup-form', function (e) {
             e.preventDefault();
 
+            spinner();
             // Initialize error flag
             let hasError = false;
 
@@ -262,6 +270,7 @@ $(document).ready(function () {
                 });
             }
         });
+        spinner();
     }
 });
 

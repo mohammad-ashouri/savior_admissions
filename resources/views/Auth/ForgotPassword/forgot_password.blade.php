@@ -10,8 +10,12 @@
     <title>Forget password</title>
 </head>
 
-<body class=" bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center h-screen">
+<body class=" bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center min-h-screen">
 
+<div id="spinner" class="hidden fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50">
+    <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
+    <p id="spinner-text" class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite"></p>
+</div>
 <div
     class="bg-light-theme-color-base mx-5 sm:mx-0 w-full max-w-2xl p-8 border-gray-200 rounded-lg shadow sm:p-6 md:p-16 dark:bg-gray-800 dark:border-gray-700">
     <form class="space-y-6 " id="forget-password" method="post">
