@@ -264,13 +264,15 @@ class TuitionPaymentController extends Controller
                         break;
                 }
 
-                $guardianMobile=$studentAppliance->studentInformations->guardianInfo->mobile;
-                $message="Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
-                $this->sendSMS($guardianMobile,$message);
+                $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
+                $message = "Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
+                $this->sendSMS($guardianMobile, $message);
 
-                return response()->json(['message'=>'Installments were made!']);
+                return response()->json(['message' => 'Installments were made!']);
+            default:
+                $this->logActivity(json_encode(['activity' => 'Change Tuition Invoice Status Failed', 'values' => json_encode($request->all(), true), 'errors' => 'Status Is Wrong!']), request()->ip(), request()->userAgent());
+
+                return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
         }
-
-        dd($request->all());
     }
 }

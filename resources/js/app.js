@@ -1680,7 +1680,7 @@ $(document).ready(function () {
                                 headers: {
                                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                                 }, success: function (response) {
-                                    swalFire('Done', JSON.parse(xhr.responseText).message, 'success', 'Ok');
+                                    swalFire('Done', JSON.parse(response).message, 'success', 'Ok');
                                 }, error: function (xhr, textStatus, errorThrown) {
                                     swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
                                 }
