@@ -260,6 +260,9 @@
                                                              $statusPercent+=25;
                                                              $statusText='Tuition Paid. Application Done!';
                                                          }
+                                                         if ($applicationStatus->tuition_payment_status=='Pending For Review'){
+                                                             $statusText='Checking tuition payment!';
+                                                         }
                                                     @endphp
                                                     <span
                                                         class="text-base font-medium text-{{$statusColor}}-700 dark:text-white">{{$statusText}}</span>
