@@ -191,14 +191,15 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
                 Route::get('/tuition_card', [PDFExportController::class, 'tuitionCardExport']);
             });
         });
-        Route::prefix('Profile')->group(function () {
-            Route::get('/', [ProfileController::class, 'index'])->name('profile');
-            Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
-        });
 
         //SMS
         Route::post('sendSMS', [SMSController::class, 'sendSMS'])->name('sms.send');
 
+    });
+
+    Route::prefix('Profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('profile');
+        Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
     });
 });
 
@@ -207,12 +208,12 @@ Route::post('/VerifyApplicationPayment', [PaymentController::class, 'verifyAppli
 Route::post('/VerifyTuitionPayment', [PaymentController::class, 'verifyTuitionPayment']);
 Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'verifyTuitionInstallmentPayment']);
 
-Route::get('/import-excel', [ExcelController::class, 'index']);
+//Route::get('/import-excel', [ExcelController::class, 'index']);
 //Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
 //Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');
 //Route::post('/importDocuments', [ExcelController::class, 'importDocuments'])->name('excel.importDocuments');
 //Route::post('/importParentFathers', [ExcelController::class, 'importParentFathers'])->name('excel.importParentFathers');
 //Route::post('/importParentMothers', [ExcelController::class, 'importParentMothers'])->name('excel.importParentMothers');
-Route::post('/importNewUsers', [ExcelController::class, 'importNewUsers'])->name('excel.importNewUsers');
+//Route::post('/importNewUsers', [ExcelController::class, 'importNewUsers'])->name('excel.importNewUsers');
 //Route::get('/ExportExcelFromUsersMobile', [ExcelController::class, 'exportExcelFromUsersMobile'])->name('excel.importParentMothers');
 //Route::get('/ExportExcelFromAllStudents', [ExcelController::class, 'exportExcelFromAllStudents']);

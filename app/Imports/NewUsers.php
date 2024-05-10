@@ -20,7 +20,6 @@ class NewUsers implements ToModel
                 $studentInformation=User::create([
                     'id'=>$studentID,
                     'password'=>bcrypt('Aa16001600'),
-                    'status'=>0
                 ]);
                 $studentInformation->assignRole('Student');
             }
@@ -29,10 +28,20 @@ class NewUsers implements ToModel
                 case 'FATHER':
                     $mobile = $row[23];
                     $email = $row[24];
+
+                    $firstName=$row[18];
+                    $lastName=$row[19];
+                    $passport=$row[20];
+                    $nationality=$row[21];
                     break;
                 case 'MOTHER':
                     $mobile = $row[31];
                     $email = $row[32];
+
+                    $firstName=$row[26];
+                    $lastName=$row[27];
+                    $passport=$row[28];
+                    $nationality=$row[29];
                     break;
             }
             $guardianUser = User::where('mobile', $mobile)->first();
@@ -43,6 +52,14 @@ class NewUsers implements ToModel
                     'password'=>bcrypt(substr($mobile,-4)),
                 ]);
                 $guardianUser->assignRole('Parent');
+
+                GeneralInformation::create([
+                    'user_id'=>$guardianUser->id,
+                    'first_name_en'=>$firstName,
+                    'last_name_en'=>$lastName,
+                    'passport_number'=>$passport,
+                    'nationality'=>$nationality,
+                ]);
             }
 
             switch ($row[16]) {
@@ -71,6 +88,8 @@ class NewUsers implements ToModel
                 'faragir_code' => $row[15],
                 'address' => $row[33],
             ]);
+
+
 
             return new StudentInformation([
                 'student_id' => $studentInformation->id,
