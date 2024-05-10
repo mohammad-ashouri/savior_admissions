@@ -82,7 +82,7 @@
                                             <div>
                                                 <div
                                                     class="text-base font-semibold">
-                                                    {{ $student->generalInformations->first_name_en . " " . $student->generalInformations->last_name_en }}
+                                                    {{ @$student->generalInformations->first_name_en . " " . @$student->generalInformations->last_name_en }}
                                                 </div>
                                             </div>
                                         </th>
