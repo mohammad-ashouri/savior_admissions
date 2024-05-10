@@ -6,6 +6,7 @@ use App\ExcelExports\AllStudentsWithGuardians;
 use App\ExcelExports\UsersWithMobile;
 use App\Imports\Documents;
 use App\Imports\DocumentTypesImport;
+use App\Imports\NewUsers;
 use App\Imports\ParentsFatherImport;
 use App\Imports\ParentsMotherImport;
 use App\Imports\StudentsImport;
@@ -72,6 +73,17 @@ class ExcelController extends Controller
         // Validate the uploaded file as needed
 
         Excel::import(new ParentsMotherImport(), $file);
+
+        return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
+    }
+
+    public function importNewUsers(Request $request)
+    {
+        $file = $request->file('excel_file');
+
+        // Validate the uploaded file as needed
+
+        Excel::import(new NewUsers(), $file);
 
         return redirect()->back()->with('success', 'داده‌ها با موفقیت وارد شدند.');
     }
