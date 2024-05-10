@@ -42,6 +42,7 @@ class ApplicationReservationController extends Controller
                 ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
                 ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
                 ->select('application_reservations.*', 'application_reservations.id as application_reservations_id')
+                ->orderBy('application_reservations.payment_status', 'desc')
                 ->orderBy('application_timings.academic_year', 'desc')
                 ->paginate(30);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
@@ -69,6 +70,7 @@ class ApplicationReservationController extends Controller
                 ->join('applications', 'application_reservations.application_id', '=', 'applications.id')
                 ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
                 ->select('application_reservations.*', 'application_reservations.id as application_reservations_id')
+                ->orderBy('application_reservations.payment_status', 'desc')
                 ->orderBy('application_timings.academic_year', 'desc')
                 ->paginate(30);
         }
