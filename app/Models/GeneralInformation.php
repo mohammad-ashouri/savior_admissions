@@ -25,6 +25,7 @@ class GeneralInformation extends Model
         'nationality',
         'passport_number',
         'faragir_code',
+        'iranian_residence_code',
         'country',
         'state_city',
         'address',
