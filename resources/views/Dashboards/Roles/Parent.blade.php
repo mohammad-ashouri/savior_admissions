@@ -204,17 +204,9 @@
                                                         $statusPercent=0;
                                                         $statusText='';
                                                         $statusColor='green';
-                                                         if ($applicationStatus->interview_status=='Pending First Interview'){
-                                                             $statusText='Pending First Interview';
-                                                             $statusPercent+=5;
-                                                         }
-                                                         if ($applicationStatus->interview_status=='Pending Second Interview'){
-                                                             $statusText='Pending Second Interview';
-                                                             $statusPercent+=5;
-                                                         }
-                                                         if ($applicationStatus->interview_status=='Pending Admissions Officer Interview'){
-                                                             $statusText='Pending Admissions Officer Interview';
-                                                             $statusPercent+=5;
+                                                         if ($applicationStatus->interview_status=='Pending Interview'){
+                                                             $statusText='Pending Interview';
+                                                             $statusPercent+=20;
                                                          }
                                                          if ($applicationStatus->interview_status=='Pending For Principal Confirmation'){
                                                              $statusText='Pending For Principal Confirmation';
@@ -285,7 +277,7 @@
                                         <th scope="row"
                                             class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                             <div>
-                                                @if($applicationStatus->documents_uploaded==0)
+                                                @if($applicationStatus->documents_uploaded=='0')
                                                     <div
                                                         class="text-base font-semibold">
                                                         <a href="{{ route('Document.UploadByParent',$student->student_id) }}"
