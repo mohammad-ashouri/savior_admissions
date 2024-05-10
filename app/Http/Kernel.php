@@ -28,6 +28,7 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'CheckIfProfileRegistered' => \App\Http\Middleware\CheckIfProfileRegistered::class,
+        'SettingsCheck' => \App\Http\Middleware\SettingsCheck::class,
     ];
 
     /**
