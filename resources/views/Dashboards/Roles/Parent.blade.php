@@ -91,7 +91,7 @@
                                             <div>
                                                 <div
                                                     class="text-base font-semibold">
-                                                    {{ $student->generalInformations->gender }}
+                                                    {{ @$student->generalInformations->gender }}
                                                 </div>
                                             </div>
                                         </th>
@@ -100,7 +100,7 @@
                                             <div>
                                                 <div
                                                     class="text-base font-semibold">
-                                                    {{ $student->generalInformations->birthdate }}
+                                                    {{ @$student->generalInformations->birthdate }}
                                                 </div>
                                             </div>
                                         </th>
@@ -108,7 +108,7 @@
                                             class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                             <div>
                                                 @can('students-show')
-                                                    <a href="{{ route('Students.show',$student->student_id) }}"
+                                                    <a href="{{ route('Students.show',@$student->student_id) }}"
                                                        type="button"
                                                        class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                         <div class="text-center">
