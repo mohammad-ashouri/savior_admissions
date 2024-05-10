@@ -23,6 +23,7 @@ class StudentInformation extends Model
         'current_nationality',
         'current_identification_type',
         'current_identification_code',
+        'sida_code',
         'status',
     ];
 
