@@ -49,7 +49,7 @@ class UserController extends Controller
                 }
             }
 
-            return view('users.index', compact('data', 'roles'));
+            return view('users.index', compact('data', 'roles','me'));
         }
         abort(403);
     }

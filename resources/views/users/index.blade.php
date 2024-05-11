@@ -1,6 +1,6 @@
 @php use App\Models\User;
  $me = User::find(auth()->user()->id);
- @endphp
+@endphp
 @extends('Layouts.panel')
 @section('content')
     <div id="content" class="p-4 md:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
@@ -41,7 +41,8 @@
                                                 @continue
                                             @endif
 
-                                            <option value="{{ $role->name }}" @if($role->name == @$_GET['role']) selected @endif>{{ $role->name }}</option>
+                                            <option value="{{ $role->name }}"
+                                                    @if($role->name == @$_GET['role']) selected @endif>{{ $role->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -164,35 +165,37 @@
                                     </td>
                                     <td class="w-96 px-6 py-4 text-center">
                                         <div class="flex">
-                                        <a href="{{ route('users.edit',$user->id) }}" type="button"
-                                           class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                            <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                                                </path>
-                                                <path fill-rule="evenodd"
-                                                      d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                      clip-rule="evenodd"></path>
-                                            </svg>
-                                            Edit
-                                        </a>
-                                        <a href="/Documents/Show/{{$user->id}}" type="button"
-                                           class="min-w-max inline-flex font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:ring-cyan-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800 hover:underline">
+                                            <a href="{{ route('users.edit',$user->id) }}" type="button"
+                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
+                                                    </path>
+                                                    <path fill-rule="evenodd"
+                                                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                                          clip-rule="evenodd"></path>
+                                                </svg>
+                                                Edit
+                                            </a>
+                                            <a href="/Documents/Show/{{$user->id}}" type="button"
+                                               class="min-w-max inline-flex font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:ring-cyan-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800 hover:underline">
 
-                                            <svg class="w-5 h-5 mr-1" fill="currentColor"
-                                                 xmlns="http://www.w3.org/2000/svg"
-                                                 x="0px" y="0px" width="100" height="100" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M14,2H4v20h16V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z M13,9V3.5L18.5,9H13z">
-                                                </path>
-                                            </svg>
+                                                <svg class="w-5 h-5 mr-1" fill="currentColor"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     x="0px" y="0px" width="100" height="100" viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M14,2H4v20h16V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z M13,9V3.5L18.5,9H13z">
+                                                    </path>
+                                                </svg>
 
-                                            Document</a>
-                                        <a href="{{route('impersonate',$user->id)}}" type="button"
-                                           class="min-w-max inline-flex font-medium text-white bg-yellow-700 hover:bg-cyan-800 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 focus:outline-none dark:focus:ring-yellow-800 hover:underline">
-                                            <i class="las la-plane-departure" style="font-size: 20px"></i>
-                                            Impersonate</a>
+                                                Document</a>
+                                            @if($me->hasRole('Super Admin'))
+                                                <a href="{{route('impersonate',$user->id)}}" type="button"
+                                                   class="min-w-max inline-flex font-medium text-white bg-yellow-700 hover:bg-cyan-800 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 focus:outline-none dark:focus:ring-yellow-800 hover:underline">
+                                                    <i class="las la-plane-departure" style="font-size: 20px"></i>
+                                                    Impersonate</a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
