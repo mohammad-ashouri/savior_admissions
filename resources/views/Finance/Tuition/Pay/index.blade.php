@@ -138,6 +138,9 @@
                                         $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
                                         $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
                                         $allDiscountPercentages=$discountPercentages+$familyDiscount;
+                                        if ($allDiscountPercentages>40){
+                                            $allDiscountPercentages=40;
+                                        }
                                     @endphp
                                 </div>
                                 <div class="overflow-x-auto">
