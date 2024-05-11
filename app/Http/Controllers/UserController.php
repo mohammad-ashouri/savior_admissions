@@ -204,6 +204,7 @@ class UserController extends Controller
         $searchEduCode = $request->input('search-user-code');
         $searchFirstName = $request->input('search-first-name');
         $searchLastName = $request->input('search-last-name');
+        $searchMobile = $request->input('search-mobile');
         $selectedRole = $request->role;
         $query = GeneralInformation::where('first_name_en', 'like', "%$searchFirstName%");
         $users = $query->where(function ($query) use ($searchEduCode, $searchFirstName, $searchLastName) {
@@ -242,11 +243,15 @@ class UserController extends Controller
                 });
             }
         }
+        if ($searchMobile != null) {
+            $query->where('mobile', 'like', "%$searchMobile%");
+        }
         $data = $query->paginate(20);
         $data->appends(request()->query())->links();
         if ($data->isEmpty()) {
             $data = [];
         }
+        $this->logActivity(json_encode(['activity' => 'Search Users', 'values' => json_encode($request->all(),true)]), request()->ip(), request()->userAgent());
 
         return view('users.index', compact('data', 'roles', 'searchEduCode', 'searchFirstName', 'searchLastName', 'selectedRole'));
     }

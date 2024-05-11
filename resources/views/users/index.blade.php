@@ -32,6 +32,12 @@
                                            placeholder="Enter last name">
                                 </div>
                                 <div>
+                                    <input type="text" id="search-mobile" name="search-mobile"
+                                           value="{{ @$_GET['search-mobile'] }}"
+                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Enter mobile">
+                                </div>
+                                <div>
                                     <select name="role" id="role"
                                             class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >

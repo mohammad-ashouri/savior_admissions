@@ -240,6 +240,7 @@ $(document).ready(function () {
             if (($('#search-user-code').val() == null || $('#search-user-code').val() == '') &&
                 ($('#search-first-name').val() == null || $('#search-first-name').val() == '') &&
                 ($('#search-last-name').val() == null || $('#search-last-name').val() == '') &&
+                ($('#search-mobile').val() == null || $('#search-mobile').val() == '') &&
                 ($('#role').val() == null || $('#role').val() == '')) {
                 swalFire('Error', 'Fields are empty', 'error', 'Ok');
             } else {
