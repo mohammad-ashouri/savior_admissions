@@ -31,7 +31,7 @@
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                             <h1 class="text-2xl font-medium"> Academic Year information</h1>
                         </div>
-                        {!! Form::model($catalog, ['method' => 'PATCH','id'=>'edit-academic-year','route' => ['AcademicYears.update', $catalog->id]]) !!}
+                        {!! Form::model($catalog, ['method' => 'PATCH','enctype'=>"multipart/form-data",'id'=>'edit-academic-year','route' => ['AcademicYears.update', $catalog->id]]) !!}
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
                             <div>
                                 <label for="name"
@@ -97,6 +97,14 @@
                                             @endif value="0">Deactive
                                     </option>
                                 </select>
+                            </div>
+                            <div>
+                                <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                       for="financial_file">Tuition Fee Financial Charter of Students (file)</label>
+                                <input required
+                                       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                       id="financial_file" name="financial_file" type="file"
+                                       accept=".pdf">
                             </div>
                         </div>
                         <div class="grid gap-6 mb-6 md:grid-cols-1">

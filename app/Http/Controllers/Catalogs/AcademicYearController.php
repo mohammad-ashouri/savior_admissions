@@ -57,6 +57,7 @@ class AcademicYearController extends Controller
             'Admissions_Officer' => 'required',
             'Financial_Manager' => 'required',
             'Interviewer' => 'required',
+            'financial_file' => 'required|file|mimes:pdf',
         ]);
 
         if ($validator->fails()) {
@@ -160,6 +161,12 @@ class AcademicYearController extends Controller
             'employees' => json_encode($employeesData, true),
         ]);
 
+        $financialFileName = 'financial_file_'.now()->format('Y-m-d_H-i-s');
+        $academicYear = $academicYear->find($academicYear->id);
+        $financialFileName = $request->file('financial_file')->storeAs('public/uploads/Documents/AcademicYears/'.$academicYear->id.'/Financial_File', "$financialFileName.pdf");
+        $academicYear->financial_roles = $financialFileName;
+        $academicYear->save();
+
         $discount = Discount::create([
             'academic_year' => $academicYear->id,
         ]);
@@ -200,6 +207,7 @@ class AcademicYearController extends Controller
             'school' => 'required|exists:schools,id',
             'start_date' => 'required|date',
             'end_date' => 'required|after_or_equal:start_date',
+            'financial_file' => 'required|file|mimes:pdf',
             'status' => 'required|boolean',
         ]);
 
@@ -366,6 +374,12 @@ class AcademicYearController extends Controller
         $academicYear->employees = json_encode($employeesData, true);
         $academicYear->save();
 
+        $financialFileName = 'financial_file_'.now()->format('Y-m-d_H-i-s');
+        $academicYear = $academicYear->find($academicYear->id);
+        $financialFileName = $request->file('financial_file')->storeAs('public/uploads/Documents/AcademicYears/'.$academicYear->id.'/Financial_File', "$financialFileName.pdf");
+        $academicYear->financial_roles = $financialFileName;
+        $academicYear->save();
+
         Discount::firstOrCreate([
             'academic_year' => $academicYear->id,
         ]);
@@ -385,6 +399,7 @@ class AcademicYearController extends Controller
             ]);
             TuitionDetail::where('tuition_id', $tuition->id)->where('level', $level)->update(['status' => 1]);
         }
+
         $this->logActivity(json_encode(['activity' => 'Academic Year Saved', 'academic_year_id' => $academicYear->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('AcademicYears.index')

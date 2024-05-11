@@ -30,18 +30,20 @@
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         @if(empty($activeAcademicYears))
-                            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                                 role="alert">
+                            <div
+                                class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                role="alert">
                                 <div class="flex">
                                     <div class="py-1">
-                                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                             xmlns="http://www.w3.org/2000/svg"
                                              viewBox="0 0 20 20">
                                             <path
                                                 d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                         </svg>
                                     </div>
                                     <div>
-                                            <p class="font-bold">No active academic year found!</p>
+                                        <p class="font-bold">No active academic year found!</p>
                                     </div>
                                 </div>
                             </div>
@@ -154,10 +156,18 @@
                                     >
                                 </textarea>
                                 </div>
+                                <div class="flex items-center h-5">
+                                    <input id="agreement" type="checkbox" value="agreed" required
+                                           class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+                                    >
+                                    <label for="agreement"
+                                           class="ml-2 text-sm font-medium text-gray-900 dark:text-white">I have read
+                                        all the rules and regulations (financial and ethical) and I accept them</label>
+                                </div>
                                 <div class="mt-3">
                                     <button type="submit"
                                             class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                        I Agree
+                                        I Agree and read all of roles
                                     </button>
                                     <a href="{{ url()->previous() }}">
                                         <button type="button"

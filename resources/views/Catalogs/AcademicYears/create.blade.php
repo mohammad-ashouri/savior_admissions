@@ -28,7 +28,7 @@
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info  bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <form id="new-academic-year" method="post" action="{{route('AcademicYears.store')}}">
+                        <form id="new-academic-year" enctype="multipart/form-data" method="post" action="{{route('AcademicYears.store')}}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
@@ -154,6 +154,14 @@
                                                 - {{ $user->email }} - {{ $user->mobile }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div>
+                                    <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                           for="financial_file">Tuition Fee Financial Charter of Students (file)</label>
+                                    <input required
+                                           class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                           id="financial_file" name="financial_file" type="file"
+                                           accept=".pdf">
                                 </div>
                             </div>
                             <button type="submit"

@@ -20,6 +20,7 @@ class AcademicYear extends Model
         'end_date',
         'levels',
         'employees',
+        'financial_roles_file',
     ];
 
     protected $casts = [
