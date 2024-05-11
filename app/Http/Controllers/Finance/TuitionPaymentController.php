@@ -225,11 +225,12 @@ class TuitionPaymentController extends Controller
                         $counter = 1;
                         $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
                         $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
-                        $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_each_installment_irr']);
+                        $amountOf = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_amount_irr']);
                         while ($counter < 3) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount = $amountOfEachInstallments - (($amountOfEachInstallments * $allDiscounts) / 100);
+//                            $newInvoice->amount = $amountOfEachInstallments - (($amountOfEachInstallments * $allDiscounts) / 100);
+//                            $newInvoice->amount = $totalFeeTwoInstallment-$twoInstallmentPaymentAmountAdvance)/2;
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
                             $newInvoice->save();
