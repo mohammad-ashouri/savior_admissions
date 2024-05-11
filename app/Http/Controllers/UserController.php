@@ -41,6 +41,7 @@ class UserController extends Controller
                 $data = User::where('status', 1)
                     ->WhereHas('roles', function ($query) {
                         $query->where('name', 'Parent');
+                        $query->orWhere('name', 'Student');
                     })
                     ->paginate(20);
                 if ($data->isEmpty()) {
@@ -224,6 +225,7 @@ class UserController extends Controller
                 ->where(function ($query) {
                     $query->whereHas('roles', function ($query) {
                         $query->where('name', 'Parent');
+                        $query->orWhere('name', 'Student');
                     });
                 });
             if (! empty($selectedRole)) {

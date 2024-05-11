@@ -142,7 +142,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
             Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation'])->middleware('can:access-SuperAdmin-and-Principal');
             Route::post('users/change_rules', [ProfileController::class, 'changeUserRole']);
             Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
-            Route::get('/searchUsers', [UserController::class, 'searchUser'])->middleware('can:access-SuperAdmin-and-Principal')->name('searchUser');
+            Route::get('/searchUsers', [UserController::class, 'searchUser'])->name('searchUser');
 
             //Students management
             Route::resource('Students', StudentController::class);

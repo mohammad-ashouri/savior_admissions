@@ -37,7 +37,7 @@
                                     >
                                         <option value="" selected disabled>Select role</option>
                                         @foreach ($roles as $role)
-                                            @if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and ($role->name == 'Super Admin' or $role->name == 'Principal' or $role->name == 'Admissions Officer' or $role->name == 'Financial Manager' or $role->name == 'Interviewer' or $role->name == 'Student'))
+                                            @if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and ($role->name == 'Super Admin' or $role->name == 'Principal' or $role->name == 'Admissions Officer' or $role->name == 'Financial Manager' or $role->name == 'Interviewer'))
                                                 @continue
                                             @endif
 
