@@ -158,7 +158,7 @@
                                         ></textarea>
                                     </div>
                                     <div class="mt-3">
-                                        <a id="financial_charter_file" class="font-bold text-blue-500 mb-2 animate__animated animate__fadeIn animate__infinite">
+                                        <a target="_blank" id="financial_charter_file" class="font-bold text-blue-500 mb-2 animate__animated animate__fadeIn animate__infinite">
                                             Click to download financial roles and charters file and read!
                                         </a>
                                     </div>
