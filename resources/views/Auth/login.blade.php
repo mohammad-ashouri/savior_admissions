@@ -13,11 +13,11 @@
     <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
     <p id="spinner-text" class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite"></p>
 </div>
-<div class="bg-light-theme-color-base lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
+<div class="bg-light-theme-color-base lg:w-5/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
     <div class="lg:w-2/5 pr-8 lg:inline-block loginPic">
     </div>
 
-    <div class="lg:w-1/2 w-full flex flex-col justify-center items-center p-8">
+    <div class="lg:w-2/3 w-full flex flex-col justify-center items-center p-8">
 
         <div>
             <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left ">Sign in to savior schools</h2>
@@ -118,6 +118,13 @@
                     Login
                     Your Account
                 </button>
+            </div>
+            <div>
+                <p class="text-red-600">
+                Please note the following conditions for admissions at Savior International Schools:<br>
+                1. The student's latest average score must be at least 75%<br>
+                2. The student must be able to speak in English fluently
+                </p>
             </div>
         </form>
     </div>
