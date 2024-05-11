@@ -219,6 +219,7 @@ class TuitionPaymentController extends Controller
                 $studentAppliance->approval_status = 1;
                 $studentAppliance->save();
 
+                $allDiscounts = $this->getAllDiscounts($studentAppliance->student_id);
                 switch ($tuitionInvoiceInfo->payment_type) {
                     case 2:
                         $counter = 1;
@@ -228,7 +229,7 @@ class TuitionPaymentController extends Controller
                         while ($counter < 3) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount = $amountOfEachInstallments;
+                            $newInvoice->amount = $amountOfEachInstallments - (($amountOfEachInstallments * $allDiscounts) / 100);
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
                             $newInvoice->save();
@@ -244,7 +245,7 @@ class TuitionPaymentController extends Controller
                         while ($counter < 5) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount = $amountOfEachInstallments;
+                            $newInvoice->amount = $amountOfEachInstallments - (($amountOfEachInstallments * $allDiscounts) / 100);
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                             $newInvoice->save();

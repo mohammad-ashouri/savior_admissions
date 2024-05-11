@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
+use App\Models\Branch\ApplicationReservation;
+use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Finance\DiscountDetail;
+use App\Models\StudentInformation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -198,5 +202,58 @@ class Controller extends BaseController
             return false;
         }
         return $academicYears;
+    }
+
+
+    //For return all discounts
+    public function getAllDiscounts($student_id)
+    {
+        $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
+            ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+            ->join('interviews', 'applications.id', '=', 'interviews.application_id')
+            ->where('application_reservations.student_id', $student_id)
+            ->where('applications.reserved', 1)
+            ->where('application_reservations.payment_status', 1)
+            ->where('applications.interviewed', 1)
+            ->where('interviews.interview_type', 3)
+            ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
+            ->orderByDesc('application_reservations.id')
+            ->first();
+
+        //Discount Percentages
+        $discountPercentages = 0;
+        if (isset(json_decode($applicationInfo->interview_form, true)['discount'])) {
+            $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
+            $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
+        }
+
+        //Get all students with paid status in all active academic years
+        $me = auth()->user()->id;
+
+        $allStudentsWithMyGuardian = StudentInformation::where('guardian', $me)->pluck('student_id')->toArray();
+        $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
+            ->with('academicYearInfo')
+            ->whereIn('student_id', $allStudentsWithMyGuardian)
+            ->where('tuition_payment_status', 'Paid')
+            ->whereIn('academic_year', $this->getActiveAcademicYears())
+            ->count();
+
+        $familyDiscount = 0;
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
+            $familyDiscount = 25;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
+            $familyDiscount = 30;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear > 4) {
+            $familyDiscount = 40;
+        }
+
+        $allDiscountPercentages=$discountPercentages+$familyDiscount;
+
+        if ($allDiscountPercentages>40){
+            return 40;
+        }
+        return $allDiscountPercentages;
     }
 }

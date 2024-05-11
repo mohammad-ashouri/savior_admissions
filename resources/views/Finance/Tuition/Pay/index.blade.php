@@ -260,7 +260,7 @@
                                                         {{ $twoInstallmentPayment['date_of_installment1_two'] }}
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{ $twoEachInstallments }}
+                                                        IRR {{ number_format(($twoEachInstallments)-(($twoEachInstallments*$allDiscountPercentages)/100)) }}
                                                     </td>
                                                 </tr>
                                                 <tr
@@ -275,7 +275,7 @@
                                                         {{ $twoInstallmentPayment['date_of_installment2_two'] }}
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{ $twoInstallmentPayment['two_installment_each_installment_irr'] }}
+                                                        IRR {{ number_format(($twoEachInstallments)-(($twoEachInstallments*$allDiscountPercentages)/100)) }}
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -379,9 +379,12 @@
                                                         {{$dateOfDueAdvance}}
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{ $fourInstallmentPayment['four_installment_advance_irr'] }}
+                                                        IRR {{ number_format($fourInstallmentPaymentAmountAdvance) }}
                                                     </td>
                                                 </tr>
+                                                @php
+                                                    $fourEachInstallments=str_replace(',','',$fourInstallmentPayment['four_installment_each_installment_irr']);
+                                                @endphp
                                                 <tr
                                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                     <td class="w-4 p-4 text-center">
@@ -394,7 +397,7 @@
                                                         {{ $fourInstallmentPayment['date_of_installment1_four'] }}
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{ $fourInstallmentPayment['four_installment_each_installment_irr'] }}
+                                                        IRR {{ number_format(($fourEachInstallments)-(($fourEachInstallments*$allDiscountPercentages)/100)) }}
                                                     </td>
                                                 </tr>
                                                 <tr
@@ -409,7 +412,7 @@
                                                         {{ $fourInstallmentPayment['date_of_installment2_four'] }}
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{ $fourInstallmentPayment['four_installment_each_installment_irr'] }}
+                                                        IRR {{ number_format(($fourEachInstallments)-(($fourEachInstallments*$allDiscountPercentages)/100)) }}
                                                     </td>
                                                 </tr>
                                                 <tr
@@ -424,7 +427,7 @@
                                                         {{ $fourInstallmentPayment['date_of_installment3_four'] }}
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{ $fourInstallmentPayment['four_installment_each_installment_irr'] }}
+                                                        IRR {{ number_format(($fourEachInstallments)-(($fourEachInstallments*$allDiscountPercentages)/100)) }}
                                                     </td>
                                                 </tr>
                                                 <tr
@@ -439,7 +442,7 @@
                                                         {{ $fourInstallmentPayment['date_of_installment4_four'] }}
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{ $fourInstallmentPayment['four_installment_each_installment_irr'] }}
+                                                        IRR {{ number_format(($fourEachInstallments)-(($fourEachInstallments*$allDiscountPercentages)/100)) }}
                                                     </td>
                                                 </tr>
                                                 </tbody>

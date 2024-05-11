@@ -116,8 +116,7 @@ class PaymentController extends Controller
                     $studentAppliance->tuition_payment_status = 'Paid';
                     $studentAppliance->approval_status = 1;
                     $studentAppliance->save();
-
-
+                    $allDiscounts = $this->getAllDiscounts($studentAppliance->student_id);
 
                     switch ($tuitionInvoiceInfo->payment_type) {
                         case 2:
@@ -125,12 +124,10 @@ class PaymentController extends Controller
                             $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
                             $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
                             $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_each_installment_irr']);
-                            $fourInstallmentPaymentAmountWithDiscounts = $fourInstallmentPaymentAmount - ((($fourInstallmentPaymentAmount * $familyDiscount) / 100) + (($fourInstallmentPaymentAmount * $discountPercentages) / 100));
-
                             while ($counter < 3) {
                                 $newInvoice = new TuitionInvoiceDetails();
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = $amountOfEachInstallments;
+                                $newInvoice->amount = $amountOfEachInstallments - (($amountOfEachInstallments * $allDiscounts) / 100);
                                 $newInvoice->is_paid = 0;
                                 $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
                                 $newInvoice->save();
@@ -146,7 +143,7 @@ class PaymentController extends Controller
                             while ($counter < 5) {
                                 $newInvoice = new TuitionInvoiceDetails();
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = $amountOfEachInstallments;
+                                $newInvoice->amount = $amountOfEachInstallments - (($amountOfEachInstallments * $allDiscounts) / 100);
                                 $newInvoice->is_paid = 0;
                                 $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                                 $newInvoice->save();
