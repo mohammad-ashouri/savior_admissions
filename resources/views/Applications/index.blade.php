@@ -95,6 +95,9 @@
                                     Reserve ID
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
+                                    Student ID
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
                                     Student
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
@@ -122,6 +125,13 @@
                                     <td class="w-4 p-4">
                                         {{$application->id}}
                                     </td>
+                                    <th scope="row"
+                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            <div
+                                                class="text-base font-semibold">{{ $application->studentInfo->id }}</div>
+                                        </div>
+                                    </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
