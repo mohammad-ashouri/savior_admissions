@@ -106,6 +106,11 @@
                                        id="financial_file" name="financial_file" type="file"
                                        accept=".pdf">
                             </div>
+                            <div>
+                                <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                       for="financial_file">Preview uploaded file</label>
+                                <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $catalog->financial_roles) }}">Click to download</a>
+                            </div>
                         </div>
                         <div class="grid gap-6 mb-6 md:grid-cols-1">
                             <div class="col-span-1 gap-4  text-black dark:text-white">
