@@ -189,7 +189,8 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
             //Exports
             //PDF
             Route::prefix('PDF')->group(function () {
-                Route::get('/tuition_card', [PDFExportController::class, 'tuitionCardExport']);
+                Route::get('/tuition_card_en/{appliance_id}', [PDFExportController::class, 'tuitionCardEnExport'])->name('tuitionCard.en');
+                Route::get('/tuition_card_fa/{appliance_id}', [PDFExportController::class, 'tuitionCardFaExport'])->name('tuitionCard.fa');
             });
         });
 

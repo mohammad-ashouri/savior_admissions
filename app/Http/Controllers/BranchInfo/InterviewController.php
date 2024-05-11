@@ -27,7 +27,7 @@ class InterviewController extends Controller
         //        $this->middleware('permission:interview-show', ['only' => ['show']]);
     }
 
-    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function index()
     {
         $me = User::find(auth()->user()->id);
         $interviews = [];

@@ -117,12 +117,16 @@ class PaymentController extends Controller
                     $studentAppliance->approval_status = 1;
                     $studentAppliance->save();
 
+
+
                     switch ($tuitionInvoiceInfo->payment_type) {
                         case 2:
                             $counter = 1;
                             $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
                             $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
                             $amountOfEachInstallments = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_each_installment_irr']);
+                            $fourInstallmentPaymentAmountWithDiscounts = $fourInstallmentPaymentAmount - ((($fourInstallmentPaymentAmount * $familyDiscount) / 100) + (($fourInstallmentPaymentAmount * $discountPercentages) / 100));
+
                             while ($counter < 3) {
                                 $newInvoice = new TuitionInvoiceDetails();
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;

@@ -63,6 +63,9 @@
                                     </div>
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
+                                    Application ID
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-center">
                                     Student ID
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
@@ -97,13 +100,18 @@
 
                             <tbody>
                             @foreach($interviews as $interview)
-                                @if($interview->reservationInfo->payment_status!==1)
+                                @if($interview->reservationInfo->payment_status!=1)
                                     @continue
                                 @endif
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="w-4 p-4 ">
+                                        <div class="flex  items-center">
+                                            {{ $loop->iteration }}
+                                        </div>
+                                    </td>
                                     <td class="w-4 p-4">
-                                        <div class="flex items-center">
+                                        <div class="flex text-center items-center">
                                             {{ $interview->id }}
                                         </div>
                                     </td>
