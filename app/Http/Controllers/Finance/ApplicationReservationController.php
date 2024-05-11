@@ -275,7 +275,7 @@ class ApplicationReservationController extends Controller
             $application->reserved=0;
             $application->save();
 
-            $message="Your payment has been rejected. \nSavior Schools";
+            $message="Your application reservation payment has been rejected. \nSavior Schools";
             $reservatoreMobile=$applicationReservation->reservatoreInfo->mobile;
             $this->sendSMS($reservatoreMobile, $message);
         }
