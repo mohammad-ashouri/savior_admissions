@@ -91,7 +91,7 @@ class StudentController extends Controller
     {
         $validator = Validator::make($request->all(), [
 //            'nationality' => 'required|exists:countries,id',
-//            'birthplace' => 'required|exists:countries,id',
+            'birthplace' => 'required|exists:countries,id',
 //            'current_identification_type' => 'required|exists:current_identification_types,id',
             'first_name_fa' => 'required|string',
             'last_name_fa' => 'required|string',
@@ -108,7 +108,7 @@ class StudentController extends Controller
 
 //        $nationality = $request->nationality;
 //        $current_identification_type = $request->current_identification_type;
-//        $birthplace = $request->birthplace;
+        $birthplace = $request->birthplace;
         $birthdate = $request->birthdate;
 //        $current_identification_code = $request->current_identification_code;
         $gender = $request->gender;
@@ -132,7 +132,7 @@ class StudentController extends Controller
         $generalInformation->first_name_en = $request->first_name_en;
         $generalInformation->last_name_en = $request->last_name_en;
         $generalInformation->birthdate = $birthdate;
-//        $generalInformation->birthplace = $birthplace;
+        $generalInformation->birthplace = $birthplace;
 //        $generalInformation->nationality = $nationality;
         $generalInformation->gender = $gender;
         $generalInformation->save();
