@@ -6,11 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-soap": "*",
         "akaunting/laravel-apexcharts": "*",
         "arielmejiadev/larapex-charts": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
         "jenssegers/agent": "^2.6",
         "kavenegar/laravel": "^1.3",
+        "lab404/laravel-impersonate": "^1.7",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
@@ -18,8 +20,7 @@
         "maatwebsite/excel": "^3.1",
         "mews/captcha": "^3.3",
         "shetabit/payment": "^5.6",
-        "spatie/laravel-permission": "^6.1",
-        "ext-soap": "*"
+        "spatie/laravel-permission": "^6.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -172,7 +172,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Shetabit\Payment\Provider\PaymentServiceProvider::class,
         Kavenegar\Laravel\ServiceProvider::class,
-    ])->toArray(),
+        Lab404\Impersonate\ImpersonateServiceProvider::class,
+        ])->toArray(),
 
     /*
     |--------------------------------------------------------------------------

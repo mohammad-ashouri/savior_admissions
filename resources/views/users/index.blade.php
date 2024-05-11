@@ -162,8 +162,8 @@
                                             @endforeach
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <!-- Modal toggle -->
+                                    <td class="w-96 px-6 py-4 text-center">
+                                        <div class="flex">
                                         <a href="{{ route('users.edit',$user->id) }}" type="button"
                                            class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                             <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
@@ -189,6 +189,11 @@
                                             </svg>
 
                                             Document</a>
+                                        <a href="{{route('impersonate',$user->id)}}" type="button"
+                                           class="min-w-max inline-flex font-medium text-white bg-yellow-700 hover:bg-cyan-800 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 focus:outline-none dark:focus:ring-yellow-800 hover:underline">
+                                            <i class="las la-plane-departure" style="font-size: 20px"></i>
+                                            Impersonate</a>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

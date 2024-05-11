@@ -403,6 +403,15 @@
                     <span class="ml-4 ">Logout</span>
                 </a>
             </li>
+            @impersonating($guard=null)
+            <li>
+                <a href="{{ route('impersonate.leave') }}"
+                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <i class="las la-sign-out-alt" style="font-size: 24px"></i>
+                    <span class="ml-4 ">Leave Impersonation</span>
+                </a>
+            </li>
+            @endImpersonating
         </ul>
     </div>
 </aside>

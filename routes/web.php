@@ -76,6 +76,8 @@ Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(function () {
+    Route::impersonate();
+
     Route::middleware(CheckIfProfileRegistered::class)->group(function () {
         Route::middleware(SettingsCheck::class)->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
