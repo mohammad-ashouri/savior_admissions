@@ -784,15 +784,19 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
-                        let selectDateAndTime = $('#date_and_time');
-                        selectDateAndTime.empty();
+                        if (response!=null) {
+                            let selectDateAndTime = $('#date_and_time');
+                            selectDateAndTime.empty();
 
-                        selectDateAndTime.append('<option selected disabled value="">Select date and time</option>');
+                            selectDateAndTime.append('<option selected disabled value="">Select date and time</option>');
 
-                        $.each(response, function (index, date_and_time) {
-                            selectDateAndTime.append('<option value="' + date_and_time.id + '">' + date_and_time.date + " - " + date_and_time.start_from + " - " + date_and_time.ends_to + '</option>');
-                        });
-                        $('.AgreementDIV').show();
+                            $.each(response, function (index, date_and_time) {
+                                selectDateAndTime.append('<option value="' + date_and_time.id + '">' + date_and_time.date + " - " + date_and_time.start_from + " - " + date_and_time.ends_to + '</option>');
+                            });
+                            $('.AgreementDIV').show();
+                        }else{
+                            swalFire('Error', "No capacity was found for this academic year!", 'error', 'Try again');
+                        }
                     }, error: function (xhr, textStatus, errorThrown) {
                         $('.AgreementDIV').hide();
                         swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');

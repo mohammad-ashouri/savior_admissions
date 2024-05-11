@@ -343,7 +343,10 @@ class ApplicationController extends Controller
             ->get();
         $this->logActivity(json_encode(['activity' => 'Getting Applications By Academic Year', 'entered_academic_year' => $request->academic_year]), request()->ip(), request()->userAgent());
 
-        return $applicationTimings;
+        if (!empty($applicationTimings) and $applicationTimings->isNotEmpty()) {
+            return $applicationTimings;
+        }
+        return response()->json(['error'=>'No capacity was found for this academic year!'],404);
     }
 
     public function checkDateAndTimeToBeFreeApplication(Request $request): \Illuminate\Http\JsonResponse|int
