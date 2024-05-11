@@ -18,7 +18,7 @@ import {
 
 window.moment = moment;
 
-$(document).on('load',function (){
+$(document).on('load', function () {
 
 // config dark mode
     let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
@@ -111,8 +111,6 @@ $(document).ready(function () {
 
 // Add a listener to check for window resize events
     window.addEventListener('resize', handleResize);
-
-
 
 
     let fullPath = window.location.pathname;
@@ -813,7 +811,26 @@ $(document).ready(function () {
                         $('.AgreementDIV').show();
                     }, error: function (xhr, textStatus, errorThrown) {
                         $('.AgreementDIV').hide();
-                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                        swalFire('Error', 'Error on Getting Educational Charter Text', 'error', 'Try again');
+                    }
+                });
+                $.ajax({
+                    type: 'GET',
+                    url: '/GetFinancialCharterFile',
+                    data: {
+                        academic_year: $(this).val()
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                    }, success: function (response) {
+                        if (response) {
+                            $('#financial_charter_file').attr('href', response);
+                        } else {
+                            $('.AgreementDIV').hide();
+                        }
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        $('.AgreementDIV').hide();
+                        swalFire('Error', 'Error on Getting Financial Charter File', 'error', 'Try again');
                     }
                 });
             });
@@ -1113,7 +1130,7 @@ $(document).ready(function () {
                     if ($('#s1_1_s').val() == 'Inadmissible' || $('#s1_2_s').val() == 'Inadmissible' || $('#s1_3_s').val() == 'Inadmissible') {
                         $('#interview-result').text('Rejected');
                     } else {
-                        if ((sumOfPoints/2) < 60) {
+                        if ((sumOfPoints / 2) < 60) {
                             $('#interview-result').text('Rejected');
                         } else {
                             $('#interview-result').text('Admitted');
@@ -1656,12 +1673,11 @@ $(document).ready(function () {
         if (fullPath.includes('TuitionInvoices/')) {
             pageTitle = 'Tuition Payment Details';
 
-            $('#set-payment-status').click(function (e){
+            $('#set-payment-status').click(function (e) {
                 e.preventDefault();
-                if ($('#payment_status').val()==0){
+                if ($('#payment_status').val() == 0) {
                     swalFire('Error', "You can't change status to this!", 'error', 'Try again');
-                }
-                else if ($('#payment_status').val()==1){
+                } else if ($('#payment_status').val() == 1) {
                     Swal.fire({
                         title: 'Are you sure?',
                         text: 'If you set the status to Approved, installments will be made for parents. This state is irreversible. are you sure?',
@@ -1675,7 +1691,7 @@ $(document).ready(function () {
                                 type: 'POST',
                                 url: '/TuitionInvoices/ChangeInvoiceStatus',
                                 data: {
-                                    invoice_id:$('#invoice_id').val(),
+                                    invoice_id: $('#invoice_id').val(),
                                     status: $('#payment_status').val()
                                 },
                                 headers: {
@@ -1688,16 +1704,14 @@ $(document).ready(function () {
                             });
                         }
                     });
-                }
-                else if ($('#payment_status').val()==2){
+                } else if ($('#payment_status').val() == 2) {
                     swalFire('Error', "You can't change status to this!", 'error', 'Try again');
                 }
 
             });
         }
 
-    }
-    else if (fullPath.includes('UploadStudentDocumentByParent')) {
+    } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
 
         $('#relationship').change(function () {
@@ -1819,8 +1833,7 @@ $(document).ready(function () {
             });
         });
 
-    }
-    else if (fullPath.includes('Discounts')) {
+    } else if (fullPath.includes('Discounts')) {
         pageTitle = 'Discounts Manager';
 
         $('#discounts-table').on('click', '.delete-row', function () {

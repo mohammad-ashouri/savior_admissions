@@ -148,13 +148,20 @@
                                     </div>
                                 </div>
                                 <div hidden="hidden" class="mb-6 AgreementDIV">
-                                    <p class="font-bold mb-2">
-                                        Educational Charter of the Students of Savior International Educational Complex
-                                    </p>
-                                    <textarea disabled
-                                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 CharterText"
-                                    >
-                                </textarea>
+                                    <div>
+                                        <p class="font-bold mb-2">
+                                            Educational Charter of the Students of Savior International Educational
+                                            Complex
+                                        </p>
+                                        <textarea disabled
+                                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 CharterText"
+                                        ></textarea>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a id="financial_charter_file" class="font-bold text-blue-500 mb-2 animate__animated animate__fadeIn animate__infinite">
+                                            Click to download financial roles and charters file and read!
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="flex items-center h-5">
                                     <input id="agreement" type="checkbox" value="agreed" required

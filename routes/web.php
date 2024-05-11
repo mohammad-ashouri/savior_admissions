@@ -106,6 +106,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
             Route::resource('AcademicYearClasses', AcademicYearClassController::class);
             Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
             Route::get('/GetAcademicYearStarttimeAndEndtime', [AcademicYearClassController::class, 'academicYearStarttimeAndEndtime']);
+            Route::get('/GetFinancialCharterFile', [AcademicYearClassController::class, 'academicYearFinancialCharterFile']);
             Route::resource('ApplicationTimings', ApplicationTimingController::class);
             Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
             Route::resource('Interviews', InterviewController::class)->names([

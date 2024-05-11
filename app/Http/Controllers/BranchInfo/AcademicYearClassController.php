@@ -216,4 +216,21 @@ class AcademicYearClassController extends Controller
 
         return $academicYear;
     }
+
+    public function academicYearFinancialCharterFile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'academic_year' => 'required|exists:academic_years,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Error on choosing academic year!'], 422);
+        }
+
+        $academicYear = $request->academic_year;
+
+        $academicYearFile=AcademicYear::find($academicYear)->value('financial_roles');
+        $this->logActivity(json_encode(['activity' => 'Academic Year Start Time And End Time Returned', 'id' => $request->academic_year]), request()->ip(), request()->userAgent());
+
+        return env('APP_URL').'/'. str_replace( 'public','storage', $academicYearFile) ;
+    }
 }
