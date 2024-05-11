@@ -795,11 +795,11 @@ $(document).ready(function () {
                             });
                             $('.AgreementDIV').show();
                         }else{
-                            swalFire('Error', "No capacity was found for this academic year!", 'error', 'Try again');
+                            swalFire('Warning', "No capacity was found for this academic year!", 'warning', 'OK');
                         }
                     }, error: function (xhr, textStatus, errorThrown) {
                         $('.AgreementDIV').hide();
-                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
+                        swalFire('Warning', JSON.parse(xhr.responseText).error, 'warning', 'OK');
                     }
                 });
                 $.ajax({
