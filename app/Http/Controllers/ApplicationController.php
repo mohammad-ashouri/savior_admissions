@@ -95,7 +95,9 @@ class ApplicationController extends Controller
 
         } elseif ($me->hasRole('Super Admin')) {
             $levels = Level::where('status', 1)->get();
-            $myStudents = StudentInformation::with('generalInformations')->orderBy('id')->get();
+            $myStudents = StudentInformation::
+                join('general_informations','student_informations.student_id','=','general_informations.user_id')
+            ->with('generalInformations')->orderBy('general_informations.last_name_en')->orderBy('general_informations.first_name_en')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
