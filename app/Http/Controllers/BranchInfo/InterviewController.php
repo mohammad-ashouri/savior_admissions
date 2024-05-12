@@ -298,9 +298,6 @@ class InterviewController extends Controller
         $interview->interview_form = json_encode($request->all(), true);
         $interview->interviewer = auth()->user()->id;
 
-        //        $reservatoreMobile = $application->reservationInfo->reservatoreInfo->mobile;
-        //        $this->sendSMS($reservatoreMobile, "The application for your student ($student) was rejected. Savior Schools");
-
         switch ($request->form_type) {
             case 'kg1':
             case 'l1':

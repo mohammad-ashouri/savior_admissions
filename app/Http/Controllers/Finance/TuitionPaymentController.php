@@ -277,7 +277,7 @@ class TuitionPaymentController extends Controller
 
                 $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
                 $message = "Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
-//                $this->sendSMS($guardianMobile, $message);
+                $this->sendSMS($guardianMobile, $message);
 
                 return response()->json(['message' => 'Installments were made!']);
             default:
