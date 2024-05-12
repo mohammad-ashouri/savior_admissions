@@ -210,14 +210,14 @@ class TuitionPaymentController extends Controller
             case 1:
                 $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
                 $tuitionInvoiceDetails->is_paid = 1;
-//                $tuitionInvoiceDetails->save();
+                $tuitionInvoiceDetails->save();
 
                 $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
 
                 $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
                 $studentAppliance->tuition_payment_status = 'Paid';
                 $studentAppliance->approval_status = 1;
-//                $studentAppliance->save();
+                $studentAppliance->save();
 
                 $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id);
                 if ($allDiscountPercentages>40){
@@ -253,7 +253,7 @@ class TuitionPaymentController extends Controller
                         while ($counter < 5) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount=($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/2;
+                            $newInvoice->amount=($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4;
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                             $newInvoice->save();

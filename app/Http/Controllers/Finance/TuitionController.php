@@ -645,7 +645,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Installment With Advance'], true);
                         $tuitionInvoiceDetails->save();
 
-                        $invoice = (new Invoice)->amount(($fullPaymentAmountWithDiscounts * 30) / 100);
+                        $invoice = (new Invoice)->amount(($fullPaymentAmount * 30) / 100);
 
                         return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionPayment')->purchase(
                             $invoice,

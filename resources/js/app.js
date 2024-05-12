@@ -1460,7 +1460,7 @@ $(document).ready(function () {
                 $('#accept-div').addClass('hidden');
                 $('#payment-button').hide();
 
-                $('#document_file_full_payment1,#document_file_offline_installment1').attr('required', false);
+                $('#document_file_full_payment1,#document_file_offline_installment1,#document_file_full_payment_with_advance1').attr('required', false);
 
                 let paymentType = $('#payment_type').val();
 

@@ -150,7 +150,7 @@ class PaymentController extends Controller
                             while ($counter < 5) {
                                 $newInvoice = new TuitionInvoiceDetails();
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = ($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 2;
+                                $newInvoice->amount = ($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4;
                                 $newInvoice->is_paid = 0;
                                 $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                                 $newInvoice->save();
