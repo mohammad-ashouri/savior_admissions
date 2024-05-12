@@ -257,26 +257,26 @@ class ApplicationReservationController extends Controller
             }
             $applianceStatus->save();
 
-            $application=Applications::find($applicationReservation->application_id);
-            $application->reserved=1;
+            $application = Applications::find($applicationReservation->application_id);
+            $application->reserved = 1;
             $application->save();
 
-            $message="Your payment has been successfully verified.\n
+            $message = "Your payment has been successfully verified.\n
             Your application has been reserved for this date and time:\n
-            " .$applicationReservation->applicationInfo->date." ".$applicationReservation->applicationInfo->start_from . " \nSavior Schools";
+            ".$applicationReservation->applicationInfo->date.' '.$applicationReservation->applicationInfo->start_from." \nSavior Schools";
 
-            $reservatoreMobile=$applicationReservation->reservatoreInfo->mobile;
+            $reservatoreMobile = $applicationReservation->reservatoreInfo->mobile;
             $this->sendSMS($reservatoreMobile, $message);
-        }elseif ($applicationStatus == 3){
+        } elseif ($applicationStatus == 3) {
             $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)
-                ->update(['interview_status'=>null]);
+                ->update(['interview_status' => null]);
 
-            $application=Applications::find($applicationReservation->application_id);
-            $application->reserved=0;
+            $application = Applications::find($applicationReservation->application_id);
+            $application->reserved = 0;
             $application->save();
 
-            $message="Your application reservation payment has been rejected. \nSavior Schools";
-            $reservatoreMobile=$applicationReservation->reservatoreInfo->mobile;
+            $message = "Your application reservation payment has been rejected. \nSavior Schools";
+            $reservatoreMobile = $applicationReservation->reservatoreInfo->mobile;
             $this->sendSMS($reservatoreMobile, $message);
         }
 

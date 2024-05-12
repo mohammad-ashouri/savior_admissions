@@ -267,11 +267,7 @@ class ApplicationController extends Controller
         }
 
         $changeApplicationStatus = Applications::find($id);
-        if ($changeApplicationStatus->status == 0) {
-            $changeApplicationStatus->status = 1;
-        } else {
-            $changeApplicationStatus->status = 0;
-        }
+        $changeApplicationStatus->status = ($changeApplicationStatus->status == 0) ? 1 : 0;
 
         if (! $changeApplicationStatus->save()) {
             $this->logActivity(json_encode(['activity' => 'Failed To Change Application Status', 'entered_id' => $id]), request()->ip(), request()->userAgent());
