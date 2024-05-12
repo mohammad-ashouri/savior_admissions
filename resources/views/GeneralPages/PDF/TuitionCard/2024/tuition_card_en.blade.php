@@ -459,7 +459,7 @@
                             Four Installment
                             @break
                         @case('4')
-                            Full Payment With Advice
+                            Full Payment With Advance
                             @break
                     @endswitch
                 </td>

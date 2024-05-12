@@ -1444,9 +1444,9 @@ $(document).ready(function () {
             pageTitle = 'Prepare To Pay Tuition';
 
             $('#payment_type,#payment_method').val('');
-            $('#document_file_full_payment1,#document_file_offline_installment1').val('');
-            $('#document_file_full_payment2,#document_file_offline_installment2').val('');
-            $('#document_file_full_payment3,#document_file_offline_installment3').val('');
+            $('#document_file_full_payment1,#document_file_full_payment_with_advance1,#document_file_offline_installment1').val('');
+            $('#document_file_full_payment2,#document_file_full_payment_with_advance2,#document_file_offline_installment2').val('');
+            $('#document_file_full_payment3,#document_file_full_payment_with_advance3,#document_file_offline_installment3').val('');
 
             $('.get-invoice').on('click', function () {
                 let paymentMethod = $('#payment_method').val();
@@ -1455,6 +1455,7 @@ $(document).ready(function () {
                 $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
                 $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
                 $('#offline-full-payment-div, #offline-installment-div').hide();
+                $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
 
                 $('#accept-div').addClass('hidden');
                 $('#payment-button').hide();
@@ -1479,7 +1480,7 @@ $(document).ready(function () {
                             $('#installment4-div, #installment4-payment-invoice').show();
                             break;
                         case '4':
-                            $('#full-payment-with-advice-div, #full-payment-with-advice-invoice').show();
+                            $('#full-payment-with-advance-div, #full-payment-with-advance-invoice').show();
                             break;
                     }
 
@@ -1503,9 +1504,9 @@ $(document).ready(function () {
                                     $('#document_file_offline_installment1').attr('required', true);
                                     break;
                                 case '4':
-                                    $('#offline-full-payment-div').show();
-                                    $('#full-payment-online').hide();
-                                    $('#document_file_full_payment1').attr('required', true);
+                                    $('#offline-full-payment-with-advance-div').show();
+                                    $('#full-payment-with-advance-online').hide();
+                                    $('#document_file_full_payment_with_advance1').attr('required', true);
                                     break;
                             }
                             break;
@@ -1524,8 +1525,8 @@ $(document).ready(function () {
                                     $('#installment4-online').show();
                                     break;
                                 case '4':
-                                    $('#offline-full-payment-with-advice-div').hide();
-                                    $('#full-payment-with-advice-online').show();
+                                    $('#offline-full-payment-with-advance-div').hide();
+                                    $('#full-payment-with-advance-online').show();
                                     break;
                             }
                             break;
@@ -1579,6 +1580,64 @@ $(document).ready(function () {
             $('#document_file_full_payment3').change(function () {
                 const fileInput = $('#document_file_full_payment3');
                 const imagePreview = $('#image_preview_full_payment3');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
+                }
+            });
+
+            $('#document_file_full_payment_with_advance1').change(function () {
+                const fileInput = $('#document_file_full_payment_with_advance1');
+                const imagePreview = $('#image_preview_full_payment_with_advance_1');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
+                }
+            });
+            $('#document_file_full_payment_with_advance2').change(function () {
+                const fileInput = $('#document_file_full_payment_with_advance2');
+                const imagePreview = $('#image_preview_full_payment_with_advance_2');
+
+                if (fileInput[0].files && fileInput[0].files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '400px');
+                        imagePreview.css('width', 'full');
+                    };
+
+                    reader.readAsDataURL(fileInput[0].files[0]);
+                } else {
+                    imagePreview.css('display', 'none');
+                }
+            });
+            $('#document_file_full_payment_with_advance3').change(function () {
+                const fileInput = $('#document_file_full_payment_with_advance3');
+                const imagePreview = $('#image_preview_full_payment_with_advance_2');
 
                 if (fileInput[0].files && fileInput[0].files[0]) {
                     const reader = new FileReader();

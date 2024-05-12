@@ -99,7 +99,7 @@
                                                 title="Select student" required>
                                             <option selected disabled value="">Select type</option>
                                             <option value="1">Full payment</option>
-                                            <option value="4">Full payment (With 30% Advice)</option>
+                                            <option value="4">Full payment (With 30% advance)</option>
                                             <option value="2">Two installments</option>
                                             <option value="3">Four installments</option>
                                         </select>
@@ -132,7 +132,7 @@
 
                                         $twoInstallmentPayment=json_decode($tuition->two_installment_payment,true);
                                         $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']);
-                                        $twoInstallmentPaymentAmountAdvance=((str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']))*30)/100;
+                                        $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $twoInstallmentPayment['two_installment_advance_irr']);
 
                                         $fourInstallmentPayment=json_decode($tuition->four_installment_payment,true);
                                         $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr']);
@@ -145,6 +145,7 @@
                                             $allDiscountPercentages=40;
                                         }
 
+                                        $totalFeeFullPayment=$fullPaymentAmount-(($fullPaymentAmount*$allDiscountPercentages)/100);
                                         $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-(($twoInstallmentPaymentAmount*$allDiscountPercentages)/100);
                                         $totalFeeFourInstallment=$fourInstallmentPaymentAmount-(($fourInstallmentPaymentAmount*$allDiscountPercentages)/100);
                                     @endphp
@@ -491,9 +492,9 @@
                                         </div>
                                     </div>
 
-                                    {{--                                    Full payment with advice divs--}}
-                                    <div id="full-payment-with-advice-div" hidden="">
-                                        <div id="full-payment-with-advice-online" hidden=""
+                                    {{--                                    Full payment with advance divs--}}
+                                    <div id="full-payment-with-advance-div" hidden="">
+                                        <div id="full-payment-with-advance-online" hidden=""
                                              class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                              role="alert">
                                             <div class="flex">
@@ -513,7 +514,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="full-payment-with-advice-online" hidden=""
+                                    <div id="full-payment-with-advance-online" hidden=""
                                          class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                          role="alert">
                                         <div class="flex">
@@ -526,7 +527,7 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <p class="font-bold">You have to pay 30% of the total tuition fee and you have to pay the remaining 70% by the end of September.<br> After payment, you will be
+                                                <p class="font-bold">You have to pay 30% of the tuition fee and you have to pay the remaining 70% by the end of September.<br> After payment, you will be
                                                     transferred to the invoices page.</p>
                                             </div>
                                         </div>
@@ -615,6 +616,109 @@
                                                 type="file"
                                                 accept=".png,.jpg,.jpeg,.pdf,.bmp">
                                             <img class="w-full h-auto" id="image_preview_full_payment3" src=""
+                                                 alt="Preview Image"
+                                                 style="display:none; ">
+                                            <div class="info mb-5">
+                                                <div class="dark:text-white font-medium mb-1">File requirements:
+                                                </div>
+                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                    these
+                                                    requirements
+                                                    are met:
+                                                </div>
+                                                <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                    <li>
+                                                        The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                    </li>
+                                                    <li>
+                                                        Maximum size: 5 MB
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="offline-full-payment-with-advance-div" hidden=""
+                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         role="alert">
+                                        <div>
+                                            <div class="flex mb-4">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    You must deposit
+                                                    ({{ number_format($fullPaymentAmountAdvance) }} IRR) using one of the following methods (bank
+                                                    account number, bank card
+                                                    number or Shaba number) and upload the image of your bank slip
+                                                    from the box
+                                                    below.
+                                                </div>
+                                            </div>
+                                            <div>
+                                                @foreach($paymentMethods as $methods)
+                                                    @if(empty($methods->description))
+                                                        @continue
+                                                    @endif
+                                                    @php
+                                                        $descriptions = null;
+                                                        if ($methods->description) {
+                                                            $descriptions = json_decode($methods->description, true);
+                                                        }
+                                                    @endphp
+
+                                                    @if ($descriptions)
+                                                        @foreach($descriptions as $title => $description)
+                                                            <label
+                                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                                {{ $title }}: {{ $description }}
+                                                            </label>
+                                                        @endforeach
+                                                    @else
+                                                        <p>No descriptions available</p>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="grid gap-6 mb-6 md:grid-cols-1">
+                                            <label
+                                                class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file_full_payment1">Select your bank slip file 1
+                                                (Required)</label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                                name="document_file_full_payment_with_advance1" id="document_file_full_payment_with_advance1"
+                                                type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_1" src=""
+                                                 alt="Preview Image"
+                                                 style="display:none; ">
+                                            <label
+                                                class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file_full_payment_with_advance2">Select your bank slip file 2
+                                                (Optional)</label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                                name="document_file_full_payment_with_advance2" id="document_file_full_payment_with_advance2"
+                                                type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_2" src=""
+                                                 alt="Preview Image"
+                                                 style="display:none; ">
+                                            <label
+                                                class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                                for="document_file_full_payment_with_advance3">Select your bank slip file 3
+                                                (Optional)</label>
+                                            <input
+                                                class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                                name="document_file_full_payment_with_advance3" id="document_file_full_payment_with_advance3"
+                                                type="file"
+                                                accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_3" src=""
                                                  alt="Preview Image"
                                                  style="display:none; ">
                                             <div class="info mb-5">
@@ -762,16 +866,7 @@
                                                     Discount:
                                                 </th>
                                                 <td class="p-4 w-56 items-center">
-                                                    IRR {{ number_format((($fullPaymentAmount-$fullPaymentAmountAdvance)*$discountPercentages)/100) }}
-                                                </td>
-                                            </tr>
-                                            <tr
-                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                <th scope="col" class="p-4">
-                                                    Family Discount:
-                                                </th>
-                                                <td class="w-56 p-4">
-                                                    IRR {{ number_format((($fullPaymentAmount-$fullPaymentAmountAdvance)*$familyDiscount)/100) }}
+                                                    IRR {{ number_format(($fullPaymentAmount*$discountPercentages)/100) }}
                                                 </td>
                                             </tr>
                                             <tr
@@ -780,7 +875,7 @@
                                                     Total Fee:
                                                 </th>
                                                 <td class="w-56 p-4">
-                                                    IRR {{ number_format($fullPaymentAmount-(((($fullPaymentAmount-$fullPaymentAmountAdvance)*$familyDiscount)/100)+((($fullPaymentAmount-$fullPaymentAmountAdvance)*$discountPercentages)/100))) }}
+                                                    IRR {{ number_format($totalFeeFullPayment) }}
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -852,7 +947,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div hidden="" id="full-payment-with-advice-invoice">
+                                    <div hidden="" id="full-payment-with-advance-invoice">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <tbody>
                                             <tr
@@ -870,16 +965,7 @@
                                                     Discount:
                                                 </th>
                                                 <td class="p-4 w-56 items-center">
-                                                    IRR {{ number_format((($fullPaymentAmount-$fullPaymentAmountAdvance)*$discountPercentages)/100) }}
-                                                </td>
-                                            </tr>
-                                            <tr
-                                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                <th scope="col" class="p-4">
-                                                    Family Discount:
-                                                </th>
-                                                <td class="w-56 p-4">
-                                                    IRR {{ number_format((($fullPaymentAmount-$fullPaymentAmountAdvance)*$familyDiscount)/100) }}
+                                                    IRR {{ number_format(($fullPaymentAmount*$discountPercentages)/100) }}
                                                 </td>
                                             </tr>
                                             <tr
@@ -888,7 +974,7 @@
                                                     Total Fee:
                                                 </th>
                                                 <td class="w-56 p-4">
-                                                    IRR {{ number_format($fullPaymentAmount-(((($fullPaymentAmount-$fullPaymentAmountAdvance)*$familyDiscount)/100)+((($fullPaymentAmount-$fullPaymentAmountAdvance)*$discountPercentages)/100))) }}
+                                                    IRR {{ number_format($totalFeeFullPayment) }}
                                                 </td>
                                             </tr>
                                             </tbody>

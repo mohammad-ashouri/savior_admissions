@@ -34,6 +34,9 @@
                                     @case('3')
                                         Four Installment
                                         @break
+                                    @case('4')
+                                        Full Payment With Advance
+                                        @break
                                 @endswitch
                             </div>
                             <div>
