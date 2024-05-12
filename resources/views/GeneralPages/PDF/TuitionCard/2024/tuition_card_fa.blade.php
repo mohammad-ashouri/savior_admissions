@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html dir="rtl" lang="en">
 @php
     use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
 
@@ -354,12 +354,12 @@
         <img src="/build/export-images/logo.png" alt="Logo">
     </div>
     <div class="title-description">
-        <h1>Tuition Card</h1>
-        <p>Monji Noor Education Institute</p>
+        <h1>{{ __('translated_fa.Tuition Card') }}</h1>
+        <p>{{ __('translated_fa.Monji Noor Education Institute') }}</p>
     </div>
     <div class="invoice-details">
-        <p class="font-bold">Invoice Number: <span class="font-light">{{ $myTuitionInfo->id }}</span></p>
-        <p class="font-bold">Date: <span class="font-light">{{ now()->format('Y-m-d') }}</span></p>
+        <p class="font-bold">{{ __('translated_fa.Invoice Number') }}: <span class="font-light">{{ $myTuitionInfo->id }}</span></p>
+        <p class="font-bold">{{ __('translated_fa.Date') }}: <span class="font-light">{{ now()->format('Y-m-d') }}</span></p>
     </div>
 </header>
 
@@ -368,25 +368,25 @@
     <div class="flex">
         <div class="texthead bg-blue">
             <div class="writing-rl">
-                <h5>Education Center Details</h5>
+                <h5>{{ __('translated_fa.Education Center Details') }}</h5>
             </div>
         </div>
         <div class="textbody">
             <div class="contact-info">
                 <div class="name">
-                    <p>Name: <span>Monji Noor Education Institute</span></p>
+                    <p>{{ __('translated_fa.Name') }}: <span>{{ __('translated_fa.Monji Noor Education Institute') }}</span></p>
                 </div>
                 <div class="contact-number">
-                    <p>Contact Number: <span>+98 25 3770 4544</span></p>
+                    <p>{{ __('translated_fa.Contact Number') }}: <span>+98 25 3770 4544</span></p>
                 </div>
             </div>
             <div class="flex justify-between">
-                <p>Postal Code: <span>37157-47748</span></p>
-                <p>Registration Number: <span>60789562</span></p>
-                <p>National ID: <span>60235789562</span></p>
+                <p>{{ __('translated_fa.Postal Code') }}: <span>37157-47748</span></p>
+                <p>{{ __('translated_fa.Registration Number') }}: <span>60789562</span></p>
+                <p>{{ __('translated_fa.National ID') }}: <span>60235789562</span></p>
             </div>
             <div class="address">
-                <p>Address: <span>Savior International Schools, 8th Alley (at the end of Shah Hamzeh walkway), 5th Alley, Ammar Yaser Boulevard, Qom, I.R Iran.</span>
+                <p>{{ __('translated_fa.Address') }}: <span>{{ __('translated_fa.Education Center Address') }}</span>
                 </p>
             </div>
         </div>
@@ -398,29 +398,29 @@
     <div class="flex">
         <div class="texthead bg-yellow">
             <div class="writing-rl">
-                <h5>Student Details</h5>
+                <h5>{{ __('translated_fa.Student Details') }}</h5>
             </div>
         </div>
         <div class="textbody">
             <div class="flex justify-between">
-                <p>Full Name of Student:
+                <p>{{ __('translated_fa.Full Name of Student') }}:
                     <span>{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}</span>
                 </p>
-                <p>Passport Number: <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
-                <p>Level of education: <span>{{$levelInfo->name}}</span></p>
+                <p>{{ __('translated_fa.Passport Number') }}: <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
+                <p>{{ __('translated_fa.Level of education') }}: <span>{{$levelInfo->name}}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>Full Name of Parent/Guardian:
+                <p>{{ __('translated_fa.Full Name of Parent/Guardian') }}:
                     <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>
                 </p>
-                <p>Passport Number:
+                <p>{{ __('translated_fa.Passport Number') }}:
                     <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->passport_number }}</span>
                 </p>
-                <p>Student ID: <span>{{ $applianceStatus->student_id }}</span></p>
+                <p>{{ __('translated_fa.Student ID') }}: <span>{{ $applianceStatus->student_id }}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>Country: <span>Afghanistan</span></p>
-                <p>Contact Number: <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
+                <p>{{ __('translated_fa.Country') }}: <span>Afghanistan</span></p>
+                <p>{{ __('translated_fa.Contact Number') }}: <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
             </div>
         </div>
     </div>
@@ -428,8 +428,7 @@
 
 {{--Tuition Table--}}
 <div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
-    <h3 class="title-section bg-blue p-1r m-0 radius-table">Tuition table for the academic
-        year: {{ $applianceStatus->academicYearInfo->name }}</h3>
+    <h3 class="title-section bg-blue p-1r m-0 radius-table">{{ __('translated_fa.Tuition table for the academic year') }}: {{ $applianceStatus->academicYearInfo->name }}</h3>
     <div class="table-container">
         <table>
             <tr>
