@@ -1,12 +1,27 @@
 @php use App\Models\User;
  $me=User::find(auth()->user()->id);
-if($interview->firstInterviewerInfo->id==$me->id){
-    $interviewFields=json_decode($interview->interview[0]->interview_form,true);
-}elseif($interview->secondInterviewerInfo->id==$me->id){
-    $interviewFields=json_decode($interview->interview[1]->interview_form,true);
-}elseif($me->hasRole('Financial Manager')){
-    $interviewFields=json_decode($interview->interview[2]->interview_form,true);
+
+ foreach ($interview->interview as $item) {
+    if ($item->interview_type == 1) {
+    $interviewFields=json_decode($item->interview_form,true);
+    }
+    if ($item->interview_type == 2) {
+    $interviewFields=json_decode($item->interview_form,true);
+    }
+    if ($item->interview_type == 3) {
+    $interviewFields=json_decode($item->interview_form,true);
+    }
 }
+
+// dd($interview);
+//
+//
+//if($interview->firstInterviewerInfo->id==$me->id){
+//}elseif($interview->secondInterviewerInfo->id==$me->id){
+//    $interviewFields=json_decode($interview->interview[1]->interview_form,true);
+//}elseif($me->hasRole('Financial Manager')){
+//    $interviewFields=json_decode($interview->interview[2]->interview_form,true);
+//}
 @endphp
 @extends('Layouts.panel')
 
@@ -53,16 +68,17 @@ if($interview->firstInterviewerInfo->id==$me->id){
                             </div>
                         </div>
                         @php
-                            if($interview->firstInterviewerInfo->id==$me->id){
-                                $interviewForm=json_decode($interview->interview[0]->interview_form,true);
-                                $interviewID=$interview->interview[0]->id;
-                            }elseif($interview->secondInterviewerInfo->id==$me->id){
-                                $interviewForm=json_decode($interview->interview[1]->interview_form,true);
-                                $interviewID=$interview->interview[1]->id;
-                            }elseif($me->hasRole('Financial Manager')){
-                                $interviewForm=json_decode($interview->interview[2]->interview_form,true);
-                                $interviewID=$interview->interview[2]->id;
+                            foreach ($interview->interview as $item) {
+                                if ($item->interview_type == 1) {
+                                $interviewFields=json_decode($item->interview_form,true);
+                                }
+                                if ($item->interview_type == 2) {
+                                $interviewFields=json_decode($item->interview_form,true);
+                                }
+                                if ($item->interview_type == 3) {
+                                $interviewFields=json_decode($item->interview_form,true);
                             }
+}
                             @endphp
                         @if ($interview->first_interviewer == $me->id)
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
