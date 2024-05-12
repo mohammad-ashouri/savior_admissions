@@ -44,7 +44,7 @@ class InterviewController extends Controller
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
-                ->paginate(30);
+                ->paginate(150);
         } elseif ($me->hasRole('Super Admin')) {
             $interviews = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -79,7 +79,7 @@ class InterviewController extends Controller
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
-                ->paginate(30);
+                ->paginate(150);
 
         } elseif ($me->hasRole('Interviewer')) {
             $interviews = Applications::with('applicationTimingInfo')
@@ -96,7 +96,7 @@ class InterviewController extends Controller
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
-                ->paginate(30);
+                ->paginate(150);
 
         }
 
