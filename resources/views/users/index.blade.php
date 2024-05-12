@@ -196,12 +196,12 @@
                                                 </svg>
 
                                                 Document</a>
-                                            @if($me->hasRole('Super Admin'))
-                                                <a href="{{route('impersonate',$user->id)}}" type="button"
-                                                   class="min-w-max inline-flex font-medium text-white bg-yellow-700 hover:bg-cyan-800 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 focus:outline-none dark:focus:ring-yellow-800 hover:underline">
-                                                    <i class="las la-plane-departure" style="font-size: 20px"></i>
-                                                    Impersonate</a>
-                                            @endif
+{{--                                            @if($me->hasRole('Super Admin'))--}}
+{{--                                                <a href="{{route('impersonate',$user->id)}}" type="button"--}}
+{{--                                                   class="min-w-max inline-flex font-medium text-white bg-yellow-700 hover:bg-cyan-800 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 focus:outline-none dark:focus:ring-yellow-800 hover:underline">--}}
+{{--                                                    <i class="las la-plane-departure" style="font-size: 20px"></i>--}}
+{{--                                                    Impersonate</a>--}}
+{{--                                            @endif--}}
                                         </div>
                                     </td>
                                 </tr>
