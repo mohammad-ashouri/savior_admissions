@@ -15,7 +15,6 @@ use Jenssegers\Agent\Agent;
 use Kavenegar\Exceptions\ApiException;
 use Kavenegar\Exceptions\HttpException;
 use Kavenegar\Laravel\Facade as Kavenegar;
-use Shetabit\Payment\Facade\Payment;
 
 class Controller extends BaseController
 {
@@ -142,7 +141,7 @@ class Controller extends BaseController
             $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
         }
 
-        return array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess,$financialManagerAccess)));
+        return array_filter(array_unique(array_merge($principalAccess, $admissionsOfficerAccess, $financialManagerAccess)));
     }
 
     //Getting financial manager accesses
@@ -186,24 +185,24 @@ class Controller extends BaseController
 
     private function format($result)
     {
-//        $statuses = [];
-//        if ($result) {
-//            foreach ($result as $r) {
-//                $statuses[] = ['status' => $r->status];
-//            }
-//        }
-//        return json_encode($statuses);
+        //        $statuses = [];
+        //        if ($result) {
+        //            foreach ($result as $r) {
+        //                $statuses[] = ['status' => $r->status];
+        //            }
+        //        }
+        //        return json_encode($statuses);
     }
 
     public function getActiveAcademicYears()
     {
-        $academicYears = AcademicYear::where('status',1)->get()->pluck('id')->toArray();
+        $academicYears = AcademicYear::where('status', 1)->get()->pluck('id')->toArray();
         if (empty($academicYears)) {
             return false;
         }
+
         return $academicYears;
     }
-
 
     //For return all discounts
     public function getAllDiscounts($student_id)
@@ -249,11 +248,38 @@ class Controller extends BaseController
             $familyDiscount = 40;
         }
 
-        $allDiscountPercentages=$discountPercentages+$familyDiscount;
+        $allDiscountPercentages = $discountPercentages + $familyDiscount;
 
-        if ($allDiscountPercentages>40){
+        if ($allDiscountPercentages > 40) {
             return 40;
         }
+
         return $allDiscountPercentages;
+    }
+
+    public function getAllFamilyDiscounts()
+    {
+        $me = auth()->user()->id;
+
+        $allStudentsWithMyGuardian = StudentInformation::where('guardian', $me)->pluck('student_id')->toArray();
+        $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
+            ->with('academicYearInfo')
+            ->whereIn('student_id', $allStudentsWithMyGuardian)
+            ->where('tuition_payment_status', 'Paid')
+            ->whereIn('academic_year', $this->getActiveAcademicYears())
+            ->count();
+
+        $familyDiscountAmount = 0;
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
+            $familyDiscountAmount = 25;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
+            $familyDiscountAmount = 30;
+        }
+        if ($allStudentsWithPaidStatusInActiveAcademicYear > 4) {
+            $familyDiscountAmount = 40;
+        }
+
+        return ['percentage' => $familyDiscountAmount, 'students_count' => $allStudentsWithPaidStatusInActiveAcademicYear];
     }
 }

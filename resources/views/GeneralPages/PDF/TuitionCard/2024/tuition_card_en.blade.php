@@ -1,14 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html dir="ltr" lang="en">
 @php
-    use App\Models\Branch\ApplicationTiming;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;
+    use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
+
+
     $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
     $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
                                                 ->join('application_reservations','applications.id','=','application_reservations.application_id')
                                                 ->where('application_reservations.student_id',$applianceStatus->student_id)
                                                 ->where('application_timings.academic_year',$applianceStatus->academic_year)->latest('application_reservations.id')->first();
-
     $levelInfo=Level::find($applicationInformation->level);
+
+    $systemTuitionInfo=Tuition::join('tuition_details','tuitions.id','=','tuition_details.tuition_id')->where('tuition_details.level',$levelInfo->id)->first();
+    $myTuitionInfo=TuitionInvoices::with('invoiceDetails')->where('appliance_id',$applianceStatus->id)->first();
+    $totalAmount=0;
+
+    foreach($myTuitionInfo->invoiceDetails as $invoices){
+        $totalAmount=$invoices->amount+$totalAmount;
+    }
+
+    $paymentAmount=null;
+    switch ($myTuitionInfo->payment_type){
+        case 1:
+        case 4:
+            $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr']);
+            break;
+        case 2:
+            $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr']);
+            break;
+        case 3:
+            $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr']);
+            break;
+    }
+
+    //Discounts
+    $interviewForm=Interview::where('application_id',$applicationInformation->application_id)->where('interview_type',3)->latest()->first();
+    $discounts=DiscountDetail::whereIn('id',json_decode($interviewForm->interview_form,true)['discount'])->get();
+
 @endphp
 <head>
     <meta charset="UTF-8">
@@ -21,8 +49,6 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-image: url(/build/export-images/bg-layer.jpg);
-
         }
 
         .bg-white {
@@ -332,8 +358,8 @@
         <p>Monji Noor Education Institute</p>
     </div>
     <div class="invoice-details">
-        <p class="font-bold">Invoice Number: <span class="font-light">INV-001</span></p>
-        <p class="font-bold">Date: <span class="font-light">2024-02-12</span></p>
+        <p class="font-bold">Invoice Number: <span class="font-light">{{ $myTuitionInfo->id }}</span></p>
+        <p class="font-bold">Date: <span class="font-light">{{ now() }}</span></p>
     </div>
 </header>
 
@@ -399,9 +425,6 @@
         </div>
     </div>
 </section>
-@php
-    $systemTuitionInfo=Tuition::join('tuition_details','tuitions.id','=','tuition_details.tuition_id')->where('tuition_details.level',$levelInfo->id)->first();
-@endphp
 
 {{--Tuition Table--}}
 <div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
@@ -432,19 +455,16 @@
 </div>
 
 {{--Paid Tuition Table--}}
-@php
-    $myTuitionInfo=TuitionInvoices::with('invoiceDetails')->where('appliance_id',$applianceStatus->id)->first();
-@endphp
 <div style="margin-top: 1%" id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
     <h3 class="title-section bg-blue p-1r m-0 radius-table">Your tuition</h3>
     <div class="table-container">
         <table>
             <tr>
-                <th style="width: 25%">Payment Type</th>
-                <th style="width: 25%">Total Payment Amount</th>
-                <th style="width: 25%">Total Discounts (%)</th>
-                <th style="width: 25%">Total Discounts (Amount)</th>
-                <th style="width: 25%">Total Fee</th>
+                <th style="width: 10%">Payment Type</th>
+                <th style="width: 15%">Total Payment Amount</th>
+                <th style="width: 15%">Total Discounts (%)</th>
+                <th style="width: 15%">Total Discounts (Amount)</th>
+                <th style="width: 15%">Total Fee</th>
             </tr>
             <tr>
                 <td class="font-bold">
@@ -463,19 +483,17 @@
                             @break
                     @endswitch
                 </td>
-                <td>{{ json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr'] }} IRR</td>
-                <td>{{ json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr'] }}
-                    IRR
-                </td>
-                <td>{{ json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr'] }}
-                    IRR
+                <td>{{ number_format($paymentAmount) }} IRR</td>
+                <td>{{ $allDiscounts }}</td>
+                <td>{{ number_format(($paymentAmount*$allDiscounts)/100) }}</td>
+                <td>{{ number_format($totalAmount) }} IRR
                 </td>
             </tr>
         </table>
     </div>
 </div>
 
-
+{{--Payment Details--}}
 <div class="flex w-100">
     <div class="w-100 p-1r">
         <div id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
@@ -483,42 +501,92 @@
             <div class="table-container ">
                 <table class="font-bold">
                     <tr>
-                        <th>Installments</th>
-                        <th>Due Date</th>
+                        <th>Type</th>
                         <th>Amount</th>
+                        <th>Due Date</th>
                         <th>Date received</th>
                         <th>Payment Method</th>
                     </tr>
-                    @foreach($myTuitionInfo->invoiceDetails as $invoices)
-                    <tr>
-                        <td>15,000,000</td>
-                        <td>15,000,000</td>
-                        <td>35,000,000</td>
-                    </tr>
+                    @foreach($myTuitionInfo->invoiceDetails as $key=>$invoices)
+                        @php
+                            $invoiceDetailsDescription=json_decode($invoices->description,true);
+                            $tuitionType=$invoiceDetailsDescription['tuition_type'];
+                            $dueType=null;
+                            if (strstr($tuitionType,'Four') and !strstr($tuitionType,'Advance')){
+                                $dueType='Four';
+                                $dueDates=json_decode($systemTuitionInfo->four_installment_payment,true);
+                            }
+                            if (strstr($tuitionType,'Two') and !strstr($tuitionType,'Advance')){
+                                $dueType='Two';
+                                $dueDates=json_decode($systemTuitionInfo->two_installment_payment,true);
+                            }
+                            if (strstr($tuitionType,'Full') and strstr($tuitionType,'Advance') and strstr($tuitionType,'Installment')){
+                                $dueType='Full';
+                            }
+                        @endphp
+                        <tr>
+                            <td>{{ $tuitionType }}</td>
+                            <td>{{ number_format($invoices->amount) }} IRR</td>
+                            <td>
+                                @switch ($dueType)
+                                    @case('Four')
+                                        {{ $dueDates["date_of_installment".$key."_four"] }}
+                                        @break
+                                    @case('Two')
+                                        {{ $dueDates["date_of_installment".$key."_two"] }}
+                                        @break
+                                    @case('Full')
+                                        2024-09-21
+                                        @break
+                                @endswitch
+                            </td>
+                            <td>
+                                @if(isset($invoices->date_of_payment))
+                                    {{ $invoices->date_of_payment }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            <td>
+                                @if(isset($invoices->paymentMethodInfo->name))
+                                    {{$invoices->paymentMethodInfo->name}}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
                     @endforeach
                     <tr style="border-top: 1px solid #ffe753;">
                         <td class="font-bold">Total</td>
-                        <td style="border: none;">15,000,000</td>
-
+                        <td style="border: none;">{{ number_format($totalAmount) }} IRR</td>
                     </tr>
-
                 </table>
             </div>
         </div>
     </div>
 </div>
 
+{{--Considerations--}}
 <div style="page-break-after: auto" class="Considerations">
     <h1>Considerations</h1>
     <ul class="considerations ">
-        <li class="consideration-item">Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus ullam ea natus
-            iusto architecto libero.
+        <li class="consideration-item font-bold">
+            Discounts
         </li>
-        <li class="consideration-item">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, neque!</li>
-        <li class="consideration-item">Lorem, ipsum dolor sit amet consectetur adipisicing.</li>
-        <li class="consideration-item">Lorem ipsum dolor sit amet.</li>
+        @foreach($discounts as $discount)
+            <li class="consideration-item">
+                {{ $discount->name }}
+            </li>
+        @endforeach
+        @if($allFamilyDiscounts['students_count']>1)
+            <li class="consideration-item font-bold">
+                Included Family Discounts
+            </li>
+        @endif
     </ul>
 </div>
+
+{{--Footer--}}
 <footer class="mt-2rem">
     <div class="footer-text font-bold">
         I, {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}
