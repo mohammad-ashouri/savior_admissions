@@ -2,7 +2,7 @@
 <html dir="rtl" lang="en">
 @php
     use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
-
+    use \Morilog\Jalali\Jalalian;
 
     $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
     $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
@@ -10,6 +10,14 @@
                                                 ->where('application_reservations.student_id',$applianceStatus->student_id)
                                                 ->where('application_timings.academic_year',$applianceStatus->academic_year)->latest('application_reservations.id')->first();
     $levelInfo=Level::find($applicationInformation->level);
+    switch (true){
+        case (strstr($levelInfo->name,'Grade')):
+            $levelName=str_replace('Grade','پایه',$levelInfo->name);
+            break;
+        case (strstr($levelInfo->name,'Kindergarten')):
+            $levelName=str_replace('Kindergarten','پیش دبستانی',$levelInfo->name);
+            break;
+    }
 
     $systemTuitionInfo=Tuition::join('tuition_details','tuitions.id','=','tuition_details.tuition_id')->where('tuition_details.level',$levelInfo->id)->first();
     $myTuitionInfo=TuitionInvoices::with('invoiceDetails')->where('appliance_id',$applianceStatus->id)->first();
@@ -351,16 +359,16 @@
     </style>
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var spans = document.querySelectorAll('span');
 
-            spans.forEach(function(span) {
+            spans.forEach(function (span) {
                 span.classList.add('ltr-text');
             });
         });
 
 
-        window.print();
+        // window.print();
         function setPrintScale() {
             if (window.matchMedia('print').matches) {
                 var scale = 0.6; // 60%
@@ -390,7 +398,7 @@
         <p class="font-bold">{{ __('translated_fa.Invoice Number') }}: <span
                 class="font-light">{{ $myTuitionInfo->id }}</span></p>
         <p class="font-bold">{{ __('translated_fa.Date') }}: <span
-                class="font-light">{{ now()->format('Y-m-d') }}</span></p>
+                class="font-light">{{ Jalalian::forge('today')->format('%A, %d %B %Y') }}</span></p>
     </div>
 </header>
 
@@ -440,7 +448,7 @@
                 </p>
                 <p>{{ __('translated_fa.Passport Number') }}:
                     <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
-                <p>{{ __('translated_fa.Level of education') }}: <span>{{$levelInfo->name}}</span></p>
+                <p>{{ __('translated_fa.Level of education') }}: <span>{{$levelName}}</span></p>
             </div>
             <div class="flex justify-between">
                 <p>{{ __('translated_fa.Full Name of Parent/Guardian') }}:
@@ -482,7 +490,7 @@
                 <td>{{ json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr'] }}
                     {{ __('translated_fa.IRR') }}
                 </td>
-                <td>{{$levelInfo->name}}</td>
+                <td>{{$levelName}}</td>
             </tr>
         </table>
     </div>
@@ -600,13 +608,24 @@
                             <td>
                                 @switch ($dueType)
                                     @case('Four')
-                                        {{ $dueDates["date_of_installment".$key."_four"] }}
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($dueDates["date_of_installment".$key."_four"]);
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
                                         @break
                                     @case('Two')
-                                        {{ $dueDates["date_of_installment".$key."_two"] }}
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($dueDates["date_of_installment".$key."_two"]);
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
                                         @break
                                     @case('Full')
-                                        2024-09-21
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime('2024-09-21');
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
                                         @break
                                 @endswitch
                             </td>
@@ -619,7 +638,13 @@
                             </td>
                             <td>
                                 @if(isset($invoices->paymentMethodInfo->name))
-                                    {{$invoices->paymentMethodInfo->name}}
+                                    @switch($invoices->paymentMethodInfo->name)
+                                        @case('Offline Payment')
+                                            پرداخت آفلاین
+                                            @break
+                                        @default
+                                            پرداخت آنلاین - درگاه به پرداخت ملت
+                                    @endswitch
                                 @else
                                     -
                                 @endif
