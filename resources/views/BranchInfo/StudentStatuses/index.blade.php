@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="content" class="p-4 md:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
-        <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
+        <div class="p-4 rounded-lg dark:border-gray-700 mt-20 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">All Students Status</h1>
             </div>
@@ -50,44 +50,40 @@
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="p-4">
-                                    <div class="flex items-center">
+                                <th scope="col" class="p-4 text-center">
                                         Appliance ID
-                                    </div>
                                 </th>
-                                <th scope="col" class="p-4">
-                                    <div class="flex items-center">
+                                <th scope="col" class="p-4 text-center">
                                         Student ID
-                                    </div>
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Academic Year
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Information
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Gender
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Interview Status
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Document Upload Status
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Document Approval Status
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Document Approval Seconder
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Tuition Payment Status
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Approval Status
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Description
                                 </th>
                             </tr>
@@ -96,47 +92,43 @@
                             <tbody>
                             @foreach($students as $student)
                                 <tr
-                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="w-4 p-4">
-                                        <div class="flex items-center">
+                                    class="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="w-4 p-4 border text-center">
                                             {{ $student->id }}
-                                        </div>
                                     </td>
-                                    <td class="w-4 p-4">
-                                        <div class="flex items-center">
+                                    <td class="w-4 p-4 border text-center">
                                             {{ $student->student_id }}
-                                        </div>
                                     </td>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->gender }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ $student->interview_status }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">
@@ -160,7 +152,7 @@
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">
@@ -178,7 +170,7 @@
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">
@@ -191,7 +183,7 @@
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">
@@ -212,7 +204,7 @@
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">
@@ -230,7 +222,7 @@
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">
