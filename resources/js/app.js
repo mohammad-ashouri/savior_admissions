@@ -1991,16 +1991,16 @@ $(document).ready(function () {
                     }
                 });
 
-                $('#Birthdate').on('change', function (event) {
-                    // Validate input
-                    if (!checkAge($(this).val())) {
-                        event.preventDefault(); // Prevent typing of unauthorized character
-                        //Remove all field values
-                        $(this).val('');
-                        // Display an error message using swalFire
-                        swalFire('Error', 'You must be over fifteen years old.', 'error', 'Try again');
-                    }
-                });
+                // $('#Birthdate').on('change', function (event) {
+                //     // Validate input
+                //     if (!checkAge($(this).val())) {
+                //         event.preventDefault(); // Prevent typing of unauthorized character
+                //         //Remove all field values
+                //         $(this).val('');
+                //         // Display an error message using swalFire
+                //         swalFire('Error', 'You must be over fifteen years old.', 'error', 'Try again');
+                //     }
+                // });
 
                 $("#postal-code,#faragir-code,#passport-number").on('input', function (event) {
                     // Validate input
