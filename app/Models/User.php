@@ -66,4 +66,18 @@ class User extends Authenticatable
     {
         return $this->belongsTo(GeneralInformation::class, 'id', 'user_id');
     }
+
+    public function canImpersonate()
+    {
+        // Check if the user is an admin or has the role of Super Admin
+        return $this->hasRoles('Super Admin');
+    }
+
+    public function hasRoles($role)
+    {
+        // Implement your logic here to check if the user has the specified role
+        // For example, if you're using Laravel's built-in roles and permissions,
+        // you can use something like:
+        return $this->hasRole($role);
+    }
 }
