@@ -44,7 +44,7 @@ class ApplicationReservationController extends Controller
                 ->select('application_reservations.*', 'application_reservations.id as application_reservations_id')
                 ->orderBy('application_reservations.payment_status', 'desc')
                 ->orderBy('application_timings.academic_year', 'desc')
-                ->paginate(30);
+                ->paginate(150);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
@@ -72,7 +72,7 @@ class ApplicationReservationController extends Controller
                 ->select('application_reservations.*', 'application_reservations.id as application_reservations_id')
                 ->orderBy('application_reservations.payment_status', 'asc')
                 ->orderBy('application_timings.academic_year', 'desc')
-                ->paginate(30);
+                ->paginate(150);
         }
 
         if ($applications->isEmpty()) {
