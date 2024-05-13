@@ -47,8 +47,13 @@
             size: a4;
         }
 
+        @font-face {
+            font-family: IRANSansX;
+            src: url('../../build/Fonts/IRANSansX-DemiBold.woff') format('woff');
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: IRANSansX, Arial, sans-serif;
         }
 
         .bg-white {
@@ -75,7 +80,7 @@
         }
 
         header .invoice-details {
-            text-align: left;
+            text-align: right;
         }
 
         section {
@@ -86,7 +91,7 @@
         }
 
         .contact-info > div {
-            text-align: left;
+            text-align: right;
         }
 
         .address {
@@ -157,11 +162,13 @@
         }
 
         #tuition_table tr th:first-child {
-            border-left: 0;
+            border-left: 1px solid;
+            border-color: #9ddadf !important;;
         }
 
         #tuition_table tr td:first-child {
-            border-left: 0;
+            border-left: 1px solid;
+            border-color: #9ddadf !important;;
         }
 
         #tuition_table tr td {
@@ -177,10 +184,12 @@
 
         #table2 tr th:first-child {
             border-left: 0;
+            border-left: 1px solid #ffe753;
         }
 
         #table2 tr td:first-child {
             border-left: 0;
+            border-left: 1px solid #ffe753;
         }
 
         #table2 tr td {
@@ -189,11 +198,11 @@
 
 
         .font-bold {
-            font-weight: 600;
+            font-weight: 400;
         }
 
         .font-light {
-            font-weight: 300;
+            font-weight: 200;
         }
 
 
@@ -279,7 +288,6 @@
         #tuition_table th:nth-child(3),
         #tuition_table td:nth-child(3) {
             width: 150px;
-            /* عرض دلخواه را اینجا تنظیم کنید */
         }
 
         .considerations {
@@ -291,25 +299,21 @@
         .consideration-item {
             margin-bottom: 10px;
             position: relative;
-            margin-left: 1.2em;
+            margin-right: 1.2em;
         }
 
         .consideration-item::before {
             content: "\2022";
-            /* کد یونیکد دایره */
             color: #9ddadf;
-            /* رنگ دایره‌ها */
             font-size: 50px;
             position: absolute;
-            left: -20px;
-            /* فاصله از سمت چپ */
+            right: -20px;
             top: 48%;
             transform: translateY(-50%);
         }
 
 
         footer {
-            background-color: #f0f0f0;
             padding: 20px;
             background-color: #e8f6f7;
         }
@@ -338,11 +342,36 @@
             font-weight: 600;
         }
 
+        .ltr-text {
+            direction: ltr !important;
+            unicode-bidi: embed;
+            text-align: left;
+        }
+
     </style>
     <script>
-        // window.print();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var spans = document.querySelectorAll('span');
+
+            spans.forEach(function(span) {
+                span.classList.add('ltr-text');
+            });
+        });
+
+
+        window.print();
+        function setPrintScale() {
+            if (window.matchMedia('print').matches) {
+                var scale = 0.6; // 60%
+                document.body.style.transform = 'scale(' + scale + ')';
+                document.body.style.transformOrigin = 'top';
+            }
+        }
+
+        setPrintScale();
     </script>
-    <title>Your Invoice</title>
+    <title>کارت شهریه</title>
 
 </head>
 
@@ -358,8 +387,10 @@
         <p>{{ __('translated_fa.Monji Noor Education Institute') }}</p>
     </div>
     <div class="invoice-details">
-        <p class="font-bold">{{ __('translated_fa.Invoice Number') }}: <span class="font-light">{{ $myTuitionInfo->id }}</span></p>
-        <p class="font-bold">{{ __('translated_fa.Date') }}: <span class="font-light">{{ now()->format('Y-m-d') }}</span></p>
+        <p class="font-bold">{{ __('translated_fa.Invoice Number') }}: <span
+                class="font-light">{{ $myTuitionInfo->id }}</span></p>
+        <p class="font-bold">{{ __('translated_fa.Date') }}: <span
+                class="font-light">{{ now()->format('Y-m-d') }}</span></p>
     </div>
 </header>
 
@@ -374,14 +405,15 @@
         <div class="textbody">
             <div class="contact-info">
                 <div class="name">
-                    <p>{{ __('translated_fa.Name') }}: <span>{{ __('translated_fa.Monji Noor Education Institute') }}</span></p>
+                    <p>{{ __('translated_fa.Name') }}:
+                        <span>{{ __('translated_fa.Monji Noor Education Institute') }}</span></p>
                 </div>
                 <div class="contact-number">
                     <p>{{ __('translated_fa.Contact Number') }}: <span>+98 25 3770 4544</span></p>
                 </div>
             </div>
             <div class="flex justify-between">
-                <p>{{ __('translated_fa.Postal Code') }}: <span>37157-47748</span></p>
+                <p>{{ __('translated_fa.Postal Code') }}: <span style="direction: ltr">37157-47748</span></p>
                 <p>{{ __('translated_fa.Registration Number') }}: <span>60789562</span></p>
                 <p>{{ __('translated_fa.National ID') }}: <span>60235789562</span></p>
             </div>
@@ -406,7 +438,8 @@
                 <p>{{ __('translated_fa.Full Name of Student') }}:
                     <span>{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}</span>
                 </p>
-                <p>{{ __('translated_fa.Passport Number') }}: <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
+                <p>{{ __('translated_fa.Passport Number') }}:
+                    <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
                 <p>{{ __('translated_fa.Level of education') }}: <span>{{$levelInfo->name}}</span></p>
             </div>
             <div class="flex justify-between">
@@ -420,7 +453,8 @@
             </div>
             <div class="flex justify-between">
                 <p>{{ __('translated_fa.Country') }}: <span>Afghanistan</span></p>
-                <p>{{ __('translated_fa.Contact Number') }}: <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
+                <p>{{ __('translated_fa.Contact Number') }}:
+                    <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
             </div>
         </div>
     </div>
@@ -428,24 +462,25 @@
 
 {{--Tuition Table--}}
 <div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
-    <h3 class="title-section bg-blue p-1r m-0 radius-table">{{ __('translated_fa.Tuition table for the academic year') }}: {{ $applianceStatus->academicYearInfo->name }}</h3>
+    <h3 class="title-section bg-blue p-1r m-0 radius-table">{{ __('translated_fa.Tuition table for the academic year') }}
+        : {{ $applianceStatus->academicYearInfo->name }}</h3>
     <div class="table-container">
         <table>
             <tr>
-                <th style="width: 15%">Currency of Payment</th>
-                <th style="width: 25%">Full Payment tuition</th>
-                <th style="width: 25%">Two Installment tuition</th>
-                <th style="width: 25%">Four Installment tuition</th>
-                <th style="width: 15%">Level</th>
+                <th style="width: 15%">{{ __('translated_fa.Currency of Payment') }}</th>
+                <th style="width: 25%">{{ __('translated_fa.Full Payment tuition') }}</th>
+                <th style="width: 25%">{{ __('translated_fa.Two Installment tuition') }}</th>
+                <th style="width: 25%">{{ __('translated_fa.Four Installment tuition') }}</th>
+                <th style="width: 15%">{{ __('translated_fa.Level') }}</th>
             </tr>
             <tr>
-                <td class="font-bold">Iranian Rial</td>
-                <td>{{ json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr'] }} IRR</td>
+                <td class="font-bold">{{ __('translated_fa.Iranian Rial') }}</td>
+                <td>{{ json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr'] }} {{ __('translated_fa.IRR') }}</td>
                 <td>{{ json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr'] }}
-                    IRR
+                    {{ __('translated_fa.IRR') }}
                 </td>
                 <td>{{ json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr'] }}
-                    IRR
+                    {{ __('translated_fa.IRR') }}
                 </td>
                 <td>{{$levelInfo->name}}</td>
             </tr>
@@ -455,37 +490,37 @@
 
 {{--Paid Tuition Table--}}
 <div style="margin-top: 1%" id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
-    <h3 class="title-section bg-blue p-1r m-0 radius-table">Your tuition</h3>
+    <h3 class="title-section bg-blue p-1r m-0 radius-table">{{ __('translated_fa.Your tuition') }}</h3>
     <div class="table-container">
         <table>
             <tr>
-                <th style="width: 10%">Payment Type</th>
-                <th style="width: 15%">Total Payment Amount</th>
-                <th style="width: 15%">Total Discounts (%)</th>
-                <th style="width: 15%">Total Discounts (Amount)</th>
-                <th style="width: 15%">Total Fee</th>
+                <th style="width: 10%">{{ __('translated_fa.Payment Type') }}</th>
+                <th style="width: 15%">{{ __('translated_fa.Total Payment Amount') }}</th>
+                <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} (درصد)</th>
+                <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} ({{ __('translated_fa.Amount') }})</th>
+                <th style="width: 15%">{{ __('translated_fa.Total Fee') }}</th>
             </tr>
             <tr>
                 <td class="font-bold">
                     @switch($myTuitionInfo->payment_type)
                         @case('1')
-                            Full Payment
+                            {{ __('translated_fa.Full Payment') }}
                             @break
                         @case('2')
-                            Two installment
+                            {{ __('translated_fa.Two installment') }}
                             @break
                         @case('3')
-                            Four Installment
+                            {{ __('translated_fa.Four Installment') }}
                             @break
                         @case('4')
-                            Full Payment With Advance
+                            {{ __('translated_fa.Four Installment') }}{{ __('translated_fa.Full Payment With Advance') }}
                             @break
                     @endswitch
                 </td>
-                <td>{{ number_format($paymentAmount) }} IRR</td>
+                <td>{{ number_format($paymentAmount) }} {{ __('translated_fa.IRR') }}</td>
                 <td>{{ $allDiscounts }}</td>
                 <td>{{ number_format(($paymentAmount*$allDiscounts)/100) }}</td>
-                <td>{{ number_format($totalAmount) }} IRR
+                <td>{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}
                 </td>
             </tr>
         </table>
@@ -496,15 +531,15 @@
 <div class="flex w-100">
     <div class="w-100 p-1r">
         <div id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
-            <h3 class="title-section bg-yellow p-1r m-0 radius-table">Payment Details</h3>
+            <h3 class="title-section bg-yellow p-1r m-0 radius-table">{{ __('translated_fa.Payment Details') }}</h3>
             <div class="table-container ">
                 <table class="font-bold">
                     <tr>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Due Date</th>
-                        <th>Date received</th>
-                        <th>Payment Method</th>
+                        <th>{{ __('translated_fa.Type') }}</th>
+                        <th>{{ __('translated_fa.Amount') }}</th>
+                        <th>{{ __('translated_fa.Due Date') }}</th>
+                        <th>{{ __('translated_fa.Date received') }}</th>
+                        <th>{{ __('translated_fa.Payment Method') }}</th>
                     </tr>
                     @foreach($myTuitionInfo->invoiceDetails as $key=>$invoices)
                         @php
@@ -524,8 +559,44 @@
                             }
                         @endphp
                         <tr>
-                            <td>{{ $tuitionType }}</td>
-                            <td>{{ number_format($invoices->amount) }} IRR</td>
+                            <td>
+                                @switch($tuitionType)
+                                    @case('Two Installment Advance')
+                                        دو قسطه - پیش پرداخت
+                                        @break
+                                    @case('Two Installment - Installment 1')
+                                        دو قسطه - قسط اول
+                                        @break
+                                    @case('Two Installment - Installment 2')
+                                        دو قسطه - قسط دوم
+                                        @break
+                                    @case('Four Installment Advance')
+                                        چهار قسطه - پیش پرداخت
+                                        @break
+                                    @case('Four Installment - Installment 1')
+                                        چهار قسطه - قسط اول
+                                        @break
+                                    @case('Four Installment - Installment 2')
+                                        چهار قسطه - قسط دوم
+                                        @break
+                                    @case('Four Installment - Installment 3')
+                                        چهار قسطه - قسط سوم
+                                        @break
+                                    @case('Four Installment - Installment 4')
+                                        چهار قسطه - قسط چهارم
+                                        @break
+                                    @case('Full Payment With Advance - Installment')
+                                        پرداخت کامل با پیش پرداخت - پرداخت دوم
+                                        @break
+                                    @case('Full Payment With Advance')
+                                        پرداخت کامل با پیش پرداخت - پرداخت اول
+                                        @break
+                                    @case('Full Payment')
+                                        پرداخت کامل
+                                        @break
+                                @endswitch
+                            </td>
+                            <td>{{ number_format($invoices->amount) }} {{ __('translated_fa.IRR') }}</td>
                             <td>
                                 @switch ($dueType)
                                     @case('Four')
@@ -556,8 +627,8 @@
                         </tr>
                     @endforeach
                     <tr style="border-top: 1px solid #ffe753;">
-                        <td class="font-bold">Total</td>
-                        <td style="border: none;">{{ number_format($totalAmount) }} IRR</td>
+                        <td class="font-bold">{{ __('translated_fa.Total') }}</td>
+                        <td style="border: none;">{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}</td>
                     </tr>
                 </table>
             </div>
@@ -567,10 +638,10 @@
 
 {{--Considerations--}}
 <div style="page-break-after: auto" class="Considerations">
-    <h1>Considerations</h1>
+    <h1>{{ __('translated_fa.Considerations') }}</h1>
     <ul class="considerations ">
         <li class="consideration-item font-bold">
-            Discounts
+            {{ __('translated_fa.Discounts') }}
         </li>
         @foreach($discounts as $discount)
             <li class="consideration-item">
@@ -579,7 +650,7 @@
         @endforeach
         @if($allFamilyDiscounts['students_count']>1)
             <li class="consideration-item font-bold">
-                Included Family Discounts
+                {{ __('translated_fa.Included Family Discounts') }}
             </li>
         @endif
     </ul>
@@ -588,15 +659,18 @@
 {{--Footer--}}
 <footer class="mt-2rem">
     <div class="footer-text font-bold">
-        I, {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}
-        , parent/guardian
-        of {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}
-        , hereby agree to all rules and regulations of Monji Noor International Educational Institute.
+        اینجانب
+        {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}
+        ،
+        والدین / قیم
+        {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}
+        ،
+        بدین وسیله با کلیه قوانین و مقررات موسسه آموزشی بین المللی منجی نور موافقت می نمایم.
     </div>
     <div class="footer-content font-bold">
-        <div class="footer-text">Signature and Fingerprint of Parent/Guardian</div>
-        <div class="footer-text">Signature and Stamp of Admissions</div>
-        <div class="footer-text">Signature and Stamp of Finance</div>
+        <div class="footer-text">{{ __('translated_fa.Signature and Fingerprint of Parent/Guardian') }}</div>
+        <div class="footer-text">{{ __('translated_fa.Signature and Stamp of Admissions') }}</div>
+        <div class="footer-text">{{ __('translated_fa.Signature and Stamp of Finance') }}</div>
     </div>
 </footer>
 

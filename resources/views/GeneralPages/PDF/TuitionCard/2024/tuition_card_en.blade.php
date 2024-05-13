@@ -47,6 +47,12 @@
             size: a4;
         }
 
+        @media print {
+            @page {
+                scale: 0.6; /* 60% مقیاس پرینت */
+            }
+        }
+
         body {
             font-family: Arial, sans-serif;
         }
@@ -158,10 +164,14 @@
 
         #tuition_table tr th:first-child {
             border-left: 0;
+            border-left: 1px solid;
+            border-color: #9ddadf !important;;
         }
 
         #tuition_table tr td:first-child {
             border-left: 0;
+            border-left: 1px solid;
+            border-color: #9ddadf !important;;
         }
 
         #tuition_table tr td {
@@ -176,11 +186,11 @@
         }
 
         #table2 tr th:first-child {
-            border-left: 0;
+            border-left: 1px solid #ffe753;
         }
 
         #table2 tr td:first-child {
-            border-left: 0;
+            border-left: 1px solid #ffe753;
         }
 
         #table2 tr td {
@@ -340,7 +350,16 @@
 
     </style>
     <script>
-        // window.print();
+        window.print();
+        function setPrintScale() {
+            if (window.matchMedia('print').matches) {
+                var scale = 0.6; // 60%
+                document.body.style.transform = 'scale(' + scale + ')';
+                document.body.style.transformOrigin = 'top';
+            }
+        }
+
+        setPrintScale();
     </script>
     <title>Your Invoice</title>
 
