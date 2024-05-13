@@ -131,34 +131,34 @@
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="p-4">
+                                <th scope="col" class="p-4 w-4">
                                     Reserve ID
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Academic Year
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Student ID
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Student
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Date Of Create
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Date Of Payment
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Amount
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Payment Method
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Status
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Action
                                 </th>
                             </tr>
@@ -167,43 +167,43 @@
                             <tbody>
                             @foreach($applications as $application)
                                 <tr
-                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="w-4 p-4">
+                                    class="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="text-center">
                                         {{$application->application_reservations_id}}
                                     </td>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->applicationTimingInfo->academicYearInfo->name }}</div>
+                                                class="font-semibold">{{ $application->applicationInfo->applicationTimingInfo->academicYearInfo->name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->studentInfo->id }}</div>
+                                                class=" font-semibold">{{ $application->studentInfo->id }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                                class=" font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->created_at }}</div>
+                                                class=" font-semibold">{{ $application->created_at }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">
+                                                class=" font-semibold">
                                                 @if($application->payment_status==0)
                                                     Not Paid Yet!
                                                 @else
@@ -213,29 +213,29 @@
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }}</div>
+                                                class=" font-semibold">{{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             @if($application->applicationInvoiceInfo)
                                                 @php
                                                     $method=PaymentMethod::find(json_decode($application->applicationInvoiceInfo->payment_information,true)['payment_method']);
                                                 @endphp
                                                 <div
-                                                    class="text-base font-semibold">{{ $method->name }}</div>
+                                                    class=" font-semibold">{{ $method->name }}</div>
                                             @endif
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">
+                                                class=" font-semibold">
                                                 @switch($application->payment_status)
                                                     @case(0)
                                                         Payment Processing
@@ -254,7 +254,7 @@
 
                                         </div>
                                     </th>
-                                    <td class="px-6 py-4 text-center">
+                                    <td class="text-center border">
                                         <!-- Modal toggle -->
                                         @if($application->payment_status!=0)
                                             @can('reservation-invoice-show')

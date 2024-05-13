@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 @if (count($errors) > 0)
-                    <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3 shadow-md"
+                    <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 shadow-md"
                          role="alert">
                         <div class="flex">
                             <div class="py-1">
@@ -51,7 +51,7 @@
                     </div>
                 @endif
                 @if( session()->has('success') )
-                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 shadow-md"
                          role="alert">
                         <div class="flex">
                             <div class="py-1">
@@ -70,7 +70,7 @@
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     @if(empty($applications) or $applications->isEmpty())
-                        <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                        <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 shadow-md"
                              role="alert">
                             <div class="flex">
                                 <div class="py-1">
@@ -94,25 +94,25 @@
                                 <th scope="col" class="p-4">
                                     Reserve ID
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-1 text-center">
                                     Student ID
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-1 text-center">
                                     Student
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-1 text-center">
                                     Date
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-1 text-center">
                                     Start From
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-1 text-center">
                                     Ends To
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-1 text-center">
                                     Reservatore
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-1 text-center">
                                     Action
                                 </th>
                             </tr>
@@ -122,52 +122,52 @@
                             @foreach($applications as $application)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="w-4 p-4">
+                                    <td class="w-4 text-center border">
                                         {{$application->id}}
                                     </td>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->studentInfo->id }}</div>
+                                                class=" font-semibold">{{ $application->studentInfo->id }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                                class=" font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->date }}</div>
+                                                class=" font-semibold">{{ $application->applicationInfo->date }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->start_from }}</div>
+                                                class=" font-semibold">{{ $application->applicationInfo->start_from }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->applicationInfo->ends_to }}</div>
+                                                class=" font-semibold">{{ $application->applicationInfo->ends_to }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="">
                                             <div
-                                                class="text-base font-semibold">{{ $application->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $application->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
+                                                class=" font-semibold">{{ $application->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $application->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
-                                    <td class="px-6 py-4 text-center">
+                                    <td class=" border px-1 text-center">
                                         <!-- Modal toggle -->
                                         @if($me->hasRole('Parent') and $application->payment_status!=0)
                                             @can('show-application-reserve')

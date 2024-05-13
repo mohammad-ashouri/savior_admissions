@@ -105,77 +105,73 @@
                                 @endif
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="w-4 p-4 ">
-                                        <div class="flex  items-center">
+                                    <td class="w-4 text-center border p-4">
                                             {{ $loop->iteration }}
-                                        </div>
                                     </td>
-                                    <td class="w-4 p-4">
-                                        <div class="flex text-center items-center">
+                                    <td class="w-4 text-center border">
                                             {{ $interview->id }}
-                                        </div>
                                     </td>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->reservationInfo->studentInfo->id }}</div>
+                                                class=" font-semibold">{{ $interview->reservationInfo->studentInfo->id }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                                class=" font-semibold">{{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->date . ' - ' . $interview->start_from . ' - ' .  $interview->ends_to}}</div>
+                                                class=" font-semibold">{{ $interview->date . ' - ' . $interview->start_from . ' - ' .  $interview->ends_to}}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->reservationInfo->levelInfo->name }}</div>
+                                                class=" font-semibold">{{ $interview->reservationInfo->levelInfo->name }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->reservationInfo->interview_type }}</div>
+                                                class=" font-semibold">{{ $interview->reservationInfo->interview_type }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
+                                                class=" font-semibold">{{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->firstInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->firstInterviewerInfo->generalInformationInfo->last_name_en }}</div>
+                                                class=" font-semibold">{{ $interview->firstInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->firstInterviewerInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $interview->secondInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->secondInterviewerInfo->generalInformationInfo->last_name_en }}</div>
+                                                class=" font-semibold">{{ $interview->secondInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->secondInterviewerInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">
+                                                class=" font-semibold">
                                                 @switch($interview->reservationInfo->payment_status)
                                                     @case(0)
                                                         Awaiting for pay
@@ -200,7 +196,7 @@
                                             </div>
                                         </div>
                                     </th>
-                                    <td class="px-6 py-4 text-center">
+                                    <td class="border text-center">
                                         <div class="flex">
                                             <!-- Modal toggle -->
                                             @if($interview->reservationInfo->payment_status==1)
