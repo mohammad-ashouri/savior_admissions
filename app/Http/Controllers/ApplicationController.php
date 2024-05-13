@@ -512,6 +512,10 @@ class ApplicationController extends Controller
                         return redirect()->route('Applications.index')->with('success', 'Application reserved successfully!');
                     }
                 }
+
+                $application = Applications::find($applicationReservationInvoice->reservationInfo->application_id);
+                $application->reserved = 1;
+                $application->save();
                 break;
             case 2:
                 $amount = $applicationInformation->applicationInfo->applicationTimingInfo->fee;
