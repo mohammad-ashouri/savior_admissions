@@ -940,6 +940,34 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
+        $(document).ready(function() {
+            // Function for converting Persian numbers to English
+            function convertToEnglish(input) {
+                var value = input.value;
+                var newValue = '';
+
+                // Convert each Persian number to its English equivalent
+                for (var i = 0; i < value.length; i++) {
+                    var charCode = value.charCodeAt(i);
+                    if (charCode >= 1776 && charCode <= 1785) {
+                        // Convert Persian number to English by subtracting 1728 from the character code
+                        newValue += String.fromCharCode(charCode - 1728);
+                    } else {
+                        // If the character is not a Persian number, it remains unchanged
+                        newValue += value[i];
+                    }
+                }
+
+                // Set the new value in the input field
+                input.value = newValue;
+            }
+
+            // When the content of an input field changes
+            $('input, textarea').on('input', function() {
+                // Call the conversion function for the current value
+                convertToEnglish(this);
+            });
+        });
         $('#update-interview').submit(function (e) {
             e.preventDefault();
 
@@ -1010,6 +1038,35 @@ $(document).ready(function () {
         });
     } else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
+
+        $(document).ready(function() {
+            // Function for converting Persian numbers to English
+            function convertToEnglish(input) {
+                var value = input.value;
+                var newValue = '';
+
+                // Convert each Persian number to its English equivalent
+                for (var i = 0; i < value.length; i++) {
+                    var charCode = value.charCodeAt(i);
+                    if (charCode >= 1776 && charCode <= 1785) {
+                        // Convert Persian number to English by subtracting 1728 from the character code
+                        newValue += String.fromCharCode(charCode - 1728);
+                    } else {
+                        // If the character is not a Persian number, it remains unchanged
+                        newValue += value[i];
+                    }
+                }
+
+                // Set the new value in the input field
+                input.value = newValue;
+            }
+
+            // When the content of an input field changes
+            $('input, textarea').on('input', function() {
+                // Call the conversion function for the current value
+                convertToEnglish(this);
+            });
+        });
 
         $('#set-interview').submit(function (e) {
             e.preventDefault();

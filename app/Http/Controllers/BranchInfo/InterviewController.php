@@ -700,7 +700,6 @@ class InterviewController extends Controller
 
         $interview = Interview::find($request->interview_id);
         $interview->interview_form = json_encode($request->all(), true);
-
         $files = [];
         if ($request->hasFile('document_file1')) {
             $document_file1_name = 'document_file1_'.now()->format('Y-m-d_H-i-s');
