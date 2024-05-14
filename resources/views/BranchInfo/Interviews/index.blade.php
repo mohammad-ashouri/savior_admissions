@@ -100,7 +100,7 @@
 
                             <tbody>
                             @foreach($interviews as $interview)
-                                @if($interview->reservationInfo->payment_status!=1)
+                                @if(@$interview->reservationInfo->payment_status!=1)
                                     @continue
                                 @endif
                                 <tr

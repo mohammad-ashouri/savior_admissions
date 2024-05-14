@@ -56,7 +56,7 @@ class InterviewController extends Controller
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
-                ->paginate(100);
+                ->paginate(150);
         } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
