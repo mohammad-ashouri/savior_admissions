@@ -1,4 +1,4 @@
-@php use App\Models\User;
+@php use App\Models\StudentInformation;use App\Models\User;
  $me = User::find(auth()->user()->id);
 @endphp
 @extends('Layouts.panel')
@@ -143,7 +143,6 @@
 
                             <tbody>
                             @foreach($data as $user)
-
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
@@ -152,7 +151,7 @@
                                         </div>
                                     </td>
                                     <th scope="row"
-                                        class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class="flex items-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <img class="w-10 h-10 rounded-full"
                                              src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
                                              alt="User Personal Image">
@@ -169,33 +168,40 @@
                                             @endforeach
                                         @endif
                                     </td>
-                                    <td class="w-96 px-6 py-4 text-center">
+                                    <td class="w-96 text-center">
                                         <div class="flex">
+                                            @if($user->hasRole('Student'))
+                                                @php
+                                                    $studentInformation=StudentInformation::where('student_id',$user->id)->value('guardian');
+                                                @endphp
+                                                @if(isset($studentInformation))
+                                                    <a href="{{ route('users.edit',$studentInformation) }}"
+                                                       type="button"
+                                                       class="min-w-max inline-flex font-medium text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-teal-600 dark:hover:bg-teal-700 focus:outline-none dark:focus:ring-teal-800 hover:underline">
+                                                        <i class="las la-male" style="font-size: 20px"></i>
+                                                        Show Parent
+                                                    </a>
+                                                @else
+                                                    <div
+                                                        class="bg-teal-100 border-t-4 border-teal-500 rounded-b w-36 text-teal-900 px-4 py-3 shadow-md mr-2"
+                                                        role="alert">
+                                                        <div class="flex">
+                                                            <div>
+                                                                Guardian not set!
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endif
                                             <a href="{{ route('users.edit',$user->id) }}" type="button"
                                                class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">
-                                                    </path>
-                                                    <path fill-rule="evenodd"
-                                                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                          clip-rule="evenodd"></path>
-                                                </svg>
+                                                <i class="las la-pen-square" style="font-size: 20px"></i>
                                                 Edit
                                             </a>
                                             <a href="/Documents/Show/{{$user->id}}" type="button"
                                                class="min-w-max inline-flex font-medium text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:ring-cyan-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800 hover:underline">
-
-                                                <svg class="w-5 h-5 mr-1" fill="currentColor"
-                                                     xmlns="http://www.w3.org/2000/svg"
-                                                     x="0px" y="0px" width="100" height="100" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M14,2H4v20h16V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z M13,9V3.5L18.5,9H13z">
-                                                    </path>
-                                                </svg>
-
-                                                Document</a>
+                                                <i class="las la-file-image" style="font-size: 20px"></i>
+                                                Documents</a>
                                             @if($me->hasRole('Super Admin'))
                                                 <a href="{{route('impersonate',$user->id)}}" type="button"
                                                    class="min-w-max inline-flex font-medium text-white bg-yellow-700 hover:bg-cyan-800 focus:ring-4 focus:ring-yellow-300 rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-yellow-600 dark:hover:bg-yellow-700 focus:outline-none dark:focus:ring-yellow-800 hover:underline">
