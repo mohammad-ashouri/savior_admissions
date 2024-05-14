@@ -7,7 +7,9 @@
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
             <div class="grid grid-cols-1 gap-4 mb-4 mt-2 text-black dark:text-white">
-                <h1 class="text-xl font-medium"> Profile of {{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }} with user id: {{ $user->generalInformationInfo->user_id }}</h1>
+                <h1 class="text-xl font-medium"> Profile
+                    of {{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
+                    with user id: {{ $user->generalInformationInfo->user_id }}</h1>
             </div>
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-1 col-span-3 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
@@ -17,7 +19,8 @@
                                  src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
                                  alt="">
                             <div class="font-bold dark:text-white">
-                                <div class="text-l">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}</div>
+                                <div
+                                    class="text-l">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}</div>
                             </div>
                         </div>
                         @can('access-user-role')
@@ -74,23 +77,26 @@
                                     <label for="first_name_fa"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
                                         name (Persian)</label>
-                                    <input type="text" id="first_name_fa" name="first_name_fa" value="{{ $user->generalInformationInfo->first_name_fa }}"
+                                    <input type="text" id="first_name_fa" name="first_name_fa"
+                                           value="{{ $user->generalInformationInfo->first_name_fa }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           required>
+                                    >
                                 </div>
                                 <div>
                                     <label for="last_name_fa"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
                                         name (Persian)</label>
-                                    <input type="text" id="last_name_fa" name="last_name_fa" value="{{ $user->generalInformationInfo->last_name_fa }}"
+                                    <input type="text" id="last_name_fa" name="last_name_fa"
+                                           value="{{ $user->generalInformationInfo->last_name_fa }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           required>
+                                    >
                                 </div>
                                 <div>
                                     <label for="first_name_en"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
                                         name (English)</label>
-                                    <input type="text" id="first_name_en" name="first_name_en" value="{{ $user->generalInformationInfo->first_name_en }}"
+                                    <input type="text" id="first_name_en" name="first_name_en"
+                                           value="{{ $user->generalInformationInfo->first_name_en }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="John" required>
                                 </div>
@@ -98,7 +104,8 @@
                                     <label for="last_name_en"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
                                         name (English)</label>
-                                    <input type="text" id="last_name_en" name="last_name_en" value="{{ $user->generalInformationInfo->last_name_en }}"
+                                    <input type="text" id="last_name_en" name="last_name_en"
+                                           value="{{ $user->generalInformationInfo->last_name_en }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Doe" required>
                                 </div>
@@ -109,12 +116,12 @@
                                     <input type="text" id="father-name" name="father_name"
                                            @if($generalInformation->father_name!==null) value=" {{ $generalInformation->father_name }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Max" required>
+                                           placeholder="Max">
                                 </div>
                                 <div>
                                     <label for="gender"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
-                                    <select required id="gender"
+                                    <select id="gender"
                                             name="gender"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
@@ -133,12 +140,12 @@
                                     <input type="date" id="Birthdate" name="Birthdate"
                                            @if($generalInformation->birthdate!==null) value="{{ $generalInformation->birthdate }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="15/08/1999" required>
+                                           placeholder="15/08/1999">
                                 </div>
                                 <div>
                                     <label for="nationality"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nationality</label>
-                                    <select required id="nationality"
+                                    <select id="nationality"
                                             name="nationality"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
@@ -152,7 +159,7 @@
                                 <div>
                                     <label for="birthplace"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthplace</label>
-                                    <select required id="birthplace"
+                                    <select id="birthplace"
                                             name="birthplace"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
@@ -170,7 +177,7 @@
                                     <input type="text" id="passport-number" name="PassportNumber"
                                            @if($generalInformation->passport_number!==null) value="{{ $generalInformation->passport_number }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="If not, enter 0" required>
+                                           placeholder="If not, enter 0">
                                 </div>
                                 <div>
                                     <label for="faragir-code"
@@ -179,12 +186,12 @@
                                     <input type="text" id="faragir-code" name="FaragirCode"
                                            @if($generalInformation->faragir_code!==null) value="{{ $generalInformation->faragir_code }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="If not, enter 0" required>
+                                           placeholder="If not, enter 0">
                                 </div>
                                 <div>
                                     <label for="Country"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                                    <select required id="Country"
+                                    <select id="Country"
                                             name="Country"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
@@ -201,7 +208,7 @@
                                     <input type="text" id="city" name="city"
                                            @if($generalInformation->state_city!==null) value="{{ $generalInformation->state_city }}"
                                            @endif class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Qom" required>
+                                           placeholder="Qom">
                                 </div>
                                 <div>
                                     <label for="email"
@@ -209,15 +216,15 @@
                                         address</label>
                                     <input type="email" id="email" name="email" value="{{ $user->email }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="john.doe@company.com" required>
+                                           placeholder="john.doe@company.com">
                                 </div>
                                 <div>
                                     <label for="mobile"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile
                                         number</label>
-                                    <input type="tel" id="mobile" name="mobile" value="{{ $user->mobile }}"
+                                    <input type="tel" id="mobile" name="mobile" value="{{ $user->mobile }}" required
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Like: +989123456789" required>
+                                           placeholder="Like: +989123456789">
                                 </div>
                                 <div>
                                     <label for="address"
@@ -226,7 +233,7 @@
                                            @if($generalInformation->address!==null) value="{{ $generalInformation->address }}"
                                            @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Qom, moallem st, 4th alley, no 433" required>
+                                           placeholder="Qom, moallem st, 4th alley, no 433">
                                 </div>
                                 <div>
                                     <label for="phone"
@@ -236,7 +243,7 @@
                                            @if($generalInformation->phone!==null) value="{{ $generalInformation->phone }}"
                                            @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="For example: +982531234567" required>
+                                           placeholder="For example: +982531234567">
                                 </div>
                                 <div>
                                     <label for="zip/postalcode"
@@ -246,7 +253,7 @@
                                            @if($generalInformation->postal_code!==null) value="{{ $generalInformation->postal_code }}"
                                            @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           pattern="[0-9]{10}" placeholder="1234567890" required>
+                                           pattern="[0-9]{10}" placeholder="1234567890">
                                 </div>
                             </div>
                             <input type="hidden" value="{{ $user->id }}" name="user_id">
@@ -313,21 +320,21 @@
                             <h1 class="text-2xl font-medium"> Student Information</h1>
                         </div>
                         <form id="changeStudentInformation">
-{{--                            <div class="grid gap-6 mb-6 md:grid-cols-2">--}}
-{{--                                <div>--}}
-{{--                                    <label for="school"--}}
-{{--                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>--}}
-{{--                                    <select id="school" name="school"--}}
-{{--                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-{{--                                            required>--}}
-{{--                                        <option value="" disabled selected>Select school...</option>--}}
-{{--                                        @foreach($schools as $school)--}}
-{{--                                            <option value="{{ $school->id }}"--}}
-{{--                                                    @if($user->school_id  == $school->id) selected @endif>{{ $school->name }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                            {{--                            <div class="grid gap-6 mb-6 md:grid-cols-2">--}}
+                            {{--                                <div>--}}
+                            {{--                                    <label for="school"--}}
+                            {{--                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>--}}
+                            {{--                                    <select id="school" name="school"--}}
+                            {{--                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+                            {{--                                            required>--}}
+                            {{--                                        <option value="" disabled selected>Select school...</option>--}}
+                            {{--                                        @foreach($schools as $school)--}}
+                            {{--                                            <option value="{{ $school->id }}"--}}
+                            {{--                                                    @if($user->school_id  == $school->id) selected @endif>{{ $school->name }}</option>--}}
+                            {{--                                        @endforeach--}}
+                            {{--                                    </select>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
                                     <label for="guardian"
