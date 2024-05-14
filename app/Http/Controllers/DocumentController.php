@@ -162,9 +162,10 @@ class DocumentController extends Controller
         }
 
         $fatherPassportFileName = 'FatherPassportScan_'.now()->format('Y-m-d_H-i-s');
+        $fatherPassportFileExtension = $request->file('father_passport_file')->getClientOriginalExtension();
         $fatherPassportFile = $request->file('father_passport_file')->storeAs(
             'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
-            "$fatherPassportFileName.jpg"
+            "$fatherPassportFileName.$fatherPassportFileExtension"
         );
 
         $document = new Document();
@@ -180,9 +181,10 @@ class DocumentController extends Controller
         $document->save();
 
         $motherPassportFileName = 'MotherPassportScan_'.now()->format('Y-m-d_H-i-s');
+        $motherPassportFileExtension = $request->file('mother_passport_file')->getClientOriginalExtension();
         $motherPassportFileName = $request->file('mother_passport_file')->storeAs(
             'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
-            "$motherPassportFileName.jpg"
+            "$motherPassportFileName.$motherPassportFileExtension"
         );
 
         $document = new Document();
@@ -198,9 +200,10 @@ class DocumentController extends Controller
         $document->save();
 
         $studentPassportFileName = 'StudentPassportFile_'.now()->format('Y-m-d_H-i-s');
+        $studentPassportFileExtension = $request->file('student_passport_file')->getClientOriginalExtension();
         $studentPassportFileName = $request->file('student_passport_file')->storeAs(
             'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
-            "$studentPassportFileName.jpg"
+            "$studentPassportFileName.$studentPassportFileExtension"
         );
 
         $document = new Document();
@@ -218,9 +221,10 @@ class DocumentController extends Controller
         $latestReportCard_FileName = '';
         if ($request->hasFile('latest_report_card')) {
             $latestReportCard_FileName = 'LatestReportCard_'.now()->format('Y-m-d_H-i-s');
+            $latestReportCard_FileExtension = $request->file('latest_report_card')->getClientOriginalExtension();
             $latestReportCard_FileName = $request->file('latest_report_card')->storeAs(
                 'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
-                "$latestReportCard_FileName.jpg"
+                "$latestReportCard_FileName.$latestReportCard_FileExtension"
             );
             $document = new Document();
             $document->user_id = auth()->user()->id;
@@ -342,9 +346,10 @@ class DocumentController extends Controller
 
         if ($request->hasFile('father_passport_file')) {
             $fatherPassportFileName = 'FatherPassportScan_'.now()->format('Y-m-d_H-i-s');
+            $fatherPassportFileExtension = $request->file('father_passport_file')->getClientOriginalExtension();
             $fatherPassportFile = $request->file('father_passport_file')->storeAs(
                 'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
-                "$fatherPassportFileName.jpg"
+                "$fatherPassportFileName.$fatherPassportFileExtension"
             );
             $document = new Document();
             $document->user_id = auth()->user()->id;
@@ -363,9 +368,10 @@ class DocumentController extends Controller
 
         if ($request->hasFile('mother_passport_file')) {
             $motherPassportFileName = 'MotherPassportScan_'.now()->format('Y-m-d_H-i-s');
+            $motherPassportFileExtension = $request->file('mother_passport_file')->getClientOriginalExtension();
             $motherPassportFileName = $request->file('mother_passport_file')->storeAs(
                 'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
-                "$motherPassportFileName.jpg"
+                "$motherPassportFileName.$motherPassportFileExtension"
             );
 
             $document = new Document();
@@ -385,9 +391,10 @@ class DocumentController extends Controller
 
         if ($request->hasFile('student_passport_file')) {
             $studentPassportFileName = 'StudentPassportFile_'.now()->format('Y-m-d_H-i-s');
+            $studentPassportFileExtension = $request->file('student_passport_file')->getClientOriginalExtension();
             $studentPassportFileName = $request->file('student_passport_file')->storeAs(
                 'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
-                "$studentPassportFileName.jpg"
+                "$studentPassportFileName.$studentPassportFileExtension"
             );
 
             $document = new Document();
@@ -408,9 +415,10 @@ class DocumentController extends Controller
         $latestReportCard_FileName = '';
         if ($request->hasFile('latest_report_card')) {
             $latestReportCard_FileName = 'LatestReportCard_'.now()->format('Y-m-d_H-i-s');
+            $latestReportCardFileExtension = $request->file('latest_report_card')->getClientOriginalExtension();
             $latestReportCard_FileName = $request->file('latest_report_card')->storeAs(
                 'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
-                "$latestReportCard_FileName.jpg"
+                "$latestReportCard_FileName.$latestReportCardFileExtension"
             );
             $document = new Document();
             $document->user_id = auth()->user()->id;
