@@ -265,6 +265,7 @@
 
                     </div>
 
+                    {{--                    Password Information--}}
                     <div class="Password-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                             <h1 class="text-2xl font-medium"> Password information</h1>
@@ -315,26 +316,12 @@
             </div>
             @if($user->hasRole('Student'))
                 @can('change-student-information')
+                    {{--                    Student information--}}
                     <div class="Student-information bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
                             <h1 class="text-2xl font-medium"> Student Information</h1>
                         </div>
                         <form id="changeStudentInformation">
-                            {{--                            <div class="grid gap-6 mb-6 md:grid-cols-2">--}}
-                            {{--                                <div>--}}
-                            {{--                                    <label for="school"--}}
-                            {{--                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">School</label>--}}
-                            {{--                                    <select id="school" name="school"--}}
-                            {{--                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-                            {{--                                            required>--}}
-                            {{--                                        <option value="" disabled selected>Select school...</option>--}}
-                            {{--                                        @foreach($schools as $school)--}}
-                            {{--                                            <option value="{{ $school->id }}"--}}
-                            {{--                                                    @if($user->school_id  == $school->id) selected @endif>{{ $school->name }}</option>--}}
-                            {{--                                        @endforeach--}}
-                            {{--                                    </select>--}}
-                            {{--                                </div>--}}
-                            {{--                            </div>--}}
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
                                     <label for="guardian"
@@ -359,7 +346,7 @@
                                         Student Relationship</label>
                                     <select id="guardian_student_relationship" name="guardian_student_relationship"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required>
+                                    >
                                         <option value="" disabled selected>Select guardian student relationship...
                                         </option>
                                         @foreach($guardianStudentRelationships as $guardianStudentRelationship)
@@ -376,7 +363,7 @@
                                         Father</label>
                                     <select id="father" name="father"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required>
+                                    >
                                         <option value="" disabled selected>Select father...</option>
                                         @foreach($parents as $parent)
                                             @foreach($parent->users as $father)
@@ -394,7 +381,7 @@
                                         Mother</label>
                                     <select id="mother" name="mother"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required>
+                                    >
                                         <option value="" disabled selected>Select mother...</option>
                                         @foreach($parents as $parent)
                                             @foreach($parent->users as $mother)
@@ -412,7 +399,7 @@
                                         Nationality</label>
                                     <select id="current_nationality" name="current_nationality"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required>
+                                    >
                                         <option value="" disabled selected>Select current nationality...</option>
                                         @foreach($countries as $country)
                                             <option
@@ -427,7 +414,7 @@
                                         Identification Type</label>
                                     <select id="current_identification_type" name="current_identification_type"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required>
+                                    >
                                         <option value="" disabled selected>Select current identification type...
                                         </option>
                                         @foreach($currentIdentificationTypes as $currentIdentificationType)
@@ -445,14 +432,14 @@
                                            @if(!empty($studentInformation) and $studentInformation->current_identification_code) value="{{ $studentInformation->current_identification_code }}"
                                            @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="For example: IRC123456789" required>
+                                           placeholder="For example: IRC123456789">
                                 </div>
                                 <div>
                                     <label for="status"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                                     <select id="status" name="status"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            required>
+                                    >
                                         <option value="" disabled selected>Select status...</option>
                                         @foreach($statuses as $status)
                                             <option value="{{ $status->id }}"
@@ -519,12 +506,12 @@
                                                 <td class="p-4">
                                                     <input type="text" id="title" name="title[]"
                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                           required>
+                                                           >
                                                 </td>
                                                 <td class="p-4">
                                                     <input type="text" id="description" name="description[]"
                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                           required>
+                                                           >
                                                 </td>
                                                 <td class="p-4 text-center">
                                                     <button type="button"

@@ -15,6 +15,7 @@ use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class StudentController extends Controller
 {
@@ -90,9 +91,9 @@ class StudentController extends Controller
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
-//            'nationality' => 'required|exists:countries,id',
+            //            'nationality' => 'required|exists:countries,id',
             'birthplace' => 'required|exists:countries,id',
-//            'current_identification_type' => 'required|exists:current_identification_types,id',
+            //            'current_identification_type' => 'required|exists:current_identification_types,id',
             'first_name_fa' => 'required|string',
             'last_name_fa' => 'required|string',
             'first_name_en' => 'required|string',
@@ -106,11 +107,11 @@ class StudentController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-//        $nationality = $request->nationality;
-//        $current_identification_type = $request->current_identification_type;
+        //        $nationality = $request->nationality;
+        //        $current_identification_type = $request->current_identification_type;
         $birthplace = $request->birthplace;
         $birthdate = $request->birthdate;
-//        $current_identification_code = $request->current_identification_code;
+        //        $current_identification_code = $request->current_identification_code;
         $gender = $request->gender;
 
         $me = User::find(auth()->user()->id);
@@ -133,16 +134,16 @@ class StudentController extends Controller
         $generalInformation->last_name_en = $request->last_name_en;
         $generalInformation->birthdate = $birthdate;
         $generalInformation->birthplace = $birthplace;
-//        $generalInformation->nationality = $nationality;
+        //        $generalInformation->nationality = $nationality;
         $generalInformation->gender = $gender;
         $generalInformation->save();
 
         $studentInformation = new StudentInformation();
         $studentInformation->student_id = $user->id;
         $studentInformation->guardian = auth()->user()->id;
-//        $studentInformation->current_nationality = $nationality;
-//        $studentInformation->current_identification_type = $current_identification_type;
-//        $studentInformation->current_identification_code = $current_identification_code;
+        //        $studentInformation->current_nationality = $nationality;
+        //        $studentInformation->current_identification_type = $current_identification_type;
+        //        $studentInformation->current_identification_code = $current_identification_code;
         $studentInformation->save();
         $this->logActivity(json_encode(['activity' => 'Student Saved', 'id' => $studentInformation->user_id]), request()->ip(), request()->userAgent());
 
@@ -220,14 +221,14 @@ class StudentController extends Controller
     public function changeInformation(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'current_identification_code' => 'required',
-            'current_identification_type' => 'required|exists:current_identification_types,id',
-            'current_nationality' => 'required|exists:countries,id',
-            'father' => 'required|exists:users,id',
+            'current_identification_code' => 'nullable|string',
+            'current_identification_type' => 'nullable|exists:current_identification_types,id',
+            'current_nationality' => 'nullable|exists:countries,id',
+            'father' => 'nullable|exists:users,id',
             'guardian' => 'required|exists:users,id',
-            'guardian_student_relationship' => 'required|exists:guardian_student_relationships,id',
-            'mother' => 'required|exists:users,id',
-            'status' => 'required|exists:student_statuses,id',
+            'guardian_student_relationship' => 'nullable|exists:guardian_student_relationships,id',
+            'mother' => 'nullable|exists:users,id',
+            'status' => 'nullable|exists:student_statuses,id',
             'user_id' => 'required|exists:users,id',
         ]);
 
@@ -238,31 +239,62 @@ class StudentController extends Controller
         }
         $extraInformationTitles = $request->title;
         $extraInformationDescriptions = $request->description;
-        if (count($extraInformationTitles) != count($extraInformationDescriptions)) {
+        if (isset($request->title) and count($extraInformationTitles) != count($extraInformationDescriptions)) {
             $this->logActivity(json_encode(['activity' => 'Extras Count Values Is Not Same', 'student_id' => $request->user_id]), request()->ip(), request()->userAgent());
 
             return response()->json(['error' => 'Extras count values is not same'], 422);
         }
 
-        $studentInformation = StudentInformation::where('student_id', $request->user_id)->first();
-        $studentInformation->parent_father_id = $request->father;
-        $studentInformation->parent_mother_id = $request->mother;
+        $checkUser = User::find($request->user_id);
+        if (empty($checkUser)) {
+            $user = User::create(['id' => $request->user_id, 'password' => bcrypt('Aa16001600')]);
+            $role = Role::where('name', 'Student')->first();
+            $user->assignRole([$role->id]);
+            $this->logActivity(json_encode(['activity' => 'Student created successfully', 'user_id' => $request->user_id]), request()->ip(), request()->userAgent());
+        }
+
+        $studentInformation = StudentInformation::where('student_id', $checkUser->id)->first();
+
+        if (empty($studentInformation)) {
+            $studentInformation = new StudentInformation();
+            $studentInformation->student_id = $checkUser->id;
+            $studentInformation->save();
+        }
+
+        if ($request->father) {
+            $studentInformation->parent_father_id = $request->father;
+        }
+        if ($request->mother) {
+            $studentInformation->parent_mother_id = $request->mother;
+        }
         $studentInformation->guardian = $request->guardian;
-        $studentInformation->guardian_student_relationship = $request->guardian_student_relationship;
-        $studentInformation->current_nationality = $request->current_nationality;
-        $studentInformation->current_identification_type = $request->current_identification_type;
-        $studentInformation->current_identification_code = $request->current_identification_code;
-        $studentInformation->status = $request->status;
+        if ($request->guardian_student_relationship) {
+            $studentInformation->guardian_student_relationship = $request->guardian_student_relationship;
+        }
+        if ($request->current_nationality) {
+            $studentInformation->current_nationality = $request->current_nationality;
+        }
+        if ($request->current_identification_type) {
+            $studentInformation->current_identification_type = $request->current_identification_type;
+        }
+        if ($request->current_identification_code) {
+            $studentInformation->current_identification_code = $request->current_identification_code;
+        }
+        if ($request->status) {
+            $studentInformation->status = $request->status;
+        }
         $studentInformation->save();
 
         StudentExtraInformation::where('student_informations_id', $studentInformation->id)->delete();
 
-        foreach ($extraInformationTitles as $index => $titles) {
-            $studentExtraInformation = new StudentExtraInformation();
-            $studentExtraInformation->student_informations_id = $studentInformation->id;
-            $studentExtraInformation->name = $titles;
-            $studentExtraInformation->description = $extraInformationDescriptions[$index];
-            $studentExtraInformation->save();
+        if (isset($request->title)) {
+            foreach ($extraInformationTitles as $index => $titles) {
+                $studentExtraInformation = new StudentExtraInformation();
+                $studentExtraInformation->student_informations_id = $studentInformation->id;
+                $studentExtraInformation->name = $titles;
+                $studentExtraInformation->description = $extraInformationDescriptions[$index];
+                $studentExtraInformation->save();
+            }
         }
 
         $this->logActivity(json_encode(['activity' => 'Student information saved successfully', 'user_id' => $request->user_id]), request()->ip(), request()->userAgent());
@@ -274,7 +306,7 @@ class StudentController extends Controller
     {
         $me = User::find(auth()->user()->id);
 
-        $students=[];
+        $students = [];
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->where('tuition_payment_status', 'Paid')
