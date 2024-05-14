@@ -9,6 +9,7 @@ use App\Models\Branch\ApplicationTiming;
 use App\Models\Branch\Interview;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Document;
 use App\Models\Finance\Discount;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -310,10 +311,146 @@ class InterviewController extends Controller
             case 'la':
             case 'kga':
                 $interview->interview_type = 3;
+
+                $files = [];
+                if ($request->file('document_file1')) {
+                    $document_file1_name = 'document_file1_'.now()->format('Y-m-d_H-i-s');
+                    $document_file1_extension = $request->file('document_file1')->getClientOriginalExtension();
+                    $document_file1_path = $request->file('document_file1')->storeAs(
+                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        "$document_file1_name.$document_file1_extension"
+                    );
+                    $files['file1'] = [
+                        'src1' => $document_file1_path,
+                        'description1' => $request->document_description1
+                    ];
+
+                    Document::create([
+                        'user_id' => auth()->user()->id,
+                        'document_type_id' => 8,
+                        'src' => $document_file1_path,
+                        'description' => $request->document_description1,
+                    ]);
+
+                    Document::create([
+                        'user_id' => $studentApplianceStatus->student_id,
+                        'document_type_id' => 8,
+                        'src' => $document_file1_path,
+                        'description' => $request->document_description1,
+                    ]);
+                }
+
+                if ($request->file('document_file2')) {
+                    $document_file2_name = 'document_file2_'.now()->format('Y-m-d_H-i-s');
+                    $document_file2_extension = $request->file('document_file2')->getClientOriginalExtension();
+                    $document_file2_path = $request->file('document_file2')->storeAs(
+                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        "$document_file2_name.$document_file2_extension"
+                    );
+                    $files['file2'] = [
+                        'src2' => $document_file2_path,
+                        'description2' => $request->document_description2
+                    ];
+
+                    Document::create([
+                        'user_id' => auth()->user()->id,
+                        'document_type_id' => 8,
+                        'src' => $document_file2_path,
+                        'description' => $request->document_description2,
+                    ]);
+
+                    Document::create([
+                        'user_id' => $studentApplianceStatus->student_id,
+                        'document_type_id' => 8,
+                        'src' => $document_file2_path,
+                        'description' => $request->document_description2,
+                    ]);
+                }
+
+                if ($request->file('document_file3')) {
+                    $document_file3_name = 'document_file3_'.now()->format('Y-m-d_H-i-s');
+                    $document_file3_extension = $request->file('document_file3')->getClientOriginalExtension();
+                    $document_file3_path = $request->file('document_file3')->storeAs(
+                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        "$document_file3_name.$document_file3_extension"
+                    );
+                    $files['file3'] = [
+                        'src3' => $document_file3_path,
+                        'description3' => $request->document_description3
+                    ];
+
+                    Document::create([
+                        'user_id' => auth()->user()->id,
+                        'document_type_id' => 8,
+                        'src' => $document_file3_path,
+                        'description' => $request->document_description3,
+                    ]);
+
+                    Document::create([
+                        'user_id' => $studentApplianceStatus->student_id,
+                        'document_type_id' => 8,
+                        'src' => $document_file3_path,
+                        'description' => $request->document_description3,
+                    ]);
+                }
+
+                if ($request->file('document_file4')) {
+                    $document_file4_name = 'document_file4_'.now()->format('Y-m-d_H-i-s');
+                    $document_file4_extension = $request->file('document_file4')->getClientOriginalExtension();
+                    $document_file4_path = $request->file('document_file4')->storeAs(
+                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        "$document_file4_name.$document_file4_extension"
+                    );
+                    $files['file4'] = [
+                        'src4' => $document_file4_path,
+                        'description4' => $request->document_description4
+                    ];
+
+                    Document::create([
+                        'user_id' => auth()->user()->id,
+                        'document_type_id' => 8,
+                        'src' => $document_file4_path,
+                        'description' => $request->document_description4,
+                    ]);
+
+                    Document::create([
+                        'user_id' => $studentApplianceStatus->student_id,
+                        'document_type_id' => 8,
+                        'src' => $document_file4_path,
+                        'description' => $request->document_description4,
+                    ]);
+                }
+
+                if ($request->file('document_file5')) {
+                    $document_file5_name = 'document_file5_'.now()->format('Y-m-d_H-i-s');
+                    $document_file5_extension = $request->file('document_file5')->getClientOriginalExtension();
+                    $document_file5_path = $request->file('document_file5')->storeAs(
+                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        "$document_file5_name.$document_file5_extension"
+                    );
+                    $files['file5'] = [
+                        'src5' => $document_file5_path,
+                        'description5' => $request->document_description5
+                    ];
+                    Document::create([
+                        'user_id' => auth()->user()->id,
+                        'document_type_id' => 8,
+                        'src' => $document_file5_path,
+                        'description' => $request->document_description5,
+                    ]);
+
+                    Document::create([
+                        'user_id' => $studentApplianceStatus->student_id,
+                        'document_type_id' => 8,
+                        'src' => $document_file5_path,
+                        'description' => $request->document_description5,
+                    ]);
+                }
                 break;
         }
 
         $interview->interview_form = json_encode($request->all(), true);
+        $interview->files = json_encode($files, true);
 
         if ($interview->save()) {
             //Check if 3 interviews completed then make that to principal for confirmation
@@ -558,8 +695,149 @@ class InterviewController extends Controller
                 redirect()->back()->withErrors(['The total percentage of selected discounts must be lower or equal to 30%.'])->withInput();
             }
         }
+
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+
         $interview = Interview::find($request->interview_id);
         $interview->interview_form = json_encode($request->all(), true);
+
+        $files = [];
+        if ($request->hasFile('document_file1')) {
+            $document_file1_name = 'document_file1_'.now()->format('Y-m-d_H-i-s');
+            $document_file1_extension = $request->file('document_file1')->getClientOriginalExtension();
+            $document_file1_path = $request->file('document_file1')->storeAs(
+                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                "$document_file1_name.$document_file1_extension"
+            );
+            $files['file1'] = [
+                'src1' => $document_file1_path,
+                'description1' => $request->document_description1
+            ];
+
+            Document::create([
+                'user_id' => auth()->user()->id,
+                'document_type_id' => 8,
+                'src' => $document_file1_path,
+                'description' => $request->document_description1,
+            ]);
+
+            Document::create([
+                'user_id' => $studentApplianceStatus->student_id,
+                'document_type_id' => 8,
+                'src' => $document_file1_path,
+                'description' => $request->document_description1,
+            ]);
+        }
+
+        if ($request->hasFile('document_file2')) {
+            $document_file2_name = 'document_file2_'.now()->format('Y-m-d_H-i-s');
+            $document_file2_extension = $request->file('document_file2')->getClientOriginalExtension();
+            $document_file2_path = $request->file('document_file2')->storeAs(
+                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                "$document_file2_name.$document_file2_extension"
+            );
+            $files['file2'] = [
+                'src2' => $document_file2_path,
+                'description2' => $request->document_description2
+            ];
+
+            Document::create([
+                'user_id' => auth()->user()->id,
+                'document_type_id' => 8,
+                'src' => $document_file2_path,
+                'description' => $request->document_description2,
+            ]);
+
+            Document::create([
+                'user_id' => $studentApplianceStatus->student_id,
+                'document_type_id' => 8,
+                'src' => $document_file2_path,
+                'description' => $request->document_description2,
+            ]);
+        }
+
+        if ($request->hasFile('document_file3')) {
+            $document_file3_name = 'document_file3_'.now()->format('Y-m-d_H-i-s');
+            $document_file3_extension = $request->file('document_file3')->getClientOriginalExtension();
+            $document_file3_path = $request->file('document_file3')->storeAs(
+                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                "$document_file3_name.$document_file3_extension"
+            );
+            $files['file3'] = [
+                'src3' => $document_file3_path,
+                'description3' => $request->document_description3
+            ];
+
+            Document::create([
+                'user_id' => auth()->user()->id,
+                'document_type_id' => 8,
+                'src' => $document_file3_path,
+                'description' => $request->document_description3,
+            ]);
+
+            Document::create([
+                'user_id' => $studentApplianceStatus->student_id,
+                'document_type_id' => 8,
+                'src' => $document_file3_path,
+                'description' => $request->document_description3,
+            ]);
+        }
+
+        if ($request->hasFile('document_file4')) {
+            $document_file4_name = 'document_file4_'.now()->format('Y-m-d_H-i-s');
+            $document_file4_extension = $request->file('document_file4')->getClientOriginalExtension();
+            $document_file4_path = $request->file('document_file4')->storeAs(
+                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                "$document_file4_name.$document_file4_extension"
+            );
+            $files['file4'] = [
+                'src4' => $document_file4_path,
+                'description4' => $request->document_description4
+            ];
+
+            Document::create([
+                'user_id' => auth()->user()->id,
+                'document_type_id' => 8,
+                'src' => $document_file4_path,
+                'description' => $request->document_description4,
+            ]);
+
+            Document::create([
+                'user_id' => $studentApplianceStatus->student_id,
+                'document_type_id' => 8,
+                'src' => $document_file4_path,
+                'description' => $request->document_description4,
+            ]);
+        }
+
+        if ($request->hasFile('document_file5')) {
+            $document_file5_name = 'document_file5_'.now()->format('Y-m-d_H-i-s');
+            $document_file5_extension = $request->file('document_file5')->getClientOriginalExtension();
+            $document_file5_path = $request->file('document_file5')->storeAs(
+                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                "$document_file5_name.$document_file5_extension"
+            );
+            $files['file5'] = [
+                'src5' => $document_file5_path,
+                'description5' => $request->document_description5
+            ];
+            Document::create([
+                'user_id' => auth()->user()->id,
+                'document_type_id' => 8,
+                'src' => $document_file5_path,
+                'description' => $request->document_description5,
+            ]);
+
+            Document::create([
+                'user_id' => $studentApplianceStatus->student_id,
+                'document_type_id' => 8,
+                'src' => $document_file5_path,
+                'description' => $request->document_description5,
+            ]);
+        }
+
+        $interview->files = json_encode($files, true);
+
         $interview->interviewer = auth()->user()->id;
 
         $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();

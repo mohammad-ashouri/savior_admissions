@@ -12,6 +12,7 @@ foreach ($interview->interview as $item) {
     if ($item->interview_type == 3) {
     $interviewFields=json_decode($item->interview_form,true);
     $interviewID=$item->id;
+    $interviewFiles=json_decode($item->files,true);
     }
 }
 
@@ -46,7 +47,7 @@ foreach ($interview->interview as $item) {
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        {!! Form::model($interview, ['method' => 'PATCH','id'=>'update-interview','route' => ['Interviews.update', $interview->id]]) !!}
+                        {!! Form::model($interview, ['method' => 'PATCH','id'=>'update-interview','enctype'=>'multipart/form-data','route' => ['Interviews.update', $interview->id]]) !!}
                         @csrf
                         <div class="grid gap-6 mb-6 md:grid-cols-2">
                             <div>
@@ -72,6 +73,7 @@ foreach ($interview->interview as $item) {
                                 }
                                 if ($item->interview_type == 3) {
                                 $interviewFields=json_decode($item->interview_form,true);
+                                $interviewFiles=json_decode($item->files,true);
                                 }
                             }
                         @endphp

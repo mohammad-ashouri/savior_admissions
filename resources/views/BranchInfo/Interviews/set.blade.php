@@ -30,7 +30,7 @@
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <form id="set-interview" method="post" action="{{route('interviews.SetInterview')}}">
+                        <form id="set-interview" method="post" enctype="multipart/form-data" action="{{route('interviews.SetInterview')}}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>

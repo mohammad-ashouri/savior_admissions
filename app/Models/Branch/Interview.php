@@ -16,6 +16,7 @@ class Interview extends Model
     protected $fillable = [
         'application_id',
         'interview_form',
+        'files',
     ];
 
     protected $casts = [

@@ -269,9 +269,111 @@
                 </div>
                 <div id="last-step" class="text-center">
                     <div class="text-left mb-4">
-                        <p class="font-bold mt-4">
-                            Discount <u>(Check only when needed)</u>
-                        </p>
+                        <div>
+                            <p class="font-bold mt-4">
+                                Discount <u>(Check only when needed)</u>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="font-bold mt-4">
+                                If needed, you can upload files related to financial affairs here.
+                            </p>
+                            <div>
+                                <div>
+                                    <label class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                           for="document_file1">Select your document </label>
+                                    <input
+                                        class="mb-4 block w-96 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="document_file1" name="document_file1" type="file"
+                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                </div>
+                                <div>
+                                    <label for="document_description1"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        Description for document</label>
+                                    <textarea id="document_description1"
+                                              placeholder="Write your description if needed"
+                                              name="document_description1"
+                                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                           for="document_file2">Select your document </label>
+                                    <input
+                                        class="mb-4 block w-96 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="document_file2" name="document_file2" type="file"
+                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                </div>
+                                <div>
+                                    <label for="document_description2"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        Description for document</label>
+                                    <textarea id="document_description2"
+                                              placeholder="Write your description if needed"
+                                              name="document_description2"
+                                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                           for="document_file3">Select your document </label>
+                                    <input
+                                        class="mb-4 block w-96 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="document_file3" name="document_file3" type="file"
+                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                </div>
+                                <div>
+                                    <label for="document_description3"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        Description for document</label>
+                                    <textarea id="document_description3"
+                                              placeholder="Write your description if needed"
+                                              name="document_description3"
+                                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                           for="document_file4">Select your document </label>
+                                    <input
+                                        class="mb-4 block w-96 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="document_file4" name="document_file4" type="file"
+                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                </div>
+                                <div>
+                                    <label for="document_description4"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        Description for document</label>
+                                    <textarea id="document_description4"
+                                              placeholder="Write your description if needed"
+                                              name="document_description4"
+                                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                           for="document_file5">Select your document </label>
+                                    <input
+                                        class="mb-4 block w-96 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="document_file5" name="document_file5" type="file"
+                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                </div>
+                                <div>
+                                    <label for="document_description5"
+                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        Description for document</label>
+                                    <textarea id="document_description5"
+                                              placeholder="Write your description if needed"
+                                              name="document_description5"
+                                              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                </div>
+                            </div>
+                        </div>
                         <div class="overflow-x-auto">
                             @if($discounts->isEmpty())
                                 <div

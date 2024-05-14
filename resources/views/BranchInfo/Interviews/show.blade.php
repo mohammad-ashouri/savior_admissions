@@ -10,18 +10,10 @@
     }
     if ($item->interview_type == 3) {
     $interviewFields=json_decode($item->interview_form,true);
+    $interviewFiles=json_decode($item->files,true);
     }
 }
 
-// dd($interview);
-//
-//
-//if($interview->firstInterviewerInfo->id==$me->id){
-//}elseif($interview->secondInterviewerInfo->id==$me->id){
-//    $interviewFields=json_decode($interview->interview[1]->interview_form,true);
-//}elseif($me->hasRole('Financial Manager')){
-//    $interviewFields=json_decode($interview->interview[2]->interview_form,true);
-//}
 @endphp
 @extends('Layouts.panel')
 
@@ -70,15 +62,16 @@
                         @php
                             foreach ($interview->interview as $item) {
                                 if ($item->interview_type == 1) {
-                                $interviewFields=json_decode($item->interview_form,true);
+                                    $interviewFields=json_decode($item->interview_form,true);
                                 }
                                 if ($item->interview_type == 2) {
-                                $interviewFields=json_decode($item->interview_form,true);
+                                    $interviewFields=json_decode($item->interview_form,true);
                                 }
                                 if ($item->interview_type == 3) {
-                                $interviewFields=json_decode($item->interview_form,true);
+                                    $interviewFields=json_decode($item->interview_form,true);
+                                    $interviewFiles=json_decode($item->files,true);
+                                }
                             }
-}
                             @endphp
                         @if ($interview->first_interviewer == $me->id)
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)

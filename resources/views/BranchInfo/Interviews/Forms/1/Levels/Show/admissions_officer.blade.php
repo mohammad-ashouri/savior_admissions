@@ -178,11 +178,13 @@
                             <select id="s5_q1" name="s5_q1" disabled
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     title="Select an option">
-                                <option @if($interviewFields['s5_q1']=='poor') selected @endif value="poor">poor</option>
+                                <option @if($interviewFields['s5_q1']=='poor') selected @endif value="poor">poor
+                                </option>
                                 <option @if($interviewFields['s5_q1']=='average') selected @endif value="average">
                                     average
                                 </option>
-                                <option @if($interviewFields['s5_q1']=='good') selected @endif value="good">good</option>
+                                <option @if($interviewFields['s5_q1']=='good') selected @endif value="good">good
+                                </option>
                                 <option @if($interviewFields['s5_q1']=='very good') selected @endif value="very good">
                                     very good
                                 </option>
@@ -252,79 +254,288 @@
 
                 <div id="last-step" class="text-center">
                     <div class="text-left mb-4">
-                        <p class="font-bold mt-4">
-                            Discount <u>(Check only when needed)</u>
-                        </p>
-                        <div class="overflow-x-auto">
-                            @if($discounts->isEmpty())
-                                <div
-                                    class="bg-teal-100 border-t-4 border-teal-500 mt-4 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                                    role="alert">
-                                    <div class="flex">
-                                        <div class="py-1">
-                                            <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
-                                                 xmlns="http://www.w3.org/2000/svg"
-                                                 viewBox="0 0 20 20">
-                                                <path
-                                                    d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            There is not any discount items to show! Please contact the
-                                            financial manager of your department and raise the issue.
-                                            <br/>
-                                            Note: If the student needs to register a discount and you do not
-                                            choose, your interview will no longer be editable.
+                        <div>
+                            <p class="font-bold mt-4">
+                                Discount <u>(Check only when needed)</u>
+                            </p>
+                            <div class="overflow-x-auto">
+                                @if($discounts->isEmpty())
+                                    <div
+                                        class="bg-teal-100 border-t-4 border-teal-500 mt-4 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                        role="alert">
+                                        <div class="flex">
+                                            <div class="py-1">
+                                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                     xmlns="http://www.w3.org/2000/svg"
+                                                     viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                There is not any discount items to show! Please contact the
+                                                financial manager of your department and raise the issue.
+                                                <br/>
+                                                Note: If the student needs to register a discount and you do not
+                                                choose, your interview will no longer be editable.
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @else
-                                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                    <thead
-                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="p-4 text-center">
-                                            ID
-                                        </th>
-                                        <th scope="col" class="p-4 text-center">
-                                            Title
-                                        </th>
-                                        <th scope="col" class="p-4 text-center">
-                                            Percentage
-                                        </th>
-                                        <th scope="col" class="p-4 text-center">
-                                            Action
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody
-                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    @foreach($discounts as $discount)
+                                @else
+                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                        <thead
+                                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr>
-                                            <td class="w-10 font-bold p-4 text-center">
-                                                {{ $loop->iteration }}
-                                            </td>
-                                            <td class="w-1/3 font-bold p-4 text-center">
-                                                {{ $discount->name }}
-                                            </td>
-                                            <td class="font-bold p-4 text-center">
-                                                {{ $discount->percentage }}%
-                                            </td>
-                                            <td class="font-bold p-4 text-center">
-                                                <input class="discount-checks" type="checkbox"
-                                                       value="{{ $discount->id }}" disabled
-                                                       @if(isset($interviewFields['discount']) and in_array($discount->id,$interviewFields['discount'])) checked
-                                                       @endif
-                                                       name="discount[]">
-                                            </td>
+                                            <th scope="col" class="p-4 text-center">
+                                                ID
+                                            </th>
+                                            <th scope="col" class="p-4 text-center">
+                                                Title
+                                            </th>
+                                            <th scope="col" class="p-4 text-center">
+                                                Percentage
+                                            </th>
+                                            <th scope="col" class="p-4 text-center">
+                                                Action
+                                            </th>
                                         </tr>
-                                    @endforeach
+                                        </thead>
+                                        <tbody
+                                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        @foreach($discounts as $discount)
+                                            <tr>
+                                                <td class="w-10 font-bold p-4 text-center">
+                                                    {{ $loop->iteration }}
+                                                </td>
+                                                <td class="w-1/3 font-bold p-4 text-center">
+                                                    {{ $discount->name }}
+                                                </td>
+                                                <td class="font-bold p-4 text-center">
+                                                    {{ $discount->percentage }}%
+                                                </td>
+                                                <td class="font-bold p-4 text-center">
+                                                    <input class="discount-checks" type="checkbox"
+                                                           value="{{ $discount->id }}" disabled
+                                                           @if(isset($interviewFields['discount']) and in_array($discount->id,$interviewFields['discount'])) checked
+                                                           @endif
+                                                           name="discount[]">
+                                                </td>
+                                            </tr>
+                                        @endforeach
 
-                                    </tbody>
-                                </table>
-                            @endif
+                                        </tbody>
+                                    </table>
+                                @endif
+                            </div>
                         </div>
                         <div>
+                            @if(isset($interviewFiles['file1']['src1']))
+                                <div>
+                                    <div>
+                                        <label for="document_description1"
+                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                            Description for document</label>
+                                        <textarea id="document_description1" readonly
+                                                  placeholder="Write your description if needed"
+                                                  name="document_description1"
+                                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="uploaded_file1_preview"
+                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                            Uploaded file1 preview</label>
+                                        @if(substr($interviewFiles['file1']['src1'],-4)=='.pdf')
+                                            <div class="flex justify-center items-center">
+                                                <a target="_blank"
+                                                   href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file1']['src1']) }}">
+                                                    <img class="pdf-documents-icons">
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                            >
+                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
+                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file1']['src1']) }}"
+                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                                                        type="button">
+                                                    <img
+                                                        class="h-auto text-blue-500 align-center max-w-full rounded-lg"
+                                                        style="width: 400px; height: 200px"
+                                                        id="uploaded_file1_preview"
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file1']['src1']) }}"
+                                                        alt="Document Not Found!">
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                            @if(isset($interviewFiles['file2']['src2']))
+                                <div>
+                                    <div>
+                                        <label for="document_description2"
+                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                            Description for document</label>
+                                        <textarea id="document_description2" readonly
+                                                  placeholder="Write your description if needed"
+                                                  name="document_description2"
+                                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="uploaded_file2_preview"
+                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                            Uploaded file2 preview</label>
+                                        @if(substr($interviewFiles['file2']['src2'],-4)=='.pdf')
+                                            <div class="flex justify-center items-center">
+                                                <a target="_blank"
+                                                   href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file2']['src2']) }}">
+                                                    <img class="pdf-documents-icons">
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                            >
+                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
+                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file2']['src2']) }}"
+                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                                                        type="button">
+                                                    <img
+                                                        class="h-auto text-blue-500 align-center max-w-full rounded-lg"
+                                                        style="width: 400px; height: 200px"
+                                                        id="uploaded_file2_preview"
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file2']['src2']) }}"
+                                                        alt="Document Not Found!">
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                            @if(isset($interviewFiles['file3']['src3']))
+                                <div>
+                                    <div>
+                                        <label for="document_description3"
+                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                            Description for document</label>
+                                        <textarea id="document_description3" readonly
+                                                  placeholder="Write your description if needed"
+                                                  name="document_description3"
+                                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="uploaded_file3_preview"
+                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                            Uploaded file3 preview</label>
+                                        @if(substr($interviewFiles['file3']['src3'],-4)=='.pdf')
+                                            <div class="flex justify-center items-center">
+                                                <a target="_blank"
+                                                   href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file3']['src3']) }}">
+                                                    <img class="pdf-documents-icons">
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                            >
+                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
+                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file3']['src3']) }}"
+                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                                                        type="button">
+                                                    <img
+                                                        class="h-auto text-blue-500 align-center max-w-full rounded-lg"
+                                                        style="width: 400px; height: 200px"
+                                                        id="uploaded_file3_preview"
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file3']['src3']) }}"
+                                                        alt="Document Not Found!">
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                            @if(isset($interviewFiles['file4']['src4']))
+                                <div>
+                                    <div>
+                                        <label for="document_description4"
+                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                            Description for document</label>
+                                        <textarea id="document_description4" readonly
+                                                  placeholder="Write your description if needed"
+                                                  name="document_description4"
+                                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="uploaded_file4_preview"
+                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                            Uploaded file4 preview</label>
+                                        @if(substr($interviewFiles['file4']['src4'],-4)=='.pdf')
+                                            <div class="flex justify-center items-center">
+                                                <a target="_blank"
+                                                   href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file4']['src4']) }}">
+                                                    <img class="pdf-documents-icons">
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                            >
+                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
+                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file4']['src4']) }}"
+                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                                                        type="button">
+                                                    <img
+                                                        class="h-auto text-blue-500 align-center max-w-full rounded-lg"
+                                                        style="width: 400px; height: 200px"
+                                                        id="uploaded_file4_preview"
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file4']['src4']) }}"
+                                                        alt="Document Not Found!">
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                            @if(isset($interviewFiles['file5']['src5']))
+                                <div>
+                                    <div>
+                                        <label for="document_description5"
+                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                            Description for document</label>
+                                        <textarea id="document_description5" readonly
+                                                  placeholder="Write your description if needed"
+                                                  name="document_description5"
+                                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="uploaded_file1_preview"
+                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                            Uploaded file5 preview</label>
+                                        @if(substr($interviewFiles['file5']['src5'],-4)=='.pdf')
+                                            <div class="flex justify-center items-center">
+                                                <a target="_blank"
+                                                   href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file5']['src5']) }}">
+                                                    <img class="pdf-documents-icons">
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                            >
+                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
+                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file5']['src5']) }}"
+                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                                                        type="button">
+                                                    <img
+                                                        class="h-auto text-blue-500 align-center max-w-full rounded-lg"
+                                                        style="width: 400px; height: 200px"
+                                                        id="uploaded_file5_preview"
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $interviewFiles['file5']['src5']) }}"
+                                                        alt="Document Not Found!">
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="mt-3">
                             <a href="{{ route('interviews.index') }}">
                                 <button type="button"
                                         class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
