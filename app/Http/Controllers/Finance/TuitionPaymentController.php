@@ -45,6 +45,9 @@ class TuitionPaymentController extends Controller
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->paginate(30);
+        } elseif ($me->hasRole('Super Admin')) {
+            $tuitionInvoices = TuitionInvoices::orderBy('created_at', 'asc')->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->paginate(30);
         }
 
         return view('Finance.TuitionInvoices.index', compact('tuitionInvoiceDetails', 'me'));
@@ -77,6 +80,9 @@ class TuitionPaymentController extends Controller
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->where('id', $tuition_id)->first();
+        } elseif ($me->hasRole('Super Admin')) {
+            $tuitionInvoices = TuitionInvoices::orderBy('created_at', 'asc')->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->where('id', $tuition_id)->first();
         }
 
         return view('Finance.TuitionInvoices.show', compact('tuitionInvoiceDetails', 'me'));
@@ -220,8 +226,8 @@ class TuitionPaymentController extends Controller
                 $studentAppliance->save();
 
                 $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id);
-                if ($allDiscountPercentages>40){
-                    $allDiscountPercentages=40;
+                if ($allDiscountPercentages > 40) {
+                    $allDiscountPercentages = 40;
                 }
 
                 $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
@@ -231,12 +237,12 @@ class TuitionPaymentController extends Controller
                         $counter = 1;
                         $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
                         $twoInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_amount_irr']);
-                        $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-(($twoInstallmentPaymentAmount*$allDiscountPercentages)/100);
-                        $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $tuitionDetailsForTwoInstallments['two_installment_advance_irr']);
+                        $totalFeeTwoInstallment = $twoInstallmentPaymentAmount - (($twoInstallmentPaymentAmount * $allDiscountPercentages) / 100);
+                        $twoInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_advance_irr']);
                         while ($counter < 3) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount=($totalFeeTwoInstallment-$twoInstallmentPaymentAmountAdvance)/2;
+                            $newInvoice->amount = ($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2;
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
                             $newInvoice->save();
@@ -247,13 +253,13 @@ class TuitionPaymentController extends Controller
                         $counter = 1;
                         $tuitionDetailsForFourInstallments = json_decode($tuitionDetails->four_installment_payment, true);
                         $fourInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_amount_irr']);
-                        $totalFeeFourInstallment=$fourInstallmentPaymentAmount-(($fourInstallmentPaymentAmount*$allDiscountPercentages)/100);
-                        $fourInstallmentPaymentAmountAdvance=str_replace(",", "", $tuitionDetailsForFourInstallments['four_installment_advance_irr']);
+                        $totalFeeFourInstallment = $fourInstallmentPaymentAmount - (($fourInstallmentPaymentAmount * $allDiscountPercentages) / 100);
+                        $fourInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_advance_irr']);
 
                         while ($counter < 5) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount=($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4;
+                            $newInvoice->amount = ($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4;
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                             $newInvoice->save();
@@ -263,8 +269,8 @@ class TuitionPaymentController extends Controller
                     case 4:
                         $tuitionDetailsForFullPayment = json_decode($tuitionDetails->full_payment, true);
                         $fullPaymentAmount = str_replace(',', '', $tuitionDetailsForFullPayment['full_payment_irr']);
-                        $fullPaymentAmountAdvance=($fullPaymentAmount*30)/100;
-                        $fullPaymentAmountInstallment=($fullPaymentAmount-(($fullPaymentAmount*$allDiscountPercentages)/100))-$fullPaymentAmountAdvance;
+                        $fullPaymentAmountAdvance = ($fullPaymentAmount * 30) / 100;
+                        $fullPaymentAmountInstallment = ($fullPaymentAmount - (($fullPaymentAmount * $allDiscountPercentages) / 100)) - $fullPaymentAmountAdvance;
 
                         $newInvoice = new TuitionInvoiceDetails();
                         $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
