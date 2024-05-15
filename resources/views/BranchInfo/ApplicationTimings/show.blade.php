@@ -162,7 +162,7 @@
                                 <tbody>
                                 @foreach($applicationTiming->applications as $application)
                                     <tr
-                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        class="@if($application->reserved==1) bg-green-300 @elseif($application->status==0) bg-red-300 @else bg-white @endif border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="w-4 pl-4">
                                             <div class="flex items-center">
                                                 {{ $loop->iteration }}
@@ -236,9 +236,9 @@
                                             <div
                                                 class="text-base font-semibold">
                                                 @if($application->status==0)
-                                                    <p class="text-red-400">Deactive</p>
+                                                    <p class="text-red-700">Deactive</p>
                                                 @elseif($application->status==1)
-                                                    <p class="text-green-400">Active</p>
+                                                    <p class="text-green-700">Active</p>
                                                 @endif
                                             </div>
                                         </th>
