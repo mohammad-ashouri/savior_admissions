@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="content" class="p-4 md:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
-        <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
+        <div class="p-4 rounded-lg dark:border-gray-700 mt-20 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">All Application Timings</h1>
             </div>
@@ -76,31 +76,31 @@
                                         #
                                     </div>
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Academic Year
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Start Date and Time
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     End Date and Time
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Interview Time
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Delay Between Reserve
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Fee
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     First Interviewer
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Second Interviewer
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class=" text-center">
                                     Action
                                 </th>
                             </tr>
@@ -110,68 +110,50 @@
                             @foreach($applicationTimings as $applicationTiming)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="w-4 p-4">
-                                        <div class="flex items-center">
+                                    <td class="w-4 p-4 text-center border">
                                             {{ $loop->iteration }}
-                                        </div>
                                     </td>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->academicYearInfo->name }}</div>
-                                        </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->start_date . " " . $applicationTiming->start_time }}</div>
-                                        </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->end_date . " " . $applicationTiming->end_time }}</div>
-                                        </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->interview_time }}</div>
-                                        </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->delay_between_reserve }}</div>
-                                        </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 class="text-base font-semibold">{{ number_format($applicationTiming->fee) . ' Rials' }}</div>
-                                        </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->firstInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->firstInterviewer->generalInformationInfo->last_name_en }}</div>
-                                        </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->secondInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->secondInterviewer->generalInformationInfo->last_name_en }}</div>
-                                        </div>
                                     </th>
-                                    <td class="px-6 py-4 text-center">
+                                    <td class=" text-center">
                                         <!-- Modal toggle -->
                                         @can('application-timing-show')
                                             <a href="{{ route('ApplicationTimings.show',$applicationTiming->id) }}"
@@ -180,22 +162,6 @@
                                                 <i class="las la-eye mt-1 mr-1"></i>
                                                 Details
                                             </a>
-                                        @endcan
-                                        @can('application-timing-edit')
-                                            {{--                                            <a href="{{ route('ApplicationTimings.edit',$applicationTiming->id) }}"--}}
-                                            {{--                                               type="button"--}}
-                                            {{--                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">--}}
-                                            {{--                                                <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"--}}
-                                            {{--                                                     xmlns="http://www.w3.org/2000/svg">--}}
-                                            {{--                                                    <path--}}
-                                            {{--                                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z">--}}
-                                            {{--                                                    </path>--}}
-                                            {{--                                                    <path fill-rule="evenodd"--}}
-                                            {{--                                                          d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"--}}
-                                            {{--                                                          clip-rule="evenodd"></path>--}}
-                                            {{--                                                </svg>--}}
-                                            {{--                                                Edit--}}
-                                            {{--                                            </a>--}}
                                         @endcan
                                     </td>
                                 </tr>
