@@ -322,7 +322,7 @@ class InterviewController extends Controller
                     );
                     $files['file1'] = [
                         'src1' => $document_file1_path,
-                        'description1' => $request->document_description1
+                        'description1' => $request->document_description1,
                     ];
 
                     Document::create([
@@ -349,7 +349,7 @@ class InterviewController extends Controller
                     );
                     $files['file2'] = [
                         'src2' => $document_file2_path,
-                        'description2' => $request->document_description2
+                        'description2' => $request->document_description2,
                     ];
 
                     Document::create([
@@ -376,7 +376,7 @@ class InterviewController extends Controller
                     );
                     $files['file3'] = [
                         'src3' => $document_file3_path,
-                        'description3' => $request->document_description3
+                        'description3' => $request->document_description3,
                     ];
 
                     Document::create([
@@ -403,7 +403,7 @@ class InterviewController extends Controller
                     );
                     $files['file4'] = [
                         'src4' => $document_file4_path,
-                        'description4' => $request->document_description4
+                        'description4' => $request->document_description4,
                     ];
 
                     Document::create([
@@ -430,7 +430,7 @@ class InterviewController extends Controller
                     );
                     $files['file5'] = [
                         'src5' => $document_file5_path,
-                        'description5' => $request->document_description5
+                        'description5' => $request->document_description5,
                     ];
                     Document::create([
                         'user_id' => auth()->user()->id,
@@ -446,11 +446,12 @@ class InterviewController extends Controller
                         'description' => $request->document_description5,
                     ]);
                 }
+                $interview->files = json_encode($files, true);
+
                 break;
         }
 
         $interview->interview_form = json_encode($request->all(), true);
-        $interview->files = json_encode($files, true);
 
         if ($interview->save()) {
             //Check if 3 interviews completed then make that to principal for confirmation
@@ -710,7 +711,7 @@ class InterviewController extends Controller
             );
             $files['file1'] = [
                 'src1' => $document_file1_path,
-                'description1' => $request->document_description1
+                'description1' => $request->document_description1,
             ];
 
             Document::create([
@@ -737,7 +738,7 @@ class InterviewController extends Controller
             );
             $files['file2'] = [
                 'src2' => $document_file2_path,
-                'description2' => $request->document_description2
+                'description2' => $request->document_description2,
             ];
 
             Document::create([
@@ -764,7 +765,7 @@ class InterviewController extends Controller
             );
             $files['file3'] = [
                 'src3' => $document_file3_path,
-                'description3' => $request->document_description3
+                'description3' => $request->document_description3,
             ];
 
             Document::create([
@@ -791,7 +792,7 @@ class InterviewController extends Controller
             );
             $files['file4'] = [
                 'src4' => $document_file4_path,
-                'description4' => $request->document_description4
+                'description4' => $request->document_description4,
             ];
 
             Document::create([
@@ -818,7 +819,7 @@ class InterviewController extends Controller
             );
             $files['file5'] = [
                 'src5' => $document_file5_path,
-                'description5' => $request->document_description5
+                'description5' => $request->document_description5,
             ];
             Document::create([
                 'user_id' => auth()->user()->id,
