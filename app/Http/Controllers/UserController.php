@@ -26,6 +26,7 @@ class UserController extends Controller
         $this->middleware('permission:edit-users', ['only' => ['edit', 'update']]);
         $this->middleware('permission:delete-users', ['only' => ['destroy']]);
         $this->middleware('permission:search-user', ['only' => ['searchUser']]);
+        $this->middleware('permission:change-users-password', ['only' => ['changeUserPassword']]);
     }
 
     public function index()
