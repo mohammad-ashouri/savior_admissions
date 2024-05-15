@@ -1,16 +1,16 @@
 @php use App\Models\User;
  $me=User::find(auth()->user()->id);
 
- foreach ($interview->interview as $item) {
-    if ($item->interview_type == 1) {
-    $interviewFields=json_decode($item->interview_form,true);
+foreach ($interview->interview as $item) {
+    if ($item->interview_type == 1 and $interview->first_interviewer == $me->id) {
+        $interviewFields=json_decode($item->interview_form,true);
     }
-    if ($item->interview_type == 2) {
-    $interviewFields=json_decode($item->interview_form,true);
+    if ($item->interview_type == 2 and $interview->second_interviewer == $me->id) {
+        $interviewFields=json_decode($item->interview_form,true);
     }
-    if ($item->interview_type == 3) {
-    $interviewFields=json_decode($item->interview_form,true);
-    $interviewFiles=json_decode($item->files,true);
+    if ($item->interview_type == 3 and $me->hasRole('Financial Manager')) {
+        $interviewFields=json_decode($item->interview_form,true);
+        $interviewFiles=json_decode($item->files,true);
     }
 }
 
@@ -61,13 +61,13 @@
                         </div>
                         @php
                             foreach ($interview->interview as $item) {
-                                if ($item->interview_type == 1) {
+                                if ($item->interview_type == 1 and $interview->first_interviewer == $me->id) {
                                     $interviewFields=json_decode($item->interview_form,true);
                                 }
-                                if ($item->interview_type == 2) {
+                                if ($item->interview_type == 2 and $interview->second_interviewer == $me->id) {
                                     $interviewFields=json_decode($item->interview_form,true);
                                 }
-                                if ($item->interview_type == 3) {
+                                if ($item->interview_type == 3 and $me->hasRole('Financial Manager')) {
                                     $interviewFields=json_decode($item->interview_form,true);
                                     $interviewFiles=json_decode($item->files,true);
                                 }
