@@ -15,6 +15,7 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('permission:change_user_general_information', ['only' => ['changeUserGeneralInformation']]);
         $this->middleware('permission:access-user-role', ['only' => ['changeUserRole']]);
     }
 
@@ -138,24 +139,26 @@ class ProfileController extends Controller
         $input = $request->all();
         $user = User::find($input['user_id']);
         $userGeneralInformation = GeneralInformation::where('user_id', $user->id)->first();
-        $userGeneralInformation->first_name_fa = $input['first_name_fa'];
-        $userGeneralInformation->last_name_fa = $input['last_name_fa'];
-        $userGeneralInformation->first_name_en = $input['first_name_en'];
-        $userGeneralInformation->last_name_en = $input['last_name_en'];
-        $userGeneralInformation->gender = $input['gender'];
-        $userGeneralInformation->father_name = $input['father_name'];
-        $userGeneralInformation->birthdate = $input['Birthdate'];
-        $userGeneralInformation->country = $input['Country'];
-        $userGeneralInformation->nationality = $input['nationality'];
-        $userGeneralInformation->birthplace = $input['birthplace'];
-        $userGeneralInformation->passport_number = $input['PassportNumber'];
-        $userGeneralInformation->faragir_code = $input['FaragirCode'];
-        $userGeneralInformation->state_city = $input['city'];
-        $userGeneralInformation->address = $input['address'];
-        $userGeneralInformation->phone = $input['phone'];
-        $userGeneralInformation->postal_code = $input['postalcode'];
+        $userGeneralInformation->first_name_fa = @$input->first_name_fa;
+        $userGeneralInformation->last_name_fa = @$input->last_name_fa;
+        $userGeneralInformation->first_name_en = @$input->first_name_en;
+        $userGeneralInformation->last_name_en = @$input->last_name_en;
+        $userGeneralInformation->gender = @$input->gender;
+        $userGeneralInformation->father_name = @$input->father_name;
+        $userGeneralInformation->birthdate = @$input->Birthdate;
+        $userGeneralInformation->country = @$input->Country;
+        $userGeneralInformation->nationality = @$input->nationality;
+        $userGeneralInformation->birthplace = @$input->birthplace;
+        $userGeneralInformation->passport_number = @$input->PassportNumber;
+        $userGeneralInformation->faragir_code = @$input->FaragirCode;
+        $userGeneralInformation->state_city = @$input->city;
+        $userGeneralInformation->address = @$input->address;
+        $userGeneralInformation->phone = @$input->phone;
+        $userGeneralInformation->postal_code = @$input->postalcode;
 
-        $checkEmail = User::where('email', $input['email'])->where('id', '!=', $user->id)->exists();
+        if (isset($input['email'])) {
+            $checkEmail = User::where('email', $input['email'])->where('id', '!=', $user->id)->exists();
+        }
         $checkMobile = User::where('mobile', $input['mobile'])->where('id', '!=', $user->id)->exists();
 
         if ($checkEmail) {
