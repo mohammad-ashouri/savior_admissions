@@ -263,7 +263,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#new-level').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -280,7 +281,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#new-academic-year').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -295,7 +297,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#edit-academic-year').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -503,7 +506,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#new-education-year').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -518,7 +522,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(this).off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -536,7 +541,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#new-education-type').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -604,7 +610,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#new-application-timing').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -620,7 +627,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(this).off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -636,7 +644,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(this).off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -652,7 +661,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $(this).off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -734,7 +744,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#application-payment').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -874,7 +885,8 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#application-payment').off('submit').submit();
+                        $(this).off('submit');
+                        $(this).submit();
                     }
                 });
             });
@@ -932,7 +944,8 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#new-student').off('submit').submit();
+                        $(this).off('submit');
+                        $(this).submit();
                     }
                 });
             });
@@ -1013,7 +1026,8 @@ $(document).ready(function () {
                             confirmButtonText: 'Yes',
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                $('#update-interview').off('submit').submit();
+                                $(this).off('submit');
+                                $(this).submit();
                             }
                         });
                     }
@@ -1030,7 +1044,8 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#update-interview').off('submit').submit();
+                        $(this).off('submit');
+                        $(this).submit();
                     }
                 });
             }
@@ -1113,7 +1128,8 @@ $(document).ready(function () {
                             confirmButtonText: 'Yes',
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                $('#set-interview').off('submit').submit();
+                                $(this).off('submit');
+                                $(this).submit();
                             }
                         });
                     }
@@ -1130,7 +1146,8 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#set-interview').off('submit').submit();
+                        $(this).off('submit');
+                        $(this).submit();
                     }
                 });
             }
@@ -1216,7 +1233,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('.confirm-appliance').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -1273,7 +1291,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('.confirm-evidences').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -1431,7 +1450,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('.confirm-evidences').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -1781,7 +1801,8 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#pay-tuition').off('submit').submit();
+                        $(this).off('submit');
+                        $(this).submit();
                     }
                 });
             });
@@ -1949,7 +1970,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#upload-student-documents').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
@@ -2001,7 +2023,8 @@ $(document).ready(function () {
                 confirmButtonText: 'Yes',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#discounts-edit').off('submit').submit();
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
         });
