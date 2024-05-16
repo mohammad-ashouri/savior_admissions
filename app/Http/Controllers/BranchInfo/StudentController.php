@@ -289,11 +289,13 @@ class StudentController extends Controller
 
         if (isset($request->title)) {
             foreach ($extraInformationTitles as $index => $titles) {
-                $studentExtraInformation = new StudentExtraInformation();
-                $studentExtraInformation->student_informations_id = $studentInformation->id;
-                $studentExtraInformation->name = $titles;
-                $studentExtraInformation->description = $extraInformationDescriptions[$index];
-                $studentExtraInformation->save();
+                if (!empty($titles)) {
+                    $studentExtraInformation = new StudentExtraInformation();
+                    $studentExtraInformation->student_informations_id = $studentInformation->id;
+                    $studentExtraInformation->name = $titles;
+                    $studentExtraInformation->description = $extraInformationDescriptions[$index];
+                    $studentExtraInformation->save();
+                }
             }
         }
 
