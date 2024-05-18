@@ -372,7 +372,7 @@
         });
 
 
-        // window.print();
+        window.print();
         function setPrintScale() {
             if (window.matchMedia('print').matches) {
                 var scale = 0.6; // 60%
@@ -519,13 +519,13 @@
                             {{ __('translated_fa.Full Payment') }}
                             @break
                         @case('2')
-                            {{ __('translated_fa.Two installment') }}
+                            {{ __('translated_fa.Two Installment') }}
                             @break
                         @case('3')
                             {{ __('translated_fa.Four Installment') }}
                             @break
                         @case('4')
-                            {{ __('translated_fa.Four Installment') }}{{ __('translated_fa.Full Payment With Advance') }}
+                            {{ __('translated_fa.Full Payment') }}{{ __('translated_fa.Full Payment With Advance') }}
                             @break
                     @endswitch
                 </td>
@@ -552,6 +552,7 @@
                         <th>{{ __('translated_fa.Due Date') }}</th>
                         <th>{{ __('translated_fa.Date received') }}</th>
                         <th>{{ __('translated_fa.Payment Method') }}</th>
+                        @php $paidAmount=0 @endphp
                     </tr>
                     @foreach($myTuitionInfo->invoiceDetails as $key=>$invoices)
                         @php
@@ -574,28 +575,28 @@
                             <td>
                                 @switch($tuitionType)
                                     @case('Two Installment Advance')
-                                        دو قسطه - پیش پرداخت
+                                         پیش پرداخت
                                         @break
                                     @case('Two Installment - Installment 1')
-                                        دو قسطه - قسط اول
+                                         قسط اول
                                         @break
                                     @case('Two Installment - Installment 2')
-                                        دو قسطه - قسط دوم
+                                         قسط دوم
                                         @break
                                     @case('Four Installment Advance')
-                                        چهار قسطه - پیش پرداخت
+                                         پیش پرداخت
                                         @break
                                     @case('Four Installment - Installment 1')
-                                        چهار قسطه - قسط اول
+                                         قسط اول
                                         @break
                                     @case('Four Installment - Installment 2')
-                                        چهار قسطه - قسط دوم
+                                         قسط دوم
                                         @break
                                     @case('Four Installment - Installment 3')
-                                        چهار قسطه - قسط سوم
+                                         قسط سوم
                                         @break
                                     @case('Four Installment - Installment 4')
-                                        چهار قسطه - قسط چهارم
+                                         قسط چهارم
                                         @break
                                     @case('Full Payment With Advance - Installment')
                                         پرداخت کامل با پیش پرداخت - پرداخت دوم
@@ -654,10 +655,17 @@
                                 @endif
                             </td>
                         </tr>
+                        @if($invoices->date_of_payment!=null)
+                            @php
+                            $paidAmount=$invoices->amount+$paidAmount;
+                            @endphp
+                        @endif
                     @endforeach
                     <tr style="border-top: 1px solid #ffe753;">
                         <td class="font-bold">{{ __('translated_fa.Total') }}</td>
-                        <td style="border: none;">{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}</td>
+                        <td>{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}</td>
+                        <td class="font-bold">{{ __('translated_fa.Paid Amount') }}</td>
+                        <td>{{ number_format($paidAmount) }} {{ __('translated_fa.IRR') }}</td>
                     </tr>
                 </table>
             </div>
@@ -675,7 +683,7 @@
             </li>
             @foreach($discounts as $discount)
                 <li class="consideration-item">
-                    {{ $discount->name }}
+                    {{ $discount->id." - " }}
                 </li>
             @endforeach
         @endif

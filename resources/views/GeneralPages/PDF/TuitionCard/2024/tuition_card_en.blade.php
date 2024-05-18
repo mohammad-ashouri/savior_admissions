@@ -580,10 +580,17 @@
                                 @endif
                             </td>
                         </tr>
+                        @if($invoices->date_of_payment!=null)
+                            @php
+                                $paidAmount=$invoices->amount+$paidAmount;
+                            @endphp
+                        @endif
                     @endforeach
                     <tr style="border-top: 1px solid #ffe753;">
                         <td class="font-bold">Total</td>
                         <td style="border: none;">{{ number_format($totalAmount) }} IRR</td>
+                        <td class="font-bold">Paid Amount</td>
+                        <td>{{ number_format($paidAmount) }} {{ __('translated_fa.IRR') }}</td>
                     </tr>
                 </table>
             </div>
@@ -601,7 +608,7 @@
             </li>
             @foreach($discounts as $discount)
                 <li class="consideration-item">
-                    {{ $discount->name }}
+                    {{ $discount->id." - " }}
                 </li>
             @endforeach
         @endif
