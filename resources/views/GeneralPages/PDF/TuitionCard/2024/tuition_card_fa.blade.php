@@ -43,8 +43,12 @@
 
     //Discounts
     $interviewForm=Interview::where('application_id',$applicationInformation->application_id)->where('interview_type',3)->latest()->first();
-    $discounts=DiscountDetail::whereIn('id',json_decode($interviewForm->interview_form,true)['discount'])->get();
-
+    if (!isset(json_decode($interviewForm->interview_form,true)['discount'])){
+        $discounts=[];
+    }else{
+        $discounts=json_decode($interviewForm->interview_form,true)['discount'];
+    }
+    $discounts=DiscountDetail::whereIn('id',$discounts)->get();
 @endphp
 <head>
     <meta charset="UTF-8">
@@ -665,14 +669,16 @@
 <div style="page-break-after: auto" class="Considerations">
     <h1>{{ __('translated_fa.Considerations') }}</h1>
     <ul class="considerations ">
-        <li class="consideration-item font-bold">
-            {{ __('translated_fa.Discounts') }}
-        </li>
-        @foreach($discounts as $discount)
-            <li class="consideration-item">
-                {{ $discount->name }}
+        @if($discounts->isNotEmpty())
+            <li class="consideration-item font-bold">
+                Discounts
             </li>
-        @endforeach
+            @foreach($discounts as $discount)
+                <li class="consideration-item">
+                    {{ $discount->name }}
+                </li>
+            @endforeach
+        @endif
         @if($allFamilyDiscounts['students_count']>1)
             <li class="consideration-item font-bold">
                 {{ __('translated_fa.Included Family Discounts') }}
