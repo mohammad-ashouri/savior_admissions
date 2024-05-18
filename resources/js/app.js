@@ -1459,6 +1459,22 @@ $(document).ready(function () {
     } else if (fullPath.includes('StudentStatuses')) {
         pageTitle = 'Student Statuses';
 
+        $('.extension_document').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your confirmation will be set permanently.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit');
+                    $(this).submit();
+                }
+            });
+        });
     } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 
