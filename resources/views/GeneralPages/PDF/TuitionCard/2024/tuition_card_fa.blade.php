@@ -469,32 +469,32 @@
 </section>
 
 {{--Tuition Table--}}
-<div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
-    <h3 class="title-section bg-blue p-1r m-0 radius-table">{{ __('translated_fa.Tuition table for the academic year') }}
-        : {{ $applianceStatus->academicYearInfo->name }}</h3>
-    <div class="table-container">
-        <table>
-            <tr>
-                <th style="width: 15%">{{ __('translated_fa.Currency of Payment') }}</th>
-                <th style="width: 25%">{{ __('translated_fa.Full Payment tuition') }}</th>
-                <th style="width: 25%">{{ __('translated_fa.Two Installment tuition') }}</th>
-                <th style="width: 25%">{{ __('translated_fa.Four Installment tuition') }}</th>
-                <th style="width: 15%">{{ __('translated_fa.Level') }}</th>
-            </tr>
-            <tr>
-                <td class="font-bold">{{ __('translated_fa.Iranian Rial') }}</td>
-                <td>{{ json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr'] }} {{ __('translated_fa.IRR') }}</td>
-                <td>{{ json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr'] }}
-                    {{ __('translated_fa.IRR') }}
-                </td>
-                <td>{{ json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr'] }}
-                    {{ __('translated_fa.IRR') }}
-                </td>
-                <td>{{$levelName}}</td>
-            </tr>
-        </table>
-    </div>
-</div>
+{{--<div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">--}}
+{{--    <h3 class="title-section bg-blue p-1r m-0 radius-table">{{ __('translated_fa.Tuition table for the academic year') }}--}}
+{{--        : {{ $applianceStatus->academicYearInfo->name }}</h3>--}}
+{{--    <div class="table-container">--}}
+{{--        <table>--}}
+{{--            <tr>--}}
+{{--                <th style="width: 15%">{{ __('translated_fa.Currency of Payment') }}</th>--}}
+{{--                <th style="width: 25%">{{ __('translated_fa.Full Payment tuition') }}</th>--}}
+{{--                <th style="width: 25%">{{ __('translated_fa.Two Installment tuition') }}</th>--}}
+{{--                <th style="width: 25%">{{ __('translated_fa.Four Installment tuition') }}</th>--}}
+{{--                <th style="width: 15%">{{ __('translated_fa.Level') }}</th>--}}
+{{--            </tr>--}}
+{{--            <tr>--}}
+{{--                <td class="font-bold">{{ __('translated_fa.Iranian Rial') }}</td>--}}
+{{--                <td>{{ json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr'] }} {{ __('translated_fa.IRR') }}</td>--}}
+{{--                <td>{{ json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr'] }}--}}
+{{--                    {{ __('translated_fa.IRR') }}--}}
+{{--                </td>--}}
+{{--                <td>{{ json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr'] }}--}}
+{{--                    {{ __('translated_fa.IRR') }}--}}
+{{--                </td>--}}
+{{--                <td>{{$levelName}}</td>--}}
+{{--            </tr>--}}
+{{--        </table>--}}
+{{--    </div>--}}
+{{--</div>--}}
 
 {{--Paid Tuition Table--}}
 <div style="margin-top: 1%" id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
