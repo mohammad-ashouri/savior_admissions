@@ -184,6 +184,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
             Route::get('ConfirmEvidences', [EvidenceController::class, 'index'])->name('Evidences');
             Route::get('ConfirmEvidences/{appliance_id}', [EvidenceController::class, 'show'])->name('Evidences.show');
             Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
+            Route::post('ExtensionOfDocumentUpload', [EvidenceController::class, 'extensionOfDocumentUpload'])->name('Evidences.extensionOfDocumentUpload');
 
             //Student status
             Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
@@ -221,3 +222,4 @@ Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'veri
 //Route::post('/importNewUsers', [ExcelController::class, 'importNewUsers'])->name('excel.importNewUsers');
 //Route::get('/ExportExcelFromUsersMobile', [ExcelController::class, 'exportExcelFromUsersMobile'])->name('excel.importParentMothers');
 //Route::get('/ExportExcelFromAllStudents', [ExcelController::class, 'exportExcelFromAllStudents']);
+Route::get('/ExportExcelFromAllStudents', [ExcelController::class, 'exportExcelFromAllStudents']);

@@ -311,9 +311,8 @@ class StudentController extends Controller
         $students = [];
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-                ->where('tuition_payment_status', 'Paid')
                 ->distinct('student_id')
-                ->orderBy('academic_year', 'desc')->paginate(20);
+                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
@@ -335,7 +334,7 @@ class StudentController extends Controller
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('academic_year', $academicYears)
                 ->distinct('student_id')
-                ->orderBy('academic_year', 'desc')->paginate(20);
+                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 

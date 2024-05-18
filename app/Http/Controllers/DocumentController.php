@@ -255,6 +255,7 @@ class DocumentController extends Controller
 
         $studentAppliance = StudentApplianceStatus::where('student_id', $request->student_id)->first();
         $studentAppliance->documents_uploaded = 2;
+        $studentAppliance->description = null;
         $studentAppliance->save();
 
         $this->sendSMS($studentInformation->guardianInfo->mobile, "Documents uploaded successfully. Please wait for the confirmation of the documents sent.\nSavior Schools");

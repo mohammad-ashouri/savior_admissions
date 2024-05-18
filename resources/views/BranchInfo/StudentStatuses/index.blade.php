@@ -6,8 +6,10 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">All Students Status</h1>
             </div>
+
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
+
                     <form id="search-user" action="{{ route('SearchReservationInvoices') }}" method="get">
                         <div class="flex w-full">
                             <div class="mr-3">
@@ -27,6 +29,42 @@
                         </div>
                     </form>
                 </div>
+                @if( session()->has('success') )
+                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                         role="alert">
+                        <div class="flex">
+                            <div class="py-1">
+                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 20 20">
+                                    <path
+                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-bold">{{ session()->get('success') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                @if (count($errors) > 0)
+                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                         role="alert">
+                        <div class="flex">
+                            <div class="py-1">
+                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 20 20">
+                                    <path
+                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                @foreach ($errors->all() as $error)
+                                    <p class="font-bold">{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     @if(empty($students))
                         <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
@@ -51,10 +89,10 @@
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 text-center">
-                                        Appliance ID
+                                    Appliance ID
                                 </th>
                                 <th scope="col" class="p-4 text-center">
-                                        Student ID
+                                    Student ID
                                 </th>
                                 <th scope="col" class=" text-center">
                                     Academic Year
@@ -93,141 +131,132 @@
                             @foreach($students as $student)
                                 <tr
                                     class="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                    <td class="w-4 p-4 border text-center">
-                                            {{ $student->id }}
+                                    <td class="w-4 border text-center">
+                                        {{ $student->id }}
                                     </td>
-                                    <td class="w-4 p-4 border text-center">
-                                            {{ $student->student_id }}
+                                    <td class="w-4 p-2 border text-center">
+                                        {{ $student->student_id }}
                                     </td>
                                     <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
-                                        </div>
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}</div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->gender }}</div>
-                                        </div>
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->gender }}</div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $student->interview_status }}</div>
-                                        </div>
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">{{ $student->interview_status }}</div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">
-                                                @switch($student->documents_uploaded)
-                                                    @case('0')
-                                                        Pending For Upload
-                                                        @break
-                                                    @case('1')
-                                                        Admitted
-                                                        @break
-                                                    @case('2')
-                                                        Pending For Review
-                                                        @break
-                                                    @case('3')
-                                                        Rejected
-                                                        @break
-                                                    @default
-                                                        -
-                                                @endswitch
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">
-                                                @switch($student->documents_uploaded_approval)
-                                                    @case(1)
-                                                        Approved
-                                                        @break
-                                                    @case(2)
-                                                        Rejected
-                                                        @break
-                                                    @default
-                                                        -
-                                                @endswitch
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">
-                                                @if($student->documentSeconder)
-                                                    {{ $student->documentSeconder->generalInformationInfo->first_name_en }} {{ $student->documentSeconder->generalInformationInfo->last_name_en }}
-                                                @else
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">
+                                            @switch($student->documents_uploaded)
+                                                @case('0')
+                                                    Pending For Upload
+                                                    @break
+                                                @case('1')
+                                                    Admitted
+                                                    @break
+                                                @case('2')
+                                                    Pending For Review
+                                                    @break
+                                                @case('3')
+                                                    Rejected
+                                                    @break
+                                                @default
                                                     -
-                                                @endif
-                                            </div>
+                                            @endswitch
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">
-                                                @switch($student->tuition_payment_status)
-                                                    @case('Not Paid')
-                                                        Not Paid Yet!
-                                                        @break
-                                                    @case('Paid')
-                                                        Paid
-                                                        @break
-                                                    @case('Pending')
-                                                        Pending For Pay
-                                                        @break
-                                                    @default
-                                                        -
-                                                @endswitch
-                                            </div>
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">
+                                            @switch($student->documents_uploaded_approval)
+                                                @case(1)
+                                                    Approved
+                                                    @break
+                                                @case(2)
+                                                    Rejected
+                                                    @break
+                                                @default
+                                                    -
+                                            @endswitch
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">
-                                                @switch($student->approval_status)
-                                                    @case(1)
-                                                        Approved
-                                                        @break
-                                                    @case(2)
-                                                        Rejected
-                                                        @break
-                                                    @default
-                                                        -
-                                                @endswitch
-                                            </div>
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">
+                                            @if($student->documentSeconder)
+                                                {{ $student->documentSeconder->generalInformationInfo->first_name_en }} {{ $student->documentSeconder->generalInformationInfo->last_name_en }}
+                                            @else
+                                                -
+                                            @endif
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center border text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">
-                                                {{$student->description}}
-                                            </div>
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">
+                                            @switch($student->tuition_payment_status)
+                                                @case('Not Paid')
+                                                    Not Paid Yet!
+                                                    @break
+                                                @case('Paid')
+                                                    Paid
+                                                    @break
+                                                @case('Pending')
+                                                    Pending For Pay
+                                                    @break
+                                                @default
+                                                    -
+                                            @endswitch
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">
+                                            @switch($student->approval_status)
+                                                @case(1)
+                                                    Approved
+                                                    @break
+                                                @case(2)
+                                                    Rejected
+                                                    @break
+                                                @default
+                                                    -
+                                            @endswitch
+                                        </div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div
+                                            class="text-base font-semibold">
+                                            {{$student->description}}
+                                            @if($student->documents_uploaded_approval=='3' and $student->documents_uploaded_approval=='3')
+                                                <form class="mt-2 extension_document" method="post"
+                                                      action="{{route('Evidences.extensionOfDocumentUpload')}}">
+                                                    @csrf
+                                                    <input type="hidden" value="{{ $student->id }}" name="appliance_id">
+                                                    <button type="submit"
+                                                            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                        Extension Of Document Upload
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </th>
                                 </tr>
