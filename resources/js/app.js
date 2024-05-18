@@ -1541,6 +1541,16 @@ $(document).ready(function () {
             $('#document_file_full_payment2,#document_file_full_payment_with_advance2,#document_file_offline_installment2').val('');
             $('#document_file_full_payment3,#document_file_full_payment_with_advance3,#document_file_offline_installment3').val('');
 
+            $('#payment_type,#payment_method').change(function (){
+                $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
+                $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
+                $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
+                $('#offline-full-payment-div, #offline-installment-div').hide();
+                $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
+                $('#accept-div').addClass('hidden');
+                $('#payment-button').hide();
+
+            });
             $('.get-invoice').on('click', function () {
                 let paymentMethod = $('#payment_method').val();
 
