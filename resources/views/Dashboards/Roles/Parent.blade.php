@@ -171,6 +171,9 @@
                                         Academic Year
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
+                                        Student ID
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">
                                         Student
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
@@ -189,6 +192,13 @@
                                         <td class="w-56 p-4">
                                             {{$applicationStatus->academicYearInfo->name}}
                                         </td>
+                                        <th scope="row"
+                                            class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
+                                            <div>
+                                                <div
+                                                    class="text-base font-semibold">{{ $applicationStatus->student_id }} </div>
+                                            </div>
+                                        </th>
                                         <th scope="row"
                                             class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                             <div>
@@ -280,7 +290,7 @@
                                                 @if($applicationStatus->documents_uploaded=='0')
                                                     <div
                                                         class="text-base font-semibold">
-                                                        <a href="{{ route('Document.UploadByParent',$student->student_id) }}"
+                                                        <a href="{{ route('Document.UploadByParent',$applicationStatus->student_id) }}"
                                                            type="button"
                                                            class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                             <div class="text-center">
@@ -295,7 +305,7 @@
                                                 @if($applicationStatus->documents_uploaded==3 and $applicationStatus->documents_uploaded_approval==2)
                                                     <div
                                                         class="text-base font-semibold">
-                                                        <a href="{{ route('Document.EditUploadedEvidences',$student->student_id) }}"
+                                                        <a href="{{ route('Document.EditUploadedEvidences',$applicationStatus->student_id) }}"
                                                            type="button"
                                                            class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                             <div class="text-center">
@@ -310,7 +320,7 @@
                                                 @if($applicationStatus->tuition_payment_status=='Pending')
                                                     <div
                                                         class="text-base font-semibold">
-                                                        <a href="{{ route('Tuitions.PayTuition',$student->student_id) }}"
+                                                        <a href="{{ route('Tuitions.PayTuition',$applicationStatus->student_id) }}"
                                                            type="button"
                                                            class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                             <div class="text-center">
