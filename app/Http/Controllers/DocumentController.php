@@ -23,6 +23,8 @@ class DocumentController extends Controller
         $this->middleware('permission:document-create', ['only' => ['createDocument', 'createDocumentForUser']]);
         $this->middleware('permission:document-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:document-delete', ['only' => ['destroy']]);
+        ini_set('post_max_size','8M');
+        ini_set('upload_max_filesize','8M');
     }
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
