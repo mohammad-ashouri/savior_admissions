@@ -277,13 +277,13 @@ class TuitionController extends Controller
         $paymentMethod = $request->payment_method;
         $paymentType = $request->payment_type;
 
-        $allDiscounts=$this->getAllDiscounts($student_id);
+        $allDiscounts = $this->getAllDiscounts($student_id);
 
         //Amount information
         $fullPayment = json_decode($tuition->full_payment, true);
         $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr']);
         $fullPaymentAmountAdvance = (str_replace(',', '', $fullPayment['full_payment_irr']));
-        $fullPaymentAmountWithDiscounts = $fullPaymentAmount - (($fullPaymentAmount*$allDiscounts)/100);
+        $fullPaymentAmountWithDiscounts = $fullPaymentAmount - (($fullPaymentAmount * $allDiscounts) / 100);
 
         $twoInstallmentPayment = json_decode($tuition->two_installment_payment, true);
         $twoInstallmentAdvance = str_replace(',', '', $twoInstallmentPayment['two_installment_advance_irr']);
@@ -667,5 +667,35 @@ class TuitionController extends Controller
         dd($request->all());
 
         return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethod', 'discountPercentages', 'familyDiscount'));
+    }
+
+    public function tuitionsStatus()
+    {
+        $me = User::find(auth()->user()->id);
+
+        $students = [];
+        if ($me->hasRole('Super Admin')) {
+            $students = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder')
+                ->where('tuition_payment_status','Paid')
+                ->orderBy('academic_year', 'desc')->paginate(150);
+            $academicYears = AcademicYear::get();
+            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
+
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+                ->whereIn('academic_year', $academicYears)
+                ->where('tuition_payment_status','Paid')
+                ->orderBy('academic_year', 'desc')->paginate(150);
+            $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
+        }
+
+        return view('Finance.TuitionsStatus.index', compact('students', 'academicYears'));
     }
 }

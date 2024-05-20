@@ -9,6 +9,7 @@
         "ext-soap": "*",
         "akaunting/laravel-apexcharts": "*",
         "arielmejiadev/larapex-charts": "^8.1",
+        "barryvdh/laravel-dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "jenssegers/agent": "^2.6",
         "kavenegar/laravel": "^1.3",

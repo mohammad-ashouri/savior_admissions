@@ -23,7 +23,6 @@ class TuitionPaymentController extends Controller
     {
         $me = User::find(auth()->user()->id);
 
-        $tuitionInvoices = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->where('student_informations.guardian', auth()->user()->id)
@@ -291,5 +290,44 @@ class TuitionPaymentController extends Controller
 
                 return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
         }
+    }
+
+    public function applianceInvoices($applianceId)
+    {
+        $me = User::find(auth()->user()->id);
+
+        if ($me->hasRole('Parent')) {
+            $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->where('student_informations.guardian', auth()->user()->id)
+                ->whereNotNull('tuition_payment_status')
+                ->pluck('student_appliance_statuses.id')->toArray();
+            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->get();
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->whereNotNull('tuition_payment_status')
+                ->whereIn('student_appliance_statuses.academic_year', $academicYears)
+                ->where('student_appliance_statuses.id', $applianceId)
+                ->pluck('student_appliance_statuses.id')->toArray();
+            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->get();
+        } elseif ($me->hasRole('Super Admin')) {
+            $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->whereNotNull('tuition_payment_status')
+                ->where('student_appliance_statuses.id', $applianceId)
+                ->pluck('student_appliance_statuses.id')->toArray();
+
+            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->get();
+        }
+
+        return view('Finance.TuitionInvoices.applianceInvoices', compact('tuitionInvoiceDetails', 'me'));
     }
 }

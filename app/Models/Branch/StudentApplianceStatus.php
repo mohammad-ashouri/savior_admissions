@@ -3,6 +3,7 @@
 namespace App\Models\Branch;
 
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -62,5 +63,9 @@ class StudentApplianceStatus extends Model
     public function evidences()
     {
         return $this->belongsTo(Evidence::class, 'id', 'appliance_id');
+    }
+    public function tuitionInvoices()
+    {
+        return $this->belongsTo(TuitionInvoices::class, 'id', 'appliance_id');
     }
 }
