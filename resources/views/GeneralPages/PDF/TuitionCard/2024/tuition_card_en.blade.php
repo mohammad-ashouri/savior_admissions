@@ -444,7 +444,7 @@
                 <p>Student ID: <span>{{ $applianceStatus->student_id }}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>Country: <span>Afghanistan</span></p>
+                <p>Country: <span>{{$fatherNationality->en_short_name}}</span></p>
                 <p>Contact Number: <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
             </div>
         </div>

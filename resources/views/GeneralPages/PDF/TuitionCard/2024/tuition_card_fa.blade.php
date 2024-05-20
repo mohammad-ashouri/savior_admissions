@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="en">
 @php
-    use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
+    use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Evidence;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Country;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
     use \Morilog\Jalali\Jalalian;
 
     $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
@@ -49,6 +49,8 @@
         $discounts=json_decode($interviewForm->interview_form,true)['discount'];
     }
     $discounts=DiscountDetail::whereIn('id',$discounts)->get();
+
+    $fatherNationality=Country::find($evidencesInfo['father_nationality']);
 @endphp
 <head>
     <meta charset="UTF-8">
@@ -372,7 +374,8 @@
         });
 
 
-        window.print();
+        // window.print();
+
         function setPrintScale() {
             if (window.matchMedia('print').matches) {
                 var scale = 0.6; // 60%
@@ -464,7 +467,7 @@
                 <p>{{ __('translated_fa.Student ID') }}: <span>{{ $applianceStatus->student_id }}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>{{ __('translated_fa.Country') }}: <span>Afghanistan</span></p>
+                <p>{{ __('translated_fa.Country') }}: <span>{{$fatherNationality->en_short_name}}</span></p>
                 <p>{{ __('translated_fa.Contact Number') }}:
                     <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
             </div>
@@ -575,28 +578,28 @@
                             <td>
                                 @switch($tuitionType)
                                     @case('Two Installment Advance')
-                                         پیش پرداخت
+                                        پیش پرداخت
                                         @break
                                     @case('Two Installment - Installment 1')
-                                         قسط اول
+                                        قسط اول
                                         @break
                                     @case('Two Installment - Installment 2')
-                                         قسط دوم
+                                        قسط دوم
                                         @break
                                     @case('Four Installment Advance')
-                                         پیش پرداخت
+                                        پیش پرداخت
                                         @break
                                     @case('Four Installment - Installment 1')
-                                         قسط اول
+                                        قسط اول
                                         @break
                                     @case('Four Installment - Installment 2')
-                                         قسط دوم
+                                        قسط دوم
                                         @break
                                     @case('Four Installment - Installment 3')
-                                         قسط سوم
+                                        قسط سوم
                                         @break
                                     @case('Four Installment - Installment 4')
-                                         قسط چهارم
+                                        قسط چهارم
                                         @break
                                     @case('Full Payment With Advance - Installment')
                                         پرداخت کامل با پیش پرداخت - پرداخت دوم
@@ -657,7 +660,7 @@
                         </tr>
                         @if($invoices->date_of_payment!=null)
                             @php
-                            $paidAmount=$invoices->amount+$paidAmount;
+                                $paidAmount=$invoices->amount+$paidAmount;
                             @endphp
                         @endif
                     @endforeach
