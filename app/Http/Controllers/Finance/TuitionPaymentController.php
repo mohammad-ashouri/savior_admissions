@@ -276,7 +276,7 @@ class TuitionPaymentController extends Controller
                         $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
                         $newInvoice->amount = $fullPaymentAmountInstallment;
                         $newInvoice->is_paid = 0;
-                        $newInvoice->description = json_encode(['tuition_type' => 'Full Installment With Advance - Installment'], true);
+                        $newInvoice->description = json_encode(['tuition_type' => 'Full Payment With Advance - Installment'], true);
                         $newInvoice->save();
                         break;
                 }

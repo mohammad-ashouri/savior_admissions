@@ -528,7 +528,7 @@
                             {{ __('translated_fa.Four Installment') }}
                             @break
                         @case('4')
-                            {{ __('translated_fa.Full Payment') }}{{ __('translated_fa.Full Payment With Advance') }}
+                            {{ __('translated_fa.Full Payment With Advance') }}
                             @break
                     @endswitch
                 </td>

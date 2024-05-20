@@ -628,7 +628,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
                         $tuitionInvoiceDetails->is_paid = 2;
                         $tuitionInvoiceDetails->date_of_payment = now();
-                        $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Installment With Advance'], true);
+                        $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Payment With Advance'], true);
                         $tuitionInvoiceDetails->save();
 
                         $studentApplianceStatus->tuition_payment_status = 'Pending For Review';
@@ -642,7 +642,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount = ($fullPaymentAmount * 30) / 100;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
                         $tuitionInvoiceDetails->is_paid = 0;
-                        $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Installment With Advance'], true);
+                        $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Payment With Advance'], true);
                         $tuitionInvoiceDetails->save();
 
                         $invoice = (new Invoice)->amount(($fullPaymentAmount * 30) / 100);
