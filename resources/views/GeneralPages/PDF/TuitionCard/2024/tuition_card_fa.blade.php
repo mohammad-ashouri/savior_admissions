@@ -374,7 +374,7 @@
         });
 
 
-        // window.print();
+        window.print();
 
         function setPrintScale() {
             if (window.matchMedia('print').matches) {
