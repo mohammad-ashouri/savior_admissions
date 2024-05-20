@@ -173,7 +173,8 @@ return [
         Shetabit\Payment\Provider\PaymentServiceProvider::class,
         Kavenegar\Laravel\ServiceProvider::class,
         Lab404\Impersonate\ImpersonateServiceProvider::class,
-        ])->toArray(),
+        Stimulsoft\Laravel\StiServiceProvider::class,
+    ])->toArray(),
 
     /*
     |--------------------------------------------------------------------------
