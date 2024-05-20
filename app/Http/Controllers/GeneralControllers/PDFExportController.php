@@ -16,7 +16,13 @@ class PDFExportController extends Controller
 
         $me=User::find($me);
         if ($me){
-            $checkGuardian=StudentInformation::where('guardian',$me->id)->where('student_id',$applianceStatus->student_id)->exists();
+            if ($me->hasRole('Parent')) {
+                $checkGuardian = StudentInformation::where('guardian', $me->id)->where('student_id', $applianceStatus->student_id)->exists();
+            }elseif($me->hasRole('Principal') or $me->hasRole('Financial Manager') or $me->hasRole('Admissions Officer')){
+                $checkGuardian = StudentInformation::where('student_id', $applianceStatus->student_id)->whereIn('academic_year',$this->getActiveAcademicYears())->exists();
+            }elseif ($me->hasRole('Super Admin')){
+                $checkGuardian = StudentInformation::where('student_id', $applianceStatus->student_id)->exists();
+            }
             if (!$checkGuardian){
                 abort(403);
             }
@@ -32,7 +38,13 @@ class PDFExportController extends Controller
 
         $me=User::find($me);
         if ($me){
-            $checkGuardian=StudentInformation::where('guardian',$me->id)->where('student_id',$applianceStatus->student_id)->exists();
+            if ($me->hasRole('Parent')) {
+                $checkGuardian = StudentInformation::where('guardian', $me->id)->where('student_id', $applianceStatus->student_id)->exists();
+            }elseif($me->hasRole('Principal') or $me->hasRole('Financial Manager') or $me->hasRole('Admissions Officer')){
+                $checkGuardian = StudentInformation::where('student_id', $applianceStatus->student_id)->whereIn('academic_year',$this->getActiveAcademicYears())->exists();
+            }elseif ($me->hasRole('Super Admin')){
+                $checkGuardian = StudentInformation::where('student_id', $applianceStatus->student_id)->exists();
+            }
             if (!$checkGuardian){
                 abort(403);
             }

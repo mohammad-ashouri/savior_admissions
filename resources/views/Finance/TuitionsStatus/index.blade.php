@@ -136,7 +136,7 @@
                                         {{ $student->student_id }}
                                     </td>
                                     <th scope="row"
-                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" p-2 items-center border text-center text-gray-900  dark:text-white">
                                         <div
                                             class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
                                     </th>

@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="content" class="p-4 md:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
-        <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
+        <div class="p-4 rounded-lg dark:border-gray-700 mt-20 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">All Students</h1>
             </div>
@@ -91,19 +91,22 @@
                                         ID
                                     </div>
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     First Name
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Last Name
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Birthdate
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
                                     Gender
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="text-center">
+                                    Academic Year
+                                </th>
+                                <th scope="col" class="text-center">
                                     Action
                                 </th>
                             </tr>
@@ -119,34 +122,41 @@
                                         </div>
                                     </td>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $student->generalInformations->first_name_en }}</div>
+                                                class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->first_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $student->generalInformations->last_name_en }}</div>
+                                                class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $student->generalInformations->birthdate }}</div>
+                                                class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->birthdate }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="pl-3">
                                             <div
-                                                class="text-base font-semibold">{{ $student->generalInformations->gender }}</div>
+                                                class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->gender }}</div>
                                         </div>
                                     </th>
-                                    <td class="px-6 py-4 text-center">
+                                    <th scope="row"
+                                        class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        <div class="pl-3">
+                                            <div
+                                                class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
+                                        </div>
+                                    </th>
+                                    <td class="text-center">
                                         @can('students-show')
                                             <a href="{{ route('Students.show',$student->student_id) }}"
                                                type="button"
