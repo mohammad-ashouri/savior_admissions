@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 @php
-    use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
+    use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Country;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
 
 
     $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
@@ -42,6 +42,7 @@
     }
     $discounts=DiscountDetail::whereIn('id',$discounts)->get();
 
+    $fatherNationality=Country::find($evidencesInfo['father_nationality']);
 @endphp
 <head>
     <meta charset="UTF-8">
@@ -490,6 +491,7 @@
                 <th style="width: 15%">Total Discounts (%)</th>
                 <th style="width: 15%">Total Discounts (Amount)</th>
                 <th style="width: 15%">Total Fee</th>
+                @php $paidAmount=0 @endphp
             </tr>
             <tr>
                 <td class="font-bold">
@@ -588,9 +590,9 @@
                     @endforeach
                     <tr style="border-top: 1px solid #ffe753;">
                         <td class="font-bold">Total</td>
-                        <td style="border: none;">{{ number_format($totalAmount) }} IRR</td>
+                        <td>{{ number_format($totalAmount) }} IRR</td>
                         <td class="font-bold">Paid Amount</td>
-                        <td>{{ number_format($paidAmount) }} {{ __('translated_fa.IRR') }}</td>
+                        <td>{{ number_format($paidAmount) }} IRR</td>
                     </tr>
                 </table>
             </div>
