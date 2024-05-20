@@ -58,9 +58,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @page {
-            size: a4;
+            size: A5;
         }
-
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: IRANSansX, Arial, sans-serif;
+            }
+        }
         @font-face {
             font-family: IRANSansX;
             src: url('../../build/Fonts/IRANSansX-DemiBold.woff') format('woff');

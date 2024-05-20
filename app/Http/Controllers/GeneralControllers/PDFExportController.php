@@ -27,6 +27,16 @@ class PDFExportController extends Controller
     }
     public function tuitionCardFaExport($appliance_id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
+        $me=auth()->user()->id;
+        $applianceStatus=StudentApplianceStatus::find($appliance_id);
+
+        $me=User::find($me);
+        if ($me){
+            $checkGuardian=StudentInformation::where('guardian',$me->id)->where('student_id',$applianceStatus->student_id)->exists();
+            if (!$checkGuardian){
+                abort(403);
+            }
+        }
         $applianceStatus=StudentApplianceStatus::find($appliance_id);
         $allDiscounts=$this->getAllDiscounts($applianceStatus->student_id);
         $allFamilyDiscounts=$this->getAllFamilyDiscounts();
