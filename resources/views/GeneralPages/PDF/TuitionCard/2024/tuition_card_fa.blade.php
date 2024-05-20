@@ -631,15 +631,20 @@
                                         @break
                                     @case('Full')
                                         @php
-                                            $jalaliDate = Jalalian::fromDateTime('2024-09-21');
-                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                            $jalaliDate = Jalalian::fromDateTime($invoices->date_of_payment);
+                                            $endOfShahrivar = Jalalian::fromFormat('Y/m/d', $jalaliDate->getYear() . '/06/31');
+                                            $formattedJalaliDate = $endOfShahrivar->format('Y/m/d');
+                                            echo $formattedJalaliDate;
                                         @endphp
                                         @break
                                 @endswitch
                             </td>
                             <td>
                                 @if(isset($invoices->date_of_payment))
-                                    {{ $invoices->date_of_payment }}
+                                    @php
+                                        $jalaliDate = Jalalian::fromDateTime($invoices->date_of_payment);
+                                        echo $formattedJalaliDate = $jalaliDate->format('Y/m/d H:i:s');
+                                    @endphp
                                 @else
                                     -
                                 @endif
