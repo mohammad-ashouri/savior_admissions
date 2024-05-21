@@ -58,20 +58,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         @page {
-            size: A5;
+            size: A4;
         }
         @media print {
             @page {
-                size: A4;
-                margin: 0;
-            }
-            body {
-                width: 210mm;
-                height: 297mm;
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: IRANSansX, Arial, sans-serif;
+                scale: 0.6; /* 60% مقیاس پرینت */
             }
         }
         @font-face {
@@ -81,6 +72,8 @@
 
         body {
             font-family: IRANSansX, Arial, sans-serif;
+            width: 20cm;
+            height: 21cm;
         }
 
         .bg-white {
@@ -111,7 +104,7 @@
         }
 
         section {
-            margin: 20px 0;
+            margin: 10px 0;
             overflow: hidden;
             border: 2px solid;
             border-radius: 50px;
@@ -121,9 +114,9 @@
             text-align: right;
         }
 
-        .address {
-            margin-top: 20px;
-        }
+        /*.address {*/
+        /*    margin-top: 20px;*/
+        /*}*/
 
         .flex {
             display: flex;
@@ -164,6 +157,9 @@
             width: 100%;
         }
 
+        .textbody p {
+            margin-top: 2px;
+        }
 
         table {
             border-collapse: collapse;
@@ -172,18 +168,18 @@
 
         th,
         td {
-            padding: 10px;
+            /*padding: 10px;*/
             text-align: center;
         }
 
         #tuition_table tr th,
         tr td {
-            padding: 1.2rem;
+            /*padding: 1.2rem;*/
             border-left: 1px solid #9ddadf;
         }
 
         #tuition_table tr td {
-            padding: 1.2rem;
+            /*padding: 1.2rem;*/
             border-left: 1px solid;
             border-color: #9ddadf !important;;
         }
@@ -205,7 +201,7 @@
 
         #table2 tr th,
         tr td {
-            padding: 1.2rem;
+            /*padding: 1.2rem;*/
             border-left: 1px solid #ffe753;
         }
 
@@ -257,7 +253,7 @@
         }
 
         .table-container table {
-            padding: 1rem;
+            /*padding: 1rem;*/
         }
 
         .bg-header {
@@ -301,7 +297,7 @@
         }
 
         .mt-2rem {
-            margin-top: 2rem;;
+            margin-top: 0.5rem;;
         }
 
         .w50 {
@@ -332,7 +328,7 @@
         .consideration-item::before {
             content: "\2022";
             color: #9ddadf;
-            font-size: 50px;
+            font-size: 20px;
             position: absolute;
             right: -20px;
             top: 48%;
@@ -348,7 +344,7 @@
         .footer-content {
             display: flex;
             justify-content: space-between;
-            margin-top: 1.5rem;
+            /*margin-top: 1.5rem;*/
             margin-left: 10px;
         }
 
@@ -366,7 +362,7 @@
         }
 
         .table-v p {
-            font-weight: 600;
+            /*font-weight: 600;*/
         }
 
         .ltr-text {
@@ -488,37 +484,14 @@
     </div>
 </section>
 
-{{--Tuition Table--}}
-{{--<div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">--}}
-{{--    <h3 class="title-section bg-blue p-1r m-0 radius-table">{{ __('translated_fa.Tuition table for the academic year') }}--}}
-{{--        : {{ $applianceStatus->academicYearInfo->name }}</h3>--}}
-{{--    <div class="table-container">--}}
-{{--        <table>--}}
-{{--            <tr>--}}
-{{--                <th style="width: 15%">{{ __('translated_fa.Currency of Payment') }}</th>--}}
-{{--                <th style="width: 25%">{{ __('translated_fa.Full Payment tuition') }}</th>--}}
-{{--                <th style="width: 25%">{{ __('translated_fa.Two Installment tuition') }}</th>--}}
-{{--                <th style="width: 25%">{{ __('translated_fa.Four Installment tuition') }}</th>--}}
-{{--                <th style="width: 15%">{{ __('translated_fa.Level') }}</th>--}}
-{{--            </tr>--}}
-{{--            <tr>--}}
-{{--                <td class="font-bold">{{ __('translated_fa.Iranian Rial') }}</td>--}}
-{{--                <td>{{ json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr'] }} {{ __('translated_fa.IRR') }}</td>--}}
-{{--                <td>{{ json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr'] }}--}}
-{{--                    {{ __('translated_fa.IRR') }}--}}
-{{--                </td>--}}
-{{--                <td>{{ json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr'] }}--}}
-{{--                    {{ __('translated_fa.IRR') }}--}}
-{{--                </td>--}}
-{{--                <td>{{$levelName}}</td>--}}
-{{--            </tr>--}}
-{{--        </table>--}}
-{{--    </div>--}}
-{{--</div>--}}
-
 {{--Paid Tuition Table--}}
-<div style="margin-top: 1%" id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
-    <h3 class="title-section bg-blue p-1r m-0 radius-table">{{ __('translated_fa.Your tuition') }}</h3>
+<div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
+    <div class="flex">
+    <div class="texthead bg-blue">
+        <div class="writing-rl">
+            <h5>{{ __('translated_fa.Your tuition') }}</h5>
+        </div>
+    </div>
     <div class="table-container">
         <table>
             <tr>
@@ -545,21 +518,26 @@
                             @break
                     @endswitch
                 </td>
-                <td>{{ number_format($paymentAmount) }} {{ __('translated_fa.IRR') }}</td>
+                <td style="white-space: nowrap" >{{ number_format($paymentAmount) }} {{ __('translated_fa.IRR') }}</td>
                 <td>{{ $allDiscounts }}</td>
                 <td>{{ number_format(($paymentAmount*$allDiscounts)/100) }}</td>
-                <td>{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}
+                <td style="white-space: nowrap">{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}
                 </td>
             </tr>
         </table>
+    </div>
     </div>
 </div>
 
 {{--Payment Details--}}
 <div class="flex w-100">
-    <div class="w-100 p-1r">
         <div id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
-            <h3 class="title-section bg-yellow p-1r m-0 radius-table">{{ __('translated_fa.Payment Details') }}</h3>
+            <div class="flex">
+                <div class="texthead bg-yellow">
+                    <div class="writing-rl">
+                        <h5>{{ __('translated_fa.Payment Details') }}</h5>
+                    </div>
+                </div>
             <div class="table-container ">
                 <table class="font-bold">
                     <tr>
@@ -625,7 +603,7 @@
                                         @break
                                 @endswitch
                             </td>
-                            <td>{{ number_format($invoices->amount) }} {{ __('translated_fa.IRR') }}</td>
+                            <td style="white-space: nowrap" >{{ number_format($invoices->amount) }} {{ __('translated_fa.IRR') }}</td>
                             <td>
                                 @switch ($dueType)
                                     @case('Four')
@@ -682,7 +660,7 @@
                             @endphp
                         @endif
                     @endforeach
-                    <tr style="border-top: 1px solid #ffe753;">
+                    <tr style="border-top: 1px solid #ffe753;white-space: nowrap">
                         <td class="font-bold">{{ __('translated_fa.Total') }}</td>
                         <td>{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}</td>
                         <td class="font-bold">{{ __('translated_fa.Paid Amount') }}</td>
@@ -690,13 +668,13 @@
                     </tr>
                 </table>
             </div>
+            </div>
         </div>
-    </div>
 </div>
 
 {{--Considerations--}}
 <div style="page-break-after: auto" class="Considerations">
-    <h1>{{ __('translated_fa.Considerations') }}</h1>
+    <h3>{{ __('translated_fa.Considerations') }}</h3>
     <ul class="considerations ">
         @if($discounts->isNotEmpty())
             <li class="consideration-item font-bold">

@@ -5,7 +5,7 @@ return [
     'Monji Noor Education Institute' => 'موسسه آموزشی منجی نور',
     'Invoice Number' => 'کد فاکتور',
     'Date' => 'تاریخ',
-    'Education Center Details' => 'اطلاعات مرکز تحصیلی',
+    'Education Center Details' => 'مرکز تحصیلی',
     'Education Center Address' => 'جمهوری اسلامی ایران، قم، بلوار عمار یاسر، کوچه پنجم، کوچه هشتم (انتهای پیاده راه شاه حمزه)، مدارس بین المللی ناجی',
     'Name' => 'نام',
     'Contact Number' => 'شماره تماس',

@@ -49,18 +49,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        @page {
-            size: a4;
-        }
-
-        @media print {
-            @page {
-                scale: 0.6; /* 60% مقیاس پرینت */
-            }
+        /*@page {*/
+        /*    size: A4;*/
+        /*}*/
+        /*@media print {*/
+        /*    @page {*/
+        /*        scale: 0.6; !* 60% مقیاس پرینت *!*/
+        /*    }*/
+        /*}*/
+        @font-face {
+            font-family: IRANSansX;
+            src: url('../../build/Fonts/IRANSansX-DemiBold.woff') format('woff');
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: IRANSansX, Arial, sans-serif;
+            width: 20cm;
+            height: 21cm;
         }
 
         .bg-white {
@@ -69,13 +74,13 @@
 
         .container {
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 0.5rem;
         }
 
         header {
             display: flex;
             justify-content: space-between;
-            padding: 10px;
+            padding: 2px;
         }
 
         header img {
@@ -87,23 +92,23 @@
         }
 
         header .invoice-details {
-            text-align: left;
+            text-align: right;
         }
 
         section {
-            margin: 20px 0;
+            margin: 5px 0;
             overflow: hidden;
             border: 2px solid;
             border-radius: 50px;
         }
 
         .contact-info > div {
-            text-align: left;
+            text-align: right;
         }
 
-        .address {
-            margin-top: 20px;
-        }
+        /*.address {*/
+        /*    margin-top: 20px;*/
+        /*}*/
 
         .flex {
             display: flex;
@@ -140,8 +145,12 @@
         }
 
         .textbody {
-            padding: 1rem;
+            padding: 0.5rem;
             width: 100%;
+        }
+
+        .textbody p {
+            margin-top: 2px;
         }
 
 
@@ -152,30 +161,28 @@
 
         th,
         td {
-            padding: 10px;
+            /*padding: 10px;*/
             text-align: center;
         }
 
         #tuition_table tr th,
         tr td {
-            padding: 1.2rem;
+            /*padding: 1.2rem;*/
             border-left: 1px solid #9ddadf;
         }
 
         #tuition_table tr td {
-            padding: 1.2rem;
+            /*padding: 1.2rem;*/
             border-left: 1px solid;
             border-color: #9ddadf !important;;
         }
 
         #tuition_table tr th:first-child {
-            border-left: 0;
             border-left: 1px solid;
             border-color: #9ddadf !important;;
         }
 
         #tuition_table tr td:first-child {
-            border-left: 0;
             border-left: 1px solid;
             border-color: #9ddadf !important;;
         }
@@ -187,15 +194,17 @@
 
         #table2 tr th,
         tr td {
-            padding: 1.2rem;
+            /*padding: 1.2rem;*/
             border-left: 1px solid #ffe753;
         }
 
         #table2 tr th:first-child {
+            border-left: 0;
             border-left: 1px solid #ffe753;
         }
 
         #table2 tr td:first-child {
+            border-left: 0;
             border-left: 1px solid #ffe753;
         }
 
@@ -205,11 +214,11 @@
 
 
         .font-bold {
-            font-weight: 600;
+            font-weight: 400;
         }
 
         .font-light {
-            font-weight: 300;
+            font-weight: 200;
         }
 
 
@@ -222,7 +231,7 @@
 
         .title-section {
             background-color: #9ddadf;
-            padding: 10px;
+            padding: 5px;
             text-align: center;
             font-weight: bold;
             border-top-right-radius: 20px;
@@ -237,7 +246,7 @@
         }
 
         .table-container table {
-            padding: 1rem;
+            /*padding: 1rem;*/
         }
 
         .bg-header {
@@ -265,7 +274,7 @@
         }
 
         .p-1r {
-            padding-right: 1rem;
+            padding-right: 0.5rem;
         }
 
         .p-1l {
@@ -281,7 +290,7 @@
         }
 
         .mt-2rem {
-            margin-top: 2rem;;
+            margin-top: 0.5rem;;
         }
 
         .w50 {
@@ -295,7 +304,6 @@
         #tuition_table th:nth-child(3),
         #tuition_table td:nth-child(3) {
             width: 150px;
-            /* عرض دلخواه را اینجا تنظیم کنید */
         }
 
         .considerations {
@@ -307,25 +315,21 @@
         .consideration-item {
             margin-bottom: 10px;
             position: relative;
-            margin-left: 1.2em;
+            margin-right: 1.2em;
         }
 
         .consideration-item::before {
             content: "\2022";
-            /* کد یونیکد دایره */
             color: #9ddadf;
-            /* رنگ دایره‌ها */
-            font-size: 50px;
+            font-size: 20px;
             position: absolute;
-            left: -20px;
-            /* فاصله از سمت چپ */
+            right: -20px;
             top: 48%;
             transform: translateY(-50%);
         }
 
 
         footer {
-            background-color: #f0f0f0;
             padding: 20px;
             background-color: #e8f6f7;
         }
@@ -333,7 +337,7 @@
         .footer-content {
             display: flex;
             justify-content: space-between;
-            margin-top: 1.5rem;
+            /*margin-top: 1.5rem;*/
             margin-left: 10px;
         }
 
@@ -351,7 +355,13 @@
         }
 
         .table-v p {
-            font-weight: 600;
+            /*font-weight: 600;*/
+        }
+
+        .ltr-text {
+            direction: ltr !important;
+            unicode-bidi: embed;
+            text-align: left;
         }
 
     </style>
@@ -394,7 +404,7 @@
     <div class="flex">
         <div class="texthead bg-blue">
             <div class="writing-rl">
-                <h5>Education Center Details</h5>
+                <h5>Education Center</h5>
             </div>
         </div>
         <div class="textbody">
@@ -452,37 +462,13 @@
     </div>
 </section>
 
-{{--Tuition Table--}}
-{{--<div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">--}}
-{{--    <h3 class="title-section bg-blue p-1r m-0 radius-table">Tuition table for the academic--}}
-{{--        year: {{ $applianceStatus->academicYearInfo->name }}</h3>--}}
-{{--    <div class="table-container">--}}
-{{--        <table>--}}
-{{--            <tr>--}}
-{{--                <th style="width: 15%">Currency of Payment</th>--}}
-{{--                <th style="width: 25%">Full Payment tuition</th>--}}
-{{--                <th style="width: 25%">Two Installment tuition</th>--}}
-{{--                <th style="width: 25%">Four Installment tuition</th>--}}
-{{--                <th style="width: 15%">Level</th>--}}
-{{--            </tr>--}}
-{{--            <tr>--}}
-{{--                <td class="font-bold">Iranian Rial</td>--}}
-{{--                <td>{{ json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr'] }} IRR</td>--}}
-{{--                <td>{{ json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr'] }}--}}
-{{--                    IRR--}}
-{{--                </td>--}}
-{{--                <td>{{ json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr'] }}--}}
-{{--                    IRR--}}
-{{--                </td>--}}
-{{--                <td>{{$levelInfo->name}}</td>--}}
-{{--            </tr>--}}
-{{--        </table>--}}
-{{--    </div>--}}
-{{--</div>--}}
-
 {{--Paid Tuition Table--}}
-<div style="margin-top: 1%" id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
-    <h3 class="title-section bg-blue p-1r m-0 radius-table">Your tuition</h3>
+<div id="tuition_table" class="flex border-table bg-border-blue radius-table bg-white">
+    <div class="texthead bg-blue">
+        <div class="writing-rl">
+            <h5>Your tuition</h5>
+        </div>
+    </div>
     <div class="table-container">
         <table>
             <tr>
@@ -494,7 +480,7 @@
                 @php $paidAmount=0 @endphp
             </tr>
             <tr>
-                <td class="font-bold">
+                <td style="white-space: nowrap" class="font-bold">
                     @switch($myTuitionInfo->payment_type)
                         @case('1')
                             Full Payment
@@ -510,10 +496,10 @@
                             @break
                     @endswitch
                 </td>
-                <td>{{ number_format($paymentAmount) }} IRR</td>
+                <td style="white-space: nowrap">{{ number_format($paymentAmount) }} IRR</td>
                 <td>{{ $allDiscounts }}</td>
                 <td>{{ number_format(($paymentAmount*$allDiscounts)/100) }}</td>
-                <td>{{ number_format($totalAmount) }} IRR
+                <td style="white-space: nowrap">{{ number_format($totalAmount) }} IRR
                 </td>
             </tr>
         </table>
@@ -523,8 +509,12 @@
 {{--Payment Details--}}
 <div class="flex w-100">
     <div class="w-100 p-1r">
-        <div id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
-            <h3 class="title-section bg-yellow p-1r m-0 radius-table">Payment Details</h3>
+        <div id="table2" class="flex border-table bg-border-yellow radius-table mt-2rem bg-white">
+            <div class="texthead bg-yellow">
+                <div class="writing-rl">
+                    <h5>Payment Details</h5>
+                </div>
+            </div>
             <div class="table-container ">
                 <table class="font-bold">
                     <tr>
@@ -553,7 +543,7 @@
                         @endphp
                         <tr>
                             <td>{{ $tuitionType }}</td>
-                            <td>{{ number_format($invoices->amount) }} IRR</td>
+                            <td style="white-space: nowrap">{{ number_format($invoices->amount) }} IRR</td>
                             <td>
                                 @switch ($dueType)
                                     @case('Four')
@@ -588,7 +578,7 @@
                             @endphp
                         @endif
                     @endforeach
-                    <tr style="border-top: 1px solid #ffe753;">
+                    <tr style="border-top: 1px solid #ffe753;white-space: nowrap">
                         <td class="font-bold">Total</td>
                         <td>{{ number_format($totalAmount) }} IRR</td>
                         <td class="font-bold">Paid Amount</td>
@@ -602,7 +592,7 @@
 
 {{--Considerations--}}
 <div style="page-break-after: auto" class="Considerations">
-    <h1>Considerations</h1>
+    <h3>Considerations</h3>
     <ul class="considerations ">
         @if($discounts->isNotEmpty())
             <li class="consideration-item font-bold">
