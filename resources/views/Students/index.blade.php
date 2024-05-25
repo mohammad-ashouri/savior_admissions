@@ -103,9 +103,11 @@
                                 <th scope="col" class="text-center">
                                     Gender
                                 </th>
-                                <th scope="col" class="text-center">
-                                    Academic Year
-                                </th>
+                                @if(!$me->hasRole('Parent'))
+                                    <th scope="col" class="text-center">
+                                        Academic Year
+                                    </th>
+                                @endif
                                 <th scope="col" class="text-center">
                                     Action
                                 </th>
@@ -149,13 +151,15 @@
                                                 class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->gender }}</div>
                                         </div>
                                     </th>
-                                    <th scope="row"
-                                        class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
-                                        </div>
-                                    </th>
+                                    @if(!$me->hasRole('Parent'))
+                                        <th scope="row"
+                                            class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                            <div class="pl-3">
+                                                <div
+                                                    class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
+                                            </div>
+                                        </th>
+                                    @endif
                                     <td class="text-center">
                                         @can('students-show')
                                             <a href="{{ route('Students.show',$student->student_id) }}"

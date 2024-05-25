@@ -43,7 +43,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-            return view('Students.index', compact('students', 'academicYears'));
+            return view('Students.index', compact('students', 'academicYears','me'));
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::where('guardian', auth()->user()->id)
                 ->with('studentInfo')
@@ -66,7 +66,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-            return view('Students.index', compact('students', 'academicYears'));
+            return view('Students.index', compact('students', 'academicYears','me'));
 
         }
 
@@ -75,7 +75,7 @@ class StudentController extends Controller
         }
         $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-        return view('Students.index', compact('students'));
+        return view('Students.index', compact('students','me'));
 
     }
 
