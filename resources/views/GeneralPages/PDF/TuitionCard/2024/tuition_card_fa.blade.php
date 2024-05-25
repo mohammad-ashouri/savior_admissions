@@ -69,6 +69,14 @@
             font-family: IRANSansX;
             src: url('../../build/Fonts/IRANSansX-DemiBold.woff') format('woff');
         }
+        @font-face {
+            font-family: IRANSansX;
+            src: url('../../build/Fonts/IRANSansX-Light.woff') format('woff');
+        }
+        @font-face {
+            font-family: IRANSansX;
+            src: url('../../build/Fonts/IRANSansX-Medium.woff') format('woff');
+        }
 
         body {
             font-family: IRANSansX, Arial, sans-serif;
@@ -85,6 +93,9 @@
             padding: 0 1rem;
         }
 
+        span{
+            font-weight: bold !important;
+        }
         header {
             display: flex;
             justify-content: space-between;
@@ -142,7 +153,7 @@
         .writing-rl {
             writing-mode: vertical-rl;
             transform: scale(-1);
-            padding: 1.3rem 0;
+            padding: 0.5rem 0;
             width: 60px;
         }
 
@@ -159,6 +170,7 @@
 
         .textbody p {
             margin-top: 2px;
+            margin-bottom: 8px;
         }
 
         table {
@@ -199,6 +211,9 @@
         }
 
 
+        #table2  {
+            width: 100%;
+        }
         #table2 tr th,
         tr td {
             /*padding: 1.2rem;*/
@@ -221,11 +236,11 @@
 
 
         .font-bold {
-            font-weight: 400;
+            font-weight: bold;
         }
 
         .font-light {
-            font-weight: 200;
+            font-weight: normal;
         }
 
 
@@ -276,32 +291,8 @@
             border-color: #ffe753 !important;
         }
 
-        .text-white {
-            color: white;
-        }
-
-        .p-1r {
-            padding-right: 1rem;
-        }
-
-        .p-1l {
-            padding-left: 1rem;
-        }
-
-        .m-0 {
-            margin: 0;
-        }
-
-        .p-0 {
-            padding: 0;
-        }
-
         .mt-2rem {
             margin-top: 0.5rem;;
-        }
-
-        .w50 {
-            width: 50%;
         }
 
         .w-100 {
@@ -371,6 +362,10 @@
             text-align: left;
         }
 
+        .payment-details-table td{
+            padding: 5px;
+            font-weight: normal;
+        }
     </style>
     <script>
 
@@ -383,7 +378,7 @@
         });
 
 
-        window.print();
+        // window.print();
 
         function setPrintScale() {
             if (window.matchMedia('print').matches) {
@@ -430,14 +425,14 @@
             <div class="contact-info">
                 <div class="name">
                     <p>{{ __('translated_fa.Name') }}:
-                        <span>{{ __('translated_fa.Monji Noor Education Institute') }}</span></p>
+                        <span class="font-bold">{{ __('translated_fa.Monji Noor Education Institute') }}</span></p>
                 </div>
                 <div class="contact-number">
                     <p>{{ __('translated_fa.Contact Number') }}: <span>+98 25 3770 4544</span></p>
                 </div>
             </div>
             <div class="flex justify-between">
-                <p>{{ __('translated_fa.Postal Code') }}: <span style="direction: ltr">37157-47748</span></p>
+                <p>{{ __('translated_fa.Postal Code') }}: <span>37157-47748</span></p>
                 <p>{{ __('translated_fa.Registration Number') }}: <span>60789562</span></p>
                 <p>{{ __('translated_fa.National ID') }}: <span>60235789562</span></p>
             </div>
@@ -485,24 +480,24 @@
 </section>
 
 {{--Paid Tuition Table--}}
-<div id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
-    <div class="flex">
+<section id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
+    <div class="flex bg-blue">
     <div class="texthead bg-blue">
         <div class="writing-rl">
             <h5>{{ __('translated_fa.Your tuition') }}</h5>
         </div>
     </div>
-    <div class="table-container">
-        <table>
+    <div class="table-container bg-white">
+        <table style="width: 100%">
             <tr>
-                <th style="width: 10%">{{ __('translated_fa.Payment Type') }}</th>
+                <th style="width: 10%;height: 0">{{ __('translated_fa.Payment Type') }}</th>
                 <th style="width: 15%">{{ __('translated_fa.Total Payment Amount') }}</th>
                 <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} (درصد)</th>
                 <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} ({{ __('translated_fa.Amount') }})</th>
                 <th style="width: 15%">{{ __('translated_fa.Total Fee') }}</th>
             </tr>
-            <tr>
-                <td class="font-bold">
+            <tr style="">
+                <td style="white-space: nowrap;height: 0">
                     @switch($myTuitionInfo->payment_type)
                         @case('1')
                             {{ __('translated_fa.Full Payment') }}
@@ -518,16 +513,16 @@
                             @break
                     @endswitch
                 </td>
-                <td style="white-space: nowrap" >{{ number_format($paymentAmount) }} {{ __('translated_fa.IRR') }}</td>
+                <td style="white-space: nowrap" >{{ number_format($paymentAmount) }} </td>
                 <td>{{ $allDiscounts }}</td>
                 <td>{{ number_format(($paymentAmount*$allDiscounts)/100) }}</td>
-                <td style="white-space: nowrap">{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}
+                <td style="white-space: nowrap">{{ number_format($totalAmount) }}
                 </td>
             </tr>
         </table>
     </div>
     </div>
-</div>
+</section>
 
 {{--Payment Details--}}
 <div class="flex w-100">
@@ -539,14 +534,14 @@
                     </div>
                 </div>
             <div class="table-container ">
-                <table class="font-bold">
+                <table class="payment-details-table font-bold">
                     <tr>
                         <th>{{ __('translated_fa.Type') }}</th>
                         <th>{{ __('translated_fa.Amount') }}</th>
-                        <th>{{ __('translated_fa.Due Date') }}</th>
+                        <th style="white-space: nowrap">{{ __('translated_fa.Due Date') }}</th>
                         <th>{{ __('translated_fa.Date received') }}</th>
                         <th>{{ __('translated_fa.Payment Method') }}</th>
-                        @php $paidAmount=0 @endphp
+                        @php $paidAmount = $debt = 0 @endphp
                     </tr>
                     @foreach($myTuitionInfo->invoiceDetails as $key=>$invoices)
                         @php
@@ -565,8 +560,8 @@
                                 $dueType='Full';
                             }
                         @endphp
-                        <tr>
-                            <td>
+                        <tr style="padding: 4px">
+                            <td style="white-space: nowrap">
                                 @switch($tuitionType)
                                     @case('Two Installment Advance')
                                         پیش پرداخت
@@ -593,18 +588,18 @@
                                         قسط چهارم
                                         @break
                                     @case('Full Payment With Advance - Installment')
-                                        پرداخت کامل با پیش پرداخت - پرداخت دوم
+                                        پرداخت دوم
                                         @break
                                     @case('Full Payment With Advance')
-                                        پرداخت کامل با پیش پرداخت - پرداخت اول
+                                        پرداخت اول
                                         @break
                                     @case('Full Payment')
                                         پرداخت کامل
                                         @break
                                 @endswitch
                             </td>
-                            <td style="white-space: nowrap" >{{ number_format($invoices->amount) }} {{ __('translated_fa.IRR') }}</td>
-                            <td>
+                            <td style="white-space: nowrap" >{{ number_format($invoices->amount) }} </td>
+                            <td style="white-space: nowrap">
                                 @switch ($dueType)
                                     @case('Four')
                                         @php
@@ -628,9 +623,11 @@
                                             echo $formattedJalaliDate;
                                         @endphp
                                         @break
+                                    @default
+                                        -
                                 @endswitch
                             </td>
-                            <td>
+                            <td class="ltr-text" style="white-space: nowrap;text-align: center">
                                 @if(isset($invoices->date_of_payment))
                                     @php
                                         $jalaliDate = Jalalian::fromDateTime($invoices->date_of_payment);
@@ -640,7 +637,7 @@
                                     -
                                 @endif
                             </td>
-                            <td>
+                            <td style="white-space: nowrap">
                                 @if(isset($invoices->paymentMethodInfo->name))
                                     @switch($invoices->paymentMethodInfo->name)
                                         @case('Offline Payment')
@@ -659,12 +656,19 @@
                                 $paidAmount=$invoices->amount+$paidAmount;
                             @endphp
                         @endif
+                        @if($invoices->date_of_payment==null)
+                            @php
+                                $debt=$totalAmount-$paidAmount;
+                            @endphp
+                        @endif
                     @endforeach
                     <tr style="border-top: 1px solid #ffe753;white-space: nowrap">
                         <td class="font-bold">{{ __('translated_fa.Total') }}</td>
-                        <td>{{ number_format($totalAmount) }} {{ __('translated_fa.IRR') }}</td>
+                        <td>{{ number_format($totalAmount) }} </td>
                         <td class="font-bold">{{ __('translated_fa.Paid Amount') }}</td>
-                        <td>{{ number_format($paidAmount) }} {{ __('translated_fa.IRR') }}</td>
+                        <td>{{ number_format($paidAmount) }} </td>
+                        <td class="font-bold">{{ __('translated_fa.Debt') }}</td>
+                        <td>{{ number_format($debt) }} </td>
                     </tr>
                 </table>
             </div>
@@ -676,9 +680,14 @@
 <div style="page-break-after: auto" class="Considerations">
     <h3>{{ __('translated_fa.Considerations') }}</h3>
     <ul class="considerations ">
+        <li class="consideration-item font-bold">
+            <u>
+            تمامی مبالغ به ریال می باشند.
+            </u>
+        </li>
         @if($discounts->isNotEmpty())
             <li class="consideration-item font-bold">
-                Discounts
+                تخفیف ها
             </li>
             @foreach($discounts as $discount)
                 <li class="consideration-item">
@@ -696,7 +705,7 @@
 
 {{--Footer--}}
 <footer class="mt-2rem">
-    <div class="footer-text font-bold">
+    <div class="footer-text ">
         اینجانب
         {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}
         ،
@@ -705,7 +714,7 @@
         ،
         بدین وسیله با کلیه قوانین و مقررات موسسه آموزشی بین المللی منجی نور موافقت می نمایم.
     </div>
-    <div class="footer-content font-bold">
+    <div class="footer-content ">
         <div class="footer-text">{{ __('translated_fa.Signature and Fingerprint of Parent/Guardian') }}</div>
         <div class="footer-text">{{ __('translated_fa.Signature and Stamp of Admissions') }}</div>
         <div class="footer-text">{{ __('translated_fa.Signature and Stamp of Finance') }}</div>

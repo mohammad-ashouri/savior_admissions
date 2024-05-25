@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\StudentInformation;
 use App\Models\User;
+use Stimulsoft\StiHandler;
 
 class PDFExportController extends Controller
 {
