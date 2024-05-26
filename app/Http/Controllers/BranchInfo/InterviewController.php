@@ -281,8 +281,8 @@ class InterviewController extends Controller
                 ->where('discount_details.status', 1)
                 ->whereIn('discount_details.id', $request->discount)
                 ->sum('discount_details.percentage');
-            if ($discountsPercentage > 30) {
-                redirect()->back()->withErrors(['The total percentage of selected discounts must be lower or equal to 30%.'])->withInput();
+            if ($discountsPercentage > 40) {
+                redirect()->back()->withErrors(['The total percentage of selected discounts must be lower or equal to 40%.'])->withInput();
             }
         }
 
@@ -843,10 +843,16 @@ class InterviewController extends Controller
         $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         //Check if 3 interviews completed then make that to principal for confirmation
-        $checkInterviewsCompleted = Interview::where('application_id', $request->application_id)
-            ->whereIn('interview_type', [1, 2, 3])
+        $checkInterview1Completed = Interview::where('application_id', $application->id)
+            ->where('interview_type', 1)
             ->exists();
-        if ($checkInterviewsCompleted) {
+        $checkInterview2Completed = Interview::where('application_id', $application->id)
+            ->where('interview_type', 2)
+            ->exists();
+        $checkInterview3Completed = Interview::where('application_id', $application->id)
+            ->where('interview_type', 3)
+            ->exists();
+        if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {
             $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
             $studentApplianceStatus->save();
         }
