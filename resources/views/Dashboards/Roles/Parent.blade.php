@@ -216,11 +216,11 @@
                                                         $statusColor='green';
                                                          if ($applicationStatus->interview_status=='Pending Interview'){
                                                              $statusText='Pending Interview';
-                                                             $statusPercent+=20;
+                                                             $statusPercent+=5;
                                                          }
                                                          if ($applicationStatus->interview_status=='Pending For Principal Confirmation'){
                                                              $statusText='Pending For Principal Confirmation';
-                                                             $statusPercent+=5;
+                                                             $statusPercent+=20;
                                                          }
                                                          if ($applicationStatus->interview_status=='Rejected'){
                                                              $statusText='Rejected Interview';
@@ -259,7 +259,7 @@
                                                              $statusText='Automatic Rejected (Documents could not be uploaded after 72 hours)';
                                                          }
                                                          if ($applicationStatus->tuition_payment_status=='Paid'){
-                                                             $statusPercent+=25;
+                                                             $statusPercent=100;
                                                              $statusText='Tuition Paid. Application Done!';
                                                          }
                                                          if ($applicationStatus->tuition_payment_status=='Pending For Review'){
