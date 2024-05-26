@@ -854,7 +854,6 @@ class InterviewController extends Controller
             ->exists();
         if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {
             $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
-            $studentApplianceStatus->save();
         }
 
         $studentApplianceStatus->save();
