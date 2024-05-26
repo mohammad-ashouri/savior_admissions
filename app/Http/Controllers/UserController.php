@@ -222,7 +222,6 @@ class UserController extends Controller
 
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $query = User::with('generalInformationInfo')
-                ->where('status', 1)
                 ->whereIn('id', $users)
                 ->where(function ($query) {
                     $query->whereHas('roles', function ($query) {
