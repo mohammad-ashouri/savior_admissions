@@ -205,18 +205,9 @@ class TuitionController extends Controller
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->count();
 
-        $familyDiscount = 0;
-        if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
-            $familyDiscount = 25;
-        }
-        if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
-            $familyDiscount = 30;
-        }
-        if ($allStudentsWithPaidStatusInActiveAcademicYear > 4) {
-            $familyDiscount = 40;
-        }
+        $allDiscountPercentages=$this->getAllDiscounts($student_id);
 
-        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'familyDiscount'));
+        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages'));
     }
 
     public function tuitionPayment(Request $request)
@@ -499,7 +490,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
                         $tuitionInvoiceDetails->is_paid = 2;
                         $tuitionInvoiceDetails->date_of_payment = now();
-                        $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Installment'], true);
+                        $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Payment'], true);
                         $tuitionInvoiceDetails->save();
 
                         $studentApplianceStatus->tuition_payment_status = 'Pending For Review';
@@ -513,7 +504,7 @@ class TuitionController extends Controller
                         $tuitionInvoiceDetails->amount = $fullPaymentAmountWithDiscounts;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
                         $tuitionInvoiceDetails->is_paid = 0;
-                        $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Installment'], true);
+                        $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'tuition_details_id' => $tuition->id, 'tuition_type' => 'Full Payment'], true);
                         $tuitionInvoiceDetails->save();
 
                         $invoice = (new Invoice)->amount($fullPaymentAmountWithDiscounts);
