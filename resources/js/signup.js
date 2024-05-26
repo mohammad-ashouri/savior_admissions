@@ -40,11 +40,11 @@ $(document).ready(function () {
                 $('#email').closest('div').hide();
             }
             // If Email option is selected
-            else if ($(this).val() === 'Email') {
-                // Show the email div and hide the mobile div
-                $('#email').closest('div').show();
-                $('#mobile').closest('div').hide();
-            }
+            // else if ($(this).val() === 'Email') {
+            //     // Show the email div and hide the mobile div
+            //     $('#email').closest('div').show();
+            //     $('#mobile').closest('div').hide();
+            // }
             // If no option is selected
             else {
                 // Hide both divs
@@ -79,15 +79,15 @@ $(document).ready(function () {
 
             // Check the value of signup method
             switch (signupMethod) {
-                case 'Email':
-                    let email = $('#email').val();
-                    if (email === '') {
-                        swalFire('Error', "Email field is empty!", 'error', 'Try again');
-                        reloadCaptcha();
-                        spinner();
-                        return;
-                    }
-                    break;
+                // case 'Email':
+                //     let email = $('#email').val();
+                //     if (email === '') {
+                //         swalFire('Error', "Email field is empty!", 'error', 'Try again');
+                //         reloadCaptcha();
+                //         spinner();
+                //         return;
+                //     }
+                //     break;
                 case 'Mobile':
                     let mobile = $('#mobile').val();
                     if (mobile === '') {

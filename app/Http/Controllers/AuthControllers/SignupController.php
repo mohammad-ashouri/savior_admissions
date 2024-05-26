@@ -60,19 +60,20 @@ class SignupController extends Controller
                 break;
 
             case 'Email':
-                $validator = Validator::make($request->all(), [
-                    'email' => [
-                        'required',
-                        'email',
-                    ],
-                ]);
-
-                if ($validator->fails()) {
-                    $errorMessage = $validator->errors()->first('email', 'EmailInvalid');
-                    $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
-                    return redirect()->back()->withErrors(['EmailInvalid' => $errorMessage])->withInput();
-                }
+//                $validator = Validator::make($request->all(), [
+//                    'email' => [
+//                        'required',
+//                        'email',
+//                    ],
+//                ]);
+//
+//                if ($validator->fails()) {
+//                    $errorMessage = $validator->errors()->first('email', 'EmailInvalid');
+//                    $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
+//
+//                    return redirect()->back()->withErrors(['EmailInvalid' => $errorMessage])->withInput();
+//                }
+                    return redirect()->back()->withErrors(['EmailInvalid' => 'Wrong register method'])->withInput();
                 break;
             default:
                 abort(500);
