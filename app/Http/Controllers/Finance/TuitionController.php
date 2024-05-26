@@ -206,8 +206,16 @@ class TuitionController extends Controller
             ->count();
 
         $allDiscountPercentages=$this->getAllDiscounts($student_id);
+        $previousDiscountPrice=$this->getAllFamilyDiscountPrice($me);
 
-        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages'));
+        //Calculate discount for minimum level
+        $minimumLevel=$this->getMinimumApplianceLevelInfo($me);
+
+        $minimumLevelTuitionDetails=Tuition::join('tuition_details','tuitions.id','=','tuition_details.tuition_id')
+        ->where('tuitions.academic_year',$minimumLevel['academic_year'])->where('tuition_details.level',$minimumLevel['level']->level)->first();
+
+        $minimumSignedStudentNumber=$this->getMinimumSignedChildNumber($me);
+        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages','previousDiscountPrice','minimumLevelTuitionDetails','minimumLevel','minimumSignedStudentNumber'));
     }
 
     public function tuitionPayment(Request $request)

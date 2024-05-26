@@ -126,6 +126,29 @@
                                 </div>
                                 <div>
                                     @php
+                                    $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment,true)['full_payment_irr']);
+                                    $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment,true)['two_installment_amount_irr']);
+                                    $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment,true)['four_installment_amount_irr']);
+                                    $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
+                                    switch($minimumSignedStudentNumber){
+                                        case '1':
+                                            $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceTwoInstallment=abs((($minimumLevelTuitionDetailsTwoInstallment*25)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceFourInstallment=abs((($minimumLevelTuitionDetailsFourInstallment*25)/100)-$previousDiscountPrice);
+                                            break;
+                                        case '2':
+                                            $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceTwoInstallment=abs((($minimumLevelTuitionDetailsTwoInstallment*30)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceFourInstallment=abs((($minimumLevelTuitionDetailsFourInstallment*30)/100)-$previousDiscountPrice);
+                                            break;
+                                        case '3':
+                                            $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceTwoInstallment=abs((($minimumLevelTuitionDetailsTwoInstallment*40)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceFourInstallment=abs((($minimumLevelTuitionDetailsFourInstallment*40)/100)-$previousDiscountPrice);
+                                            break;
+                                        default:
+                                    }
+
                                         $fullPayment=json_decode($tuition->full_payment,true);
                                         $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr']);
                                         $fullPaymentAmountAdvance=((str_replace(",", "", $fullPayment['full_payment_irr']))*30)/100;
@@ -140,14 +163,10 @@
 
                                         $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
                                         $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
-                                        $allDiscountPercentages=$discountPercentages+$familyDiscount;
-                                        if ($allDiscountPercentages>40){
-                                            $allDiscountPercentages=40;
-                                        }
 
-                                        $totalFeeFullPayment=$fullPaymentAmount-(($fullPaymentAmount*$allDiscountPercentages)/100);
-                                        $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-(($twoInstallmentPaymentAmount*$allDiscountPercentages)/100);
-                                        $totalFeeFourInstallment=$fourInstallmentPaymentAmount-(($fourInstallmentPaymentAmount*$allDiscountPercentages)/100);
+                                        $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFullPayment);
+                                        $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment);
+                                        $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment);
                                     @endphp
                                 </div>
                                 <div class="overflow-x-auto">
@@ -267,7 +286,7 @@
                                                         {{ $twoInstallmentPayment['date_of_installment1_two'] }}
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeTwoInstallment-$twoInstallmentPaymentAmountAdvance)/2) }}
+                                                        IRR {{ number_format((($totalFeeTwoInstallment-$twoInstallmentPaymentAmountAdvance)/2)) }}
                                                     </td>
                                                 </tr>
                                                 <tr
@@ -866,7 +885,7 @@
                                                     Discount:
                                                 </th>
                                                 <td class="p-4 w-56 items-center">
-                                                    IRR {{ number_format(($fullPaymentAmount*$discountPercentages)/100) }}
+                                                    IRR {{ number_format((($fullPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFullPayment) }}
                                                 </td>
                                             </tr>
                                             <tr
@@ -875,7 +894,7 @@
                                                     Total Fee:
                                                 </th>
                                                 <td class="w-56 p-4">
-                                                    IRR {{ number_format($totalFeeFullPayment) }}
+                                                    IRR {{ number_format($totalFeeFullPayment-$familyPercentagePriceFullPayment) }}
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -899,7 +918,7 @@
                                                     Discount:
                                                 </th>
                                                 <td class="p-4 w-56 items-center">
-                                                    IRR {{ number_format(($twoInstallmentPaymentAmount*$discountPercentages)/100) }}
+                                                    IRR {{ number_format((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment) }}
                                                 </td>
                                             </tr>
                                             <tr
@@ -908,7 +927,7 @@
                                                     Total Fee:
                                                 </th>
                                                 <td class="w-56 p-4">
-                                                    IRR {{ number_format($twoInstallmentPaymentAmount-(($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)) }}
+                                                    IRR {{ number_format($twoInstallmentPaymentAmount-(($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)-$familyPercentagePriceTwoInstallment) }}
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -932,7 +951,7 @@
                                                     Discount:
                                                 </th>
                                                 <td class="p-4 w-56 items-center">
-                                                    IRR {{ number_format(($fourInstallmentPaymentAmount*$discountPercentages)/100) }}
+                                                    IRR {{ number_format((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment) }}
                                                 </td>
                                             </tr>
                                             <tr
@@ -941,7 +960,7 @@
                                                     Total Fee:
                                                 </th>
                                                 <td class="w-56 p-4">
-                                                    IRR {{ number_format($totalFeeFourInstallment) }}
+                                                    IRR {{ number_format($fourInstallmentPaymentAmount-(($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)-$familyPercentagePriceFourInstallment) }}
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -965,7 +984,7 @@
                                                     Discount:
                                                 </th>
                                                 <td class="p-4 w-56 items-center">
-                                                    IRR {{ number_format(($fullPaymentAmount*$discountPercentages)/100) }}
+                                                    IRR {{ number_format((($fullPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFullPayment) }}
                                                 </td>
                                             </tr>
                                             <tr
@@ -974,7 +993,7 @@
                                                     Total Fee:
                                                 </th>
                                                 <td class="w-56 p-4">
-                                                    IRR {{ number_format($totalFeeFullPayment) }}
+                                                    IRR {{ number_format($totalFeeFullPayment-$familyPercentagePriceFullPayment) }}
                                                 </td>
                                             </tr>
                                             </tbody>

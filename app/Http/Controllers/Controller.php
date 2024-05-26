@@ -7,6 +7,7 @@ use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Finance\DiscountDetail;
+use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\StudentInformation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -230,25 +231,34 @@ class Controller extends BaseController
         $me = auth()->user()->id;
 
         $allStudentsWithMyGuardian = StudentInformation::where('guardian', $me)->pluck('student_id')->toArray();
-        $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
-            ->with('academicYearInfo')
-            ->whereIn('student_id', $allStudentsWithMyGuardian)
+        $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::whereIn('student_id', $allStudentsWithMyGuardian)
             ->where('tuition_payment_status', 'Paid')
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->count();
 
-        $familyDiscount = 0;
-        if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
-            $familyDiscount = 25;
-        }
-        if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
-            $familyDiscount = 30;
-        }
-        if ($allStudentsWithPaidStatusInActiveAcademicYear > 4) {
-            $familyDiscount = 40;
-        }
+        $minimumStudentLevel = StudentApplianceStatus::join('granted_family_discounts', 'granted_family_discounts.appliance_id', '=', 'student_appliance_statuses.id')
+            ->whereIn('student_appliance_statuses.student_id', $allStudentsWithMyGuardian)
+            ->whereIn('student_appliance_statuses.academic_year', $this->getActiveAcademicYears())
+            ->min('level');
 
-        $allDiscountPercentages = $discountPercentages + $familyDiscount;
+        //        $familyDiscount = 0;
+        //
+        //        if(!empty($minimumStudentLevel)) {
+        //            if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
+        //                if ($applicationInfo->level<=$minimumStudentLevel) {
+        //                    $familyDiscount = 25;
+        //                }
+        //            }
+        //            if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
+        //                $familyDiscount = 30;
+        //            }
+        //            if ($allStudentsWithPaidStatusInActiveAcademicYear > 4) {
+        //                $familyDiscount = 40;
+        //            }
+        //        }
+
+        $allDiscountPercentages = $discountPercentages;
+        //        $allDiscountPercentages = $discountPercentages + $familyDiscount;
 
         if ($allDiscountPercentages > 40) {
             return 40;
@@ -281,5 +291,42 @@ class Controller extends BaseController
         }
 
         return ['percentage' => $familyDiscountAmount, 'students_count' => $allStudentsWithPaidStatusInActiveAcademicYear];
+    }
+
+    public function getMinimumApplianceLevelInfo($guardian_id)
+    {
+        $allStudentsWithGuardian = StudentInformation::where('guardian', $guardian_id)->pluck('student_id')->toArray();
+        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
+
+        $level=GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)
+            ->orderBy('level', 'asc')
+            ->first();
+
+        $academicYear=StudentApplianceStatus::find($level->appliance_id)->value('academic_year');
+        return ['level'=>$level,'academic_year'=>$academicYear];
+    }
+
+    public function getMinimumSignedChildNumber($guardian_id)
+    {
+        $allStudentsWithGuardian = StudentInformation::where('guardian', $guardian_id)->pluck('student_id')->toArray();
+        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
+
+        return GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)
+            ->orderByDesc('signed_child_number')
+            ->value('signed_child_number');
+    }
+
+    public function calculateDiscountByMinimumLevelTuition($tuition_id,$percentage)
+    {
+
+    }
+
+    public function getAllFamilyDiscountPrice($guardian_id)
+    {
+        //Found previous discounts
+        $allStudentsWithGuardian = StudentInformation::where('guardian', $guardian_id)->pluck('student_id')->toArray();
+        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
+
+        return GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->sum('discount_price');
     }
 }
