@@ -331,4 +331,14 @@ class Controller extends BaseController
 
         return GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->sum('discount_price');
     }
+
+    public function getGrantedDiscountInfo($appliance_id)
+    {
+        $grantedDiscountInfo=GrantedFamilyDiscount::where('appliance_id', $appliance_id)->first();
+
+        if (empty($grantedDiscountInfo)) {
+            return 0;
+        }
+        return $grantedDiscountInfo;
+    }
 }

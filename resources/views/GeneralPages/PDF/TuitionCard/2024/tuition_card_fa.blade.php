@@ -60,19 +60,23 @@
         @page {
             size: A4;
         }
+
         @media print {
             @page {
                 scale: 0.6; /* 60% مقیاس پرینت */
             }
         }
+
         @font-face {
             font-family: IRANSansX;
             src: url('../../build/Fonts/IRANSansX-DemiBold.woff') format('woff');
         }
+
         @font-face {
             font-family: IRANSansX;
             src: url('../../build/Fonts/IRANSansX-Light.woff') format('woff');
         }
+
         @font-face {
             font-family: IRANSansX;
             src: url('../../build/Fonts/IRANSansX-Medium.woff') format('woff');
@@ -93,9 +97,10 @@
             padding: 0 1rem;
         }
 
-        span{
+        span {
             font-weight: bold !important;
         }
+
         header {
             display: flex;
             justify-content: space-between;
@@ -211,9 +216,10 @@
         }
 
 
-        #table2  {
+        #table2 {
             width: 100%;
         }
+
         #table2 tr th,
         tr td {
             /*padding: 1.2rem;*/
@@ -362,7 +368,7 @@
             text-align: left;
         }
 
-        .payment-details-table td{
+        .payment-details-table td {
             padding: 5px;
             font-weight: normal;
         }
@@ -482,57 +488,59 @@
 {{--Paid Tuition Table--}}
 <section id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
     <div class="flex bg-blue">
-    <div class="texthead bg-blue">
-        <div class="writing-rl">
-            <h5>{{ __('translated_fa.Your tuition') }}</h5>
+        <div class="texthead bg-blue">
+            <div class="writing-rl">
+                <h5>{{ __('translated_fa.Your tuition') }}</h5>
+            </div>
         </div>
-    </div>
-    <div class="table-container bg-white">
-        <table style="width: 100%">
-            <tr>
-                <th style="width: 10%;height: 0">{{ __('translated_fa.Payment Type') }}</th>
-                <th style="width: 15%">{{ __('translated_fa.Total Payment Amount') }}</th>
-                <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} (درصد)</th>
-                <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} ({{ __('translated_fa.Amount') }})</th>
-                <th style="width: 15%">{{ __('translated_fa.Total Fee') }}</th>
-            </tr>
-            <tr style="">
-                <td style="white-space: nowrap;height: 0">
-                    @switch($myTuitionInfo->payment_type)
-                        @case('1')
-                            {{ __('translated_fa.Full Payment') }}
-                            @break
-                        @case('2')
-                            {{ __('translated_fa.Two Installment') }}
-                            @break
-                        @case('3')
-                            {{ __('translated_fa.Four Installment') }}
-                            @break
-                        @case('4')
-                            {{ __('translated_fa.Full Payment With Advance') }}
-                            @break
-                    @endswitch
-                </td>
-                <td style="white-space: nowrap" >{{ number_format($paymentAmount) }} </td>
-                <td>{{ $allDiscounts }}</td>
-                <td>{{ number_format(($paymentAmount*$allDiscounts)/100) }}</td>
-                <td style="white-space: nowrap">{{ number_format($totalAmount) }}
-                </td>
-            </tr>
-        </table>
-    </div>
+        <div class="table-container bg-white">
+            <table style="width: 100%">
+                <tr>
+                    <th style="width: 10%;height: 0">{{ __('translated_fa.Payment Type') }}</th>
+                    <th style="width: 15%">{{ __('translated_fa.Total Payment Amount') }}</th>
+                    <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} (درصد)</th>
+                    <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} ({{ __('translated_fa.Amount') }}
+                        )
+                    </th>
+                    <th style="width: 15%">{{ __('translated_fa.Total Fee') }}</th>
+                </tr>
+                <tr style="">
+                    <td style="white-space: nowrap;height: 0">
+                        @switch($myTuitionInfo->payment_type)
+                            @case('1')
+                                {{ __('translated_fa.Full Payment') }}
+                                @break
+                            @case('2')
+                                {{ __('translated_fa.Two Installment') }}
+                                @break
+                            @case('3')
+                                {{ __('translated_fa.Four Installment') }}
+                                @break
+                            @case('4')
+                                {{ __('translated_fa.Full Payment With Advance') }}
+                                @break
+                        @endswitch
+                    </td>
+                    <td style="white-space: nowrap">{{ number_format($paymentAmount) }} </td>
+                    <td>{{ $allDiscounts }}</td>
+                    <td>{{ number_format((($paymentAmount*$allDiscounts)/100)+$allFamilyDiscounts->discount_price) }}</td>
+                    <td style="white-space: nowrap">{{ number_format($totalAmount) }}
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </section>
 
 {{--Payment Details--}}
 <div class="flex w-100">
-        <div id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
-            <div class="flex">
-                <div class="texthead bg-yellow">
-                    <div class="writing-rl">
-                        <h5>{{ __('translated_fa.Payment Details') }}</h5>
-                    </div>
+    <div id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
+        <div class="flex">
+            <div class="texthead bg-yellow">
+                <div class="writing-rl">
+                    <h5>{{ __('translated_fa.Payment Details') }}</h5>
                 </div>
+            </div>
             <div class="table-container ">
                 <table class="payment-details-table font-bold">
                     <tr>
@@ -598,7 +606,7 @@
                                         @break
                                 @endswitch
                             </td>
-                            <td style="white-space: nowrap" >{{ number_format($invoices->amount) }} </td>
+                            <td style="white-space: nowrap">{{ number_format($invoices->amount) }} </td>
                             <td style="white-space: nowrap">
                                 @switch ($dueType)
                                     @case('Four')
@@ -672,8 +680,8 @@
                     </tr>
                 </table>
             </div>
-            </div>
         </div>
+    </div>
 </div>
 
 {{--Considerations--}}
@@ -682,7 +690,7 @@
     <ul class="considerations ">
         <li class="consideration-item font-bold">
             <u>
-            تمامی مبالغ به ریال می باشند.
+                تمامی مبالغ به ریال می باشند.
             </u>
         </li>
         @if($discounts->isNotEmpty())
@@ -695,9 +703,10 @@
                 </li>
             @endforeach
         @endif
-        @if($allFamilyDiscounts['students_count']>1)
+        @if($allFamilyDiscounts->discount_price>0)
             <li class="consideration-item font-bold">
                 {{ __('translated_fa.Included Family Discounts') }}
+                ({{number_format($allFamilyDiscounts->discount_price)}} ریال)
             </li>
         @endif
     </ul>

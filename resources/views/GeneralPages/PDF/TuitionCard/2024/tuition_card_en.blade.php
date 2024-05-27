@@ -269,32 +269,12 @@
             border-color: #ffe753 !important;
         }
 
-        .text-white {
-            color: white;
-        }
-
         .p-1r {
             padding-right: 0.5rem;
         }
 
-        .p-1l {
-            padding-left: 1rem;
-        }
-
-        .m-0 {
-            margin: 0;
-        }
-
-        .p-0 {
-            padding: 0;
-        }
-
         .mt-2rem {
             margin-top: 0.5rem;;
-        }
-
-        .w50 {
-            width: 50%;
         }
 
         .w-100 {
@@ -315,7 +295,7 @@
         .consideration-item {
             margin-bottom: 10px;
             position: relative;
-            margin-right: 1.2em;
+            margin-left: 1.2em;
         }
 
         .consideration-item::before {
@@ -323,7 +303,7 @@
             color: #9ddadf;
             font-size: 20px;
             position: absolute;
-            right: -20px;
+            left: -20px;
             top: 48%;
             transform: translateY(-50%);
         }
@@ -366,7 +346,7 @@
 
     </style>
     <script>
-        window.print();
+        // window.print();
 
         function setPrintScale() {
             if (window.matchMedia('print').matches) {
@@ -498,7 +478,8 @@
                 </td>
                 <td style="white-space: nowrap">{{ number_format($paymentAmount) }} IRR</td>
                 <td>{{ $allDiscounts }}</td>
-                <td>{{ number_format(($paymentAmount*$allDiscounts)/100) }}</td>
+                <td>{{ number_format((($paymentAmount*$allDiscounts)/100)+$allFamilyDiscounts->discount_price) }}IRR
+                </td>
                 <td style="white-space: nowrap">{{ number_format($totalAmount) }} IRR
                 </td>
             </tr>
@@ -508,21 +489,22 @@
 
 {{--Payment Details--}}
 <div class="flex w-100">
-    <div class="w-100 p-1r">
-        <div id="table2" class="flex border-table bg-border-yellow radius-table mt-2rem bg-white">
+    <div id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
+        <div class="flex">
             <div class="texthead bg-yellow">
                 <div class="writing-rl">
                     <h5>Payment Details</h5>
                 </div>
             </div>
             <div class="table-container ">
-                <table class="font-bold">
+                <table class="payment-details-table font-bold">
                     <tr>
                         <th>Type</th>
                         <th>Amount</th>
-                        <th>Due Date</th>
+                        <th style="white-space: nowrap">Due Date</th>
                         <th>Date received</th>
                         <th>Payment Method</th>
+                        @php $paidAmount = $debt = 0 @endphp
                     </tr>
                     @foreach($myTuitionInfo->invoiceDetails as $key=>$invoices)
                         @php
@@ -541,10 +523,40 @@
                                 $dueType='Full';
                             }
                         @endphp
-                        <tr>
-                            <td>{{ $tuitionType }}</td>
-                            <td style="white-space: nowrap">{{ number_format($invoices->amount) }} IRR</td>
-                            <td>
+                        <tr style="padding: 4px">
+                            <td style="white-space: nowrap">
+                                @switch($tuitionType)
+                                    @case('Two Installment Advance')
+                                    @case('Four Installment Advance')
+                                        Advance
+                                        @break
+                                    @case('Two Installment - Installment 1')
+                                    @case('Four Installment - Installment 1')
+                                        Installment 1
+                                        @break
+                                    @case('Two Installment - Installment 2')
+                                    @case('Four Installment - Installment 2')
+                                        Installment 2
+                                        @break
+                                    @case('Four Installment - Installment 3')
+                                        Installment 3
+                                        @break
+                                    @case('Four Installment - Installment 4')
+                                        Installment 4
+                                        @break
+                                    @case('Full Payment With Advance - Installment')
+                                        Installment
+                                        @break
+                                    @case('Full Payment With Advance')
+                                        Advance
+                                        @break
+                                    @case('Full Payment')
+                                        Full Payment
+                                        @break
+                                @endswitch
+                            </td>
+                            <td style="white-space: nowrap">{{ number_format($invoices->amount) }} </td>
+                            <td style="white-space: nowrap">
                                 @switch ($dueType)
                                     @case('Four')
                                         {{ $dueDates["date_of_installment".$key."_four"] }}
@@ -553,18 +565,20 @@
                                         {{ $dueDates["date_of_installment".$key."_two"] }}
                                         @break
                                     @case('Full')
-                                        2024-09-21
+                                        {{$invoices->date_of_payment}}
                                         @break
+                                    @default
+                                        -
                                 @endswitch
                             </td>
-                            <td>
+                            <td class="ltr-text" style="white-space: nowrap;text-align: center">
                                 @if(isset($invoices->date_of_payment))
-                                    {{ $invoices->date_of_payment }}
+                                    {{$invoices->date_of_payment}}
                                 @else
                                     -
                                 @endif
                             </td>
-                            <td>
+                            <td style="white-space: nowrap">
                                 @if(isset($invoices->paymentMethodInfo->name))
                                     {{$invoices->paymentMethodInfo->name}}
                                 @else
@@ -577,12 +591,19 @@
                                 $paidAmount=$invoices->amount+$paidAmount;
                             @endphp
                         @endif
+                        @if($invoices->date_of_payment==null)
+                            @php
+                                $debt=$totalAmount-$paidAmount;
+                            @endphp
+                        @endif
                     @endforeach
                     <tr style="border-top: 1px solid #ffe753;white-space: nowrap">
                         <td class="font-bold">Total</td>
-                        <td>{{ number_format($totalAmount) }} IRR</td>
+                        <td>{{ number_format($totalAmount) }} </td>
                         <td class="font-bold">Paid Amount</td>
-                        <td>{{ number_format($paidAmount) }} IRR</td>
+                        <td>{{ number_format($paidAmount) }} </td>
+                        <td class="font-bold">Debt</td>
+                        <td>{{ number_format($debt) }} </td>
                     </tr>
                 </table>
             </div>
@@ -591,7 +612,7 @@
 </div>
 
 {{--Considerations--}}
-<div style="page-break-after: auto" class="Considerations">
+<div class="Considerations">
     <h3>Considerations</h3>
     <ul class="considerations ">
         @if($discounts->isNotEmpty())
@@ -604,9 +625,9 @@
                 </li>
             @endforeach
         @endif
-        @if($allFamilyDiscounts['students_count']>1)
+        @if($allFamilyDiscounts->discount_price>0)
             <li class="consideration-item font-bold">
-                Included Family Discounts
+                Included Family Discounts ({{number_format($allFamilyDiscounts->discount_price)}} IRR)
             </li>
         @endif
     </ul>

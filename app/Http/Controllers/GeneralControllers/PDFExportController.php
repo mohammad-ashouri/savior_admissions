@@ -29,7 +29,7 @@ class PDFExportController extends Controller
             }
         }
         $allDiscounts=$this->getAllDiscounts($applianceStatus->student_id);
-        $allFamilyDiscounts=$this->getAllFamilyDiscounts();
+        $allFamilyDiscounts=$this->getGrantedDiscountInfo($appliance_id);
         return view('GeneralPages.PDF.TuitionCard.2024.tuition_card_en',compact('applianceStatus','allDiscounts','allFamilyDiscounts'));
     }
     public function tuitionCardFaExport($appliance_id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -52,7 +52,7 @@ class PDFExportController extends Controller
         }
         $applianceStatus=StudentApplianceStatus::find($appliance_id);
         $allDiscounts=$this->getAllDiscounts($applianceStatus->student_id);
-        $allFamilyDiscounts=$this->getAllFamilyDiscounts();
+        $allFamilyDiscounts=$this->getGrantedDiscountInfo($appliance_id);
         return view('GeneralPages.PDF.TuitionCard.2024.tuition_card_fa',compact('applianceStatus','allDiscounts','allFamilyDiscounts'));
     }
 }
