@@ -206,8 +206,11 @@ class TuitionPaymentController extends Controller
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->where('id', $tuition_id)->first();
+        }else{
+            $tuitionInvoices = TuitionInvoices::pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
+                ->where('id', $tuition_id)->first();
         }
-
         if (empty($tuitionInvoiceDetails)) {
             $this->logActivity(json_encode(['activity' => 'Change Tuition Invoice Status Failed', 'values' => json_encode($request->all(), true), 'errors' => 'Tuition Id Is Wrong!']), request()->ip(), request()->userAgent());
 
@@ -229,6 +232,7 @@ class TuitionPaymentController extends Controller
                 $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id);
 
                 //Found previous discounts
+                $familyPercentagePriceTwoInstallment=0;
                 $allStudentsWithGuardian = StudentInformation::where('guardian', $studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
                 $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
                 $allGrantedFamilyDiscounts = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->get();
@@ -257,19 +261,24 @@ class TuitionPaymentController extends Controller
                     $student_id = $studentAppliance->student_id;
 
                     $allDiscountPercentages = $this->getAllDiscounts($student_id);
-                    $previousDiscountPrice = $this->getAllFamilyDiscountPrice($me);
+                    $previousDiscountPrice = $this->getAllFamilyDiscountPrice($studentAppliance->studentInformations->guardianInfo->id);
 
                     //Calculate discount for minimum level
-                    $minimumLevel = $this->getMinimumApplianceLevelInfo($me);
+                    $minimumLevel = $this->getMinimumApplianceLevelInfo($studentAppliance->studentInformations->guardianInfo->id);
 
                     $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
                         ->where('tuitions.academic_year', $minimumLevel['academic_year'])->where('tuition_details.level', $minimumLevel['level']->level)->first();
+                    if ($minimumLevelTuitionDetails->level>$applicationInfo->level){
+                        $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+                            ->where('tuitions.academic_year', $applicationInfo->academic_year)->where('tuition_details.level', $applicationInfo->level)->first();
+                    }
 
-                    $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($me);
+                    $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($studentAppliance->studentInformations->guardianInfo->id);
                     $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment, true)['full_payment_irr']);
                     $minimumLevelTuitionDetailsTwoInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->two_installment_payment, true)['two_installment_amount_irr']);
                     $minimumLevelTuitionDetailsFourInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->four_installment_payment, true)['four_installment_amount_irr']);
                     $familyPercentagePriceFullPayment = $familyPercentagePriceTwoInstallment = $familyPercentagePriceFourInstallment = 0;
+
                     switch ($minimumSignedStudentNumber) {
                         case '1':
                             $familyPercentagePriceFullPayment = abs((($minimumLevelTuitionDetailsFullPayment * 25) / 100) - $previousDiscountPrice);
@@ -345,9 +354,9 @@ class TuitionPaymentController extends Controller
                             break;
                         default:
                     }
-                    //                    dd($minimumLevel);
                 }
-                //                dd($applicationInfo);
+
+
                 $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
 
                 switch ($tuitionInvoiceInfo->payment_type) {
@@ -360,7 +369,7 @@ class TuitionPaymentController extends Controller
                         while ($counter < 3) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount = ($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2;
+                            $newInvoice->amount = (($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2)+($familyPercentagePriceTwoInstallment/2);
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
                             $newInvoice->save();
@@ -377,7 +386,7 @@ class TuitionPaymentController extends Controller
                         while ($counter < 5) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount = ($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4;
+                            $newInvoice->amount = (($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4)+($familyPercentagePriceFourInstallment/4);
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                             $newInvoice->save();
@@ -388,8 +397,7 @@ class TuitionPaymentController extends Controller
                         $tuitionDetailsForFullPayment = json_decode($tuitionDetails->full_payment, true);
                         $fullPaymentAmount = str_replace(',', '', $tuitionDetailsForFullPayment['full_payment_irr']);
                         $fullPaymentAmountAdvance = ($fullPaymentAmount * 30) / 100;
-                        $fullPaymentAmountInstallment = ($fullPaymentAmount - (($fullPaymentAmount * $allDiscountPercentages) / 100)) - $fullPaymentAmountAdvance;
-
+                        $fullPaymentAmountInstallment = ($fullPaymentAmount - (($fullPaymentAmount * $allDiscountPercentages) / 100)-$familyPercentagePriceFullPayment) - $fullPaymentAmountAdvance;
                         $newInvoice = new TuitionInvoiceDetails();
                         $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
                         $newInvoice->amount = $fullPaymentAmountInstallment;

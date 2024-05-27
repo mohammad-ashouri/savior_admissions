@@ -297,13 +297,15 @@ class Controller extends BaseController
     {
         $allStudentsWithGuardian = StudentInformation::where('guardian', $guardian_id)->pluck('student_id')->toArray();
         $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
-
-        $level=GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)
+        $level = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)
             ->orderBy('level', 'asc')
             ->first();
+        $academicYear = [];
+        if (! empty($level)) {
+            $academicYear = StudentApplianceStatus::where('id',$level->appliance_id)->value('academic_year');
+        }
 
-        $academicYear=StudentApplianceStatus::find($level->appliance_id)->value('academic_year');
-        return ['level'=>$level,'academic_year'=>$academicYear];
+        return ['level' => $level, 'academic_year' => $academicYear];
     }
 
     public function getMinimumSignedChildNumber($guardian_id)
@@ -311,14 +313,14 @@ class Controller extends BaseController
         $allStudentsWithGuardian = StudentInformation::where('guardian', $guardian_id)->pluck('student_id')->toArray();
         $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
 
-        return GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)
+        $minimumSignedStudentNumber = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)
             ->orderByDesc('signed_child_number')
             ->value('signed_child_number');
-    }
+        if (empty($minimumSignedStudentNumber) or $minimumSignedStudentNumber == null) {
+            return 1;
+        }
 
-    public function calculateDiscountByMinimumLevelTuition($tuition_id,$percentage)
-    {
-
+        return $minimumSignedStudentNumber;
     }
 
     public function getAllFamilyDiscountPrice($guardian_id)

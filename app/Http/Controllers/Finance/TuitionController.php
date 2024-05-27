@@ -211,10 +211,20 @@ class TuitionController extends Controller
         //Calculate discount for minimum level
         $minimumLevel=$this->getMinimumApplianceLevelInfo($me);
 
-        $minimumLevelTuitionDetails=Tuition::join('tuition_details','tuitions.id','=','tuition_details.tuition_id')
-        ->where('tuitions.academic_year',$minimumLevel['academic_year'])->where('tuition_details.level',$minimumLevel['level']->level)->first();
+        if (!empty($minimumLevel['academic_year']) and !$minimumLevel['level']==null) {
+            $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+                ->where('tuitions.academic_year', $minimumLevel['academic_year'])->where('tuition_details.level', $minimumLevel['level']->level)->first();
+            if ($minimumLevelTuitionDetails->level>$applicationInfo->level){
+                $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+                    ->where('tuitions.academic_year', $applicationInfo->academic_year)->where('tuition_details.level', $applicationInfo->level)->first();
+            }
+        }
 
+        if (empty($minimumLevelTuitionDetails)){
+            $minimumLevelTuitionDetails=[];
+        }
         $minimumSignedStudentNumber=$this->getMinimumSignedChildNumber($me);
+
         return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages','previousDiscountPrice','minimumLevelTuitionDetails','minimumLevel','minimumSignedStudentNumber'));
     }
 
@@ -278,11 +288,48 @@ class TuitionController extends Controller
 
         $allDiscounts = $this->getAllDiscounts($student_id);
 
+        $previousDiscountPrice=$this->getAllFamilyDiscountPrice($studentApplianceStatus->studentInformations->guardianInfo->id);
+
+        //Calculate discount for minimum level
+        $minimumLevel=$this->getMinimumApplianceLevelInfo($studentApplianceStatus->studentInformations->guardianInfo->id);
+
+        if (!empty($minimumLevel['academic_year']) and !$minimumLevel['level']==null) {
+            $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+                ->where('tuitions.academic_year', $minimumLevel['academic_year'])->where('tuition_details.level', $minimumLevel['level']->level)->first();
+            if ($minimumLevelTuitionDetails->level>$applicationInfo->level){
+                $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+                    ->where('tuitions.academic_year', $applicationInfo->academic_year)->where('tuition_details.level', $applicationInfo->level)->first();
+            }
+        }
+
+        if (empty($minimumLevelTuitionDetails)){
+            $minimumLevelTuitionDetails=[];
+        }
+        $minimumSignedStudentNumber=$this->getMinimumSignedChildNumber($studentApplianceStatus->studentInformations->guardianInfo->id);
+
+        if (!empty($minimumLevelTuitionDetails)){
+            $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment,true)['full_payment_irr']);
+            $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
+            switch($minimumSignedStudentNumber){
+                case '1':
+                    $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice);
+                    break;
+                case '2':
+                    $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice);
+                    break;
+                case '3':
+                    $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice);
+                    break;
+                default:
+            }
+        }else{
+            $familyPercentagePriceFullPayment=0;
+        }
+
         //Amount information
         $fullPayment = json_decode($tuition->full_payment, true);
         $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr']);
-        $fullPaymentAmountAdvance = (str_replace(',', '', $fullPayment['full_payment_irr']));
-        $fullPaymentAmountWithDiscounts = $fullPaymentAmount - (($fullPaymentAmount * $allDiscounts) / 100);
+        $fullPaymentAmountWithDiscounts = $fullPaymentAmount - ((($fullPaymentAmount * $allDiscounts) / 100)+$familyPercentagePriceFullPayment);
 
         $twoInstallmentPayment = json_decode($tuition->two_installment_payment, true);
         $twoInstallmentAdvance = str_replace(',', '', $twoInstallmentPayment['two_installment_advance_irr']);

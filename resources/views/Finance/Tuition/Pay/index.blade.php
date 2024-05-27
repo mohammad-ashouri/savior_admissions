@@ -126,6 +126,7 @@
                                 </div>
                                 <div>
                                     @php
+                                    if (!empty($minimumLevelTuitionDetails)){
                                     $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment,true)['full_payment_irr']);
                                     $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment,true)['two_installment_amount_irr']);
                                     $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment,true)['four_installment_amount_irr']);
@@ -148,6 +149,9 @@
                                             break;
                                         default:
                                     }
+                                    }else{
+                                        $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
+                                    }
 
                                         $fullPayment=json_decode($tuition->full_payment,true);
                                         $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr']);
@@ -164,7 +168,7 @@
                                         $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
                                         $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
 
-                                        $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFullPayment);
+                                        $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100));
                                         $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment);
                                         $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment);
                                     @endphp
@@ -866,6 +870,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="overflow-x-auto">
                                     <div hidden="" id="full-payment-invoice">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -966,6 +971,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+
                                     <div hidden="" id="full-payment-with-advance-invoice">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <tbody>
