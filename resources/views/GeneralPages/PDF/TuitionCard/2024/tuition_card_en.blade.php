@@ -504,6 +504,7 @@
                         <th style="white-space: nowrap">Due Date</th>
                         <th>Date received</th>
                         <th>Payment Method</th>
+                        <th style="width: 120px;"> </th>
                         @php $paidAmount = $debt = 0 @endphp
                     </tr>
                     @foreach($myTuitionInfo->invoiceDetails as $key=>$invoices)
@@ -578,7 +579,7 @@
                                     -
                                 @endif
                             </td>
-                            <td style="white-space: nowrap">
+                            <td style="white-space: nowrap; border-right: 1px solid #ffe753">
                                 @if(isset($invoices->paymentMethodInfo->name))
                                     {{$invoices->paymentMethodInfo->name}}
                                 @else
