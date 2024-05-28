@@ -326,10 +326,16 @@ class TuitionController extends Controller
             $familyPercentagePriceFullPayment=0;
         }
 
+
         //Amount information
         $fullPayment = json_decode($tuition->full_payment, true);
         $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr']);
-        $fullPaymentAmountWithDiscounts = $fullPaymentAmount - ((($fullPaymentAmount * $allDiscounts) / 100)+$familyPercentagePriceFullPayment);
+        $totalDiscountsFull=(($fullPaymentAmount*$allDiscounts)/100)+$familyPercentagePriceFullPayment;
+        $tuitionDiscountFull=($fullPaymentAmount*40)/100;
+        if($totalDiscountsFull>$tuitionDiscountFull){
+            $totalDiscountsFull=$tuitionDiscountFull;
+        }
+        $fullPaymentAmountWithDiscounts = $fullPaymentAmount - $totalDiscountsFull;
 
         $twoInstallmentPayment = json_decode($tuition->two_installment_payment, true);
         $twoInstallmentAdvance = str_replace(',', '', $twoInstallmentPayment['two_installment_advance_irr']);

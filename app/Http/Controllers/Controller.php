@@ -227,44 +227,7 @@ class Controller extends BaseController
             $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
         }
 
-        //Get all students with paid status in all active academic years
-        $me = auth()->user()->id;
-
-        $allStudentsWithMyGuardian = StudentInformation::where('guardian', $me)->pluck('student_id')->toArray();
-        $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::whereIn('student_id', $allStudentsWithMyGuardian)
-            ->where('tuition_payment_status', 'Paid')
-            ->whereIn('academic_year', $this->getActiveAcademicYears())
-            ->count();
-
-        $minimumStudentLevel = StudentApplianceStatus::join('granted_family_discounts', 'granted_family_discounts.appliance_id', '=', 'student_appliance_statuses.id')
-            ->whereIn('student_appliance_statuses.student_id', $allStudentsWithMyGuardian)
-            ->whereIn('student_appliance_statuses.academic_year', $this->getActiveAcademicYears())
-            ->min('level');
-
-        //        $familyDiscount = 0;
-        //
-        //        if(!empty($minimumStudentLevel)) {
-        //            if ($allStudentsWithPaidStatusInActiveAcademicYear == 2) {
-        //                if ($applicationInfo->level<=$minimumStudentLevel) {
-        //                    $familyDiscount = 25;
-        //                }
-        //            }
-        //            if ($allStudentsWithPaidStatusInActiveAcademicYear == 3) {
-        //                $familyDiscount = 30;
-        //            }
-        //            if ($allStudentsWithPaidStatusInActiveAcademicYear > 4) {
-        //                $familyDiscount = 40;
-        //            }
-        //        }
-
-        $allDiscountPercentages = $discountPercentages;
-        //        $allDiscountPercentages = $discountPercentages + $familyDiscount;
-
-        if ($allDiscountPercentages > 40) {
-            return 40;
-        }
-
-        return $allDiscountPercentages;
+        return $discountPercentages;
     }
 
     public function getAllFamilyDiscounts()
