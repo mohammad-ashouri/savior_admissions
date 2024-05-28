@@ -133,19 +133,19 @@
                                     $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
                                     switch($minimumSignedStudentNumber){
                                         case '1':
-                                            $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice);
-                                            $familyPercentagePriceTwoInstallment=abs((($minimumLevelTuitionDetailsTwoInstallment*25)/100)-$previousDiscountPrice);
-                                            $familyPercentagePriceFourInstallment=abs((($minimumLevelTuitionDetailsFourInstallment*25)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice;
+                                            $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*25)/100)-$previousDiscountPrice;
+                                            $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*25)/100)-$previousDiscountPrice;
                                             break;
                                         case '2':
-                                            $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice);
-                                            $familyPercentagePriceTwoInstallment=abs((($minimumLevelTuitionDetailsTwoInstallment*30)/100)-$previousDiscountPrice);
-                                            $familyPercentagePriceFourInstallment=abs((($minimumLevelTuitionDetailsFourInstallment*30)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice;
+                                            $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*30)/100)-$previousDiscountPrice;
+                                            $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*30)/100)-$previousDiscountPrice;
                                             break;
                                         case '3':
-                                            $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice);
-                                            $familyPercentagePriceTwoInstallment=abs((($minimumLevelTuitionDetailsTwoInstallment*40)/100)-$previousDiscountPrice);
-                                            $familyPercentagePriceFourInstallment=abs((($minimumLevelTuitionDetailsFourInstallment*40)/100)-$previousDiscountPrice);
+                                            $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice;
+                                            $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*40)/100)-$previousDiscountPrice;
+                                            $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*40)/100)-$previousDiscountPrice;
                                             break;
                                         default:
                                     }

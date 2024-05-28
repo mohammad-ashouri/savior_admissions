@@ -250,6 +250,7 @@ class TuitionPaymentController extends Controller
                     ->first();
 
                 if ($allGrantedFamilyDiscounts->isEmpty()) {
+                    $familyPercentagePriceFullPayment = $familyPercentagePriceTwoInstallment = $familyPercentagePriceFourInstallment = 0;
                     $newGrantedFamilyDiscount = new GrantedFamilyDiscount();
                     $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
                     $newGrantedFamilyDiscount->level = $applicationInfo->level;
@@ -281,9 +282,9 @@ class TuitionPaymentController extends Controller
 
                     switch ($minimumSignedStudentNumber) {
                         case '1':
-                            $familyPercentagePriceFullPayment = abs((($minimumLevelTuitionDetailsFullPayment * 25) / 100) - $previousDiscountPrice);
-                            $familyPercentagePriceTwoInstallment = abs((($minimumLevelTuitionDetailsTwoInstallment * 25) / 100) - $previousDiscountPrice);
-                            $familyPercentagePriceFourInstallment = abs((($minimumLevelTuitionDetailsFourInstallment * 25) / 100) - $previousDiscountPrice);
+                            $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 25) / 100) - $previousDiscountPrice;
+                            $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 25) / 100) - $previousDiscountPrice;
+                            $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 25) / 100) - $previousDiscountPrice;
 
                             $newGrantedFamilyDiscount = new GrantedFamilyDiscount();
                             $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
@@ -305,9 +306,11 @@ class TuitionPaymentController extends Controller
                             $newGrantedFamilyDiscount->save();
                             break;
                         case '2':
-                            $familyPercentagePriceFullPayment = abs((($minimumLevelTuitionDetailsFullPayment * 30) / 100) - $previousDiscountPrice);
-                            $familyPercentagePriceTwoInstallment = abs((($minimumLevelTuitionDetailsTwoInstallment * 30) / 100) - $previousDiscountPrice);
-                            $familyPercentagePriceFourInstallment = abs((($minimumLevelTuitionDetailsFourInstallment * 30) / 100) - $previousDiscountPrice);
+
+                            $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 30) / 100) - $previousDiscountPrice;
+                            $familyPercentagePriceTwoInstallment =(($minimumLevelTuitionDetailsTwoInstallment * 30) / 100) - $previousDiscountPrice;
+                            $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 30) / 100) - $previousDiscountPrice;
+
 
                             $newGrantedFamilyDiscount = new GrantedFamilyDiscount();
                             $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
@@ -329,9 +332,9 @@ class TuitionPaymentController extends Controller
                             $newGrantedFamilyDiscount->save();
                             break;
                         case '3':
-                            $familyPercentagePriceFullPayment = abs((($minimumLevelTuitionDetailsFullPayment * 40) / 100) - $previousDiscountPrice);
-                            $familyPercentagePriceTwoInstallment = abs((($minimumLevelTuitionDetailsTwoInstallment * 40) / 100) - $previousDiscountPrice);
-                            $familyPercentagePriceFourInstallment = abs((($minimumLevelTuitionDetailsFourInstallment * 40) / 100) - $previousDiscountPrice);
+                            $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 40) / 100) - $previousDiscountPrice;
+                            $familyPercentagePriceTwoInstallment =(($minimumLevelTuitionDetailsTwoInstallment * 40) / 100) - $previousDiscountPrice;
+                            $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 40) / 100) - $previousDiscountPrice;
 
                             $newGrantedFamilyDiscount = new GrantedFamilyDiscount();
                             $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
@@ -369,7 +372,7 @@ class TuitionPaymentController extends Controller
                         while ($counter < 3) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount = (($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2)+($familyPercentagePriceTwoInstallment/2);
+                            $newInvoice->amount = (($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2)-($familyPercentagePriceTwoInstallment/2);
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
                             $newInvoice->save();
@@ -386,7 +389,7 @@ class TuitionPaymentController extends Controller
                         while ($counter < 5) {
                             $newInvoice = new TuitionInvoiceDetails();
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                            $newInvoice->amount = (($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4)+($familyPercentagePriceFourInstallment/4);
+                            $newInvoice->amount = (($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4)-($familyPercentagePriceFourInstallment/4);
                             $newInvoice->is_paid = 0;
                             $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                             $newInvoice->save();
@@ -409,7 +412,7 @@ class TuitionPaymentController extends Controller
 
                 $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
                 $message = "Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
-                $this->sendSMS($guardianMobile, $message);
+//                $this->sendSMS($guardianMobile, $message);
 
                 return response()->json(['message' => 'Installments were made!']);
             default:

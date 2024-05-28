@@ -312,13 +312,13 @@ class TuitionController extends Controller
             $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
             switch($minimumSignedStudentNumber){
                 case '1':
-                    $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice);
+                    $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice;
                     break;
                 case '2':
-                    $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice);
+                    $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice;
                     break;
                 case '3':
-                    $familyPercentagePriceFullPayment=abs((($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice);
+                    $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice;
                     break;
                 default:
             }
