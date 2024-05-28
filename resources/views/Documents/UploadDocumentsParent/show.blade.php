@@ -468,10 +468,10 @@
                                     <div class="mt-3 ml-2">
                                         <label for="student_iranian_sanad_code"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                            Iranian sanad code</label>
+                                            Iranian yekta code</label>
                                         <input required type="text" disabled
                                                value="{{$informations['student_iranian_sanad_code']}}"
-                                               placeholder="Please enter student's iranian sanad code ..."
+                                               placeholder="Please enter student's iranian yekta code ..."
                                                name="student_iranian_sanad_code" id="student_iranian_sanad_code"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     </div>
