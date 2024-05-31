@@ -106,10 +106,10 @@
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 text-center border p-4">
-                                            {{ $loop->iteration }}
+                                        {{ $loop->iteration }}
                                     </td>
                                     <td class="w-4 text-center border">
-                                            {{ $interview->id }}
+                                        {{ $interview->id }}
                                     </td>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
@@ -259,6 +259,9 @@
                                                         @endif
                                                         @break
                                                     @case('1')
+                                                        @php
+                                                            $studentApplianceStatus=StudentApplianceStatus::where('academic_year',$interview->applicationTimingInfo->academic_year)->where('student_id',$interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+                                                        @endphp
                                                         @can('interview-show')
                                                             <a href="{{ route('Interviews.show',$interview->id) }}"
                                                                type="button"
@@ -267,6 +270,16 @@
                                                                 Details
                                                             </a>
                                                         @endcan
+                                                        @if($studentApplianceStatus->tuition_payment_status==null and $studentApplianceStatus->interview_status!='Pending Interview' and $studentApplianceStatus->interview_status!='Rejected' and $me->hasRole('Financial Manager'))
+                                                            @can('interview-edit')
+                                                                <a href="/Interviews/{{ $interview->id }}/edit"
+                                                                   type="button"
+                                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                                    <i class="las la-pen mt-1 mr-1"></i>
+                                                                    Edit
+                                                                </a>
+                                                            @endcan
+                                                        @endif
                                                         @break
                                                 @endswitch
                                             @endif
