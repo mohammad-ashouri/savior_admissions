@@ -31,10 +31,13 @@ class DashboardController extends Controller
         $this->allRegisteredApplicationsInLastAcademicYear = $allRegisteredApplicationsInLastAcademicYear;
     }
 
-    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function index()
     {
         $me = User::with('generalInformationInfo')->find(auth()->user()->id);
 
+        if (empty($me)){
+            redirect()->route('logout');
+        }
         //Students
         $students = [];
         if ($me->hasRole('Parent')) {

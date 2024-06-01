@@ -106,7 +106,7 @@ $(document).ready(function () {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                             }, success: function (response) {
                                 if (response.success) {
-                                    window.location.href = response.redirect;
+                                    window.location.href = '/dashboard';
                                 } else {
                                     if (response.validator_errors) {
                                         let errorList = response.validator_errors;
