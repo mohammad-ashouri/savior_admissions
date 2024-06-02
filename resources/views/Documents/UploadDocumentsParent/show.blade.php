@@ -144,11 +144,11 @@
                                         <div class="mt-3 ml-2">
                                             <label for="father_qualification"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                Father's qualification</label>
+                                                Father's degree</label>
                                             <input type="text" id="father_qualification" name="father_qualification"
                                                    value="{{$informations['father_qualification']}}" disabled
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Father's Qualification">
+                                                   required placeholder="Enter Father's Degree">
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="father_passport_number"
@@ -256,11 +256,11 @@
                                         <div class="mt-3 ml-2">
                                             <label for="mother_qualification"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                mother's qualification</label>
+                                                mother's degree</label>
                                             <input type="text" id="mother_qualification" name="mother_qualification"
                                                    value="{{$informations['mother_qualification']}}" disabled
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter mother's Qualification">
+                                                   required placeholder="Enter mother's degree">
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="mother_passport_number"
