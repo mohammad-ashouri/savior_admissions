@@ -100,14 +100,14 @@ class EvidenceController extends Controller
                 $studentAppliance->documents_uploaded = 3;
                 $studentAppliance->documents_uploaded_approval = 2;
                 $studentAppliance->description = 'Documents Rejected';
-                $this->sendSMS($guardianMobile, "Your documents were rejected. To review and see the reason for rejection, please refer to your panel.\nSavior Schools");
+//                $this->sendSMS($guardianMobile, "Your documents were rejected. To review and see the reason for rejection, please refer to your panel.\nSavior Schools");
                 break;
             default:
                 $this->logActivity(json_encode(['activity' => 'Failed To Confirm Evidences (Wrong Status)', 'values' => $request->all(), 'appliance_id' => $appliance_id]), request()->ip(), request()->userAgent());
 
                 abort(403);
         }
-        $studentAppliance->seconder_description = $request->seconder_description;
+        $studentAppliance->seconder_description = $request->description;
         $studentAppliance->documents_uploaded_seconder = $me->id;
         $studentAppliance->save();
 
