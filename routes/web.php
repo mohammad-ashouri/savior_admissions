@@ -224,4 +224,4 @@ Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'veri
 //Route::post('/importNewUsers', [ExcelController::class, 'importNewUsers'])->name('excel.importNewUsers');
 //Route::get('/ExportExcelFromUsersMobile', [ExcelController::class, 'exportExcelFromUsersMobile'])->name('excel.importParentMothers');
 //Route::get('/ExportExcelFromAllStudents', [ExcelController::class, 'exportExcelFromAllStudents']);
-//Route::get('/ExportExcelFromAllStudents', [ExcelController::class, 'exportExcelFromAllStudents']);
+//Route::get('/ExportExcelFromAllGuardianWithStudents', [ExcelController::class, 'exportExcelFromAllGuardianWithStudents']);

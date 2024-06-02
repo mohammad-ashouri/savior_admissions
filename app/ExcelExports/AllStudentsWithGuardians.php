@@ -19,14 +19,6 @@ class AllStudentsWithGuardians implements FromCollection, WithHeadings, ShouldAu
             ->with('guardianInfo')
             ->get()
             ->map(function ($student) {
-                $applicationReservation = ApplicationReservation::where('payment_status', 1)
-                    ->where('student_id', $student->student_id)
-                    ->get();
-
-                $applicationDetails = null;
-                if ($applicationReservation->isNotEmpty()) {
-                    $applicationDetails = $applicationReservation->first()->id;
-                }
                 return [
                     'Student id' => $student->student_id,
                     'Student Name' => $student->generalInformations->first_name_en,
@@ -35,7 +27,6 @@ class AllStudentsWithGuardians implements FromCollection, WithHeadings, ShouldAu
                     'Guardian Name' => $student->guardianInfo->generalInformationInfo->last_name_en,
                     'Guardian Family' => $student->guardianInfo->generalInformationInfo->last_name_en,
                     'Guardian Mobile' => @$student->guardianInfo->mobile,
-                    'Application' => $applicationDetails
                     // Add more columns as needed
                 ];
             });
@@ -51,7 +42,6 @@ class AllStudentsWithGuardians implements FromCollection, WithHeadings, ShouldAu
             'Guardian Name',
             'Guardian Family',
             'Guardian Mobile',
-            'Application',
             // Add more headings if needed
         ];
     }
