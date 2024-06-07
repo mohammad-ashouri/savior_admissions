@@ -61,29 +61,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        @page {
-            size: A4;
-        }
-
-        @media print {
-            @page {
-                scale: 0.6; /* 60% مقیاس پرینت */
-            }
-        }
-
+        /*@page {*/
+        /*    size: A4;*/
+        /*}*/
+        /*@media print {*/
+        /*    @page {*/
+        /*        scale: 0.6; !* 60% مقیاس پرینت *!*/
+        /*    }*/
+        /*}*/
         @font-face {
             font-family: IRANSansX;
             src: url('../../build/Fonts/IRANSansX-DemiBold.woff') format('woff');
-        }
-
-        @font-face {
-            font-family: IRANSansX;
-            src: url('../../build/Fonts/IRANSansX-Light.woff') format('woff');
-        }
-
-        @font-face {
-            font-family: IRANSansX;
-            src: url('../../build/Fonts/IRANSansX-Medium.woff') format('woff');
         }
 
         body {
@@ -98,17 +86,13 @@
 
         .container {
             margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        span {
-            font-weight: bold !important;
+            padding: 0 0.5rem;
         }
 
         header {
             display: flex;
             justify-content: space-between;
-            padding: 10px;
+            padding: 2px;
         }
 
         header img {
@@ -124,19 +108,15 @@
         }
 
         section {
-            margin: 10px 0;
+            margin: 5px 0;
             overflow: hidden;
-            border: 2px solid;
-            border-radius: 50px;
+            border: 1px solid;
+            border-radius: 10px;
         }
 
         .contact-info > div {
             text-align: right;
         }
-
-        /*.address {*/
-        /*    margin-top: 20px;*/
-        /*}*/
 
         .flex {
             display: flex;
@@ -162,7 +142,7 @@
         .writing-rl {
             writing-mode: vertical-rl;
             transform: scale(-1);
-            padding: 0.5rem 0;
+            padding: 1.3rem 0;
             width: 60px;
         }
 
@@ -173,14 +153,14 @@
         }
 
         .textbody {
-            padding: 1rem;
+            padding: 0.5rem;
             width: 100%;
         }
 
         .textbody p {
             margin-top: 2px;
-            margin-bottom: 8px;
         }
+
 
         table {
             border-collapse: collapse;
@@ -196,23 +176,23 @@
         #tuition_table tr th,
         tr td {
             /*padding: 1.2rem;*/
-            border-left: 1px solid #9ddadf;
+            border-left: 1px solid black;
         }
 
         #tuition_table tr td {
             /*padding: 1.2rem;*/
             border-left: 1px solid;
-            border-color: #9ddadf !important;;
+            border-color: black !important;;
         }
 
         #tuition_table tr th:first-child {
             border-left: 1px solid;
-            border-color: #9ddadf !important;;
+            border-color: black !important;;
         }
 
         #tuition_table tr td:first-child {
             border-left: 1px solid;
-            border-color: #9ddadf !important;;
+            border-color: black !important;;
         }
 
         #tuition_table tr td {
@@ -220,55 +200,41 @@
         }
 
 
-        #table2 {
-            width: 100%;
-        }
-
         #table2 tr th,
         tr td {
             /*padding: 1.2rem;*/
-            border-left: 1px solid #ffe753;
+            border-left: 1px solid black;
         }
 
         #table2 tr th:first-child {
             border-left: 0;
-            border-left: 1px solid #ffe753;
+            border-left: 1px solid black;
         }
 
         #table2 tr td:first-child {
             border-left: 0;
-            border-left: 1px solid #ffe753;
+            border-left: 1px solid black;
         }
 
         #table2 tr td {
-            border-top: 1px solid #ffe753;
+            border-top: 1px solid black;
         }
 
 
         .font-bold {
-            font-weight: bold;
+            font-weight: 400;
         }
 
         .font-light {
-            font-weight: normal;
+            font-weight: 200;
         }
 
 
         .border-table {
             border: 1px solid;
-            border-radius: 20px;
+            border-radius: 10px;
             overflow: hidden;
             position: relative;
-        }
-
-        .title-section {
-            background-color: #9ddadf;
-            padding: 10px;
-            text-align: center;
-            font-weight: bold;
-            border-top-right-radius: 20px;
-            border-top-left-radius: 20px;
-            color: rgb(0, 0, 0);
         }
 
         .table-container {
@@ -289,8 +255,8 @@
             background-color: #9ddadf;
         }
 
-        .bg-border-blue {
-            border-color: #9ddadf !important;
+        .bg-border-black {
+            border-color: black !important;
         }
 
         .bg-yellow {
@@ -298,7 +264,7 @@
         }
 
         .bg-border-yellow {
-            border-color: #ffe753 !important;
+            border-color: black !important;
         }
 
         .mt-2rem {
@@ -323,7 +289,7 @@
         .consideration-item {
             margin-bottom: 10px;
             position: relative;
-            margin-right: 1.2em;
+            margin-left: 1.2em;
         }
 
         .consideration-item::before {
@@ -331,7 +297,7 @@
             color: #9ddadf;
             font-size: 20px;
             position: absolute;
-            right: -20px;
+            left: -20px;
             top: 48%;
             transform: translateY(-50%);
         }
@@ -354,16 +320,8 @@
             line-height: 1.5;
         }
 
-        .font-norm {
-            font-family: normal;
-        }
-
         .table-v p > span {
             font-weight: 400;
-        }
-
-        .table-v p {
-            /*font-weight: 600;*/
         }
 
         .ltr-text {
@@ -372,10 +330,6 @@
             text-align: left;
         }
 
-        .payment-details-table td {
-            padding: 5px;
-            font-weight: normal;
-        }
     </style>
     <script>
 
@@ -499,7 +453,7 @@
 
 {{--Paid Tuition Table--}}
 <section id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
-    <div class="flex bg-blue">
+    <div class="flex bg-white">
         <div class="texthead bg-blue">
             <div class="writing-rl">
                 <h5>{{ __('translated_fa.Your tuition') }}</h5>
@@ -619,7 +573,7 @@
                                 @endswitch
                             </td>
                             <td style="white-space: nowrap">{{ number_format($invoices->amount) }} </td>
-                            <td style="white-space: nowrap">
+                            <td style="padding: 0 20px 0 20px;white-space: nowrap">
                                 @switch ($dueType)
                                     @case('Four')
                                         @php
@@ -647,7 +601,7 @@
                                         -
                                 @endswitch
                             </td>
-                            <td class="ltr-text" style="white-space: nowrap;text-align: center">
+                            <td class="ltr-text" style="padding: 0 20px 0 20px;white-space: nowrap;text-align: center">
                                 @if(isset($invoices->date_of_payment))
                                     @php
                                         $jalaliDate = Jalalian::fromDateTime($invoices->date_of_payment);
@@ -664,7 +618,7 @@
                                             پرداخت آفلاین
                                             @break
                                         @default
-                                            پرداخت آنلاین - درگاه به پرداخت ملت
+                                            پرداخت آنلاین - به پرداخت ملت
                                     @endswitch
                                 @else
                                     -
@@ -687,8 +641,7 @@
                         <td>{{ number_format($totalAmount) }} </td>
                         <td class="font-bold">{{ __('translated_fa.Paid Amount') }}</td>
                         <td>{{ number_format($paidAmount) }} </td>
-                        <td class="font-bold">{{ __('translated_fa.Debt') }}</td>
-                        <td>{{ number_format($debt) }} </td>
+                        <td class="font-bold">{{ __('translated_fa.Debt') }}: {{ number_format($debt) }}</td>
                     </tr>
                 </table>
             </div>

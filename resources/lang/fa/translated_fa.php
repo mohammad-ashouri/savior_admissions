@@ -2,7 +2,7 @@
 return [
     'Payment Type' => 'نوع پرداخت شهریه',
     'Tuition Card' => 'کارت شهریه',
-    'Monji Noor Education Institute' => 'موسسه آموزشی منجی نور',
+    'Monji Noor Education Institute' => 'مجتمع بین المللی منجی نور',
     'Invoice Number' => 'کد فاکتور',
     'Date' => 'تاریخ',
     'Education Center Details' => 'مرکز تحصیلی',

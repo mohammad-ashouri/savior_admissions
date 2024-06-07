@@ -102,17 +102,13 @@
         section {
             margin: 5px 0;
             overflow: hidden;
-            border: 2px solid;
-            border-radius: 50px;
+            border: 1px solid;
+            border-radius: 10px;
         }
 
         .contact-info > div {
             text-align: right;
         }
-
-        /*.address {*/
-        /*    margin-top: 20px;*/
-        /*}*/
 
         .flex {
             display: flex;
@@ -172,23 +168,23 @@
         #tuition_table tr th,
         tr td {
             /*padding: 1.2rem;*/
-            border-left: 1px solid #9ddadf;
+            border-left: 1px solid black;
         }
 
         #tuition_table tr td {
             /*padding: 1.2rem;*/
             border-left: 1px solid;
-            border-color: #9ddadf !important;;
+            border-color: black !important;;
         }
 
         #tuition_table tr th:first-child {
             border-left: 1px solid;
-            border-color: #9ddadf !important;;
+            border-color: black !important;;
         }
 
         #tuition_table tr td:first-child {
             border-left: 1px solid;
-            border-color: #9ddadf !important;;
+            border-color: black !important;;
         }
 
         #tuition_table tr td {
@@ -199,21 +195,21 @@
         #table2 tr th,
         tr td {
             /*padding: 1.2rem;*/
-            border-left: 1px solid #ffe753;
+            border-left: 1px solid black;
         }
 
         #table2 tr th:first-child {
             border-left: 0;
-            border-left: 1px solid #ffe753;
+            border-left: 1px solid black;
         }
 
         #table2 tr td:first-child {
             border-left: 0;
-            border-left: 1px solid #ffe753;
+            border-left: 1px solid black;
         }
 
         #table2 tr td {
-            border-top: 1px solid #ffe753;
+            border-top: 1px solid black;
         }
 
 
@@ -228,19 +224,9 @@
 
         .border-table {
             border: 1px solid;
-            border-radius: 20px;
+            border-radius: 10px;
             overflow: hidden;
             position: relative;
-        }
-
-        .title-section {
-            background-color: #9ddadf;
-            padding: 5px;
-            text-align: center;
-            font-weight: bold;
-            border-top-right-radius: 20px;
-            border-top-left-radius: 20px;
-            color: rgb(0, 0, 0);
         }
 
         .table-container {
@@ -261,8 +247,8 @@
             background-color: #9ddadf;
         }
 
-        .bg-border-blue {
-            border-color: #9ddadf !important;
+        .bg-border-black {
+            border-color: black !important;
         }
 
         .bg-yellow {
@@ -270,11 +256,7 @@
         }
 
         .bg-border-yellow {
-            border-color: #ffe753 !important;
-        }
-
-        .p-1r {
-            padding-right: 0.5rem;
+            border-color: black !important;
         }
 
         .mt-2rem {
@@ -330,16 +312,8 @@
             line-height: 1.5;
         }
 
-        .font-norm {
-            font-family: normal;
-        }
-
         .table-v p > span {
             font-weight: 400;
-        }
-
-        .table-v p {
-            /*font-weight: 600;*/
         }
 
         .ltr-text {
@@ -374,7 +348,7 @@
     </div>
     <div class="title-description">
         <h1>Tuition Card</h1>
-        <p>Monji Noor Education Institute</p>
+        <p>Savior International School</p>
     </div>
     <div class="invoice-details">
         <p class="font-bold">Invoice Number: <span class="font-light">{{ $myTuitionInfo->id }}</span></p>
@@ -383,7 +357,7 @@
 </header>
 
 {{--Education Center Details--}}
-<section class="bg-border-blue bg-white table-v">
+<section class="bg-border-black bg-white table-v">
     <div class="flex">
         <div class="texthead bg-blue">
             <div class="writing-rl">
@@ -393,7 +367,7 @@
         <div class="textbody">
             <div class="contact-info">
                 <div class="name">
-                    <p>Name: <span>Monji Noor Education Institute</span></p>
+                    <p>Name: <span>Savior International School</span></p>
                 </div>
                 <div class="contact-number">
                     <p>Contact Number: <span>+98 25 3770 4544</span></p>
@@ -430,14 +404,14 @@
         </div>
         <div class="textbody">
             <div class="flex justify-between">
-                <p>Full Name of Student:
+                <p>Student:
                     <span>{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}</span>
                 </p>
                 <p>Passport Number: <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
-                <p>Level of education: <span>{{$levelInfo->name}}</span></p>
+                <p>Grade: <span>{{$levelInfo->name}}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>Full Name of Parent/Guardian:
+                <p>Parent/Guardian:
                     <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>
                 </p>
                 <p>Passport Number:
@@ -454,49 +428,54 @@
 </section>
 
 {{--Paid Tuition Table--}}
-<div id="tuition_table" class="flex border-table bg-border-blue radius-table bg-white">
-    <div class="texthead bg-blue">
-        <div class="writing-rl">
-            <h5>Your tuition</h5>
+<section id="tuition_table" class="border-table bg-border-blue radius-table bg-white">
+
+    <div class="flex bg-white">
+        <div class="texthead bg-blue">
+            <div class="writing-rl">
+                <h5>Your tuition</h5>
+            </div>
+        </div>
+        <div class="table-container bg-white">
+            <table class="table1" style="border: 1px solid black">
+                <tr>
+                    <th style="width: 10%">Currency</th>
+                    <th style="width: 10%">Payment Type</th>
+                    <th style="width: 15%">Gross Fee</th>
+                    <th style="width: 15%;white-space: nowrap">Total Discount</th>
+                    <th style="width: 15%; ">Net Fee</th>
+                    @php $paidAmount=0 @endphp
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap" class="font-bold">
+                        IRR
+                    </td>
+                    <td style="white-space: nowrap" class="font-bold">
+                        @switch($myTuitionInfo->payment_type)
+                            @case('1')
+                                Full Payment
+                                @break
+                            @case('2')
+                                Two installment
+                                @break
+                            @case('3')
+                                Four Installment
+                                @break
+                            @case('4')
+                                Full Payment With Advance
+                                @break
+                        @endswitch
+                    </td>
+                    <td style="white-space: nowrap">{{ number_format($paymentAmount) }} </td>
+                    <td style="white-space: nowrap">{{ number_format((($paymentAmount*$allDiscounts)/100)+$allFamilyDiscounts->discount_price) }}
+                    </td>
+                    <td style="white-space: nowrap">{{ number_format($totalAmount) }}
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
-    <div class="table-container">
-        <table>
-            <tr>
-                <th style="width: 10%">Payment Type</th>
-                <th style="width: 15%">Total Payment Amount</th>
-                <th style="width: 15%">Total Discounts (%)</th>
-                <th style="width: 15%">Total Discounts (Amount)</th>
-                <th style="width: 15%">Total Fee</th>
-                @php $paidAmount=0 @endphp
-            </tr>
-            <tr>
-                <td style="white-space: nowrap" class="font-bold">
-                    @switch($myTuitionInfo->payment_type)
-                        @case('1')
-                            Full Payment
-                            @break
-                        @case('2')
-                            Two installment
-                            @break
-                        @case('3')
-                            Four Installment
-                            @break
-                        @case('4')
-                            Full Payment With Advance
-                            @break
-                    @endswitch
-                </td>
-                <td style="white-space: nowrap">{{ number_format($paymentAmount) }} IRR</td>
-                <td>{{ $allDiscounts }}</td>
-                <td>{{ number_format((($paymentAmount*$allDiscounts)/100)+$allFamilyDiscounts->discount_price) }}IRR
-                </td>
-                <td style="white-space: nowrap">{{ number_format($totalAmount) }} IRR
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>
+</section>
 
 {{--Payment Details--}}
 <div class="flex w-100">
@@ -513,9 +492,9 @@
                         <th>Type</th>
                         <th>Amount</th>
                         <th style="white-space: nowrap">Due Date</th>
-                        <th>Date received</th>
+                        <th style="white-space: nowrap">Date received</th>
                         <th>Payment Method</th>
-                        <th style="width: 120px;"> </th>
+                        <th style="width: 120px;"></th>
                         @php $paidAmount = $debt = 0 @endphp
                     </tr>
                     @foreach($myTuitionInfo->invoiceDetails as $key=>$invoices)
@@ -567,8 +546,8 @@
                                         @break
                                 @endswitch
                             </td>
-                            <td style="white-space: nowrap">{{ number_format($invoices->amount) }} </td>
-                            <td style="white-space: nowrap">
+                            <td style="white-space: nowrap;padding: 0 20px 0 20px;">{{ number_format($invoices->amount) }} </td>
+                            <td style="white-space: nowrap;padding: 0 20px 0 20px;">
                                 @switch ($dueType)
                                     @case('Four')
                                         {{ $dueDates["date_of_installment".$key."_four"] }}
@@ -590,7 +569,7 @@
                                     -
                                 @endif
                             </td>
-                            <td style="white-space: nowrap; border-right: 1px solid #ffe753">
+                            <td style="white-space: nowrap; border-right: 1px solid black">
                                 @if(isset($invoices->paymentMethodInfo->name))
                                     {{$invoices->paymentMethodInfo->name}}
                                 @else
@@ -609,13 +588,12 @@
                             @endphp
                         @endif
                     @endforeach
-                    <tr style="border-top: 1px solid #ffe753;white-space: nowrap">
+                    <tr style="border-top: 1px solid black;white-space: nowrap">
                         <td class="font-bold">Total</td>
                         <td>{{ number_format($totalAmount) }} </td>
                         <td class="font-bold">Paid Amount</td>
                         <td>{{ number_format($paidAmount) }} </td>
-                        <td class="font-bold">Debt</td>
-                        <td>{{ number_format($debt) }} </td>
+                        <td class="font-bold">Outstanding: {{ number_format($debt) }}</td>
                     </tr>
                 </table>
             </div>
@@ -639,7 +617,7 @@
         @endif
         @if($allFamilyDiscounts->discount_price>0)
             <li class="consideration-item font-bold">
-                Included Family Discounts ({{number_format($allFamilyDiscounts->discount_price)}} IRR)
+                Included Family Discounts ({{number_format($allFamilyDiscounts->discount_price)}} )
             </li>
         @endif
     </ul>
