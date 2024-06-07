@@ -236,37 +236,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-8" id="tab8">
-                    <p class="font-bold mb-4">
-                        Final step: Interview result
-                    </p>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr>
-                                <th scope="col" class="w-1/3 p-4 text-center">
-                                    Sum of points with coefficient
-                                </th>
-                                <td class="font-bold p-4 text-center">
-                                    <p id="sum-of-points"></p>
-                                </td>
-                                <td class=" p-4 text-center" rowspan="2">
-                                    Acceptance conditions (to be completed if the conditional option is selected)
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="col" class="w-1/3 p-4 text-center">
-                                    Result (admitted, conditional, rejected)
-                                </th>
-                                <td class="font-bold p-4 text-center">
-
-                                </td>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
                 <div id="last-step" class="text-center">
                     <div class="text-left mb-4">
                         <div>

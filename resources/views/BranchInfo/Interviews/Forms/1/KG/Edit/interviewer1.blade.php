@@ -148,7 +148,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_1" name="s2_1" value="{{$interviewFields['s2_1']}}"
+                                    <input type="number" id="s2_1" name="s2_1" value="{{$interviewFields['s2_1']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -173,7 +173,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_2" name="s2_2" value="{{$interviewFields['s2_2']}}"
+                                    <input type="number" id="s2_2" name="s2_2" value="{{$interviewFields['s2_2']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -198,7 +198,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_3" name="s2_3" value="{{$interviewFields['s2_3']}}"
+                                    <input type="number" id="s2_3" name="s2_3" value="{{$interviewFields['s2_3']}}"
                                            min="0" max="3"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -224,7 +224,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_4" name="s2_4" value="{{$interviewFields['s2_4']}}"
+                                    <input type="number" id="s2_4" name="s2_4" value="{{$interviewFields['s2_4']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -249,7 +249,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_5" name="s2_5" value="{{$interviewFields['s2_5']}}"
+                                    <input type="number" id="s2_5" name="s2_5" value="{{$interviewFields['s2_5']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -275,7 +275,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_6" name="s2_6" value="{{$interviewFields['s2_6']}}"
+                                    <input type="number" id="s2_6" name="s2_6" value="{{$interviewFields['s2_6']}}"
                                            min="0" max="3"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -300,7 +300,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s2_7" name="s2_7" value="{{$interviewFields['s2_7']}}"
+                                    <input type="number" id="s2_7" name="s2_7" value="{{$interviewFields['s2_7']}}"
                                            min="0" max="2"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -370,7 +370,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_1" name="s3_1" value="{{$interviewFields['s3_1']}}"
+                                    <input type="number" id="s3_1" name="s3_1" value="{{$interviewFields['s3_1']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -396,7 +396,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_2" name="s3_2" value="{{$interviewFields['s3_2']}}"
+                                    <input type="number" id="s3_2" name="s3_2" value="{{$interviewFields['s3_2']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -422,7 +422,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_3" name="s3_3" value="{{$interviewFields['s3_3']}}"
+                                    <input type="number" id="s3_3" name="s3_3" value="{{$interviewFields['s3_3']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -448,7 +448,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_4" name="s3_4" value="{{$interviewFields['s3_4']}}"
+                                    <input type="number" id="s3_4" name="s3_4" value="{{$interviewFields['s3_4']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -473,7 +473,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_5" name="s3_5" value="{{$interviewFields['s3_5']}}"
+                                    <input type="number" id="s3_5" name="s3_5" value="{{$interviewFields['s3_5']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -498,7 +498,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s3_6" name="s3_6" value="{{$interviewFields['s3_6']}}"
+                                    <input type="number" id="s3_6" name="s3_6" value="{{$interviewFields['s3_6']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -567,7 +567,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_1" name="s4_1" value="{{$interviewFields['s4_1']}}"
+                                    <input type="number" id="s4_1" name="s4_1" value="{{$interviewFields['s4_1']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -591,7 +591,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_2" name="s4_2" value="{{$interviewFields['s4_2']}}"
+                                    <input type="number" id="s4_2" name="s4_2" value="{{$interviewFields['s4_2']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
@@ -615,7 +615,7 @@
                                     </p>
                                 </td>
                                 <td class="w-4 p-4 text-center">
-                                    <input type="text" id="s4_3" name="s4_3" value="{{$interviewFields['s4_3']}}"
+                                    <input type="number" id="s4_3" name="s4_3" value="{{$interviewFields['s4_3']}}"
                                            min="0" max="5"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            required>
