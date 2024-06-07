@@ -443,7 +443,7 @@
                 <p>{{ __('translated_fa.National ID') }}: <span>60235789562</span></p>
             </div>
             <div class="address">
-                <p>{{ __('translated_fa.Address') }}: <span>{{ __('translated_fa.Education Center Address') }}</span>
+                <p>{{ __('translated_fa.Address') }}: <span></span>
                 </p>
             </div>
         </div>

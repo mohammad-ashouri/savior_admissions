@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('schools', function (Blueprint $table) {
             $table->string('address')->after('educational_charter')->nullable();
+            $table->string('address_fa')->after('address')->nullable();
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('schools', function (Blueprint $table) {
             $table->dropColumn('address');
+            $table->dropColumn('address_fa');
         });
     }
 };

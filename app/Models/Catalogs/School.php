@@ -17,6 +17,7 @@ class School extends Model
         'educational_charter',
         'status',
         'address',
+        'address_fa',
     ];
     protected $hidden = [
         'created_at',
