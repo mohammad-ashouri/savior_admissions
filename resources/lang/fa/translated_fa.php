@@ -51,4 +51,6 @@ return [
     'Signature and Stamp of Finance' => 'امضا و مهر امور مالی',
     'Signature and Stamp of Admissions' => 'امضا و مهر پذیرش',
     'Signature and Fingerprint of Parent/Guardian' => 'امضا و اثر انگشت والدین/سرپرست',
+    'Branch' => 'شعبه',
+    'Academic Year' => 'سال تحصیلی',
 ];

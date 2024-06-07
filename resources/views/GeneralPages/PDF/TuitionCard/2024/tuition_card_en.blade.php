@@ -43,6 +43,10 @@
     $discounts=DiscountDetail::whereIn('id',$discounts)->get();
 
     $fatherNationality=Country::find($evidencesInfo['father_nationality']);
+
+    $academicYearInfo=AcademicYear::with('schoolInfo')->find($applicationInformation->academic_year);
+    $schoolAddress=$academicYearInfo->schoolInfo->address;
+    $schoolBranch=$academicYearInfo->schoolInfo->name;
 @endphp
 <head>
     <meta charset="UTF-8">
@@ -359,7 +363,6 @@
         setPrintScale();
     </script>
     <title>Your Invoice</title>
-
 </head>
 
 <body class="container">
@@ -396,13 +399,21 @@
                     <p>Contact Number: <span>+98 25 3770 4544</span></p>
                 </div>
             </div>
+            <div class="contact-info">
+                <div class="name">
+                    <p>Branch: <span>{{$schoolBranch}}</span></p>
+                </div>
+                <div class="name">
+                    <p>Academic Year: <span>{{$academicYearInfo->name}}</span></p>
+                </div>
+            </div>
             <div class="flex justify-between">
-                <p>Postal Code: <span>37157-47748</span></p>
+                <p>Postal Code: <span>37156-57571</span></p>
                 <p>Registration Number: <span>60789562</span></p>
-                <p>National ID: <span>60235789562</span></p>
+                <p>National ID: <span>14011156661</span></p>
             </div>
             <div class="address">
-                <p>Address: <span>Savior International Schools, 8th Alley (at the end of Shah Hamzeh walkway), 5th Alley, Ammar Yaser Boulevard, Qom, I.R Iran.</span>
+                <p>Address: <span>{{$schoolAddress}}</span>
                 </p>
             </div>
         </div>

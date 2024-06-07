@@ -51,6 +51,10 @@
     $discounts=DiscountDetail::whereIn('id',$discounts)->get();
 
     $fatherNationality=Country::find($evidencesInfo['father_nationality']);
+
+    $academicYearInfo=AcademicYear::with('schoolInfo')->find($applicationInformation->academic_year);
+    $schoolAddress=$academicYearInfo->schoolInfo->address_fa;
+    $schoolBranch=$academicYearInfo->schoolInfo->name;
 @endphp
 <head>
     <meta charset="UTF-8">
@@ -397,9 +401,7 @@
         setPrintScale();
     </script>
     <title>کارت شهریه</title>
-
 </head>
-
 <body class="container">
 
 {{--Header--}}
@@ -437,13 +439,23 @@
                     <p>{{ __('translated_fa.Contact Number') }}: <span>+98 25 3770 4544</span></p>
                 </div>
             </div>
+            <div class="contact-info">
+                <div class="name">
+                    <p>{{ __('translated_fa.Branch') }}: <span>{{$schoolBranch}}</span></p>
+                </div>
+                <div class="name">
+                    <p>{{ __('translated_fa.Academic Year') }}: <span>{{$academicYearInfo->name}}</span></p>
+                </div>
+            </div>
             <div class="flex justify-between">
-                <p>{{ __('translated_fa.Postal Code') }}: <span>37157-47748</span></p>
+                <p>{{ __('translated_fa.Postal Code') }}: <span>37156-57571</span></p>
                 <p>{{ __('translated_fa.Registration Number') }}: <span>60789562</span></p>
-                <p>{{ __('translated_fa.National ID') }}: <span>60235789562</span></p>
+                <p>{{ __('translated_fa.National ID') }}: <span>14011156661</span></p>
             </div>
             <div class="address">
-                <p>{{ __('translated_fa.Address') }}: <span></span>
+                <p>{{ __('translated_fa.Address') }}: <span>
+                       {{$schoolAddress}}
+                    </span>
                 </p>
             </div>
         </div>
@@ -465,7 +477,7 @@
                 </p>
                 <p>{{ __('translated_fa.Passport Number') }}:
                     <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
-                <p>{{ __('translated_fa.Level of education') }}: <span>{{$levelName}}</span></p>
+                <p style="white-space: nowrap">{{ __('translated_fa.Level of education') }}: <span style="white-space: nowrap">{{$levelName}}</span></p>
             </div>
             <div class="flex justify-between">
                 <p>{{ __('translated_fa.Full Name of Parent/Guardian') }}:

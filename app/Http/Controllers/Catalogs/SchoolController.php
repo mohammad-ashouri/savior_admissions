@@ -50,7 +50,7 @@ class SchoolController extends Controller
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $school = School::create(['name' => $request->input('name'), 'gender' => $request->input('gender'), 'educational_charter' => $request->input('educational_charter'), 'address' => $request->input('address')]);
+        $school = School::create(['name' => $request->input('name'), 'gender' => $request->input('gender'), 'educational_charter' => $request->input('educational_charter'), 'address' => $request->input('address'), 'address_fa' => $request->input('address_fa')]);
         $this->logActivity(json_encode(['activity' => 'School Saved', 'id' => $school->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('Schools.index')
@@ -87,6 +87,7 @@ class SchoolController extends Controller
         $catalog->gender = $request->input('gender');
         $catalog->educational_charter = $request->input('educational_charter');
         $catalog->address = $request->input('address');
+        $catalog->address_fa = $request->input('address_fa');
         $catalog->status = $request->input('status');
         $catalog->save();
         $this->logActivity(json_encode(['activity' => 'School Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
