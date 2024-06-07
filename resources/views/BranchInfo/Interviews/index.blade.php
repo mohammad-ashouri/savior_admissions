@@ -5,7 +5,7 @@
 
 @section('content')
     <div id="content" class="p-4 md:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
-        <div class="p-4 rounded-lg dark:border-gray-700 mt-14 ">
+        <div class="p-4 rounded-lg dark:border-gray-700 mt-20 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">Interviews</h1>
             </div>
@@ -187,6 +187,9 @@
                                                             @case(1)
                                                                 Interviewed
                                                                 @break
+                                                            @case(2)
+                                                                Absence
+                                                                @break
                                                         @endswitch
                                                         @break
                                                     @case(2)
@@ -226,6 +229,18 @@
                                                                                 Set
                                                                             </a>
                                                                         @endcan
+                                                                        @if($interview->firstInterviewerInfo->id==$me->id)
+                                                                            <form class="submit-absence" method="post" action="{{ route('interviews.submitAbsence') }}">
+                                                                                @csrf
+                                                                                <input type="hidden" value="{{ $interview->id }}" name="application_id">
+                                                                                <button
+                                                                                   type="button"
+                                                                                   class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">
+                                                                                    <i class="las la-times-circle mt-1 mr-1"></i>
+                                                                                    Submit Absence
+                                                                                </button>
+                                                                            </form>
+                                                                        @endif
                                                                     @else
                                                                         @can('interview-show')
                                                                             <a href="/Interviews/{{ $interview->id }}"

@@ -116,6 +116,7 @@ Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(functio
             ]);
             Route::get('/SetInterview/{id}', [InterviewController::class, 'GetInterviewForm']);
             Route::post('/SetInterview', [InterviewController::class, 'SetInterview'])->name('interviews.SetInterview');
+            Route::post('/SubmitAbsence', [InterviewController::class, 'submitAbsence'])->name('interviews.submitAbsence');
 
             //Finance
             Route::resource('ReservationInvoices', ApplicationReservationController::class);

@@ -42,9 +42,10 @@ class InterviewController extends Controller
                 ->with('interview')
                 ->where('reserved', 1)
                 ->whereIn('id', $reservations)
-                ->orderBy('date', 'desc')
-                ->orderBy('ends_to', 'desc')
-                ->orderBy('start_from', 'desc')
+                ->orderBy('interviewed', 'asc') // Corrected column name
+                ->orderBy('date', 'asc')
+                ->orderBy('ends_to', 'asc')
+                ->orderBy('start_from', 'asc')
                 ->paginate(150);
         } elseif ($me->hasRole('Super Admin')) {
             $interviews = Applications::with('applicationTimingInfo')
@@ -53,9 +54,10 @@ class InterviewController extends Controller
                 ->with('reservationInfo')
                 ->with('interview')
                 ->where('reserved', 1)
-                ->orderBy('date', 'desc')
-                ->orderBy('ends_to', 'desc')
-                ->orderBy('start_from', 'desc')
+                ->orderBy('interviewed', 'asc') // Corrected column name
+                ->orderBy('date', 'asc')
+                ->orderBy('ends_to', 'asc')
+                ->orderBy('start_from', 'asc')
                 ->paginate(150);
         } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
@@ -77,9 +79,10 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->orderBy('date', 'desc')
-                ->orderBy('ends_to', 'desc')
-                ->orderBy('start_from', 'desc')
+                ->orderBy('interviewed', 'asc') // Corrected column name
+                ->orderBy('date', 'asc')
+                ->orderBy('ends_to', 'asc')
+                ->orderBy('start_from', 'asc')
                 ->paginate(150);
 
         } elseif ($me->hasRole('Interviewer')) {
@@ -93,10 +96,10 @@ class InterviewController extends Controller
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
                 })
-                ->orderBy('interviewed', 'desc') // Corrected column name
-                ->orderBy('date', 'desc')
-                ->orderBy('ends_to', 'desc')
-                ->orderBy('start_from', 'desc')
+                ->orderBy('interviewed', 'asc') // Corrected column name
+                ->orderBy('date', 'asc')
+                ->orderBy('ends_to', 'asc')
+                ->orderBy('start_from', 'asc')
                 ->paginate(150);
 
         }
@@ -867,5 +870,51 @@ class InterviewController extends Controller
 
         return redirect()->route('interviews.index')
             ->withErrors(['errors' => 'Recording the interview failed!']);
+    }
+
+    public function submitAbsence(Request $request)
+    {
+        /* TODO:
+        1- validation application id by academic year permission
+        */
+        $me = User::find(auth()->user()->id);
+        $applicationId = $request->application_id;
+
+        if ($me->hasRole('Super Admin')) {
+            $application = Applications::where('reserved', 1)
+                ->where('id',$applicationId)
+                ->first();
+        } elseif ($me->hasRole('Interviewer')) {
+            $application = Applications::where('reserved', 1)
+                ->where('first_interviewer', $me->id)
+                ->where('id',$applicationId)
+                ->first();
+        }
+
+        if (empty($application)){
+            $this->logActivity(json_encode(['activity' => 'Registration of absence in the interview encountered an error!', 'values' => json_encode($request->all(),true)]), request()->ip(), request()->userAgent());
+
+            return redirect()->route('interviews.index')
+                ->withErrors(['errors' => 'Registration of absence in the interview encountered an error!']);
+
+        }
+        $applicationInfo = Applications::with('applicationTimingInfo')->with('reservationInfo')->find($applicationId);
+        $applicationInfo->interviewed = 2;
+        $applicationInfo->save();
+
+        $studentStatus = StudentApplianceStatus::where('student_id', $applicationInfo->reservationInfo->student_id)->where('academic_year', $applicationInfo->applicationTimingInfo->academic_year)->first();
+        $studentStatus->interview_status = 'Absence';
+        $studentStatus->save();
+
+        if ($applicationInfo->save() and $studentStatus->save()) {
+            $this->logActivity(json_encode(['activity' => 'Registration of absence in the interview was done successfully', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
+
+            return redirect()->route('interviews.index')
+                ->with(['success' => 'Registration of absence in the interview was done successfully!']);
+        }
+        $this->logActivity(json_encode(['activity' => 'Registration of absence in the interview encountered an error!', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
+
+        return redirect()->route('interviews.index')
+            ->withErrors(['errors' => 'Registration of absence in the interview encountered an error!']);
     }
 }

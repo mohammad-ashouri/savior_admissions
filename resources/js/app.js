@@ -1065,6 +1065,21 @@ $(document).ready(function () {
             // }
 
         });
+        $('.submit-absence').click(function (){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This operation cannot be reversed.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit');
+                    $(this).submit();
+                }
+            });
+        });
     } else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
 

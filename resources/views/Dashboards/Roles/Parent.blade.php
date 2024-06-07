@@ -214,6 +214,11 @@
                                                         $statusPercent=0;
                                                         $statusText='';
                                                         $statusColor='green';
+                                                         if ($applicationStatus->interview_status=='Absence'){
+                                                             $statusText='Absence of attendance at the interview';
+                                                             $statusColor='red';
+                                                             $statusPercent=100;
+                                                         }
                                                          if ($applicationStatus->interview_status=='Pending Interview'){
                                                              $statusText='Pending Interview';
                                                              $statusPercent+=5;
