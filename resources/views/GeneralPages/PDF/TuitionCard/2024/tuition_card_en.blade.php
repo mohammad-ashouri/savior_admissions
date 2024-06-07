@@ -413,7 +413,7 @@
                 <p>National ID: <span>14011156661</span></p>
             </div>
             <div class="address">
-                <p>Address: <span>{{$schoolAddress}}</span>
+                <p>Address: <span style="font-size: small !important;">{{$schoolAddress}}</span>
                 </p>
             </div>
         </div>
