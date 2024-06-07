@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
-        <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
+        <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 <h1 class="text-2xl font-medium"> New School</h1>
             </div>
@@ -57,6 +57,13 @@
                                    class="block mb-2  font-bold text-gray-900 dark:text-white">Educational Charter</label>
                             <textarea name="educational_charter" id="educational_charter" required placeholder="Please enter your description in full and keeping spaces."
                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            ></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address"
+                                   class="block mb-2  font-bold text-gray-900 dark:text-white">Address</label>
+                            <textarea name="address" id="address" required placeholder="Please enter school's address."
+                                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             ></textarea>
                         </div>
                         <button type="submit"
