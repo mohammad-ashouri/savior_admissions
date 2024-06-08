@@ -435,7 +435,7 @@
             </div>
             <div class="flex justify-between">
                 <p>{{ __('translated_fa.Full Name of Parent/Guardian') }}:
-                    <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>
+                    <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_fa }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_fa }}</span>
                 </p>
                 <p>{{ __('translated_fa.Passport Number') }}:
                     <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->passport_number }}</span>
@@ -679,10 +679,10 @@
 <footer class="mt-2rem">
     <div class="footer-text ">
         اینجانب
-        {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}
+        <span style="font-weight: bold">{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_fa }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_fa }}</span>
         ،
         والدین / قیم
-        {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}
+        <span style="font-weight: bold">{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_fa }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_fa }}</span>
         ،
         بدین وسیله با کلیه قوانین و مقررات موسسه آموزشی بین المللی منجی نور موافقت می نمایم.
     </div>
