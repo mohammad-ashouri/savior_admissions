@@ -427,7 +427,7 @@
         <div class="textbody">
             <div class="flex justify-between">
                 <p>{{ __('translated_fa.Full Name of Student') }}:
-                    <span>{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}</span>
+                    <span>{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_fa }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_fa }}</span>
                 </p>
                 <p>{{ __('translated_fa.Passport Number') }}:
                     <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
@@ -462,16 +462,15 @@
         <div class="table-container bg-white">
             <table style="width: 100%">
                 <tr>
-                    <th style="width: 10%;height: 0">{{ __('translated_fa.Payment Type') }}</th>
-                    <th style="width: 15%">{{ __('translated_fa.Total Payment Amount') }}</th>
-                    <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} (درصد)</th>
-                    <th style="width: 15%">{{ __('translated_fa.Total Discounts') }} ({{ __('translated_fa.Amount') }}
+                    <th style="height: 0">{{ __('translated_fa.Payment Type') }}</th>
+                    <th style="">{{ __('translated_fa.Total Payment Amount') }}</th>
+                    <th style="">{{ __('translated_fa.Total Discounts') }} ({{ __('translated_fa.Amount') }}
                         )
                     </th>
-                    <th style="width: 15%">{{ __('translated_fa.Total Fee') }}</th>
+                    <th style="">{{ __('translated_fa.Total Fee') }}</th>
                 </tr>
-                <tr style="">
-                    <td style="white-space: nowrap;height: 0">
+                <tr style="height: 1px">
+                    <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">
                         @switch($myTuitionInfo->payment_type)
                             @case('1')
                                 {{ __('translated_fa.Full Payment') }}
@@ -487,10 +486,9 @@
                                 @break
                         @endswitch
                     </td>
-                    <td style="white-space: nowrap">{{ number_format($paymentAmount) }} </td>
-                    <td>{{ $allDiscounts }}</td>
-                    <td>{{ number_format((($paymentAmount*$allDiscounts)/100)+$allFamilyDiscounts->discount_price) }}</td>
-                    <td style="white-space: nowrap">{{ number_format($totalAmount) }}
+                    <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">{{ number_format($paymentAmount) }} </td>
+                    <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">{{ number_format((($paymentAmount*$allDiscounts)/100)+$allFamilyDiscounts->discount_price) }}</td>
+                    <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">{{ number_format($totalAmount) }}
                     </td>
                 </tr>
             </table>

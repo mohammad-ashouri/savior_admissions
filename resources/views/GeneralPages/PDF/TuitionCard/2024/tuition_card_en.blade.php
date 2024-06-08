@@ -308,7 +308,6 @@
         }
 
         .footer-text {
-            font-size: 16px;
             line-height: 1.5;
         }
 
@@ -624,17 +623,19 @@
 </div>
 
 {{--Footer--}}
-<footer class="mt-2rem">
-    <div class="footer-text font-bold">
-        I, {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}
-        , parent/guardian
-        of {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}
-        , hereby agree to all rules and regulations of Monji Noor International Educational Institute.
+<footer class="">
+    <div class="footer-text ">
+        <p class="font-bold">
+            I, <span style="font-weight: bold">{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>
+            , parent/guardian
+            of <span style="font-weight: bold">{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}</span>
+            , hereby agree to all rules and regulations of Monji Noor International Educational Institute.</p>
+
     </div>
     <div class="footer-content font-bold">
         <div class="footer-text">Signature and Fingerprint of Parent/Guardian</div>
-        <div class="footer-text">Signature and Stamp of Admissions</div>
-        <div class="footer-text">Signature and Stamp of Finance</div>
+        <div class="footer-text">Signature and Stamp of Admissions Officer</div>
+        <div class="footer-text">Signature and Stamp of Financial Manager</div>
     </div>
 </footer>
 
