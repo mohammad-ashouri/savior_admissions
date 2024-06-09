@@ -57,9 +57,20 @@ class LoginController extends Controller
         if ($validator->fails()) {
             $this->logActivity(json_encode(['activity' => $validator->errors()]), request()->ip(), request()->userAgent());
 
-            return response()->json([
-                'success' => false,
+            return redirect()->back()->withErrors([
                 'errors' => ['validator_errors' => $validator->errors()],
+            ]);
+        }
+
+        $captcha = $request->input('captcha');
+
+        // Uncomment if you want to include captcha validation
+        $sessionCaptcha = session('captcha')['key'];
+        if (! password_verify($captcha, $sessionCaptcha)) {
+            $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Captcha)', 'entered_values' => json_encode($request->all())]), request()->ip(), request()->userAgent());
+
+            return redirect()->back()->withErrors([
+                'captchaError' => 'Captcha is wrong!',
             ]);
         }
 
@@ -73,18 +84,16 @@ class LoginController extends Controller
                 if ($validator->fails()) {
                     $this->logActivity(json_encode(['activity' => 'Login Failed', 'validator_errors' => $validator->errors()]), request()->ip(), request()->userAgent());
 
-                    return response()->json([
-                        'success' => false,
-                        'validator_errors' => $validator->errors(),
+                    return redirect()->back()->withErrors([
+                        'EmailError' => ['loginError' => 'Wrong email or password'],
                     ]);
                 }
                 $user = User::where('email', $request->input('email'))->first();
                 if (! password_verify($request->password, $user->password)) {
                     $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
 
-                    return response()->json([
-                        'success' => false,
-                        'errors' => ['loginError' => 'Wrong email or password'],
+                    return redirect()->back()->withErrors([
+                        'EmailError' => ['loginError' => 'Wrong email or password'],
                     ]);
                 }
                 $credentials = $request->only('email', 'password');
@@ -94,39 +103,36 @@ class LoginController extends Controller
                 $validator = Validator::make($request->all(), [
                     'phone_code' => 'required|exists:country_phone_codes,id',
                     'mobile' => 'required',
-                    'password' => 'required', // Uncomment if you want to include captcha validation
+                    'password' => 'required',
                 ]);
 
                 if ($validator->fails()) {
                     $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'validator_errors' => $validator->errors()]), request()->ip(), request()->userAgent());
 
-                    return response()->json([
-                        'success' => false,
-                        'validator_errors' => $validator->errors(),
+                    return redirect()->back()->withErrors([
+                        'MobileError' => 'Wrong mobile or password',
                     ]);
                 }
 
                 $phoneCode = CountryPhoneCodes::find($request->input('phone_code'));
                 $user = User::where('mobile', '+'.$phoneCode->phonecode.$request->input('mobile'))->first();
 
-                if (empty($user)){
+                if (empty($user)) {
                     $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'errors' => 'Wrong mobile']), request()->ip(), request()->userAgent());
 
-                    return response()->json([
-                        'success' => false,
-                        'errors' => ['loginError' => 'Wrong mobile or password'],
+                    return redirect()->back()->withErrors([
+                        'MobileError' => 'Wrong mobile or password',
                     ]);
                 }
                 if (! password_verify($request->password, $user->password)) {
                     $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
 
-                    return response()->json([
-                        'success' => false,
-                        'errors' => ['loginError' => 'Wrong mobile or password'],
+                    return redirect()->back()->withErrors([
+                        'MobileError' => 'Wrong mobile or password',
                     ]);
                 }
 
-                $request['mobile'] = "+" . $phoneCode->phonecode . $request->mobile;
+                $request['mobile'] = '+'.$phoneCode->phonecode.$request->mobile;
                 $credentials = $request->only('mobile', 'password');
 
                 break;
@@ -138,21 +144,8 @@ class LoginController extends Controller
         if ($validator->fails()) {
             $this->logActivity(json_encode(['activity' => 'Wrong Captcha', 'errors' => $validator->errors()]), request()->ip(), request()->userAgent());
 
-            return response()->json([
-                'success' => false,
-                'validator_errors' => $validator->errors(),
-            ]);
-        }
-        $captcha = $request->input('captcha');
-
-        // Uncomment if you want to include captcha validation
-        $sessionCaptcha = session('captcha')['key'];
-        if (! password_verify($captcha, $sessionCaptcha)) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Captcha)', 'entered_values' => json_encode($request->all())]), request()->ip(), request()->userAgent());
-
-            return response()->json([
-                'success' => false,
-                'errors' => ['captcha' => 'Captcha is wrong!'],
+            return redirect()->back()->withErrors([
+                'errors' => ['validator_errors' => $validator->errors()],
             ]);
         }
 
@@ -162,15 +155,11 @@ class LoginController extends Controller
             Session::put('id', $user->id);
             $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
 
-            return response()->json([
-                'success' => true,
-                'redirect' => route('dashboard'),
-            ]);
+            return route('dashboard');
         }
 
-        return response()->json([
-            'success' => false,
-            'errors' => ['captcha' => 'Server Error!'],
+        return redirect()->back()->withErrors([
+            'errors' => ['ServerError' => 'Server Error!'],
         ]);
     }
 

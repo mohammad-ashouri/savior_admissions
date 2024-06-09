@@ -9,9 +9,11 @@
     <title>Savior Schools Login</title>
 </head>
 <body class="bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center min-h-screen">
-<div id="spinner" class="hidden fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50">
+<div id="spinner"
+     class="hidden fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50">
     <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
-    <p id="spinner-text" class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite"></p>
+    <p id="spinner-text"
+       class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite"></p>
 </div>
 <div class="bg-light-theme-color-base lg:w-5/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
     <div class="lg:w-2/5 pr-8 lg:inline-block loginPic">
@@ -26,20 +28,33 @@
             @if ($errors->has('WrongToken'))
                 @vite(['resources/js/Swals/WrongToken.js'])
             @endif
-            @if( session()->has('SMSSent') )
+            @if( $errors->has('SMSSent') )
                 @vite(['resources/js/Swals/SMSSent.js'])
             @endif
-            @if( session()->has('EmailSent') )
+            @if( $errors->has('EmailSent') )
                 @vite(['resources/js/Swals/EmailSent.js'])
             @endif
-            @if( session()->has('SMSSendingFailed') )
+            @if( $errors->has('SMSSendingFailed') )
                 @vite(['resources/js/Swals/SMSSendingFailed.js'])
             @endif
-            @if( session()->has('EmailSendingFailed') )
+            @if( $errors->has('EmailSendingFailed') )
                 @vite(['resources/js/Swals/EmailSendingFailed.js'])
             @endif
+            @if( $errors->has('MobileError') )
+                @vite(['resources/js/Swals/MobileError.js'])
+            @endif
+            @if( $errors->has('EmailError') )
+                @vite(['resources/js/Swals/EmailError.js'])
+            @endif
+            @if( $errors->has('captchaError') )
+                @vite(['resources/js/Swals/CaptchaError.js'])
+            @endif
+            @if( $errors->has('ServerError') )
+                @vite(['resources/js/Swals/ServerError.js'])
+            @endif
         </div>
-        <form id="login-form" class="space-y-4 w-full">
+        <form id="login-form" method="post" action="/login" class="space-y-4 w-full">
+            @csrf
             <div class="mb-6">
                 <div>
                     <label for="login-method"
@@ -121,9 +136,9 @@
             </div>
             <div>
                 <p class="text-red-600">
-                Please note the following conditions for admissions at Savior International Schools:<br>
-                1. The student's latest average score must be at least 75%<br>
-                2. The student must be able to speak in English fluently
+                    Please note the following conditions for admissions at Savior International Schools:<br>
+                    1. The student's latest average score must be at least 75%<br>
+                    2. The student must be able to speak in English fluently
                 </p>
             </div>
         </form>

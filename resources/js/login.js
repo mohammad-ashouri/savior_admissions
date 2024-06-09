@@ -97,59 +97,63 @@ $(document).ready(function () {
                     spinner();
                     if ($('#login-method').val() == null) {
                         swalFire('Error', 'Login method is not selected!', 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
+                        spinner();
                     } else {
-                        let form = $(this);
-                        let data = form.serialize();
+                        spinner();
+                        $(this).off('submit');
+                        $(this).submit();
+                        // let form = $(this);
+                        // let data = form.serialize();
 
-                        $.ajax({
-                            type: 'POST', url: '/login', data: data, headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            }, success: function (response) {
-                                if (response.success) {
-                                    window.location.href = '/dashboard';
-                                } else {
-                                    if (response.validator_errors) {
-                                        let errorList = response.validator_errors;
-
-                                        // Iterate through the error list and display each error
-                                        for (let key in errorList) {
-                                            if (errorList.hasOwnProperty(key)) {
-                                                let errorMessage = errorList[key][0]; // Assuming each field has only one error message
-                                                spinner();
-                                                swalFire('Error', errorMessage, 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
-                                            }
-                                        }
-                                        reloadCaptcha();
-                                        captcha.value = '';
-                                    } else if (response.errors) {
-                                        if (response.errors.loginError) {
-                                            spinner();
-                                            swalFire('Login Error', response.errors.loginError, 'error', 'Try again');
-                                            reloadCaptcha();
-                                            captcha.value = '';
-                                        } else if (response.errors.captcha) {
-                                            spinner();
-                                            swalFire('Error', response.errors.captcha, 'error', 'Try again');
-                                            reloadCaptcha();
-                                            captcha.value = '';
-                                        }
-                                    }
-                                }
-                            }, error: function (xhr, textStatus, errorThrown) {
-                                if (xhr.responseJSON && xhr.responseJSON['YouAreLocked']) {
-                                    swalFire('Access is forbidden', 'Your IP has been blocked. Please provide to your admin', 'error', 'Done!');
-                                    const fields = [email, password, captcha];
-                                    fields.forEach(field => {
-                                        field.disabled = true;
-                                        field.value = null;
-                                        field.style.backgroundColor = 'gray';
-                                    });
-                                } else {
-                                    swalFire('Server Error', 'Server connectivity failed', 'error', 'Try again');
-                                    spinner();
-                                }
-                            }
-                        });
+                        // $.ajax({
+                        //     type: 'POST', url: '/login', data: data, headers: {
+                        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        //     }, success: function (response) {
+                        //         if (response.success) {
+                        //             window.location.href = '/dashboard';
+                        //         } else {
+                        //             if (response.validator_errors) {
+                        //                 let errorList = response.validator_errors;
+                        //
+                        //                 // Iterate through the error list and display each error
+                        //                 for (let key in errorList) {
+                        //                     if (errorList.hasOwnProperty(key)) {
+                        //                         let errorMessage = errorList[key][0]; // Assuming each field has only one error message
+                        //                         spinner();
+                        //                         swalFire('Error', errorMessage, 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
+                        //                     }
+                        //                 }
+                        //                 reloadCaptcha();
+                        //                 captcha.value = '';
+                        //             } else if (response.errors) {
+                        //                 if (response.errors.loginError) {
+                        //                     spinner();
+                        //                     swalFire('Login Error', response.errors.loginError, 'error', 'Try again');
+                        //                     reloadCaptcha();
+                        //                     captcha.value = '';
+                        //                 } else if (response.errors.captcha) {
+                        //                     spinner();
+                        //                     swalFire('Error', response.errors.captcha, 'error', 'Try again');
+                        //                     reloadCaptcha();
+                        //                     captcha.value = '';
+                        //                 }
+                        //             }
+                        //         }
+                        //     }, error: function (xhr, textStatus, errorThrown) {
+                        //         if (xhr.responseJSON && xhr.responseJSON['YouAreLocked']) {
+                        //             swalFire('Access is forbidden', 'Your IP has been blocked. Please provide to your admin', 'error', 'Done!');
+                        //             const fields = [email, password, captcha];
+                        //             fields.forEach(field => {
+                        //                 field.disabled = true;
+                        //                 field.value = null;
+                        //                 field.style.backgroundColor = 'gray';
+                        //             });
+                        //         } else {
+                        //             swalFire('Server Error', 'Server connectivity failed', 'error', 'Try again');
+                        //             spinner();
+                        //         }
+                        //     }
+                        // });
                     }
 
                 });
