@@ -134,7 +134,7 @@
         .writing-rl {
             writing-mode: vertical-rl;
             transform: scale(-1);
-            padding: 1.3rem 0;
+            padding: 0.3rem 0;
             width: 60px;
         }
 
@@ -346,12 +346,14 @@
         <img src="/build/export-images/logo.png" alt="Logo">
     </div>
     <div class="title-description">
-        <h1>Tuition Card</h1>
-        <p>Savior International School</p>
+        <h1>Tuition Fee Card</h1>
+        <p style="padding: 0; margin: 0">Monji International Educational Institute</p>
+        <p style="padding: 0; margin: 0">{{$academicYearInfo->name}}</p>
     </div>
     <div class="invoice-details">
         <p class="font-bold">Invoice Number: <span class="font-light">{{ $myTuitionInfo->id }}</span></p>
         <p class="font-bold">Date: <span class="font-light">{{ now()->format('Y-m-d') }}</span></p>
+        <p class="font-bold">Student ID: <span class="font-light">{{ $applianceStatus->student_id }}</span></p>
     </div>
 </header>
 
@@ -360,34 +362,26 @@
     <div class="flex">
         <div class="texthead bg-blue">
             <div class="writing-rl">
-                <h5>Education Center</h5>
+                <h5>Institute Information</h5>
             </div>
         </div>
-        <div class="textbody">
-            <div class="contact-info">
-                <div class="name">
-                    <p>Name: <span>Savior International School</span></p>
+        <div style="margin-top: 5px" class="textbody">
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <p>Name: <span>{{$academicYearInfo->schoolInfo->name}}</span></p>
                 </div>
-                <div class="contact-number">
-                    <p>Contact Number: <span>+98 25 3770 4544</span></p>
-                </div>
-            </div>
-            <div class="contact-info">
-                <div class="name">
-                    <p>Branch: <span>{{$schoolBranch}}</span></p>
-                </div>
-                <div class="name">
-                    <p>Academic Year: <span>{{$academicYearInfo->name}}</span></p>
+                <div>
+                    <p>National ID: <span>14011156661</span></p>
                 </div>
             </div>
             <div class="flex justify-between">
-                <p>Postal Code: <span>37156-57571</span></p>
                 <p>Registration Number: <span>60789562</span></p>
-                <p>National ID: <span>14011156661</span></p>
+                <p>Contact Number: <span>+98 25 3770 4544</span></p>
             </div>
             <div class="address">
                 <p>Address: <span style="font-size: small !important;">{{$schoolAddress}}</span>
                 </p>
+                <p>Postal Code: <span>37156-57571</span></p>
             </div>
         </div>
     </div>
@@ -398,29 +392,31 @@
     <div class="flex">
         <div class="texthead bg-yellow">
             <div class="writing-rl">
-                <h5>Student Details</h5>
+                <h5>Student Information</h5>
             </div>
         </div>
         <div class="textbody">
             <div class="flex justify-between">
-                <p>Student:
+                <p>Full Name:
                     <span>{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}</span>
                 </p>
-                <p>Passport Number: <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
-                <p>Grade: <span>{{$levelInfo->name}}</span></p>
+                <p>Passport Number/National ID: <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>Parent/Guardian:
+                <p>Grade: <span>{{$levelInfo->name}}</span></p>
+                <p>Nationality: <span>{{ $applianceStatus->studentInformations->nationality }}</span></p>
+            </div>
+            <div class="flex justify-between">
+                <p>Guardian Full Name:
                     <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>
                 </p>
-                <p>Passport Number:
-                    <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->passport_number }}</span>
+                <p>Contact Number:
+                    <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span>
                 </p>
-                <p>Student ID: <span>{{ $applianceStatus->student_id }}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>Country: <span>{{$fatherNationality->en_short_name}}</span></p>
-                <p>Contact Number: <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
+                <p>Address: <span>{{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->address}}</span></p>
+                <p>Postal Code: <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->postal_code }}</span></p>
             </div>
         </div>
     </div>
@@ -432,7 +428,7 @@
     <div class="flex bg-white">
         <div class="texthead bg-blue">
             <div class="writing-rl">
-                <h5>Your tuition</h5>
+                <h5>Fee Details</h5>
             </div>
         </div>
         <div class="table-container bg-white">
@@ -440,7 +436,7 @@
                 <tr>
                     <th style="width: 10%">Currency</th>
                     <th style="width: 10%">Payment Type</th>
-                    <th style="width: 15%">Gross Fee</th>
+                    <th style="width: 15%">Cross Fee</th>
                     <th style="width: 15%;white-space: nowrap">Total Discount</th>
                     <th style="width: 15%; ">Net Fee</th>
                     @php $paidAmount=0 @endphp
@@ -482,16 +478,16 @@
         <div class="flex">
             <div class="texthead bg-yellow">
                 <div class="writing-rl">
-                    <h5>Payment Details</h5>
+                    <h5>Fee Details Table </h5>
                 </div>
             </div>
             <div class="table-container ">
                 <table class="payment-details-table font-bold">
                     <tr>
-                        <th>Type</th>
-                        <th>Amount</th>
+                        <th>No</th>
                         <th style="white-space: nowrap">Due Date</th>
-                        <th style="white-space: nowrap">Date received</th>
+                        <th>Due Amount</th>
+                        <th style="white-space: nowrap">Paid Date</th>
                         <th>Payment Method</th>
                         <th style="width: 120px;"></th>
                         @php $paidAmount = $debt = 0 @endphp
@@ -515,37 +511,8 @@
                         @endphp
                         <tr style="padding: 4px">
                             <td style="white-space: nowrap">
-                                @switch($tuitionType)
-                                    @case('Two Installment Advance')
-                                    @case('Four Installment Advance')
-                                        Advance
-                                        @break
-                                    @case('Two Installment - Installment 1')
-                                    @case('Four Installment - Installment 1')
-                                        Installment 1
-                                        @break
-                                    @case('Two Installment - Installment 2')
-                                    @case('Four Installment - Installment 2')
-                                        Installment 2
-                                        @break
-                                    @case('Four Installment - Installment 3')
-                                        Installment 3
-                                        @break
-                                    @case('Four Installment - Installment 4')
-                                        Installment 4
-                                        @break
-                                    @case('Full Payment With Advance - Installment')
-                                        Installment
-                                        @break
-                                    @case('Full Payment With Advance')
-                                        Advance
-                                        @break
-                                    @case('Full Payment')
-                                        Full Payment
-                                        @break
-                                @endswitch
+                                {{ $loop->iteration }}
                             </td>
-                            <td style="white-space: nowrap;padding: 0 20px 0 20px;">{{ number_format($invoices->amount) }} </td>
                             <td style="white-space: nowrap;padding: 0 20px 0 20px;">
                                 @switch ($dueType)
                                     @case('Four')
@@ -561,6 +528,7 @@
                                         -
                                 @endswitch
                             </td>
+                            <td style="white-space: nowrap;padding: 0 20px 0 20px;">{{ number_format($invoices->amount) }} </td>
                             <td class="ltr-text" style="white-space: nowrap;text-align: center">
                                 @if(isset($invoices->date_of_payment))
                                     {{$invoices->date_of_payment}}
@@ -626,16 +594,13 @@
 <footer class="">
     <div class="footer-text ">
         <p class="font-bold">
-            I, <span style="font-weight: bold">{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>
-            , parent/guardian
-            of <span style="font-weight: bold">{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_en }}</span>
-            , hereby agree to all rules and regulations of Monji Noor International Educational Institute.</p>
-
+            I, <span style="font-weight: bold">{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>, have read the Disciplinary and the Financial Charters of Monji International Educational Institute, and agree to abide by them
+        </p>
     </div>
     <div class="footer-content font-bold">
-        <div class="footer-text">Signature and Fingerprint of Parent/Guardian</div>
+        <div class="footer-text">Signature and Fingerprint of Guardian</div>
         <div class="footer-text">Signature and Stamp of Admissions Officer</div>
-        <div class="footer-text">Signature and Stamp of Financial Manager</div>
+        <div class="footer-text">Signature and Stamp of Finance</div>
     </div>
 </footer>
 
