@@ -944,6 +944,7 @@ $(document).ready(function () {
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        spinner();
                         $(this).off('submit');
                         $(this).submit();
                     }
