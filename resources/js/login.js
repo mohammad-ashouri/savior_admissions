@@ -2,6 +2,11 @@ import $ from 'jquery';
 import {swalFire, reloadCaptcha, startTimer, spinner} from './MainJsFunctionsAndImports.js';
 
 $(document).ready(function () {
+    document.cookie.split(";").forEach(function(cookie) {
+        var name = cookie.split("=")[0];
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/";
+    });
+
     let fullPath = window.location.pathname;
     if (fullPath.includes('/password/reset')) {
         $('#reset-password').submit(function (e) {
