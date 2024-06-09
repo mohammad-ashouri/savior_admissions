@@ -29,6 +29,7 @@ use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckIfProfileRegistered;
 use App\Http\Middleware\CheckLoginMiddleware;
+use App\Http\Middleware\NoCache;
 use App\Http\Middleware\SettingsCheck;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -75,7 +76,7 @@ Route::prefix('password')->group(function () {
 Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware('web')->middleware(CheckLoginMiddleware::class)->group(function () {
+Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddleware::class)->group(function () {
     Route::impersonate();
 
     Route::middleware(CheckIfProfileRegistered::class)->group(function () {
