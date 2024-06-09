@@ -155,7 +155,7 @@ class LoginController extends Controller
             Session::put('id', $user->id);
             $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
 
-            return route('dashboard');
+            return redirect()->route('dashboard');
         }
 
         return redirect()->back()->withErrors([
