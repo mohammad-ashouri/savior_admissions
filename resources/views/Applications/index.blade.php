@@ -92,6 +92,9 @@
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4">
+                                    #
+                                </th>
+                                <th scope="col" class="p-4">
                                     Reserve ID
                                 </th>
                                 <th scope="col" class="px-1 text-center">
@@ -122,6 +125,9 @@
                             @foreach($applications as $application)
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="w-4 text-center border">
+                                        {{$loop->iteration}}
+                                    </td>
                                     <td class="w-4 text-center border">
                                         {{$application->id}}
                                     </td>
