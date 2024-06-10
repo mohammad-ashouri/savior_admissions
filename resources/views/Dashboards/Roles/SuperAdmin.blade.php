@@ -80,6 +80,9 @@
                     @include('Dashboards.Roles.Charts.AdmittedInterviews')
                     @include('Dashboards.Roles.Charts.RejectedInterviews')
                 </div>
+                <div class="flex w-full mt-6 overflow-x-auto">
+                    @include('Dashboards.Roles.Charts.AbsenceInInterview')
+                </div>
             </div>
         </div>
     </div>

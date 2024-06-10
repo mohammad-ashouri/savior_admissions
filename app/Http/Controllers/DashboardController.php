@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\AbsenceInInterview;
 use App\Charts\AcceptedStudentsByAcademicYear;
 use App\Charts\AdmittedInterviews;
 use App\Charts\AllReservedApplications;
@@ -28,6 +29,7 @@ class DashboardController extends Controller
     protected AllStudentsPendingForUploadDocuments $allStudentsPendingForUploadDocument;
     protected RejectedInterviews $rejectedInterviews;
     protected AdmittedInterviews $admittedInterviews;
+    protected AbsenceInInterview $absenceInInterview;
 
     public function __construct(AcceptedStudentsByAcademicYear          $acceptedStudentNumberStatusByAcademicYear,
                                 AllRegisteredStudentsInLastAcademicYear $allReservedStudentsInLastAcademicYear,
@@ -35,6 +37,7 @@ class DashboardController extends Controller
                                 AllStudentsPendingForUploadDocuments                 $allStudentsPendingForUploadDocument,
                                 AdmittedInterviews                 $admittedInterviews,
                                 RejectedInterviews                 $rejectedInterviews,
+                                AbsenceInInterview                 $absenceInInterview,
     ) {
         $this->acceptedStudentNumberStatusByAcademicYear = $acceptedStudentNumberStatusByAcademicYear;
         $this->allRegisteredStudentsInLastAcademicYear = $allReservedStudentsInLastAcademicYear;
@@ -42,6 +45,7 @@ class DashboardController extends Controller
         $this->allStudentsPendingForUploadDocument = $allStudentsPendingForUploadDocument;
         $this->admittedInterviews = $admittedInterviews;
         $this->rejectedInterviews = $rejectedInterviews;
+        $this->absenceInInterview = $absenceInInterview;
     }
 
     public function index()
@@ -68,6 +72,7 @@ class DashboardController extends Controller
             $allStudentsPendingForUploadDocument = $this->allStudentsPendingForUploadDocument->build();
             $admittedInterviews = $this->admittedInterviews->build();
             $rejectedInterviews = $this->rejectedInterviews->build();
+            $absenceInInterview = $this->absenceInInterview->build();
 
             return view('Dashboards.Main', compact(
                 'me',
@@ -77,6 +82,7 @@ class DashboardController extends Controller
                 'allStudentsPendingForUploadDocument',
                 'admittedInterviews',
                 'rejectedInterviews',
+                'absenceInInterview',
             ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
