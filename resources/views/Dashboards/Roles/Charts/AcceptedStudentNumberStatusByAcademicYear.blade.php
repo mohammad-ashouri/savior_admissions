@@ -6,7 +6,7 @@
 @endphp
 
 <div class="flex mr-4 w-full">
-    <div id="chart"></div>
+    <div id="chart2"></div>
 </div>
 
 <script src="{{ $chart->cdn() }}"></script>
@@ -37,7 +37,7 @@
             }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        var chart = new ApexCharts(document.querySelector("#chart2"), options);
         chart.render();
     });
 </script>

@@ -43,7 +43,7 @@
                         <h1 class="text-xl font-semibold text-black dark:text-white ">Students Status </h1>
                     </div>
                 </div>
-                <div class="flex w-full">
+                <div class="flex overflow-x-auto w-full">
                     @include('Dashboards.Roles.Charts.AllRegisteredStudentsInLastAcademicYear')
                     @include('Dashboards.Roles.Charts.AcceptedStudentNumberStatusByAcademicYear')
                 </div>
