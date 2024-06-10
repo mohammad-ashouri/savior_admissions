@@ -7,6 +7,11 @@
                 {{ $me->generalInformationInfo->first_name_en }} {{ $me->generalInformationInfo->last_name_en }}
                 . Welcome to savior school panel
             </div>
+
+            <div id="spinner" class=" fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50">
+                <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
+                <p id="spinner-text" class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite">Loading...</p>
+            </div>
             @if($me->hasRole('Super Admin'))
                 @include('Dashboards.Roles.SuperAdmin')
             @endif

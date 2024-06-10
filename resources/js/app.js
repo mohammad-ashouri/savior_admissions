@@ -2087,6 +2087,7 @@ $(document).ready(function () {
     } else {
         switch (fullPath) {
             case '/dashboard':
+                spinner();
                 pageTitle = 'Dashboard';
                 break;
             case '/Profile':
