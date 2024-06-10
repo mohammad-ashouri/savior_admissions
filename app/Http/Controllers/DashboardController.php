@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Charts\AcceptedStudentsByAcademicYear;
+use App\Charts\AdmittedInterviews;
 use App\Charts\AllReservedApplications;
 use App\Charts\AllRegisteredStudentsInLastAcademicYear;
 use App\Charts\AllStudentsPendingForUploadDocuments;
+use App\Charts\RejectedInterviews;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -24,16 +26,22 @@ class DashboardController extends Controller
     protected AllReservedApplications $allReservedApplicationsInLastAcademicYear;
 
     protected AllStudentsPendingForUploadDocuments $allStudentsPendingForUploadDocument;
+    protected RejectedInterviews $rejectedInterviews;
+    protected AdmittedInterviews $admittedInterviews;
 
     public function __construct(AcceptedStudentsByAcademicYear          $acceptedStudentNumberStatusByAcademicYear,
                                 AllRegisteredStudentsInLastAcademicYear $allReservedStudentsInLastAcademicYear,
                                 AllReservedApplications                 $allRegisteredApplicationsInLastAcademicYear,
                                 AllStudentsPendingForUploadDocuments                 $allStudentsPendingForUploadDocument,
+                                AdmittedInterviews                 $admittedInterviews,
+                                RejectedInterviews                 $rejectedInterviews,
     ) {
         $this->acceptedStudentNumberStatusByAcademicYear = $acceptedStudentNumberStatusByAcademicYear;
         $this->allRegisteredStudentsInLastAcademicYear = $allReservedStudentsInLastAcademicYear;
         $this->allReservedApplicationsInLastAcademicYear = $allRegisteredApplicationsInLastAcademicYear;
         $this->allStudentsPendingForUploadDocument = $allStudentsPendingForUploadDocument;
+        $this->admittedInterviews = $admittedInterviews;
+        $this->rejectedInterviews = $rejectedInterviews;
     }
 
     public function index()
@@ -58,6 +66,8 @@ class DashboardController extends Controller
             $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear->build();
             $allReservedApplicationsInLastAcademicYear = $this->allReservedApplicationsInLastAcademicYear->build();
             $allStudentsPendingForUploadDocument = $this->allStudentsPendingForUploadDocument->build();
+            $admittedInterviews = $this->admittedInterviews->build();
+            $rejectedInterviews = $this->rejectedInterviews->build();
 
             return view('Dashboards.Main', compact(
                 'me',
@@ -65,6 +75,8 @@ class DashboardController extends Controller
                 'allRegisteredStudentsInLastAcademicYear',
                 'allReservedApplicationsInLastAcademicYear',
                 'allStudentsPendingForUploadDocument',
+                'admittedInterviews',
+                'rejectedInterviews',
             ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {

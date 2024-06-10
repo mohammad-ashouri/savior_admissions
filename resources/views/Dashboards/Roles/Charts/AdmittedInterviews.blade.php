@@ -1,12 +1,12 @@
 @php
-    $chart = $allReservedApplicationsInLastAcademicYear['chart'];
-    $labels = $allReservedApplicationsInLastAcademicYear['labels'];
-    $data = $allReservedApplicationsInLastAcademicYear['data'];
-    $colors = $allReservedApplicationsInLastAcademicYear['colors'];
+    $chart = $admittedInterviews['chart'];
+    $labels = $admittedInterviews['labels'];
+    $data = $admittedInterviews['data'];
+    $colors = $admittedInterviews['colors'];
 @endphp
 
 <div class="flex mr-4 w-full">
-    <div id="chart3"></div>
+    <div id="chart6"></div>
 </div>
 
 <script src="{{ $chart->cdn() }}"></script>
@@ -29,15 +29,15 @@
                 categories: @json($labels),
             },
             series: [{
-                name: 'All Reserved Applications',
+                name: 'Admitted Interviews',
                 data: @json($data)
             }],
             title: {
-                text: 'Number of all reserved applications by academic year'
+                text: 'Number of all admitted interviews by academic year'
             }
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart3"), options);
+        var chart = new ApexCharts(document.querySelector("#chart6"), options);
         chart.render();
     });
 </script>

@@ -50,7 +50,6 @@ class AllReservedApplications
         $colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF33A1', '#33FFA7', '#FFA733'];
 
         $chart = $this->allRegisteredApplications->horizontalBarChart()
-            ->setTitle('تعداد کل برنامه‌های ثبت‌نام شده بر اساس سال تحصیلی')
             ->setWidth(600)
             ->setHeight(250)
             ->setGrid()

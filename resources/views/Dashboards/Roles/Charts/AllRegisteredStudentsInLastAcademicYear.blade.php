@@ -29,7 +29,7 @@
                 categories: @json($labels),
             },
             series: [{
-                name: 'Approved Students',
+                name: 'Registered Students',
                 data: @json($data)
             }],
             title: {
