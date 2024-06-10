@@ -18,17 +18,17 @@ class AcceptedStudentsByAcademicYear
         $this->academicYears = AcademicYear::where('status', 1)->get()->pluck('id')->toArray();
     }
 
-    public function build(): \ArielMejiaDev\LarapexCharts\HorizontalBar
+    public function build()
     {
         $students = StudentApplianceStatus::with('academicYearInfo')
             ->whereIn('academic_year', $this->academicYears)
-            ->where('approval_status',1)
+            ->where('approval_status', 1)
             ->get();
 
         $studentCountsByYear = [];
         foreach ($students as $student) {
             $yearId = $student->academicYearInfo->id;
-            if (! isset($studentCountsByYear[$yearId])) {
+            if (!isset($studentCountsByYear[$yearId])) {
                 $studentCountsByYear[$yearId] = 0;
             }
             $studentCountsByYear[$yearId]++;
@@ -37,7 +37,7 @@ class AcceptedStudentsByAcademicYear
         $academicYearLabels = [];
         foreach ($this->academicYears as $yearId) {
             $academicYear = AcademicYear::find($yearId);
-            $academicYearLabels[] = $academicYear->name ;
+            $academicYearLabels[] = $academicYear->name;
         }
 
         $data = [];
@@ -45,18 +45,22 @@ class AcceptedStudentsByAcademicYear
             $data[] = $studentCountsByYear[$yearId] ?? 0;
         }
 
+        $colors = ['#FF5733', '#33FF57', '#3357FF', '#F333FF', '#FF33A1', '#33FFA7', '#FFA733'];
+
         $chart = $this->acceptedStudentNumberStatusByAcademicYear->horizontalBarChart()
             ->setTitle('Number of all approved students by academic year')
             ->setWidth(600)
-            ->setHeight(500)
+            ->setHeight(250)
             ->setGrid()
-        ;
+            ->addData('Approved Students', $data)
+            ->setXAxis($academicYearLabels);
 
-        foreach ($academicYearLabels as $index => $academicYearLabel) {
-            $chart->addData($academicYearLabel, [$data[$index]]);
-        }
-
-        return $chart->setXAxis($academicYearLabels);
-
+        return [
+            'chart' => $chart,
+            'labels' => $academicYearLabels,
+            'data' => $data,
+            'colors' => $colors,
+        ];
     }
+
 }
