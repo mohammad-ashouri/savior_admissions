@@ -43,7 +43,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-            return view('Students.index', compact('students', 'academicYears','me'));
+            return view('Students.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::where('guardian', auth()->user()->id)
                 ->with('studentInfo')
@@ -66,7 +66,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-            return view('Students.index', compact('students', 'academicYears','me'));
+            return view('Students.index', compact('students', 'academicYears', 'me'));
 
         }
 
@@ -75,7 +75,7 @@ class StudentController extends Controller
         }
         $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-        return view('Students.index', compact('students','me'));
+        return view('Students.index', compact('students', 'me'));
 
     }
 
@@ -91,9 +91,9 @@ class StudentController extends Controller
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make($request->all(), [
-            //            'nationality' => 'required|exists:countries,id',
+            'nationality' => 'required|exists:countries,id',
             'birthplace' => 'required|exists:countries,id',
-            //            'current_identification_type' => 'required|exists:current_identification_types,id',
+            'faragir_code' => 'required|string',
             'first_name_fa' => 'required|string',
             'last_name_fa' => 'required|string',
             'first_name_en' => 'required|string',
@@ -107,7 +107,7 @@ class StudentController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        //        $nationality = $request->nationality;
+                $nationality = $request->nationality;
         //        $current_identification_type = $request->current_identification_type;
         $birthplace = $request->birthplace;
         $birthdate = $request->birthdate;
@@ -134,14 +134,14 @@ class StudentController extends Controller
         $generalInformation->last_name_en = $request->last_name_en;
         $generalInformation->birthdate = $birthdate;
         $generalInformation->birthplace = $birthplace;
-        //        $generalInformation->nationality = $nationality;
+                $generalInformation->nationality = $nationality;
         $generalInformation->gender = $gender;
         $generalInformation->save();
 
         $studentInformation = new StudentInformation();
         $studentInformation->student_id = $user->id;
         $studentInformation->guardian = auth()->user()->id;
-        //        $studentInformation->current_nationality = $nationality;
+                $studentInformation->current_nationality = $nationality;
         //        $studentInformation->current_identification_type = $current_identification_type;
         //        $studentInformation->current_identification_code = $current_identification_code;
         $studentInformation->save();
@@ -289,7 +289,7 @@ class StudentController extends Controller
 
         if (isset($request->title)) {
             foreach ($extraInformationTitles as $index => $titles) {
-                if (!empty($titles)) {
+                if (! empty($titles)) {
                     $studentExtraInformation = new StudentExtraInformation();
                     $studentExtraInformation->student_informations_id = $studentInformation->id;
                     $studentExtraInformation->name = $titles;
