@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Charts\AcceptedStudentsByAcademicYear;
 use App\Charts\AllReservedApplications;
 use App\Charts\AllRegisteredStudentsInLastAcademicYear;
+use App\Charts\AllStudentsPendingForUploadDocuments;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -22,13 +23,17 @@ class DashboardController extends Controller
 
     protected AllReservedApplications $allReservedApplicationsInLastAcademicYear;
 
+    protected AllStudentsPendingForUploadDocuments $allStudentsPendingForUploadDocument;
+
     public function __construct(AcceptedStudentsByAcademicYear          $acceptedStudentNumberStatusByAcademicYear,
                                 AllRegisteredStudentsInLastAcademicYear $allReservedStudentsInLastAcademicYear,
                                 AllReservedApplications                 $allRegisteredApplicationsInLastAcademicYear,
+                                AllStudentsPendingForUploadDocuments                 $allStudentsPendingForUploadDocument,
     ) {
         $this->acceptedStudentNumberStatusByAcademicYear = $acceptedStudentNumberStatusByAcademicYear;
         $this->allRegisteredStudentsInLastAcademicYear = $allReservedStudentsInLastAcademicYear;
         $this->allReservedApplicationsInLastAcademicYear = $allRegisteredApplicationsInLastAcademicYear;
+        $this->allStudentsPendingForUploadDocument = $allStudentsPendingForUploadDocument;
     }
 
     public function index()
@@ -52,8 +57,15 @@ class DashboardController extends Controller
             $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear->build();
             $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear->build();
             $allReservedApplicationsInLastAcademicYear = $this->allReservedApplicationsInLastAcademicYear->build();
+            $allStudentsPendingForUploadDocument = $this->allStudentsPendingForUploadDocument->build();
 
-            return view('Dashboards.Main', compact('me', 'acceptedStudentNumberStatusByAcademicYear', 'allRegisteredStudentsInLastAcademicYear', 'allReservedApplicationsInLastAcademicYear'));
+            return view('Dashboards.Main', compact(
+                'me',
+                'acceptedStudentNumberStatusByAcademicYear',
+                'allRegisteredStudentsInLastAcademicYear',
+                'allReservedApplicationsInLastAcademicYear',
+                'allStudentsPendingForUploadDocument',
+            ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
