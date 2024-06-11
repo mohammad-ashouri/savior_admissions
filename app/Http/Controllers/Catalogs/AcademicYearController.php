@@ -50,6 +50,7 @@ class AcademicYearController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:academic_years,name',
+            'persian_name' => 'required|unique:academic_years,persian_name',
             'school' => 'required|exists:schools,id',
             'start_date' => 'required|date',
             'end_date' => 'required|after_or_equal:start_date',
@@ -154,6 +155,7 @@ class AcademicYearController extends Controller
 
         $academicYear = AcademicYear::create([
             'name' => $request->name,
+            'persian_name' => $request->persian_name,
             'school_id' => $request->school,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
@@ -204,6 +206,7 @@ class AcademicYearController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'persian_name' => 'required',
             'school' => 'required|exists:schools,id',
             'start_date' => 'required|date',
             'end_date' => 'required|after_or_equal:start_date',
@@ -345,6 +348,7 @@ class AcademicYearController extends Controller
         ];
         $academicYear = AcademicYear::find($id);
         $academicYear->name = $request->input('name');
+        $academicYear->persian_name = $request->input('persian_name');
         $academicYear->status = $request->input('status');
 
         $academicYearClasses = AcademicYearClass::where('academic_year', $academicYear->id)->get();

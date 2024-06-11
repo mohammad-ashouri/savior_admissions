@@ -398,7 +398,7 @@
                     <p>{{ __('translated_fa.Branch') }}: <span>{{$schoolBranch}}</span></p>
                 </div>
                 <div class="name">
-                    <p>{{ __('translated_fa.Academic Year') }}: <span>{{$academicYearInfo->name}}</span></p>
+                    <p>{{ __('translated_fa.Academic Year') }}: <span>{{$academicYearInfo->persian_name}}</span></p>
                 </div>
             </div>
             <div class="flex justify-between">
