@@ -15,10 +15,10 @@ class CheckLoginMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (\auth()->user()->id) {
+        if (Auth::check()) {
             return $next($request);
         }
 
-        return redirect()->route('login');
+        return redirect()->route('logout');
     }
 }
