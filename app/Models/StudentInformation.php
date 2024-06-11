@@ -7,10 +7,11 @@ use App\Models\Catalogs\GuardianStudentRelationship;
 use App\Models\Catalogs\StudentStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentInformation extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $table = 'student_informations';
 
@@ -30,6 +31,7 @@ class StudentInformation extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
 
     public function studentInfo()
