@@ -39,6 +39,14 @@
                                        placeholder="Enter name" required>
                             </div>
                             <div>
+                                <label for="persian_name"
+                                       class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Name (Persian)</label>
+                                <input type="text" id="persian_name" value="{{old('persian_name')}}" name="persian_name"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="نام فارسی را وارد کنید" required>
+                            </div>
+                            <div>
                                 <label for="gender"
                                        class="block mb-2  font-bold text-gray-900 dark:text-white">Gender of school
                                     students</label>

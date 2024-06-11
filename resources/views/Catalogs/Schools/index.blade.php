@@ -89,7 +89,10 @@
                                 </div>
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
-                                Name
+                                Name (English)
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center">
+                                Name (Persian)
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
                                 Gender
@@ -116,6 +119,12 @@
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="pl-3">
                                         <div class="text-base font-semibold">{{ $School->name }}</div>
+                                    </div>
+                                </th>
+                                <th scope="row"
+                                    class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div class="pl-3">
+                                        <div class="text-base font-semibold">{{ $School->persian_name }}</div>
                                     </div>
                                 </th>
                                 <th scope="row"

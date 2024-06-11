@@ -54,7 +54,7 @@
 
     $academicYearInfo=AcademicYear::with('schoolInfo')->find($applicationInformation->academic_year);
     $schoolAddress=$academicYearInfo->schoolInfo->address_fa;
-    $schoolBranch=$academicYearInfo->schoolInfo->name;
+    $schoolBranch=$academicYearInfo->schoolInfo->persian_name;
 @endphp
 <head>
     <meta charset="UTF-8">

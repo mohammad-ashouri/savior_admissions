@@ -40,6 +40,7 @@ class SchoolController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:schools,name',
+            'persian_name' => 'required|unique:schools,persian_name',
             'gender' => 'required',
             'educational_charter' => 'required',
             'address' => 'required|string',
@@ -50,7 +51,7 @@ class SchoolController extends Controller
 
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $school = School::create(['name' => $request->input('name'), 'gender' => $request->input('gender'), 'educational_charter' => $request->input('educational_charter'), 'address' => $request->input('address'), 'address_fa' => $request->input('address_fa')]);
+        $school = School::create(['name' => $request->input('name'),'persian_name' => $request->input('persian_name'), 'gender' => $request->input('gender'), 'educational_charter' => $request->input('educational_charter'), 'address' => $request->input('address'), 'address_fa' => $request->input('address_fa')]);
         $this->logActivity(json_encode(['activity' => 'School Saved', 'id' => $school->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('Schools.index')
@@ -70,6 +71,7 @@ class SchoolController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'persian_name' => 'required',
             'gender' => 'required',
             'educational_charter' => 'required',
             'address' => 'required|string',
@@ -84,6 +86,7 @@ class SchoolController extends Controller
 
         $catalog = School::find($id);
         $catalog->name = $request->input('name');
+        $catalog->persian_name = $request->input('persian_name');
         $catalog->gender = $request->input('gender');
         $catalog->educational_charter = $request->input('educational_charter');
         $catalog->address = $request->input('address');
