@@ -497,8 +497,8 @@
 </section>
 
 {{--Payment Details--}}
-<div class="flex w-100">
-    <div id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
+<div class="flex ">
+    <div style="width: 800px" id="table2" class="border-table bg-border-yellow radius-table mt-2rem bg-white">
         <div class="flex">
             <div class="texthead bg-yellow">
                 <div class="writing-rl">
