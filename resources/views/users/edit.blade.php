@@ -222,7 +222,7 @@
                                     <label for="mobile"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile
                                         number</label>
-                                    <input type="tel" id="mobile" name="mobile" value="{{ $user->mobile }}" required
+                                    <input type="tel" id="mobile" name="mobile" value="{{ $user->mobile }}" @if(!$user->hasRole('Student')) required @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Like: +989123456789">
                                 </div>

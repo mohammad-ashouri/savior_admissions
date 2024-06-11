@@ -114,7 +114,7 @@ class ProfileController extends Controller
 
     public function changeUserGeneralInformation(Request $request): \Illuminate\Http\JsonResponse
     {
-        $this->validate($request, [
+        $rules = [
             'first_name_fa' => 'nullable|string',
             'last_name_fa' => 'nullable|string',
             'first_name_en' => 'required|string',
@@ -128,48 +128,58 @@ class ProfileController extends Controller
             'FaragirCode' => 'nullable|string',
             'Country' => 'nullable|exists:countries,id',
             'city' => 'nullable|string',
-            'mobile' => 'required',
             'address' => 'nullable|string|max:100',
             'phone' => 'nullable',
             'postalcode' => 'nullable|integer',
             'email' => 'nullable|email',
             'user_id' => 'required|exists:users,id',
-        ]);
+        ];
 
         $input = $request->all();
         $user = User::find($input['user_id']);
-        $userGeneralInformation = GeneralInformation::where('user_id', $user->id)->first();
-        $userGeneralInformation->first_name_fa = @$input->first_name_fa;
-        $userGeneralInformation->last_name_fa = @$input->last_name_fa;
-        $userGeneralInformation->first_name_en = @$input->first_name_en;
-        $userGeneralInformation->last_name_en = @$input->last_name_en;
-        $userGeneralInformation->gender = @$input->gender;
-        $userGeneralInformation->father_name = @$input->father_name;
-        $userGeneralInformation->birthdate = @$input->Birthdate;
-        $userGeneralInformation->country = @$input->Country;
-        $userGeneralInformation->nationality = @$input->nationality;
-        $userGeneralInformation->birthplace = @$input->birthplace;
-        $userGeneralInformation->passport_number = @$input->PassportNumber;
-        $userGeneralInformation->faragir_code = @$input->FaragirCode;
-        $userGeneralInformation->state_city = @$input->city;
-        $userGeneralInformation->address = @$input->address;
-        $userGeneralInformation->phone = @$input->phone;
-        $userGeneralInformation->postal_code = @$input->postalcode;
 
+        if ($user->hasRole('Student')) {
+            $checkMobile = false;
+            $rules['mobile'] = 'nullable';
+        } else {
+            $rules['mobile'] = 'required';
+            $checkMobile = User::where('mobile', $input['mobile'])->where('id', '!=', $user->id)->exists();
+            if ($checkMobile) {
+                return response()->json(['message' => 'Mobile exists! try another mobile'], 500);
+            }
+        }
+
+        $this->validate($request, $rules);
+
+        $userGeneralInformation = GeneralInformation::where('user_id', $user->id)->first();
+        $userGeneralInformation->first_name_fa = $request->first_name_fa;
+        $userGeneralInformation->last_name_fa = $request->last_name_fa;
+        $userGeneralInformation->first_name_en = $request->first_name_en;
+        $userGeneralInformation->last_name_en = $request->last_name_en;
+        $userGeneralInformation->gender = $request->gender;
+        $userGeneralInformation->father_name = $request->father_name;
+        $userGeneralInformation->birthdate = $request->Birthdate;
+        $userGeneralInformation->country = $request->Country;
+        $userGeneralInformation->nationality = $request->nationality;
+        $userGeneralInformation->birthplace = $request->birthplace;
+        $userGeneralInformation->passport_number = $request->PassportNumber;
+        $userGeneralInformation->faragir_code = $request->FaragirCode;
+        $userGeneralInformation->state_city = $request->city;
+        $userGeneralInformation->address = $request->address;
+        $userGeneralInformation->phone = $request->phone;
+        $userGeneralInformation->postal_code = $request->postalcode;
+
+        $checkEmail = false;
         if (isset($input['email'])) {
             $checkEmail = User::where('email', $input['email'])->where('id', '!=', $user->id)->exists();
         }
-        $checkMobile = User::where('mobile', $input['mobile'])->where('id', '!=', $user->id)->exists();
 
         if ($checkEmail) {
-            return response()->json(['error' => 'Email exists! try another email'], 500);
-        }
-        if ($checkMobile) {
-            return response()->json(['error' => 'Mobile exists! try another mobile'], 500);
+            return response()->json(['message' => 'Email exists! try another email'], 500);
         }
 
-        $user->email = $input['email'];
-        $user->mobile = $input['mobile'];
+        $user->email = $request->email;
+        $user->mobile = $request->mobile;
         $user->save();
 
         $userGeneralInformation->editor = auth()->user()->id;
