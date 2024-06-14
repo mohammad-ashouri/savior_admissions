@@ -33,7 +33,7 @@
                 data: @json($data)
             }],
             title: {
-                text: 'Number of all absence in interview by academic year'
+                text: 'Absences in Interviews by Academic Year'
             }
         };
 

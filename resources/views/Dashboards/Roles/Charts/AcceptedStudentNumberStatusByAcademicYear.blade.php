@@ -33,7 +33,7 @@
                 data: @json($data)
             }],
             title: {
-                text: 'Number of all approved students by academic year'
+                text: 'Approved students by academic year'
             }
         };
 

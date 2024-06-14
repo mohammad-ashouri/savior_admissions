@@ -33,7 +33,7 @@
                 data: @json($data)
             }],
             title: {
-                text: 'Number of all reserved applications by academic year'
+                text: 'Total Number of Reserved Applications by Academic Year'
             }
         };
 

@@ -33,7 +33,7 @@
                 data: @json($data)
             }],
             title: {
-                text: 'Number of all students pending for upload documents by academic year'
+                text: 'Number of All Students Waiting for Document Upload by Academic Year'
             }
         };
 

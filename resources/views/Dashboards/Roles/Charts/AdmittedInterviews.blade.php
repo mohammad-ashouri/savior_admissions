@@ -33,7 +33,7 @@
                 data: @json($data)
             }],
             title: {
-                text: 'Number of all admitted interviews by academic year'
+                text: 'Total Accepted Interviews by Academic Year'
             }
         };
 
