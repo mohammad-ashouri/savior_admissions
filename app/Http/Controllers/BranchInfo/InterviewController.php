@@ -843,22 +843,22 @@ class InterviewController extends Controller
 
         $interview->interviewer = auth()->user()->id;
 
-        //        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
-        //Check if 3 interviews completed then make that to principal for confirmation
-        //        $checkInterview1Completed = Interview::where('application_id', $application->id)
-        //            ->where('interview_type', 1)
-        //            ->exists();
-        //        $checkInterview2Completed = Interview::where('application_id', $application->id)
-        //            ->where('interview_type', 2)
-        //            ->exists();
-        //        $checkInterview3Completed = Interview::where('application_id', $application->id)
-        //            ->where('interview_type', 3)
-        //            ->exists();
-        //        if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {
-        //            $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
-        //        }
-        //        $studentApplianceStatus->save();
+        //        Check if 3 interviews completed then make that to principal for confirmation
+        $checkInterview1Completed = Interview::where('application_id', $application->id)
+            ->where('interview_type', 1)
+            ->exists();
+        $checkInterview2Completed = Interview::where('application_id', $application->id)
+            ->where('interview_type', 2)
+            ->exists();
+        $checkInterview3Completed = Interview::where('application_id', $application->id)
+            ->where('interview_type', 3)
+            ->exists();
+        if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {
+            $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
+        }
+        $studentApplianceStatus->save();
 
         if ($interview->save()) {
             $this->logActivity(json_encode(['activity' => 'Interview Updated Successfully', 'interview_id' => $interview->id, 'values' => $request->all()]), request()->ip(), request()->userAgent());
@@ -882,17 +882,17 @@ class InterviewController extends Controller
 
         if ($me->hasRole('Super Admin')) {
             $application = Applications::where('reserved', 1)
-                ->where('id',$applicationId)
+                ->where('id', $applicationId)
                 ->first();
         } elseif ($me->hasRole('Interviewer')) {
             $application = Applications::where('reserved', 1)
                 ->where('first_interviewer', $me->id)
-                ->where('id',$applicationId)
+                ->where('id', $applicationId)
                 ->first();
         }
 
-        if (empty($application)){
-            $this->logActivity(json_encode(['activity' => 'Registration of absence in the interview encountered an error!', 'values' => json_encode($request->all(),true)]), request()->ip(), request()->userAgent());
+        if (empty($application)) {
+            $this->logActivity(json_encode(['activity' => 'Registration of absence in the interview encountered an error!', 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
 
             return redirect()->route('interviews.index')
                 ->withErrors(['errors' => 'Registration of absence in the interview encountered an error!']);
