@@ -501,6 +501,37 @@
                                             </div>
                                         @endif
                                     </div>
+                                    @if(isset($files['residence_document_file']))
+                                        <div class="mt-3 ml-2">
+                                            <label for="residence_document_file_preview"
+                                                   class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                Residence document file preview</label>
+                                            @if(substr($files['residence_document_file'],-4)=='.pdf')
+                                                <div class="flex justify-center items-center">
+                                                    <a target="_blank"
+                                                       href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}">
+                                                        <img class="pdf-documents-icons">
+                                                    </a>
+                                                </div>
+                                            @else
+                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                                >
+                                                    <button data-modal-target="openImage"
+                                                            data-modal-toggle="openImage"
+                                                            data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}"
+                                                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
+                                                            type="button">
+                                                        <img
+                                                            class="h-auto text-blue-500 align-center max-w-full rounded-lg"
+                                                            style="width: 400px; height: 200px"
+                                                            id="residence_document_file_preview"
+                                                            src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}"
+                                                            alt="Document Not Found!">
+                                                    </button>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <!-- openImage Modal -->

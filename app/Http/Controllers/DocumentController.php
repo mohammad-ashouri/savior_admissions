@@ -142,6 +142,7 @@ class DocumentController extends Controller
             'mother_passport_file' => 'required|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
             'student_passport_file' => 'required|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
             'latest_report_card' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
+            'residence_document_file' => 'required|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -241,12 +242,34 @@ class DocumentController extends Controller
             $document->save();
         }
 
+        $residenceDocumentFile_FileName = '';
+        if ($request->hasFile('residence_document_file')) {
+            $residenceDocumentFile_FileName = 'LatestReportCard_'.now()->format('Y-m-d_H-i-s');
+            $residenceDocument_FileExtension = $request->file('residence_document_file')->getClientOriginalExtension();
+            $residenceDocumentFile_FileName = $request->file('residence_document_file')->storeAs(
+                'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+                "$residenceDocumentFile_FileName.$residenceDocument_FileExtension"
+            );
+            $document = new Document();
+            $document->user_id = auth()->user()->id;
+            $document->document_type_id = DocumentType::where('name', 'Residence Document')->first()->id;
+            $document->src = $residenceDocumentFile_FileName;
+            $document->save();
+
+            $document = new Document();
+            $document->user_id = $checkStudentApplianceStatus->student_id;
+            $document->document_type_id = DocumentType::where('name', 'Residence Document')->first()->id;
+            $document->src = $residenceDocumentFile_FileName;
+            $document->save();
+        }
+
         $files = json_encode(
             [
                 'father_passport_file' => $fatherPassportFile,
                 'mother_passport_file' => $motherPassportFileName,
                 'latest_report_card' => $latestReportCard_FileName,
                 'student_passport_file' => $studentPassportFileName,
+                'residence_document_file' => $residenceDocumentFile_FileName,
             ], true);
 
         $evidences = new Evidence();

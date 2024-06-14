@@ -2031,6 +2031,37 @@ $(document).ready(function () {
             }
         });
 
+        $('#residence_document_file').change(function () {
+            const fileInput = $('#residence_document_file');
+            const imagePreview = $('#residence_document_file_preview');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const file = fileInput[0].files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    if (file.type === 'application/pdf') {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '200px');
+                        imagePreview.css('width', '400px');
+                        imagePreview.attr('alt', 'PDF File Chosen!');
+                    } else {
+                        imagePreview.attr('src', e.target.result);
+                        imagePreview.css('display', 'block');
+                        imagePreview.css('height', '200px');
+                        imagePreview.css('width', '400px');
+                        imagePreview.removeAttr('alt');
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.css('display', 'none');
+                imagePreview.removeAttr('alt');
+            }
+        });
+
         $('#upload-student-documents').submit(function (e) {
             e.preventDefault();
             Swal.fire({
