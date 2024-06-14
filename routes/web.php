@@ -152,6 +152,8 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
             //Students management
             Route::resource('Students', StudentController::class);
+            Route::post('Students/uploadPersonalPicture', [StudentController::class, 'uploadPersonalPicture'])->name('UploadPersonalPicture');
+
 
             //Applications
             Route::resource('Applications', ApplicationController::class);

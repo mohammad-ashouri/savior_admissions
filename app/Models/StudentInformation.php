@@ -83,4 +83,9 @@ class StudentInformation extends Model
     {
         return $this->belongsTo(GeneralInformation::class, 'student_id', 'user_id');
     }
+
+    public function userInfo()
+    {
+        return $this->belongsTo(User::class, 'student_id', 'id');
+    }
 }

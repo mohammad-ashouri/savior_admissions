@@ -952,6 +952,22 @@ $(document).ready(function () {
             });
         }
 
+        $('#student_personal_picture_form').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You can only choose student's personal photo once",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit');
+                    $(this).submit();
+                }
+            });
+        });
     } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
         $(document).ready(function() {

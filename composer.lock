@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "412d5026c40836fb86f90793ef5d11ec",
+    "content-hash": "d979e9fd4cd1057cfdfc5fc024b75196",
     "packages": [
         {
             "name": "akaunting/laravel-apexcharts",

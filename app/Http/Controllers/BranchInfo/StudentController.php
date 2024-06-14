@@ -7,14 +7,17 @@ use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\CurrentIdentificationType;
 use App\Models\Country;
+use App\Models\Document;
 use App\Models\GeneralInformation;
 use App\Models\StudentExtraInformation;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 use Spatie\Permission\Models\Role;
 
 class StudentController extends Controller
@@ -107,7 +110,7 @@ class StudentController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-                $nationality = $request->nationality;
+        $nationality = $request->nationality;
         //        $current_identification_type = $request->current_identification_type;
         $birthplace = $request->birthplace;
         $birthdate = $request->birthdate;
@@ -134,14 +137,14 @@ class StudentController extends Controller
         $generalInformation->last_name_en = $request->last_name_en;
         $generalInformation->birthdate = $birthdate;
         $generalInformation->birthplace = $birthplace;
-                $generalInformation->nationality = $nationality;
+        $generalInformation->nationality = $nationality;
         $generalInformation->gender = $gender;
         $generalInformation->save();
 
         $studentInformation = new StudentInformation();
         $studentInformation->student_id = $user->id;
         $studentInformation->guardian = auth()->user()->id;
-                $studentInformation->current_nationality = $nationality;
+        $studentInformation->current_nationality = $nationality;
         //        $studentInformation->current_identification_type = $current_identification_type;
         //        $studentInformation->current_identification_code = $current_identification_code;
         $studentInformation->save();
@@ -162,6 +165,7 @@ class StudentController extends Controller
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
                 ->with('extraInformations')
+                ->with('userInfo')
                 ->where('student_id', $id)
                 ->first();
             if (empty($studentInformations)) {
@@ -177,6 +181,7 @@ class StudentController extends Controller
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
+                ->with('userInfo')
                 ->with('extraInformations')
                 ->where('student_id', $id)
                 ->first();
@@ -200,6 +205,7 @@ class StudentController extends Controller
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
                 ->with('extraInformations')
+                ->with('userInfo')
                 ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->join('applications', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
@@ -348,5 +354,60 @@ class StudentController extends Controller
         $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
         return view('BranchInfo.StudentStatuses.index', compact('students'));
+    }
+
+    public function uploadPersonalPicture(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:users,id',
+            'personal_picture' => 'required|image|mimes:jpeg,png,jpg,bmp|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            $this->logActivity(json_encode(['activity' => 'Upload Personal Image Failed', 'errors' => json_encode($validator), 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $userId = $request->id;
+
+        // Get the file from the request
+        $file = $request->file('personal_picture');
+
+        $filename = time().'.'.$file->getClientOriginalExtension();
+        $destinationPath = storage_path('app/public/uploads/Documents/'.$userId.'/personal_image/');
+        $thumbnailPath = storage_path('app/public/uploads/Documents/'.$userId.'/personal_image/'.'/thumbnails');
+
+        if (! File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
+
+        if (! File::exists($thumbnailPath)) {
+            File::makeDirectory($thumbnailPath, 0755, true);
+        }
+
+        $file->move($destinationPath, $filename);
+
+        $thumbnail = Image::make($destinationPath.'/'.$filename)->resize(200, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        $thumbnail->save($thumbnailPath.'/thumb_'.$filename);
+
+        $destinationPath = 'public/uploads/Documents/'.$userId.'/personal_image/'.$filename;
+        $thumbnailPath = 'public/uploads/Documents/'.$userId.'/personal_image/'.'thumbnails/thumb_'.$filename;
+
+        $userThumbnail = User::find($userId);
+        $userThumbnail->personal_image = $thumbnailPath;
+        $userThumbnail->save();
+
+        $userPersonalPictureDocument = new Document();
+        $userPersonalPictureDocument->user_id = $userId;
+        $userPersonalPictureDocument->document_type_id = 2;
+        $userPersonalPictureDocument->src = $destinationPath;
+        $userPersonalPictureDocument->save();
+
+        return redirect()->back()->with('success', "Student's personal picture uploaded successfully");
+
     }
 }
