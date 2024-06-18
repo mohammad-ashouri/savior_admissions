@@ -3,6 +3,7 @@ import $ from 'jquery';
 import 'ionicons';
 import moment from 'moment';
 import Alpine from 'alpinejs'
+
 Alpine.start()
 // If you want Alpine's instance to be available everywhere.
 window.Alpine = Alpine
@@ -26,49 +27,47 @@ window.moment = moment;
 
 $(document).ready(function () {
 
-
-
 // config dark mode
-        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
 // Change the icons inside the button based on previous settings
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            themeToggleDarkIcon.classList.remove('hidden');
-            document.documentElement.classList.add('dark');
-        } else {
-            themeToggleLightIcon.classList.remove('hidden');
-            document.documentElement.classList.remove('dark')
-        }
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        themeToggleDarkIcon.classList.remove('hidden');
+        document.documentElement.classList.add('dark');
+    } else {
+        themeToggleLightIcon.classList.remove('hidden');
+        document.documentElement.classList.remove('dark')
+    }
 
-        let themeToggleBtn = document.getElementById('theme-toggle');
+    let themeToggleBtn = document.getElementById('theme-toggle');
 
-        themeToggleBtn.addEventListener('click', function () {
+    themeToggleBtn.addEventListener('click', function () {
 
-            // toggle icons inside button
-            themeToggleDarkIcon.classList.toggle('hidden');
-            themeToggleLightIcon.classList.toggle('hidden');
+        // toggle icons inside button
+        themeToggleDarkIcon.classList.toggle('hidden');
+        themeToggleLightIcon.classList.toggle('hidden');
 
-            // if set via local storage previously
-            if (localStorage.getItem('color-theme')) {
-                if (localStorage.getItem('color-theme') === 'light') {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                }
-
-                // if NOT set via local storage previously
+        // if set via local storage previously
+        if (localStorage.getItem('color-theme')) {
+            if (localStorage.getItem('color-theme') === 'light') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
             } else {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                }
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
             }
+
+            // if NOT set via local storage previously
+        } else {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        }
 
     });
 
@@ -118,6 +117,71 @@ $(document).ready(function () {
 
 // Add a listener to check for window resize events
     window.addEventListener('resize', handleResize);
+
+    $('#change-my-password-btn').click(async function () {
+        Swal.fire({
+            title: 'Password Management',
+            html:
+                '<div class="flex flex-col items-center space-y-2">' +
+                '<label for="current-password" class="text-left">Current Password</label>' +
+                '<input id="current-password" class="swal2-input w-full md:w-1/2" placeholder="Enter your current password" type="password" minlength="8" maxlength="24" autocomplete="new-password" autocapitalize="off" autocorrect="off">' +
+                '<label for="new-password" class="text-left">New Password</label>' +
+                '<input id="new-password" class="swal2-input w-full md:w-1/2" placeholder="Enter your new password" type="password" minlength="8" maxlength="24" autocomplete="new-password" autocapitalize="off" autocorrect="off">' +
+                '<label for="confirm-password" class="text-left">Confirm Password</label>' +
+                '<input id="confirm-password" class="swal2-input w-full md:w-1/2" placeholder="Confirm your new password" type="password" minlength="8" maxlength="24" autocomplete="new-password" autocapitalize="off" autocorrect="off">' +
+                '</div>'
+            ,
+            focusConfirm: false,
+            showCancelButton: true,
+            preConfirm: () => {
+                const currentPassword = document.getElementById('current-password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                if (!currentPassword || !newPassword || !confirmPassword) {
+                    Swal.showValidationMessage('All fields are required.');
+                    return false;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    Swal.showValidationMessage('New password and confirmation do not match.');
+                    return false;
+                }
+
+                if (newPassword.length < 8 || newPassword.length > 24) {
+                    Swal.showValidationMessage('New password must be between 8 and 24 characters.');
+                    return false;
+                }
+
+                return [currentPassword, newPassword, confirmPassword];
+            },
+            confirmButtonText: "Change Password",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                spinner();
+                const currentPassword = result.value[0];
+                const newPassword = result.value[1];
+                const confirmPassword = result.value[2];
+                $.ajax({
+                    type: 'POST',
+                    url: '/password/change',
+                    data: {
+                        Current_password: currentPassword,
+                        New_password: newPassword,
+                        Confirm_password: confirmPassword,
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                    }, success: function (response) {
+                        swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                    }
+                });
+                spinner();
+            }
+        });
+    });
 
 
     let fullPath = window.location.pathname;
@@ -803,7 +867,7 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, success: function (response) {
-                        if (response!=null) {
+                        if (response != null) {
                             let selectDateAndTime = $('#date_and_time');
                             selectDateAndTime.empty();
 
@@ -813,7 +877,7 @@ $(document).ready(function () {
                                 selectDateAndTime.append('<option value="' + date_and_time.id + '">' + date_and_time.date + " - " + date_and_time.start_from + " - " + date_and_time.ends_to + '</option>');
                             });
                             $('.AgreementDIV').show();
-                        }else{
+                        } else {
                             swalFire('Warning', "No capacity was found for this academic year!", 'warning', 'OK');
                         }
                     }, error: function (xhr, textStatus, errorThrown) {
@@ -977,7 +1041,7 @@ $(document).ready(function () {
         });
     } else if (fullPath.includes('Interviews')) {
         pageTitle = 'Interviews';
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Function for converting Persian numbers to English
             function convertToEnglish(input) {
                 var value = input.value;
@@ -1000,7 +1064,7 @@ $(document).ready(function () {
             }
 
             // When the content of an input field changes
-            $('input, textarea').on('input', function() {
+            $('input, textarea').on('input', function () {
                 // Call the conversion function for the current value
                 convertToEnglish(this);
             });
@@ -1089,7 +1153,7 @@ $(document).ready(function () {
             // }
 
         });
-        $('.submit-absence').click(function (){
+        $('.submit-absence').click(function () {
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'This operation cannot be reversed.',
@@ -1107,7 +1171,7 @@ $(document).ready(function () {
     } else if (fullPath.includes('SetInterview')) {
         pageTitle = 'Set Interview';
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Function for converting Persian numbers to English
             function convertToEnglish(input) {
                 var value = input.value;
@@ -1130,7 +1194,7 @@ $(document).ready(function () {
             }
 
             // When the content of an input field changes
-            $('input, textarea').on('input', function() {
+            $('input, textarea').on('input', function () {
                 // Call the conversion function for the current value
                 convertToEnglish(this);
             });
@@ -1594,7 +1658,7 @@ $(document).ready(function () {
             $('#document_file_full_payment2,#document_file_full_payment_with_advance2,#document_file_offline_installment2').val('');
             $('#document_file_full_payment3,#document_file_full_payment_with_advance3,#document_file_offline_installment3').val('');
 
-            $('#payment_type,#payment_method').change(function (){
+            $('#payment_type,#payment_method').change(function () {
                 $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
                 $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
                 $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
@@ -2204,26 +2268,6 @@ $(document).ready(function () {
                     }
                 });
 
-                $('#reset-password').submit(function (e) {
-                    e.preventDefault();
-                    let form = $(this);
-                    let data = form.serialize();
-                    $.ajax({
-                        type: 'POST',
-                        url: '/password/change',
-                        data: data,
-                        headers: {
-                            'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                        }, success: function (response) {
-                            $('#Current_password').val("");
-                            $('#New_password').val("");
-                            $('#Confirm_password').val("");
-                            swalFire('Done', 'Password changed successfully!', 'success', 'Ok');
-                        }, error: function (xhr, textStatus, errorThrown) {
-                            swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                        }
-                    });
-                });
                 break;
         }
     }

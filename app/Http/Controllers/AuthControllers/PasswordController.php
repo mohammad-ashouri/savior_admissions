@@ -31,8 +31,9 @@ class PasswordController extends Controller
         $sessionCaptcha = session('captcha')['key'];
         if (! password_verify($captcha, $sessionCaptcha)) {
             $this->logActivity(json_encode(['activity' => 'Register Failed (Wrong Captcha)', 'entered_values' => json_encode($request->all())]), request()->ip(), request()->userAgent());
+
             return response()->json([
-                'error' => 'Captcha is invalid.'
+                'error' => 'Captcha is invalid.',
             ]);
         }
 
@@ -337,8 +338,13 @@ class PasswordController extends Controller
         if (password_verify($request->input('Current_password'), $user->password)) {
             $user->password = Hash::make($request->input('New_password'));
             $user->save();
+            $this->logActivity(json_encode(['activity' => 'The user reset his password ']), request()->ip(), request()->userAgent(), auth()->user()->id);
 
-            return redirect()->back()->withSuccess('Password updated successfully!');
+            return response()->json(['message' => 'Password updated successfully!'], 200);
         }
+        $this->logActivity(json_encode(['activity' => 'Reset user password failed ', 'errors' => 'Current password failed', 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent(), auth()->user()->id);
+
+        return response()->json(['message' => 'Current password is wrong!'], 422);
+
     }
 }
