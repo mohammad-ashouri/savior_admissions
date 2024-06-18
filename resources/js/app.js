@@ -2,6 +2,11 @@ import 'flowbite';
 import $ from 'jquery';
 import 'ionicons';
 import moment from 'moment';
+import Alpine from 'alpinejs'
+Alpine.start()
+// If you want Alpine's instance to be available everywhere.
+window.Alpine = Alpine
+
 import {
     checkAge,
     checkEnglishCharacters,
@@ -16,11 +21,13 @@ import {
     spinner,
 } from './MainJsFunctionsAndImports.js';
 
+
 window.moment = moment;
 
-
-
 $(document).ready(function () {
+
+
+
 // config dark mode
         let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
         let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
