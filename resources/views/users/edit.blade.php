@@ -222,7 +222,8 @@
                                     <label for="mobile"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mobile
                                         number</label>
-                                    <input type="tel" id="mobile" name="mobile" value="{{ $user->mobile }}" @if(!$user->hasRole('Student')) required @endif
+                                    <input type="tel" id="mobile" name="mobile" value="{{ $user->mobile }}"
+                                           @if(!$user->hasRole('Student')) required @endif
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="Like: +989123456789">
                                 </div>
@@ -324,19 +325,26 @@
                         <form id="changeStudentInformation">
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
+                                    @foreach($parents as $guardian)
+                                        @if(!isset($guardian->generalInformationInfo->first_name_en) or $guardian->generalInformationInfo->first_name_en == null)
+                                            @dd($guardian)
+                                        @endif
+                                    @endforeach
+
                                     <label for="guardian"
                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Guardian</label>
                                     <select id="guardian" name="guardian"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
                                         <option value="" disabled selected>Select guardian...</option>
-                                        @foreach($parents as $parent)
-                                            @foreach($parent->users as $guardian)
-                                                <option
-                                                    @if(!empty($studentInformation) and $studentInformation->guardian==$guardian->id) selected
-                                                    @endif
-                                                    value="{{$guardian->id}}">{{ $guardian->id . " - " . $guardian->generalInformationInfo->first_name_en . " " . $guardian->generalInformationInfo->last_name_en }}</option>
-                                            @endforeach
+                                        @foreach($parents as $guardian)
+                                            @if($guardian->generalInformationInfo->first_name_en == null)
+                                                @continue
+                                            @endif
+                                            <option
+                                                @if(!empty($studentInformation) and $studentInformation->guardian==$guardian->id) selected
+                                                @endif
+                                                value="{{$guardian->id}}">{{ $guardian->id . " - " . $guardian->generalInformationInfo->first_name_en . " " . $guardian->generalInformationInfo->last_name_en }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -365,13 +373,14 @@
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                         <option value="" disabled selected>Select father...</option>
-                                        @foreach($parents as $parent)
-                                            @foreach($parent->users as $father)
-                                                <option
-                                                    @if(!empty($studentInformation) and $studentInformation->parent_father_id==$father->id) selected
-                                                    @endif
-                                                    value="{{$father->id}}">{{ $father->id . " - " . $father->generalInformationInfo->first_name_en . " " . $father->generalInformationInfo->last_name_en }}</option>
-                                            @endforeach
+                                        @foreach($parents as $father)
+                                            @if($father->first_name_en == null)
+                                                @continue
+                                            @endif
+                                            <option
+                                                @if(!empty($studentInformation) and $studentInformation->parent_father_id==$father->id) selected
+                                                @endif
+                                                value="{{$father->id}}">{{ $father->id . " - " . $father->generalInformationInfo->first_name_en . " " . $father->generalInformationInfo->last_name_en }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -383,13 +392,14 @@
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     >
                                         <option value="" disabled selected>Select mother...</option>
-                                        @foreach($parents as $parent)
-                                            @foreach($parent->users as $mother)
-                                                <option
-                                                    @if(!empty($studentInformation) and $studentInformation->parent_mother_id==$mother->id) selected
-                                                    @endif
-                                                    value="{{$mother->id}}">{{ $mother->id . " - " . $mother->generalInformationInfo->first_name_en . " " . $mother->generalInformationInfo->last_name_en }}</option>
-                                            @endforeach
+                                        @foreach($parents as $mother)
+                                            @if($mother->first_name_en == null)
+                                                @continue
+                                            @endif
+                                            <option
+                                                @if(!empty($studentInformation) and $studentInformation->parent_mother_id==$mother->id) selected
+                                                @endif
+                                                value="{{$mother->id}}">{{ $mother->id . " - " . $mother->generalInformationInfo->first_name_en . " " . $mother->generalInformationInfo->last_name_en }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -506,12 +516,12 @@
                                                 <td class="p-4">
                                                     <input type="text" id="title" name="title[]"
                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                           >
+                                                    >
                                                 </td>
                                                 <td class="p-4">
                                                     <input type="text" id="description" name="description[]"
                                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                           >
+                                                    >
                                                 </td>
                                                 <td class="p-4 text-center">
                                                     <button type="button"

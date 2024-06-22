@@ -138,9 +138,10 @@ class UserController extends Controller
         $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
         $countries = Country::get();
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct('nationality')->get();
-        $parents = Role::where('name', 'Student')->orWhere('name', 'Parent')->with(['users' => function ($query) {
-            $query->orderBy('id', 'desc');
-        }])->get();
+        $parents = User::with('generalInformationInfo')->where('status', 1)
+            ->WhereHas('roles', function ($query) {
+                $query->where('name', 'Parent');
+            })->get();
         $guardianStudentRelationships = GuardianStudentRelationship::get();
         $currentIdentificationTypes = CurrentIdentificationType::get();
         $statuses = StudentStatus::orderBy('name', 'asc')->get();
