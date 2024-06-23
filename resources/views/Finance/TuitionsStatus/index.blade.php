@@ -163,7 +163,7 @@
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            @switch($student->tuitionInvoices->payment_type)
+                                            @switch(@$student->tuitionInvoices->payment_type)
                                                 @case('1')
                                                     Full Payment
                                                     @break
@@ -183,41 +183,47 @@
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            @php
-                                                $totalTuition=0;
-                                                foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                    $totalTuition=$totalTuition+$invoices->amount;
-                                                }
-                                            @endphp
-                                            {{ number_format($totalTuition) }} IRR
+                                            @if($student->tuitionInvoices!=null)
+                                                @php
+                                                    $totalTuition=0;
+                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                        $totalTuition=$totalTuition+$invoices->amount;
+                                                    }
+                                                @endphp
+                                                {{ number_format($totalTuition) }} IRR
+                                            @endif
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            @php
-                                                $totalPaid=0;
-                                                foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                    if ($invoices->is_paid==0){ continue; }
-                                                    $totalPaid=$totalPaid+$invoices->amount;
-                                                }
-                                            @endphp
-                                            {{ number_format($totalPaid) }} IRR
+                                            @if($student->tuitionInvoices!=null)
+                                                @php
+                                                    $totalPaid=0;
+                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                        if ($invoices->is_paid==0){ continue; }
+                                                        $totalPaid=$totalPaid+$invoices->amount;
+                                                    }
+                                                @endphp
+                                                {{ number_format($totalPaid) }} IRR
+                                            @endif
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="text-base font-semibold">
-                                            @php
-                                                $debtBalance=0;
-                                                foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                    if ($invoices->is_paid==1){ continue; }
-                                                    $debtBalance=$debtBalance+$invoices->amount;
-                                                }
-                                            @endphp
-                                            {{ number_format($debtBalance) }} IRR
+                                            @if($student->tuitionInvoices!=null)
+                                                @php
+                                                    $debtBalance=0;
+                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                        if ($invoices->is_paid==1){ continue; }
+                                                        $debtBalance=$debtBalance+$invoices->amount;
+                                                    }
+                                                @endphp
+                                                {{ number_format($debtBalance) }} IRR
+                                            @endif
                                         </div>
                                     </th>
                                     <th scope="row"
