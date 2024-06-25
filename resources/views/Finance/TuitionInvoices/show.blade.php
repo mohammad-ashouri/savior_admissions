@@ -112,7 +112,6 @@
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
-
                             <div>
                                 <p class="font-bold">Payment
                                     Method: </p> {{$tuitionInvoiceDetails->paymentMethodInfo->name}}

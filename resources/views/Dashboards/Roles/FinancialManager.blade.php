@@ -5,7 +5,7 @@
 @endphp
 @section('content')
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
-        <div class="p-4 rounded-lg dark:border-gray-700 mt-14">
+        <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 Dear
                 {{ $me->generalInformationInfo->first_name_en }} {{ $me->generalInformationInfo->last_name_en }}
