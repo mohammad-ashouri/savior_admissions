@@ -209,6 +209,7 @@ class StudentController extends Controller
                 ->join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->join('applications', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                ->where('student_appliance_statuses.student_id', $id)
                 ->whereIn('application_timings.academic_year', $academicYears)
                 ->first();
             if (empty($studentInformations)) {
