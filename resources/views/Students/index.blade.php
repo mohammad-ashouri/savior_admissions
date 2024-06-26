@@ -1,3 +1,4 @@
+@php use App\Models\Branch\ApplicationReservation; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -107,6 +108,9 @@
                                     <th scope="col" class="text-center">
                                         Academic Year
                                     </th>
+                                    <th scope="col" class="text-center">
+                                        Level
+                                    </th>
                                 @endif
                                 <th scope="col" class="text-center">
                                     Action
@@ -157,6 +161,23 @@
                                             <div class="pl-3">
                                                 <div
                                                     class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
+                                            </div>
+                                        </th>
+                                    @php
+                                    $getApplication=ApplicationReservation::with('levelInfo')
+                                    ->join('applications','application_reservations.application_id','=','applications.id')
+                                    ->join('application_timings','applications.application_timing_id','=','application_timings.id')
+                                    ->where('application_timings.academic_year',$student->academicYearInfo->id)
+                                    ->where('application_reservations.student_id',$student->student_id)
+                                    ->where('application_reservations.payment_status',1)
+                                    ->first()
+                                    ;
+                                    @endphp
+                                        <th scope="row"
+                                            class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                            <div class="pl-3">
+                                                <div
+                                                    class="text-base font-semibold">{{ $getApplication->levelInfo->name }}</div>
                                             </div>
                                         </th>
                                     @endif
