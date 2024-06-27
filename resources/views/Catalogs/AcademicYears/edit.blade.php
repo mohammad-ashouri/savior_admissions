@@ -130,14 +130,11 @@
                                 <select id="Principal[]" name="Principal[]" multiple="multiple"
                                         class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required>
-                                    @foreach($users as $user)
-                                        @if(!$user->hasRole('Principal'))
-                                            @continue
-                                        @endif
+                                    @foreach($principals as $principal)
                                         <option
-                                            @if(old('Principal')==$user->id or (old('Principal') !== null and in_array($user->id,old('Principal'))) or in_array($user->id,json_decode($catalog->employees,true)['Principal'][0])) selected
-                                            @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
-                                            - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            @if(old('Principal')==$principal->id or (old('Principal') !== null and in_array($principal->id,old('Principal'))) or in_array($principal->id,json_decode($catalog->employees,true)['Principal'][0])) selected
+                                            @endif value="{{ $principal->id }}">{{ $principal->generalInformationInfo->first_name_en }} {{ $principal->generalInformationInfo->last_name_en }}
+                                            - {{ $principal->email }} - {{ $principal->mobile }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -148,14 +145,11 @@
                                 <select id="Admissions_Officer[]" name="Admissions_Officer[]" multiple="multiple"
                                         class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required>
-                                    @foreach($users as $user)
-                                        @if(!$user->hasRole('Admissions Officer'))
-                                            @continue
-                                        @endif
+                                    @foreach($admissionOfficers as $admissionOfficer)
                                         <option
-                                            @if(old('Admissions_Officer')==$user->id or (old('Admissions_Officer') !== null and in_array($user->id,old('Admissions_Officer'))) or in_array($user->id,json_decode($catalog->employees,true)['Admissions_Officer'][0])) selected
-                                            @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
-                                            - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            @if(old('Admissions_Officer')==$admissionOfficer->id or (old('Admissions_Officer') !== null and in_array($admissionOfficer->id,old('Admissions_Officer'))) or in_array($admissionOfficer->id,json_decode($catalog->employees,true)['Admissions_Officer'][0])) selected
+                                            @endif value="{{ $admissionOfficer->id }}">{{ $admissionOfficer->generalInformationInfo->first_name_en }} {{ $admissionOfficer->generalInformationInfo->last_name_en }}
+                                            - {{ $admissionOfficer->email }} - {{ $admissionOfficer->mobile }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -166,14 +160,11 @@
                                 <select id="Financial_Manager[]" name="Financial_Manager[]" multiple="multiple"
                                         class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required>
-                                    @foreach($users as $user)
-                                        @if(!$user->hasRole('Financial Manager'))
-                                            @continue
-                                        @endif
+                                    @foreach($financialManagers as $financialManager)
                                         <option
-                                            @if(old('Financial_Manager')==$user->id or (old('Financial_Manager') !== null and in_array($user->id,old('Financial_Manager'))) or in_array($user->id,json_decode($catalog->employees,true)['Financial_Manager'][0])) selected
-                                            @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
-                                            - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            @if(old('Financial_Manager')==$financialManager->id or (old('Financial_Manager') !== null and in_array($financialManager->id,old('Financial_Manager'))) or in_array($financialManager->id,json_decode($catalog->employees,true)['Financial_Manager'][0])) selected
+                                            @endif value="{{ $financialManager->id }}">{{ $financialManager->generalInformationInfo->first_name_en }} {{ $financialManager->generalInformationInfo->last_name_en }}
+                                            - {{ $financialManager->email }} - {{ $financialManager->mobile }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -183,14 +174,11 @@
                                 <select id="Interviewer[]" name="Interviewer[]" multiple="multiple"
                                         class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         required>
-                                    @foreach($users as $user)
-                                        @if(!$user->hasRole('Interviewer'))
-                                            @continue
-                                        @endif
+                                    @foreach($interviewers as $interviewer)
                                         <option
-                                            @if(old('Interviewer')==$user->id or (old('Interviewer') !== null and in_array($user->id,old('Interviewer'))) or in_array($user->id,json_decode($catalog->employees,true)['Interviewer'][0])) selected
-                                            @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
-                                            - {{ $user->email }} - {{ $user->mobile }}</option>
+                                            @if(old('Interviewer')==$interviewer->id or (old('Interviewer') !== null and in_array($interviewer->id,old('Interviewer'))) or in_array($interviewer->id,json_decode($catalog->employees,true)['Interviewer'][0])) selected
+                                            @endif value="{{ $interviewer->id }}">{{ $interviewer->generalInformationInfo->first_name_en }} {{ $interviewer->generalInformationInfo->last_name_en }}
+                                            - {{ $interviewer->email }} - {{ $interviewer->mobile }}</option>
                                     @endforeach
                                 </select>
                             </div>

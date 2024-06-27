@@ -28,6 +28,30 @@ class AcademicYearController extends Controller
         $this->middleware('permission:academic-year-search', ['only' => ['search']]);
     }
 
+    public function getAllPrincipals()
+    {
+        return User::where('status', 1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
+            $query->where('name', 'Principal');
+        })->orderBy('id')->get();
+    }
+    public function getAllAdmissionsOfficers()
+    {
+        return User::where('status', 1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
+            $query->where('name', 'Admissions Officer');
+        })->orderBy('id')->get();
+    }
+    public function getAllFinancialManagers()
+    {
+        return User::where('status', 1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
+            $query->where('name', 'Financial Manager');
+        })->orderBy('id')->get();
+    }
+    public function getAllInterviewers()
+    {
+        return User::where('status', 1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
+            $query->where('name', 'Interviewer');
+        })->orderBy('id')->get();
+    }
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $academicYears = AcademicYear::with('schoolInfo')->orderBy('id', 'desc')->paginate(10);
@@ -41,9 +65,12 @@ class AcademicYearController extends Controller
         $academicYears = AcademicYear::get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
-        $users = User::where('status', 1)->with('generalInformationInfo')->orderBy('id')->get();
 
-        return view('Catalogs.AcademicYears.create', compact('academicYears', 'schools', 'levels', 'users'));
+        $principals=$this->getAllPrincipals();
+        $admissionOfficers=$this->getAllAdmissionsOfficers();
+        $financialManagers=$this->getAllFinancialManagers();
+        $interviewers=$this->getAllInterviewers();
+        return view('Catalogs.AcademicYears.create', compact('academicYears', 'schools', 'levels', 'admissionOfficers','principals','financialManagers','interviewers'));
     }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
@@ -196,10 +223,13 @@ class AcademicYearController extends Controller
         $catalog = AcademicYear::with('schoolInfo')->find($id);
         $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
         $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
-        $users = User::where('status', 1)->with('generalInformationInfo')->orderBy('id')->get();
+        $principals=$this->getAllPrincipals();
+        $admissionOfficers=$this->getAllAdmissionsOfficers();
+        $financialManagers=$this->getAllFinancialManagers();
+        $interviewers=$this->getAllInterviewers();
         $this->logActivity(json_encode(['activity' => 'Getting Academic Year Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
 
-        return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools', 'levels', 'users'));
+        return view('Catalogs.AcademicYears.edit', compact('catalog', 'schools', 'levels', 'admissionOfficers','principals','financialManagers','interviewers'));
     }
 
     public function update(Request $request, $id): \Illuminate\Http\RedirectResponse

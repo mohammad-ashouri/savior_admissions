@@ -28,7 +28,8 @@
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info  bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <form id="new-academic-year" enctype="multipart/form-data" method="post" action="{{route('AcademicYears.store')}}">
+                        <form id="new-academic-year" enctype="multipart/form-data" method="post"
+                              action="{{route('AcademicYears.store')}}">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
@@ -43,7 +44,8 @@
                                     <label for="persian_name"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         Name (Persian)</label>
-                                    <input type="text" id="persian_name" value="{{ old('persian_name') }}" name="persian_name"
+                                    <input type="text" id="persian_name" value="{{ old('persian_name') }}"
+                                           name="persian_name"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            placeholder="نام فارسی را وارد کنید" required>
                                 </div>
@@ -99,14 +101,11 @@
                                     <select id="Principal[]" name="Principal[]" multiple="multiple"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
-                                        @foreach($users as $user)
-                                            @if(!$user->hasRole('Principal'))
-                                                @continue
-                                            @endif
+                                        @foreach($principals as $principal)
                                             <option
-                                                @if(is_array(old('Principal')) and in_array($user->id,old('Principal'))) selected
-                                                @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
-                                                - {{ $user->email }} - {{ $user->mobile }}</option>
+                                                @if(is_array(old('Principal')) and in_array($principal->id,old('Principal'))) selected
+                                                @endif value="{{ $principal->id }}">{{ $principal->generalInformationInfo->first_name_en }} {{ $principal->generalInformationInfo->last_name_en }}
+                                                - {{ $principal->email }} - {{ $principal->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -117,14 +116,12 @@
                                     <select id="Admissions_Officer[]" name="Admissions_Officer[]" multiple="multiple"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
-                                        @foreach($users as $user)
-                                            @if(!$user->hasRole('Admissions Officer'))
-                                                @continue
-                                            @endif
+                                        @foreach($admissionOfficers as $admissionOfficer)
                                             <option
-                                                @if(is_array(old('Admissions_Officer')) and in_array($user->id,old('Admissions_Officer'))) selected
-                                                @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
-                                                - {{ $user->email }} - {{ $user->mobile }}</option>
+                                                @if(is_array(old('Admissions_Officer')) and in_array($admissionOfficer->id,old('Admissions_Officer'))) selected
+                                                @endif value="{{ $admissionOfficer->id }}">{{ $admissionOfficer->generalInformationInfo->first_name_en }} {{ $admissionOfficer->generalInformationInfo->last_name_en }}
+                                                - {{ $admissionOfficer->email }}
+                                                - {{ $admissionOfficer->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -135,14 +132,12 @@
                                     <select id="Financial_Manager[]" name="Financial_Manager[]" multiple="multiple"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
-                                        @foreach($users as $user)
-                                            @if(!$user->hasRole('Financial Manager'))
-                                                @continue
-                                            @endif
+                                        @foreach($financialManagers as $financialManager)
                                             <option
-                                                @if(is_array(old('Financial_Manager')) and in_array($user->id,old('Financial_Manager'))) selected
-                                                @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
-                                                - {{ $user->email }} - {{ $user->mobile }}</option>
+                                                @if(is_array(old('Financial_Manager')) and in_array($financialManager->id,old('Financial_Manager'))) selected
+                                                @endif value="{{ $financialManager->id }}">{{ $financialManager->generalInformationInfo->first_name_en }} {{ $financialManager->generalInformationInfo->last_name_en }}
+                                                - {{ $financialManager->email }}
+                                                - {{ $financialManager->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -152,14 +147,11 @@
                                     <select id="Interviewer[]" name="Interviewer[]" multiple="multiple"
                                             class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             required>
-                                        @foreach($users as $user)
-                                            @if(!$user->hasRole('Interviewer'))
-                                                @continue
-                                            @endif
+                                        @foreach($interviewers as $interviewer)
                                             <option
-                                                @if(is_array(old('Interviewer')) and in_array($user->id,old('Interviewer'))) selected
-                                                @endif value="{{ $user->id }}">{{ $user->generalInformationInfo->first_name_en }} {{ $user->generalInformationInfo->last_name_en }}
-                                                - {{ $user->email }} - {{ $user->mobile }}</option>
+                                                @if(is_array(old('Interviewer')) and in_array($interviewer->id,old('Interviewer'))) selected
+                                                @endif value="{{ $interviewer->id }}">{{ $interviewer->generalInformationInfo->first_name_en }} {{ $interviewer->generalInformationInfo->last_name_en }}
+                                                - {{ $interviewer->email }} - {{ $interviewer->mobile }}</option>
                                         @endforeach
                                     </select>
                                 </div>
