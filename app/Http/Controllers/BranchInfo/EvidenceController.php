@@ -155,4 +155,31 @@ class EvidenceController extends Controller
         return redirect()->route('StudentStatus')
             ->with('success', 'The deadline for uploading documents for this appliance ID:'.$applianceId.' has been extended');
     }
+
+    public function showEvidence($appliance_id)
+    {
+        $me = User::find(auth()->user()->id);
+        if ($me->hasRole('Super Admin')) {
+            $academicYears = AcademicYear::pluck('id')->toArray();
+        } elseif ($me->hasRole('Admissions Officer')) {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+        }
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->where('id', $appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded','!=', '0')->where('interview_status', 'Admitted')->orderBy('documents_uploaded', 'asc')->first();
+        if (empty($studentAppliance)) {
+            abort(403);
+        }
+
+        $bloodGroups = BloodGroup::get();
+        $guardianStudentRelationships = GuardianStudentRelationship::get();
+        $countries = Country::orderBy('en_short_name', 'asc')->get();
+        $nationalities = Country::orderBy('nationality', 'asc')->get();
+        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $studentAppliance->student_id)->first();
+        $this->logActivity(json_encode(['activity' => 'Getting Appliance Form', 'appliance_id' => $appliance_id]), request()->ip(), request()->userAgent());
+
+        return view('Documents.UploadDocumentsParent.ShowUploadedEvidence', compact('studentAppliance', 'bloodGroups', 'guardianStudentRelationships', 'countries', 'nationalities', 'studentInformation'));
+    }
 }

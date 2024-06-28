@@ -1592,6 +1592,8 @@ $(document).ready(function () {
                 }
             });
         });
+    } else if (fullPath.includes('Evidences/show')) {
+        pageTitle = 'Uploaded Student Documents';
     } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
 

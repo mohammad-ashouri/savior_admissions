@@ -189,6 +189,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             //Evidences confirmation
             Route::get('ConfirmEvidences', [EvidenceController::class, 'index'])->name('Evidences');
             Route::get('ConfirmEvidences/{appliance_id}', [EvidenceController::class, 'show'])->name('Evidences.show');
+            Route::get('Evidences/show/{appliance_id}', [EvidenceController::class, 'showEvidence'])->name('Evidences.showEvidence');
             Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
             Route::post('ExtensionOfDocumentUpload', [EvidenceController::class, 'extensionOfDocumentUpload'])->name('Evidences.extensionOfDocumentUpload');
 
