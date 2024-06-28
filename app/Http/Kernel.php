@@ -30,6 +30,7 @@ class Kernel extends HttpKernel
         'CheckIfProfileRegistered' => \App\Http\Middleware\CheckIfProfileRegistered::class,
         'SettingsCheck' => \App\Http\Middleware\SettingsCheck::class,
         'no-cache' => \App\Http\Middleware\NoCache::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
     ];
 
     /**

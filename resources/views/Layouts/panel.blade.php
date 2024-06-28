@@ -123,8 +123,9 @@
                             </li>
                             <li>
                                 <button type="button" id="change-my-password-btn"
-                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                   role="menuitem">Change Password</button>
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        role="menuitem">Change Password
+                                </button>
                             </li>
 
                             <li>
@@ -404,6 +405,15 @@
                     <span class="ml-4">Profile</span>
                 </a>
             </li>
+            @if($me->hasRole('Super Admin'))
+            <li>
+                <a href="/telescope"
+                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <i class="las la-crosshairs" style="font-size: 24px"></i>
+                    <span class="ml-4">Telescope</span>
+                </a>
+            </li>
+            @endif
             <li>
                 <a href="{{ route('logout') }}"
                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
