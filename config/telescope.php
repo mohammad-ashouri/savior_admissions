@@ -59,7 +59,7 @@ return [
 
     'storage' => [
         'database' => [
-            'connection' => env('DB_CONNECTION'),
+            'connection' => env('DB_CONNECTION','main'),
             'chunk' => 1000,
         ],
     ],
