@@ -84,6 +84,7 @@ class StudentController extends Controller
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
+        abort('403');
         $birthplaces = Country::orderBy('en_short_name', 'asc')->get();
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct()->get();
         $identificationTypes = CurrentIdentificationType::get();
