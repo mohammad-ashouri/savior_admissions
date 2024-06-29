@@ -1594,7 +1594,7 @@ $(document).ready(function () {
         });
     } else if (fullPath.includes('Evidences/show')) {
         pageTitle = 'Uploaded Student Documents';
-    } else if (fullPath.includes('Tuition')) {
+    } else if (fullPath.includes('Tuition/')) {
         pageTitle = 'Tuition Manager';
 
         //Find all elements on the page
@@ -1652,352 +1652,348 @@ $(document).ready(function () {
             });
         });
 
-        if (fullPath.includes('PayTuition')) {
-            pageTitle = 'Prepare To Pay Tuition';
 
-            $('#payment_type,#payment_method').val('');
-            $('#document_file_full_payment1,#document_file_full_payment_with_advance1,#document_file_offline_installment1').val('');
-            $('#document_file_full_payment2,#document_file_full_payment_with_advance2,#document_file_offline_installment2').val('');
-            $('#document_file_full_payment3,#document_file_full_payment_with_advance3,#document_file_offline_installment3').val('');
+    } else if (fullPath.includes('PayTuition')) {
+        pageTitle = 'Prepare To Pay Tuition';
 
-            $('#payment_type,#payment_method').change(function () {
-                $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
-                $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
-                $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
-                $('#offline-full-payment-div, #offline-installment-div').hide();
-                $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
-                $('#accept-div').addClass('hidden');
-                $('#payment-button').hide();
+        $('#payment_type,#payment_method').val('');
+        $('#document_file_full_payment1,#document_file_full_payment_with_advance1,#document_file_offline_installment1').val('');
+        $('#document_file_full_payment2,#document_file_full_payment_with_advance2,#document_file_offline_installment2').val('');
+        $('#document_file_full_payment3,#document_file_full_payment_with_advance3,#document_file_offline_installment3').val('');
 
-            });
-            $('.get-invoice').on('click', function () {
-                let paymentMethod = $('#payment_method').val();
+        $('#payment_type,#payment_method').change(function () {
+            $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
+            $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
+            $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
+            $('#offline-full-payment-div, #offline-installment-div').hide();
+            $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
+            $('#accept-div').addClass('hidden');
+            $('#payment-button').hide();
 
-                $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
-                $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
-                $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
-                $('#offline-full-payment-div, #offline-installment-div').hide();
-                $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
+        });
+        $('.get-invoice').on('click', function () {
+            let paymentMethod = $('#payment_method').val();
 
-                $('#accept-div').addClass('hidden');
-                $('#payment-button').hide();
+            $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
+            $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
+            $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
+            $('#offline-full-payment-div, #offline-installment-div').hide();
+            $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
 
-                $('#document_file_full_payment1,#document_file_offline_installment1,#document_file_full_payment_with_advance1').attr('required', false);
+            $('#accept-div').addClass('hidden');
+            $('#payment-button').hide();
 
-                let paymentType = $('#payment_type').val();
+            $('#document_file_full_payment1,#document_file_offline_installment1,#document_file_full_payment_with_advance1').attr('required', false);
 
-                // Hide all elements initially
-                $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online, #installment2-div, #installment2-payment-invoice, #installment2-online, #installment4-div, #installment4-payment-invoice, #installment4-online, #offline-full-payment-div, #offline-installment-div').hide();
+            let paymentType = $('#payment_type').val();
 
-                if (paymentType != null && paymentMethod != null) {
-                    // Show elements based on payment type
-                    switch (paymentType) {
-                        case '1':
-                            $('#full-payment-div, #full-payment-invoice').show();
-                            break;
-                        case '2':
-                            $('#installment2-div, #installment2-payment-invoice').show();
-                            break;
-                        case '3':
-                            $('#installment4-div, #installment4-payment-invoice').show();
-                            break;
-                        case '4':
-                            $('#full-payment-with-advance-div, #full-payment-with-advance-invoice').show();
-                            break;
-                    }
+            // Hide all elements initially
+            $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online, #installment2-div, #installment2-payment-invoice, #installment2-online, #installment4-div, #installment4-payment-invoice, #installment4-online, #offline-full-payment-div, #offline-installment-div').hide();
 
-                    // Show or hide elements based on payment method
-                    switch (paymentMethod) {
-                        case '1':
-                            switch (paymentType) {
-                                case '1':
-                                    $('#offline-full-payment-div').show();
-                                    $('#full-payment-online').hide();
-                                    $('#document_file_full_payment1').attr('required', true);
-                                    break;
-                                case '2':
-                                    $('#offline-installment-div').show();
-                                    $('#installment2-online').hide();
-                                    $('#document_file_offline_installment1').attr('required', true);
-                                    break;
-                                case '3':
-                                    $('#offline-installment-div').show();
-                                    $('#installment4-online').hide();
-                                    $('#document_file_offline_installment1').attr('required', true);
-                                    break;
-                                case '4':
-                                    $('#offline-full-payment-with-advance-div').show();
-                                    $('#full-payment-with-advance-online').hide();
-                                    $('#document_file_full_payment_with_advance1').attr('required', true);
-                                    break;
-                            }
-                            break;
-                        case '2':
-                            switch (paymentType) {
-                                case '1':
-                                    $('#offline-full-payment-div').hide();
-                                    $('#full-payment-online').show();
-                                    break;
-                                case '2':
-                                    $('#offline-installment-div').hide();
-                                    $('#installment2-online').show();
-                                    break;
-                                case '3':
-                                    $('#offline-installment-div').hide();
-                                    $('#installment4-online').show();
-                                    break;
-                                case '4':
-                                    $('#offline-full-payment-with-advance-div').hide();
-                                    $('#full-payment-with-advance-online').show();
-                                    break;
-                            }
-                            break;
-                    }
+            if (paymentType != null && paymentMethod != null) {
+                // Show elements based on payment type
+                switch (paymentType) {
+                    case '1':
+                        $('#full-payment-div, #full-payment-invoice').show();
+                        break;
+                    case '2':
+                        $('#installment2-div, #installment2-payment-invoice').show();
+                        break;
+                    case '3':
+                        $('#installment4-div, #installment4-payment-invoice').show();
+                        break;
+                    case '4':
+                        $('#full-payment-with-advance-div, #full-payment-with-advance-invoice').show();
+                        break;
+                }
 
-                    $('#accept-div').removeClass('hidden');
-                    $('#payment-button').show();
-                } else {
-                    swalFire('Error', 'Please select both of fields.', 'error', 'Try again');
+                // Show or hide elements based on payment method
+                switch (paymentMethod) {
+                    case '1':
+                        switch (paymentType) {
+                            case '1':
+                                $('#offline-full-payment-div').show();
+                                $('#full-payment-online').hide();
+                                $('#document_file_full_payment1').attr('required', true);
+                                break;
+                            case '2':
+                                $('#offline-installment-div').show();
+                                $('#installment2-online').hide();
+                                $('#document_file_offline_installment1').attr('required', true);
+                                break;
+                            case '3':
+                                $('#offline-installment-div').show();
+                                $('#installment4-online').hide();
+                                $('#document_file_offline_installment1').attr('required', true);
+                                break;
+                            case '4':
+                                $('#offline-full-payment-with-advance-div').show();
+                                $('#full-payment-with-advance-online').hide();
+                                $('#document_file_full_payment_with_advance1').attr('required', true);
+                                break;
+                        }
+                        break;
+                    case '2':
+                        switch (paymentType) {
+                            case '1':
+                                $('#offline-full-payment-div').hide();
+                                $('#full-payment-online').show();
+                                break;
+                            case '2':
+                                $('#offline-installment-div').hide();
+                                $('#installment2-online').show();
+                                break;
+                            case '3':
+                                $('#offline-installment-div').hide();
+                                $('#installment4-online').show();
+                                break;
+                            case '4':
+                                $('#offline-full-payment-with-advance-div').hide();
+                                $('#full-payment-with-advance-online').show();
+                                break;
+                        }
+                        break;
+                }
+
+                $('#accept-div').removeClass('hidden');
+                $('#payment-button').show();
+            } else {
+                swalFire('Error', 'Please select both of fields.', 'error', 'Try again');
+            }
+        });
+
+        $('#document_file_full_payment1').change(function () {
+            const fileInput = $('#document_file_full_payment1');
+            const imagePreview = $('#image_preview_full_payment1');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+        $('#document_file_full_payment2').change(function () {
+            const fileInput = $('#document_file_full_payment2');
+            const imagePreview = $('#image_preview_full_payment2');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+        $('#document_file_full_payment3').change(function () {
+            const fileInput = $('#document_file_full_payment3');
+            const imagePreview = $('#image_preview_full_payment3');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+
+        $('#document_file_full_payment_with_advance1').change(function () {
+            const fileInput = $('#document_file_full_payment_with_advance1');
+            const imagePreview = $('#image_preview_full_payment_with_advance_1');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+        $('#document_file_full_payment_with_advance2').change(function () {
+            const fileInput = $('#document_file_full_payment_with_advance2');
+            const imagePreview = $('#image_preview_full_payment_with_advance_2');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+        $('#document_file_full_payment_with_advance3').change(function () {
+            const fileInput = $('#document_file_full_payment_with_advance3');
+            const imagePreview = $('#image_preview_full_payment_with_advance_2');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+
+        $('#document_file_offline_installment1').change(function () {
+            const fileInput = $('#document_file_offline_installment1');
+            const imagePreview = $('#image_preview_offline_installment1');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+        $('#document_file_offline_installment2').change(function () {
+            const fileInput = $('#document_file_offline_installment2');
+            const imagePreview = $('#image_preview_offline_installment2');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+        $('#document_file_offline_installment3').change(function () {
+            const fileInput = $('#document_file_offline_installment3');
+            const imagePreview = $('#image_preview_offline_installment3');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+
+        $('#pay-tuition').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'After confirmation, you will be taken to the payment page.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit');
+                    $(this).submit();
                 }
             });
+        });
 
-            $('#document_file_full_payment1').change(function () {
-                const fileInput = $('#document_file_full_payment1');
-                const imagePreview = $('#image_preview_full_payment1');
+    } else if (fullPath.includes('TuitionInvoices')) {
+        pageTitle = 'Tuition Invoices';
+    } else if (fullPath.includes('TuitionInvoices/')) {
+        pageTitle = 'Tuition Payment Details';
 
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-            $('#document_file_full_payment2').change(function () {
-                const fileInput = $('#document_file_full_payment2');
-                const imagePreview = $('#image_preview_full_payment2');
-
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-            $('#document_file_full_payment3').change(function () {
-                const fileInput = $('#document_file_full_payment3');
-                const imagePreview = $('#image_preview_full_payment3');
-
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-
-            $('#document_file_full_payment_with_advance1').change(function () {
-                const fileInput = $('#document_file_full_payment_with_advance1');
-                const imagePreview = $('#image_preview_full_payment_with_advance_1');
-
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-            $('#document_file_full_payment_with_advance2').change(function () {
-                const fileInput = $('#document_file_full_payment_with_advance2');
-                const imagePreview = $('#image_preview_full_payment_with_advance_2');
-
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-            $('#document_file_full_payment_with_advance3').change(function () {
-                const fileInput = $('#document_file_full_payment_with_advance3');
-                const imagePreview = $('#image_preview_full_payment_with_advance_2');
-
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-
-            $('#document_file_offline_installment1').change(function () {
-                const fileInput = $('#document_file_offline_installment1');
-                const imagePreview = $('#image_preview_offline_installment1');
-
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-            $('#document_file_offline_installment2').change(function () {
-                const fileInput = $('#document_file_offline_installment2');
-                const imagePreview = $('#image_preview_offline_installment2');
-
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-            $('#document_file_offline_installment3').change(function () {
-                const fileInput = $('#document_file_offline_installment3');
-                const imagePreview = $('#image_preview_offline_installment3');
-
-                if (fileInput[0].files && fileInput[0].files[0]) {
-                    const reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        imagePreview.attr('src', e.target.result);
-                        imagePreview.css('display', 'block');
-                        imagePreview.css('height', '400px');
-                        imagePreview.css('width', 'full');
-                    };
-
-                    reader.readAsDataURL(fileInput[0].files[0]);
-                } else {
-                    imagePreview.css('display', 'none');
-                }
-            });
-
-            $('#pay-tuition').submit(function (e) {
-                e.preventDefault();
+        $('#set-payment-status').click(function (e) {
+            e.preventDefault();
+            if ($('#payment_status').val() == 0) {
+                swalFire('Error', "You can't change status to this!", 'error', 'Try again');
+            } else if ($('#payment_status').val() == 1) {
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: 'After confirmation, you will be taken to the payment page.',
+                    text: 'If you set the status to Approved, installments will be made for parents. This state is irreversible. are you sure?',
                     icon: 'warning',
                     showCancelButton: true,
                     cancelButtonText: 'No',
                     confirmButtonText: 'Yes',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $(this).off('submit');
-                        $(this).submit();
+                        $.ajax({
+                            type: 'POST',
+                            url: '/TuitionInvoices/ChangeInvoiceStatus',
+                            data: {
+                                invoice_id: $('#invoice_id').val(),
+                                status: $('#payment_status').val()
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                            }, success: function (response) {
+                                swalFire('Done', JSON.parse(response).message, 'success', 'Ok');
+                            }, error: function (xhr, textStatus, errorThrown) {
+                                swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                            }
+                        });
                     }
                 });
-            });
+            } else if ($('#payment_status').val() == 2) {
+                swalFire('Error', "You can't change status to this!", 'error', 'Try again');
+            }
 
-        }
-
-        if (fullPath.includes('TuitionInvoices')) {
-            pageTitle = 'Tuition Invoices';
-        }
-        if (fullPath.includes('TuitionInvoices/')) {
-            pageTitle = 'Tuition Payment Details';
-
-            $('#set-payment-status').click(function (e) {
-                e.preventDefault();
-                if ($('#payment_status').val() == 0) {
-                    swalFire('Error', "You can't change status to this!", 'error', 'Try again');
-                } else if ($('#payment_status').val() == 1) {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: 'If you set the status to Approved, installments will be made for parents. This state is irreversible. are you sure?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        cancelButtonText: 'No',
-                        confirmButtonText: 'Yes',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                type: 'POST',
-                                url: '/TuitionInvoices/ChangeInvoiceStatus',
-                                data: {
-                                    invoice_id: $('#invoice_id').val(),
-                                    status: $('#payment_status').val()
-                                },
-                                headers: {
-                                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                                }, success: function (response) {
-                                    swalFire('Done', JSON.parse(response).message, 'success', 'Ok');
-                                }, error: function (xhr, textStatus, errorThrown) {
-                                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                                }
-                            });
-                        }
-                    });
-                } else if ($('#payment_status').val() == 2) {
-                    swalFire('Error', "You can't change status to this!", 'error', 'Try again');
-                }
-
-            });
-        }
-
+        });
     } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
 
