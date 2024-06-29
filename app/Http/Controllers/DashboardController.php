@@ -110,7 +110,7 @@ class DashboardController extends Controller
             $applicationStatuses = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('student_id', $myStudents)->orderByDesc('academic_year')->get();
         }
         if ($me->hasRole('Super Admin')) {
-            $applicationStatuses = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(30);
+            $applicationStatuses = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(150);
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
@@ -133,7 +133,7 @@ class DashboardController extends Controller
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
                 ->whereIn('application_id', $applications)
-                ->paginate(30);
+                ->paginate(150);
         }
 
         if (empty($applicationStatuses)) {
