@@ -1592,7 +1592,9 @@ $(document).ready(function () {
                 }
             });
         });
-    } else if (fullPath.includes('Evidences/show')) {
+    } else if (fullPath.includes('ShowApplianceInvoices')) {
+        pageTitle = 'Appliance Tuition Invoices';
+    }else if (fullPath.includes('Evidences/show')) {
         pageTitle = 'Uploaded Student Documents';
     } else if (fullPath.includes('Tuition')) {
         pageTitle = 'Tuition Manager';
