@@ -119,14 +119,14 @@
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div>
                                             <div
-                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                         <div>
                                             <div
-                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }}</div>
+                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}</div>
                                         </div>
                                     </th>
                                     <th scope="row"
