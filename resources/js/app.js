@@ -1596,7 +1596,7 @@ $(document).ready(function () {
         pageTitle = 'Appliance Tuition Invoices';
     }else if (fullPath.includes('Evidences/show')) {
         pageTitle = 'Uploaded Student Documents';
-    } else if (fullPath.includes('Tuition')) {
+    } else if (fullPath.includes('Tuition') && !fullPath.includes('TuitionsStatus')) {
         pageTitle = 'Tuition Manager';
 
         //Find all elements on the page
@@ -1957,6 +1957,8 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('TuitionInvoices')) {
         pageTitle = 'Tuition Invoices';
+    }else if (fullPath.includes('TuitionsStatus')) {
+        pageTitle = 'Tuitions Status';
     } else if (fullPath.includes('TuitionInvoices/')) {
         pageTitle = 'Tuition Payment Details';
 

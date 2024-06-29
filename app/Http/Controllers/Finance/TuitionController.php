@@ -205,27 +205,27 @@ class TuitionController extends Controller
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->count();
 
-        $allDiscountPercentages=$this->getAllDiscounts($student_id);
-        $previousDiscountPrice=$this->getAllFamilyDiscountPrice($me);
+        $allDiscountPercentages = $this->getAllDiscounts($student_id);
+        $previousDiscountPrice = $this->getAllFamilyDiscountPrice($me);
 
         //Calculate discount for minimum level
-        $minimumLevel=$this->getMinimumApplianceLevelInfo($me);
+        $minimumLevel = $this->getMinimumApplianceLevelInfo($me);
 
-        if (!empty($minimumLevel['academic_year']) and !$minimumLevel['level']==null) {
+        if (! empty($minimumLevel['academic_year']) and ! $minimumLevel['level'] == null) {
             $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
                 ->where('tuitions.academic_year', $minimumLevel['academic_year'])->where('tuition_details.level', $minimumLevel['level']->level)->first();
-            if ($minimumLevelTuitionDetails->level>$applicationInfo->level){
+            if ($minimumLevelTuitionDetails->level > $applicationInfo->level) {
                 $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
                     ->where('tuitions.academic_year', $applicationInfo->academic_year)->where('tuition_details.level', $applicationInfo->level)->first();
             }
         }
 
-        if (empty($minimumLevelTuitionDetails)){
-            $minimumLevelTuitionDetails=[];
+        if (empty($minimumLevelTuitionDetails)) {
+            $minimumLevelTuitionDetails = [];
         }
-        $minimumSignedStudentNumber=$this->getMinimumSignedChildNumber($me);
+        $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($me);
 
-        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages','previousDiscountPrice','minimumLevelTuitionDetails','minimumLevel','minimumSignedStudentNumber'));
+        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages', 'previousDiscountPrice', 'minimumLevelTuitionDetails', 'minimumLevel', 'minimumSignedStudentNumber'));
     }
 
     public function tuitionPayment(Request $request)
@@ -288,52 +288,51 @@ class TuitionController extends Controller
 
         $allDiscounts = $this->getAllDiscounts($student_id);
 
-        $previousDiscountPrice=$this->getAllFamilyDiscountPrice($studentApplianceStatus->studentInformations->guardianInfo->id);
+        $previousDiscountPrice = $this->getAllFamilyDiscountPrice($studentApplianceStatus->studentInformations->guardianInfo->id);
 
         //Calculate discount for minimum level
-        $minimumLevel=$this->getMinimumApplianceLevelInfo($studentApplianceStatus->studentInformations->guardianInfo->id);
+        $minimumLevel = $this->getMinimumApplianceLevelInfo($studentApplianceStatus->studentInformations->guardianInfo->id);
 
-        if (!empty($minimumLevel['academic_year']) and !$minimumLevel['level']==null) {
+        if (! empty($minimumLevel['academic_year']) and ! $minimumLevel['level'] == null) {
             $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
                 ->where('tuitions.academic_year', $minimumLevel['academic_year'])->where('tuition_details.level', $minimumLevel['level']->level)->first();
-            if ($minimumLevelTuitionDetails->level>$applicationInfo->level){
+            if ($minimumLevelTuitionDetails->level > $applicationInfo->level) {
                 $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
                     ->where('tuitions.academic_year', $applicationInfo->academic_year)->where('tuition_details.level', $applicationInfo->level)->first();
             }
         }
 
-        if (empty($minimumLevelTuitionDetails)){
-            $minimumLevelTuitionDetails=[];
+        if (empty($minimumLevelTuitionDetails)) {
+            $minimumLevelTuitionDetails = [];
         }
-        $minimumSignedStudentNumber=$this->getMinimumSignedChildNumber($studentApplianceStatus->studentInformations->guardianInfo->id);
+        $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($studentApplianceStatus->studentInformations->guardianInfo->id);
 
-        if (!empty($minimumLevelTuitionDetails)){
-            $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment,true)['full_payment_irr']);
-            $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
-            switch($minimumSignedStudentNumber){
+        if (! empty($minimumLevelTuitionDetails)) {
+            $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment, true)['full_payment_irr']);
+            $familyPercentagePriceFullPayment = $familyPercentagePriceTwoInstallment = $familyPercentagePriceFourInstallment = 0;
+            switch ($minimumSignedStudentNumber) {
                 case '1':
-                    $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice;
+                    $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 25) / 100) - $previousDiscountPrice;
                     break;
                 case '2':
-                    $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice;
+                    $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 30) / 100) - $previousDiscountPrice;
                     break;
                 case '3':
-                    $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice;
+                    $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 40) / 100) - $previousDiscountPrice;
                     break;
                 default:
             }
-        }else{
-            $familyPercentagePriceFullPayment=0;
+        } else {
+            $familyPercentagePriceFullPayment = 0;
         }
-
 
         //Amount information
         $fullPayment = json_decode($tuition->full_payment, true);
         $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr']);
-        $totalDiscountsFull=(($fullPaymentAmount*$allDiscounts)/100)+$familyPercentagePriceFullPayment;
-        $tuitionDiscountFull=($fullPaymentAmount*40)/100;
-        if($totalDiscountsFull>$tuitionDiscountFull){
-            $totalDiscountsFull=$tuitionDiscountFull;
+        $totalDiscountsFull = (($fullPaymentAmount * $allDiscounts) / 100) + $familyPercentagePriceFullPayment;
+        $tuitionDiscountFull = ($fullPaymentAmount * 40) / 100;
+        if ($totalDiscountsFull > $tuitionDiscountFull) {
+            $totalDiscountsFull = $tuitionDiscountFull;
         }
         $fullPaymentAmountWithDiscounts = $fullPaymentAmount - $totalDiscountsFull;
 
@@ -728,7 +727,7 @@ class TuitionController extends Controller
         $students = [];
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder')
-                ->where('tuition_payment_status','Paid')
+                ->where('tuition_payment_status', 'Paid')
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
             $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
@@ -742,8 +741,53 @@ class TuitionController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('academic_year', $academicYears)
-                ->where('tuition_payment_status','Paid')
+                ->where('tuition_payment_status', 'Paid')
                 ->orderBy('academic_year', 'desc')->paginate(150);
+            $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
+        }
+
+        return view('Finance.TuitionsStatus.index', compact('students', 'academicYears'));
+    }
+
+    public function searchTuitionsStatus(Request $request)
+    {
+        $this->validate($request, [
+            'student_id' => 'nullable|exists:student_appliance_statuses,student_id',
+            'academic_year' => 'nullable|exists:academic_years,id',
+        ]);
+        $me = User::find(auth()->user()->id);
+        $students = [];
+        if ($me->hasRole('Super Admin')) {
+            $data = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder');
+            if ($request->student_id) {
+                $data->where('student_id', $request->student_id);
+            }
+            if ($request->academic_year) {
+                $data->where('academic_year', $request->academic_year);
+            }
+            $data->where('tuition_payment_status', 'Paid');
+            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+            $academicYears = AcademicYear::get();
+            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
+
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
+            if ($request->student_id) {
+                $data->where('student_id', $request->student_id);
+            }
+            if ($request->academic_year) {
+                $data->where('academic_year', $request->academic_year);
+            }
+            $data->whereIn('academic_year', $academicYears);
+            $data->where('tuition_payment_status', 'Paid');
+            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
         }
