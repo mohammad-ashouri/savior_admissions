@@ -103,6 +103,12 @@
                                 @if(@$interview->reservationInfo->payment_status!=1)
                                     @continue
                                 @endif
+                                @php
+                                    $studentApplianceStatus=StudentApplianceStatus::where('academic_year',$interview->applicationTimingInfo->academic_year)->where('student_id',$interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+                                @endphp
+{{--                                @if($studentApplianceStatus==null)--}}
+{{--                                    @dd($interview)--}}
+{{--                                @endif--}}
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <td class="w-4 text-center border p-4">
@@ -179,9 +185,6 @@
                                                     @case(1)
                                                         @switch($interview->Interviewed)
                                                             @case(0)
-                                                                @php
-                                                                    $studentApplianceStatus=StudentApplianceStatus::where('academic_year',$interview->applicationTimingInfo->academic_year)->where('student_id',$interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
-                                                                @endphp
                                                                 {{$studentApplianceStatus->interview_status}}
                                                                 @break
                                                             @case(1)
@@ -285,7 +288,7 @@
                                                                 Details
                                                             </a>
                                                         @endcan
-                                                        @if($studentApplianceStatus->tuition_payment_status==null and $studentApplianceStatus->interview_status!='Pending Interview' and $studentApplianceStatus->interview_status!='Rejected' and $me->hasRole('Financial Manager'))
+                                                        @if(isset($studentApplianceStatus->tuition_payment_status) and $studentApplianceStatus->tuition_payment_status==null and $studentApplianceStatus->interview_status!='Pending Interview' and $studentApplianceStatus->interview_status!='Rejected' and $me->hasRole('Financial Manager'))
                                                             @can('interview-edit')
                                                                 <a href="/Interviews/{{ $interview->id }}/edit"
                                                                    type="button"
