@@ -961,35 +961,50 @@ class InterviewController extends Controller
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
 
             // Finding applications related to the application timings
-            $interviews = Applications::with('applicationTimingInfo')
+            $data = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('reserved', 1)
-                ->orderBy('interviewed', 'asc') // Corrected column name
-                ->orderBy('date', 'asc')
-                ->orderBy('ends_to', 'asc')
-                ->orderBy('start_from', 'asc')
+                ->where('applications.reserved', 1);
+            if (! empty($studentId)) {
+                $data->whereHas('reservationInfo', function ($query) use ($studentId) {
+                    $query->where('student_id', $studentId);
+                });
+            }
+            if (! empty($applicationId)) {
+                $data->where('id', $applicationId);
+            }
+            $interviews = $data->orderBy('applications.interviewed', 'asc') // Corrected column name
+                ->orderBy('applications.date', 'asc')
+                ->orderBy('applications.ends_to', 'asc')
+                ->orderBy('applications.start_from', 'asc')
                 ->paginate(150);
 
         } elseif ($me->hasRole('Interviewer')) {
-            $interviews = Applications::with('applicationTimingInfo')
+            $data = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where('reserved', 1)
                 ->where(function ($query) use ($me) {
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
                 })
-                ->orderBy('interviewed', 'asc') // Corrected column name
-                ->orderBy('date', 'asc')
-                ->orderBy('ends_to', 'asc')
-                ->orderBy('start_from', 'asc')
+                ->where('applications.reserved', 1);
+            if (! empty($studentId)) {
+                $data->whereHas('reservationInfo', function ($query) use ($studentId) {
+                    $query->where('student_id', $studentId);
+                });
+            }
+            if (! empty($applicationId)) {
+                $data->where('id', $applicationId);
+            }
+            $interviews = $data->orderBy('applications.interviewed', 'asc') // Corrected column name
+                ->orderBy('applications.date', 'asc')
+                ->orderBy('applications.ends_to', 'asc')
+                ->orderBy('applications.start_from', 'asc')
                 ->paginate(150);
 
         }
