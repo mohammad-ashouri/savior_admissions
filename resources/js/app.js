@@ -1597,7 +1597,7 @@ $(document).ready(function () {
         pageTitle = 'Appliance Tuition Invoices';
     }else if (fullPath.includes('Evidences/show')) {
         pageTitle = 'Uploaded Student Documents';
-    } else if (fullPath.includes('Tuition') && !fullPath.includes('TuitionsStatus')) {
+    } else if (fullPath.includes('Tuition') && !fullPath.includes('TuitionsStatus') && !fullPath.includes('PayTuition') && !fullPath.includes('TuitionInvoices')) {
         pageTitle = 'Tuition Manager';
 
         //Find all elements on the page
