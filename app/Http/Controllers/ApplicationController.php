@@ -566,15 +566,14 @@ class ApplicationController extends Controller
         $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
-        } elseif ($me->hasRole('Principal')) {
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer') or $me->hasRole('Financial Manager')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
-            $filteredArray = $this->getFilteredAccessesP($myAllAccesses);
+            $filteredArray = $this->getFilteredAccessesPAF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
-        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('id', $appliance_id)->where('interview_status', 'Pending For Principal Confirmation')->first();
-
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('id', $appliance_id)->first();
         if (empty($studentAppliance)) {
             $this->logActivity(json_encode(['activity' => 'Getting Appliance Interview Form Failed']), request()->ip(), request()->userAgent());
 

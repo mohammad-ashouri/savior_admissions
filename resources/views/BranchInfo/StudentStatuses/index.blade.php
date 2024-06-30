@@ -1,3 +1,4 @@
+@php use App\Models\Branch\ApplicationReservation; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -107,6 +108,9 @@
                                     Interview Status
                                 </th>
                                 <th scope="col" class=" text-center">
+                                    Interview Form
+                                </th>
+                                <th scope="col" class=" text-center">
                                     Document Upload Status
                                 </th>
                                 <th scope="col" class=" text-center">
@@ -155,7 +159,24 @@
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
-                                            class="text-base font-semibold">{{ $student->interview_status }}</div>
+                                            class="text-base font-semibold">
+                                            {{ $student->interview_status }}</div>
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @if(($student->interview_status=='Admitted' or $student->interview_status=='Rejected'))
+                                            @php
+                                                $applicationReservation=ApplicationReservation::with('levelInfo')->where('student_id',$student->student_id)->where('payment_status',1)->latest()->first();
+                                            @endphp
+                                            @if($applicationReservation != null)
+                                                <a href="/ConfirmApplication/{{ $applicationReservation->application_id }}/{{$student->id}}"
+                                                   type="button"
+                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                    <i class="las la-eye mt-1 mr-1"></i>
+                                                    Show
+                                                </a>
+                                            @endif
+                                        @endif
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
