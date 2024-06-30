@@ -55,26 +55,26 @@
         </div>
         <form id="login-form" method="post" action="/login" class="space-y-4 w-full">
             @csrf
-            <div class="mb-6">
-                <div>
-                    <label for="login-method"
-                           class="block mb-2 text-sm font-medium text-gray-900">Login method</label>
-                    <select name="login-method" id="login-method"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected disabled value="">Choose an option</option>
-                        <option value="mobile">Mobile</option>
-                        <option value="email">Email</option>
-                    </select>
-                </div>
-            </div>
+{{--            <div class="mb-6">--}}
+{{--                <div>--}}
+{{--                    <label for="login-method"--}}
+{{--                           class="block mb-2 text-sm font-medium text-gray-900">Login method</label>--}}
+{{--                    <select name="login-method" id="login-method"--}}
+{{--                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">--}}
+{{--                        <option selected disabled value="">Choose an option</option>--}}
+{{--                        <option value="mobile">Mobile</option>--}}
+{{--                        <option value="email">Email</option>--}}
+{{--                    </select>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
-            <div class="mb-6">
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>
-                <input type="email" id="email" name="email"
-                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                       placeholder="name@gmail.com">
-            </div>
-            <div class="mb-6" id="mobileDiv">
+{{--            <div class="mb-6">--}}
+{{--                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>--}}
+{{--                <input type="email" id="email" name="email"--}}
+{{--                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+{{--                       placeholder="name@gmail.com">--}}
+{{--            </div>--}}
+            <div class="mb-6" id="">
                 <label for="mobile" class="block mb-2 text-sm font-medium text-gray-900 ">Your mobile</label>
                 <div class="flex">
                     <select name="phone_code" id="phone_code" required
@@ -85,7 +85,7 @@
                                 +{{$phoneCodes->phonecode}}</option>
                         @endforeach
                     </select>
-                    <input type="text" id="mobile" name="mobile"
+                    <input type="text" id="mobile" name="mobile" required value="{{ old('mobile') }}"
                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-br-md rounded-tr-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            placeholder="Enter without 0 or phone code at the beginning of it ">
                 </div>
@@ -94,7 +94,7 @@
             <div class="mb-6">
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Your
                     password</label>
-                <input type="password" id="password" name="password" autocomplete="new-password"
+                <input type="password" id="password" name="password" autocomplete="new-password" required value="{{ old('password') }}"
                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                        placeholder="••••••••">
             </div>

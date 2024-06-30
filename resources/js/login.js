@@ -38,43 +38,43 @@ $(document).ready(function () {
                     $('#contact-us-modal').show();
                 });
 
-                $('#login-method').val('');
-                $('#password').val();
+                // $('#login-method').val('');
+                // $('#password').val();
                 $('#captcha').val('');
 
-                $('#email').closest('div').hide();
-                $('#mobileDiv').hide();
+                // $('#email').closest('div').hide();
+                // $('#mobileDiv').hide();
 
                 // When the select option changes
-                $('#login-method').change(function () {
-                    // If Mobile option is selected
-                    if ($(this).val() === 'mobile') {
-                        // Show the mobile div and hide the email div
-                        $('#mobileDiv').show();
-                        $('#email').closest('div').hide();
-                        $('#email').val('');
-                        $('#mobile').val('');
-                        $('#password').val('');
-                    }
-                    // If Email option is selected
-                    else if ($(this).val() === 'email') {
-                        // Show the email div and hide the mobile div
-                        $('#email').closest('div').show();
-                        $('#mobileDiv').hide();
-                        $('#email').val('');
-                        $('#mobile').val('');
-                        $('#password').val('');
-                    }
-                    // If no option is selected
-                    else {
-                        // Hide both divs
-                        $('#email').closest('div').hide();
-                        $('#mobileDiv').hide();
-                        $('#email').val('');
-                        $('#mobile').val('');
-                        $('#password').val('');
-                    }
-                });
+                // $('#login-method').change(function () {
+                //     // If Mobile option is selected
+                //     if ($(this).val() === 'mobile') {
+                //         // Show the mobile div and hide the email div
+                //         $('#mobileDiv').show();
+                //         $('#email').closest('div').hide();
+                //         $('#email').val('');
+                //         $('#mobile').val('');
+                //         $('#password').val('');
+                //     }
+                //     // If Email option is selected
+                //     else if ($(this).val() === 'email') {
+                //         // Show the email div and hide the mobile div
+                //         $('#email').closest('div').show();
+                //         $('#mobileDiv').hide();
+                //         $('#email').val('');
+                //         $('#mobile').val('');
+                //         $('#password').val('');
+                //     }
+                //     // If no option is selected
+                //     else {
+                //         // Hide both divs
+                //         $('#email').closest('div').hide();
+                //         $('#mobileDiv').hide();
+                //         $('#email').val('');
+                //         $('#mobile').val('');
+                //         $('#password').val('');
+                //     }
+                // });
 
                 // Find the input element
                 let inputElement = document.getElementById('mobile');
@@ -100,10 +100,10 @@ $(document).ready(function () {
                 $('#login-form').submit(function (e) {
                     e.preventDefault();
                     spinner();
-                    if ($('#login-method').val() == null) {
-                        swalFire('Error', 'Login method is not selected!', 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
-                        spinner();
-                    } else {
+                    // if ($('#login-method').val() == null) {
+                    //     swalFire('Error', 'Login method is not selected!', 'error', 'Try again'); // Print error message to console, you can change this to display in your HTML
+                    //     spinner();
+                    // } else {
                         spinner();
                         $(this).off('submit');
                         $(this).submit();
@@ -159,7 +159,7 @@ $(document).ready(function () {
                         //         }
                         //     }
                         // });
-                    }
+                    // }
 
                 });
                 $('#captchaImg').click(function () {
