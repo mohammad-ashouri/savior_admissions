@@ -116,6 +116,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
                 'index' => 'interviews.index',
             ]);
             Route::get('/SetInterview/{id}', [InterviewController::class, 'GetInterviewForm']);
+            Route::get('/SearchInterviews', [InterviewController::class, 'searchInterviews'])->name('SearchInterviews');
             Route::post('/SetInterview', [InterviewController::class, 'SetInterview'])->name('interviews.SetInterview');
             Route::post('/SubmitAbsence', [InterviewController::class, 'submitAbsence'])->name('interviews.submitAbsence');
 

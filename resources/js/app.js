@@ -1233,9 +1233,10 @@ $(document).ready(function () {
                     responses.forEach(function (response) {
                         totalDiscounts += parseInt(response);
                     });
-                    if (totalDiscounts > 30) {
-                        swalFire('Error', "The discount amount selected by you is higher than 30%", 'error', 'Try again');
-                    } else {
+                    // if (totalDiscounts > 30) {
+                    //     swalFire('Error', "The discount amount selected by you is higher than 30%", 'error', 'Try again');
+                    // }
+                    // else {
                         Swal.fire({
                             title: 'Are you sure?',
                             text: 'Your interview will be submit.',
@@ -1249,7 +1250,7 @@ $(document).ready(function () {
                                 $(this).submit();
                             }
                         });
-                    }
+                    // }
                 }).catch(function (error) {
                     swalFire('Error', error, 'error', 'Try again');
                 });

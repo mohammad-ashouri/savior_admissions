@@ -917,4 +917,89 @@ class InterviewController extends Controller
         return redirect()->route('interviews.index')
             ->withErrors(['errors' => 'Registration of absence in the interview encountered an error!']);
     }
+
+    public function searchInterviews(Request $request)
+    {
+        $this->validate($request, [
+            'student_id' => 'nullable|exists:student_appliance_statuses,student_id',
+            'application_id' => 'nullable|exists:applications,id',
+        ]);
+        $studentId = $request->student_id;
+        $applicationId = $request->application_id;
+
+        $me = User::find(auth()->user()->id);
+        $interviews = [];
+        if ($me->hasRole('Super Admin')) {
+            $data = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->with('reservationInfo')
+                ->with('interview')
+                ->where('applications.reserved', 1);
+            if (! empty($studentId)) {
+                $data->whereHas('reservationInfo', function ($query) use ($studentId) {
+                    $query->where('student_id', $studentId);
+                });
+            }
+            if (! empty($applicationId)) {
+                $data->where('id', $applicationId);
+            }
+            $interviews = $data->orderBy('applications.interviewed', 'asc') // Corrected column name
+                ->orderBy('applications.date', 'asc')
+                ->orderBy('applications.ends_to', 'asc')
+                ->orderBy('applications.start_from', 'asc')
+                ->paginate(150);
+        } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            // Finding application timings based on academic years
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+
+            // Finding applications related to the application timings
+            $interviews = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->with('reservationInfo')
+                ->with('interview')
+                ->where('reserved', 1)
+                ->whereIn('application_timing_id', $applicationTimings)
+                ->where('reserved', 1)
+                ->orderBy('interviewed', 'asc') // Corrected column name
+                ->orderBy('date', 'asc')
+                ->orderBy('ends_to', 'asc')
+                ->orderBy('start_from', 'asc')
+                ->paginate(150);
+
+        } elseif ($me->hasRole('Interviewer')) {
+            $interviews = Applications::with('applicationTimingInfo')
+                ->with('firstInterviewerInfo')
+                ->with('secondInterviewerInfo')
+                ->with('reservationInfo')
+                ->with('interview')
+                ->where('reserved', 1)
+                ->where(function ($query) use ($me) {
+                    $query->where('first_interviewer', $me->id)
+                        ->orWhere('second_interviewer', $me->id);
+                })
+                ->orderBy('interviewed', 'asc') // Corrected column name
+                ->orderBy('date', 'asc')
+                ->orderBy('ends_to', 'asc')
+                ->orderBy('start_from', 'asc')
+                ->paginate(150);
+
+        }
+
+        if (empty($interviews) or $interviews->isEmpty()) {
+            $interviews = [];
+        }
+        $this->logActivity(json_encode(['activity' => 'Getting Interviews']), request()->ip(), request()->userAgent());
+
+        return view('BranchInfo.Interviews.index', compact('interviews'));
+
+    }
 }

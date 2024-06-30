@@ -10,12 +10,41 @@
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">Interviews</h1>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <div class="flex justify-between">
-                    <div class="relative hidden md:block w-96">
-                        <input type="text" id="search-navbar"
-                               class="font-normal text-lg block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                               placeholder="Search it...">
-                    </div>
+                <div class="relative hidden md:block w-96">
+                    <form action="{{ route('SearchInterviews') }}" method="get">
+                        <div class="flex w-96">
+                            <div>
+                                <input type="text" id="application_id" name="application_id"
+                                       value="{{ isset($_GET['application_id']) ? $_GET['application_id'] : '' }}"
+                                       class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="Enter application id">
+                            </div>
+                            <div>
+                                <input type="text" id="student_id" name="student_id"
+                                       value="{{ isset($_GET['student_id']) ? $_GET['student_id'] : '' }}"
+                                       class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="Enter student id">
+                            </div>
+                            <div>
+                                <button type="submit"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    <i class="fas fa-search mr-2" aria-hidden="true"></i>
+                                    Filter
+                                </button>
+                            </div>
+                            @if(isset($_GET['student_id']))
+                                <div class="ml-3">
+                                    <a href="/Interviews">
+                                        <button type="button"
+                                                class="text-white bg-red-700 hover:bg-red-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 RemoveFilter">
+                                            <i class="fas fa-remove mr-2" aria-hidden="true"></i>
+                                            Remove
+                                        </button>
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                    </form>
                 </div>
                 @if( session()->has('success') )
                     <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
