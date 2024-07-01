@@ -11,6 +11,7 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">
+                        @can('search-tuition-status')
                         <form id="search-user" action="{{ route('SearchTuitionStatus') }}" method="get">
                             <div class="flex w-96">
                                 <div>
@@ -50,6 +51,7 @@
                                 @endif
                             </div>
                         </form>
+                        @endcan
                     </div>
                 </div>
                 @if( session()->has('success') )

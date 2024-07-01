@@ -745,6 +745,15 @@ class TuitionController extends Controller
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
+        } elseif ($me->hasRole('Parent')) {
+            $students = StudentInformation::where('guardian', $me->id)->get()->pluck('student_id')->toArray();
+            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+                ->whereIn('student_id', $students)
+                ->where('tuition_payment_status', 'Paid')
+                ->orderBy('academic_year', 'desc')->paginate(150);
+            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
+
+            return view('Finance.TuitionsStatus.index', compact('students'));
         }
 
         return view('Finance.TuitionsStatus.index', compact('students', 'academicYears'));
