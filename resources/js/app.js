@@ -1237,19 +1237,19 @@ $(document).ready(function () {
                     //     swalFire('Error', "The discount amount selected by you is higher than 30%", 'error', 'Try again');
                     // }
                     // else {
-                        Swal.fire({
-                            title: 'Are you sure?',
-                            text: 'Your interview will be submit.',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            cancelButtonText: 'No',
-                            confirmButtonText: 'Yes',
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $(this).off('submit');
-                                $(this).submit();
-                            }
-                        });
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Your interview will be submit.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        cancelButtonText: 'No',
+                        confirmButtonText: 'Yes',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $(this).off('submit');
+                            $(this).submit();
+                        }
+                    });
                     // }
                 }).catch(function (error) {
                     swalFire('Error', error, 'error', 'Try again');
@@ -1595,7 +1595,7 @@ $(document).ready(function () {
         });
     } else if (fullPath.includes('ShowApplianceInvoices')) {
         pageTitle = 'Appliance Tuition Invoices';
-    }else if (fullPath.includes('Evidences/show')) {
+    } else if (fullPath.includes('Evidences/show')) {
         pageTitle = 'Uploaded Student Documents';
     } else if (fullPath.includes('Tuition') && !fullPath.includes('TuitionsStatus') && !fullPath.includes('PayTuition') && !fullPath.includes('TuitionInvoices')) {
         pageTitle = 'Tuition Manager';
@@ -1958,47 +1958,49 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('TuitionInvoices')) {
         pageTitle = 'Tuition Invoices';
-    }else if (fullPath.includes('TuitionsStatus')) {
+        if (fullPath.includes('TuitionInvoices/')) {
+            pageTitle = 'Tuition Payment Details';
+
+            $('#set-payment-status').click(function (e) {
+                e.preventDefault();
+                if ($('#payment_status').val() == 0) {
+                    swalFire('Error', "You can't change status to this!", 'error', 'Try again');
+                } else if ($('#payment_status').val() == 1) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'If you set the status to Approved, installments will be made for parents. This state is irreversible. are you sure?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        cancelButtonText: 'No',
+                        confirmButtonText: 'Yes',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/TuitionInvoices/ChangeInvoiceStatus',
+                                data: {
+                                    invoice_id: $('#invoice_id').val(),
+                                    status: $('#payment_status').val()
+                                },
+                                headers: {
+                                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                                }, success: function (response) {
+                                    swalFire('Done', JSON.parse(response).message, 'success', 'Ok');
+                                }, error: function (xhr, textStatus, errorThrown) {
+                                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                                }
+                            });
+                        }
+                    });
+                } else if ($('#payment_status').val() == 2) {
+                    swalFire('Error', "You can't change status to this!", 'error', 'Try again');
+                }
+
+            });
+        }
+    } else if (fullPath.includes('TuitionsStatus')) {
         pageTitle = 'Tuitions Status';
-    } else if (fullPath.includes('TuitionInvoices/')) {
-        pageTitle = 'Tuition Payment Details';
 
-        $('#set-payment-status').click(function (e) {
-            e.preventDefault();
-            if ($('#payment_status').val() == 0) {
-                swalFire('Error', "You can't change status to this!", 'error', 'Try again');
-            } else if ($('#payment_status').val() == 1) {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'If you set the status to Approved, installments will be made for parents. This state is irreversible. are you sure?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Yes',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/TuitionInvoices/ChangeInvoiceStatus',
-                            data: {
-                                invoice_id: $('#invoice_id').val(),
-                                status: $('#payment_status').val()
-                            },
-                            headers: {
-                                'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                            }, success: function (response) {
-                                swalFire('Done', JSON.parse(response).message, 'success', 'Ok');
-                            }, error: function (xhr, textStatus, errorThrown) {
-                                swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                            }
-                        });
-                    }
-                });
-            } else if ($('#payment_status').val() == 2) {
-                swalFire('Error', "You can't change status to this!", 'error', 'Try again');
-            }
-
-        });
     } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
 
