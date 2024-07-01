@@ -3,6 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\TemporarySeeders\ChangeParentsPassword;
+use Database\Seeders\TemporarySeeders\ChangeUsersMobileFormatToInternational;
+use Database\Seeders\TemporarySeeders\DeleteParentsAndStudentsEmail;
+use Database\Seeders\TemporarySeeders\RemoveAllStudentsMobiles;
+use Database\Seeders\TemporarySeeders\RemoveMobileThatUserNotGuardian;
+use Database\Seeders\TemporarySeeders\RevokeDocumentPermissionFromParentRole;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
