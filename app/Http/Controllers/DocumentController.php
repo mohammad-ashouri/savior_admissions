@@ -23,8 +23,8 @@ class DocumentController extends Controller
         $this->middleware('permission:document-create', ['only' => ['createDocument', 'createDocumentForUser']]);
         $this->middleware('permission:document-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:document-delete', ['only' => ['destroy']]);
-        ini_set('post_max_size','8M');
-        ini_set('upload_max_filesize','8M');
+        ini_set('post_max_size', '8M');
+        ini_set('upload_max_filesize', '8M');
     }
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -461,12 +461,36 @@ class DocumentController extends Controller
             $latestReportCard_FileName = $files['latest_report_card'];
         }
 
+        $residenceDocumentScan_FileName = '';
+        if ($request->hasFile('residence_document_file')) {
+            $residenceDocumentScan_FileName = 'ResidenceDocumentScan_'.now()->format('Y-m-d_H-i-s');
+            $residenceDocumentScanFileExtension = $request->file('residence_document_file')->getClientOriginalExtension();
+            $residenceDocumentScan_FileName = $request->file('residence_document_file')->storeAs(
+                'public/uploads/Documents/'.$checkStudentApplianceStatus->student_id.'/Appliance_'.$checkStudentApplianceStatus->id,
+                "$residenceDocumentScan_FileName.$residenceDocumentScanFileExtension"
+            );
+            $document = new Document();
+            $document->user_id = auth()->user()->id;
+            $document->document_type_id = DocumentType::where('name', 'Residence Document')->first()->id;
+            $document->src = $residenceDocumentScan_FileName;
+            $document->save();
+
+            $document = new Document();
+            $document->user_id = $checkStudentApplianceStatus->student_id;
+            $document->document_type_id = DocumentType::where('name', 'Residence Document')->first()->id;
+            $document->src = $residenceDocumentScan_FileName;
+            $document->save();
+        } else {
+            $residenceDocumentScan_FileName = $files['residence_document_file'];
+        }
+
         $files = json_encode(
             [
                 'father_passport_file' => $fatherPassportFile,
                 'mother_passport_file' => $motherPassportFileName,
                 'latest_report_card' => $latestReportCard_FileName,
                 'student_passport_file' => $studentPassportFileName,
+                'residence_document_file' => $residenceDocumentScan_FileName,
             ], true);
 
         $evidences->appliance_id = $checkStudentApplianceStatus->id;

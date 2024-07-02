@@ -159,7 +159,8 @@
                                                 <label for="father_passport_number"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                     Father's passport number</label>
-                                                <input type="text" id="father_passport_number" name="father_passport_number"
+                                                <input type="text" id="father_passport_number"
+                                                       name="father_passport_number"
                                                        value=""
                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                        required placeholder="Enter father's passport number">
@@ -180,13 +181,15 @@
                                             </div>
                                             <div class="mt-3 mr-2">
                                                 <label class="block mb-2  font-bold text-gray-900 dark:text-white"
-                                                       for="father_passport_file">Father's passport Bio-Data page scan (file)</label>
+                                                       for="father_passport_file">Father's passport Bio-Data page scan
+                                                    (file)</label>
                                                 <input required
                                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                                        id="father_passport_file" name="father_passport_file" type="file"
                                                        accept=".pdf,.jpg,.bpm,.jpeg,.png">
                                                 <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                                                    <div class="dark:text-white font-medium mb-1">File requirements</div>
+                                                    <div class="dark:text-white font-medium mb-1">File requirements
+                                                    </div>
                                                     <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
                                                         these
                                                         requirements
@@ -269,7 +272,8 @@
                                                 <label for="mother_passport_number"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                     Mother's passport number</label>
-                                                <input type="text" id="mother_passport_number" name="mother_passport_number"
+                                                <input type="text" id="mother_passport_number"
+                                                       name="mother_passport_number"
                                                        value=""
                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                        required placeholder="Enter Mother's Passport Number">
@@ -290,13 +294,15 @@
                                             </div>
                                             <div class="mt-3 mr-2">
                                                 <label class="block mb-2  font-bold text-gray-900 dark:text-white"
-                                                       for="mother_passport_file">Mother's passport Bio-Data page scan (file)</label>
+                                                       for="mother_passport_file">Mother's passport Bio-Data page scan
+                                                    (file)</label>
                                                 <input required
-                                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                    id="mother_passport_file" name="mother_passport_file" type="file"
-                                                    accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                                       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                       id="mother_passport_file" name="mother_passport_file" type="file"
+                                                       accept=".pdf,.jpg,.bpm,.jpeg,.png">
                                                 <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                                                    <div class="dark:text-white font-medium mb-1">File requirements</div>
+                                                    <div class="dark:text-white font-medium mb-1">File requirements
+                                                    </div>
                                                     <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
                                                         these
                                                         requirements
@@ -359,7 +365,8 @@
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
-                                                   for="latest_report_card">Latest report card (Optional for KG1 and KG2)</label>
+                                                   for="latest_report_card">Latest report card (Optional for KG1 and
+                                                KG2)</label>
                                             <input
                                                 class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                                 id="latest_report_card" name="latest_report_card" type="file"
@@ -404,63 +411,78 @@
                                     <div class="grid md:grid-cols-2">
                                         <div class="mt-3 mr-2">
                                             <label
-                                                   class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Student first name</label>
-                                            <input type="text" value="{{ $studentInformation->generalInformations->first_name_en }}" disabled
+                                            <input type="text"
+                                                   value="{{ $studentInformation->generalInformations->first_name_en }}"
+                                                   disabled
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label
-                                                   class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Student last name</label>
-                                            <input type="text" value="{{ $studentInformation->generalInformations->last_name_en }}" disabled
+                                            <input type="text"
+                                                   value="{{ $studentInformation->generalInformations->last_name_en }}"
+                                                   disabled
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="student_passport_number"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Passport number</label>
-                                            <input required type="text" value="" placeholder="ID Number for Iranian students" name="student_passport_number" id="student_passport_number"
+                                            <input required type="text" value=""
+                                                   placeholder="ID Number for Iranian students"
+                                                   name="student_passport_number" id="student_passport_number"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="passport_expiry_date"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Passport expiry date</label>
-                                            <input required type="date" value="" name="passport_expiry_date" id="passport_expiry_date"
+                                            <input required type="date" value="" name="passport_expiry_date"
+                                                   id="passport_expiry_date"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="student_iranian_visa"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Iranian visa/Residence number</label>
-                                            <input required type="text" value="" placeholder="Please enter student's iranian visa..." name="student_iranian_visa" id="student_passport_number"
+                                            <input required type="text" value=""
+                                                   placeholder="Please enter student's iranian visa..."
+                                                   name="student_iranian_visa" id="student_passport_number"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="iranian_residence_expiry"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Iranian visa/Residence expiry</label>
-                                            <input required type="date" value="" name="iranian_residence_expiry" id="iranian_residence_expiry"
+                                            <input required type="date" value="" name="iranian_residence_expiry"
+                                                   id="iranian_residence_expiry"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="student_iranian_faragir_code"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Iranian faragir code</label>
-                                            <input required type="text" value="" placeholder="Please enter student's iranian faragir code ..." name="student_iranian_faragir_code" id="student_iranian_faragir_code"
+                                            <input required type="text" value=""
+                                                   placeholder="Please enter student's iranian faragir code ..."
+                                                   name="student_iranian_faragir_code" id="student_iranian_faragir_code"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="student_iranian_sanad_code"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Iranian yekta code</label>
-                                            <input required type="text" value="" placeholder="Please enter student's iranian yekta code ..." name="student_iranian_sanad_code" id="student_iranian_sanad_code"
+                                            <input required type="text" value=""
+                                                   placeholder="Please enter student's iranian yekta code ..."
+                                                   name="student_iranian_sanad_code" id="student_iranian_sanad_code"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
-                                                   for="student_passport_file">Student's passport Bio-Data page scan (file)</label>
+                                                   for="student_passport_file">Student's passport Bio-Data page scan
+                                                (file)</label>
                                             <input required
                                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                                    id="student_passport_file" name="student_passport_file" type="file"
@@ -493,7 +515,8 @@
                                                    for="residence_document_file">Residence document scan (file)</label>
                                             <input required
                                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                   id="residence_document_file" name="residence_document_file" type="file"
+                                                   id="residence_document_file" name="residence_document_file"
+                                                   type="file"
                                                    accept=".pdf,.jpg,.bpm,.jpeg,.png">
                                             <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                 <div class="dark:text-white font-medium mb-1">File requirements</div>

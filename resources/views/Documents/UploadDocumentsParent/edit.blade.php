@@ -652,12 +652,12 @@
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
-                                                   for="residence_document_file">Student's passport Bio-Data page scan
-                                                (file)</label>
-                                            <input
-                                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                id="residence_document_file" name="residence_document_file" type="file"
-                                                accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                                   for="residence_document_file">Residence document scan (file)</label>
+                                            <input required
+                                                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                   id="residence_document_file" name="residence_document_file"
+                                                   type="file"
+                                                   accept=".pdf,.jpg,.bpm,.jpeg,.png">
                                             <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                 <div class="dark:text-white font-medium mb-1">File requirements</div>
                                                 <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
@@ -674,6 +674,12 @@
                                                     </li>
                                                 </ul>
                                             </div>
+                                        </div>
+                                        <div class="mt-3 ml-2">
+                                            <label for="residence_document_file_preview"
+                                                   class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                Residence document file file preview</label>
+                                            <img id="residence_document_file_preview">
                                         </div>
 
                                         @if(isset($files['residence_document_file']))
