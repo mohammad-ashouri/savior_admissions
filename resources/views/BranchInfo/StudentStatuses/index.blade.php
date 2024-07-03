@@ -241,6 +241,9 @@
                                                 @case('Pending')
                                                     Pending For Pay
                                                     @break
+                                                @case('Pending For Review')
+                                                    Pending For Review
+                                                    @break
                                                 @default
                                                     -
                                             @endswitch
