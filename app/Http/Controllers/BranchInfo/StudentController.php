@@ -324,7 +324,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears','me'));
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::where('guardian', auth()->user()->id)
                 ->with('studentInfo')
@@ -346,7 +346,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears','me'));
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
 
         }
 
@@ -355,7 +355,7 @@ class StudentController extends Controller
         }
         $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
-        return view('BranchInfo.StudentStatuses.index', compact('students','me'));
+        return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
     }
 
     public function uploadPersonalPicture(Request $request)
@@ -411,5 +411,119 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success', "Student's personal picture uploaded successfully");
 
+    }
+
+    public function search(Request $request)
+    {
+        $this->validate($request, [
+            'student_id' => 'nullable|exists:student_appliance_statuses,student_id',
+            'academic_year' => 'nullable|exists:academic_years,id',
+        ]);
+
+        $me = User::find(auth()->user()->id);
+        $studentId = $request->student_id;
+        $studentFirstName = $request->student_first_name;
+        $studentLastName = $request->student_last_name;
+        $academicYear = $request->academic_year;
+
+        $students = [];
+        if ($me->hasRole('Super Admin')) {
+            $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+                ->distinct('student_id');
+            if (! empty($studentId)) {
+                $data->where('student_id', $studentId);
+            }
+            if (! empty($studentFirstName)) {
+                $data->whereHas('studentInfo',function($query) use ($studentFirstName){
+                    $query->whereHas('generalInformationInfo',function($query) use ($studentFirstName){
+                        $query->where('first_name_en','like',"%$studentFirstName%");
+                    });
+                });
+            }
+            if (! empty($studentLastName)) {
+                $data->whereHas('studentInfo',function($query) use ($studentLastName){
+                    $query->whereHas('generalInformationInfo',function($query) use ($studentLastName){
+                        $query->where('first_last_en','like',"%$studentLastName%");
+                    });
+                });
+            }
+            if (! empty($academicYear)) {
+                $data->where('academic_year', $academicYear);
+            }
+            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+            $academicYears = AcademicYear::get();
+
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
+        } elseif ($me->hasRole('Parent')) {
+            $data = StudentInformation::where('guardian', auth()->user()->id)
+                ->with('studentInfo')
+                ->with('nationalityInfo')
+                ->with('identificationTypeInfo')
+                ->with('generalInformations');
+            if (! empty($studentId)) {
+                $data->where('student_id', $studentId);
+            }
+            if (! empty($studentFirstName)) {
+                $data->whereHas('studentInfo',function($query) use ($studentFirstName){
+                    $query->whereHas('generalInformationInfo',function($query) use ($studentFirstName){
+                        $query->where('first_name_en','like',"%$studentFirstName%");
+                    });
+                });
+            }
+            if (! empty($studentLastName)) {
+                $data->whereHas('studentInfo',function($query) use ($studentLastName){
+                    $query->whereHas('generalInformationInfo',function($query) use ($studentLastName){
+                        $query->where('first_last_en','like',"%$studentLastName%");
+                    });
+                });
+            }
+            if (! empty($academicYear)) {
+                $data->where('academic_year', $academicYear);
+            }
+            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+                ->whereIn('academic_year', $academicYears)
+                ->distinct('student_id');
+            if (! empty($studentId)) {
+                $data->where('student_id', $studentId);
+            }
+            if (! empty($studentFirstName)) {
+                $data->whereHas('studentInfo',function($query) use ($studentFirstName){
+                    $query->whereHas('generalInformationInfo',function($query) use ($studentFirstName){
+                        $query->where('first_name_en','like',"%$studentFirstName%");
+                    });
+                });
+            }
+            if (! empty($studentLastName)) {
+                $data->whereHas('studentInfo',function($query) use ($studentLastName){
+                    $query->whereHas('generalInformationInfo',function($query) use ($studentLastName){
+                        $query->where('first_last_en','like',"%$studentLastName%");
+                    });
+                });
+            }
+            if (! empty($academicYear)) {
+                $data->where('academic_year', $academicYear);
+            }
+            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+            $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
+
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
+
+        }
+
+        if ($students->isEmpty() or empty($students)) {
+            $students = [];
+        }
+        $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
+
+        return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
     }
 }
