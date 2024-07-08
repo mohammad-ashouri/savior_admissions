@@ -418,12 +418,16 @@ class StudentController extends Controller
         $this->validate($request, [
             'student_id' => 'nullable|exists:student_appliance_statuses,student_id',
             'academic_year' => 'nullable|exists:academic_years,id',
+            'student_first_name' => 'nullable|string',
+            'student_last_name' => 'nullable|string',
+            'gender' => 'nullable|string|in:Male,Female',
         ]);
 
         $me = User::find(auth()->user()->id);
         $studentId = $request->student_id;
         $studentFirstName = $request->student_first_name;
         $studentLastName = $request->student_last_name;
+        $gender = $request->gender;
         $academicYear = $request->academic_year;
 
         $students = [];
@@ -444,6 +448,13 @@ class StudentController extends Controller
                 $data->whereHas('studentInfo',function($query) use ($studentLastName){
                     $query->whereHas('generalInformationInfo',function($query) use ($studentLastName){
                         $query->where('first_last_en','like',"%$studentLastName%");
+                    });
+                });
+            }
+            if (! empty($gender)) {
+                $data->whereHas('studentInfo',function($query) use ($gender){
+                    $query->whereHas('generalInformationInfo',function($query) use ($gender){
+                        $query->where('gender',$gender);
                     });
                 });
             }
@@ -477,6 +488,13 @@ class StudentController extends Controller
                     });
                 });
             }
+            if (! empty($gender)) {
+                $data->whereHas('studentInfo',function($query) use ($gender){
+                    $query->whereHas('generalInformationInfo',function($query) use ($gender){
+                        $query->where('gender',$gender);
+                    });
+                });
+            }
             if (! empty($academicYear)) {
                 $data->where('academic_year', $academicYear);
             }
@@ -505,6 +523,13 @@ class StudentController extends Controller
                 $data->whereHas('studentInfo',function($query) use ($studentLastName){
                     $query->whereHas('generalInformationInfo',function($query) use ($studentLastName){
                         $query->where('first_last_en','like',"%$studentLastName%");
+                    });
+                });
+            }
+            if (! empty($gender)) {
+                $data->whereHas('studentInfo',function($query) use ($gender){
+                    $query->whereHas('generalInformationInfo',function($query) use ($gender){
+                        $query->where('gender',$gender);
                     });
                 });
             }

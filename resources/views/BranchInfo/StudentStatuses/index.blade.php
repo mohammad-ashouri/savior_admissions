@@ -15,7 +15,7 @@
                         <div class="flex w-full">
                             <div class="mr-3">
                                 <select id="academic_year" name="academic_year"
-                                        class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="" disabled selected>Select Academic Year...</option>
                                     @foreach($academicYears as $academicYear)
                                         <option
@@ -41,6 +41,16 @@
                                        value="{{ isset($_GET['student_last_name']) ? $_GET['student_last_name'] : '' }}"
                                        class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                        placeholder="Enter student last name">
+                            </div>
+                            <div class="mr-3">
+                                <select id="gender" name="gender"
+                                        class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="" disabled selected>Select Gender...</option>
+                                    <option @if(isset($_GET['gender']) and $_GET['gender']=='Male') selected
+                                            @endif value="Male">Male</option>
+                                    <option @if(isset($_GET['gender']) and $_GET['gender']=='Female') selected
+                                            @endif  value="Female">Female</option>
+                                </select>
                             </div>
                             <div>
                                 <button type="submit"
