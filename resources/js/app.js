@@ -967,6 +967,8 @@ $(document).ready(function () {
         pageTitle = 'Roles';
     } else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
+    } else if (fullPath.includes('SearchStudentApplianceStatuses')) {
+        pageTitle = 'Search In Student Appliance Statuses';
     } else if (fullPath.includes('Students')) {
         pageTitle = 'Students';
 
