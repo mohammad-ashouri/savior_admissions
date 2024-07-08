@@ -68,6 +68,11 @@ $(document).ready(function () {
                 mobileNumber = mobileNumber.substring(1);
                 $(this).val(mobileNumber);
             }
+            if (mobileNumber.startsWith('0')) {
+                // Remove the leading characters
+                mobileNumber = mobileNumber.substring(1);
+                $(this).val(mobileNumber);
+            }
         });
 
         // When the form submitted
