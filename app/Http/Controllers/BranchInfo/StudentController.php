@@ -41,7 +41,6 @@ class StudentController extends Controller
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->where('tuition_payment_status', 'Paid')
-                ->distinct('student_id')
                 ->orderBy('academic_year', 'desc')->paginate(100);
             $academicYears = AcademicYear::get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
@@ -64,7 +63,6 @@ class StudentController extends Controller
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->whereIn('academic_year', $academicYears)
                 ->where('tuition_payment_status', 'Paid')
-                ->distinct('student_id')
                 ->orderBy('academic_year', 'desc')->paginate(100);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
@@ -319,7 +317,6 @@ class StudentController extends Controller
         $students = [];
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-                ->distinct('student_id')
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
@@ -341,7 +338,6 @@ class StudentController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('academic_year', $academicYears)
-                ->distinct('student_id')
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
@@ -432,8 +428,7 @@ class StudentController extends Controller
 
         $students = [];
         if ($me->hasRole('Super Admin')) {
-            $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-                ->distinct('student_id');
+            $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
             if (! empty($studentId)) {
                 $data->where('student_id', $studentId);
             }
@@ -462,6 +457,14 @@ class StudentController extends Controller
                 $data->where('academic_year', $academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+            $students->appends([
+                'student_id' => $studentId,
+                'student_first_name' => $studentFirstName,
+                'student_last_name' => $studentLastName,
+                'gender' => $gender,
+                'academic_year' => $academicYear,
+            ]);
+
             $academicYears = AcademicYear::get();
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
@@ -499,6 +502,13 @@ class StudentController extends Controller
                 $data->where('academic_year', $academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+            $students->appends([
+                'student_id' => $studentId,
+                'student_first_name' => $studentFirstName,
+                'student_last_name' => $studentLastName,
+                'gender' => $gender,
+                'academic_year' => $academicYear,
+            ]);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
@@ -507,8 +517,7 @@ class StudentController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-                ->whereIn('academic_year', $academicYears)
-                ->distinct('student_id');
+                ->whereIn('academic_year', $academicYears);
             if (! empty($studentId)) {
                 $data->where('student_id', $studentId);
             }
@@ -537,6 +546,14 @@ class StudentController extends Controller
                 $data->where('academic_year', $academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+            $students->appends([
+                'student_id' => $studentId,
+                'student_first_name' => $studentFirstName,
+                'student_last_name' => $studentLastName,
+                'gender' => $gender,
+                'academic_year' => $academicYear,
+            ]);
+
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
             $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
