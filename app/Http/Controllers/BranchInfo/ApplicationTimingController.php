@@ -222,8 +222,6 @@ class ApplicationTimingController extends Controller
                 $interviewers = [];
             }
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Interviewers For Application Timings', 'interviewers' => json_encode($interviewers)]), request()->ip(), request()->userAgent());
-
         return $interviewers;
     }
 }

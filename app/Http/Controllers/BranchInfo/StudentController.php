@@ -64,8 +64,6 @@ class StudentController extends Controller
                 ->where('tuition_payment_status', 'Paid')
                 ->orderBy('academic_year', 'desc')->paginate(100);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
-            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
-
             return view('Students.index', compact('students', 'academicYears', 'me'));
 
         }
@@ -73,8 +71,6 @@ class StudentController extends Controller
         if ($students->isEmpty()) {
             $students = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
-
         return view('Students.index', compact('students', 'me'));
 
     }
@@ -103,8 +99,6 @@ class StudentController extends Controller
             'gender' => 'required|string',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Student Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -146,7 +140,6 @@ class StudentController extends Controller
         //        $studentInformation->current_identification_type = $current_identification_type;
         //        $studentInformation->current_identification_code = $current_identification_code;
         $studentInformation->save();
-        $this->logActivity(json_encode(['activity' => 'Student Saved', 'id' => $studentInformation->user_id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('Students.index')
             ->with('success', 'Student added successfully');
@@ -167,12 +160,8 @@ class StudentController extends Controller
                 ->where('student_id', $id)
                 ->first();
             if (empty($studentInformations)) {
-                $this->logActivity(json_encode(['activity' => 'Failed Access To Student Information', 'student_id' => $id]), request()->ip(), request()->userAgent());
-
                 abort(403);
             }
-            $this->logActivity(json_encode(['activity' => 'Getting Student Information', 'id' => $studentInformations->student_id]), request()->ip(), request()->userAgent());
-
             return view('Students.show', compact('studentInformations'));
         } elseif ($me->hasRole('Super Admin')) {
             $studentInformations = StudentInformation::with('studentInfo')
@@ -184,12 +173,8 @@ class StudentController extends Controller
                 ->where('student_id', $id)
                 ->first();
             if (empty($studentInformations)) {
-                $this->logActivity(json_encode(['activity' => 'Failed Access To Student Information', 'student_id' => $id]), request()->ip(), request()->userAgent());
-
                 abort(403);
             }
-            $this->logActivity(json_encode(['activity' => 'Getting Student Information', 'id' => $studentInformations->student_id]), request()->ip(), request()->userAgent());
-
             return view('Students.show', compact('studentInformations'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
@@ -211,12 +196,8 @@ class StudentController extends Controller
                 ->whereIn('application_timings.academic_year', $academicYears)
                 ->first();
             if (empty($studentInformations)) {
-                $this->logActivity(json_encode(['activity' => 'Failed Access To Student Information', 'student_id' => $id]), request()->ip(), request()->userAgent());
-
                 abort(403);
             }
-            $this->logActivity(json_encode(['activity' => 'Getting Student Information', 'id' => $studentInformations->student_id]), request()->ip(), request()->userAgent());
-
             return view('Students.show', compact('studentInformations'));
         }
 
@@ -238,15 +219,11 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving Student Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return response()->json(['error' => $validator], 422);
         }
         $extraInformationTitles = $request->title;
         $extraInformationDescriptions = $request->description;
         if (isset($request->title) and count($extraInformationTitles) != count($extraInformationDescriptions)) {
-            $this->logActivity(json_encode(['activity' => 'Extras Count Values Is Not Same', 'student_id' => $request->user_id]), request()->ip(), request()->userAgent());
-
             return response()->json(['error' => 'Extras count values is not same'], 422);
         }
 
@@ -255,7 +232,6 @@ class StudentController extends Controller
             $user = User::create(['id' => $request->user_id, 'password' => bcrypt('Aa16001600')]);
             $role = Role::where('name', 'Student')->first();
             $user->assignRole([$role->id]);
-            $this->logActivity(json_encode(['activity' => 'Student created successfully', 'user_id' => $request->user_id]), request()->ip(), request()->userAgent());
         }
 
         $studentInformation = StudentInformation::where('student_id', $checkUser->id)->first();
@@ -304,8 +280,6 @@ class StudentController extends Controller
             }
         }
 
-        $this->logActivity(json_encode(['activity' => 'Student information saved successfully', 'user_id' => $request->user_id]), request()->ip(), request()->userAgent());
-
         return response()->json(['success' => 'Student information saved successfully!'], 200);
     }
 
@@ -318,8 +292,6 @@ class StudentController extends Controller
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
-            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
-
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::where('guardian', auth()->user()->id)
@@ -339,8 +311,6 @@ class StudentController extends Controller
                 ->whereIn('academic_year', $academicYears)
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
-            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
-
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
 
         }
@@ -348,8 +318,6 @@ class StudentController extends Controller
         if ($students->isEmpty() or empty($students)) {
             $students = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
-
         return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
     }
 
@@ -361,8 +329,6 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Upload Personal Image Failed', 'errors' => json_encode($validator), 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -554,8 +520,6 @@ class StudentController extends Controller
             ]);
 
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
-            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
-
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
 
         }
@@ -563,8 +527,6 @@ class StudentController extends Controller
         if ($students->isEmpty() or empty($students)) {
             $students = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
-
         return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
     }
 }

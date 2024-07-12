@@ -247,13 +247,9 @@ class ApplicationController extends Controller
         $changeApplicationStatus->status = ($changeApplicationStatus->status == 0) ? 1 : 0;
 
         if (! $changeApplicationStatus->save()) {
-            $this->logActivity(json_encode(['activity' => 'Failed To Change Application Status', 'entered_id' => $id]), request()->ip(), request()->userAgent());
-
             return redirect()->back()
                 ->withErrors(['errors' => 'Change Interview Status Failed!']);
         }
-        $this->logActivity(json_encode(['activity' => 'Interview Status Changed Successfully', 'entered_id' => $id]), request()->ip(), request()->userAgent());
-
         return redirect()->back()
             ->with('success', 'Interview Status Changed!');
     }
@@ -265,13 +261,9 @@ class ApplicationController extends Controller
             'student' => 'required|exists:general_informations,user_id',
         ]);
         if (! $request->student) {
-            $this->logActivity(json_encode(['activity' => 'Getting Academic Years By Level Failed', 'errors' => 'Student Not Chosen']), request()->ip(), request()->userAgent());
-
             return response()->json(['error' => 'Select student first!'], 422);
         }
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Getting Academic Years By Level Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return response()->json(['error' => 'Error on choosing level!'], 422);
         }
         $level = $request->level;
@@ -292,8 +284,6 @@ class ApplicationController extends Controller
             $query->whereIn('school_id', $schoolWithGender);
         }
         $academicYears = $query->select('id', 'name')->get()->toArray();
-        $this->logActivity(json_encode(['activity' => 'Getting Academic Years By Level', 'entered_level' => $level]), request()->ip(), request()->userAgent());
-
         return $academicYears;
     }
 
@@ -303,8 +293,6 @@ class ApplicationController extends Controller
             'academic_year' => 'required|exists:academic_years,id',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Getting Applications By Academic Year Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return response()->json(['error' => 'Error on choosing academic year!'], 422);
         }
 
@@ -316,7 +304,6 @@ class ApplicationController extends Controller
             ->select('applications.*', 'application_timings.id as application_timings_id')
             ->orderBy('application_timings.start_date')
             ->get();
-        $this->logActivity(json_encode(['activity' => 'Getting Applications By Academic Year', 'entered_academic_year' => $request->academic_year]), request()->ip(), request()->userAgent());
 
         if (!empty($applicationTimings) and $applicationTimings->isNotEmpty()) {
             return $applicationTimings;
@@ -330,20 +317,14 @@ class ApplicationController extends Controller
             'application' => 'required|exists:applications,id',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Getting Date And Time To Be Free Application Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return response()->json(['error' => 'Error on choosing application!'], 422);
         }
 
         $application = $request->application;
         $applicationCheck = Applications::where('status', 1)->where('reserved', 0)->find($application);
         if (empty($applicationCheck)) {
-            $this->logActivity(json_encode(['activity' => 'Application Reserved A Few Moments Ago', 'application_id' => $application]), request()->ip(), request()->userAgent());
-
             return response()->json(['error' => 'Unfortunately, the selected application was reserved a few minutes ago. Please choose another application'], 422);
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Date And Time To Be Free Application', 'application_id' => $application]), request()->ip(), request()->userAgent());
-
         return 0;
     }
 
@@ -357,8 +338,6 @@ class ApplicationController extends Controller
             'interview_type' => 'required',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Preparation For Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -372,22 +351,16 @@ class ApplicationController extends Controller
         $studentInfo = StudentInformation::where('guardian', $me->id)->where('student_id', $student)->first();
 
         if (empty($studentInfo)) {
-            $this->logActivity(json_encode(['activity' => 'Preparation For Application Payment Failed', 'errors' => 'Access To Student Denied', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
-
             abort(403);
         }
 
         $academicYearInfo = AcademicYear::whereJsonContains('levels', $level)->find($academic_year);
         if (empty($academicYearInfo)) {
-            $this->logActivity(json_encode(['activity' => 'Preparation For Application Payment Failed', 'errors' => 'Access To Academic Year Info Denied', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
-
             abort(403);
         }
 
         $applicationCheck = Applications::where('status', 1)->where('reserved', 0)->find($dateAndTime);
         if (empty($applicationCheck)) {
-            $this->logActivity(json_encode(['activity' => 'Application Reserved A Few Moments Ago', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors('Unfortunately, the selected application was reserved a few minutes ago. Please choose another application')->withInput();
         }
 
@@ -403,8 +376,6 @@ class ApplicationController extends Controller
             $applications->reserved = 1;
             $applications->save();
         }
-        $this->logActivity(json_encode(['activity' => 'Application Payment Prepared To Pay Successfully', 'parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
-
         return redirect()->route('PrepareToPayApplication', $applicationReservation->id);
     }
 
@@ -415,8 +386,6 @@ class ApplicationController extends Controller
         if ($me->hasRole('Parent')) {
             $checkApplication = ApplicationReservation::with('applicationInfo')->where('reservatore', $me->id)->find($application_id);
             if (empty($checkApplication)) {
-                $this->logActivity(json_encode(['activity' => 'Prepare To Pay Application Failed', 'application_id' => $application_id, 'errors' => 'Access Denied']), request()->ip(), request()->userAgent());
-
                 abort(403);
             }
         }
@@ -424,7 +393,6 @@ class ApplicationController extends Controller
 
         $deadline = Carbon::parse($createdAt)->addHour()->toDateTimeString();
         $paymentMethods = PaymentMethod::where('status', 1)->get();
-        $this->logActivity(json_encode(['activity' => 'Application Prepared To Pay', 'application_id' => $application_id]), request()->ip(), request()->userAgent());
 
         return view('Applications.application_payment', compact('checkApplication', 'deadline', 'paymentMethods'));
     }
@@ -439,8 +407,6 @@ class ApplicationController extends Controller
             'id' => 'required|exists:application_reservations,id',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -452,8 +418,6 @@ class ApplicationController extends Controller
                     'document_file' => 'required|file|mimes:jpg,bmp,pdf,jpeg,png',
                 ]);
                 if ($validator->fails()) {
-                    $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
 
@@ -484,8 +448,6 @@ class ApplicationController extends Controller
                     if ($applicationReservationInvoice) {
                         $applicationInformation->payment_status = 2; //For Pending
                         $applicationInformation->save();
-                        $this->logActivity(json_encode(['activity' => 'Application Reserved Successfully', 'reservation_invoice_id' => $applicationInformation->id]), request()->ip(), request()->userAgent());
-
                         return redirect()->route('Applications.index')->with('success', 'Application reserved successfully!');
                     }
                 }
@@ -514,8 +476,6 @@ class ApplicationController extends Controller
 
                 break;
             default:
-                $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
                 abort(403);
         }
     }
@@ -533,8 +493,6 @@ class ApplicationController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
         $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('interview_status', 'Pending For Principal Confirmation')->paginate(150);
-        $this->logActivity(json_encode(['activity' => 'Getting Appliance List']), request()->ip(), request()->userAgent());
-
         return view('BranchInfo.ConfirmAppliance.index', compact('studentAppliances'));
     }
 
@@ -552,8 +510,6 @@ class ApplicationController extends Controller
         }
         $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('id', $appliance_id)->first();
         if (empty($studentAppliance)) {
-            $this->logActivity(json_encode(['activity' => 'Getting Appliance Interview Form Failed']), request()->ip(), request()->userAgent());
-
             abort(403);
         }
         $interviewsForms = Interview::where('application_id', $application_id)->pluck('interview_form')->toArray();
@@ -570,7 +526,6 @@ class ApplicationController extends Controller
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
             ->get();
-        $this->logActivity(json_encode(['activity' => 'Getting Appliance Interview Form']), request()->ip(), request()->userAgent());
 
         return view('BranchInfo.Interviews.Forms.1.ApplianceConfirmation.Show', compact('studentAppliance', 'interviewFields', 'applicationReservation', 'discounts'));
     }
@@ -584,8 +539,6 @@ class ApplicationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Confirm Student Appliance Failed', 'values' => $request->all(), 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $applicationInfo = Applications::find($request->application_id);

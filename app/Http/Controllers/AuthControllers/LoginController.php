@@ -108,15 +108,11 @@ class LoginController extends Controller
         $user = User::where('mobile', '+'.$phoneCode->phonecode.$request->input('mobile'))->first();
 
         if (empty($user)) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'errors' => 'Wrong mobile']), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors([
                 'MobileError' => 'Wrong mobile or password',
             ]);
         }
         if (! password_verify($request->password, $user->password)) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed', 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors([
                 'MobileError' => 'Wrong mobile or password',
             ])->withInput();
@@ -132,8 +128,6 @@ class LoginController extends Controller
             'captcha' => 'required', // Uncomment if you want to include captcha validation
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Wrong Captcha', 'errors' => $validator->errors()]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors([
                 'errors' => ['validator_errors' => $validator->errors()],
             ])->withInput();
@@ -143,8 +137,6 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             Session::put('id', $user->id);
-            $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'email' => $request->input('email')]), request()->ip(), request()->userAgent());
-
             return redirect()->route('dashboard');
         }
 

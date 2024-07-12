@@ -75,8 +75,6 @@ class TuitionController extends Controller
         if (empty($tuitions)) {
             $tuitions = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Tuitions Information For Edit', 'tuition_id' => $id]), request()->ip(), request()->userAgent());
-
         return view('Finance.Tuition.edit', compact('tuitions'));
 
     }
@@ -114,8 +112,6 @@ class TuitionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Change Tuition Price Failed', 'values' => $request, 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
-
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred',
@@ -148,8 +144,6 @@ class TuitionController extends Controller
             'date_of_installment4_four' => $request->date_of_installment4_four,
         ], true);
         $tuition->save();
-        $this->logActivity(json_encode(['activity' => 'Tuition Fee Changed', 'tuition_id' => $request->tuition_id, 'price' => $request->price]), request()->ip(), request()->userAgent());
-
         return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
     }
 
@@ -237,8 +231,6 @@ class TuitionController extends Controller
             'description' => 'nullable|string',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -357,8 +349,6 @@ class TuitionController extends Controller
                         'document_file_full_payment3' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
                     ]);
                     if ($validator->fails()) {
-                        $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
-
                         return redirect()->back()->withErrors($validator)->withInput();
                     }
 
@@ -412,8 +402,6 @@ class TuitionController extends Controller
                         'document_file_offline_installment3' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
                     ]);
                     if ($validator->fails()) {
-                        $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
-
                         return redirect()->back()->withErrors($validator)->withInput();
                     }
                     if ($request->file('document_file_offline_installment1') !== null) {
@@ -466,8 +454,6 @@ class TuitionController extends Controller
                         'document_file_full_payment_with_advance3' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
                     ]);
                     if ($validator->fails()) {
-                        $this->logActivity(json_encode(['activity' => 'Application Payment Failed', 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
-
                         return redirect()->back()->withErrors($validator)->withInput();
                     }
 
@@ -728,8 +714,6 @@ class TuitionController extends Controller
                 ->where('tuition_payment_status', 'Paid')
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
-            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
-
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
@@ -742,15 +726,12 @@ class TuitionController extends Controller
                 ->where('tuition_payment_status', 'Paid')
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
-            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::where('guardian', $me->id)->get()->pluck('student_id')->toArray();
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('student_id', $students)
                 ->where('tuition_payment_status', 'Paid')
                 ->orderBy('academic_year', 'desc')->paginate(150);
-            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
-
             return view('Finance.TuitionsStatus.index', compact('students'));
         }
 
@@ -794,8 +775,6 @@ class TuitionController extends Controller
             $data->where('tuition_payment_status', 'Paid');
             $students = $data->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
-            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
-
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
@@ -828,7 +807,6 @@ class TuitionController extends Controller
             $data->where('tuition_payment_status', 'Paid');
             $students = $data->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
-            $this->logActivity(json_encode(['activity' => 'Getting Tuitions Status list']), request()->ip(), request()->userAgent());
         }
 
         return view('Finance.TuitionsStatus.index', compact('students', 'academicYears'));

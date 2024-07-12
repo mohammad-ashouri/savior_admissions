@@ -43,14 +43,10 @@ class SignupController extends Controller
                 if ($validator->fails()) {
                     if ($validator->errors()->first('mobile')) {
                         $errorMessage = $validator->errors()->first('mobile', 'MobileInvalid');
-                        $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
                         return redirect()->back()->withErrors(['MobileInvalid' => $errorMessage])->withInput();
                     }
                     if ($validator->errors()->first('phone_code')) {
                         $errorMessage = $validator->errors()->first('phone_code', 'PhoneCodeInvalid');
-                        $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
                         return redirect()->back()->withErrors(['PhoneCodeInvalid' => $errorMessage])->withInput();
                     }
 
@@ -67,8 +63,6 @@ class SignupController extends Controller
 //
 //                if ($validator->fails()) {
 //                    $errorMessage = $validator->errors()->first('email', 'EmailInvalid');
-//                    $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-//
 //                    return redirect()->back()->withErrors(['EmailInvalid' => $errorMessage])->withInput();
 //                }
                     return redirect()->back()->withErrors(['EmailInvalid' => 'Wrong register method'])->withInput();
@@ -82,8 +76,6 @@ class SignupController extends Controller
         // Uncomment if you want to include captcha validation
         $sessionCaptcha = session('captcha')['key'];
         if (! password_verify($captcha, $sessionCaptcha)) {
-            $this->logActivity(json_encode(['activity' => 'Register Failed (Wrong Captcha)', 'entered_values' => json_encode($request->all())]), request()->ip(), request()->userAgent());
-
             return ['error' => 'Captcha is invalid.'];
         }
 
@@ -127,7 +119,6 @@ class SignupController extends Controller
                     //Send token
                     $this->sendSms($mobile, $valueToSend);
 
-                    $this->logActivity(json_encode(['activity' => 'SMS Token Sent', 'mobile' => $mobile, 'values' => json_encode([$tokenEntry, $valueToSend])]), request()->ip(), request()->userAgent());
                     $method = 'mobile';
                     $value = $mobile;
 
@@ -145,8 +136,6 @@ class SignupController extends Controller
 
                 $checkIfEmailExists = User::where('email', $email)->exists();
                 if ($checkIfEmailExists) {
-                    $this->logActivity(json_encode(['activity' => 'Email Token Sending Failed', 'errors' => $errorMessage]), request()->ip(), request()->userAgent());
-
                     return ['error' => 'The entered email address already exists.'];
                 } else {
                     //Remove previous token
@@ -169,7 +158,6 @@ class SignupController extends Controller
                         );
 
                         if ($mailSend) {
-                            $this->logActivity(json_encode(['activity' => 'Email Token Sent', 'email' => $email]), request()->ip(), request()->userAgent());
                             $method = 'email';
                             $value = $email;
 
@@ -186,7 +174,6 @@ class SignupController extends Controller
                 }
                 break;
         }
-        $this->logActivity(json_encode(['activity' => 'Authorization Aborted']), request()->ip(), request()->userAgent());
 
         abort(422);
     }
@@ -210,8 +197,6 @@ class SignupController extends Controller
                 $checkAuthorizationCode = RegisterToken::where('register_method', 'Mobile')->where('value', $mobile)->where('token', $verificationCode)->first();
 
                 if (empty($checkAuthorizationCode)) {
-                    $this->logActivity(json_encode(['activity' => 'Authorization Aborted', 'errors' => 'Verification Code Is Wrong']), request()->ip(), request()->userAgent());
-
                     return ['error' => 'Verification code is invalid.'];
                 }
 
@@ -240,8 +225,6 @@ class SignupController extends Controller
                 $checkAuthorizationCode = RegisterToken::where('register_method', 'Email')->where('value', $email)->where('token', $verificationCode)->first();
 
                 if (empty($checkAuthorizationCode)) {
-                    $this->logActivity(json_encode(['activity' => 'Authorization Aborted', 'errors' => 'Verification Code Is Wrong']), request()->ip(), request()->userAgent());
-
                     return ['error' => 'Verification code is invalid.'];
                 }
 
@@ -263,17 +246,12 @@ class SignupController extends Controller
 
     public function newAccount($token)
     {
-        $this->logActivity(json_encode(['activity' => 'Checking New Account Token']), request()->ip(), request()->userAgent());
-
         $checkToken = RegisterToken::where('token', $token)->where('status', 0)->exists();
         if ($checkToken) {
             $tokenInfo = RegisterToken::where('token', $token)->first();
-            $this->logActivity(json_encode(['activity' => 'Getting New Account Page']), request()->ip(), request()->userAgent());
 
             return view('Auth.Signup.signup', ['tokenInfo' => $tokenInfo]);
         }
-        $this->logActivity(json_encode(['activity' => 'Getting New Account Page Failed', 'errors' => 'Token Is Wrong']), request()->ip(), request()->userAgent());
-
         return redirect()->route('login')
             ->withErrors(['WrongToken' => 'WrongToken']);
     }
@@ -291,8 +269,6 @@ class SignupController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Wrong Entered Values For Signup', 'errors' => json_encode($validator->errors()), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             return redirect()->route('login')
                 ->withErrors(['errors', $validator->errors()]);
         }
@@ -320,15 +296,10 @@ class SignupController extends Controller
         $generalInformations->birthdate = $request->birthdate;
         $generalInformations->save();
 
-        $this->logActivity(json_encode(['activity' => 'User Registered Successfully', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
-
-        $this->logActivity(json_encode(['activity' => 'Token Deleted', 'token_id' => $registerToken->id]), request()->ip(), request()->userAgent());
-
         RegisterToken::where('token', $request->token)->delete();
 
         Session::put('id', $user->id);
         Auth::loginUsingId(session('id'));
-        $this->logActivity(json_encode(['activity' => 'Login Succeeded', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
 
         return redirect()->route('dashboard');
     }

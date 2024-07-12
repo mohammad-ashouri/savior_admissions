@@ -106,8 +106,6 @@ class ProfileController extends Controller
         }
 
         if ($generalInformation) {
-            $this->logActivity(json_encode(['activity' => 'Profile Updated', 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withSuccess('Profile updated successfully!');
         }
     }
@@ -184,7 +182,6 @@ class ProfileController extends Controller
 
         $userGeneralInformation->editor = auth()->user()->id;
         $userGeneralInformation->save();
-        $this->logActivity(json_encode(['activity' => 'Profile Updated By Admin', 'user_id' => $user->id, 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
 
         return response()->json(['success' => 'Profile updated!'], 200);
     }
@@ -194,7 +191,6 @@ class ProfileController extends Controller
         $user = User::find($request->input('user_id'));
         DB::table('model_has_roles')->where('model_id', $user->id)->delete();
         $user->syncRoles($request->input('role'));
-        $this->logActivity(json_encode(['activity' => 'Rules Updated By Admin', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
 
         return response()->json(['success' => 'Rules updated! <br> Please refresh the page to display additional information'], 200);
     }

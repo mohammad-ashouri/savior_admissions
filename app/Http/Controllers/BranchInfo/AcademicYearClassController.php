@@ -199,8 +199,6 @@ class AcademicYearClassController extends Controller
                 $academicYear = [];
             }
         }
-        $this->logActivity(json_encode(['activity' => 'Academic Year Start Time And End Time Returned', 'id' => $academicYear->id]), request()->ip(), request()->userAgent());
-
         return $academicYear;
     }
 
@@ -216,8 +214,6 @@ class AcademicYearClassController extends Controller
         $academicYear = $request->academic_year;
 
         $academicYearFile=AcademicYear::find($academicYear)->value('financial_roles');
-        $this->logActivity(json_encode(['activity' => 'Academic Year Start Time And End Time Returned', 'id' => $request->academic_year]), request()->ip(), request()->userAgent());
-
         return env('APP_URL').'/'. str_replace( 'public','storage', $academicYearFile) ;
     }
 }

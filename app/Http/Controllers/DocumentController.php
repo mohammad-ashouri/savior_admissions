@@ -344,14 +344,10 @@ class DocumentController extends Controller
         }
         $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', auth()->user()->id)->first();
         if (empty($studentInformation)) {
-            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student information is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             abort(403);
         }
         $checkStudentApplianceStatus = StudentApplianceStatus::with('evidences')->where('student_id', $request->student_id)->whereIn('academic_year', $this->getActiveAcademicYears())->where('documents_uploaded', 3)->latest()->first();
         if (empty($checkStudentApplianceStatus)) {
-            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student appliance status is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             abort(403);
         }
 

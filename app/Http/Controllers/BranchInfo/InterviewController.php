@@ -212,8 +212,6 @@ class InterviewController extends Controller
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
             ->get();
-        $this->logActivity(json_encode(['activity' => 'Getting Interview Form', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
-
         return view('BranchInfo.Interviews.set', compact('interview', 'discounts'));
     }
 
@@ -469,13 +467,9 @@ class InterviewController extends Controller
                 $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
                 $studentApplianceStatus->save();
             }
-            $this->logActivity(json_encode(['activity' => 'Interview Set Successfully', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
-
             return redirect()->route('interviews.index')
                 ->with('success', 'The interview was successfully recorded');
         }
-        $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
-
         return redirect()->route('interviews.index')
             ->withErrors(['errors' => 'Recording the interview failed!']);
     }
@@ -572,7 +566,6 @@ class InterviewController extends Controller
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
             ->get();
-        $this->logActivity(json_encode(['activity' => 'Getting Interview', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
 
         return view('BranchInfo.Interviews.show', compact('interview', 'discounts'));
     }
@@ -634,8 +627,6 @@ class InterviewController extends Controller
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
             ->get();
-        $this->logActivity(json_encode(['activity' => 'Getting Interview For Edit', 'interview_id' => $interview->id]), request()->ip(), request()->userAgent());
-
         return view('BranchInfo.Interviews.edit', compact('interview', 'discounts'));
     }
 
@@ -859,13 +850,9 @@ class InterviewController extends Controller
         $studentApplianceStatus->save();
 
         if ($interview->save()) {
-            $this->logActivity(json_encode(['activity' => 'Interview Updated Successfully', 'interview_id' => $interview->id, 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             return redirect()->route('interviews.index')
                 ->with('success', 'The interview was successfully recorded');
         }
-        $this->logActivity(json_encode(['activity' => 'Recording The Interview Failed', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
-
         return redirect()->route('interviews.index')
             ->withErrors(['errors' => 'Recording the interview failed!']);
     }
@@ -890,8 +877,6 @@ class InterviewController extends Controller
         }
 
         if (empty($application)) {
-            $this->logActivity(json_encode(['activity' => 'Registration of absence in the interview encountered an error!', 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
-
             return redirect()->route('interviews.index')
                 ->withErrors(['errors' => 'Registration of absence in the interview encountered an error!']);
 
@@ -905,13 +890,9 @@ class InterviewController extends Controller
         $studentStatus->save();
 
         if ($applicationInfo->save() and $studentStatus->save()) {
-            $this->logActivity(json_encode(['activity' => 'Registration of absence in the interview was done successfully', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
-
             return redirect()->route('interviews.index')
                 ->with(['success' => 'Registration of absence in the interview was done successfully!']);
         }
-        $this->logActivity(json_encode(['activity' => 'Registration of absence in the interview encountered an error!', 'application_id' => $request->application_id]), request()->ip(), request()->userAgent());
-
         return redirect()->route('interviews.index')
             ->withErrors(['errors' => 'Registration of absence in the interview encountered an error!']);
     }
@@ -1010,8 +991,6 @@ class InterviewController extends Controller
         if (empty($interviews) or $interviews->isEmpty()) {
             $interviews = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Interviews']), request()->ip(), request()->userAgent());
-
         return view('BranchInfo.Interviews.index', compact('interviews'));
 
     }
