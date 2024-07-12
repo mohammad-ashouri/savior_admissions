@@ -89,8 +89,6 @@ class ApplicationReservationController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->get();
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Application Reservation Invoices']), request()->ip(), request()->userAgent());
-
         return view('Finance.ApplicationReservationInvoices.index', compact('applications', 'paymentMethods', 'academicYears'));
 
     }
@@ -114,8 +112,6 @@ class ApplicationReservationController extends Controller
         $me = User::find(auth()->user()->id);
         $applicationReservation = ApplicationReservation::find($id);
         if (empty($applicationReservation)) {
-            $this->logActivity(json_encode(['activity' => 'Access Denied To Show Application Reservation Invoice', 'application_reservation_id' => $id, 'status' => 'Not Found']), request()->ip(), request()->userAgent());
-
             abort(403);
         }
 
@@ -150,8 +146,6 @@ class ApplicationReservationController extends Controller
                 abort(403);
             }
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Application Reservation Informations', 'application_reservation_id' => $id]), request()->ip(), request()->userAgent());
-
         return view('Finance.ApplicationReservationInvoices.show', compact('applicationInfo'));
     }
 
@@ -172,8 +166,6 @@ class ApplicationReservationController extends Controller
                     ->select('application_timings.*', 'academic_years.id as academic_year_id')
                     ->first();
                 if (! $checkAccessToApplication) {
-                    $this->logActivity(json_encode(['activity' => 'Destroying Application Reservation Failed', 'application_reservation_id' => $id]), request()->ip(), request()->userAgent());
-
                     return redirect()->back()
                         ->withErrors(['errors' => 'Delete Failed!']);
                 }
@@ -183,13 +175,9 @@ class ApplicationReservationController extends Controller
         $removeApplication = Applications::find($id)->delete();
 
         if (! $removeApplication) {
-            $this->logActivity(json_encode(['activity' => 'Destroying Application Reservation Failed', 'application_reservation_id' => $id]), request()->ip(), request()->userAgent());
-
             return redirect()->back()
                 ->withErrors(['errors' => 'Delete Failed!']);
         }
-        $this->logActivity(json_encode(['activity' => 'Application Reservation Successfully Destroyed', 'application_reservation_id' => $id]), request()->ip(), request()->userAgent());
-
         return redirect()->back()
             ->with('success', 'Application deleted!');
     }
@@ -228,21 +216,16 @@ class ApplicationReservationController extends Controller
         }
 
         if (empty($applicationInfo)) {
-            $this->logActivity(json_encode(['activity' => 'Changing Application Payment Status Failed', 'application_id' => $applicationID, 'application_status' => $applicationStatus, 'message' => $applicationInfo]), request()->ip(), request()->userAgent());
-
             return response()->json(['message' => $applicationInfo], 422);
         }
 
         $applicationReservation = ApplicationReservation::with('applicationInfo')->with('reservatoreInfo')->find($applicationID);
         if (empty($applicationReservation)) {
-            $this->logActivity(json_encode(['activity' => 'Changing Application Payment Status Failed', 'application_id' => $applicationID, 'application_status' => $applicationStatus, 'message' => $applicationInfo]), request()->ip(), request()->userAgent());
-
             return response()->json(['message' => 'Application not found!'], 422);
         }
 
         $applicationReservation->payment_status = $applicationStatus;
         $applicationReservation->save();
-        $this->logActivity(json_encode(['activity' => 'Application Payment Status Changed', 'application_id' => $applicationID, 'application_status' => $applicationStatus]), request()->ip(), request()->userAgent());
 
         $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->first();
         if ($applicationStatus == 1) {
@@ -351,7 +334,6 @@ class ApplicationReservationController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->get();
         }
-        $this->logActivity(json_encode(['activity' => 'Searching In Application Reservation Invoice ', 'search_parameters' => json_encode($request->all())]), request()->ip(), request()->userAgent());
 
         return view('Finance.ApplicationReservationInvoices.search', compact('applications', 'paymentMethods', 'academicYears'));
     }

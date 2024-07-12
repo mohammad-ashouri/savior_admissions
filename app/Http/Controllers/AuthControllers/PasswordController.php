@@ -18,8 +18,6 @@ class PasswordController extends Controller
     public function showForgetPassword(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $countryPhoneCodes = CountryPhoneCodes::where('phonecode', '!=', 0)->get();
-        $this->logActivity(json_encode(['activity' => 'Getting Forget Password Index Page']), request()->ip(), request()->userAgent());
-
         return view('Auth.ForgotPassword.forgot_password', compact('countryPhoneCodes'));
     }
 

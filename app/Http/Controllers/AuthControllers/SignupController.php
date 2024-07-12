@@ -20,8 +20,6 @@ class SignupController extends Controller
 {
     public function index()
     {
-        $this->logActivity(json_encode(['activity' => 'Getting Signup Authorization Index Page']), request()->ip(), request()->userAgent());
-
         $countryPhoneCodes = CountryPhoneCodes::where('phonecode', '!=', 0)->get();
 
         return view('Auth.Signup.register', compact('countryPhoneCodes'));

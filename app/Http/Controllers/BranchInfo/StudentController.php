@@ -43,7 +43,6 @@ class StudentController extends Controller
                 ->where('tuition_payment_status', 'Paid')
                 ->orderBy('academic_year', 'desc')->paginate(100);
             $academicYears = AcademicYear::get();
-            $this->logActivity(json_encode(['activity' => 'Getting Students list']), request()->ip(), request()->userAgent());
 
             return view('Students.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {

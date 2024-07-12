@@ -107,8 +107,6 @@ class InterviewController extends Controller
         if (empty($interviews) or $interviews->isEmpty()) {
             $interviews = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Interviews']), request()->ip(), request()->userAgent());
-
         return view('BranchInfo.Interviews.index', compact('interviews'));
 
     }

@@ -41,8 +41,6 @@ class DiscountsController extends Controller
         if ($discounts->isEmpty()) {
             $discounts = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Discounts']), request()->ip(), request()->userAgent());
-
         return view('Finance.Discounts.index', compact('discounts'));
     }
 
@@ -66,8 +64,6 @@ class DiscountsController extends Controller
         if (empty($discounts)) {
             $discounts = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Academic Year Discounts Information For Edit', 'discount_id' => $id]), request()->ip(), request()->userAgent());
-
         return view('Finance.Discounts.edit', compact('discounts'));
     }
 
@@ -89,13 +85,10 @@ class DiscountsController extends Controller
         }
 
         if (empty($discounts)) {
-            $this->logActivity(json_encode(['activity' => 'Saving Discounts Failed', 'errors' => 'Access Denied', 'discount_id' => $request->discount_id]), request()->ip(), request()->userAgent());
-
             abort(403);
         }
 
         if (count($request->name) != count($request->percentage)) {
-            $this->logActivity(json_encode(['activity' => 'Saving Discounts Failed', 'errors' => 'Data Count Is Not Equal', 'discount_id' => $request->discount_id]), request()->ip(), request()->userAgent());
             abort(503);
         }
         //        dd(request()->all());
@@ -117,8 +110,6 @@ class DiscountsController extends Controller
             $discount_details->save();
         }
 
-        $this->logActivity(json_encode(['activity' => 'Discounts Saved', 'discount_id' => $request->discount_id]), request()->ip(), request()->userAgent());
-
         return redirect()->route('Discounts.index')
             ->with('success', 'Discount settings saved successfully!');
 
@@ -133,7 +124,6 @@ class DiscountsController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => $validator], 422);
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Discount Percentage', 'discount_id' => $request->discount_id]), request()->ip(), request()->userAgent());
 
         return DiscountDetail::where('id', $request->discount_id)->value('percentage');
     }

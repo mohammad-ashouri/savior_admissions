@@ -199,8 +199,6 @@ class TuitionPaymentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Failed To Pay Tuition Installment', 'errors' => json_encode($validator), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $tuition_id = $request->tuition_invoice_id;
@@ -223,7 +221,6 @@ class TuitionPaymentController extends Controller
         }
 
         if (empty($tuitionInvoiceDetails)) {
-            $this->logActivity(json_encode(['activity' => 'Failed To Pay Tuition Installment', 'errors' => 'Access Denied', 'values' => $request->all()]), request()->ip(), request()->userAgent());
             abort(403);
         }
 
@@ -259,8 +256,6 @@ class TuitionPaymentController extends Controller
             'status' => 'required|integer|in:1,3',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Change Tuition Invoice Status Failed', 'values' => json_encode($request->all(), true), 'errors' => json_encode($validator->errors())]), request()->ip(), request()->userAgent());
-
             return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
         }
         $tuitionInvoiceDetails = null;
@@ -286,8 +281,6 @@ class TuitionPaymentController extends Controller
                 ->where('id', $tuition_id)->first();
         }
         if (empty($tuitionInvoiceDetails)) {
-            $this->logActivity(json_encode(['activity' => 'Change Tuition Invoice Status Failed', 'values' => json_encode($request->all(), true), 'errors' => 'Tuition Id Is Wrong!']), request()->ip(), request()->userAgent());
-
             return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
         }
 
@@ -505,8 +498,6 @@ class TuitionPaymentController extends Controller
 
                 return response()->json(['message' => 'Installments were made!']);
             default:
-                $this->logActivity(json_encode(['activity' => 'Change Tuition Invoice Status Failed', 'values' => json_encode($request->all(), true), 'errors' => 'Status Is Wrong!']), request()->ip(), request()->userAgent());
-
                 return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
         }
     }

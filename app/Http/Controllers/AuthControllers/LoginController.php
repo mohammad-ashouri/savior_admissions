@@ -55,8 +55,6 @@ class LoginController extends Controller
         //            'login-method' => 'required|in:mobile,email', // Uncomment if you want to include captcha validation
         //        ]);
         //        if ($validator->fails()) {
-        //            $this->logActivity(json_encode(['activity' => $validator->errors()]), request()->ip(), request()->userAgent());
-        //
         //            return redirect()->back()->withErrors([
         //                'errors' => ['validator_errors' => $validator->errors()],
         //            ]);
@@ -67,8 +65,6 @@ class LoginController extends Controller
         // Uncomment if you want to include captcha validation
         $sessionCaptcha = session('captcha')['key'];
         if (! password_verify($captcha, $sessionCaptcha)) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed (Wrong Captcha)', 'entered_values' => json_encode($request->all())]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors([
                 'captchaError' => 'Captcha is wrong!',
             ])->withInput();
@@ -82,16 +78,12 @@ class LoginController extends Controller
         //                ]);
         //
         //                if ($validator->fails()) {
-        //                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'validator_errors' => $validator->errors()]), request()->ip(), request()->userAgent());
-        //
         //                    return redirect()->back()->withErrors([
         //                        'EmailError' => ['loginError' => 'Wrong email or password'],
         //                    ]);
         //                }
         //                $user = User::where('email', $request->input('email'))->first();
         //                if (! password_verify($request->password, $user->password)) {
-        //                    $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'errors' => 'Wrong Password']), request()->ip(), request()->userAgent());
-        //
         //                    return redirect()->back()->withErrors([
         //                        'EmailError' => ['loginError' => 'Wrong email or password'],
         //                    ]);
@@ -107,8 +99,6 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Login Failed', 'Entry Values' => $request->all(), 'validator_errors' => $validator->errors()]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors([
                 'MobileError' => 'Wrong mobile or password',
             ])->withInput();

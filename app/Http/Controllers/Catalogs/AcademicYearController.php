@@ -55,8 +55,6 @@ class AcademicYearController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $academicYears = AcademicYear::with('schoolInfo')->orderBy('id', 'desc')->paginate(10);
-        $this->logActivity(json_encode(['activity' => 'Getting Academic Year List']), request()->ip(), request()->userAgent());
-
         return view('Catalogs.AcademicYears.index', compact('academicYears'));
     }
 

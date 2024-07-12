@@ -49,8 +49,6 @@ class DocumentController extends Controller
         $document->document_type_id = $request->document_type;
         $document->src = $path;
         $document->save();
-        $this->logActivity(json_encode(['activity' => 'User Document Added', 'document id' => $document->id, 'user_id' => $document->user_id]), request()->ip(), request()->userAgent());
-
         return response()->json(['success' => 'Document added!'], 200);
     }
 
@@ -69,8 +67,6 @@ class DocumentController extends Controller
         $document->document_type_id = $request->document_type;
         $document->src = $path;
         $document->save();
-        $this->logActivity(json_encode(['activity' => 'User Document Added', 'document id' => $document->id, 'user_id' => $document->user_id]), request()->ip(), request()->userAgent());
-
         return response()->json(['success' => 'Document added!'], 200);
     }
 
@@ -146,21 +142,15 @@ class DocumentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Upload Student Documents Failed', 'errors' => json_encode($validator), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', auth()->user()->id)->first();
         if (empty($studentInformation)) {
-            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student information is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             abort(403);
         }
         $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $request->student_id)->where('documents_uploaded', 0)->latest()->first();
         if (empty($checkStudentApplianceStatus)) {
-            $this->logActivity(json_encode(['activity' => 'Access To Upload Student Documents Failed', 'errors' => 'Student appliance status is wrong', 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             abort(403);
         }
 
@@ -350,8 +340,6 @@ class DocumentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Upload Student Documents Failed', 'errors' => json_encode($validator), 'values' => $request->all()]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', auth()->user()->id)->first();

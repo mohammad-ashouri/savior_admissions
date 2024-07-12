@@ -52,8 +52,6 @@ class TuitionController extends Controller
         if ($tuitions->isEmpty()) {
             $tuitions = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Getting Tuitions']), request()->ip(), request()->userAgent());
-
         return view('Finance.Tuition.index', compact('tuitions'));
     }
 

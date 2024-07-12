@@ -191,8 +191,6 @@ class UserController extends Controller
             $user = User::find($input['user_id']);
             $user->password = $input['password'];
             $user->save();
-            $this->logActivity(json_encode(['activity' => 'Password Changed Successfully', 'user_id' => $user->id]), request()->ip(), request()->userAgent());
-
         } else {
             $input = Arr::except($input, ['New_password']);
         }
@@ -252,8 +250,6 @@ class UserController extends Controller
         if ($data->isEmpty()) {
             $data = [];
         }
-        $this->logActivity(json_encode(['activity' => 'Search Users', 'values' => json_encode($request->all(),true)]), request()->ip(), request()->userAgent());
-
         return view('users.index', compact('data', 'roles', 'searchEduCode', 'searchFirstName', 'searchLastName', 'selectedRole'));
     }
 
@@ -271,7 +267,6 @@ class UserController extends Controller
         $userAdditionalInformation = array_merge($userAdditionalInformation, $studentInformation);
         $user->additional_information = json_encode($userAdditionalInformation);
         $user->save();
-        $this->logActivity(json_encode(['activity' => 'Principal Information Saved Successfully', 'user_id' => $request->user_id]), request()->ip(), request()->userAgent());
 
         return response()->json(['success' => 'Principal information saved successfully!'], 200);
     }

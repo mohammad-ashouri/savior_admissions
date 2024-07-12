@@ -23,8 +23,6 @@ class SchoolController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $schools = School::with('genderInfo')->orderBy('name')->paginate(10);
-        $this->logActivity(json_encode(['activity' => 'Getting Schools']), request()->ip(), request()->userAgent());
-
         return view('Catalogs.Schools.index', compact('schools'));
     }
 
@@ -47,13 +45,9 @@ class SchoolController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving School Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $school = School::create(['name' => $request->input('name'),'persian_name' => $request->input('persian_name'), 'gender' => $request->input('gender'), 'educational_charter' => $request->input('educational_charter'), 'address' => $request->input('address'), 'address_fa' => $request->input('address_fa')]);
-        $this->logActivity(json_encode(['activity' => 'School Saved', 'id' => $school->id]), request()->ip(), request()->userAgent());
-
         return redirect()->route('Schools.index')
             ->with('success', 'School created successfully');
     }
@@ -62,8 +56,6 @@ class SchoolController extends Controller
     {
         $catalog = School::find($id);
         $genders = Gender::get();
-        $this->logActivity(json_encode(['activity' => 'Getting School Information For Edit', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
-
         return view('Catalogs.Schools.edit', compact('catalog', 'genders'));
     }
 
@@ -79,8 +71,6 @@ class SchoolController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Saving School Failed', 'errors' => json_encode($validator)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -93,8 +83,6 @@ class SchoolController extends Controller
         $catalog->address_fa = $request->input('address_fa');
         $catalog->status = $request->input('status');
         $catalog->save();
-        $this->logActivity(json_encode(['activity' => 'School Updated', 'id' => $catalog->id]), request()->ip(), request()->userAgent());
-
         return redirect()->route('Schools.index')
             ->with('success', 'School updated successfully');
     }
@@ -105,12 +93,8 @@ class SchoolController extends Controller
         $schools = School::where('name', 'LIKE', "%$name%")->paginate(10);
         $schools->appends(request()->query())->links();
         if ($schools->isEmpty()) {
-            $this->logActivity(json_encode(['activity' => 'Getting School Informations', 'entered_name' => $request->name, 'status' => 'Not Found']), request()->ip(), request()->userAgent());
-
             return redirect()->route('Schools.index')->withErrors('Not Found!')->withInput();
         }
-        $this->logActivity(json_encode(['activity' => 'Getting School Informations', 'entered_name' => $request->name, 'status' => 'Founded']), request()->ip(), request()->userAgent());
-
         return view('Catalogs.Schools.index', compact('schools', 'name'));
     }
 

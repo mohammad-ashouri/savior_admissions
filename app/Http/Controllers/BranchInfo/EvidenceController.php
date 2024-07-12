@@ -60,7 +60,6 @@ class EvidenceController extends Controller
         $countries = Country::orderBy('en_short_name', 'asc')->get();
         $nationalities = Country::orderBy('nationality', 'asc')->get();
         $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $studentAppliance->student_id)->first();
-        $this->logActivity(json_encode(['activity' => 'Getting Appliance Form', 'appliance_id' => $appliance_id]), request()->ip(), request()->userAgent());
 
         return view('Documents.UploadDocumentsParent.show', compact('studentAppliance', 'bloodGroups', 'guardianStudentRelationships', 'countries', 'nationalities', 'studentInformation'));
     }
@@ -80,8 +79,6 @@ class EvidenceController extends Controller
         $appliance_id = $request->appliance_id;
         $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->where('id', $appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded', '2')->where('interview_status', 'Admitted')->first();
         if (empty($studentAppliance)) {
-            $this->logActivity(json_encode(['activity' => 'Failed To Confirm Evidences', 'values' => $request->all(), 'appliance_id' => $appliance_id]), request()->ip(), request()->userAgent());
-
             abort(403);
         }
 
@@ -103,8 +100,6 @@ class EvidenceController extends Controller
                 $this->sendSMS($guardianMobile, "Your documents were rejected. To review and see the reason for rejection, please refer to your panel.\nSavior Schools");
                 break;
             default:
-                $this->logActivity(json_encode(['activity' => 'Failed To Confirm Evidences (Wrong Status)', 'values' => $request->all(), 'appliance_id' => $appliance_id]), request()->ip(), request()->userAgent());
-
                 abort(403);
         }
         $studentAppliance->seconder_description = $request->description;
@@ -122,8 +117,6 @@ class EvidenceController extends Controller
             'appliance_id' => 'required|integer|exists:student_appliance_statuses,id',
         ]);
         if ($validator->fails()) {
-            $this->logActivity(json_encode(['activity' => 'Getting Appliance For Extension Of Document Upload Failed', 'errors' => json_encode($validator), 'values' => json_encode($request->all(), true)]), request()->ip(), request()->userAgent());
-
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $applianceId = $request->appliance_id;
@@ -178,7 +171,6 @@ class EvidenceController extends Controller
         $countries = Country::orderBy('en_short_name', 'asc')->get();
         $nationalities = Country::orderBy('nationality', 'asc')->get();
         $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $studentAppliance->student_id)->first();
-        $this->logActivity(json_encode(['activity' => 'Getting Appliance Form', 'appliance_id' => $appliance_id]), request()->ip(), request()->userAgent());
 
         return view('Documents.UploadDocumentsParent.ShowUploadedEvidence', compact('studentAppliance', 'bloodGroups', 'guardianStudentRelationships', 'countries', 'nationalities', 'studentInformation'));
     }
