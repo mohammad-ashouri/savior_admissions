@@ -1,4 +1,4 @@
-@php use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\PaymentMethod; @endphp
+@php use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\PaymentMethod; $totalPaid=0; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -9,7 +9,8 @@
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
-                    <form id="search-user" action="{{ route('SearchReservationInvoices') }}" method="get">
+                    <form id="search-reservation-invoices" action="{{ route('SearchReservationInvoices') }}"
+                          method="get">
                         <div class="flex w-full">
                             <div class="mr-3">
                                 <label for="academic_year"
@@ -17,7 +18,6 @@
                                     Academic Year</label>
                                 <select id="academic_year" name="academic_year"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" disabled selected>Select Academic Year...</option>
                                     @foreach($academicYears as $academicYear)
                                         <option
                                             @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
@@ -115,6 +115,9 @@
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 w-4">
+                                    #
+                                </th>
+                                <th scope="col" class="p-4 w-4">
                                     Reserve ID
                                 </th>
                                 <th scope="col" class="text-center">
@@ -151,6 +154,9 @@
                             @foreach($applications as $application)
                                 <tr
                                     class="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="text-center border">
+                                        {{$loop->iteration}}
+                                    </td>
                                     <td class="text-center">
                                         {{$application->application_reservations_id}}
                                     </td>
@@ -199,7 +205,7 @@
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="">
                                             <div
-                                                class=" font-semibold">{{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }}</div>
+                                                class=" font-semibold">{{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }} </div>
                                         </div>
                                     </th>
                                     <th scope="row"
@@ -217,6 +223,12 @@
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="">
+                                            @php
+                                                $totalPaid+=$application->applicationInfo->applicationTimingInfo->fee;
+                                                if ($application->payment_status!=1){
+                                                    $totalPaid-=$application->applicationInfo->applicationTimingInfo->fee;
+                                                }
+                                            @endphp
                                             <div
                                                 class=" font-semibold">
                                                 @switch($application->payment_status)
@@ -237,6 +249,7 @@
 
                                         </div>
                                     </th>
+
                                     <td class="text-center border">
                                         <!-- Modal toggle -->
                                         @if($application->payment_status!=0)
@@ -256,15 +269,26 @@
                             @endforeach
                             </tbody>
                         </table>
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="p-4 border text-center">
+                                    Total Paid
+                                </th>
+                                <th scope="row"
+                                    class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div
+                                        class="text-base font-semibold">
+                                        {{ number_format($totalPaid) }} IRR
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
                     @endif
                 </div>
 
             </div>
         </div>
-        @if(!empty($applications))
-            <div class="pagination text-center">
-                {{ $applications->links() }}
-            </div>
-        @endif
     </div>
 @endsection
