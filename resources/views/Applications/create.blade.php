@@ -142,8 +142,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="font-bold">After your payment is completed and confirmed, you must
-                                                refer to the link below at the appointed time of the interview</p>
+                                            <p class="font-bold">After your payment is completed and confirmed, please
+                                                refer to the link below at the appointed time of the interview.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                                     </div>
                                     <div class="mt-3">
                                         <a target="_blank" id="financial_charter_file" class="font-bold text-blue-500 mb-2 animate__animated animate__fadeIn animate__infinite">
-                                            Click to download financial rules and charters file and read!
+                                            Click to download financial rules and charters file.
                                         </a>
                                     </div>
                                 </div>
@@ -167,9 +167,10 @@
                                     <input id="agreement" type="checkbox" value="agreed" required
                                            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
                                     >
-                                    <label for="agreement"
-                                           class="ml-2 text-sm font-medium text-gray-900 dark:text-white">I have read
-                                        all the rules and regulations (financial and ethical) and I accept them</label>
+                                    <label for="agreement" class="ml-2 text-sm font-medium text-gray-900 dark:text-white">I
+                                        have read and agreed
+                                        all the rules and regulations (financial and ethical) and by continuing with this
+                                        application.</label>
                                 </div>
                                 <div class="mt-3">
                                     <button type="submit"

@@ -82,7 +82,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    There is not any applications to show!
+                                    No applications found!
                                 </div>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                                     Ends To
                                 </th>
                                 <th scope="col" class="px-1 text-center">
-                                    Reservatore
+                                    Reserved By
                                 </th>
                                 <th scope="col" class="px-1 text-center">
                                     Action

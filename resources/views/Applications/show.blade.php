@@ -12,7 +12,7 @@
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
                             <div>
-                                <p class="font-bold">Reserve ID: </p> {{ $applicationInfo->id }}
+                                <p class="font-bold">Reservation ID: </p> {{ $applicationInfo->id }}
                             </div>
                             <div>
                                 <p class="font-bold">Student
@@ -40,7 +40,7 @@
                                     : </p>{{ $applicationInfo->applicationInfo->secondInterviewerInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->applicationInfo->secondInterviewerInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
-                                <p class="font-bold"> Reservatore
+                                <p class="font-bold"> Reserved By
                                     : </p>{{ $applicationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                 </div>
                                 <div>
                                     <p class="font-bold"> Paid
-                                        at: </p> {{$applicationInfo->applicationInvoiceInfo->created_at}}
+                                        At: </p> {{$applicationInfo->applicationInvoiceInfo->created_at}}
                                 </div>
                                 @if($applicationInfo->applicationInvoiceInfo->description)
                                     <div>
@@ -116,7 +116,7 @@
                                             $paymentMethod->src = str_replace('public', 'storage', $paymentMethod->src);
                                         @endphp
                                         <img class="w-96" src="{{ env('APP_URL')}}/{{$paymentMethod->src }}"
-                                             alt="Payment image not found!">
+                                             alt="Payment Receipt Not Found!">
                                     </div>
                                     @break
                                 @case(2)

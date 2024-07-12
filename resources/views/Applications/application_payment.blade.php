@@ -36,10 +36,9 @@
                         </svg>
                     </div>
                     <span hidden="" id="deadline">{{ $deadline }}</span>
-                    <div>
-                        You have
+                    <div> Please make the payment before
                         <span id="timer"></span>
-                        seconds to make the payment. Otherwise, your application will be removed from the reserve mode
+                        seconds to complete your reservation.
                     </div>
                 </div>
             </div>
@@ -77,11 +76,11 @@
                                         </div>
                                         <span hidden="" id="deadline">{{ $deadline }}</span>
                                         <div>
-                                            You must deposit
+                                            Please make your payment of
                                             {{ number_format($checkApplication->applicationInfo->applicationTimingInfo->fee) }}
-                                            Rials using one of the following methods (bank account number, bank card
-                                            number or Shaba number) and upload the image of your bank slip from the box
-                                            below.
+                                            IRR using one of the following methods: transfer using bank account, transfer to
+                                            bank card or transfer using Sheba number. After the payment, please upload the
+                                            transaction receipt image below.
                                         </div>
                                     </div>
                                 </div>
@@ -108,7 +107,7 @@
                                 @endforeach
 
                                 <label class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                       for="document_file">Upload your bank slip </label>
+                                       for="document_file">Upload your transaction receipt </label>
                                 <input
                                     class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
                                     id="document_file" name="document_file" type="file"
@@ -124,7 +123,7 @@
                                     </div>
                                     <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
                                         <li>
-                                            The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                            Acceptable formats: png, jpg, jpeg, pdf, bmp
                                         </li>
                                         <li>
                                             Maximum size: 5 MB
@@ -149,9 +148,9 @@
                                         </div>
                                         <span hidden="" id="deadline">{{ $deadline }}</span>
                                         <div>
-                                            You must pay the amount
-                                            of {{ number_format($checkApplication->applicationInfo->applicationTimingInfo->fee) }}
-                                            Rials through the bank payment portal. For this, click on the pay button
+                                            Please make payment online of
+                                            {{ number_format($checkApplication->applicationInfo->applicationTimingInfo->fee) }}
+                                            IRR by clicking on the "Pay" button.
                                         </div>
                                     </div>
                                 </div>
@@ -171,9 +170,9 @@
                                         </div>
                                         <span hidden="" id="deadline">{{ $deadline }}</span>
                                         <div>
-                                            You must pay the amount
-                                            of {{ number_format($checkApplication->applicationInfo->applicationTimingInfo->fee) }}
-                                            Rials through the bank payment portal. For this, click on the pay button
+                                            Please make payment online of
+                                            {{ number_format($checkApplication->applicationInfo->applicationTimingInfo->fee) }}
+                                            IRR by clicking on the "Pay" button.
                                         </div>
                                     </div>
                                 </div>
