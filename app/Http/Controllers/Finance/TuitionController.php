@@ -710,21 +710,21 @@ class TuitionController extends Controller
 
         $students = [];
         if ($me->hasRole('Super Admin')) {
-            $students = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder')
-                ->where('tuition_payment_status', 'Paid')
-                ->orderBy('academic_year', 'desc')->paginate(150);
+//            $students = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder')
+//                ->where('tuition_payment_status', 'Paid')
+//                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
-
-            // Finding academic years with status 1 in the specified schools
+//
+//            // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-                ->whereIn('academic_year', $academicYears)
-                ->where('tuition_payment_status', 'Paid')
-                ->orderBy('academic_year', 'desc')->paginate(150);
+//            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+//                ->whereIn('academic_year', $academicYears)
+//                ->where('tuition_payment_status', 'Paid')
+//                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::where('guardian', $me->id)->get()->pluck('student_id')->toArray();
@@ -773,7 +773,7 @@ class TuitionController extends Controller
                 $data->where('academic_year', $request->academic_year);
             }
             $data->where('tuition_payment_status', 'Paid');
-            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+            $students = $data->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
@@ -805,7 +805,7 @@ class TuitionController extends Controller
             }
             $data->whereIn('academic_year', $academicYears);
             $data->where('tuition_payment_status', 'Paid');
-            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
+            $students = $data->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
         }
 

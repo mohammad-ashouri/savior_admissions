@@ -93,6 +93,9 @@
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 border text-center">
+                                    #
+                                </th>
+                                <th scope="col" class="p-4 border text-center">
                                     Appliance ID
                                 </th>
                                 <th scope="col" class="p-4 border text-center">
@@ -129,9 +132,15 @@
                             </thead>
 
                             <tbody>
+                            @php
+                                $sumTuition=$sumDebt=$sumPaid=0;
+                            @endphp
                             @foreach($students as $student)
                                 <tr
                                     class="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="w-2 border text-center">
+                                        {{ $loop->iteration }}
+                                    </td>
                                     <td class="w-2 border text-center">
                                         {{ $student->id }}
                                     </td>
@@ -192,6 +201,7 @@
                                                     foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
                                                         $totalTuition=$totalTuition+$invoices->amount;
                                                     }
+                                                    $sumTuition+=$totalTuition;
                                                 @endphp
                                                 {{ number_format($totalTuition) }} IRR
                                             @endif
@@ -208,6 +218,7 @@
                                                         if ($invoices->is_paid==0){ continue; }
                                                         $totalPaid=$totalPaid+$invoices->amount;
                                                     }
+                                                    $sumPaid+=$totalPaid;
                                                 @endphp
                                                 {{ number_format($totalPaid) }} IRR
                                             @endif
@@ -224,52 +235,47 @@
                                                         if ($invoices->is_paid==1){ continue; }
                                                         $debtBalance=$debtBalance+$invoices->amount;
                                                     }
+                                                    $sumDebt+=$debtBalance;
                                                 @endphp
                                                 {{ number_format($debtBalance) }} IRR
                                             @endif
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
-                                            class="flex text-base font-semibold">
-                                            <div
-                                                class="text-base font-semibold">
-                                                <a href="{{ route('tuitionCard.en',$student->id) }}"
-                                                   type="button"
-                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                    <div class="text-center">
-                                                        <i title="Click for view english tuition card "
-                                                           class="las la-address-card "
-                                                           style="font-size: 20px"></i>
-                                                        English
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div
-                                                class="text-base font-semibold">
-                                                <a href="{{ route('tuitionCard.fa',$student->id) }}"
-                                                   type="button"
-                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                    <div class="text-center">
-                                                        <i title="Click for view english tuition card "
-                                                           class="las la-address-card "
-                                                           style="font-size: 20px"></i>
-                                                        Persian
-                                                    </div>
-                                                </a>
-                                            </div>
+                                            class="flex text-center font-semibold">
+                                            <a href="{{ route('tuitionCard.en',$student->id) }}"
+                                               type="button"
+                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                <div class="text-center">
+                                                    <i title="Click for view english tuition card "
+                                                       class="las la-address-card "
+                                                       style="font-size: 20px"></i>
+                                                    English
+                                                </div>
+                                            </a>
+                                            <a href="{{ route('tuitionCard.fa',$student->id) }}"
+                                               type="button"
+                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                <div class="text-center">
+                                                    <i title="Click for view english tuition card "
+                                                       class="las la-address-card "
+                                                       style="font-size: 20px"></i>
+                                                    Persian
+                                                </div>
+                                            </a>
                                         </div>
                                     </th>
                                     <th scope="row"
-                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
                                             class="flex text-base font-semibold">
                                             <div
                                                 class="text-base font-semibold">
                                                 <a href="{{ route('applianceInvoices',$student->id) }}"
                                                    type="button"
-                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                     <div class="text-center">
                                                         <i title="Click for view english tuition card "
                                                            class="las la-money-bill "
@@ -284,15 +290,49 @@
                             @endforeach
                             </tbody>
                         </table>
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="p-4 border text-center">
+                                    Total Tuition
+                                </th>
+                                <th scope="col" class="p-4 border text-center">
+                                    Total Paid
+                                </th>
+                                <th scope="col" class="p-4 border text-center">
+                                    Debt Balance
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="row"
+                                    class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div
+                                        class="text-base font-semibold">
+                                        {{ number_format($sumTuition) }} IRR
+                                    </div>
+                                </th>
+                                <th scope="row"
+                                    class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div
+                                        class="text-base font-semibold">
+                                        {{ number_format($sumPaid) }} IRR
+                                    </div>
+                                </th>
+                                <th scope="row"
+                                    class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                    <div
+                                        class="text-base font-semibold">
+                                        {{ number_format($sumDebt) }} IRR
+                                    </div>
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
                     @endif
                 </div>
 
             </div>
         </div>
-        @if(!empty($students))
-            <div class="pagination text-center">
-                {{ $students->links() }}
-            </div>
-        @endif
     </div>
 @endsection
