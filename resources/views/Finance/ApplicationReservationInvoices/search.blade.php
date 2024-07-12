@@ -86,24 +86,7 @@
                         </div>
                     </form>
                 </div>
-
-                @if( session()->has('success') )
-                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                         role="alert">
-                        <div class="flex">
-                            <div class="py-1">
-                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20">
-                                    <path
-                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-bold">{{ session()->get('success') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
+                @include('GeneralPages.errors.session.success')
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     @if(empty($applications) or $applications->isEmpty())
@@ -254,16 +237,16 @@
                                     <td class="text-center border">
                                         <!-- Modal toggle -->
                                         @if($application->payment_status!=0)
-{{--                                            @can('reservation-invoice-show')--}}
-{{--                                                <a href="{{ route('ReservationInvoices.show',$application->application_reservations_id) }}"--}}
-{{--                                                   type="button"--}}
-{{--                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">--}}
-{{--                                                    <div class="text-center">--}}
-{{--                                                        <i class="las la-eye "></i>--}}
-{{--                                                    </div>--}}
-{{--                                                    Details--}}
-{{--                                                </a>--}}
-{{--                                            @endcan--}}
+                                            {{--                                            @can('reservation-invoice-show')--}}
+                                            {{--                                                <a href="{{ route('ReservationInvoices.show',$application->application_reservations_id) }}"--}}
+                                            {{--                                                   type="button"--}}
+                                            {{--                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">--}}
+                                            {{--                                                    <div class="text-center">--}}
+                                            {{--                                                        <i class="las la-eye "></i>--}}
+                                            {{--                                                    </div>--}}
+                                            {{--                                                    Details--}}
+                                            {{--                                                </a>--}}
+                                            {{--                                            @endcan--}}
                                         @endif
                                     </td>
                                 </tr>

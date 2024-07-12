@@ -9,41 +9,9 @@
                     Tuition Payment
                 </h1>
             </div>
-            @if (count($errors) > 0)
-                <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                     role="alert">
-                    <div class="flex">
-                        <div class="py-1">
-                            <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                                 viewBox="0 0 20 20">
-                                <path
-                                    d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            @foreach ($errors->all() as $error)
-                                <p class="font-bold">{{ $error }}</p>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            @elseif( session()->has('success') )
-                <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                     role="alert">
-                    <div class="flex">
-                        <div class="py-1">
-                            <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                                 viewBox="0 0 20 20">
-                                <path
-                                    d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="font-bold">{{ session()->get('success') }}</p>
-                        </div>
-                    </div>
-                </div>
-            @endif
+            @include('GeneralPages.errors.session.error')
+            @include('GeneralPages.errors.session.success')
+
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="lg:col-span-3 col-span-3 ">
                     <div class=" bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
@@ -126,51 +94,51 @@
                                 </div>
                                 <div>
                                     @php
-                                    if (!empty($minimumLevelTuitionDetails)){
-                                    $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment,true)['full_payment_irr']);
-                                    $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment,true)['two_installment_amount_irr']);
-                                    $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment,true)['four_installment_amount_irr']);
-                                    $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
-                                    switch($minimumSignedStudentNumber){
-                                        case '1':
-                                            $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice;
-                                            $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*25)/100)-$previousDiscountPrice;
-                                            $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*25)/100)-$previousDiscountPrice;
-                                            break;
-                                        case '2':
-                                            $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice;
-                                            $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*30)/100)-$previousDiscountPrice;
-                                            $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*30)/100)-$previousDiscountPrice;
-                                            break;
-                                        case '3':
-                                            $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice;
-                                            $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*40)/100)-$previousDiscountPrice;
-                                            $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*40)/100)-$previousDiscountPrice;
-                                            break;
-                                        default:
-                                    }
-                                    }else{
+                                        if (!empty($minimumLevelTuitionDetails)){
+                                        $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment,true)['full_payment_irr']);
+                                        $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment,true)['two_installment_amount_irr']);
+                                        $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment,true)['four_installment_amount_irr']);
                                         $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
-                                    }
+                                        switch($minimumSignedStudentNumber){
+                                            case '1':
+                                                $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice;
+                                                $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*25)/100)-$previousDiscountPrice;
+                                                $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*25)/100)-$previousDiscountPrice;
+                                                break;
+                                            case '2':
+                                                $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice;
+                                                $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*30)/100)-$previousDiscountPrice;
+                                                $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*30)/100)-$previousDiscountPrice;
+                                                break;
+                                            case '3':
+                                                $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice;
+                                                $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*40)/100)-$previousDiscountPrice;
+                                                $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*40)/100)-$previousDiscountPrice;
+                                                break;
+                                            default:
+                                        }
+                                        }else{
+                                            $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
+                                        }
 
-                                        $fullPayment=json_decode($tuition->full_payment,true);
-                                        $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr']);
-                                        $fullPaymentAmountAdvance=((str_replace(",", "", $fullPayment['full_payment_irr']))*30)/100;
+                                            $fullPayment=json_decode($tuition->full_payment,true);
+                                            $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr']);
+                                            $fullPaymentAmountAdvance=((str_replace(",", "", $fullPayment['full_payment_irr']))*30)/100;
 
-                                        $twoInstallmentPayment=json_decode($tuition->two_installment_payment,true);
-                                        $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']);
-                                        $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $twoInstallmentPayment['two_installment_advance_irr']);
+                                            $twoInstallmentPayment=json_decode($tuition->two_installment_payment,true);
+                                            $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']);
+                                            $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $twoInstallmentPayment['two_installment_advance_irr']);
 
-                                        $fourInstallmentPayment=json_decode($tuition->four_installment_payment,true);
-                                        $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr']);
-                                        $fourInstallmentPaymentAmountAdvance=(str_replace(",", "", $fourInstallmentPayment['four_installment_advance_irr']));
+                                            $fourInstallmentPayment=json_decode($tuition->four_installment_payment,true);
+                                            $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr']);
+                                            $fourInstallmentPaymentAmountAdvance=(str_replace(",", "", $fourInstallmentPayment['four_installment_advance_irr']));
 
-                                        $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
-                                        $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
+                                            $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
+                                            $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
 
-                                        $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100));
-                                        $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment);
-                                        $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment);
+                                            $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100));
+                                            $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment);
+                                            $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment);
                                     @endphp
                                 </div>
                                 <div class="overflow-x-auto">
@@ -530,7 +498,8 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">You have to pay 30% of the total tuition fee and you have to pay the remaining 70% by the end of September.
+                                                    <p class="font-bold">You have to pay 30% of the total tuition fee
+                                                        and you have to pay the remaining 70% by the end of September.
                                                         <br> After payment, you will be
                                                         It will take you to the invoices page.</p>
                                                 </div>
@@ -550,7 +519,9 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <p class="font-bold">You have to pay 30% of the tuition fee and you have to pay the remaining 70% by the end of September.<br> After payment, you will be
+                                                <p class="font-bold">You have to pay 30% of the tuition fee and you have
+                                                    to pay the remaining 70% by the end of September.<br> After payment,
+                                                    you will be
                                                     transferred to the invoices page.</p>
                                             </div>
                                         </div>
@@ -675,7 +646,8 @@
                                                 </div>
                                                 <div>
                                                     You must deposit
-                                                    ({{ number_format($fullPaymentAmountAdvance) }} IRR) using one of the following methods (bank
+                                                    ({{ number_format($fullPaymentAmountAdvance) }} IRR) using one of
+                                                    the following methods (bank
                                                     account number, bank card
                                                     number or Shaba number) and upload the image of your bank slip
                                                     from the box
@@ -714,34 +686,42 @@
                                                 (Required)</label>
                                             <input
                                                 class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                                name="document_file_full_payment_with_advance1" id="document_file_full_payment_with_advance1"
+                                                name="document_file_full_payment_with_advance1"
+                                                id="document_file_full_payment_with_advance1"
                                                 type="file"
                                                 accept=".png,.jpg,.jpeg,.pdf,.bmp">
-                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_1" src=""
+                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_1"
+                                                 src=""
                                                  alt="Preview Image"
                                                  style="display:none; ">
                                             <label
                                                 class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                                for="document_file_full_payment_with_advance2">Select your bank slip file 2
+                                                for="document_file_full_payment_with_advance2">Select your bank slip
+                                                file 2
                                                 (Optional)</label>
                                             <input
                                                 class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                                name="document_file_full_payment_with_advance2" id="document_file_full_payment_with_advance2"
+                                                name="document_file_full_payment_with_advance2"
+                                                id="document_file_full_payment_with_advance2"
                                                 type="file"
                                                 accept=".png,.jpg,.jpeg,.pdf,.bmp">
-                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_2" src=""
+                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_2"
+                                                 src=""
                                                  alt="Preview Image"
                                                  style="display:none; ">
                                             <label
                                                 class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                                for="document_file_full_payment_with_advance3">Select your bank slip file 3
+                                                for="document_file_full_payment_with_advance3">Select your bank slip
+                                                file 3
                                                 (Optional)</label>
                                             <input
                                                 class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                                name="document_file_full_payment_with_advance3" id="document_file_full_payment_with_advance3"
+                                                name="document_file_full_payment_with_advance3"
+                                                id="document_file_full_payment_with_advance3"
                                                 type="file"
                                                 accept=".png,.jpg,.jpeg,.pdf,.bmp">
-                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_3" src=""
+                                            <img class="w-full h-auto" id="image_preview_full_payment_with_advance_3"
+                                                 src=""
                                                  alt="Preview Image"
                                                  style="display:none; ">
                                             <div class="info mb-5">

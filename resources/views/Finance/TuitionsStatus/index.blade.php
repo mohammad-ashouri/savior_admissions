@@ -12,96 +12,63 @@
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">
                         @can('search-tuition-status')
-                        <form id="search-user" action="{{ route('SearchTuitionStatus') }}" method="get">
-                            <div class="flex w-96">
-                                <div class="">
-                                    <select id="academic_year" name="academic_year"
-                                            class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="" disabled selected>Select Academic Year...</option>
-                                        @foreach($academicYears as $academicYear)
-                                            <option
-                                                @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
-                                                @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <input type="text" id="student_id" name="student_id"
-                                           value="{{ isset($_GET['student_id']) ? $_GET['student_id'] : '' }}"
-                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter student id">
-                                </div>
-                                <div>
-                                    <input type="text" id="student_first_name" name="student_first_name"
-                                           value="{{ isset($_GET['student_first_name']) ? $_GET['student_first_name'] : '' }}"
-                                           class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter student first name">
-                                </div>
-                                <div>
-                                    <input type="text" id="student_last_name" name="student_last_name"
-                                           value="{{ isset($_GET['student_last_name']) ? $_GET['student_last_name'] : '' }}"
-                                           class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                           placeholder="Enter student last name">
-                                </div>
-                                <div>
-                                    <button type="submit"
-                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                        <i class="fas fa-search mr-2" aria-hidden="true"></i>
-                                        Filter
-                                    </button>
-                                </div>
-                                @if(isset($_GET['student_id']))
-                                    <div class="ml-3">
-                                        <a href="/TuitionsStatus">
-                                            <button type="button"
-                                                    class="text-white bg-red-700 hover:bg-red-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 RemoveFilter">
-                                                <i class="fas fa-remove mr-2" aria-hidden="true"></i>
-                                                Remove
-                                            </button>
-                                        </a>
+                            <form id="search-user" action="{{ route('SearchTuitionStatus') }}" method="get">
+                                <div class="flex w-96">
+                                    <div class="">
+                                        <select id="academic_year" name="academic_year"
+                                                class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                            <option value="" disabled selected>Select Academic Year...</option>
+                                            @foreach($academicYears as $academicYear)
+                                                <option
+                                                    @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                                    @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                @endif
-                            </div>
-                        </form>
+                                    <div>
+                                        <input type="text" id="student_id" name="student_id"
+                                               value="{{ isset($_GET['student_id']) ? $_GET['student_id'] : '' }}"
+                                               class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                               placeholder="Enter student id">
+                                    </div>
+                                    <div>
+                                        <input type="text" id="student_first_name" name="student_first_name"
+                                               value="{{ isset($_GET['student_first_name']) ? $_GET['student_first_name'] : '' }}"
+                                               class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                               placeholder="Enter student first name">
+                                    </div>
+                                    <div>
+                                        <input type="text" id="student_last_name" name="student_last_name"
+                                               value="{{ isset($_GET['student_last_name']) ? $_GET['student_last_name'] : '' }}"
+                                               class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                               placeholder="Enter student last name">
+                                    </div>
+                                    <div>
+                                        <button type="submit"
+                                                class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            <i class="fas fa-search mr-2" aria-hidden="true"></i>
+                                            Filter
+                                        </button>
+                                    </div>
+                                    @if(isset($_GET['student_id']))
+                                        <div class="ml-3">
+                                            <a href="/TuitionsStatus">
+                                                <button type="button"
+                                                        class="text-white bg-red-700 hover:bg-red-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 RemoveFilter">
+                                                    <i class="fas fa-remove mr-2" aria-hidden="true"></i>
+                                                    Remove
+                                                </button>
+                                            </a>
+                                        </div>
+                                    @endif
+                                </div>
+                            </form>
                         @endcan
                     </div>
                 </div>
-                @if( session()->has('success') )
-                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                         role="alert">
-                        <div class="flex">
-                            <div class="py-1">
-                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20">
-                                    <path
-                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-bold">{{ session()->get('success') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                @if (count($errors) > 0)
-                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                         role="alert">
-                        <div class="flex">
-                            <div class="py-1">
-                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20">
-                                    <path
-                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                @foreach ($errors->all() as $error)
-                                    <p class="font-bold">{{ $error }}</p>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                @endif
+                @include('GeneralPages.errors.session.success')
+                @include('GeneralPages.errors.session.error')
+
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     @if(empty($students))
                         <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"

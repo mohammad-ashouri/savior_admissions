@@ -11,7 +11,8 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
 
-                    <form id="search-student-appliance-statuses" action="{{ route('SearchStudentApplianceStatuses') }}" method="get">
+                    <form id="search-student-appliance-statuses" action="{{ route('SearchStudentApplianceStatuses') }}"
+                          method="get">
                         <div class="flex w-full">
                             <div class="mr-3">
                                 <select id="academic_year" name="academic_year"
@@ -47,9 +48,11 @@
                                         class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option value="" disabled selected>Select Gender...</option>
                                     <option @if(isset($_GET['gender']) and $_GET['gender']=='Male') selected
-                                            @endif value="Male">Male</option>
+                                            @endif value="Male">Male
+                                    </option>
                                     <option @if(isset($_GET['gender']) and $_GET['gender']=='Female') selected
-                                            @endif  value="Female">Female</option>
+                                            @endif  value="Female">Female
+                                    </option>
                                 </select>
                             </div>
                             <div>
@@ -73,42 +76,9 @@
                         </div>
                     </form>
                 </div>
-                @if( session()->has('success') )
-                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                         role="alert">
-                        <div class="flex">
-                            <div class="py-1">
-                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20">
-                                    <path
-                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-bold">{{ session()->get('success') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                @if (count($errors) > 0)
-                    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                         role="alert">
-                        <div class="flex">
-                            <div class="py-1">
-                                <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 20 20">
-                                    <path
-                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                @foreach ($errors->all() as $error)
-                                    <p class="font-bold">{{ $error }}</p>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                @endif
+                @include('GeneralPages.errors.session.success')
+                @include('GeneralPages.errors.session.error')
+
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     @if(empty($students))
                         <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
