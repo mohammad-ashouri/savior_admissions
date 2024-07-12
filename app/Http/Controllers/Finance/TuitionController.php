@@ -763,14 +763,32 @@ class TuitionController extends Controller
     {
         $this->validate($request, [
             'student_id' => 'nullable|exists:student_appliance_statuses,student_id',
+            'student_first_name' => 'nullable|string',
+            'student_last_name' => 'nullable|string',
             'academic_year' => 'nullable|exists:academic_years,id',
         ]);
         $me = User::find(auth()->user()->id);
         $students = [];
+        $firstName = $request->student_first_name;
+        $lastName = $request->student_last_name;
         if ($me->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder');
             if ($request->student_id) {
                 $data->where('student_id', $request->student_id);
+            }
+            if (! empty($firstName)) {
+                $data->whereHas('studentInfo', function ($query) use ($firstName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($firstName) {
+                        $query->where('first_name_en', 'like', "%$firstName%");
+                    });
+                });
+            }
+            if (! empty($lastName)) {
+                $data->whereHas('studentInfo', function ($query) use ($lastName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($lastName) {
+                        $query->where('last_name_en', 'like', "%$lastName%");
+                    });
+                });
             }
             if ($request->academic_year) {
                 $data->where('academic_year', $request->academic_year);
@@ -790,6 +808,20 @@ class TuitionController extends Controller
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
             if ($request->student_id) {
                 $data->where('student_id', $request->student_id);
+            }
+            if (! empty($firstName)) {
+                $data->whereHas('studentInfo', function ($query) use ($firstName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($firstName) {
+                        $query->where('first_name_en', 'like', "%$firstName%");
+                    });
+                });
+            }
+            if (! empty($lastName)) {
+                $data->whereHas('studentInfo', function ($query) use ($lastName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($lastName) {
+                        $query->where('last_name_en', 'like', "%$lastName%");
+                    });
+                });
             }
             if ($request->academic_year) {
                 $data->where('academic_year', $request->academic_year);
