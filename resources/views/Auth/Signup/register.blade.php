@@ -10,9 +10,11 @@
 </head>
 
 <body class="bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center min-h-screen">
-<div id="spinner" class="hidden fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50">
+<div id="spinner"
+     class="hidden fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50">
     <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
-    <p id="spinner-text" class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite"></p>
+    <p id="spinner-text"
+       class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite"></p>
 </div>
 <div class="bg-light-theme-color-base dark:bg-gray-800 lg:w-4/6 w-full lg:m-0 m-8 rounded-lg shadow-lg flex">
     <div class="lg:w-2/5 pr-8 lg:inline-block signupPic">
@@ -27,12 +29,12 @@
         @if(session()->has('errors') && session('errors')->has('MobileExists'))
             @vite(['resources/js/Swals/MobileExists.js'])
         @endif
-            @if( session()->has('SMSSendingFailed') )
-                @vite(['resources/js/Swals/SMSSendingFailed.js'])
-            @endif
-            @if( session()->has('EmailSendingFailed') )
-                @vite(['resources/js/Swals/EmailSendingFailed.js'])
-            @endif
+        @if( session()->has('SMSSendingFailed') )
+            @vite(['resources/js/Swals/SMSSendingFailed.js'])
+        @endif
+        @if( session()->has('EmailSendingFailed') )
+            @vite(['resources/js/Swals/EmailSendingFailed.js'])
+        @endif
         <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left dark:text-white">Create an Account
         </h2>
         <form id="send-code" method="post" action="{{ route('CreateAccount.register') }}" class="space-y-4 w-full">
@@ -40,7 +42,8 @@
             <div class="space-y-2">
                 <h2 class="sm:text-2xl text-2xl font-bold text-gray-900 dark:text-white">Don't have account?</h2>
                 <p class="font-normal text-base text-gray-900 dark:text-gray-400">
-                    Do not worry! You can create a new account! Choose a method, then request to create a new account.
+                    Do not worry! You can create a new account! Choose a method, then request to create a new
+                    account.
                 </p>
             </div>
             <div>
@@ -50,15 +53,15 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option selected disabled value="">Choose an option</option>
                     <option value="Mobile">Mobile</option>
-{{--                    <option value="Email">Email</option>--}}
+                    {{--                    <option value="Email">Email</option>--}}
                 </select>
             </div>
-{{--            <div class="mb-6">--}}
-{{--                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Enter your email</label>--}}
-{{--                <input type="email" id="email" name="email"--}}
-{{--                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-{{--                       placeholder="name@gmail.com">--}}
-{{--            </div>--}}
+            {{--            <div class="mb-6">--}}
+            {{--                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Enter your email</label>--}}
+            {{--                <input type="email" id="email" name="email"--}}
+            {{--                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+            {{--                       placeholder="name@gmail.com">--}}
+            {{--            </div>--}}
             <div class="mb-6">
                 <label for="phone-code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
                     country phone

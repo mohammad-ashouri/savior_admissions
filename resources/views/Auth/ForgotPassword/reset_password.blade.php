@@ -60,7 +60,7 @@
             </div>
 
             <div class="mb-6">
-                <p class="text-white text-center">capcha code</p>
+                <p class="text-white text-center">captcha code</p>
             </div>
 
             <div class="flex justify-between items-start mb-6">

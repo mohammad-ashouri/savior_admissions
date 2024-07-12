@@ -14,7 +14,7 @@
     <div class="lg:w-2/5 pr-8 lg:inline-block loginPic">
     </div>
     <div class="lg:w-1/2 w-full flex flex-col justify-center items-center p-8">
-        <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left ">Register to savior school</h2>
+        <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left ">Register At Savior International Schools</h2>
         <form id="signup-form" method="post" action="{{route('CreateAccount.createAccount')}}" class="space-y-4 w-full">
             @csrf
             @if($tokenInfo->register_method=='Email')

@@ -7,7 +7,7 @@
     @vite(['resources/css/app.css',  'resources/js/login.js'])
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Forget password</title>
+    <title>Forget Password</title>
 </head>
 
 <body class=" bg-light-theme-color-nav-base dark:bg-gray-800 flex items-center justify-center min-h-screen">
@@ -23,7 +23,8 @@
         <div class="space-y-2">
             <h2 class="sm:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Forgot your password?</h2>
             <p class="font-normal text-base text-gray-900 dark:text-gray-400">
-                Don't fret! Just select an option and type in your information and we will send you a code to reset your
+                No worries! Just select an option and type in your information and we will send you a code to reset
+                your
                 password!
             </p>
         </div>

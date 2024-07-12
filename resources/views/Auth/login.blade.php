@@ -22,7 +22,8 @@
     <div class="lg:w-2/3 w-full flex flex-col justify-center items-center p-8">
 
         <div>
-            <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left ">Sign in to savior schools</h2>
+            <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left ">Sign in to Savior International
+                School's Admission Portal</h2>
         </div>
         <div>
             @if ($errors->has('WrongToken'))
@@ -165,7 +166,7 @@
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                        Have you problem? Contact us!
+                        Facing problems? Contact us!
                     </h3>
                     <button type="button" id="close-modal-button"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
@@ -178,38 +179,45 @@
                         Taha Branch-Admissions Department
                     </p>
                     <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
-                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a href="tel:+989058384005">+989058384005
+                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a
+                            href="tel:+989058384005">+989058384005
                             <span class="text-blue-500">(Click to call)</span></a>
                     </p>
                     <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
-                        <i class="las la-phone" style="font-size: 24px"></i>Phone number: <a href="tel:+982537727780">+982537727780
+                        <i class="las la-phone" style="font-size: 24px"></i>Phone number: <a
+                            href="tel:+982537727780">+982537727780
                             <span class="text-blue-500">(Click to call)</span></a>
                     </p>
                     <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
                         <i class="las la-share-alt" style="font-size: 24px"></i>eitaa: <a
-                            class="text-blue-500 underline" href="https://eitaa.com/admissionsaviorboys">https://eitaa.com/admissionsaviorboys</a>
+                            class="text-blue-500 underline"
+                            href="https://eitaa.com/admissionsaviorboys">https://eitaa.com/admissionsaviorboys</a>
                     </p>
                     <p class="font-bold leading-relaxed text-gray-800 dark:text-gray-400">
                         Kawthar Branch-Admissions Department
                     </p>
                     <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
-                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a href="tel:+989028384002">+989028384002
+                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a
+                            href="tel:+989028384002">+989028384002
                             <span class="text-blue-500">(Click to call)</span></a>
                     </p>
                     <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
                         <i class="las la-share-alt" style="font-size: 24px"></i>eitaa: <a
-                            class="text-blue-500 underline" href="https://eitaa.com/Admissions">https://eitaa.com/Admissions</a>
+                            class="text-blue-500 underline"
+                            href="https://eitaa.com/Admissions">https://eitaa.com/Admissions</a>
                     </p>
                     <p class="font-bold leading-relaxed text-gray-800 dark:text-gray-400">
                         Tuba Branch-Admissions Department
                     </p>
                     <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
-                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a href="tel:+989333234105">+989333234105
+                        <i class="las la-mobile" style="font-size: 24px"></i>Mobile number: <a
+                            href="tel:+989333234105">+989333234105
                             <span class="text-blue-500">(Click to call)</span></a>
                     </p>
                     <p class="text-base leading-relaxed text-gray-800 dark:text-gray-400">
                         <i class="las la-share-alt" style="font-size: 24px"></i>eitaa: <a
-                            class="text-blue-500 underline" href="https://eitaa.com/KgSupervisor">https://eitaa.com/KgSupervisor</a>
+                            class="text-blue-500 underline"
+                            href="https://eitaa.com/KgSupervisor">https://eitaa.com/KgSupervisor</a>
                     </p>
 
 
