@@ -274,7 +274,7 @@ class InterviewController extends Controller
         if (empty($application)) {
             abort(403);
         }
-        if (isset($request->discount) and ! empty($request->discount)) {
+        if (isset($request->discount) and !empty($request->discount)) {
             $discountsPercentage = Discount::join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
                 ->where('discounts.academic_year', $application->applicationTimingInfo->academic_year)
                 ->where('discount_details.status', 1)
@@ -313,10 +313,10 @@ class InterviewController extends Controller
 
                 $files = [];
                 if ($request->file('document_file1')) {
-                    $document_file1_name = 'document_file1_'.now()->format('Y-m-d_H-i-s');
+                    $document_file1_name = 'document_file1_' . now()->format('Y-m-d_H-i-s');
                     $document_file1_extension = $request->file('document_file1')->getClientOriginalExtension();
                     $document_file1_path = $request->file('document_file1')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                         "$document_file1_name.$document_file1_extension"
                     );
                     $files['file1'] = [
@@ -340,10 +340,10 @@ class InterviewController extends Controller
                 }
 
                 if ($request->file('document_file2')) {
-                    $document_file2_name = 'document_file2_'.now()->format('Y-m-d_H-i-s');
+                    $document_file2_name = 'document_file2_' . now()->format('Y-m-d_H-i-s');
                     $document_file2_extension = $request->file('document_file2')->getClientOriginalExtension();
                     $document_file2_path = $request->file('document_file2')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                         "$document_file2_name.$document_file2_extension"
                     );
                     $files['file2'] = [
@@ -367,10 +367,10 @@ class InterviewController extends Controller
                 }
 
                 if ($request->file('document_file3')) {
-                    $document_file3_name = 'document_file3_'.now()->format('Y-m-d_H-i-s');
+                    $document_file3_name = 'document_file3_' . now()->format('Y-m-d_H-i-s');
                     $document_file3_extension = $request->file('document_file3')->getClientOriginalExtension();
                     $document_file3_path = $request->file('document_file3')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                         "$document_file3_name.$document_file3_extension"
                     );
                     $files['file3'] = [
@@ -394,10 +394,10 @@ class InterviewController extends Controller
                 }
 
                 if ($request->file('document_file4')) {
-                    $document_file4_name = 'document_file4_'.now()->format('Y-m-d_H-i-s');
+                    $document_file4_name = 'document_file4_' . now()->format('Y-m-d_H-i-s');
                     $document_file4_extension = $request->file('document_file4')->getClientOriginalExtension();
                     $document_file4_path = $request->file('document_file4')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                         "$document_file4_name.$document_file4_extension"
                     );
                     $files['file4'] = [
@@ -421,10 +421,10 @@ class InterviewController extends Controller
                 }
 
                 if ($request->file('document_file5')) {
-                    $document_file5_name = 'document_file5_'.now()->format('Y-m-d_H-i-s');
+                    $document_file5_name = 'document_file5_' . now()->format('Y-m-d_H-i-s');
                     $document_file5_extension = $request->file('document_file5')->getClientOriginalExtension();
                     $document_file5_path = $request->file('document_file5')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                        'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                         "$document_file5_name.$document_file5_extension"
                     );
                     $files['file5'] = [
@@ -678,7 +678,7 @@ class InterviewController extends Controller
         if (empty($application)) {
             abort(403);
         }
-        if (isset($request->discount) and ! empty($request->discount)) {
+        if (isset($request->discount) and !empty($request->discount)) {
             $discountsPercentage = Discount::join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
                 ->where('discounts.academic_year', $application->applicationTimingInfo->academic_year)
                 ->where('discount_details.status', 1)
@@ -695,10 +695,10 @@ class InterviewController extends Controller
         $interview->interview_form = json_encode($request->all(), true);
         $files = [];
         if ($request->hasFile('document_file1')) {
-            $document_file1_name = 'document_file1_'.now()->format('Y-m-d_H-i-s');
+            $document_file1_name = 'document_file1_' . now()->format('Y-m-d_H-i-s');
             $document_file1_extension = $request->file('document_file1')->getClientOriginalExtension();
             $document_file1_path = $request->file('document_file1')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                 "$document_file1_name.$document_file1_extension"
             );
             $files['file1'] = [
@@ -722,10 +722,10 @@ class InterviewController extends Controller
         }
 
         if ($request->hasFile('document_file2')) {
-            $document_file2_name = 'document_file2_'.now()->format('Y-m-d_H-i-s');
+            $document_file2_name = 'document_file2_' . now()->format('Y-m-d_H-i-s');
             $document_file2_extension = $request->file('document_file2')->getClientOriginalExtension();
             $document_file2_path = $request->file('document_file2')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                 "$document_file2_name.$document_file2_extension"
             );
             $files['file2'] = [
@@ -749,10 +749,10 @@ class InterviewController extends Controller
         }
 
         if ($request->hasFile('document_file3')) {
-            $document_file3_name = 'document_file3_'.now()->format('Y-m-d_H-i-s');
+            $document_file3_name = 'document_file3_' . now()->format('Y-m-d_H-i-s');
             $document_file3_extension = $request->file('document_file3')->getClientOriginalExtension();
             $document_file3_path = $request->file('document_file3')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                 "$document_file3_name.$document_file3_extension"
             );
             $files['file3'] = [
@@ -776,10 +776,10 @@ class InterviewController extends Controller
         }
 
         if ($request->hasFile('document_file4')) {
-            $document_file4_name = 'document_file4_'.now()->format('Y-m-d_H-i-s');
+            $document_file4_name = 'document_file4_' . now()->format('Y-m-d_H-i-s');
             $document_file4_extension = $request->file('document_file4')->getClientOriginalExtension();
             $document_file4_path = $request->file('document_file4')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                 "$document_file4_name.$document_file4_extension"
             );
             $files['file4'] = [
@@ -803,10 +803,10 @@ class InterviewController extends Controller
         }
 
         if ($request->hasFile('document_file5')) {
-            $document_file5_name = 'document_file5_'.now()->format('Y-m-d_H-i-s');
+            $document_file5_name = 'document_file5_' . now()->format('Y-m-d_H-i-s');
             $document_file5_extension = $request->file('document_file5')->getClientOriginalExtension();
             $document_file5_path = $request->file('document_file5')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                'public/uploads/Documents/' . $studentApplianceStatus->student_id . '/Appliance_' . $studentApplianceStatus->id . '/Financial_Files',
                 "$document_file5_name.$document_file5_extension"
             );
             $files['file5'] = [
@@ -901,9 +901,13 @@ class InterviewController extends Controller
     {
         $this->validate($request, [
             'student_id' => 'nullable|exists:student_appliance_statuses,student_id',
+            'student_first_name' => 'nullable|string',
+            'student_last_name' => 'nullable|string',
             'application_id' => 'nullable|exists:applications,id',
         ]);
         $studentId = $request->student_id;
+        $firstName = $request->student_first_name;
+        $lastName = $request->student_last_name;
         $applicationId = $request->application_id;
 
         $me = User::find(auth()->user()->id);
@@ -915,19 +919,6 @@ class InterviewController extends Controller
                 ->with('reservationInfo')
                 ->with('interview')
                 ->where('applications.reserved', 1);
-            if (! empty($studentId)) {
-                $data->whereHas('reservationInfo', function ($query) use ($studentId) {
-                    $query->where('student_id', $studentId);
-                });
-            }
-            if (! empty($applicationId)) {
-                $data->where('id', $applicationId);
-            }
-            $interviews = $data->orderBy('applications.interviewed', 'asc') // Corrected column name
-                ->orderBy('applications.date', 'asc')
-                ->orderBy('applications.ends_to', 'asc')
-                ->orderBy('applications.start_from', 'asc')
-                ->paginate(150);
         } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
@@ -947,20 +938,6 @@ class InterviewController extends Controller
                 ->with('interview')
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('applications.reserved', 1);
-            if (! empty($studentId)) {
-                $data->whereHas('reservationInfo', function ($query) use ($studentId) {
-                    $query->where('student_id', $studentId);
-                });
-            }
-            if (! empty($applicationId)) {
-                $data->where('id', $applicationId);
-            }
-            $interviews = $data->orderBy('applications.interviewed', 'asc') // Corrected column name
-                ->orderBy('applications.date', 'asc')
-                ->orderBy('applications.ends_to', 'asc')
-                ->orderBy('applications.start_from', 'asc')
-                ->paginate(150);
-
         } elseif ($me->hasRole('Interviewer')) {
             $data = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -972,22 +949,39 @@ class InterviewController extends Controller
                         ->orWhere('second_interviewer', $me->id);
                 })
                 ->where('applications.reserved', 1);
-            if (! empty($studentId)) {
-                $data->whereHas('reservationInfo', function ($query) use ($studentId) {
-                    $query->where('student_id', $studentId);
-                });
-            }
-            if (! empty($applicationId)) {
-                $data->where('id', $applicationId);
-            }
-            $interviews = $data->orderBy('applications.interviewed', 'asc') // Corrected column name
-                ->orderBy('applications.date', 'asc')
-                ->orderBy('applications.ends_to', 'asc')
-                ->orderBy('applications.start_from', 'asc')
-                ->paginate(150);
-
         }
 
+        if (!empty($studentId)) {
+            $data->whereHas('reservationInfo', function ($query) use ($studentId) {
+                $query->where('student_id', $studentId);
+            });
+        }
+        if (!empty($applicationId)) {
+            $data->where('id', $applicationId);
+        }
+        if (!empty($firstName)) {
+            $data->whereHas('reservationInfo', function ($query) use ($firstName) {
+                $query->whereHas('studentInfo', function ($query) use ($firstName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($firstName) {
+                        $query->where('first_name_en', 'like', "%$firstName%");
+                    });
+                });
+            });
+        }
+        if (!empty($lastName)) {
+            $data->whereHas('reservationInfo', function ($query) use ($lastName) {
+                $query->whereHas('studentInfo', function ($query) use ($lastName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($lastName) {
+                        $query->where('last_name_en', 'like', "%$lastName%");
+                    });
+                });
+            });
+        }
+        $interviews = $data->orderBy('applications.interviewed', 'asc') // Corrected column name
+        ->orderBy('applications.date', 'asc')
+            ->orderBy('applications.ends_to', 'asc')
+            ->orderBy('applications.start_from', 'asc')
+            ->paginate(150);
         if (empty($interviews) or $interviews->isEmpty()) {
             $interviews = [];
         }
