@@ -100,6 +100,8 @@
                         {{--                        </button>--}}
                     </div>
                 </div>
+                @include('GeneralPages.errors.session.error')
+                @include('GeneralPages.errors.session.success')
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                     @if(empty($data))

@@ -50,7 +50,7 @@ class UserController extends Controller
                 }
             }
 
-            return view('users.index', compact('data', 'roles','me'));
+            return view('users.index', compact('data', 'roles', 'me'));
         }
         abort(403);
     }
@@ -83,7 +83,7 @@ class UserController extends Controller
             'last_name_fa' => 'required',
             'first_name_en' => 'required',
             'last_name_en' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email',
             'mobile' => 'required|integer|unique:users,mobile',
             'password' => 'required|unique:users,mobile',
             'role' => 'required',
@@ -91,9 +91,17 @@ class UserController extends Controller
         ]);
 
         $user = new User;
-        $user->email = $request->email;
-        $user->mobile = $request->mobile;
+        if ($request->input('role') != 'Student') {
+            $user->email = $request->email;
+            $user->mobile = $request->mobile;
+        }
         $user->password = Hash::make($request->password);
+        if ($request->input('role') == 'Student') {
+            $lastStudent = User::whereHas('roles', function ($query) {
+                $query->where('name', 'Student');
+            })->orderByDesc('id')->first();
+            $user->id = $lastStudent->id + 1;
+        }
         //        if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and $request->role == 'Student') {
         //            $additionalInformation = [
         //                'school_id' => $request->school,
@@ -110,9 +118,9 @@ class UserController extends Controller
             $generalInformation->first_name_en = $request->first_name_en;
             $generalInformation->last_name_en = $request->last_name_en;
             $generalInformation->save();
+
             $user->assignRole($request->input('role'));
         }
-
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');
     }
@@ -250,6 +258,7 @@ class UserController extends Controller
         if ($data->isEmpty()) {
             $data = [];
         }
+
         return view('users.index', compact('data', 'roles', 'searchEduCode', 'searchFirstName', 'searchLastName', 'selectedRole'));
     }
 
