@@ -10,6 +10,16 @@
                 <div class="relative hidden md:block w-96">
                     <form action="{{ route('searchTuitionInvoices') }}" method="get">
                         <div class="flex w-96">
+                            <div class="mr-3">
+                                <select id="academic_year" name="academic_year"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    @foreach($academicYears as $academicYear)
+                                        <option
+                                            @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                            @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div>
                                 <input type="text" id="student_id" name="student_id"
                                        value="{{ isset($_GET['student_id']) ? $_GET['student_id'] : '' }}"
@@ -260,10 +270,5 @@
 
             </div>
         </div>
-        @if(!empty($tuitionInvoiceDetails))
-            <div class="pagination text-center">
-                {{ $tuitionInvoiceDetails->links() }}
-            </div>
-        @endif
     </div>
 @endsection
