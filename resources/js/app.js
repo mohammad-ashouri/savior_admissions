@@ -1204,73 +1204,73 @@ $(document).ready(function () {
 
         $('#set-interview').submit(function (e) {
             e.preventDefault();
-
-            function getDiscountDetail(id) {
-                return new Promise(function (resolve, reject) {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/GetDiscountPercentage',
-                        data: {
-                            discount_id: id,
-                        },
-                        success: function (response) {
-                            resolve(response);
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            reject('Unprocessable Entity');
-                        }
-                    });
-                });
-            }
-
-            if ($('.discount-checks:checked').length > 0) {
-                let promises = [];
-
-                $('.discount-checks:checked').each(function () {
-                    promises.push(getDiscountDetail($(this).val()));
-                });
-
-                Promise.all(promises).then(function (responses) {
-                    let totalDiscounts = 0;
-                    responses.forEach(function (response) {
-                        totalDiscounts += parseInt(response);
-                    });
-                    // if (totalDiscounts > 30) {
-                    //     swalFire('Error', "The discount amount selected by you is higher than 30%", 'error', 'Try again');
-                    // }
-                    // else {
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: 'Your interview will be submit.',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        cancelButtonText: 'No',
-                        confirmButtonText: 'Yes',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $(this).off('submit');
-                            $(this).submit();
-                        }
-                    });
-                    // }
-                }).catch(function (error) {
-                    swalFire('Error', error, 'error', 'Try again');
-                });
-            } else {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Your interview will be submit.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Yes',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $(this).off('submit');
-                        $(this).submit();
-                    }
-                });
-            }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your interview will be submit.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit');
+                    $(this).submit();
+                }
+            });
+            // function getDiscountDetail(id) {
+            //     return new Promise(function (resolve, reject) {
+            //         $.ajax({
+            //             type: 'GET',
+            //             url: '/GetDiscountPercentage',
+            //             data: {
+            //                 discount_id: id,
+            //             },
+            //             success: function (response) {
+            //                 resolve(response);
+            //             },
+            //             error: function (xhr, textStatus, errorThrown) {
+            //                 reject('Unprocessable Entity');
+            //             }
+            //         });
+            //     });
+            // }
+            //
+            // if ($('.discount-checks:checked').length > 0) {
+            //     let promises = [];
+            //
+            //     $('.discount-checks:checked').each(function () {
+            //         promises.push(getDiscountDetail($(this).val()));
+            //     });
+            //
+            //     Promise.all(promises).then(function (responses) {
+            //         let totalDiscounts = 0;
+            //         responses.forEach(function (response) {
+            //             totalDiscounts += parseInt(response);
+            //         });
+            //         // if (totalDiscounts > 30) {
+            //         //     swalFire('Error', "The discount amount selected by you is higher than 30%", 'error', 'Try again');
+            //         // }
+            //         // else {
+            //
+            //         // }
+            //     }).catch(function (error) {
+            //         swalFire('Error', error, 'error', 'Try again');
+            //     });
+            // } else {
+            //     Swal.fire({
+            //         title: 'Are you sure?',
+            //         text: 'Your interview will be submit.',
+            //         icon: 'warning',
+            //         showCancelButton: true,
+            //         cancelButtonText: 'No',
+            //         confirmButtonText: 'Yes',
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             $(this).off('submit');
+            //             $(this).submit();
+            //         }
+            //     });
+            // }
 
         });
 
