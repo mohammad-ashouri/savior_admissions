@@ -53,6 +53,9 @@
             @if( $errors->has('ServerError') )
                 @vite(['resources/js/Swals/ServerError.js'])
             @endif
+            @if( $errors->has('DeactivatedUser') )
+                @vite(['resources/js/Swals/DeactivatedUser.js'])
+            @endif
         </div>
         <form id="login-form" method="post" action="/login" class="space-y-4 w-full">
             @csrf

@@ -32,7 +32,7 @@ class LoginController extends Controller
 
     public function showLoginForm(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
-        if (! \session('id') or ! Auth::check()) {
+        if (!\session('id') or !Auth::check()) {
 
             $countryPhoneCodes = CountryPhoneCodes::where('phonecode', '!=', 0)
                 ->orderBy('phonecode', 'asc')
@@ -64,7 +64,7 @@ class LoginController extends Controller
 
         // Uncomment if you want to include captcha validation
         $sessionCaptcha = session('captcha')['key'];
-        if (! password_verify($captcha, $sessionCaptcha)) {
+        if (!password_verify($captcha, $sessionCaptcha)) {
             return redirect()->back()->withErrors([
                 'captchaError' => 'Captcha is wrong!',
             ])->withInput();
@@ -105,20 +105,27 @@ class LoginController extends Controller
         }
 
         $phoneCode = CountryPhoneCodes::find($request->input('phone_code'));
-        $user = User::where('mobile', '+'.$phoneCode->phonecode.$request->input('mobile'))->first();
+        $user = User::where('mobile', '+' . $phoneCode->phonecode . $request->input('mobile'))->where('status', 0)->first();
+        if (empty($user)) {
+            return redirect()->back()->withErrors([
+                'DeactivatedUser' => 'User deactivated!',
+            ]);
+        }
+
+        $user = User::where('mobile', '+' . $phoneCode->phonecode . $request->input('mobile'))->where('status', 1)->first();
 
         if (empty($user)) {
             return redirect()->back()->withErrors([
                 'MobileError' => 'Wrong mobile or password',
             ]);
         }
-        if (! password_verify($request->password, $user->password)) {
+        if (!password_verify($request->password, $user->password)) {
             return redirect()->back()->withErrors([
                 'MobileError' => 'Wrong mobile or password',
             ])->withInput();
         }
 
-        $request['mobile'] = '+'.$phoneCode->phonecode.$request->mobile;
+        $request['mobile'] = '+' . $phoneCode->phonecode . $request->mobile;
         $credentials = $request->only('mobile', 'password');
 
         //                break;
