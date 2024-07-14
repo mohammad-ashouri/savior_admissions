@@ -25,7 +25,6 @@ class TuitionPaymentController extends Controller
     public function index()
     {
         $me = User::find(auth()->user()->id);
-        $academicYears = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->where('student_informations.guardian', auth()->user()->id)
@@ -47,13 +46,13 @@ class TuitionPaymentController extends Controller
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->paginate(150);
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
         } elseif ($me->hasRole('Super Admin')) {
             $tuitionInvoices = TuitionInvoices::orderBy('created_at', 'asc')->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->paginate(150);
             $academicYears = AcademicYear::get();
         }
         $tuitionInvoiceDetails = [];
-
         return view('Finance.TuitionInvoices.index', compact('tuitionInvoiceDetails', 'me', 'academicYears'));
     }
 
@@ -117,8 +116,9 @@ class TuitionPaymentController extends Controller
                 ->whereNotNull('tuition_payment_status')
                 ->whereIn('student_appliance_statuses.academic_year', $academicYears)
                 ->pluck('student_appliance_statuses.id')->toArray();
-            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->where('appliance_id', $studentApplianceStatus->id)->pluck('id')->toArray();
+            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->get();
+            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
         } elseif ($me->hasRole('Super Admin')) {
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $studentApplianceStatus)->orderBy('created_at', 'asc')->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')
