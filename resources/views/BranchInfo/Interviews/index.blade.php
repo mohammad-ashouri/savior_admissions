@@ -317,7 +317,7 @@
                                                                 Details
                                                             </a>
                                                         @endcan
-                                                        @if(isset($studentApplianceStatus->tuition_payment_status) and $studentApplianceStatus->tuition_payment_status!='Paid' and $me->hasRole('Financial Manager'))
+                                                        @if( $studentApplianceStatus->tuition_payment_status!='Paid' and $me->hasRole('Financial Manager'))
                                                             @can('interview-edit')
                                                                 <a href="/Interviews/{{ $interview->id }}/edit"
                                                                    type="button"
