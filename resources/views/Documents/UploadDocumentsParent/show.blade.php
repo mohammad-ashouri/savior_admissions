@@ -186,18 +186,14 @@
                                                     </a>
                                                 </div>
                                             @else
-                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                                >
-                                                    <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                                            data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['father_passport_file']) }}"
-                                                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                            type="button">
+                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                    <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['father_passport_file']) }}"
+                                                       data-pswp-width="1669"
+                                                       data-pswp-height="2500">
                                                         <img
-                                                            class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                            style="width: 400px; height: 200px"
                                                             src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['father_passport_file']) }}"
-                                                            alt="Document Not Found!">
-                                                    </button>
+                                                            alt="Document Not Found!"/>
+                                                    </a>
                                                 </div>
                                             @endif
                                         </div>
@@ -298,19 +294,15 @@
                                                     </a>
                                                 </div>
                                             @else
-                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                                >
-                                                    <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                                            data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['mother_passport_file']) }}"
-                                                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                            type="button">
-                                                        <img
-                                                            class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                            style="width: 400px; height: 200px"
-                                                            src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['mother_passport_file']) }}"
-                                                            alt="Document Not Found!">
-                                                    </button>
-                                                </div>
+                                                    <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                        <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['mother_passport_file']) }}"
+                                                           data-pswp-width="1669"
+                                                           data-pswp-height="2500">
+                                                            <img
+                                                                src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['mother_passport_file']) }}"
+                                                                alt="Document Not Found!"/>
+                                                        </a>
+                                                    </div>
                                             @endif
                                         </div>
                                     </div>
@@ -365,17 +357,14 @@
                                                 </a>
                                             </div>
                                         @else
-                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                            >
-                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['latest_report_card']) }}"
-                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                        type="button">
-                                                    <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                         style="width: 400px; height: 200px"
-                                                         src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['latest_report_card']) }}"
-                                                         alt="Document Not Found!">
-                                                </button>
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['latest_report_card']) }}"
+                                                   data-pswp-width="1669"
+                                                   data-pswp-height="2500">
+                                                    <img
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['latest_report_card']) }}"
+                                                        alt="Document Not Found!"/>
+                                                </a>
                                             </div>
                                         @endif
                                     </div>
@@ -487,17 +476,14 @@
                                                 </a>
                                             </div>
                                         @else
-                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                            >
-                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['student_passport_file']) }}"
-                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                        type="button">
-                                                    <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                         style="width: 400px; height: 200px"
-                                                         src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['student_passport_file']) }}"
-                                                         alt="Document Not Found!">
-                                                </button>
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['student_passport_file']) }}"
+                                                   data-pswp-width="1669"
+                                                   data-pswp-height="2500">
+                                                    <img
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['student_passport_file']) }}"
+                                                        alt="Document Not Found"/>
+                                                </a>
                                             </div>
                                         @endif
                                     </div>
@@ -514,20 +500,15 @@
                                                     </a>
                                                 </div>
                                             @else
-                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                                >
-                                                    <button data-modal-target="openImage"
-                                                            data-modal-toggle="openImage"
-                                                            data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}"
-                                                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                            type="button">
+                                                <div
+                                                    class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                    <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}"
+                                                       data-pswp-width="1669"
+                                                       data-pswp-height="2500">
                                                         <img
-                                                            class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                            style="width: 400px; height: 200px"
-                                                            id="residence_document_file_preview"
                                                             src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}"
-                                                            alt="Document Not Found!">
-                                                    </button>
+                                                            alt=""/>
+                                                    </a>
                                                 </div>
                                             @endif
                                         </div>
