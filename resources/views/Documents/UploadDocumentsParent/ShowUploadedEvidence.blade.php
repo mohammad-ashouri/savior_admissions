@@ -186,18 +186,14 @@
                                                     </a>
                                                 </div>
                                             @else
-                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                                >
-                                                    <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                                            data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['father_passport_file']) }}"
-                                                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                            type="button">
+                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                    <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['father_passport_file']) }}"
+                                                       data-pswp-width="1669"
+                                                       data-pswp-height="1500">
                                                         <img
-                                                            class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                            style="width: 400px; height: 200px"
                                                             src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['father_passport_file']) }}"
-                                                            alt="Document Not Found!">
-                                                    </button>
+                                                            alt="Document Not Found!"/>
+                                                    </a>
                                                 </div>
                                             @endif
                                         </div>
@@ -298,18 +294,14 @@
                                                     </a>
                                                 </div>
                                             @else
-                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                                >
-                                                    <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                                            data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['mother_passport_file']) }}"
-                                                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                            type="button">
+                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                    <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['mother_passport_file']) }}"
+                                                       data-pswp-width="1669"
+                                                       data-pswp-height="1500">
                                                         <img
-                                                            class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                            style="width: 400px; height: 200px"
                                                             src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['mother_passport_file']) }}"
-                                                            alt="Document Not Found!">
-                                                    </button>
+                                                            alt="Document Not Found!"/>
+                                                    </a>
                                                 </div>
                                             @endif
                                         </div>
@@ -365,17 +357,14 @@
                                                 </a>
                                             </div>
                                         @else
-                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                            >
-                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['latest_report_card']) }}"
-                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                        type="button">
-                                                    <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                         style="width: 400px; height: 200px"
-                                                         src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['latest_report_card']) }}"
-                                                         alt="Document Not Found!">
-                                                </button>
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['latest_report_card']) }}"
+                                                   data-pswp-width="1669"
+                                                   data-pswp-height="1500">
+                                                    <img
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['latest_report_card']) }}"
+                                                        alt="Document Not Found!"/>
+                                                </a>
                                             </div>
                                         @endif
                                     </div>
@@ -487,17 +476,14 @@
                                                 </a>
                                             </div>
                                         @else
-                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                            >
-                                                <button data-modal-target="openImage" data-modal-toggle="openImage"
-                                                        data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['student_passport_file']) }}"
-                                                        class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                        type="button">
-                                                    <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                         style="width: 400px; height: 200px"
-                                                         src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['student_passport_file']) }}"
-                                                         alt="Document Not Found!">
-                                                </button>
+                                            <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['student_passport_file']) }}"
+                                                   data-pswp-width="1669"
+                                                   data-pswp-height="1500">
+                                                    <img
+                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['student_passport_file']) }}"
+                                                        alt="Document Not Found!"/>
+                                                </a>
                                             </div>
                                         @endif
                                     </div>
@@ -514,20 +500,14 @@
                                                     </a>
                                                 </div>
                                             @else
-                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                                >
-                                                    <button data-modal-target="openImage"
-                                                            data-modal-toggle="openImage"
-                                                            data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}"
-                                                            class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                            type="button">
+                                                <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                    <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}"
+                                                       data-pswp-width="1669"
+                                                       data-pswp-height="1500">
                                                         <img
-                                                            class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                                            style="width: 400px; height: 200px"
-                                                            id="residence_document_file_preview"
                                                             src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['residence_document_file']) }}"
-                                                            alt="Document Not Found!">
-                                                    </button>
+                                                            alt="Document Not Found!"/>
+                                                    </a>
                                                 </div>
                                             @endif
                                         </div>
@@ -535,36 +515,36 @@
                                 </div>
                             </div>
                             <!-- openImage Modal -->
-                            <div id="openImage" tabindex="-1" aria-hidden="true"
-                                 class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                                <div class="relative w-full max-w-2xl max-h-full">
-                                    <!-- Modal content -->
-                                    <div class="relative  rounded-lg shadow ">
-                                        <!-- Modal header -->
-                                        <div class="flex items-start justify-between ">
+{{--                            <div id="openImage" tabindex="-1" aria-hidden="true"--}}
+{{--                                 class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">--}}
+{{--                                <div class="relative w-full max-w-2xl max-h-full">--}}
+{{--                                    <!-- Modal content -->--}}
+{{--                                    <div class="relative  rounded-lg shadow ">--}}
+{{--                                        <!-- Modal header -->--}}
+{{--                                        <div class="flex items-start justify-between ">--}}
 
-                                            <button type="button"
-                                                    class="text-gray-400 bg-transparent  rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center  dark:hover:text-white"
-                                                    data-modal-hide="openImage">
-                                                <svg class="w-3 h-3" aria-hidden="true"
-                                                     xmlns="http://www.w3.org/2000/svg"
-                                                     fill="none" viewBox="0 0 14 14">
-                                                    <path stroke="currentColor" stroke-linecap="round"
-                                                          stroke-linejoin="round"
-                                                          stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                                </svg>
-                                                <span class="sr-only">Close modal</span>
-                                            </button>
-                                        </div>
-                                        <!-- Modal body -->
-                                        <div class="text-center">
-                                            <img class="h-auto max-w-full rounded-lg " id="image-for-show" src=""
-                                                 alt="image">
-                                        </div>
+{{--                                            <button type="button"--}}
+{{--                                                    class="text-gray-400 bg-transparent  rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center  dark:hover:text-white"--}}
+{{--                                                    data-modal-hide="openImage">--}}
+{{--                                                <svg class="w-3 h-3" aria-hidden="true"--}}
+{{--                                                     xmlns="http://www.w3.org/2000/svg"--}}
+{{--                                                     fill="none" viewBox="0 0 14 14">--}}
+{{--                                                    <path stroke="currentColor" stroke-linecap="round"--}}
+{{--                                                          stroke-linejoin="round"--}}
+{{--                                                          stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>--}}
+{{--                                                </svg>--}}
+{{--                                                <span class="sr-only">Close modal</span>--}}
+{{--                                            </button>--}}
+{{--                                        </div>--}}
+{{--                                        <!-- Modal body -->--}}
+{{--                                        <div class="text-center">--}}
+{{--                                            <img class="h-auto max-w-full rounded-lg " id="image-for-show" src=""--}}
+{{--                                                 alt="image">--}}
+{{--                                        </div>--}}
 
-                                    </div>
-                                </div>
-                            </div>
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <a href="{{ url()->previous() }}">
                                 <button type="button"
                                         class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

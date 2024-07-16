@@ -189,7 +189,7 @@
                                                 <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
                                                     <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['father_passport_file']) }}"
                                                        data-pswp-width="1669"
-                                                       data-pswp-height="2500">
+                                                       data-pswp-height="1500">
                                                         <img
                                                             src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $files['father_passport_file']) }}"
                                                             alt="Document Not Found!"/>
