@@ -1046,12 +1046,12 @@ $(document).ready(function () {
         $(document).ready(function () {
             // Function for converting Persian numbers to English
             function convertToEnglish(input) {
-                var value = input.value;
-                var newValue = '';
+                let value = input.value;
+                let newValue = '';
 
                 // Convert each Persian number to its English equivalent
-                for (var i = 0; i < value.length; i++) {
-                    var charCode = value.charCodeAt(i);
+                for (let i = 0; i < value.length; i++) {
+                    let charCode = value.charCodeAt(i);
                     if (charCode >= 1776 && charCode <= 1785) {
                         // Convert Persian number to English by subtracting 1728 from the character code
                         newValue += String.fromCharCode(charCode - 1728);
@@ -1176,12 +1176,12 @@ $(document).ready(function () {
         $(document).ready(function () {
             // Function for converting Persian numbers to English
             function convertToEnglish(input) {
-                var value = input.value;
-                var newValue = '';
+                let value = input.value;
+                let newValue = '';
 
                 // Convert each Persian number to its English equivalent
-                for (var i = 0; i < value.length; i++) {
-                    var charCode = value.charCodeAt(i);
+                for (let i = 0; i < value.length; i++) {
+                    let charCode = value.charCodeAt(i);
                     if (charCode >= 1776 && charCode <= 1785) {
                         // Convert Persian number to English by subtracting 1728 from the character code
                         newValue += String.fromCharCode(charCode - 1728);
@@ -1669,13 +1669,13 @@ $(document).ready(function () {
                     swalFire('Done', response.message, 'success', 'Ok');
                 }, error: function (xhr, textStatus, errorThrown) {
                     // Parse the JSON response to access error data
-                    var errorData = JSON.parse(xhr.responseText);
+                    let errorData = JSON.parse(xhr.responseText);
 
                     // Access the first error message
-                    var firstErrorMessage = '';
-                    var foundFirstError = false; // Flag to track whether the first error is found
+                    let firstErrorMessage = '';
+                    let foundFirstError = false; // Flag to track whether the first error is found
 
-                    for (var key in errorData.errors) {
+                    for (let key in errorData.errors) {
                         if (errorData.errors.hasOwnProperty(key) && !foundFirstError) {
                             firstErrorMessage = errorData.errors[key];
                             foundFirstError = true; // Set the flag to true to stop the loop
