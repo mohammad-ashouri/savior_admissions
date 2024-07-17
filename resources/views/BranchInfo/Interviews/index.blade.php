@@ -231,12 +231,12 @@
                                     <td class="border text-center">
                                         <div class="flex">
                                             <!-- Modal toggle -->
+                                            @php
+                                                $studentApplianceStatus=StudentApplianceStatus::where('academic_year',$interview->applicationTimingInfo->academic_year)->where('student_id',$interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+                                            @endphp
                                             @if($interview->reservationInfo->payment_status==1)
                                                 @switch($interview->Interviewed)
                                                     @case(0)
-                                                        @php
-                                                            $studentApplianceStatus=StudentApplianceStatus::where('academic_year',$interview->applicationTimingInfo->academic_year)->where('student_id',$interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
-                                                        @endphp
                                                         @switch($studentApplianceStatus->interview_status)
                                                             @case('Rejected')
                                                             @case('Accepted')
@@ -306,9 +306,6 @@
                                                         @endif
                                                         @break
                                                     @case('1')
-                                                        @php
-                                                            $studentApplianceStatus=StudentApplianceStatus::where('academic_year',$interview->applicationTimingInfo->academic_year)->where('student_id',$interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
-                                                        @endphp
                                                         @can('interview-show')
                                                             <a href="{{ route('Interviews.show',$interview->id) }}"
                                                                type="button"
@@ -317,7 +314,7 @@
                                                                 Details
                                                             </a>
                                                         @endcan
-                                                        @if( $studentApplianceStatus->tuition_payment_status!='Paid' and $me->hasRole('Financial Manager'))
+                                                        @if($studentApplianceStatus?->approval_status=='0' and $me->hasRole('Financial Manager'))
                                                             @can('interview-edit')
                                                                 <a href="/Interviews/{{ $interview->id }}/edit"
                                                                    type="button"
