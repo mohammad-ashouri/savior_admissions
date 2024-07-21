@@ -64,6 +64,7 @@ class StudentController extends Controller
                 ->where('tuition_payment_status', 'Paid')
                 ->orderBy('academic_year', 'desc')->paginate(100);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+
             return view('Students.index', compact('students', 'academicYears', 'me'));
 
         }
@@ -71,13 +72,14 @@ class StudentController extends Controller
         if ($students->isEmpty()) {
             $students = [];
         }
+
         return view('Students.index', compact('students', 'me'));
 
     }
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        abort('403');
+        //        abort('403');
         $birthplaces = Country::orderBy('en_short_name', 'asc')->get();
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct()->get();
         $identificationTypes = CurrentIdentificationType::get();
@@ -106,10 +108,23 @@ class StudentController extends Controller
         //        $current_identification_type = $request->current_identification_type;
         $birthplace = $request->birthplace;
         $birthdate = $request->birthdate;
-        //        $current_identification_code = $request->current_identification_code;
+        $faragir_code = $request->faragir_code;
         $gender = $request->gender;
 
         $me = User::find(auth()->user()->id);
+
+        //Check student information
+        $allMyStudents = StudentInformation::where('guardian', $me->id)->get()->pluck('student_id')->toArray();
+        $allGeneralInformation=GeneralInformation::whereIn('user_id',$allMyStudents)
+            ->where('first_name_en',$request->first_name_en)
+            ->where('last_name_en',$request->last_name_en)
+            ->where('gender',$request->gender)
+            ->first();
+
+        if (!empty($allGeneralInformation)){
+            return redirect()->back()->withErrors('Duplicate student entered. Please check your student list!')->withInput();
+        }
+
         $lastStudent = User::whereHas('roles', function ($query) {
             $query->where('name', 'Student');
         })->orderByDesc('id')->first();
@@ -138,7 +153,7 @@ class StudentController extends Controller
         $studentInformation->guardian = auth()->user()->id;
         $studentInformation->current_nationality = $nationality;
         //        $studentInformation->current_identification_type = $current_identification_type;
-        //        $studentInformation->current_identification_code = $current_identification_code;
+        $studentInformation->current_identification_code = $faragir_code;
         $studentInformation->save();
 
         return redirect()->route('Students.index')
@@ -162,6 +177,7 @@ class StudentController extends Controller
             if (empty($studentInformations)) {
                 abort(403);
             }
+
             return view('Students.show', compact('studentInformations'));
         } elseif ($me->hasRole('Super Admin')) {
             $studentInformations = StudentInformation::with('studentInfo')
@@ -175,6 +191,7 @@ class StudentController extends Controller
             if (empty($studentInformations)) {
                 abort(403);
             }
+
             return view('Students.show', compact('studentInformations'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
@@ -198,6 +215,7 @@ class StudentController extends Controller
             if (empty($studentInformations)) {
                 abort(403);
             }
+
             return view('Students.show', compact('studentInformations'));
         }
 
@@ -292,6 +310,7 @@ class StudentController extends Controller
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
+
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::where('guardian', auth()->user()->id)
@@ -311,6 +330,7 @@ class StudentController extends Controller
                 ->whereIn('academic_year', $academicYears)
                 ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
 
         }
@@ -318,6 +338,7 @@ class StudentController extends Controller
         if ($students->isEmpty() or empty($students)) {
             $students = [];
         }
+
         return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
     }
 
@@ -398,23 +419,23 @@ class StudentController extends Controller
                 $data->where('student_id', $studentId);
             }
             if (! empty($studentFirstName)) {
-                $data->whereHas('studentInfo',function($query) use ($studentFirstName){
-                    $query->whereHas('generalInformationInfo',function($query) use ($studentFirstName){
-                        $query->where('first_name_en','like',"%$studentFirstName%");
+                $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($studentFirstName) {
+                        $query->where('first_name_en', 'like', "%$studentFirstName%");
                     });
                 });
             }
             if (! empty($studentLastName)) {
-                $data->whereHas('studentInfo',function($query) use ($studentLastName){
-                    $query->whereHas('generalInformationInfo',function($query) use ($studentLastName){
-                        $query->where('first_last_en','like',"%$studentLastName%");
+                $data->whereHas('studentInfo', function ($query) use ($studentLastName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($studentLastName) {
+                        $query->where('first_last_en', 'like', "%$studentLastName%");
                     });
                 });
             }
             if (! empty($gender)) {
-                $data->whereHas('studentInfo',function($query) use ($gender){
-                    $query->whereHas('generalInformationInfo',function($query) use ($gender){
-                        $query->where('gender',$gender);
+                $data->whereHas('studentInfo', function ($query) use ($gender) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
+                        $query->where('gender', $gender);
                     });
                 });
             }
@@ -443,23 +464,23 @@ class StudentController extends Controller
                 $data->where('student_id', $studentId);
             }
             if (! empty($studentFirstName)) {
-                $data->whereHas('studentInfo',function($query) use ($studentFirstName){
-                    $query->whereHas('generalInformationInfo',function($query) use ($studentFirstName){
-                        $query->where('first_name_en','like',"%$studentFirstName%");
+                $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($studentFirstName) {
+                        $query->where('first_name_en', 'like', "%$studentFirstName%");
                     });
                 });
             }
             if (! empty($studentLastName)) {
-                $data->whereHas('studentInfo',function($query) use ($studentLastName){
-                    $query->whereHas('generalInformationInfo',function($query) use ($studentLastName){
-                        $query->where('first_last_en','like',"%$studentLastName%");
+                $data->whereHas('studentInfo', function ($query) use ($studentLastName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($studentLastName) {
+                        $query->where('first_last_en', 'like', "%$studentLastName%");
                     });
                 });
             }
             if (! empty($gender)) {
-                $data->whereHas('studentInfo',function($query) use ($gender){
-                    $query->whereHas('generalInformationInfo',function($query) use ($gender){
-                        $query->where('gender',$gender);
+                $data->whereHas('studentInfo', function ($query) use ($gender) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
+                        $query->where('gender', $gender);
                     });
                 });
             }
@@ -487,23 +508,23 @@ class StudentController extends Controller
                 $data->where('student_id', $studentId);
             }
             if (! empty($studentFirstName)) {
-                $data->whereHas('studentInfo',function($query) use ($studentFirstName){
-                    $query->whereHas('generalInformationInfo',function($query) use ($studentFirstName){
-                        $query->where('first_name_en','like',"%$studentFirstName%");
+                $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($studentFirstName) {
+                        $query->where('first_name_en', 'like', "%$studentFirstName%");
                     });
                 });
             }
             if (! empty($studentLastName)) {
-                $data->whereHas('studentInfo',function($query) use ($studentLastName){
-                    $query->whereHas('generalInformationInfo',function($query) use ($studentLastName){
-                        $query->where('first_last_en','like',"%$studentLastName%");
+                $data->whereHas('studentInfo', function ($query) use ($studentLastName) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($studentLastName) {
+                        $query->where('first_last_en', 'like', "%$studentLastName%");
                     });
                 });
             }
             if (! empty($gender)) {
-                $data->whereHas('studentInfo',function($query) use ($gender){
-                    $query->whereHas('generalInformationInfo',function($query) use ($gender){
-                        $query->where('gender',$gender);
+                $data->whereHas('studentInfo', function ($query) use ($gender) {
+                    $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
+                        $query->where('gender', $gender);
                     });
                 });
             }
@@ -520,6 +541,7 @@ class StudentController extends Controller
             ]);
 
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
 
         }
@@ -527,6 +549,7 @@ class StudentController extends Controller
         if ($students->isEmpty() or empty($students)) {
             $students = [];
         }
+
         return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
     }
 }
