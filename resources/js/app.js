@@ -2033,6 +2033,33 @@ $(document).ready(function () {
                             });
                         }
                     });
+                } else if ($('#payment_status').val() == 3) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'If you set the payment status to rejected, the payment is canceled and the parent must make the payment again. Also, the status of the student will be set to pending approval. This operation cannot be reversed! are you sure?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        cancelButtonText: 'No',
+                        confirmButtonText: 'Yes',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/TuitionInvoices/ChangeInvoiceStatus',
+                                data: {
+                                    invoice_id: $('#invoice_id').val(),
+                                    status: $('#payment_status').val()
+                                },
+                                headers: {
+                                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                                }, success: function (response) {
+                                    swalFire('Done', JSON.parse(response).message, 'success', 'Ok');
+                                }, error: function (xhr, textStatus, errorThrown) {
+                                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                                }
+                            });
+                        }
+                    });
                 } else if ($('#payment_status').val() == 2) {
                     swalFire('Error', "You can't change status to this!", 'error', 'Try again');
                 }

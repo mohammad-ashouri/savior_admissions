@@ -76,7 +76,7 @@ class TuitionPaymentController extends Controller
         $firstName = $request->student_first_name;
         $lastName = $request->student_last_name;
 
-        $data = StudentApplianceStatus::with('studentInfo')->where('tuition_payment_status', 'Paid');
+        $data = StudentApplianceStatus::with('studentInfo')->where('documents_uploaded_approval','=', 1);
         if (! empty($studentId)) {
             $data->where('student_id', $studentId);
         }
@@ -97,7 +97,6 @@ class TuitionPaymentController extends Controller
                 });
             });
         }
-
         $studentApplianceStatus = $data->get()->pluck('id')->toArray();
 
         $me = User::find(auth()->user()->id);
@@ -516,6 +515,25 @@ class TuitionPaymentController extends Controller
                 $this->sendSMS($guardianMobile, $message);
 
                 return response()->json(['message' => 'Installments were made!']);
+            case 3:
+                $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
+                $tuitionInvoiceDetails->is_paid = 3;
+                $tuitionInvoiceDetails->save();
+
+                $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+                $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+                if ($studentAppliance->tuition_payment_status=='Pending') {
+                    $studentAppliance->tuition_payment_status = 'Pending';
+                    $studentAppliance->approval_status = 0;
+                    $studentAppliance->save();
+                }
+
+                $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
+                $message = "Your tuition payment with ID: $tuition_id has been rejected. Please contact the financial expert of the relevant school.\nSavior Schools";
+                $this->sendSMS($guardianMobile, $message);
+                return response()->json(['message' => 'Payment rejected!']);
+
+                break;
             default:
                 return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
         }

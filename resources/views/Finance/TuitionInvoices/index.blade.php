@@ -215,6 +215,9 @@
                                                     @case('2')
                                                         Pending To Review
                                                         @break
+                                                    @case('3')
+                                                        Rejected
+                                                        @break
                                                     @default
                                                         Pending To Pay
                                                 @endswitch
