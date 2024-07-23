@@ -428,7 +428,7 @@ class StudentController extends Controller
             if (! empty($studentLastName)) {
                 $data->whereHas('studentInfo', function ($query) use ($studentLastName) {
                     $query->whereHas('generalInformationInfo', function ($query) use ($studentLastName) {
-                        $query->where('first_last_en', 'like', "%$studentLastName%");
+                        $query->where('last_name_en', 'like', "%$studentLastName%");
                     });
                 });
             }
