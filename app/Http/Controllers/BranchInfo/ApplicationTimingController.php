@@ -28,11 +28,10 @@ class ApplicationTimingController extends Controller
         $me = User::find(auth()->user()->id);
         $applicationTimings = [];
         if ($me->hasRole('Super Admin')) {
-            $applicationTimings = ApplicationTiming::with('academicYearInfo')->with('firstInterviewer')->with('secondInterviewer')->orderBy('id', 'desc')->paginate(150);
+            $applicationTimings = ApplicationTiming::with('academicYearInfo')->with('firstInterviewer')->with('secondInterviewer')->where('deleted_at',null)->orderBy('id', 'desc')->paginate(150);
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
-            return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
         } elseif (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -41,14 +40,15 @@ class ApplicationTimingController extends Controller
                 ->with('secondInterviewer')
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                 ->whereIn('academic_years.school_id', $filteredArray)
+                ->where('deleted_at',null)
                 ->orderBy('application_timings.id', 'desc')
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->paginate(150);
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
-            return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
         }
+        return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
     }
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
