@@ -40,10 +40,11 @@ class ApplicationTimingController extends Controller
                 ->with('secondInterviewer')
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                 ->whereIn('academic_years.school_id', $filteredArray)
-                ->where('deleted_at',null)
+                ->where('application_timings.deleted_at','=',null)
                 ->orderBy('application_timings.id', 'desc')
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->paginate(150);
+
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
@@ -57,7 +58,6 @@ class ApplicationTimingController extends Controller
         $academicYears = [];
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::where('status', 1)->get();
-            return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
@@ -65,9 +65,8 @@ class ApplicationTimingController extends Controller
             if ($academicYears->count() == 0) {
                 $academicYears = [];
             }
-            return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
         }
-
+        return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
     }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
@@ -224,4 +223,46 @@ class ApplicationTimingController extends Controller
         }
         return $interviewers;
     }
+    public function destroy($id): \Illuminate\Http\RedirectResponse
+    {
+        $me = User::find(auth()->user()->id);
+        $applicationTimings = [];
+        if ($me->hasRole('Super Admin')) {
+            $applicationTimings = ApplicationTiming::with('applications')
+                ->where('deleted_at',null)
+                ->whereHas('applications',function($query) use ($id){
+                    $query->where('reserved',0);
+                })
+                ->get();
+
+            if ($applicationTimings->isEmpty()) {
+                $applicationTimings = [];
+            }
+        } elseif (! $me->hasRole('Super Admin')) {
+            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $applicationTimings = ApplicationTiming::with('academicYearInfo')
+                ->with('firstInterviewer')
+                ->with('secondInterviewer')
+                ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
+                ->whereIn('academic_years.school_id', $filteredArray)
+                ->where('deleted_at',null)
+                ->orderBy('application_timings.id', 'desc')
+                ->select('application_timings.*', 'academic_years.id as academic_year_id')
+                ->paginate(150);
+            if ($applicationTimings->isEmpty()) {
+                $applicationTimings = [];
+            }
+        }
+
+        $removeApplication = Applications::find($id)->delete();
+
+        if (! $removeApplication) {
+            return redirect()->back()
+                ->withErrors(['errors' => 'Delete Failed!']);
+        }
+        return redirect()->back()
+            ->with('success', 'Application deleted!');
+    }
+
 }
