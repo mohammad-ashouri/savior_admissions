@@ -138,15 +138,25 @@
                                             <div
                                                 class="text-base font-semibold">{{ $applicationTiming->secondInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->secondInterviewer->generalInformationInfo->last_name_en }}</div>
                                     </th>
-                                    <td class=" text-center">
+                                    <td class="flex text-center">
                                         <!-- Modal toggle -->
                                         @can('application-timing-show')
                                             <a href="{{ route('ApplicationTimings.show',$applicationTiming->id) }}"
                                                type="button"
-                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
-                                                <i class="las la-eye mt-1 mr-1"></i>
-                                                Details
+                                               class="text-white mr-2 bg-blue-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">
+                                                <i class="las la-eye" style="font-size: 22px"></i>
                                             </a>
+                                        @endcan
+                                        @can('application-timing-delete')
+                                            <form class="RemoveApplicationTiming" method="post"
+                                                  action="/ApplicationTimings/{{ $applicationTiming->id }}">
+                                                @csrf
+                                                <input name="_method" type="hidden" value="DELETE">
+                                                <button type="submit" title="Remove Application Timing"
+                                                        class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm  px-2 py-2 text-center inline-flex items-center  dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 ">
+                                                    <i class="las la-trash" style="font-size: 22px"></i>
+                                                </button>
+                                            </form>
                                         @endcan
                                     </td>
                                 </tr>

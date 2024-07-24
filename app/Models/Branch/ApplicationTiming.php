@@ -6,10 +6,11 @@ use App\Models\Catalogs\AcademicYear;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ApplicationTiming extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $table = 'application_timings';
 

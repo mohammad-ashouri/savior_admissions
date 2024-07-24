@@ -706,6 +706,23 @@ $(document).ready(function () {
             });
         });
 
+        $('.RemoveApplicationTiming').submit(function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'All applications will be deleted!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit');
+                    $(this).submit();
+                }
+            });
+        });
+
         $('.ChangeApplicationStatus').submit(function (e) {
             e.preventDefault();
             Swal.fire({

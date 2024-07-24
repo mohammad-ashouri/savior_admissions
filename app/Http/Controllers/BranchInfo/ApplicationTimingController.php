@@ -28,7 +28,7 @@ class ApplicationTimingController extends Controller
         $me = User::find(auth()->user()->id);
         $applicationTimings = [];
         if ($me->hasRole('Super Admin')) {
-            $applicationTimings = ApplicationTiming::with('academicYearInfo')->with('firstInterviewer')->with('secondInterviewer')->where('deleted_at',null)->orderBy('id', 'desc')->paginate(150);
+            $applicationTimings = ApplicationTiming::with('academicYearInfo')->with('firstInterviewer')->with('secondInterviewer')->orderBy('id', 'desc')->paginate(150);
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
@@ -40,7 +40,6 @@ class ApplicationTimingController extends Controller
                 ->with('secondInterviewer')
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                 ->whereIn('academic_years.school_id', $filteredArray)
-                ->where('application_timings.deleted_at','=',null)
                 ->orderBy('application_timings.id', 'desc')
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->paginate(150);
@@ -49,6 +48,7 @@ class ApplicationTimingController extends Controller
                 $applicationTimings = [];
             }
         }
+
         return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
     }
 
@@ -66,6 +66,7 @@ class ApplicationTimingController extends Controller
                 $academicYears = [];
             }
         }
+
         return view('BranchInfo.ApplicationTimings.create', compact('academicYears'));
     }
 
@@ -89,8 +90,8 @@ class ApplicationTimingController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if ($request->first_interviewer==$request->second_interviewer){
-            return redirect()->back()->withErrors(['errors'=>'The first and second interviewers cannot be equal.'])->withInput();
+        if ($request->first_interviewer == $request->second_interviewer) {
+            return redirect()->back()->withErrors(['errors' => 'The first and second interviewers cannot be equal.'])->withInput();
         }
 
         $me = User::find(auth()->user()->id);
@@ -133,29 +134,29 @@ class ApplicationTimingController extends Controller
                 }
 
                 foreach ($daysBetween as $day) {
-//                    foreach ($request->interviewers as $interviewer) {
-                        $duration = $request->interview_time;
-                        $breakTime = $request->delay_between_reserve;
-                        $startTime = Carbon::createFromFormat('H:i', $request->start_time);
-                        $endTime = Carbon::createFromFormat('H:i', $request->end_time);
-                        $totalSessions = floor($startTime->diffInMinutes($endTime) / ($duration + $breakTime));
-                        $currentDateTime = $startTime;
+                    //                    foreach ($request->interviewers as $interviewer) {
+                    $duration = $request->interview_time;
+                    $breakTime = $request->delay_between_reserve;
+                    $startTime = Carbon::createFromFormat('H:i', $request->start_time);
+                    $endTime = Carbon::createFromFormat('H:i', $request->end_time);
+                    $totalSessions = floor($startTime->diffInMinutes($endTime) / ($duration + $breakTime));
+                    $currentDateTime = $startTime;
 
-                        for ($i = 1; $i <= $totalSessions; $i++) {
-                            $interview = new Applications();
-                            $interview->application_timing_id = $applicationTiming->id;
-                            $interview->date = $day;
-                            $start_from = $currentDateTime->format('H:i');
-                            $interview->start_from = $start_from;
-                            $currentDateTime->addMinutes($duration);
-                            $ends_to = $currentDateTime->format('H:i');
-                            $interview->ends_to = $ends_to;
-                            $interview->first_interviewer = $request->first_interviewer;
-                            $interview->second_interviewer = $request->second_interviewer;
-                            $currentDateTime->addMinutes($breakTime);
-                            $interview->save();
-                        }
-//                    }
+                    for ($i = 1; $i <= $totalSessions; $i++) {
+                        $interview = new Applications();
+                        $interview->application_timing_id = $applicationTiming->id;
+                        $interview->date = $day;
+                        $start_from = $currentDateTime->format('H:i');
+                        $interview->start_from = $start_from;
+                        $currentDateTime->addMinutes($duration);
+                        $ends_to = $currentDateTime->format('H:i');
+                        $interview->ends_to = $ends_to;
+                        $interview->first_interviewer = $request->first_interviewer;
+                        $interview->second_interviewer = $request->second_interviewer;
+                        $currentDateTime->addMinutes($breakTime);
+                        $interview->save();
+                    }
+                    //                    }
                 }
             } else {
                 return redirect()->route('ApplicationTimings.create')
@@ -165,6 +166,7 @@ class ApplicationTimingController extends Controller
             return redirect()->route('ApplicationTimings.create')
                 ->withErrors(['errors' => 'Creating application timing failed!']);
         }
+
         return redirect()->route('ApplicationTimings.index')
             ->with('success', 'Application timing created successfully');
     }
@@ -191,6 +193,7 @@ class ApplicationTimingController extends Controller
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->first();
         }
+
         return view('BranchInfo.ApplicationTimings.show', compact('applicationTiming'));
     }
 
@@ -221,48 +224,51 @@ class ApplicationTimingController extends Controller
                 $interviewers = [];
             }
         }
+
         return $interviewers;
     }
+
     public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(auth()->user()->id);
-        $applicationTimings = [];
+        $applicationTiming = $applications = [];
         if ($me->hasRole('Super Admin')) {
-            $applicationTimings = ApplicationTiming::with('applications')
-                ->where('deleted_at',null)
-                ->whereHas('applications',function($query) use ($id){
-                    $query->where('reserved',0);
+            $applicationTiming = ApplicationTiming::with('applications')
+                ->where('id', $id)
+                ->whereHas('applications', function ($query) use ($id) {
+                    $query->where('application_timing_id', $id);
                 })
-                ->get();
+                ->first();
 
-            if ($applicationTimings->isEmpty()) {
-                $applicationTimings = [];
-            }
         } elseif (! $me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $applicationTimings = ApplicationTiming::with('academicYearInfo')
-                ->with('firstInterviewer')
-                ->with('secondInterviewer')
+            $applicationTiming = ApplicationTiming::with('applications')
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                 ->whereIn('academic_years.school_id', $filteredArray)
-                ->where('deleted_at',null)
+                ->whereHas('applications', function ($query) use ($id) {
+                    $query->where('application_timing_id', $id);
+                })
+                ->where('application_timings.deleted_at', null)
                 ->orderBy('application_timings.id', 'desc')
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
-                ->paginate(150);
-            if ($applicationTimings->isEmpty()) {
-                $applicationTimings = [];
+                ->first();
+
+        }
+
+        if (! empty($applicationTiming->applications) and $applicationTiming->applications != null) {
+            foreach ($applicationTiming->applications as $application) {
+                if ($application->reserved == '1') {
+                    continue;
+                }
+                $applications[] = $application->id;
             }
+            Applications::whereIn('id', $applications)->delete();
+        } else {
+            ApplicationTiming::find($id)->delete();
         }
 
-        $removeApplication = Applications::find($id)->delete();
-
-        if (! $removeApplication) {
-            return redirect()->back()
-                ->withErrors(['errors' => 'Delete Failed!']);
-        }
         return redirect()->back()
-            ->with('success', 'Application deleted!');
+            ->with('success', 'Applications deleted!');
     }
-
 }
