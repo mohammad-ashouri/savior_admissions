@@ -40,7 +40,7 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereIn('id', $reservations)
                 ->orderBy('interviewed', 'asc') // Corrected column name
                 ->orderBy('date', 'asc')
@@ -53,7 +53,7 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->orderBy('interviewed', 'asc') // Corrected column name
                 ->orderBy('date', 'asc')
                 ->orderBy('ends_to', 'asc')
@@ -76,9 +76,9 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->orderBy('interviewed', 'asc') // Corrected column name
                 ->orderBy('date', 'asc')
                 ->orderBy('ends_to', 'asc')
@@ -91,7 +91,7 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->where(function ($query) use ($me) {
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
@@ -119,7 +119,7 @@ class InterviewController extends Controller
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereId($id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -140,9 +140,8 @@ class InterviewController extends Controller
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('reserved', 1)
                 ->whereId($id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -164,9 +163,8 @@ class InterviewController extends Controller
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
-                ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereId($id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -185,7 +183,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->where(function ($query) use ($me) {
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
@@ -224,7 +222,7 @@ class InterviewController extends Controller
             $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereId($request->application_id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -245,9 +243,8 @@ class InterviewController extends Controller
             $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
-                ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereId($request->application_id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -259,7 +256,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->where(function ($query) use ($me) {
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
@@ -485,7 +482,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereIn('id', $reservations)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -496,7 +493,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereId($id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -518,7 +515,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->whereId($id)
                 ->first();
@@ -538,9 +535,8 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('reserved', 1)
                 ->whereId($id)
                 ->first();
         } elseif ($me->hasRole('Interviewer')) {
@@ -549,7 +545,7 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->where(function ($query) use ($me) {
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
@@ -590,9 +586,8 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('reserved', 1)
                 ->whereId($id)
                 ->first();
         } elseif ($me->hasRole('Interviewer')) {
@@ -601,7 +596,7 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->where(function ($query) use ($me) {
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
@@ -649,9 +644,8 @@ class InterviewController extends Controller
             $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('reserved', 1)
                 ->whereId($request->application_id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
@@ -663,7 +657,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
-                ->where('reserved', 1)
+                ->whereReserved(1)
                 ->where(function ($query) use ($me) {
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);

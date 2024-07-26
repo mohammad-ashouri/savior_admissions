@@ -46,7 +46,7 @@ class UnreserveApplications extends Command
 
         $applications = Applications::whereStatus(1)
             ->where('date', '<', $today)
-            ->where('reserved', 0)
+            ->whereReserved(0)
             ->update(['status'=>0]);
     }
 }

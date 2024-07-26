@@ -29,7 +29,7 @@ class UnreserveApplications00_00 extends Command
         $today = now()->toDateString();
 
         Applications::whereDate('date', $today)
-            ->where('reserved', 0)
+            ->whereReserved(0)
             ->whereStatus(1)
             ->update(['status' => 0]);
     }

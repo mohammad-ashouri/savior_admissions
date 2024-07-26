@@ -321,7 +321,7 @@ class ApplicationController extends Controller
         }
 
         $application = $request->application;
-        $applicationCheck = Applications::whereStatus(1)->where('reserved', 0)->find($application);
+        $applicationCheck = Applications::whereStatus(1)->whereReserved(0)->find($application);
         if (empty($applicationCheck)) {
             return response()->json(['error' => 'Unfortunately, the selected application was reserved a few minutes ago. Please choose another application'], 422);
         }
@@ -359,7 +359,7 @@ class ApplicationController extends Controller
             abort(403);
         }
 
-        $applicationCheck = Applications::whereStatus(1)->where('reserved', 0)->find($dateAndTime);
+        $applicationCheck = Applications::whereStatus(1)->whereReserved(0)->find($dateAndTime);
         if (empty($applicationCheck)) {
             return redirect()->back()->withErrors('Unfortunately, the selected application was reserved a few minutes ago. Please choose another application')->withInput();
         }
