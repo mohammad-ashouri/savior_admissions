@@ -101,9 +101,9 @@ class SchoolController extends Controller
     public function EducationalCharter(Request $request)
     {
         $academicYear = $request->input('academic_year');
-        $checkAcademicYear = AcademicYear::where('id', $academicYear)->whereStatus(1)->first();
+        $checkAcademicYear = AcademicYear::whereId($academicYear)->whereStatus(1)->first();
         if (!empty($checkAcademicYear)) {
-            return School::where('id', $checkAcademicYear->school_id)->whereStatus(1)->value('educational_charter');
+            return School::whereId($checkAcademicYear->school_id)->whereStatus(1)->value('educational_charter');
         } else {
             abort(403, 'Access Denied');
         }

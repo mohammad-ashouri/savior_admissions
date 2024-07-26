@@ -265,7 +265,7 @@ class Controller extends BaseController
             ->first();
         $academicYear = [];
         if (! empty($level)) {
-            $academicYear = StudentApplianceStatus::where('id',$level->appliance_id)->value('academic_year');
+            $academicYear = StudentApplianceStatus::whereId($level->appliance_id)->value('academic_year');
         }
 
         return ['level' => $level, 'academic_year' => $academicYear];

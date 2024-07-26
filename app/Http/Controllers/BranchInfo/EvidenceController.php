@@ -50,7 +50,7 @@ class EvidenceController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
-        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->where('id', $appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded', '2')->where('interview_status', 'Admitted')->orderBy('documents_uploaded', 'asc')->first();
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->whereId($appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded', '2')->where('interview_status', 'Admitted')->orderBy('documents_uploaded', 'asc')->first();
         if (empty($studentAppliance)) {
             abort(403);
         }
@@ -77,7 +77,7 @@ class EvidenceController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
         $appliance_id = $request->appliance_id;
-        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->where('id', $appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded', '2')->where('interview_status', 'Admitted')->first();
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->whereId($appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded', '2')->where('interview_status', 'Admitted')->first();
         if (empty($studentAppliance)) {
             abort(403);
         }
@@ -129,7 +129,7 @@ class EvidenceController extends Controller
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-            $appliance = StudentApplianceStatus::whereIn('academic_year', $academicYears)->where('id', $applianceId)->first();
+            $appliance = StudentApplianceStatus::whereIn('academic_year', $academicYears)->whereId($applianceId)->first();
         }
 
         StudentApplianceStatus::find($applianceId)->update([
@@ -161,7 +161,7 @@ class EvidenceController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
-        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->where('id', $appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded','!=', '0')->where('interview_status', 'Admitted')->orderBy('documents_uploaded', 'asc')->first();
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->whereId($appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded','!=', '0')->where('interview_status', 'Admitted')->orderBy('documents_uploaded', 'asc')->first();
         if (empty($studentAppliance)) {
             abort(403);
         }

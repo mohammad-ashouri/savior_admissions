@@ -120,7 +120,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->where('reserved', 1)
-                ->where('id', $id)
+                ->whereId($id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -143,7 +143,7 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->where('id', $id)
+                ->whereId($id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -167,7 +167,7 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->where('id', $id)
+                ->whereId($id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -191,7 +191,7 @@ class InterviewController extends Controller
                         ->orWhere('second_interviewer', $me->id);
                 })
                 ->where('Interviewed', 0)
-                ->where('id', $id)
+                ->whereId($id)
                 ->first();
 
             $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
@@ -225,7 +225,7 @@ class InterviewController extends Controller
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->where('reserved', 1)
-                ->where('id', $request->application_id)
+                ->whereId($request->application_id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -248,7 +248,7 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->where('id', $request->application_id)
+                ->whereId($request->application_id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -265,7 +265,7 @@ class InterviewController extends Controller
                         ->orWhere('second_interviewer', $me->id);
                 })
                 ->where('Interviewed', 0)
-                ->where('id', $request->application_id)
+                ->whereId($request->application_id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -497,7 +497,7 @@ class InterviewController extends Controller
                 ->with('secondInterviewerInfo')
                 ->with('interview')
                 ->where('reserved', 1)
-                ->where('id', $id)
+                ->whereId($id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -520,7 +520,7 @@ class InterviewController extends Controller
                 ->with('interview')
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
-                ->where('id', $id)
+                ->whereId($id)
                 ->first();
         } elseif ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
@@ -541,7 +541,7 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->where('id', $id)
+                ->whereId($id)
                 ->first();
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
@@ -554,7 +554,7 @@ class InterviewController extends Controller
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
                 })
-                ->where('id', $id)
+                ->whereId($id)
                 ->first();
         }
         if (empty($interview)) {
@@ -593,7 +593,7 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->where('id', $id)
+                ->whereId($id)
                 ->first();
         } elseif ($me->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
@@ -606,7 +606,7 @@ class InterviewController extends Controller
                     $query->where('first_interviewer', $me->id)
                         ->orWhere('second_interviewer', $me->id);
                 })
-                ->where('id', $id)
+                ->whereId($id)
                 ->first();
         }
         if (empty($interview)) {
@@ -652,7 +652,7 @@ class InterviewController extends Controller
                 ->where('reserved', 1)
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('reserved', 1)
-                ->where('id', $request->application_id)
+                ->whereId($request->application_id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -669,7 +669,7 @@ class InterviewController extends Controller
                         ->orWhere('second_interviewer', $me->id);
                 })
                 ->where('Interviewed', 0)
-                ->where('id', $request->application_id)
+                ->whereId($request->application_id)
                 ->orderBy('date', 'desc')
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
@@ -867,12 +867,12 @@ class InterviewController extends Controller
 
         if ($me->hasRole('Super Admin')) {
             $application = Applications::where('reserved', 1)
-                ->where('id', $applicationId)
+                ->whereId($applicationId)
                 ->first();
         } elseif ($me->hasRole('Interviewer')) {
             $application = Applications::where('reserved', 1)
                 ->where('first_interviewer', $me->id)
-                ->where('id', $applicationId)
+                ->whereId($applicationId)
                 ->first();
         }
 
@@ -957,7 +957,7 @@ class InterviewController extends Controller
             });
         }
         if (!empty($applicationId)) {
-            $data->where('id', $applicationId);
+            $data->whereId($applicationId);
         }
         if (!empty($firstName)) {
             $data->whereHas('reservationInfo', function ($query) use ($firstName) {

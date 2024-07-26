@@ -127,9 +127,9 @@ class ApplicationController extends Controller
 
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
-            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->where('id', $id)->first();
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->whereId($id)->first();
         } elseif ($me->hasRole('Super Admin')) {
-            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereId($id)->first();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -151,7 +151,7 @@ class ApplicationController extends Controller
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
                 ->whereIn('application_id', $applications)
-                ->where('id', $id)->first();
+                ->whereId($id)->first();
             if (empty($applicationInfo)) {
                 abort(403);
             }
@@ -508,7 +508,7 @@ class ApplicationController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
-        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('id', $appliance_id)->first();
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->whereId($appliance_id)->first();
         if (empty($studentAppliance)) {
             abort(403);
         }

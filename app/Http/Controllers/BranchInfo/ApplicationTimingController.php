@@ -210,12 +210,12 @@ class ApplicationTimingController extends Controller
         $academicYear = $request->academic_year;
 
         if ($me->hasRole('Super Admin')) {
-            $academicYearInterviewers = AcademicYear::whereStatus(1)->where('id', $academicYear)->pluck('employees')->first();
+            $academicYearInterviewers = AcademicYear::whereStatus(1)->whereId($academicYear)->pluck('employees')->first();
             $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->whereStatus(1)->with('generalInformationInfo')->get()->keyBy('id')->toArray();
         } else {
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $academicYearInterviewers = AcademicYear::whereStatus(1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
+            $academicYearInterviewers = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
             if (empty($academicYearInterviewers)) {
                 $academicYearInterviewers = [];
             }
@@ -234,7 +234,7 @@ class ApplicationTimingController extends Controller
         $applicationTiming = $applications = [];
         if ($me->hasRole('Super Admin')) {
             $applicationTiming = ApplicationTiming::with('applications')
-                ->where('id', $id)
+                ->whereId($id)
                 ->whereHas('applications', function ($query) use ($id) {
                     $query->where('application_timing_id', $id);
                 })

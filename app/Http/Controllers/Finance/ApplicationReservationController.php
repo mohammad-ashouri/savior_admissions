@@ -118,9 +118,9 @@ class ApplicationReservationController extends Controller
 
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
-            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->where('id', $id)->first();
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->whereId($id)->first();
         } elseif ($me->hasRole('Super Admin')) {
-            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereId($id)->first();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -142,7 +142,7 @@ class ApplicationReservationController extends Controller
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
                 ->whereIn('application_id', $applications)
-                ->where('id', $id)->first();
+                ->whereId($id)->first();
             if (empty($applicationInfo)) {
                 abort(403);
             }
@@ -192,7 +192,7 @@ class ApplicationReservationController extends Controller
         $applicationStatus = $request->status;
 
         if ($me->hasRole('Super Admin')) {
-            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $applicationID)->first();
+            $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereId($applicationID)->first();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -214,7 +214,7 @@ class ApplicationReservationController extends Controller
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
                 ->whereIn('application_id', $applications)
-                ->where('id', $applicationID)->first();
+                ->whereId($applicationID)->first();
 
         }
 

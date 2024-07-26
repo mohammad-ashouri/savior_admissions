@@ -125,6 +125,6 @@ class DiscountsController extends Controller
             return response()->json(['message' => $validator], 422);
         }
 
-        return DiscountDetail::where('id', $request->discount_id)->value('percentage');
+        return DiscountDetail::whereId($request->discount_id)->value('percentage');
     }
 }

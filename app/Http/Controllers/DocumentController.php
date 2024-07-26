@@ -58,7 +58,7 @@ class DocumentController extends Controller
             'document_type' => 'exists:document_types,id',
             'document_file' => 'required|mimes:png,jpg,jpeg,pdf,bmp|max:2048',
             'user_id' => Rule::exists('users', 'id')->where(function ($query) use ($user_id) {
-                $query->where('id', (int) $user_id);
+                $query->whereId((int) $user_id);
             }),
         ]);
         $path = $request->file('document_file')->store('public/uploads/Documents/'.auth()->user()->id);
@@ -482,7 +482,7 @@ class DocumentController extends Controller
         $evidences->files = $files;
         $evidences->save();
 
-        $studentAppliance = StudentApplianceStatus::where('id', $checkStudentApplianceStatus->id)->first();
+        $studentAppliance = StudentApplianceStatus::whereId($checkStudentApplianceStatus->id)->first();
         $studentAppliance->documents_uploaded = 2;
         $studentAppliance->documents_uploaded_approval = null;
         $studentAppliance->save();

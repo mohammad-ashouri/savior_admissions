@@ -153,7 +153,7 @@ class TuitionPaymentController extends Controller
                 ->whereNotNull('tuition_payment_status')
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->where('id', $tuition_id)->first();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->whereId($tuition_id)->first();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -168,14 +168,14 @@ class TuitionPaymentController extends Controller
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
-                ->where('id', $tuition_id)->first();
+                ->whereId($tuition_id)->first();
         } elseif ($me->hasRole('Super Admin')) {
             $tuitionInvoices = TuitionInvoices::orderBy('created_at', 'asc')->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')
                 ->with('invoiceDetails')
                 ->with('paymentMethodInfo')
                 ->whereIn('tuition_invoice_id', $tuitionInvoices)
-                ->where('id', $tuition_id)
+                ->whereId($tuition_id)
                 ->first();
         }
 
@@ -197,12 +197,12 @@ class TuitionPaymentController extends Controller
                 ->with('invoiceDetails')
                 ->with('paymentMethodInfo')
                 ->whereIn('tuition_invoice_id', $tuitionInvoices)
-                ->where('id', $tuition_id)
+                ->whereId($tuition_id)
                 ->where('is_paid', 0)
                 ->first();
         }
 
-        $paymentMethods = PaymentMethod::where('id', 2)->get();
+        $paymentMethods = PaymentMethod::whereId(2)->get();
 
         return view('Finance.TuitionInvoices.pay', compact('tuitionInvoiceDetails', 'paymentMethods'));
     }
@@ -233,7 +233,7 @@ class TuitionPaymentController extends Controller
                 ->with('invoiceDetails')
                 ->with('paymentMethodInfo')
                 ->whereIn('tuition_invoice_id', $tuitionInvoices)
-                ->where('id', $tuition_id)
+                ->whereId($tuition_id)
                 ->where('is_paid', 0)
                 ->first();
         }
@@ -292,11 +292,11 @@ class TuitionPaymentController extends Controller
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
-                ->where('id', $tuition_id)->first();
+                ->whereId($tuition_id)->first();
         } else {
             $tuitionInvoices = TuitionInvoices::pluck('id')->toArray();
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
-                ->where('id', $tuition_id)->first();
+                ->whereId($tuition_id)->first();
         }
         if (empty($tuitionInvoiceDetails)) {
             return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);

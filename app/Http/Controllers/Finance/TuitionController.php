@@ -242,7 +242,7 @@ class TuitionController extends Controller
         $description = $request->description;
         $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
-            ->where('id', $appliance_id)
+            ->whereId($appliance_id)
             ->where('tuition_payment_status', 'Pending')
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->first();

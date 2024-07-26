@@ -95,12 +95,12 @@ class ProfileController extends Controller
         }
 
         if (isset($request->mobile)) {
-            $user = User::where('id', auth()->user()->id)->update([
+            $user = User::whereId(auth()->user()->id)->update([
                 'mobile' => $request->mobile,
             ]);
         }
         if (isset($request->email)) {
-            $user = User::where('id', auth()->user()->id)->update([
+            $user = User::whereId(auth()->user()->id)->update([
                 'email' => $request->email,
             ]);
         }

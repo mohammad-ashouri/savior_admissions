@@ -15,7 +15,7 @@ class NewUsers implements ToModel
         if ($row[2] != null) {
             $studentID = $row[2];
 
-            $studentInformation = User::where('id',$studentID)->first();
+            $studentInformation = User::whereId($studentID)->first();
             if (empty($studentInformation)) {
                 $studentInformation=User::create([
                     'id'=>$studentID,
