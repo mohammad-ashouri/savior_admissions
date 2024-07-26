@@ -70,9 +70,14 @@ class User extends Authenticatable
 
     public function canImpersonate()
     {
-        // Check if the user is an admin or has the role of Super Admin
-        return $this->hasRoles('Super Admin');
+        // Check if the user has the impersonate permission
+        return $this->hasAnyPermission('impersonate');
     }
+
+//    public function canBeImpersonated()
+//    {
+//            $this->can_be_impersonated == 1;
+//    }
 
     public function hasRoles($role)
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckImpersonatePermission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -31,7 +32,8 @@ class Kernel extends HttpKernel
         'SettingsCheck' => \App\Http\Middleware\SettingsCheck::class,
         'no-cache' => \App\Http\Middleware\NoCache::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
-    ];
+        'CheckImpersonatePermission' => \App\Http\Middleware\CheckImpersonatePermission::class,
+        ];
 
     /**
      * The application's route middleware groups.

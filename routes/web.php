@@ -28,6 +28,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckIfProfileRegistered;
+use App\Http\Middleware\CheckImpersonatePermission;
 use App\Http\Middleware\CheckLoginMiddleware;
 use App\Http\Middleware\NoCache;
 use App\Http\Middleware\SettingsCheck;
@@ -77,8 +78,9 @@ Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddleware::class)->group(function () {
-    Route::impersonate();
-
+    Route::group(['middleware' => ['auth', CheckImpersonatePermission::class]], function () {
+        Route::impersonate();
+    });
     Route::middleware(CheckIfProfileRegistered::class)->group(function () {
         Route::middleware(SettingsCheck::class)->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

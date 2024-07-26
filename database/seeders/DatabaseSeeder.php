@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\TemporarySeeders\AddImpersonatePermission;
 use Database\Seeders\TemporarySeeders\AddSearchTuitionStatusPermission;
 use Database\Seeders\TemporarySeeders\ChangeParentsPassword;
 use Database\Seeders\TemporarySeeders\ChangeUsersMobileFormatToInternational;
@@ -35,7 +36,8 @@ class DatabaseSeeder extends Seeder
 //            RemoveAllStudentsMobiles::class,
 //            ChangeParentsPassword::class,
 //            RemoveMobileThatUserNotGuardian::class,
-            AddSearchTuitionStatusPermission::class,
+//            AddSearchTuitionStatusPermission::class,
+            AddImpersonatePermission::class,
         ]);
     }
 }
