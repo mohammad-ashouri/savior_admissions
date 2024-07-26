@@ -94,7 +94,7 @@ class DashboardController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->whereIn('academic_year', $academicYears)
-                ->where('tuition_payment_status', 'Paid')
+                ->whereTuitionPaymentStatus('Paid')
                 ->distinct('student_id')
                 ->orderBy('id', 'desc')->orderBy('academic_year', 'desc')->take(5)->get();
         }

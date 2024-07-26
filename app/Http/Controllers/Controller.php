@@ -238,7 +238,7 @@ class Controller extends BaseController
         $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
             ->whereIn('student_id', $allStudentsWithMyGuardian)
-            ->where('tuition_payment_status', 'Paid')
+            ->whereTuitionPaymentStatus('Paid')
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->count();
 
@@ -259,7 +259,7 @@ class Controller extends BaseController
     public function getMinimumApplianceLevelInfo($guardian_id)
     {
         $allStudentsWithGuardian = StudentInformation::whereGuardian($guardian_id)->pluck('student_id')->toArray();
-        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
+        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
         $level = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)
             ->orderBy('level', 'asc')
             ->first();
@@ -274,7 +274,7 @@ class Controller extends BaseController
     public function getMinimumSignedChildNumber($guardian_id)
     {
         $allStudentsWithGuardian = StudentInformation::whereGuardian($guardian_id)->pluck('student_id')->toArray();
-        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
+        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
 
         $minimumSignedStudentNumber = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)
             ->orderByDesc('signed_child_number')
@@ -290,7 +290,7 @@ class Controller extends BaseController
     {
         //Found previous discounts
         $allStudentsWithGuardian = StudentInformation::whereGuardian($guardian_id)->pluck('student_id')->toArray();
-        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
+        $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
 
         return GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->sum('discount_price');
     }

@@ -153,7 +153,7 @@ class TuitionController extends Controller
             abort(403);
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->where('student_id', $student_id)->where('tuition_payment_status', 'Pending')->whereIn('academic_year', $this->getActiveAcademicYears())->first();
+        $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->where('student_id', $student_id)->whereTuitionPaymentStatus('Pending')->whereIn('academic_year', $this->getActiveAcademicYears())->first();
 
         if (empty($studentApplianceStatus)) {
             abort(403);
@@ -193,7 +193,7 @@ class TuitionController extends Controller
         $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
             ->whereIn('student_id', $allStudentsWithMyGuardian)
-            ->where('tuition_payment_status', 'Paid')
+            ->whereTuitionPaymentStatus('Paid')
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->count();
 
@@ -243,7 +243,7 @@ class TuitionController extends Controller
         $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
             ->whereId($appliance_id)
-            ->where('tuition_payment_status', 'Pending')
+            ->whereTuitionPaymentStatus('Pending')
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->first();
 
@@ -711,7 +711,7 @@ class TuitionController extends Controller
         $students = [];
         if ($me->hasRole('Super Admin')) {
 //            $students = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder')
-//                ->where('tuition_payment_status', 'Paid')
+//                ->whereTuitionPaymentStatus('Paid')
 //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
@@ -723,14 +723,14 @@ class TuitionController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 //            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
 //                ->whereIn('academic_year', $academicYears)
-//                ->where('tuition_payment_status', 'Paid')
+//                ->whereTuitionPaymentStatus('Paid')
 //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::whereGuardian($me->id)->get()->pluck('student_id')->toArray();
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('student_id', $students)
-                ->where('tuition_payment_status', 'Paid')
+                ->whereTuitionPaymentStatus('Paid')
                 ->orderBy('academic_year', 'desc')->paginate(150);
             return view('Finance.TuitionsStatus.index', compact('students'));
         }
@@ -772,7 +772,7 @@ class TuitionController extends Controller
             if ($request->academic_year) {
                 $data->where('academic_year', $request->academic_year);
             }
-            $data->where('tuition_payment_status', 'Paid');
+            $data->whereTuitionPaymentStatus('Paid');
             $students = $data->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
@@ -804,7 +804,7 @@ class TuitionController extends Controller
                 $data->where('academic_year', $request->academic_year);
             }
             $data->whereIn('academic_year', $academicYears);
-            $data->where('tuition_payment_status', 'Paid');
+            $data->whereTuitionPaymentStatus('Paid');
             $students = $data->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
         }

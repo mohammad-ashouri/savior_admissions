@@ -40,7 +40,7 @@ class StudentController extends Controller
 
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
-                ->where('tuition_payment_status', 'Paid')
+                ->whereTuitionPaymentStatus('Paid')
                 ->orderBy('academic_year', 'desc')->paginate(100);
             $academicYears = AcademicYear::get();
 
@@ -61,7 +61,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->whereIn('academic_year', $academicYears)
-                ->where('tuition_payment_status', 'Paid')
+                ->whereTuitionPaymentStatus('Paid')
                 ->orderBy('academic_year', 'desc')->paginate(100);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
