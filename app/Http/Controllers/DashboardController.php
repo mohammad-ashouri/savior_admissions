@@ -87,7 +87,7 @@ class DashboardController extends Controller
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -114,7 +114,7 @@ class DashboardController extends Controller
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools

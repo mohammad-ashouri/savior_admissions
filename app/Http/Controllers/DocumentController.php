@@ -30,8 +30,8 @@ class DocumentController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $documentTypes = DocumentType::whereStatus('1')->orderBy('name')->get();
-        $myDocuments = Document::with('documentType')->where('user_id', auth()->user()->id)->orderBy('id', 'desc')->get();
-        $myDocumentTypes = Document::with('documentType')->where('user_id', auth()->user()->id)->pluck('document_type_id')->all();
+        $myDocuments = Document::with('documentType')->whereUserId(auth()->user()->id)->orderBy('id', 'desc')->get();
+        $myDocumentTypes = Document::with('documentType')->whereUserId(auth()->user()->id)->pluck('document_type_id')->all();
         $myDocumentTypes = array_unique($myDocumentTypes);
 
         return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes'));
@@ -73,9 +73,9 @@ class DocumentController extends Controller
     public function showUserDocuments($user_id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $documentTypes = DocumentType::orderBy('name', 'asc')->get();
-        $myDocuments = Document::with('documentType')->where('user_id', $user_id)->orderBy('id', 'desc')->get();
+        $myDocuments = Document::with('documentType')->whereUserId($user_id)->orderBy('id', 'desc')->get();
         $documentOwner = User::find($user_id);
-        $myDocumentTypes = Document::with('documentType')->where('user_id', $user_id)->pluck('document_type_id')->all();
+        $myDocumentTypes = Document::with('documentType')->whereUserId($user_id)->pluck('document_type_id')->all();
 
         return view('Documents.index', compact('documentTypes', 'myDocuments', 'myDocumentTypes', 'documentOwner', 'user_id'));
 

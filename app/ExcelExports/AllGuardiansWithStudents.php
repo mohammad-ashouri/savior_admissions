@@ -26,7 +26,7 @@ class AllGuardiansWithStudents implements FromCollection, ShouldAutoSize, WithHe
         $data = collect();
 
         foreach ($guardians as $guardianId) {
-            $guardianInfo = GeneralInformation::with('user')->where('user_id', $guardianId)->first();
+            $guardianInfo = GeneralInformation::with('user')->whereUserId($guardianId)->first();
 
             if ($guardianInfo) {
                 $students = StudentInformation::where('guardian', $guardianId)->get();

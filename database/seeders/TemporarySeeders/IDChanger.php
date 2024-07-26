@@ -31,7 +31,7 @@ class IDChanger extends Seeder
             $user->save();
 
             // Update the related records in other tables
-            GeneralInformation::where('user_id', $oldUserID)->update(['user_id' => $user->id]);
+            GeneralInformation::whereUserId($oldUserID)->update(['user_id' => $user->id]);
 
             // Update parent_father_id in StudentInformation table
             StudentInformation::where('parent_father_id', $oldUserID)->update(['parent_father_id' => $user->id]);
@@ -43,7 +43,7 @@ class IDChanger extends Seeder
             StudentInformation::where('guardian', $oldUserID)->update(['guardian' => $user->id]);
 
             // Update user_id in Documents table
-            Document::where('user_id', $oldUserID)->update(['user_id' => $user->id]);
+            Document::whereUserId($oldUserID)->update(['user_id' => $user->id]);
 
             // Update model_id in model_has_roles table
             DB::table('model_has_roles')->where('model_id', $oldUserID)->update(['model_id' => $user->id]);

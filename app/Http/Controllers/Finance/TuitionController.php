@@ -40,7 +40,7 @@ class TuitionController extends Controller
             $tuitions = Tuition::with('academicYearInfo')->orderBy('academic_year', 'desc')->paginate(10);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -63,7 +63,7 @@ class TuitionController extends Controller
             $tuitions = Tuition::with('academicYearInfo')->with('allTuitions')->orderBy('academic_year', 'desc')->find($id);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -716,7 +716,7 @@ class TuitionController extends Controller
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 //
 //            // Finding academic years with status 1 in the specified schools
@@ -777,7 +777,7 @@ class TuitionController extends Controller
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools

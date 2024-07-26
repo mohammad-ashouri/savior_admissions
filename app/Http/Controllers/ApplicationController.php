@@ -51,7 +51,7 @@ class ApplicationController extends Controller
             $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(150);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -97,7 +97,7 @@ class ApplicationController extends Controller
             ->with('generalInformations')->orderBy('general_informations.last_name_en')->orderBy('general_informations.first_name_en')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding levels by accessing academic year levels
@@ -132,7 +132,7 @@ class ApplicationController extends Controller
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -163,7 +163,7 @@ class ApplicationController extends Controller
     {
         $me = User::find(auth()->user()->id);
         if (! $me->hasRole('Super Admin')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
                 ->with('applications')
@@ -193,7 +193,7 @@ class ApplicationController extends Controller
     {
         $me = User::find(auth()->user()->id);
         if (! $me->hasRole('Super Admin')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
                 ->with('applications')
@@ -227,7 +227,7 @@ class ApplicationController extends Controller
     {
         $me = User::find(auth()->user()->id);
         if (! $me->hasRole('Super Admin')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
                 ->with('applications')
@@ -268,7 +268,7 @@ class ApplicationController extends Controller
         }
         $level = $request->level;
 
-        $studentGender = GeneralInformation::where('user_id', $request->student)->value('gender');
+        $studentGender = GeneralInformation::whereUserId('user_id', $request->student)->value('gender');
 
         switch ($studentGender) {
             case 'Male':
@@ -486,7 +486,7 @@ class ApplicationController extends Controller
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
         } elseif ($me->hasRole('Principal')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesP($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -502,7 +502,7 @@ class ApplicationController extends Controller
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer') or $me->hasRole('Financial Manager')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPAF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools

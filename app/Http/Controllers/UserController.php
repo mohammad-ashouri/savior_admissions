@@ -61,7 +61,7 @@ class UserController extends Controller
         if ($me->hasRole('Super Admin')) {
             $schools = School::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $schools = School::whereStatus(1)->whereIn('id', $filteredArray)->get();
             if ($schools->count() == 0) {
@@ -133,7 +133,7 @@ class UserController extends Controller
         if ($me->hasRole('Super Admin')) {
             $schools = School::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $schools = School::whereStatus(1)->whereIn('id', $filteredArray)->paginate(20);
             if ($schools->count() == 0) {
@@ -143,7 +143,7 @@ class UserController extends Controller
             $schools = [];
         }
         $roles = Role::orderBy('name', 'asc')->pluck('name')->all();
-        $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
+        $generalInformation = GeneralInformation::whereUserId($user->id)->first();
         $countries = Country::get();
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct('nationality')->get();
         $parents = User::with('generalInformationInfo')->whereStatus(1)

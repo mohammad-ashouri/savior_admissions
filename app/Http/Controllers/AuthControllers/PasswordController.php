@@ -70,11 +70,11 @@ class PasswordController extends Controller
 
                 //Delete previous tokens
                 $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                PasswordResetToken::where('user_id', $userInfo->id)
+                PasswordResetToken::whereUserId($userInfo->id)
                     ->where('created_at', '<=', $twoMinutesAgo)
                     ->delete();
 
-                $lastToken = PasswordResetToken::where('user_id', $userInfo->id)
+                $lastToken = PasswordResetToken::whereUserId($userInfo->id)
                     ->where('created_at', '>', $twoMinutesAgo)
                     ->first();
 
@@ -118,11 +118,11 @@ class PasswordController extends Controller
 
                 //Delete previous tokens
                 $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                PasswordResetToken::where('user_id', $userInfo->id)
+                PasswordResetToken::whereUserId($userInfo->id)
                     ->where('created_at', '<=', $twoMinutesAgo)
                     ->delete();
 
-                $lastToken = PasswordResetToken::where('user_id', $userInfo->id)
+                $lastToken = PasswordResetToken::whereUserId($userInfo->id)
                     ->where('created_at', '>', $twoMinutesAgo)
                     ->first();
 
@@ -204,7 +204,7 @@ class PasswordController extends Controller
                 }
 
                 //Delete previous tokens
-                $deletedToken = PasswordResetToken::where('user_id', $userInfo->id)->where('token', $token)->where('type', 2)->delete();
+                $deletedToken = PasswordResetToken::whereUserId($userInfo->id)->where('token', $token)->where('type', 2)->delete();
 
                 if (! $deletedToken) {
                     return response()->json([
@@ -255,7 +255,7 @@ class PasswordController extends Controller
                 }
 
                 //Delete previous tokens
-                $deletedToken = PasswordResetToken::where('user_id', $userInfo->id)->where('token', $token)->where('type', 1)->delete();
+                $deletedToken = PasswordResetToken::whereUserId($userInfo->id)->where('token', $token)->where('type', 1)->delete();
 
                 if (! $deletedToken) {
                     return response()->json([

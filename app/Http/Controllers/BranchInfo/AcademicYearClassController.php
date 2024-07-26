@@ -32,7 +32,7 @@ class AcademicYearClassController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Retrieve user access information
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Retrieve academic years associated with the accesses
@@ -166,7 +166,7 @@ class AcademicYearClassController extends Controller
         if ($me->hasRole('Super Admin')) {
             $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYear)->pluck('levels')->all();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->pluck('levels')->all();
         }
@@ -195,7 +195,7 @@ class AcademicYearClassController extends Controller
         if ($me->hasRole('Super Admin')) {
             $academicYear = AcademicYear::whereStatus(1)->whereId($academicYear)->select('start_date', 'end_date')->first();
         } else {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYear = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->select('start_date', 'end_date')->first();
             if (empty($academicYear)) {

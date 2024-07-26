@@ -50,7 +50,7 @@ class ResetPasswordMailer extends Mailable
 
         $userInfo = User::where('email', $this->email)->first();
 
-        PasswordResetToken::where('user_id', $userInfo->id)->update(['active' => 0]);
+        PasswordResetToken::whereUserId($userInfo->id)->update(['active' => 0]);
 
         $tokenEntry = new PasswordResetToken();
         $tokenEntry->user_id = $userInfo->id;

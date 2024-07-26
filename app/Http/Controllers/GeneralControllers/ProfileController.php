@@ -22,9 +22,9 @@ class ProfileController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(auth()->user()->id);
-        $myGeneralInformation = GeneralInformation::where('user_id', $me->id)->with('user')->first();
+        $myGeneralInformation = GeneralInformation::whereUserId($me->id)->with('user')->first();
         $personnelPhotoType = DocumentType::where('name', 'Personal picture')->first();
-        $myDocuments = Document::where('user_id', $me->id)->where('document_type_id', $personnelPhotoType->id)->latest()->first();
+        $myDocuments = Document::whereUserId($me->id)->where('document_type_id', $personnelPhotoType->id)->latest()->first();
         $countries = Country::get();
 
         return view('GeneralPages.profile', compact('myGeneralInformation', 'myDocuments', 'countries'));
@@ -32,7 +32,7 @@ class ProfileController extends Controller
 
     public function editMyProfile(Request $request)
     {
-        $generalInformation = GeneralInformation::where('user_id', auth()->user()->id)->first();
+        $generalInformation = GeneralInformation::whereUserId(auth()->user()->id)->first();
 
         if ($generalInformation->status == 0) {
             $this->validate($request, [
@@ -48,7 +48,7 @@ class ProfileController extends Controller
                 'zip/postalcode' => 'required|string',
                 'email' => 'nullable|email',
             ]);
-            $generalInformation = GeneralInformation::where('user_id', auth()->user()->id)->update(
+            $generalInformation = GeneralInformation::whereUserId(auth()->user()->id)->update(
                 [
                     'first_name_fa' => $request->input('first_name_fa'),
                     'last_name_fa' => $request->input('last_name_fa'),
@@ -78,7 +78,7 @@ class ProfileController extends Controller
                 'zip/postalcode' => 'required|string',
                 'email' => 'nullable|email',
             ]);
-            $generalInformation = GeneralInformation::where('user_id', auth()->user()->id)->update(
+            $generalInformation = GeneralInformation::whereUserId(auth()->user()->id)->update(
                 [
                     'faragir_code' => $request->input('FaragirCode'),
                     'passport_number' => $request->input('PassportNumber'),
@@ -149,7 +149,7 @@ class ProfileController extends Controller
 
         $this->validate($request, $rules);
 
-        $userGeneralInformation = GeneralInformation::where('user_id', $user->id)->first();
+        $userGeneralInformation = GeneralInformation::whereUserId($user->id)->first();
         $userGeneralInformation->first_name_fa = $request->first_name_fa;
         $userGeneralInformation->last_name_fa = $request->last_name_fa;
         $userGeneralInformation->first_name_en = $request->first_name_en;

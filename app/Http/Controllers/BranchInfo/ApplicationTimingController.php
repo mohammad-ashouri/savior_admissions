@@ -33,7 +33,7 @@ class ApplicationTimingController extends Controller
                 $applicationTimings = [];
             }
         } elseif (! $me->hasRole('Super Admin')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $applicationTimings = ApplicationTiming::with('academicYearInfo')
                 ->with('firstInterviewer')
@@ -59,7 +59,7 @@ class ApplicationTimingController extends Controller
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::whereStatus(1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             if ($academicYears->count() == 0) {
@@ -99,7 +99,7 @@ class ApplicationTimingController extends Controller
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::whereStatus(1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             if ($academicYears->count() == 0) {
@@ -181,7 +181,7 @@ class ApplicationTimingController extends Controller
                 ->with('secondInterviewer')
                 ->find($id);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $applicationTiming = ApplicationTiming::with('academicYearInfo')
                 ->with('firstInterviewer')
@@ -213,7 +213,7 @@ class ApplicationTimingController extends Controller
             $academicYearInterviewers = AcademicYear::whereStatus(1)->where('id', $academicYear)->pluck('employees')->first();
             $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->whereStatus(1)->with('generalInformationInfo')->get()->keyBy('id')->toArray();
         } else {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYearInterviewers = AcademicYear::whereStatus(1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
             if (empty($academicYearInterviewers)) {
@@ -241,7 +241,7 @@ class ApplicationTimingController extends Controller
                 ->first();
 
         } elseif (! $me->hasRole('Super Admin')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $applicationTiming = ApplicationTiming::with('applications')
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')

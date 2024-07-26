@@ -73,7 +73,7 @@ class NewUsers implements ToModel
                     break;
             }
 
-            $checkGeneralInformation=GeneralInformation::where('user_id',$row[2])->updateOrCreate([
+            $checkGeneralInformation=GeneralInformation::whereUserId($row[2])->updateOrCreate([
                 'user_id' => $studentInformation->id,
                 'first_name_fa' => $row[5],
                 'last_name_fa' => $row[6],
