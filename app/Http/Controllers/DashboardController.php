@@ -118,7 +118,7 @@ class DashboardController extends Controller
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();

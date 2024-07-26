@@ -55,7 +55,7 @@ class ApplicationController extends Controller
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -88,10 +88,10 @@ class ApplicationController extends Controller
         $activeAcademicYears = $this->getActiveAcademicYears();
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::where('guardian', $me->id)->orderBy('student_id')->get();
-            $levels = Level::where('status', 1)->get();
+            $levels = Level::whereStatus(1)->get();
 
         } elseif ($me->hasRole('Super Admin')) {
-            $levels = Level::where('status', 1)->get();
+            $levels = Level::whereStatus(1)->get();
             $myStudents = StudentInformation::
                 join('general_informations','student_informations.student_id','=','general_informations.user_id')
             ->with('generalInformations')->orderBy('general_informations.last_name_en')->orderBy('general_informations.first_name_en')->get();
@@ -101,7 +101,7 @@ class ApplicationController extends Controller
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding levels by accessing academic year levels
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             $levels = [];
             foreach ($academicYears as $academicYear) {
                 $levels[] = json_decode($academicYear['levels'], true);
@@ -136,7 +136,7 @@ class ApplicationController extends Controller
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -279,7 +279,7 @@ class ApplicationController extends Controller
                 break;
         }
         $schoolWithGender = School::where('gender', $gender)->get()->pluck('id')->toArray();
-        $query = AcademicYear::where('status', 1)->whereJsonContains('levels', $level);
+        $query = AcademicYear::whereStatus(1)->whereJsonContains('levels', $level);
         if ($level != 1 and $level != 2) {
             $query->whereIn('school_id', $schoolWithGender);
         }
@@ -321,7 +321,7 @@ class ApplicationController extends Controller
         }
 
         $application = $request->application;
-        $applicationCheck = Applications::where('status', 1)->where('reserved', 0)->find($application);
+        $applicationCheck = Applications::whereStatus(1)->where('reserved', 0)->find($application);
         if (empty($applicationCheck)) {
             return response()->json(['error' => 'Unfortunately, the selected application was reserved a few minutes ago. Please choose another application'], 422);
         }
@@ -359,7 +359,7 @@ class ApplicationController extends Controller
             abort(403);
         }
 
-        $applicationCheck = Applications::where('status', 1)->where('reserved', 0)->find($dateAndTime);
+        $applicationCheck = Applications::whereStatus(1)->where('reserved', 0)->find($dateAndTime);
         if (empty($applicationCheck)) {
             return redirect()->back()->withErrors('Unfortunately, the selected application was reserved a few minutes ago. Please choose another application')->withInput();
         }
@@ -392,7 +392,7 @@ class ApplicationController extends Controller
         $createdAt = $checkApplication->created_at;
 
         $deadline = Carbon::parse($createdAt)->addHour()->toDateTimeString();
-        $paymentMethods = PaymentMethod::where('status', 1)->get();
+        $paymentMethods = PaymentMethod::whereStatus(1)->get();
 
         return view('Applications.application_payment', compact('checkApplication', 'deadline', 'paymentMethods'));
     }

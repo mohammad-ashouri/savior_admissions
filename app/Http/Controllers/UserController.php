@@ -39,7 +39,7 @@ class UserController extends Controller
             if ($me->hasRole('Super Admin')) {
                 $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->paginate(20);
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-                $data = User::where('status', 1)
+                $data = User::whereStatus(1)
                     ->WhereHas('roles', function ($query) {
                         $query->where('name', 'Parent');
                         $query->orWhere('name', 'Student');
@@ -63,7 +63,7 @@ class UserController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $schools = School::where('status', 1)->whereIn('id', $filteredArray)->get();
+            $schools = School::whereStatus(1)->whereIn('id', $filteredArray)->get();
             if ($schools->count() == 0) {
                 $schools = [];
             }
@@ -135,7 +135,7 @@ class UserController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $schools = School::where('status', 1)->whereIn('id', $filteredArray)->paginate(20);
+            $schools = School::whereStatus(1)->whereIn('id', $filteredArray)->paginate(20);
             if ($schools->count() == 0) {
                 $schools = [];
             }
@@ -146,7 +146,7 @@ class UserController extends Controller
         $generalInformation = GeneralInformation::where('user_id', $user->id)->first();
         $countries = Country::get();
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct('nationality')->get();
-        $parents = User::with('generalInformationInfo')->where('status', 1)
+        $parents = User::with('generalInformationInfo')->whereStatus(1)
             ->WhereHas('roles', function ($query) {
                 $query->where('name', 'Parent');
             })->get();

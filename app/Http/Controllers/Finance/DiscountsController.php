@@ -33,7 +33,7 @@ class DiscountsController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $discounts = Discount::with('academicYearInfo')->whereIn('academic_year', $academicYears)->orderBy('academic_year', 'desc')->paginate(10);
         }
@@ -56,7 +56,7 @@ class DiscountsController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $discounts = Discount::with('academicYearInfo')->with('allDiscounts')->whereIn('academic_year', $academicYears)->orderBy('academic_year', 'desc')->find($id);
         }
@@ -79,7 +79,7 @@ class DiscountsController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $discounts = Discount::with('academicYearInfo')->with('allDiscounts')->whereIn('academic_year', $academicYears)->orderBy('academic_year', 'desc')->find($request->discount_id);
         }

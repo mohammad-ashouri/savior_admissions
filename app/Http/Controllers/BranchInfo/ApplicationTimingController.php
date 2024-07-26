@@ -57,11 +57,11 @@ class ApplicationTimingController extends Controller
         $me = User::find(auth()->user()->id);
         $academicYears = [];
         if ($me->hasRole('Super Admin')) {
-            $academicYears = AcademicYear::where('status', 1)->get();
+            $academicYears = AcademicYear::whereStatus(1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             if ($academicYears->count() == 0) {
                 $academicYears = [];
             }
@@ -97,11 +97,11 @@ class ApplicationTimingController extends Controller
         $me = User::find(auth()->user()->id);
         $academicYears = [];
         if ($me->hasRole('Super Admin')) {
-            $academicYears = AcademicYear::where('status', 1)->get();
+            $academicYears = AcademicYear::whereStatus(1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             if ($academicYears->count() == 0) {
                 $academicYears = [];
             }
@@ -210,16 +210,16 @@ class ApplicationTimingController extends Controller
         $academicYear = $request->academic_year;
 
         if ($me->hasRole('Super Admin')) {
-            $academicYearInterviewers = AcademicYear::where('status', 1)->where('id', $academicYear)->pluck('employees')->first();
-            $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->where('status', 1)->with('generalInformationInfo')->get()->keyBy('id')->toArray();
+            $academicYearInterviewers = AcademicYear::whereStatus(1)->where('id', $academicYear)->pluck('employees')->first();
+            $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->whereStatus(1)->with('generalInformationInfo')->get()->keyBy('id')->toArray();
         } else {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $academicYearInterviewers = AcademicYear::where('status', 1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
+            $academicYearInterviewers = AcademicYear::whereStatus(1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
             if (empty($academicYearInterviewers)) {
                 $academicYearInterviewers = [];
             }
-            $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->where('status', 1)->with('generalInformationInfo')->get()->toArray();
+            $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->whereStatus(1)->with('generalInformationInfo')->get()->toArray();
             if (empty($interviewers)) {
                 $interviewers = [];
             }

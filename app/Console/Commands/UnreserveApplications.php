@@ -44,10 +44,9 @@ class UnreserveApplications extends Command
 
         $today = Carbon::today();
 
-        $applications = Applications::where('status', 1)
+        $applications = Applications::whereStatus(1)
             ->where('date', '<', $today)
             ->where('reserved', 0)
-            ->where('status', 1)
             ->update(['status'=>0]);
     }
 }

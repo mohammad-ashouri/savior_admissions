@@ -197,7 +197,7 @@ class Controller extends BaseController
 
     public function getActiveAcademicYears()
     {
-        $academicYears = AcademicYear::where('status', 1)->get()->pluck('id')->toArray();
+        $academicYears = AcademicYear::whereStatus(1)->get()->pluck('id')->toArray();
         if (empty($academicYears)) {
             return false;
         }

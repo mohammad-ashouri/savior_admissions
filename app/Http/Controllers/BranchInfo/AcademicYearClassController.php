@@ -69,7 +69,7 @@ class AcademicYearClassController extends Controller
             $academicYears = [];
         }
 
-        $levels = Level::where('status', 1)->get();
+        $levels = Level::whereStatus(1)->get();
         $educationTypes = EducationType::whereStatus(1)->get();
         $educationGenders = Gender::get();
 
@@ -110,7 +110,7 @@ class AcademicYearClassController extends Controller
         $academicYearClass = AcademicYearClass::find($id);
 
         if ($me->hasRole('Super Admin')) {
-            $academicYears = AcademicYear::where('status', 1)->get();
+            $academicYears = AcademicYear::whereStatus(1)->get();
             $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYearClass->academic_year)->pluck('levels')->all();
             $levels = Level::whereIn('id', json_decode($academicYearLevels[0], true))->whereStatus(1)->pluck('name', 'id')->all();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {

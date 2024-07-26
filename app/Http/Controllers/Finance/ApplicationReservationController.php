@@ -50,7 +50,7 @@ class ApplicationReservationController extends Controller
         //            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
         //
         //            // Finding academic years with status 1 in the specified schools
-        //            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+        //            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         //
         //            // Finding application timings based on academic years
         //            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -78,7 +78,7 @@ class ApplicationReservationController extends Controller
         //            $applications = [];
         //        }
         //
-        $paymentMethods = PaymentMethod::where('status', 1)->get();
+        $paymentMethods = PaymentMethod::whereStatus(1)->get();
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
@@ -99,7 +99,7 @@ class ApplicationReservationController extends Controller
         $me = User::find(auth()->user()->id);
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
-            $levels = Level::where('status', 1)->get();
+            $levels = Level::whereStatus(1)->get();
 
             return view('Finance.ApplicationReservationInvoices.create', compact('myStudents', 'levels'));
         }
@@ -127,7 +127,7 @@ class ApplicationReservationController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -199,7 +199,7 @@ class ApplicationReservationController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -306,7 +306,7 @@ class ApplicationReservationController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -340,7 +340,7 @@ class ApplicationReservationController extends Controller
             $applications = [];
         }
 
-        $paymentMethods = PaymentMethod::where('status', 1)->get();
+        $paymentMethods = PaymentMethod::whereStatus(1)->get();
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {

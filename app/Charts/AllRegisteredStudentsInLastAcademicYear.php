@@ -15,7 +15,7 @@ class AllRegisteredStudentsInLastAcademicYear
     public function __construct(LarapexChart $allRegisteredStudentsInLastAcademicYear)
     {
         $this->allRegisteredStudentsInLastAcademicYear = $allRegisteredStudentsInLastAcademicYear;
-        $this->academicYears = AcademicYear::where('status', 1)->get()->pluck('id')->toArray();
+        $this->academicYears = AcademicYear::whereStatus(1)->get()->pluck('id')->toArray();
     }
 
     public function build()

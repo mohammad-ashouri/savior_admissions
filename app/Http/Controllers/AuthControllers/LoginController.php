@@ -105,14 +105,14 @@ class LoginController extends Controller
         }
 
         $phoneCode = CountryPhoneCodes::find($request->input('phone_code'));
-        $user = User::where('mobile', '+' . $phoneCode->phonecode . $request->input('mobile'))->where('status', 0)->first();
+        $user = User::where('mobile', '+' . $phoneCode->phonecode . $request->input('mobile'))->whereStatus(0)->first();
         if (!empty($user)) {
             return redirect()->back()->withErrors([
                 'DeactivatedUser' => 'User deactivated!',
             ]);
         }
 
-        $user = User::where('mobile', '+' . $phoneCode->phonecode . $request->input('mobile'))->where('status', 1)->first();
+        $user = User::where('mobile', '+' . $phoneCode->phonecode . $request->input('mobile'))->whereStatus(1)->first();
 
         if (empty($user)) {
             return redirect()->back()->withErrors([

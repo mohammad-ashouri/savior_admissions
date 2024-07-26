@@ -15,7 +15,7 @@ class AcceptedStudentsByAcademicYear
     public function __construct(LarapexChart $studentsCountByAcademicYear)
     {
         $this->acceptedStudentNumberStatusByAcademicYear = $studentsCountByAcademicYear;
-        $this->academicYears = AcademicYear::where('status', 1)->get()->pluck('id')->toArray();
+        $this->academicYears = AcademicYear::whereStatus(1)->get()->pluck('id')->toArray();
     }
 
     public function build()

@@ -95,13 +95,13 @@ class SignupController extends Controller
                 $twoMinutesAgo = Carbon::now()->subMinutes(2);
                 RegisterToken::where('value', $mobile)
                     ->where('register_method', 'Mobile')
-                    ->where('status', 0)
+                    ->whereStatus(0)
                     ->where('created_at', '<=', $twoMinutesAgo)
                     ->delete();
 
                 $lastToken = RegisterToken::where('value', $mobile)
                     ->where('register_method', 'Mobile')
-                    ->where('status', 0)
+                    ->whereStatus(0)
                     ->where('created_at', '>', $twoMinutesAgo)
                     ->first();
 
@@ -142,13 +142,13 @@ class SignupController extends Controller
                     $twoMinutesAgo = Carbon::now()->subMinutes(2);
                     RegisterToken::where('value', $email)
                         ->where('register_method', 'Email')
-                        ->where('status', 0)
+                        ->whereStatus(0)
                         ->where('created_at', '<=', $twoMinutesAgo)
                         ->delete();
 
                     $lastToken = RegisterToken::where('value', $email)
                         ->where('register_method', 'Email')
-                        ->where('status', 0)
+                        ->whereStatus(0)
                         ->where('created_at', '>', $twoMinutesAgo)
                         ->first();
 
@@ -190,7 +190,7 @@ class SignupController extends Controller
                 $twoMinutesAgo = Carbon::now()->subMinutes(2);
                 RegisterToken::where('value', $mobile)
                     ->where('register_method', 'Mobile')
-                    ->where('status', 0)
+                    ->whereStatus(0)
                     ->where('created_at', '<=', $twoMinutesAgo)
                     ->delete();
 
@@ -218,7 +218,7 @@ class SignupController extends Controller
                 $twoMinutesAgo = Carbon::now()->subMinutes(2);
                 RegisterToken::where('value', $email)
                     ->where('register_method', 'Email')
-                    ->where('status', 0)
+                    ->whereStatus(0)
                     ->where('created_at', '<=', $twoMinutesAgo)
                     ->delete();
 
@@ -246,7 +246,7 @@ class SignupController extends Controller
 
     public function newAccount($token)
     {
-        $checkToken = RegisterToken::where('token', $token)->where('status', 0)->exists();
+        $checkToken = RegisterToken::where('token', $token)->whereStatus(0)->exists();
         if ($checkToken) {
             $tokenInfo = RegisterToken::where('token', $token)->first();
 

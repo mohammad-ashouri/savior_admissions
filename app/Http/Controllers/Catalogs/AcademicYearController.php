@@ -30,25 +30,25 @@ class AcademicYearController extends Controller
 
     public function getAllPrincipals()
     {
-        return User::where('status', 1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
+        return User::whereStatus(1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
             $query->where('name', 'Principal');
         })->orderBy('id')->get();
     }
     public function getAllAdmissionsOfficers()
     {
-        return User::where('status', 1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
+        return User::whereStatus(1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
             $query->where('name', 'Admissions Officer');
         })->orderBy('id')->get();
     }
     public function getAllFinancialManagers()
     {
-        return User::where('status', 1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
+        return User::whereStatus(1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
             $query->where('name', 'Financial Manager');
         })->orderBy('id')->get();
     }
     public function getAllInterviewers()
     {
-        return User::where('status', 1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
+        return User::whereStatus(1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
             $query->where('name', 'Interviewer');
         })->orderBy('id')->get();
     }
@@ -61,8 +61,8 @@ class AcademicYearController extends Controller
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $academicYears = AcademicYear::get();
-        $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
-        $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
+        $schools = School::whereStatus(1)->orderBy('name', 'asc')->get();
+        $levels = Level::whereStatus(1)->orderBy('id', 'asc')->get();
 
         $principals=$this->getAllPrincipals();
         $admissionOfficers=$this->getAllAdmissionsOfficers();
@@ -90,7 +90,7 @@ class AcademicYearController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $prevAcademicYear = AcademicYear::where('school_id', $request->input('school'))->where('status', 1)->first();
+        $prevAcademicYear = AcademicYear::where('school_id', $request->input('school'))->whereStatus(1)->first();
         if ($prevAcademicYear) {
             $prevAcademicYear->status = 0;
             $prevAcademicYear->save();
@@ -214,8 +214,8 @@ class AcademicYearController extends Controller
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = AcademicYear::with('schoolInfo')->find($id);
-        $levels = Level::where('status', 1)->orderBy('id', 'asc')->get();
-        $schools = School::where('status', 1)->orderBy('name', 'asc')->get();
+        $levels = Level::whereStatus(1)->orderBy('id', 'asc')->get();
+        $schools = School::whereStatus(1)->orderBy('name', 'asc')->get();
         $principals=$this->getAllPrincipals();
         $admissionOfficers=$this->getAllAdmissionsOfficers();
         $financialManagers=$this->getAllFinancialManagers();
@@ -383,7 +383,7 @@ class AcademicYearController extends Controller
             $applicationTiming->status = $academicYear->status;
             $applicationTiming->save();
 
-            $applications = Applications::where('application_timing_id', $applicationTiming->id)->where('reserved', 0)->where('status', 1)->get();
+            $applications = Applications::where('application_timing_id', $applicationTiming->id)->where('reserved', 0)->whereStatus(1)->get();
             foreach ($applications as $application) {
                 $application = Applications::find($application->id)->first();
                 $application->status = 0;

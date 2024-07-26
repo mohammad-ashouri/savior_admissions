@@ -70,9 +70,6 @@
                                                                 <label
                                                                     class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">The
                                                                     amount of full payment</label>
-                                                                <script>
-
-                                                                </script>
                                                                 <div class="flex justify-between">
                                                                     <input type="text"
                                                                            value="{{@$fullPaymentDetails['full_payment_irr']}}"

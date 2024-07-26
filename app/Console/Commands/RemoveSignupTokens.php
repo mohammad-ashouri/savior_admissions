@@ -29,7 +29,7 @@ class RemoveSignupTokens extends Command
      */
     public function handle()
     {
-        $registerTokens=RegisterToken::where('created_at', '<=', now()->subHour(1))->where('status',0)->get();
+        $registerTokens=RegisterToken::where('created_at', '<=', now()->subHour(1))->whereStatus(0)->get();
         foreach ($registerTokens as $registerToken){
             RegisterToken::find($registerToken->id)->delete();
         }
