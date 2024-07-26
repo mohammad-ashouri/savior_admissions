@@ -98,7 +98,7 @@ class ApplicationReservationController extends Controller
     {
         $me = User::find(auth()->user()->id);
         if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::with('generalInformations')->where('guardian', $me->id)->orderBy('id')->get();
+            $myStudents = StudentInformation::with('generalInformations')->whereGuardian($me->id)->orderBy('id')->get();
             $levels = Level::whereStatus(1)->get();
 
             return view('Finance.ApplicationReservationInvoices.create', compact('myStudents', 'levels'));
@@ -117,7 +117,7 @@ class ApplicationReservationController extends Controller
         }
 
         if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->where('id', $id)->first();
         } elseif ($me->hasRole('Super Admin')) {
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();

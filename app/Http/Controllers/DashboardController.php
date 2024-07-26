@@ -58,7 +58,7 @@ class DashboardController extends Controller
         //Students
         $students = [];
         if ($me->hasRole('Parent')) {
-            $students = StudentInformation::where('guardian', auth()->user()->id)
+            $students = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
@@ -106,7 +106,7 @@ class DashboardController extends Controller
         //Applications
         $applicationStatuses = [];
         if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
             $applicationStatuses = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('student_id', $myStudents)->orderByDesc('academic_year')->get();
         }
         if ($me->hasRole('Super Admin')) {

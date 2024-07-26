@@ -40,7 +40,7 @@ class IDChanger extends Seeder
             StudentInformation::where('parent_mother_id', $oldUserID)->update(['parent_mother_id' => $user->id]);
 
             // Update guardian in StudentInformation table
-            StudentInformation::where('guardian', $oldUserID)->update(['guardian' => $user->id]);
+            StudentInformation::whereGuardian($oldUserID)->update(['guardian' => $user->id]);
 
             // Update user_id in Documents table
             Document::whereUserId($oldUserID)->update(['user_id' => $user->id]);

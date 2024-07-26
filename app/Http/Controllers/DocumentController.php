@@ -83,7 +83,7 @@ class DocumentController extends Controller
 
     public function uploadStudentDocumentByParent($student_id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse
     {
-        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->where('guardian', auth()->user()->id)->first();
+        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->whereGuardian(auth()->user()->id)->first();
         if (empty($studentInformation)) {
             abort(403);
         }
@@ -145,7 +145,7 @@ class DocumentController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', auth()->user()->id)->first();
+        $studentInformation = StudentInformation::where('student_id', $request->student_id)->whereGuardian(auth()->user()->id)->first();
         if (empty($studentInformation)) {
             abort(403);
         }
@@ -280,7 +280,7 @@ class DocumentController extends Controller
 
     public function editUploadedEvidences($student_id)
     {
-        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->where('guardian', auth()->user()->id)->first();
+        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $student_id)->whereGuardian(auth()->user()->id)->first();
         if (empty($studentInformation)) {
             abort(403);
         }
@@ -342,7 +342,7 @@ class DocumentController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $studentInformation = StudentInformation::where('student_id', $request->student_id)->where('guardian', auth()->user()->id)->first();
+        $studentInformation = StudentInformation::where('student_id', $request->student_id)->whereGuardian(auth()->user()->id)->first();
         if (empty($studentInformation)) {
             abort(403);
         }

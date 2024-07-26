@@ -45,7 +45,7 @@ class ApplicationController extends Controller
         $me = User::find(auth()->user()->id);
         $applications = [];
         if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
             $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myStudents)->paginate(150);
         } elseif ($me->hasRole('Super Admin')) {
             $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(150);
@@ -87,7 +87,7 @@ class ApplicationController extends Controller
         $me = User::find(auth()->user()->id);
         $activeAcademicYears = $this->getActiveAcademicYears();
         if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::where('guardian', $me->id)->orderBy('student_id')->get();
+            $myStudents = StudentInformation::whereGuardian($me->id)->orderBy('student_id')->get();
             $levels = Level::whereStatus(1)->get();
 
         } elseif ($me->hasRole('Super Admin')) {
@@ -126,7 +126,7 @@ class ApplicationController extends Controller
         }
 
         if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::where('guardian', $me->id)->pluck('student_id')->toArray();
+            $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->where('id', $id)->first();
         } elseif ($me->hasRole('Super Admin')) {
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->where('id', $id)->first();
@@ -348,7 +348,7 @@ class ApplicationController extends Controller
         $dateAndTime = $request->date_and_time;
         $interviewType = $request->interview_type;
 
-        $studentInfo = StudentInformation::where('guardian', $me->id)->where('student_id', $student)->first();
+        $studentInfo = StudentInformation::whereGuardian($me->id)->where('student_id', $student)->first();
 
         if (empty($studentInfo)) {
             abort(403);

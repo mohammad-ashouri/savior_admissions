@@ -127,7 +127,7 @@ class PaymentController extends Controller
 
                     //Found previous discounts
                     $familyPercentagePriceTwoInstallment = 0;
-                    $allStudentsWithGuardian = StudentInformation::where('guardian', $studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
+                    $allStudentsWithGuardian = StudentInformation::whereGuardian($studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
                     $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->where('tuition_payment_status', 'Paid')->pluck('id')->toArray();
                     $allGrantedFamilyDiscounts = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->get();
 

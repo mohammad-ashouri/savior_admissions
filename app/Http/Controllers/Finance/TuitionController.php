@@ -189,7 +189,7 @@ class TuitionController extends Controller
         //Get all students with paid status in all active academic years
         $me = auth()->user()->id;
 
-        $allStudentsWithMyGuardian = StudentInformation::where('guardian', $me)->pluck('student_id')->toArray();
+        $allStudentsWithMyGuardian = StudentInformation::whereGuardian($me)->pluck('student_id')->toArray();
         $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
             ->whereIn('student_id', $allStudentsWithMyGuardian)
@@ -727,7 +727,7 @@ class TuitionController extends Controller
 //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
         } elseif ($me->hasRole('Parent')) {
-            $students = StudentInformation::where('guardian', $me->id)->get()->pluck('student_id')->toArray();
+            $students = StudentInformation::whereGuardian($me->id)->get()->pluck('student_id')->toArray();
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('student_id', $students)
                 ->where('tuition_payment_status', 'Paid')

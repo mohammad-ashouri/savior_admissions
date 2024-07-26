@@ -46,7 +46,7 @@ class StudentController extends Controller
 
             return view('Students.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {
-            $students = StudentInformation::where('guardian', auth()->user()->id)
+            $students = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
@@ -114,7 +114,7 @@ class StudentController extends Controller
         $me = User::find(auth()->user()->id);
 
         //Check student information
-        $allMyStudents = StudentInformation::where('guardian', $me->id)->get()->pluck('student_id')->toArray();
+        $allMyStudents = StudentInformation::whereGuardian($me->id)->get()->pluck('student_id')->toArray();
         $allGeneralInformation=GeneralInformation::whereIn('user_id',$allMyStudents)
             ->where('first_name_en',$request->first_name_en)
             ->where('last_name_en',$request->last_name_en)
@@ -165,7 +165,7 @@ class StudentController extends Controller
         $me = User::find(auth()->user()->id);
 
         if ($me->hasRole('Parent')) {
-            $studentInformations = StudentInformation::where('guardian', auth()->user()->id)
+            $studentInformations = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
@@ -313,7 +313,7 @@ class StudentController extends Controller
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {
-            $students = StudentInformation::where('guardian', auth()->user()->id)
+            $students = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
@@ -455,7 +455,7 @@ class StudentController extends Controller
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {
-            $data = StudentInformation::where('guardian', auth()->user()->id)
+            $data = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
