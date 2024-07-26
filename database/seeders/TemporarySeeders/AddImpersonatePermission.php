@@ -14,19 +14,19 @@ class AddImpersonatePermission extends Seeder
     public function run(): void
     {
         Permission::create(['name' => 'impersonate']);
-        $admissionsOfficerRole = Role::where('name', 'Admissions Officer')->first();
+        $admissionsOfficerRole = Role::whereName('Admissions Officer')->first();
         $admissionsOfficerRole->givePermissionTo([
             'impersonate',
         ]);
-        $financialManagerRole = Role::where('name', 'Financial Manager')->first();
+        $financialManagerRole = Role::whereName('Financial Manager')->first();
         $financialManagerRole->givePermissionTo([
             'impersonate',
         ]);
-        $superAdminRole = Role::where('name', 'Super Admin')->first();
+        $superAdminRole = Role::whereName('Super Admin')->first();
         $superAdminRole->givePermissionTo([
             'impersonate',
         ]);
-        $principalRole = Role::where('name', 'Principal')->first();
+        $principalRole = Role::whereName('Principal')->first();
         $principalRole->givePermissionTo([
             'impersonate',
         ]);

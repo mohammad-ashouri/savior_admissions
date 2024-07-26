@@ -41,7 +41,7 @@ class UserController extends Controller
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
                 $data = User::whereStatus(1)
                     ->WhereHas('roles', function ($query) {
-                        $query->where('name', 'Parent');
+                        $query->whereName('Parent');
                         $query->orWhere('name', 'Student');
                     })
                     ->paginate(20);
@@ -98,7 +98,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         if ($request->input('role') == 'Student') {
             $lastStudent = User::whereHas('roles', function ($query) {
-                $query->where('name', 'Student');
+                $query->whereName('Student');
             })->orderByDesc('id')->first();
             $user->id = $lastStudent->id + 1;
         }
@@ -148,7 +148,7 @@ class UserController extends Controller
         $nationalities = Country::orderBy('nationality', 'asc')->select('nationality', 'id')->distinct('nationality')->get();
         $parents = User::with('generalInformationInfo')->whereStatus(1)
             ->WhereHas('roles', function ($query) {
-                $query->where('name', 'Parent');
+                $query->whereName('Parent');
             })->get();
         $guardianStudentRelationships = GuardianStudentRelationship::get();
         $currentIdentificationTypes = CurrentIdentificationType::get();
@@ -232,13 +232,13 @@ class UserController extends Controller
                 ->whereIn('id', $users)
                 ->where(function ($query) {
                     $query->whereHas('roles', function ($query) {
-                        $query->where('name', 'Parent');
+                        $query->whereName('Parent');
                         $query->orWhere('name', 'Student');
                     });
                 });
             if (! empty($selectedRole)) {
                 $query->whereHas('roles', function ($query) use ($selectedRole) {
-                    $query->where('name', $selectedRole);
+                    $query->whereName($selectedRole);
                 });
             }
         } else {
@@ -246,7 +246,7 @@ class UserController extends Controller
                 ->whereIn('id', $users);
             if (! empty($selectedRole)) {
                 $query->whereHas('roles', function ($query) use ($selectedRole) {
-                    $query->where('name', $selectedRole);
+                    $query->whereName($selectedRole);
                 });
             }
         }

@@ -16,7 +16,7 @@ class RemoveMobileThatUserNotGuardian extends Seeder
         $studentInformations = StudentInformation::distinct()->pluck('guardian')->toArray();
 
         User::whereHas('roles', function ($query) {
-            $query->where('name', 'Parent');
+            $query->whereName('Parent');
         })
             ->whereNotIn('id', $studentInformations)
             ->update(['mobile' => null]);

@@ -15,15 +15,15 @@ class AddSearchTuitionStatusPermission extends Seeder
     public function run(): void
     {
         Permission::create(['name' => 'search-tuition-status']);
-        $financialManagerRole=Role::where('name','Financial Manager')->first();
+        $financialManagerRole=Role::whereName('Financial Manager')->first();
         $financialManagerRole->givePermissionTo([
             'search-tuition-status'
         ]);
-        $superAdminRole = Role::where('name', 'Super Admin')->first();
+        $superAdminRole = Role::whereName('Super Admin')->first();
         $superAdminRole->givePermissionTo([
             'search-tuition-status',
         ]);
-        $principalRole = Role::where('name', 'Principal')->first();
+        $principalRole = Role::whereName('Principal')->first();
         $principalRole->givePermissionTo([
             'search-tuition-status',
         ]);

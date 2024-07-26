@@ -28,7 +28,7 @@ class StudentSeeder extends Seeder
                 'last_name_en' => 'Student',
             ]
         );
-        $role = Role::where('name', 'Student')->first();
+        $role = Role::whereName('Student')->first();
         $user->assignRole([$role->id]);
     }
 }

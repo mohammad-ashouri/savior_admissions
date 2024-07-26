@@ -30,7 +30,7 @@ class PrincipalSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Principal')->first();
+        $role = Role::whereName('Principal')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -49,7 +49,7 @@ class PrincipalSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Principal')->first();
+        $role = Role::whereName('Principal')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -68,7 +68,7 @@ class PrincipalSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Principal')->first();
+        $role = Role::whereName('Principal')->first();
         $user->assignRole([$role->id]);
     }
 }

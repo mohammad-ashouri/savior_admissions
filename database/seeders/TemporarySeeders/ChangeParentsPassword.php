@@ -15,13 +15,13 @@ class ChangeParentsPassword extends Seeder
     public function run(): void
     {
         User::whereHas('roles', function ($query) {
-            $query->where('name', 'Parent');
+            $query->whereName('Parent');
         })->update([
             'password' => DB::raw("SUBSTRING(mobile, -4)")
         ]);
 
         $users = User::whereHas('roles', function ($query) {
-            $query->where('name', 'Parent');
+            $query->whereName('Parent');
         })->get();
 
         foreach ($users as $user) {

@@ -76,7 +76,7 @@ class EducationTypeController extends Controller
     public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
-        $types = EducationType::where('name', 'LIKE', "%$name%")->paginate(10);
+        $types = EducationType::whereName('LIKE', "%$name%")->paginate(10);
         $types->appends(request()->query())->links();
         if ($types->isEmpty()) {
             return redirect()->route('EducationTypes.index')->withErrors('Not Found!')->withInput();

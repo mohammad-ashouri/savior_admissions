@@ -14,19 +14,19 @@ class AddChangeUsersPasswordPermission extends Seeder
     public function run(): void
     {
         Permission::create(['name' => 'change-users-password']);
-        $admissionsOfficerRole=Role::where('name','Admissions Officer')->first();
+        $admissionsOfficerRole=Role::whereName('Admissions Officer')->first();
         $admissionsOfficerRole->givePermissionTo([
             'change-users-password'
         ]);
-        $interviewerRole=Role::where('name','Interviewer')->first();
+        $interviewerRole=Role::whereName('Interviewer')->first();
         $interviewerRole->givePermissionTo([
             'change-users-password'
         ]);
-        $superAdminRole=Role::where('name','Super Admin')->first();
+        $superAdminRole=Role::whereName('Super Admin')->first();
         $superAdminRole->givePermissionTo([
             'change-users-password'
         ]);
-        $principalRole=Role::where('name','Principal')->first();
+        $principalRole=Role::whereName('Principal')->first();
         $principalRole->givePermissionTo([
             'change-users-password'
         ]);

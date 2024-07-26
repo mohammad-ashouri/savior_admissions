@@ -19,7 +19,7 @@ class SettingsCheck
     {
         $me=User::find(auth()->user()->id);
         //Check maintenance mode
-        $systemSettingsMaintenanceMode=SystemSettings::where('name','maintenance_mode')->first();
+        $systemSettingsMaintenanceMode=SystemSettings::whereName('maintenance_mode')->first();
         if ($systemSettingsMaintenanceMode->value==1 and !$me->hasRole('Super Admin')){
             return response()->view('GeneralPages.errors.maintenance_mode', [], 503);
         }

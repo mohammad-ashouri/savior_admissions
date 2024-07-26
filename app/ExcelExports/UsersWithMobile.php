@@ -12,7 +12,7 @@ class UsersWithMobile implements FromCollection
         return User::join('general_informations', 'users.id', '=', 'general_informations.user_id')
             ->whereNotNull('users.mobile')
             ->whereHas('roles',function ($query){
-                $query->where('name','Parent');
+                $query->whereName('Parent');
             })
             ->select('users.mobile','general_informations.first_name_en','general_informations.last_name_en')
             ->orderBy('general_informations.last_name_en')

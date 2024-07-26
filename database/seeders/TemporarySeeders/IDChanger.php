@@ -17,7 +17,7 @@ class IDChanger extends Seeder
     public function run(): void
     {
         $usersToUpdate = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'student');
+            $query->whereName('student');
         })->where('id','!=',1)->where('id','!=',2)->get();
 
         foreach ($usersToUpdate as $user) {

@@ -31,7 +31,7 @@ class ParentMotherSeeder extends Seeder
                 'last_name_en' => 'Mother',
             ]
         );
-        $role = Role::where('name', 'Parent')->first();
+        $role = Role::whereName('Parent')->first();
         $user->assignRole([$role->id]);
     }
 }

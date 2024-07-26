@@ -163,13 +163,13 @@ class DocumentController extends Controller
 
         $document = new Document();
         $document->user_id = auth()->user()->id;
-        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
         $document->src = $fatherPassportFile;
         $document->save();
 
         $document = new Document();
         $document->user_id = $checkStudentApplianceStatus->student_id;
-        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
         $document->src = $fatherPassportFile;
         $document->save();
 
@@ -182,13 +182,13 @@ class DocumentController extends Controller
 
         $document = new Document();
         $document->user_id = auth()->user()->id;
-        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
         $document->src = $motherPassportFileName;
         $document->save();
 
         $document = new Document();
         $document->user_id = $checkStudentApplianceStatus->student_id;
-        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
         $document->src = $motherPassportFileName;
         $document->save();
 
@@ -201,13 +201,13 @@ class DocumentController extends Controller
 
         $document = new Document();
         $document->user_id = auth()->user()->id;
-        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
         $document->src = $studentPassportFileName;
         $document->save();
 
         $document = new Document();
         $document->user_id = $checkStudentApplianceStatus->student_id;
-        $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+        $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
         $document->src = $studentPassportFileName;
         $document->save();
 
@@ -221,13 +221,13 @@ class DocumentController extends Controller
             );
             $document = new Document();
             $document->user_id = auth()->user()->id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $latestReportCard_FileName;
             $document->save();
 
             $document = new Document();
             $document->user_id = $checkStudentApplianceStatus->student_id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $latestReportCard_FileName;
             $document->save();
         }
@@ -242,13 +242,13 @@ class DocumentController extends Controller
             );
             $document = new Document();
             $document->user_id = auth()->user()->id;
-            $document->document_type_id = DocumentType::where('name', 'Residence Document')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Residence Document')->first()->id;
             $document->src = $residenceDocumentFile_FileName;
             $document->save();
 
             $document = new Document();
             $document->user_id = $checkStudentApplianceStatus->student_id;
-            $document->document_type_id = DocumentType::where('name', 'Residence Document')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Residence Document')->first()->id;
             $document->src = $residenceDocumentFile_FileName;
             $document->save();
         }
@@ -363,13 +363,13 @@ class DocumentController extends Controller
             );
             $document = new Document();
             $document->user_id = auth()->user()->id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $fatherPassportFile;
             $document->save();
 
             $document = new Document();
             $document->user_id = $checkStudentApplianceStatus->student_id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $fatherPassportFile;
             $document->save();
         } else {
@@ -386,13 +386,13 @@ class DocumentController extends Controller
 
             $document = new Document();
             $document->user_id = auth()->user()->id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $motherPassportFileName;
             $document->save();
 
             $document = new Document();
             $document->user_id = $checkStudentApplianceStatus->student_id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $motherPassportFileName;
             $document->save();
         } else {
@@ -409,13 +409,13 @@ class DocumentController extends Controller
 
             $document = new Document();
             $document->user_id = auth()->user()->id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $studentPassportFileName;
             $document->save();
 
             $document = new Document();
             $document->user_id = $checkStudentApplianceStatus->student_id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $studentPassportFileName;
             $document->save();
         } else {
@@ -432,13 +432,13 @@ class DocumentController extends Controller
             );
             $document = new Document();
             $document->user_id = auth()->user()->id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $latestReportCard_FileName;
             $document->save();
 
             $document = new Document();
             $document->user_id = $checkStudentApplianceStatus->student_id;
-            $document->document_type_id = DocumentType::where('name', 'Passport photo - page 1')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Passport photo - page 1')->first()->id;
             $document->src = $latestReportCard_FileName;
             $document->save();
         } else {
@@ -455,13 +455,13 @@ class DocumentController extends Controller
             );
             $document = new Document();
             $document->user_id = auth()->user()->id;
-            $document->document_type_id = DocumentType::where('name', 'Residence Document')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Residence Document')->first()->id;
             $document->src = $residenceDocumentScan_FileName;
             $document->save();
 
             $document = new Document();
             $document->user_id = $checkStudentApplianceStatus->student_id;
-            $document->document_type_id = DocumentType::where('name', 'Residence Document')->first()->id;
+            $document->document_type_id = DocumentType::whereName('Residence Document')->first()->id;
             $document->src = $residenceDocumentScan_FileName;
             $document->save();
         } else {

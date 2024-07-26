@@ -425,13 +425,13 @@ class ApplicationController extends Controller
 
                 $document = new Document();
                 $document->user_id = $applicationInformation->student_id;
-                $document->document_type_id = DocumentType::where('name', 'Deposit slip')->first()->id;
+                $document->document_type_id = DocumentType::whereName('Deposit slip')->first()->id;
                 $document->src = $path;
                 $document->save();
 
                 $document = new Document();
                 $document->user_id = auth()->user()->id;
-                $document->document_type_id = DocumentType::where('name', 'Deposit slip')->first()->id;
+                $document->document_type_id = DocumentType::whereName('Deposit slip')->first()->id;
                 $document->src = $path;
                 $document->save();
 

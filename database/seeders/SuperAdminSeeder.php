@@ -31,7 +31,7 @@ class SuperAdminSeeder extends Seeder
 //                'last_name_en' => 'Ashouri',
 //            ]
 //        );
-//        $role = Role::where('name', 'Super Admin')->first();
+//        $role = Role::whereName('Super Admin')->first();
 //        $user->assignRole([$role->id]);
 //
 //        $user = User::query()->create([
@@ -48,7 +48,7 @@ class SuperAdminSeeder extends Seeder
 //                'last_name_en' => 'Ghanbari',
 //            ]
 //        );
-//        $role = Role::where('name', 'Super Admin')->first();
+//        $role = Role::whereName('Super Admin')->first();
 //        $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -67,7 +67,7 @@ class SuperAdminSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Super Admin')->first();
+        $role = Role::whereName('Super Admin')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -86,7 +86,7 @@ class SuperAdminSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Super Admin')->first();
+        $role = Role::whereName('Super Admin')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -105,7 +105,7 @@ class SuperAdminSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Super Admin')->first();
+        $role = Role::whereName('Super Admin')->first();
         $user->assignRole([$role->id]);
     }
 }

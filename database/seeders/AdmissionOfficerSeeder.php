@@ -33,7 +33,7 @@ class AdmissionOfficerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Admissions Officer')->first();
+        $role = Role::whereName('Admissions Officer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -52,7 +52,7 @@ class AdmissionOfficerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Admissions Officer')->first();
+        $role = Role::whereName('Admissions Officer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -70,7 +70,7 @@ class AdmissionOfficerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Admissions Officer')->first();
+        $role = Role::whereName('Admissions Officer')->first();
         $user->assignRole([$role->id]);
     }
 }

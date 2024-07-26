@@ -14,19 +14,19 @@ class AddPermissionForChangeUserGeneralInformation extends Seeder
     public function run(): void
     {
         Permission::create(['name' => 'change_user_general_information']);
-        $admissionsOfficerRole = Role::where('name', 'Admissions Officer')->first();
+        $admissionsOfficerRole = Role::whereName('Admissions Officer')->first();
         $admissionsOfficerRole->givePermissionTo([
             'change_user_general_information',
         ]);
-        $interviewerRole = Role::where('name', 'Interviewer')->first();
+        $interviewerRole = Role::whereName('Interviewer')->first();
         $interviewerRole->givePermissionTo([
             'change_user_general_information',
         ]);
-        $superAdminRole = Role::where('name', 'Super Admin')->first();
+        $superAdminRole = Role::whereName('Super Admin')->first();
         $superAdminRole->givePermissionTo([
             'change_user_general_information',
         ]);
-        $principalRole = Role::where('name', 'Principal')->first();
+        $principalRole = Role::whereName('Principal')->first();
         $principalRole->givePermissionTo([
             'change_user_general_information',
         ]);

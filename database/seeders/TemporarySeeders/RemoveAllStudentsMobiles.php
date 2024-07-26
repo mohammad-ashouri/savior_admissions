@@ -13,7 +13,7 @@ class RemoveAllStudentsMobiles extends Seeder
     public function run(): void
     {
         User::whereHas('roles', function ($query) {
-            $query->where('name', 'Student');
+            $query->whereName('Student');
         })
             ->update([
                 'mobile' => null,

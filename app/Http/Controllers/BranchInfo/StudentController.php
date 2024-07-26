@@ -126,7 +126,7 @@ class StudentController extends Controller
         }
 
         $lastStudent = User::whereHas('roles', function ($query) {
-            $query->where('name', 'Student');
+            $query->whereName('Student');
         })->orderByDesc('id')->first();
 
         $user = new User();
@@ -248,7 +248,7 @@ class StudentController extends Controller
         $checkUser = User::find($request->user_id);
         if (empty($checkUser)) {
             $user = User::create(['id' => $request->user_id, 'password' => bcrypt('Aa16001600')]);
-            $role = Role::where('name', 'Student')->first();
+            $role = Role::whereName('Student')->first();
             $user->assignRole([$role->id]);
         }
 

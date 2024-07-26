@@ -13,7 +13,7 @@ class DeleteParentsAndStudentsEmail extends Seeder
     public function run(): void
     {
         User::whereHas('roles', function($query) {
-            $query->where('name', 'Student')->orWhere('name', 'Parent');
+            $query->whereName('Student')->orWhere('name', 'Parent');
         })->update([
             'email'=>null
         ]);

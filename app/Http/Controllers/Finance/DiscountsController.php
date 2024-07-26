@@ -94,7 +94,7 @@ class DiscountsController extends Controller
         //        dd(request()->all());
 
         foreach ($request->name as $key => $name) {
-            $discount_details = DiscountDetail::where('discount_id', $request->discount_id)->where('name', $name)->first();
+            $discount_details = DiscountDetail::where('discount_id', $request->discount_id)->whereName($name)->first();
             if (empty($discount_details)) {
                 $discount_details = new DiscountDetail();
                 $discount_details->discount_id = $request->discount_id;

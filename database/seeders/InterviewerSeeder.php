@@ -32,7 +32,7 @@ class InterviewerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -50,7 +50,7 @@ class InterviewerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -68,7 +68,7 @@ class InterviewerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -86,7 +86,7 @@ class InterviewerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -104,7 +104,7 @@ class InterviewerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -122,7 +122,7 @@ class InterviewerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -140,7 +140,7 @@ class InterviewerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
         $user = User::query()->create([
@@ -158,20 +158,20 @@ class InterviewerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
 
         //Add temporary mrs.pejhman to default interviewers
 
         $user=User::where('email','a.pejhman@saviorschools.com')->first();
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
 
         //Add temporary mrs.hosseini to default interviewers
 
         $user=User::where('email','z.hosseini@saviorschools.com')->first();
-        $role = Role::where('name', 'Interviewer')->first();
+        $role = Role::whereName('Interviewer')->first();
         $user->assignRole([$role->id]);
     }
 }

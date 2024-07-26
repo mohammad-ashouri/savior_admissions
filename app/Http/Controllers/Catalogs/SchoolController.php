@@ -90,7 +90,7 @@ class SchoolController extends Controller
     public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
-        $schools = School::where('name', 'LIKE', "%$name%")->paginate(10);
+        $schools = School::whereName('LIKE', "%$name%")->paginate(10);
         $schools->appends(request()->query())->links();
         if ($schools->isEmpty()) {
             return redirect()->route('Schools.index')->withErrors('Not Found!')->withInput();

@@ -31,25 +31,25 @@ class AcademicYearController extends Controller
     public function getAllPrincipals()
     {
         return User::whereStatus(1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
-            $query->where('name', 'Principal');
+            $query->whereName('Principal');
         })->orderBy('id')->get();
     }
     public function getAllAdmissionsOfficers()
     {
         return User::whereStatus(1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
-            $query->where('name', 'Admissions Officer');
+            $query->whereName('Admissions Officer');
         })->orderBy('id')->get();
     }
     public function getAllFinancialManagers()
     {
         return User::whereStatus(1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
-            $query->where('name', 'Financial Manager');
+            $query->whereName('Financial Manager');
         })->orderBy('id')->get();
     }
     public function getAllInterviewers()
     {
         return User::whereStatus(1)->with('generalInformationInfo')->WhereHas('roles', function ($query) {
-            $query->where('name', 'Interviewer');
+            $query->whereName('Interviewer');
         })->orderBy('id')->get();
     }
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
@@ -428,7 +428,7 @@ class AcademicYearController extends Controller
     public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
-        $academicYears = AcademicYear::with('schoolInfo')->where('name', 'LIKE', "%$name%")->paginate(10);
+        $academicYears = AcademicYear::with('schoolInfo')->whereName('LIKE', "%$name%")->paginate(10);
         $academicYears->appends(request()->query())->links();
         if ($academicYears->isEmpty()) {
             return redirect()->route('AcademicYears.index')->withErrors('Not Found!')->withInput();

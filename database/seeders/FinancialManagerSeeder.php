@@ -33,7 +33,7 @@ class FinancialManagerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Financial Manager')->first();
+        $role = Role::whereName('Financial Manager')->first();
         $user->assignRole([$role->id]);
 
 
@@ -53,7 +53,7 @@ class FinancialManagerSeeder extends Seeder
                 'status' => 1,
             ]
         );
-        $role = Role::where('name', 'Financial Manager')->first();
+        $role = Role::whereName('Financial Manager')->first();
         $user->assignRole([$role->id]);
     }
 }
