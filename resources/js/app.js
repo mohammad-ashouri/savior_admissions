@@ -951,7 +951,7 @@ $(document).ready(function () {
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                     }, error: function (xhr, textStatus, errorThrown) {
-                        swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                        swalFire('Error', JSON.parse(xhr.responseText).error, 'error', 'Try again');
                     }
                 });
             });

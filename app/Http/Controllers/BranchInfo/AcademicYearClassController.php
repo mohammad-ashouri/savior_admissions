@@ -36,7 +36,7 @@ class AcademicYearClassController extends Controller
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Retrieve academic years associated with the accesses
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
 
             // Convert the 'id' column to an array
             $academicYearIds = $academicYears->pluck('id')->toArray();
@@ -49,6 +49,7 @@ class AcademicYearClassController extends Controller
         } else {
             $academicYearClasses = [];
         }
+
         return view('BranchInfo.AcademicYearClasses.index', compact('academicYearClasses'));
     }
 
@@ -56,11 +57,11 @@ class AcademicYearClassController extends Controller
     {
         $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
-            $academicYears = AcademicYear::where('status', 1)->get();
+            $academicYears = AcademicYear::whereStatus(1)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             if ($academicYears->count() == 0) {
                 $academicYears = [];
             }
@@ -69,7 +70,7 @@ class AcademicYearClassController extends Controller
         }
 
         $levels = Level::where('status', 1)->get();
-        $educationTypes = EducationType::where('status', 1)->get();
+        $educationTypes = EducationType::whereStatus(1)->get();
         $educationGenders = Gender::get();
 
         return view('BranchInfo.AcademicYearClasses.create', compact('academicYears', 'levels', 'educationTypes', 'educationGenders'));
@@ -110,18 +111,19 @@ class AcademicYearClassController extends Controller
 
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::where('status', 1)->get();
-            $academicYearLevels = AcademicYear::where('status', 1)->where('id', $academicYearClass->academic_year)->pluck('levels')->all();
-            $levels = Level::whereIn('id', json_decode($academicYearLevels[0], true))->where('status', 1)->pluck('name', 'id')->all();
+            $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYearClass->academic_year)->pluck('levels')->all();
+            $levels = Level::whereIn('id', json_decode($academicYearLevels[0], true))->whereStatus(1)->pluck('name', 'id')->all();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $academicYears = AcademicYear::where('status', 1)->whereIn('school_id', $filteredArray)->get();
-            $academicYearLevels = AcademicYear::where('status', 1)->where('id', $academicYearClass->academic_year)->whereIn('school_id', $filteredArray)->pluck('levels')->all();
-            $levels = Level::whereIn('id', json_decode($academicYearLevels[0], true))->where('status', 1)->pluck('name', 'id')->all();
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
+            $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYearClass->academic_year)->whereIn('school_id', $filteredArray)->pluck('levels')->all();
+            $levels = Level::whereIn('id', json_decode($academicYearLevels[0], true))->whereStatus(1)->pluck('name', 'id')->all();
         }
 
-        $educationTypes = EducationType::where('status', 1)->get();
+        $educationTypes = EducationType::whereStatus(1)->get();
         $educationGenders = Gender::get();
+
         return view('BranchInfo.AcademicYearClasses.edit', compact('academicYears', 'levels', 'educationTypes', 'educationGenders', 'academicYearClass'));
 
     }
@@ -162,18 +164,19 @@ class AcademicYearClassController extends Controller
         $academicYear = $request->academic_year;
         $academicYearLevels = [];
         if ($me->hasRole('Super Admin')) {
-            $academicYearLevels = AcademicYear::where('status', 1)->where('id', $academicYear)->pluck('levels')->all();
+            $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYear)->pluck('levels')->all();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $academicYearLevels = AcademicYear::where('status', 1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->pluck('levels')->all();
+            $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->pluck('levels')->all();
         }
 
         if (empty($academicYearLevels)) {
             $levelInfo = [];
         } else {
-            $levelInfo = Level::whereIn('id', json_decode($academicYearLevels[0], true))->where('status', 1)->get();
+            $levelInfo = Level::whereIn('id', json_decode($academicYearLevels[0], true))->whereStatus(1)->get();
         }
+
         return $levelInfo;
     }
 
@@ -190,15 +193,16 @@ class AcademicYearClassController extends Controller
         $academicYear = $request->academic_year;
 
         if ($me->hasRole('Super Admin')) {
-            $academicYear = AcademicYear::where('status', 1)->where('id', $academicYear)->select('start_date', 'end_date')->first();
+            $academicYear = AcademicYear::whereStatus(1)->whereId($academicYear)->select('start_date', 'end_date')->first();
         } else {
             $myAllAccesses = UserAccessInformation::where('user_id', $me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $academicYear = AcademicYear::where('status', 1)->where('id', $academicYear)->whereIn('school_id', $filteredArray)->select('start_date', 'end_date')->first();
+            $academicYear = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->select('start_date', 'end_date')->first();
             if (empty($academicYear)) {
                 $academicYear = [];
             }
         }
+
         return $academicYear;
     }
 
@@ -213,7 +217,8 @@ class AcademicYearClassController extends Controller
 
         $academicYear = $request->academic_year;
 
-        $academicYearFile=AcademicYear::find($academicYear)->value('financial_roles');
-        return env('APP_URL').'/'. str_replace( 'public','storage', $academicYearFile) ;
+        $academicYearFile = AcademicYear::find($academicYear)->value('financial_roles');
+
+        return env('APP_URL').'/'.str_replace('public', 'storage', $academicYearFile);
     }
 }
