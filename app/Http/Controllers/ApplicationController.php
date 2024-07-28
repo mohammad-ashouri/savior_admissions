@@ -492,7 +492,7 @@ class ApplicationController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
-        $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->where('interview_status', 'Pending For Principal Confirmation')->paginate(150);
+        $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->whereInterviewStatus('Pending For Principal Confirmation')->paginate(150);
         return view('BranchInfo.ConfirmAppliance.index', compact('studentAppliances'));
     }
 

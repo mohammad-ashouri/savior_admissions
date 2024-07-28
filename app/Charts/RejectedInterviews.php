@@ -21,7 +21,7 @@ class RejectedInterviews
     {
         $students = StudentApplianceStatus::with('academicYearInfo')
             ->whereIn('academic_year', $this->academicYears)
-            ->where('interview_status','=', 'Rejected')
+            ->whereInterviewStatus('Rejected')
             ->get();
 
         $studentCountsByYear = [];
