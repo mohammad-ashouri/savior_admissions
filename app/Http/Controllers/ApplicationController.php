@@ -268,7 +268,7 @@ class ApplicationController extends Controller
         }
         $level = $request->level;
 
-        $studentGender = GeneralInformation::whereUserId('user_id', $request->student)->value('gender');
+        $studentGender = GeneralInformation::whereUserId($request->student)->value('gender');
 
         switch ($studentGender) {
             case 'Male':
