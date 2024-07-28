@@ -519,7 +519,7 @@ class ApplicationController extends Controller
 
             $interviewFields = array_merge($interviewFields, $interviewFormData);
         }
-        $applicationReservation = ApplicationReservation::with('levelInfo')->with('studentInfo')->whereStudentId($studentAppliance->studentInfo->id)->where('payment_status', 1)->latest()->first();
+        $applicationReservation = ApplicationReservation::with('levelInfo')->with('studentInfo')->whereStudentId($studentAppliance->studentInfo->id)->wherePaymentStatus(1)->latest()->first();
         $discounts = Discount::with('allDiscounts')
             ->whereAcademicYear($studentAppliance->academicYearInfo->id)
             ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')

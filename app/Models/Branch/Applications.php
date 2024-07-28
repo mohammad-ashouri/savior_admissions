@@ -52,7 +52,7 @@ class Applications extends Model
     }
     public function reservationInfo()
     {
-        return $this->hasOne(ApplicationReservation::class, 'application_id', 'id')->where('payment_status',1);
+        return $this->hasOne(ApplicationReservation::class, 'application_id', 'id')->wherePaymentStatus(1);
     }
 
     public function interview()

@@ -44,7 +44,7 @@ class PaymentController extends Controller
 
                     $invoiceDescription = json_decode($transactionDetail->description, true);
 
-                    $applicationReservation = ApplicationReservation::where('payment_status', 0)->whereId($invoiceDescription['reservation_id'])->first();
+                    $applicationReservation = ApplicationReservation::wherePaymentStatus(0)->whereId($invoiceDescription['reservation_id'])->first();
                     $applicationReservation->payment_status = 1;
                     $applicationReservation->save();
 
