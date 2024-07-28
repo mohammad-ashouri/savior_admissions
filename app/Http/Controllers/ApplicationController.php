@@ -278,7 +278,7 @@ class ApplicationController extends Controller
                 $gender = 2;
                 break;
         }
-        $schoolWithGender = School::where('gender', $gender)->get()->pluck('id')->toArray();
+        $schoolWithGender = School::whereGender($gender)->get()->pluck('id')->toArray();
         $query = AcademicYear::whereStatus(1)->whereJsonContains('levels', $level);
         if ($level != 1 and $level != 2) {
             $query->whereIn('school_id', $schoolWithGender);

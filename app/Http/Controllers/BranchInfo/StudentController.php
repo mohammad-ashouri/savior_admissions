@@ -118,7 +118,7 @@ class StudentController extends Controller
         $allGeneralInformation=GeneralInformation::whereIn('user_id',$allMyStudents)
             ->where('first_name_en',$request->first_name_en)
             ->where('last_name_en',$request->last_name_en)
-            ->where('gender',$request->gender)
+            ->whereGender($request->gender)
             ->first();
 
         if (!empty($allGeneralInformation)){
@@ -435,7 +435,7 @@ class StudentController extends Controller
             if (! empty($gender)) {
                 $data->whereHas('studentInfo', function ($query) use ($gender) {
                     $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
-                        $query->where('gender', $gender);
+                        $query->whereGender($gender);
                     });
                 });
             }
@@ -480,7 +480,7 @@ class StudentController extends Controller
             if (! empty($gender)) {
                 $data->whereHas('studentInfo', function ($query) use ($gender) {
                     $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
-                        $query->where('gender', $gender);
+                        $query->whereGender($gender);
                     });
                 });
             }
@@ -524,7 +524,7 @@ class StudentController extends Controller
             if (! empty($gender)) {
                 $data->whereHas('studentInfo', function ($query) use ($gender) {
                     $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
-                        $query->where('gender', $gender);
+                        $query->whereGender($gender);
                     });
                 });
             }
