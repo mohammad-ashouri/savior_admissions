@@ -21,7 +21,7 @@ class AllStudentsPendingForUploadDocuments
     {
         $students = StudentApplianceStatus::with('academicYearInfo')
             ->whereIn('academic_year', $this->academicYears)
-            ->where('documents_uploaded','=', 0)
+            ->whereDocumentsUploaded(0)
             ->get();
 
         $studentCountsByYear = [];

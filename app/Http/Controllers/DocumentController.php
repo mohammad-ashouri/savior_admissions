@@ -87,7 +87,7 @@ class DocumentController extends Controller
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($student_id)->where('documents_uploaded', 0)->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($student_id)->whereDocumentsUploaded(0)->first();
         if (empty($checkStudentApplianceStatus)) {
             return redirect()->back()->withErrors('Student documents are uploaded or under review');
         }
@@ -149,7 +149,7 @@ class DocumentController extends Controller
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($request->student_id)->where('documents_uploaded', 0)->latest()->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($request->student_id)->whereDocumentsUploaded(0)->latest()->first();
         if (empty($checkStudentApplianceStatus)) {
             abort(403);
         }
@@ -284,7 +284,7 @@ class DocumentController extends Controller
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($student_id)->where('documents_uploaded', 3)->where('documents_uploaded_approval', 2)->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($student_id)->whereDocumentsUploaded(3)->where('documents_uploaded_approval', 2)->first();
         if (empty($checkStudentApplianceStatus)) {
             return redirect()->back()->withErrors('Student documents are uploaded or under review');
         }
@@ -346,7 +346,7 @@ class DocumentController extends Controller
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::with('evidences')->whereStudentId($request->student_id)->whereIn('academic_year', $this->getActiveAcademicYears())->where('documents_uploaded', 3)->latest()->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::with('evidences')->whereStudentId($request->student_id)->whereIn('academic_year', $this->getActiveAcademicYears())->whereDocumentsUploaded(3)->latest()->first();
         if (empty($checkStudentApplianceStatus)) {
             abort(403);
         }
