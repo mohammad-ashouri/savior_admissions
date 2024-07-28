@@ -384,7 +384,7 @@ class ApplicationController extends Controller
         $me = User::find(auth()->user()->id);
         $checkApplication = null;
         if ($me->hasRole('Parent')) {
-            $checkApplication = ApplicationReservation::with('applicationInfo')->where('reservatore', $me->id)->find($application_id);
+            $checkApplication = ApplicationReservation::with('applicationInfo')->whereReservatore($me->id)->find($application_id);
             if (empty($checkApplication)) {
                 abort(403);
             }
