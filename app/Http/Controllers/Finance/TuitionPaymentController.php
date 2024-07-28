@@ -198,7 +198,7 @@ class TuitionPaymentController extends Controller
                 ->with('paymentMethodInfo')
                 ->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->whereId($tuition_id)
-                ->where('is_paid', 0)
+                ->whereIsPaid(0)
                 ->first();
         }
 
@@ -234,7 +234,7 @@ class TuitionPaymentController extends Controller
                 ->with('paymentMethodInfo')
                 ->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->whereId($tuition_id)
-                ->where('is_paid', 0)
+                ->whereIsPaid(0)
                 ->first();
         }
 
