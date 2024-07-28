@@ -172,7 +172,7 @@ class StudentController extends Controller
                 ->with('generalInformations')
                 ->with('extraInformations')
                 ->with('userInfo')
-                ->where('student_id', $id)
+                ->whereStudentId($id)
                 ->first();
             if (empty($studentInformations)) {
                 abort(403);
@@ -186,7 +186,7 @@ class StudentController extends Controller
                 ->with('generalInformations')
                 ->with('userInfo')
                 ->with('extraInformations')
-                ->where('student_id', $id)
+                ->whereStudentId($id)
                 ->first();
             if (empty($studentInformations)) {
                 abort(403);
@@ -416,7 +416,7 @@ class StudentController extends Controller
         if ($me->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
             if (! empty($studentId)) {
-                $data->where('student_id', $studentId);
+                $data->whereStudentId($studentId);
             }
             if (! empty($studentFirstName)) {
                 $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {
@@ -461,7 +461,7 @@ class StudentController extends Controller
                 ->with('identificationTypeInfo')
                 ->with('generalInformations');
             if (! empty($studentId)) {
-                $data->where('student_id', $studentId);
+                $data->whereStudentId($studentId);
             }
             if (! empty($studentFirstName)) {
                 $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {
@@ -505,7 +505,7 @@ class StudentController extends Controller
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('academic_year', $academicYears);
             if (! empty($studentId)) {
-                $data->where('student_id', $studentId);
+                $data->whereStudentId($studentId);
             }
             if (! empty($studentFirstName)) {
                 $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {

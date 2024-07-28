@@ -153,7 +153,7 @@ class TuitionController extends Controller
             abort(403);
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->where('student_id', $student_id)->whereTuitionPaymentStatus('Pending')->whereIn('academic_year', $this->getActiveAcademicYears())->first();
+        $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereStudentId($student_id)->whereTuitionPaymentStatus('Pending')->whereIn('academic_year', $this->getActiveAcademicYears())->first();
 
         if (empty($studentApplianceStatus)) {
             abort(403);
@@ -753,7 +753,7 @@ class TuitionController extends Controller
         if ($me->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder');
             if ($request->student_id) {
-                $data->where('student_id', $request->student_id);
+                $data->whereStudentId($request->student_id);
             }
             if (! empty($firstName)) {
                 $data->whereHas('studentInfo', function ($query) use ($firstName) {
@@ -784,7 +784,7 @@ class TuitionController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
             if ($request->student_id) {
-                $data->where('student_id', $request->student_id);
+                $data->whereStudentId($request->student_id);
             }
             if (! empty($firstName)) {
                 $data->whereHas('studentInfo', function ($query) use ($firstName) {

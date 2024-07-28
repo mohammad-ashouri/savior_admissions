@@ -153,7 +153,7 @@ class UserController extends Controller
         $guardianStudentRelationships = GuardianStudentRelationship::get();
         $currentIdentificationTypes = CurrentIdentificationType::get();
         $statuses = StudentStatus::orderBy('name', 'asc')->get();
-        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $id)->first();
+        $studentInformation = StudentInformation::with('generalInformations')->whereStudentId($id)->first();
         if (empty($studentInformation)) {
             $studentInformation = [];
         }

@@ -179,7 +179,7 @@
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         @if(($student->interview_status=='Admitted' or $student->interview_status=='Rejected'))
                                             @php
-                                                $applicationReservation=ApplicationReservation::with('levelInfo')->where('student_id',$student->student_id)->where('payment_status',1)->latest()->first();
+                                                $applicationReservation=ApplicationReservation::with('levelInfo')->whereStudentId($student->student_id)->where('payment_status',1)->latest()->first();
                                             @endphp
                                             @if($applicationReservation != null)
                                                 <a href="/ConfirmApplication/{{ $applicationReservation->application_id }}/{{$student->id}}"

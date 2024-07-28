@@ -348,7 +348,7 @@ class ApplicationController extends Controller
         $dateAndTime = $request->date_and_time;
         $interviewType = $request->interview_type;
 
-        $studentInfo = StudentInformation::whereGuardian($me->id)->where('student_id', $student)->first();
+        $studentInfo = StudentInformation::whereGuardian($me->id)->whereStudentId($student)->first();
 
         if (empty($studentInfo)) {
             abort(403);
@@ -519,7 +519,7 @@ class ApplicationController extends Controller
 
             $interviewFields = array_merge($interviewFields, $interviewFormData);
         }
-        $applicationReservation = ApplicationReservation::with('levelInfo')->with('studentInfo')->where('student_id', $studentAppliance->studentInfo->id)->where('payment_status', 1)->latest()->first();
+        $applicationReservation = ApplicationReservation::with('levelInfo')->with('studentInfo')->whereStudentId($studentAppliance->studentInfo->id)->where('payment_status', 1)->latest()->first();
         $discounts = Discount::with('allDiscounts')
             ->where('academic_year', $studentAppliance->academicYearInfo->id)
             ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')

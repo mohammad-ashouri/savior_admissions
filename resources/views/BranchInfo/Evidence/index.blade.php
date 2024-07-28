@@ -61,7 +61,7 @@
                             <tbody>
                             @foreach($studentAppliances as $appliance)
                                 @php
-                                    $applicationReservation=ApplicationReservation::with('levelInfo')->where('student_id',$appliance->studentInfo->id)->where('payment_status',1)->latest()->first();
+                                    $applicationReservation=ApplicationReservation::with('levelInfo')->whereStudentId($appliance->studentInfo->id)->where('payment_status',1)->latest()->first();
                                 @endphp
                                 <tr
                                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

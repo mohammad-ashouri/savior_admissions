@@ -170,7 +170,7 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
             switch ($studentApplianceStatus->interview_status) {
                 case 'Accepted':
@@ -192,7 +192,7 @@ class InterviewController extends Controller
                 ->whereId($id)
                 ->first();
 
-            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
             switch ($studentApplianceStatus->interview_status) {
                 case 'Accepted':
@@ -282,7 +282,7 @@ class InterviewController extends Controller
             }
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         switch ($studentApplianceStatus->interview_status) {
             case 'Accepted':
@@ -608,7 +608,7 @@ class InterviewController extends Controller
             abort(403);
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->where('student_id', $interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         switch ($studentApplianceStatus->interview_status) {
             case 'Accepted':
@@ -683,7 +683,7 @@ class InterviewController extends Controller
             }
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         $interview = Interview::find($request->interview_id);
         $interview->interview_form = json_encode($request->all(), true);
@@ -826,7 +826,7 @@ class InterviewController extends Controller
 
         $interview->interviewer = auth()->user()->id;
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->where('student_id', $application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         //        Check if 3 interviews completed then make that to principal for confirmation
         $checkInterview1Completed = Interview::where('application_id', $application->id)
@@ -947,7 +947,7 @@ class InterviewController extends Controller
 
         if (!empty($studentId)) {
             $data->whereHas('reservationInfo', function ($query) use ($studentId) {
-                $query->where('student_id', $studentId);
+                $query->whereStudentId( $studentId);
             });
         }
         if (!empty($applicationId)) {

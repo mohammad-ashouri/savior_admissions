@@ -59,7 +59,7 @@ class EvidenceController extends Controller
         $guardianStudentRelationships = GuardianStudentRelationship::get();
         $countries = Country::orderBy('en_short_name', 'asc')->get();
         $nationalities = Country::orderBy('nationality', 'asc')->get();
-        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $studentAppliance->student_id)->first();
+        $studentInformation = StudentInformation::with('generalInformations')->whereStudentId($studentAppliance->student_id)->first();
 
         return view('Documents.UploadDocumentsParent.show', compact('studentAppliance', 'bloodGroups', 'guardianStudentRelationships', 'countries', 'nationalities', 'studentInformation'));
     }
@@ -82,7 +82,7 @@ class EvidenceController extends Controller
             abort(403);
         }
 
-        $studentInfo = StudentInformation::with('guardianInfo')->where('student_id', $studentAppliance->student_id)->first();
+        $studentInfo = StudentInformation::with('guardianInfo')->whereStudentId($studentAppliance->student_id)->first();
         $guardianMobile = $studentInfo->guardianInfo->mobile;
 
         switch (request('status')) {
@@ -140,7 +140,7 @@ class EvidenceController extends Controller
 
         $appliance = StudentApplianceStatus::find($applianceId);
 
-        $studentInformation = StudentInformation::with('guardianInfo')->where('student_id', $appliance->student_id)->first();
+        $studentInformation = StudentInformation::with('guardianInfo')->whereStudentId($appliance->student_id)->first();
         $guardianMobile = $studentInformation->guardianInfo->mobile;
         $message = "The deadline for uploading your documents has been extended. You have 72 hours to upload your documents.\nSavior Schools";
         $this->sendSMS($guardianMobile, $message);
@@ -170,7 +170,7 @@ class EvidenceController extends Controller
         $guardianStudentRelationships = GuardianStudentRelationship::get();
         $countries = Country::orderBy('en_short_name', 'asc')->get();
         $nationalities = Country::orderBy('nationality', 'asc')->get();
-        $studentInformation = StudentInformation::with('generalInformations')->where('student_id', $studentAppliance->student_id)->first();
+        $studentInformation = StudentInformation::with('generalInformations')->whereStudentId($studentAppliance->student_id)->first();
 
         return view('Documents.UploadDocumentsParent.ShowUploadedEvidence', compact('studentAppliance', 'bloodGroups', 'guardianStudentRelationships', 'countries', 'nationalities', 'studentInformation'));
     }

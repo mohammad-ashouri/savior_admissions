@@ -78,7 +78,7 @@ class TuitionPaymentController extends Controller
 
         $data = StudentApplianceStatus::with('studentInfo')->where('documents_uploaded_approval','=', 1);
         if (! empty($studentId)) {
-            $data->where('student_id', $studentId);
+            $data->whereStudentId($studentId);
         }
         if (! empty($academicYear)) {
             $data->where('academic_year', $academicYear);
