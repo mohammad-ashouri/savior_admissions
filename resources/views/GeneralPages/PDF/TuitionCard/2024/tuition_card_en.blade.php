@@ -12,7 +12,7 @@
     $levelInfo=Level::find($applicationInformation->level);
 
     $systemTuitionInfo=Tuition::join('tuition_details','tuitions.id','=','tuition_details.tuition_id')->where('tuition_details.level',$levelInfo->id)->first();
-    $myTuitionInfo=TuitionInvoices::with('invoiceDetails')->where('appliance_id',$applianceStatus->id)->first();
+    $myTuitionInfo=TuitionInvoices::with('invoiceDetails')->whereApplianceId($applianceStatus->id)->first();
     $totalAmount=0;
 
     foreach($myTuitionInfo->invoiceDetails as $invoices){

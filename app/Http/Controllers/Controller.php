@@ -297,7 +297,7 @@ class Controller extends BaseController
 
     public function getGrantedDiscountInfo($appliance_id)
     {
-        $grantedDiscountInfo=GrantedFamilyDiscount::where('appliance_id', $appliance_id)->first();
+        $grantedDiscountInfo=GrantedFamilyDiscount::whereApplianceId($appliance_id)->first();
 
         if (empty($grantedDiscountInfo)) {
             return 0;
