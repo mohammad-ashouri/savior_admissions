@@ -412,13 +412,13 @@ class AcademicYearController extends Controller
         ]);
 
         //For deactivate all tuitions
-        TuitionDetail::where('tuition_id', $tuition->id)->update(['status' => 0]);
+        TuitionDetail::whereTuitionId($tuition->id)->update(['status' => 0]);
         foreach ($request->levels as $level) {
             TuitionDetail::firstOrCreate([
                 'tuition_id' => $tuition->id,
                 'level' => $level,
             ]);
-            TuitionDetail::where('tuition_id', $tuition->id)->where('level', $level)->update(['status' => 1]);
+            TuitionDetail::whereTuitionId($tuition->id)->where('level', $level)->update(['status' => 1]);
         }
 
         return redirect()->route('AcademicYears.index')
