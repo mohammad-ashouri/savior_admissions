@@ -55,7 +55,7 @@ class PasswordController extends Controller
 
                 $mobile = '+'.$prefix->phonecode.$request->mobile;
 
-                $userInfo = User::where('mobile', $mobile)->first();
+                $userInfo = User::whereMobile($mobile)->first();
 
                 if (empty($userInfo)) {
                     return response()->json([
@@ -192,7 +192,7 @@ class PasswordController extends Controller
 
                 $mobile = '+'.$prefix->phonecode.$request->mobile;
 
-                $userInfo = User::where('mobile', $mobile)->first();
+                $userInfo = User::whereMobile($mobile)->first();
 
                 if (empty($userInfo)) {
                     return response()->json([

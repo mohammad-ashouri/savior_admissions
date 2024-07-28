@@ -44,7 +44,7 @@ class NewUsers implements ToModel
                     $nationality=$row[29];
                     break;
             }
-            $guardianUser = User::where('mobile', $mobile)->first();
+            $guardianUser = User::whereMobile($mobile)->first();
             if (empty($guardianUser)){
                 $guardianUser=User::create([
                     'mobile'=>$mobile,

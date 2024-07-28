@@ -86,7 +86,7 @@ class SignupController extends Controller
                 $prefix = CountryPhoneCodes::find($request->phone_code);
                 $mobile = '+'.$prefix->phonecode.$request->mobile;
 
-                $checkIfMobileExists = User::where('mobile', $mobile)->exists();
+                $checkIfMobileExists = User::whereMobile($mobile)->exists();
                 if ($checkIfMobileExists) {
                     return ['error' => 'Mobile Exists. Please login!'];
                 }

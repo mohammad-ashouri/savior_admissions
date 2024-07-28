@@ -141,7 +141,7 @@ class ProfileController extends Controller
             $rules['mobile'] = 'nullable';
         } else {
             $rules['mobile'] = 'required';
-            $checkMobile = User::where('mobile', $input['mobile'])->where('id', '!=', $user->id)->exists();
+            $checkMobile = User::whereMobile($input['mobile'])->where('id', '!=', $user->id)->exists();
             if ($checkMobile) {
                 return response()->json(['message' => 'Mobile exists! try another mobile'], 500);
             }
