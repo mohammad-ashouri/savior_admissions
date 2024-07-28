@@ -117,7 +117,7 @@ class StudentController extends Controller
         $allMyStudents = StudentInformation::whereGuardian($me->id)->get()->pluck('student_id')->toArray();
         $allGeneralInformation=GeneralInformation::whereIn('user_id',$allMyStudents)
             ->whereFirstNameEn($request->first_name_en)
-            ->where('last_name_en',$request->last_name_en)
+            ->whereLastNameEn($request->last_name_en)
             ->whereGender($request->gender)
             ->first();
 
