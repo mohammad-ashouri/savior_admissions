@@ -236,7 +236,7 @@ class ApplicationTimingController extends Controller
             $applicationTiming = ApplicationTiming::with('applications')
                 ->whereId($id)
                 ->whereHas('applications', function ($query) use ($id) {
-                    $query->where('application_timing_id', $id);
+                    $query->whereApplicationTimingId($id);
                 })
                 ->first();
 
@@ -247,7 +247,7 @@ class ApplicationTimingController extends Controller
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')
                 ->whereIn('academic_years.school_id', $filteredArray)
                 ->whereHas('applications', function ($query) use ($id) {
-                    $query->where('application_timing_id', $id);
+                    $query->whereApplicationTimingId($id);
                 })
                 ->where('application_timings.deleted_at', null)
                 ->orderBy('application_timings.id', 'desc')

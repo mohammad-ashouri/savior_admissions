@@ -383,7 +383,7 @@ class AcademicYearController extends Controller
             $applicationTiming->status = $academicYear->status;
             $applicationTiming->save();
 
-            $applications = Applications::where('application_timing_id', $applicationTiming->id)->whereReserved(0)->whereStatus(1)->get();
+            $applications = Applications::whereApplicationTimingId($applicationTiming->id)->whereReserved(0)->whereStatus(1)->get();
             foreach ($applications as $application) {
                 $application = Applications::find($application->id)->first();
                 $application->status = 0;
