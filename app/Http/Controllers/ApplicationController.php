@@ -213,7 +213,7 @@ class ApplicationController extends Controller
         $removeApplicationReserve->reserved = 0;
 
         $applicationReservations = ApplicationReservation::whereApplicationId($removeApplicationReserve->id)->first();
-        $applicationReservationInvoice = ApplicationReservationsInvoices::where('a_reservation_id', $applicationReservations->id)->delete();
+        $applicationReservationInvoice = ApplicationReservationsInvoices::whereAReservationId($applicationReservations->id)->delete();
         $applicationReservations->delete();
         if (! $removeApplicationReserve->save() or ! $applicationReservations or ! $applicationReservationInvoice) {
             return redirect()->back()
