@@ -252,7 +252,7 @@ class StudentController extends Controller
             $user->assignRole([$role->id]);
         }
 
-        $studentInformation = StudentInformation::where('student_id', $checkUser->id)->first();
+        $studentInformation = StudentInformation::whereStudentId($checkUser->id)->first();
 
         if (empty($studentInformation)) {
             $studentInformation = new StudentInformation();

@@ -20,9 +20,9 @@ class PDFExportController extends Controller
             if ($me->hasRole('Parent')) {
                 $checkGuardian = StudentInformation::whereGuardian($me->id)->whereStudentId($applianceStatus->student_id)->exists();
             }elseif($me->hasRole('Principal') or $me->hasRole('Financial Manager') or $me->hasRole('Admissions Officer')){
-                $checkGuardian = StudentApplianceStatus::where('student_id', $applianceStatus->student_id)->whereIn('academic_year',$this->getActiveAcademicYears())->exists();
+                $checkGuardian = StudentApplianceStatus::whereStudentId($applianceStatus->student_id)->whereIn('academic_year',$this->getActiveAcademicYears())->exists();
             }elseif ($me->hasRole('Super Admin')){
-                $checkGuardian = StudentApplianceStatus::where('student_id', $applianceStatus->student_id)->exists();
+                $checkGuardian = StudentApplianceStatus::whereStudentId($applianceStatus->student_id)->exists();
             }
             if (!$checkGuardian){
                 abort(403);
@@ -42,9 +42,9 @@ class PDFExportController extends Controller
             if ($me->hasRole('Parent')) {
                 $checkGuardian = StudentInformation::whereGuardian($me->id)->whereStudentId($applianceStatus->student_id)->exists();
             }elseif($me->hasRole('Principal') or $me->hasRole('Financial Manager') or $me->hasRole('Admissions Officer')){
-                $checkGuardian = StudentApplianceStatus::where('student_id', $applianceStatus->student_id)->whereIn('academic_year',$this->getActiveAcademicYears())->exists();
+                $checkGuardian = StudentApplianceStatus::whereStudentId($applianceStatus->student_id)->whereIn('academic_year',$this->getActiveAcademicYears())->exists();
             }elseif ($me->hasRole('Super Admin')){
-                $checkGuardian = StudentApplianceStatus::where('student_id', $applianceStatus->student_id)->exists();
+                $checkGuardian = StudentApplianceStatus::whereStudentId($applianceStatus->student_id)->exists();
             }
             if (!$checkGuardian){
                 abort(403);

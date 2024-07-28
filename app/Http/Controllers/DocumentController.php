@@ -87,7 +87,7 @@ class DocumentController extends Controller
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $student_id)->where('documents_uploaded', 0)->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($student_id)->where('documents_uploaded', 0)->first();
         if (empty($checkStudentApplianceStatus)) {
             return redirect()->back()->withErrors('Student documents are uploaded or under review');
         }
@@ -145,11 +145,11 @@ class DocumentController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $studentInformation = StudentInformation::where('student_id', $request->student_id)->whereGuardian(auth()->user()->id)->first();
+        $studentInformation = StudentInformation::whereStudentId($request->student_id)->whereGuardian(auth()->user()->id)->first();
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $request->student_id)->where('documents_uploaded', 0)->latest()->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($request->student_id)->where('documents_uploaded', 0)->latest()->first();
         if (empty($checkStudentApplianceStatus)) {
             abort(403);
         }
@@ -268,7 +268,7 @@ class DocumentController extends Controller
         $evidences->files = $files;
         $evidences->save();
 
-        $studentAppliance = StudentApplianceStatus::where('student_id', $request->student_id)->first();
+        $studentAppliance = StudentApplianceStatus::whereStudentId($request->student_id)->first();
         $studentAppliance->documents_uploaded = 2;
         $studentAppliance->description = null;
         $studentAppliance->save();
@@ -284,7 +284,7 @@ class DocumentController extends Controller
         if (empty($studentInformation)) {
             abort(403);
         }
-        $checkStudentApplianceStatus = StudentApplianceStatus::where('student_id', $student_id)->where('documents_uploaded', 3)->where('documents_uploaded_approval', 2)->first();
+        $checkStudentApplianceStatus = StudentApplianceStatus::whereStudentId($student_id)->where('documents_uploaded', 3)->where('documents_uploaded_approval', 2)->first();
         if (empty($checkStudentApplianceStatus)) {
             return redirect()->back()->withErrors('Student documents are uploaded or under review');
         }
@@ -342,7 +342,7 @@ class DocumentController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $studentInformation = StudentInformation::where('student_id', $request->student_id)->whereGuardian(auth()->user()->id)->first();
+        $studentInformation = StudentInformation::whereStudentId($request->student_id)->whereGuardian(auth()->user()->id)->first();
         if (empty($studentInformation)) {
             abort(403);
         }

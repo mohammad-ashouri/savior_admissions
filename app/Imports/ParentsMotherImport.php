@@ -36,7 +36,7 @@ class ParentsMotherImport implements ToModel
         }
         $user = User::where('email', $row[3])->first();
 
-        $studentInformation = StudentInformation::where('student_id', $row[0])->update([
+        $studentInformation = StudentInformation::whereStudentId($row[0])->update([
             'parent_mother_id' => $user->id,
         ]);
     }

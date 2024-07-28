@@ -174,7 +174,7 @@
                                         <div class="flex">
                                             @if($user->hasRole('Student'))
                                                 @php
-                                                    $studentInformation=StudentInformation::where('student_id',$user->id)->value('guardian');
+                                                    $studentInformation=StudentInformation::whereStudentId($user->id)->value('guardian');
                                                 @endphp
                                                 @if(isset($studentInformation))
                                                     <a href="{{ route('users.edit',$studentInformation) }}"

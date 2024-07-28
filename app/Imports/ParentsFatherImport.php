@@ -34,7 +34,7 @@ class ParentsFatherImport implements ToModel
             $generalInformation->save();
         }
         $user = User::where('email', $row[3])->first();
-        $studentInformation = StudentInformation::where('student_id', $row[0])->firstOrCreate([
+        $studentInformation = StudentInformation::whereStudentId($row[0])->firstOrCreate([
             'student_id' => $row[0],
             'guardian' => $user->id,
             'parent_father_id' => $user->id,

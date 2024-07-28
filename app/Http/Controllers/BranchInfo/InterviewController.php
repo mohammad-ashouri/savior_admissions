@@ -879,7 +879,7 @@ class InterviewController extends Controller
         $applicationInfo->interviewed = 2;
         $applicationInfo->save();
 
-        $studentStatus = StudentApplianceStatus::where('student_id', $applicationInfo->reservationInfo->student_id)->whereAcademicYear($applicationInfo->applicationTimingInfo->academic_year)->first();
+        $studentStatus = StudentApplianceStatus::whereStudentId($applicationInfo->reservationInfo->student_id)->whereAcademicYear($applicationInfo->applicationTimingInfo->academic_year)->first();
         $studentStatus->interview_status = 'Absence';
         $studentStatus->save();
 
