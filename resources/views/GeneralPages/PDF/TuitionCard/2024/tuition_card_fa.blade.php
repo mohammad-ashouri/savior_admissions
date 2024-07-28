@@ -42,7 +42,7 @@
     }
 
     //Discounts
-    $interviewForm=Interview::where('application_id',$applicationInformation->application_id)->where('interview_type',3)->latest()->first();
+    $interviewForm=Interview::whereApplicationId($applicationInformation->application_id)->where('interview_type',3)->latest()->first();
     if (!isset(json_decode($interviewForm->interview_form,true)['discount'])){
         $discounts=[];
     }else{

@@ -212,7 +212,7 @@ class ApplicationController extends Controller
         $removeApplicationReserve = Applications::find($id);
         $removeApplicationReserve->reserved = 0;
 
-        $applicationReservations = ApplicationReservation::where('application_id', $removeApplicationReserve->id)->first();
+        $applicationReservations = ApplicationReservation::whereApplicationId($removeApplicationReserve->id)->first();
         $applicationReservationInvoice = ApplicationReservationsInvoices::where('a_reservation_id', $applicationReservations->id)->delete();
         $applicationReservations->delete();
         if (! $removeApplicationReserve->save() or ! $applicationReservations or ! $applicationReservationInvoice) {
@@ -512,7 +512,7 @@ class ApplicationController extends Controller
         if (empty($studentAppliance)) {
             abort(403);
         }
-        $interviewsForms = Interview::where('application_id', $application_id)->pluck('interview_form')->toArray();
+        $interviewsForms = Interview::whereApplicationId($application_id)->pluck('interview_form')->toArray();
         $interviewFields = [];
         foreach ($interviewsForms as $interviewFormArray) {
             $interviewFormData = json_decode($interviewFormArray, true);

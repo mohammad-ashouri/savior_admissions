@@ -451,13 +451,13 @@ class InterviewController extends Controller
 
         if ($interview->save()) {
             //Check if 3 interviews completed then make that to principal for confirmation
-            $checkInterview1Completed = Interview::where('application_id', $request->application_id)
+            $checkInterview1Completed = Interview::whereApplicationId($request->application_id)
                 ->where('interview_type', 1)
                 ->exists();
-            $checkInterview2Completed = Interview::where('application_id', $request->application_id)
+            $checkInterview2Completed = Interview::whereApplicationId($request->application_id)
                 ->where('interview_type', 2)
                 ->exists();
-            $checkInterview3Completed = Interview::where('application_id', $request->application_id)
+            $checkInterview3Completed = Interview::whereApplicationId($request->application_id)
                 ->where('interview_type', 3)
                 ->exists();
             if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {
@@ -829,13 +829,13 @@ class InterviewController extends Controller
         $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         //        Check if 3 interviews completed then make that to principal for confirmation
-        $checkInterview1Completed = Interview::where('application_id', $application->id)
+        $checkInterview1Completed = Interview::whereApplicationId($application->id)
             ->where('interview_type', 1)
             ->exists();
-        $checkInterview2Completed = Interview::where('application_id', $application->id)
+        $checkInterview2Completed = Interview::whereApplicationId($application->id)
             ->where('interview_type', 2)
             ->exists();
-        $checkInterview3Completed = Interview::where('application_id', $application->id)
+        $checkInterview3Completed = Interview::whereApplicationId($application->id)
             ->where('interview_type', 3)
             ->exists();
         if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {

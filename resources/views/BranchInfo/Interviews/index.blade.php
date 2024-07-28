@@ -245,7 +245,7 @@
                                                             @default
                                                                 @if($interview->firstInterviewerInfo->id==$me->id or $interview->secondInterviewerInfo->id==$me->id or $me->hasRole('Financial Manager'))
                                                                     @php
-                                                                        $checkInterview=Interview::where('application_id',$interview->id)
+                                                                        $checkInterview=Interview::whereApplicationId($interview->id)
                                                                         ->where('interviewer',auth()->user()->id)
                                                                         ->exists();
                                                                     @endphp
