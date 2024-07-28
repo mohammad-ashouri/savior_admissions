@@ -170,7 +170,7 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+            $studentApplianceStatus = StudentApplianceStatus::whereAcademicYear($interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
             switch ($studentApplianceStatus->interview_status) {
                 case 'Accepted':
@@ -192,7 +192,7 @@ class InterviewController extends Controller
                 ->whereId($id)
                 ->first();
 
-            $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+            $studentApplianceStatus = StudentApplianceStatus::whereAcademicYear($interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
             switch ($studentApplianceStatus->interview_status) {
                 case 'Accepted':
@@ -205,7 +205,7 @@ class InterviewController extends Controller
         }
 
         $discounts = Discount::with('allDiscounts')
-            ->where('academic_year', $interview->applicationTimingInfo->academic_year)
+            ->whereAcademicYear($interview->applicationTimingInfo->academic_year)
             ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
@@ -282,7 +282,7 @@ class InterviewController extends Controller
             }
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::whereAcademicYear($application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         switch ($studentApplianceStatus->interview_status) {
             case 'Accepted':
@@ -557,7 +557,7 @@ class InterviewController extends Controller
             abort(403);
         }
         $discounts = Discount::with('allDiscounts')
-            ->where('academic_year', $interview->applicationTimingInfo->academic_year)
+            ->whereAcademicYear($interview->applicationTimingInfo->academic_year)
             ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
@@ -608,7 +608,7 @@ class InterviewController extends Controller
             abort(403);
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::whereAcademicYear($interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         switch ($studentApplianceStatus->interview_status) {
             case 'Accepted':
@@ -617,7 +617,7 @@ class InterviewController extends Controller
         }
 
         $discounts = Discount::with('allDiscounts')
-            ->where('academic_year', $interview->applicationTimingInfo->academic_year)
+            ->whereAcademicYear($interview->applicationTimingInfo->academic_year)
             ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
@@ -683,7 +683,7 @@ class InterviewController extends Controller
             }
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::whereAcademicYear($application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         $interview = Interview::find($request->interview_id);
         $interview->interview_form = json_encode($request->all(), true);
@@ -826,7 +826,7 @@ class InterviewController extends Controller
 
         $interview->interviewer = auth()->user()->id;
 
-        $studentApplianceStatus = StudentApplianceStatus::where('academic_year', $application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+        $studentApplianceStatus = StudentApplianceStatus::whereAcademicYear($application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
         //        Check if 3 interviews completed then make that to principal for confirmation
         $checkInterview1Completed = Interview::whereApplicationId($application->id)
@@ -879,7 +879,7 @@ class InterviewController extends Controller
         $applicationInfo->interviewed = 2;
         $applicationInfo->save();
 
-        $studentStatus = StudentApplianceStatus::where('student_id', $applicationInfo->reservationInfo->student_id)->where('academic_year', $applicationInfo->applicationTimingInfo->academic_year)->first();
+        $studentStatus = StudentApplianceStatus::where('student_id', $applicationInfo->reservationInfo->student_id)->whereAcademicYear($applicationInfo->applicationTimingInfo->academic_year)->first();
         $studentStatus->interview_status = 'Absence';
         $studentStatus->save();
 

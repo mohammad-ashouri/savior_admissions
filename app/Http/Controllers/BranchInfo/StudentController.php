@@ -440,7 +440,7 @@ class StudentController extends Controller
                 });
             }
             if (! empty($academicYear)) {
-                $data->where('academic_year', $academicYear);
+                $data->whereAcademicYear($academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->paginate(150);
             $students->appends([
@@ -485,7 +485,7 @@ class StudentController extends Controller
                 });
             }
             if (! empty($academicYear)) {
-                $data->where('academic_year', $academicYear);
+                $data->whereAcademicYear($academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->paginate(150);
             $students->appends([
@@ -529,7 +529,7 @@ class StudentController extends Controller
                 });
             }
             if (! empty($academicYear)) {
-                $data->where('academic_year', $academicYear);
+                $data->whereAcademicYear($academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->paginate(150);
             $students->appends([

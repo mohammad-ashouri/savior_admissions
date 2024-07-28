@@ -770,7 +770,7 @@ class TuitionController extends Controller
                 });
             }
             if ($request->academic_year) {
-                $data->where('academic_year', $request->academic_year);
+                $data->whereAcademicYear($request->academic_year);
             }
             $data->whereTuitionPaymentStatus('Paid');
             $students = $data->orderBy('academic_year', 'desc')->get();
@@ -801,7 +801,7 @@ class TuitionController extends Controller
                 });
             }
             if ($request->academic_year) {
-                $data->where('academic_year', $request->academic_year);
+                $data->whereAcademicYear($request->academic_year);
             }
             $data->whereIn('academic_year', $academicYears);
             $data->whereTuitionPaymentStatus('Paid');

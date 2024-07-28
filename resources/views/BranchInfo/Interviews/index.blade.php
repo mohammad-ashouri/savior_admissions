@@ -130,7 +130,7 @@
                                     @continue
                                 @endif
                                 @php
-                                    $studentApplianceStatus=StudentApplianceStatus::where('academic_year',$interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+                                    $studentApplianceStatus=StudentApplianceStatus::whereAcademicYear($interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
                                 @endphp
                                 {{--                                @if($studentApplianceStatus==null)--}}
                                 {{--                                    @dd($interview)--}}
@@ -232,7 +232,7 @@
                                         <div class="flex">
                                             <!-- Modal toggle -->
                                             @php
-                                                $studentApplianceStatus=StudentApplianceStatus::where('academic_year',$interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+                                                $studentApplianceStatus=StudentApplianceStatus::whereAcademicYear($interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
                                             @endphp
                                             @if($interview->reservationInfo->payment_status==1)
                                                 @switch($interview->Interviewed)

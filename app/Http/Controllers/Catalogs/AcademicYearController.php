@@ -370,14 +370,14 @@ class AcademicYearController extends Controller
         $academicYear->persian_name = $request->input('persian_name');
         $academicYear->status = $request->input('status');
 
-        $academicYearClasses = AcademicYearClass::where('academic_year', $academicYear->id)->get();
+        $academicYearClasses = AcademicYearClass::whereAcademicYear($academicYear->id)->get();
         foreach ($academicYearClasses as $academicYearClass) {
             $academicYearClass = AcademicYearClass::find($academicYearClass->id);
             $academicYearClass->status = $academicYear->status;
             $academicYearClass->save();
         }
 
-        $applicationTimings = ApplicationTiming::where('academic_year', $academicYear->id)->get();
+        $applicationTimings = ApplicationTiming::whereAcademicYear($academicYear->id)->get();
         foreach ($applicationTimings as $applicationTiming) {
             $applicationTiming = ApplicationTiming::find($applicationTiming->id);
             $applicationTiming->status = $academicYear->status;

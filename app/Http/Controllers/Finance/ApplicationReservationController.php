@@ -230,7 +230,7 @@ class ApplicationReservationController extends Controller
         $applicationReservation->payment_status = $applicationStatus;
         $applicationReservation->save();
 
-        $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->first();
+        $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->whereAcademicYear($applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->first();
         if ($applicationStatus == 1) {
             if (empty($applianceStatus)) {
                 $applianceStatus = new StudentApplianceStatus();
@@ -253,7 +253,7 @@ class ApplicationReservationController extends Controller
             $reservatoreMobile = $applicationReservation->reservatoreInfo->mobile;
             $this->sendSMS($reservatoreMobile, $message);
         } elseif ($applicationStatus == 3) {
-            $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->where('academic_year', $applicationReservation->applicationInfo->applicationTimingInfo->academic_year)
+            $applianceStatus = StudentApplianceStatus::where('student_id', $applicationReservation->student_id)->whereAcademicYear($applicationReservation->applicationInfo->applicationTimingInfo->academic_year)
                 ->update(['interview_status' => null]);
 
             $application = Applications::find($applicationReservation->application_id);

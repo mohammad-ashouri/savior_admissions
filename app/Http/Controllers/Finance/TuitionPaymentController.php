@@ -81,7 +81,7 @@ class TuitionPaymentController extends Controller
             $data->whereStudentId($studentId);
         }
         if (! empty($academicYear)) {
-            $data->where('academic_year', $academicYear);
+            $data->whereAcademicYear($academicYear);
         }
         if (! empty($firstName)) {
             $data->whereHas('studentInfo', function ($query) use ($firstName) {

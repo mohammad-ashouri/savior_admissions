@@ -521,7 +521,7 @@ class ApplicationController extends Controller
         }
         $applicationReservation = ApplicationReservation::with('levelInfo')->with('studentInfo')->whereStudentId($studentAppliance->studentInfo->id)->where('payment_status', 1)->latest()->first();
         $discounts = Discount::with('allDiscounts')
-            ->where('academic_year', $studentAppliance->academicYearInfo->id)
+            ->whereAcademicYear($studentAppliance->academicYearInfo->id)
             ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
