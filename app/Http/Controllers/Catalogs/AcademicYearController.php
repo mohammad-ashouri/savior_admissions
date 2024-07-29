@@ -265,7 +265,7 @@ class AcademicYearController extends Controller
             if ($key !== false) {
                 unset($values[$key]);
             }
-            UserAccessInformation::where('admissions_officer', $result)->update(['admissions_officer' => implode('|', $values)]);
+            UserAccessInformation::whereAdmissionsOfficer($result)->update(['admissions_officer' => implode('|', $values)]);
         }
         $results = UserAccessInformation::pluck('financial_manager');
         foreach ($results as $result) {
