@@ -93,13 +93,13 @@ class SignupController extends Controller
 
                 //Remove previous token
                 $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                RegisterToken::where('value', $mobile)
+                RegisterToken::whereValue($mobile)
                     ->where('register_method', 'Mobile')
                     ->whereStatus(0)
                     ->where('created_at', '<=', $twoMinutesAgo)
                     ->delete();
 
-                $lastToken = RegisterToken::where('value', $mobile)
+                $lastToken = RegisterToken::whereValue($mobile)
                     ->where('register_method', 'Mobile')
                     ->whereStatus(0)
                     ->where('created_at', '>', $twoMinutesAgo)
@@ -140,13 +140,13 @@ class SignupController extends Controller
                 } else {
                     //Remove previous token
                     $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                    RegisterToken::where('value', $email)
+                    RegisterToken::whereValue($email)
                         ->where('register_method', 'Email')
                         ->whereStatus(0)
                         ->where('created_at', '<=', $twoMinutesAgo)
                         ->delete();
 
-                    $lastToken = RegisterToken::where('value', $email)
+                    $lastToken = RegisterToken::whereValue($email)
                         ->where('register_method', 'Email')
                         ->whereStatus(0)
                         ->where('created_at', '>', $twoMinutesAgo)
@@ -188,13 +188,13 @@ class SignupController extends Controller
 
                 //Remove previous token
                 $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                RegisterToken::where('value', $mobile)
+                RegisterToken::whereValue($mobile)
                     ->where('register_method', 'Mobile')
                     ->whereStatus(0)
                     ->where('created_at', '<=', $twoMinutesAgo)
                     ->delete();
 
-                $checkAuthorizationCode = RegisterToken::where('register_method', 'Mobile')->where('value', $mobile)->where('token', $verificationCode)->first();
+                $checkAuthorizationCode = RegisterToken::where('register_method', 'Mobile')->whereValue($mobile)->where('token', $verificationCode)->first();
 
                 if (empty($checkAuthorizationCode)) {
                     return ['error' => 'Verification code is invalid.'];
@@ -216,13 +216,13 @@ class SignupController extends Controller
 
                 //Remove previous token
                 $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                RegisterToken::where('value', $email)
+                RegisterToken::whereValue($email)
                     ->where('register_method', 'Email')
                     ->whereStatus(0)
                     ->where('created_at', '<=', $twoMinutesAgo)
                     ->delete();
 
-                $checkAuthorizationCode = RegisterToken::where('register_method', 'Email')->where('value', $email)->where('token', $verificationCode)->first();
+                $checkAuthorizationCode = RegisterToken::where('register_method', 'Email')->whereValue($email)->where('token', $verificationCode)->first();
 
                 if (empty($checkAuthorizationCode)) {
                     return ['error' => 'Verification code is invalid.'];

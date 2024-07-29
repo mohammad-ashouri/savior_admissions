@@ -45,7 +45,7 @@ class SendRegisterToken extends Mailable
     {
 
         //Remove previous token
-        RegisterToken::where('value', $this->email)->where('register_method', 'Email')->whereStatus(0)->delete();
+        RegisterToken::whereValue($this->email)->where('register_method', 'Email')->whereStatus(0)->delete();
 
         $tokenEntry = new RegisterToken();
         $tokenEntry->register_method = 'Email';
