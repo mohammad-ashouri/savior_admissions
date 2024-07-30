@@ -48,7 +48,7 @@ class PaymentController extends Controller
                     $applicationReservation->payment_status = 1;
                     $applicationReservation->save();
 
-                    $applicationReservationInvoice = new ApplicationReservationsInvoices();
+                    $applicationReservationInvoice = new ApplicationReservationsInvoices;
                     $applicationReservationInvoice->a_reservation_id = $applicationReservation->id;
                     $applicationReservationInvoice->payment_information = json_encode(['payment_method' => 2, json_encode($request->all(), true)], true);
                     $applicationReservationInvoice->save();
@@ -57,10 +57,16 @@ class PaymentController extends Controller
                     $application->reserved = 1;
                     $application->save();
 
-                    $applianceStatus = new StudentApplianceStatus();
-                    $applianceStatus->student_id = $applicationReservation->student_id;
-                    $applianceStatus->academic_year = $applicationReservation->applicationInfo->applicationTimingInfo->academic_year;
-                    $applianceStatus->interview_status = 'Pending Interview';
+                    $applianceStatus = StudentApplianceStatus::whereStudentId($applicationReservation->student_id)->whereAcademicYear($applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->first();
+
+                    if (empty($applianceStatus)) {
+                        $applianceStatus = new StudentApplianceStatus();
+                        $applianceStatus->student_id = $applicationReservation->student_id;
+                        $applianceStatus->academic_year = $applicationReservation->applicationInfo->applicationTimingInfo->academic_year;
+                        $applianceStatus->interview_status = 'Pending Interview';
+                    } else {
+                        $applianceStatus->interview_status = 'Pending Interview';
+                    }
                     $applianceStatus->save();
 
                     $reservatoreMobile = $user->mobile;
@@ -145,7 +151,7 @@ class PaymentController extends Controller
 
                     if ($allGrantedFamilyDiscounts->isEmpty()) {
                         $familyPercentagePriceFullPayment = $familyPercentagePriceTwoInstallment = $familyPercentagePriceFourInstallment = 0;
-                        $newGrantedFamilyDiscount = new GrantedFamilyDiscount();
+                        $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
                         $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
                         $newGrantedFamilyDiscount->level = $applicationInfo->level;
                         $newGrantedFamilyDiscount->discount_percent = 0;
@@ -177,10 +183,10 @@ class PaymentController extends Controller
                         switch ($minimumSignedStudentNumber) {
                             case '1':
                                 $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 25) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceTwoInstallment =(($minimumLevelTuitionDetailsTwoInstallment * 25) / 100) - $previousDiscountPrice;
+                                $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 25) / 100) - $previousDiscountPrice;
                                 $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 25) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount();
+                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
                                 $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
                                 $newGrantedFamilyDiscount->level = $applicationInfo->level;
                                 $newGrantedFamilyDiscount->discount_percent = 25;
@@ -201,10 +207,10 @@ class PaymentController extends Controller
                                 break;
                             case '2':
                                 $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 30) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceTwoInstallment =(($minimumLevelTuitionDetailsTwoInstallment * 30) / 100) - $previousDiscountPrice;
+                                $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 30) / 100) - $previousDiscountPrice;
                                 $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 30) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount();
+                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
                                 $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
                                 $newGrantedFamilyDiscount->level = $applicationInfo->level;
                                 $newGrantedFamilyDiscount->discount_percent = 30;
@@ -225,10 +231,10 @@ class PaymentController extends Controller
                                 break;
                             case '3':
                                 $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 40) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceTwoInstallment =(($minimumLevelTuitionDetailsTwoInstallment * 40) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceFourInstallment =(($minimumLevelTuitionDetailsFourInstallment * 40) / 100) - $previousDiscountPrice;
+                                $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 40) / 100) - $previousDiscountPrice;
+                                $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 40) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount();
+                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
                                 $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
                                 $newGrantedFamilyDiscount->level = $applicationInfo->level;
                                 $newGrantedFamilyDiscount->discount_percent = 40;
@@ -259,16 +265,16 @@ class PaymentController extends Controller
                             $totalFeeTwoInstallment = $twoInstallmentPaymentAmount - (($twoInstallmentPaymentAmount * $allDiscountPercentages) / 100);
                             $twoInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_advance_irr']);
 
-                            $totalDiscountsTwo=(($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment;
-                            $tuitionDiscountTwo=($twoInstallmentPaymentAmount*40)/100;
-                            if($totalDiscountsTwo>$tuitionDiscountTwo){
-                                $totalDiscountsTwo=$tuitionDiscountTwo;
+                            $totalDiscountsTwo = (($twoInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceTwoInstallment;
+                            $tuitionDiscountTwo = ($twoInstallmentPaymentAmount * 40) / 100;
+                            if ($totalDiscountsTwo > $tuitionDiscountTwo) {
+                                $totalDiscountsTwo = $tuitionDiscountTwo;
                             }
 
                             while ($counter < 3) {
-                                $newInvoice = new TuitionInvoiceDetails();
+                                $newInvoice = new TuitionInvoiceDetails;
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = (($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2)-($totalDiscountsTwo/2);
+                                $newInvoice->amount = (($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2) - ($totalDiscountsTwo / 2);
                                 $newInvoice->is_paid = 0;
                                 $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
                                 $newInvoice->save();
@@ -282,15 +288,15 @@ class PaymentController extends Controller
                             $totalFeeFourInstallment = $fourInstallmentPaymentAmount - (($fourInstallmentPaymentAmount * $allDiscountPercentages) / 100);
                             $fourInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_advance_irr']);
 
-                            $totalDiscountsFour=(($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment;
-                            $tuitionDiscountFour=($fourInstallmentPaymentAmount*40)/100;
-                            if($totalDiscountsFour>$tuitionDiscountFour){
-                                $totalDiscountsFour=$tuitionDiscountFour;
+                            $totalDiscountsFour = (($fourInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceFourInstallment;
+                            $tuitionDiscountFour = ($fourInstallmentPaymentAmount * 40) / 100;
+                            if ($totalDiscountsFour > $tuitionDiscountFour) {
+                                $totalDiscountsFour = $tuitionDiscountFour;
                             }
                             while ($counter < 5) {
-                                $newInvoice = new TuitionInvoiceDetails();
+                                $newInvoice = new TuitionInvoiceDetails;
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = (($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4)-($totalDiscountsFour/4);
+                                $newInvoice->amount = (($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4) - ($totalDiscountsFour / 4);
                                 $newInvoice->is_paid = 0;
                                 $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                                 $newInvoice->save();
@@ -301,13 +307,13 @@ class PaymentController extends Controller
                             $tuitionDetailsForFullPayment = json_decode($tuitionDetails->full_payment, true);
                             $fullPaymentAmount = str_replace(',', '', $tuitionDetailsForFullPayment['full_payment_irr']);
                             $fullPaymentAmountAdvance = ($fullPaymentAmount * 30) / 100;
-                            $totalDiscountsFull=(($fullPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFullPayment;
-                            $tuitionDiscountFull=($fullPaymentAmount*40)/100;
-                            if($totalDiscountsFull>$tuitionDiscountFull){
-                                $totalDiscountsFull=$tuitionDiscountFull;
+                            $totalDiscountsFull = (($fullPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceFullPayment;
+                            $tuitionDiscountFull = ($fullPaymentAmount * 40) / 100;
+                            if ($totalDiscountsFull > $tuitionDiscountFull) {
+                                $totalDiscountsFull = $tuitionDiscountFull;
                             }
                             $fullPaymentAmountInstallment = $fullPaymentAmount - $totalDiscountsFull - $fullPaymentAmountAdvance;
-                            $newInvoice = new TuitionInvoiceDetails();
+                            $newInvoice = new TuitionInvoiceDetails;
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
                             $newInvoice->amount = $fullPaymentAmountInstallment;
                             $newInvoice->is_paid = 0;
