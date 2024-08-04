@@ -16,6 +16,9 @@ class TuitionDetail extends Model
         'full_payment',
         'two_installment_payment',
         'four_installment_payment',
+        'full_payment_ministry',
+        'two_installment_payment_ministry',
+        'four_installment_payment_ministry',
         'status',
     ];
 
