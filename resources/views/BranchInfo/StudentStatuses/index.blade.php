@@ -157,11 +157,16 @@
                                     <td class="w-4 p-2 border text-center">
                                         {{ $student->student_id }}
                                     </td>
+                                    @php
+                                        @$guardian=User::whereId($student->studentInformations->guardian)->get()->value('mobile');
+                                    @endphp
                                     <td class="border text-center">
-                                        <button type="button" data-id="{{ User::whereId($student->studentInformations->guardian)->get()->value('mobile') }}"
-                                                class="show-guardian-mobile text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                            <i class="las la-phone "></i>
-                                        </button>
+                                        @if($guardian)
+                                            <button type="button" data-id="{{ $guardian }}"
+                                                    class="show-guardian-mobile text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                <i class="las la-phone "></i>
+                                            </button>
+                                        @endif
                                     </td>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
