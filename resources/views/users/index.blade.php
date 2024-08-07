@@ -59,7 +59,7 @@
                                         Filter
                                     </button>
                                 </div>
-                                @if(isset($_GET['search-edu-code']) || isset($_GET['search-first-name']) || isset($_GET['search-last-name']) || isset($_GET['role']))
+                                @if(isset($_GET['search-user-code']) || isset($_GET['search-first-name']) || isset($_GET['search-last-name']) || isset($_GET['role']))
                                     <div class="ml-3">
                                         <a href="/users">
                                             <button type="button"
@@ -160,7 +160,7 @@
                                         <div class="pl-3">
                                             <div
                                                 class="text-base font-semibold">{{ @$user->generalInformationInfo->first_name_en }} {{ @$user->generalInformationInfo->last_name_en }}</div>
-                                            <div class="font-normal text-gray-500">{{ $user->email }}</div>
+                                            <div class="font-normal text-gray-500">{{ $user->mobile }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
@@ -177,12 +177,15 @@
                                                     $studentInformation=StudentInformation::whereStudentId($user->id)->value('guardian');
                                                 @endphp
                                                 @if(isset($studentInformation))
-                                                    <a href="{{ route('users.edit',$studentInformation) }}"
-                                                       type="button"
-                                                       class="min-w-max inline-flex font-medium text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-teal-600 dark:hover:bg-teal-700 focus:outline-none dark:focus:ring-teal-800 hover:underline">
-                                                        <i class="las la-male" style="font-size: 20px"></i>
-                                                        Show Parent
-                                                    </a>
+                                                    <form id="search-user" action="{{ route('searchUser') }}" method="get">
+                                                                <input type="hidden" name="search-user-code"
+                                                                       value="{{ $studentInformation }}">
+                                                        <button
+                                                            class="min-w-max inline-flex font-medium text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-teal-600 dark:hover:bg-teal-700 focus:outline-none dark:focus:ring-teal-800 hover:underline">
+                                                            <i class="las la-male" style="font-size: 20px"></i>
+                                                            Show Parent
+                                                        </button>
+                                                    </form>
                                                 @else
                                                     <div
                                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b w-36 text-teal-900 px-4 py-3 shadow-md mr-2"

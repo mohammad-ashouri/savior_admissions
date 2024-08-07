@@ -37,14 +37,14 @@ class UserController extends Controller
         $data = [];
         if ($me) {
             if ($me->hasRole('Super Admin')) {
-                $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->paginate(20);
+                $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->paginate(100);
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
                 $data = User::whereStatus(1)
                     ->WhereHas('roles', function ($query) {
                         $query->whereName('Parent');
                         $query->orWhere('name', 'Student');
                     })
-                    ->paginate(20);
+                    ->paginate(100);
                 if ($data->isEmpty()) {
                     $data = [];
                 }
@@ -253,7 +253,7 @@ class UserController extends Controller
         if ($searchMobile != null) {
             $query->where('mobile', 'like', "%$searchMobile%");
         }
-        $data = $query->paginate(20);
+        $data = $query->paginate(100);
         $data->appends(request()->query())->links();
         if ($data->isEmpty()) {
             $data = [];
