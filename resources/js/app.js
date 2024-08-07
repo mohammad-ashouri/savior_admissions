@@ -1634,7 +1634,15 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('StudentStatuses')) {
         pageTitle = 'Student Statuses';
-
+        $('.show-guardian-mobile').click(function() {
+            let dataId = this.getAttribute('data-id');
+            Swal.fire({
+                title: 'Guardian Mobile',
+                text: dataId,
+                icon: 'info',
+                confirmButtonText: 'بستن'
+            });
+        });
         $('.extension_document').submit(function (e) {
             e.preventDefault();
             Swal.fire({
