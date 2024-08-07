@@ -522,7 +522,7 @@ class TuitionPaymentController extends Controller
 
                 $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
                 $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
-                if ($studentAppliance->tuition_payment_status=='Pending') {
+                if ($studentAppliance->tuition_payment_status=='Pending For Review') {
                     $studentAppliance->tuition_payment_status = 'Pending';
                     $studentAppliance->approval_status = 0;
                     $studentAppliance->save();
