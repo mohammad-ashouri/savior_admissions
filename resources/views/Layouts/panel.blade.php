@@ -179,11 +179,7 @@
                             aria-controls="dropdown-branch" data-collapse-toggle="dropdown-branch">
                         <i class="nav-icon la la-landmark" style="font-size: 24px"></i>
                         <span class="flex-1 ml-4 text-left whitespace-nowrap">Branch Info</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                             viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
+                        <i class="las la-angle-right mr-1" style="font-size: 20px"></i>
                     </button>
                     <ul id="dropdown-branch" class="hidden py-2 space-y-2">
                         @can('academic-year-classes-menu-access')
@@ -264,11 +260,7 @@
                             aria-controls="dropdown-finance" data-collapse-toggle="dropdown-finance">
                         <i class="las la-coins" style="font-size: 24px"></i>
                         <span class="flex-1 ml-4 text-left whitespace-nowrap">Finance</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                             viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
+                        <i class="las la-angle-right mr-1" style="font-size: 20px"></i>
                     </button>
                     <ul id="dropdown-finance" class="hidden py-2 space-y-2">
                         @can('reservation-invoice-list')
@@ -323,11 +315,7 @@
                             aria-controls="dropdown-catalog" data-collapse-toggle="dropdown-catalog">
                         <i class="las la-toolbox" style="font-size: 24px"></i>
                         <span class="flex-1 ml-4 text-left whitespace-nowrap">Catalogs</span>
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                             viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                  stroke-width="2" d="m1 1 4 4 4-4"/>
-                        </svg>
+                        <i class="las la-angle-right mr-1" style="font-size: 20px"></i>
                     </button>
                     <ul id="dropdown-catalog" class="hidden py-2 space-y-2">
                         @can('role-list')
