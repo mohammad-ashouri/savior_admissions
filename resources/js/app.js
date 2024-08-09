@@ -1385,7 +1385,7 @@ $(document).ready(function () {
             children: 'a',
             pswpModule: () => import('photoswipe'),
             wheelToZoom: true,
-            padding: { top: 80, bottom: 80 }
+            padding: {top: 80, bottom: 80}
         });
         lightbox.init();
         // const images = []; // Array to store image URLs
@@ -1634,11 +1634,12 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('StudentStatuses')) {
         pageTitle = 'Student Statuses';
-        $('.show-guardian-mobile').click(function() {
+        $('.show-guardian-mobile').click(function () {
             let dataId = this.getAttribute('data-id');
+            let dataInfo = this.getAttribute('data-info');
             Swal.fire({
                 title: 'Guardian Mobile',
-                text: dataId,
+                text: dataInfo + '\n' + dataId,
                 icon: 'info',
                 confirmButtonText: 'بستن'
             });
