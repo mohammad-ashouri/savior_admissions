@@ -125,6 +125,7 @@
                                                         <td class="p-4">
                                                             @php
                                                                 $twoInstallmentDetails=json_decode($tuition->two_installment_payment,true);
+                                                                $twoInstallmentMinistryDetails=json_decode($tuition->two_installment_payment_ministry,true);
                                                             @endphp
                                                             @if($tuition->tuitionInfo->academicYearInfo->status==1)
                                                                 <div>
@@ -148,6 +149,33 @@
                                                                                    value="{{@$twoInstallmentDetails['two_installment_amount_usd']}}"
                                                                                    id="two_installment_amount_usd"
                                                                                    name="two_installment_amount_usd"
+                                                                                   placeholder="Enter full amount of two payment installment for {{$tuition->levelInfo->name}} in USD"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">USD</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <label
+                                                                        class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">Full
+                                                                        amount of two payment installment (ministry)</label>
+                                                                    <div class="grid grid-cols-2 gap-4 mb-4">
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$twoInstallmentMinistryDetails['two_installment_amount_irr_ministry']}}"
+                                                                                   id="two_installment_amount_irr_ministry"
+                                                                                   name="two_installment_amount_irr_ministry"
+                                                                                   placeholder="Enter full amount of two payment installment for {{$tuition->levelInfo->name}} in Rials"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
+                                                                        </div>
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$twoInstallmentMinistryDetails['two_installment_amount_usd_ministry']}}"
+                                                                                   id="two_installment_amount_usd_ministry"
+                                                                                   name="two_installment_amount_usd_ministry"
                                                                                    placeholder="Enter full amount of two payment installment for {{$tuition->levelInfo->name}} in USD"
                                                                                    class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
                                                                                    required>
@@ -183,6 +211,33 @@
                                                                         </div>
                                                                     </div>
                                                                     <label
+                                                                        class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">Advance
+                                                                        payment in two installments (ministry)</label>
+                                                                    <div class="grid grid-cols-2 gap-4 mb-4">
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$twoInstallmentMinistryDetails['two_installment_advance_irr_ministry']}}"
+                                                                                   id="two_installment_advance_irr_ministry"
+                                                                                   name="two_installment_advance_irr_ministry"
+                                                                                   placeholder="Enter advance payment in two installments for {{$tuition->levelInfo->name}} in Rials"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
+                                                                        </div>
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$twoInstallmentMinistryDetails['two_installment_advance_usd_ministry']}}"
+                                                                                   id="two_installment_advance_usd_ministry"
+                                                                                   name="two_installment_advance_usd_ministry"
+                                                                                   placeholder="Enter advance payment in two installments for {{$tuition->levelInfo->name}} in USD"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">USD</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <label
                                                                         class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">The
                                                                         amount of each installment</label>
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
@@ -202,6 +257,33 @@
                                                                                    value="{{@$twoInstallmentDetails['two_installment_each_installment_usd']}}"
                                                                                    id="two_installment_each_installment_usd"
                                                                                    name="two_installment_each_installment_usd"
+                                                                                   placeholder="Enter the amount of each installment for {{$tuition->levelInfo->name}} in USD"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">USD</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <label
+                                                                        class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">The
+                                                                        amount of each installment (ministry)</label>
+                                                                    <div class="grid grid-cols-2 gap-4 mb-4">
+                                                                        <div class="flex">
+                                                                            <input type="text"
+                                                                                   value="{{@$twoInstallmentMinistryDetails['two_installment_each_installment_irr_ministry']}}"
+                                                                                   id="two_installment_each_installment_irr_ministry"
+                                                                                   name="two_installment_each_installment_irr_ministry"
+                                                                                   placeholder="Enter the amount of each installment for {{$tuition->levelInfo->name}} in Rials"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
+                                                                        </div>
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$twoInstallmentMinistryDetails['two_installment_each_installment_usd_ministry']}}"
+                                                                                   id="two_installment_each_installment_usd_ministry"
+                                                                                   name="two_installment_each_installment_usd_ministry"
                                                                                    placeholder="Enter the amount of each installment for {{$tuition->levelInfo->name}} in USD"
                                                                                    class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
                                                                                    required>
@@ -256,6 +338,7 @@
                                                         <td class="p-4">
                                                             @php
                                                                 $fourInstallmentDetails=json_decode($tuition->four_installment_payment,true);
+                                                                $fourInstallmentMinistryDetails=json_decode($tuition->four_installment_payment_ministry,true);
                                                             @endphp
                                                             @if($tuition->tuitionInfo->academicYearInfo->status==1)
                                                                 <div>
@@ -279,6 +362,33 @@
                                                                                    value="{{@$fourInstallmentDetails['four_installment_amount_usd']}}"
                                                                                    id="four_installment_amount_usd"
                                                                                    name="four_installment_amount_usd"
+                                                                                   placeholder="Enter full amount of four payment installment for {{$tuition->levelInfo->name}} in USD"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">USD</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <label
+                                                                        class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">Full
+                                                                        amount of four payment installment (ministry)</label>
+                                                                    <div class="grid grid-cols-2 gap-4 mb-4">
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$fourInstallmentMinistryDetails['four_installment_amount_irr_ministry']}}"
+                                                                                   id="four_installment_amount_irr_ministry"
+                                                                                   name="four_installment_amount_irr_ministry"
+                                                                                   placeholder="Enter full amount of four payment installment for {{$tuition->levelInfo->name}} in Rials"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
+                                                                        </div>
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$fourInstallmentMinistryDetails['four_installment_amount_usd_ministry']}}"
+                                                                                   id="four_installment_amount_usd_ministry"
+                                                                                   name="four_installment_amount_usd_ministry"
                                                                                    placeholder="Enter full amount of four payment installment for {{$tuition->levelInfo->name}} in USD"
                                                                                    class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
                                                                                    required>
@@ -314,6 +424,33 @@
                                                                         </div>
                                                                     </div>
                                                                     <label
+                                                                        class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">Advance
+                                                                        payment in four installments (ministry)</label>
+                                                                    <div class="grid grid-cols-2 gap-4 mb-4">
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$fourInstallmentMinistryDetails['four_installment_advance_irr_ministry']}}"
+                                                                                   id="four_installment_advance_irr_ministry"
+                                                                                   name="four_installment_advance_irr_ministry"
+                                                                                   placeholder="Enter advance payment in four installments for {{$tuition->levelInfo->name}} in Rials"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
+                                                                        </div>
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$fourInstallmentMinistryDetails['four_installment_advance_usd_ministry']}}"
+                                                                                   id="four_installment_advance_usd_ministry"
+                                                                                   name="four_installment_advance_usd_ministry"
+                                                                                   placeholder="Enter advance payment in four installments for {{$tuition->levelInfo->name}} in USD"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">USD</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <label
                                                                         class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">The
                                                                         amount of each installment</label>
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
@@ -333,6 +470,33 @@
                                                                                    value="{{@$fourInstallmentDetails['four_installment_each_installment_usd']}}"
                                                                                    id="four_installment_each_installment_usd"
                                                                                    name="four_installment_each_installment_usd"
+                                                                                   placeholder="Enter the amount of each installment for {{$tuition->levelInfo->name}} in USD"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">USD</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <label
+                                                                        class="block mb-1 mt-2 text-sm font-medium text-gray-900 dark:text-white">The
+                                                                        amount of each installment (ministry)</label>
+                                                                    <div class="grid grid-cols-2 gap-4 mb-4">
+                                                                        <div class="flex">
+                                                                            <input type="text"
+                                                                                   value="{{@$fourInstallmentDetails['four_installment_each_installment_irr_ministry']}}"
+                                                                                   id="four_installment_each_installment_irr_ministry"
+                                                                                   name="four_installment_each_installment_irr_ministry"
+                                                                                   placeholder="Enter the amount of each installment for {{$tuition->levelInfo->name}} in Rials"
+                                                                                   class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                                                   required>
+                                                                            <span
+                                                                                class="inline-flex items-center px-1 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">IRR</span>
+                                                                        </div>
+                                                                        <div class="flex ">
+                                                                            <input type="text"
+                                                                                   value="{{@$fourInstallmentDetails['four_installment_each_installment_usd_ministry']}}"
+                                                                                   id="four_installment_each_installment_usd_ministry"
+                                                                                   name="four_installment_each_installment_usd_ministry"
                                                                                    placeholder="Enter the amount of each installment for {{$tuition->levelInfo->name}} in USD"
                                                                                    class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
                                                                                    required>

@@ -90,21 +90,35 @@ class TuitionController extends Controller
         $validator = Validator::make($requestData, [
             'tuition_details_id' => 'required|integer|exists:tuition_details,id',
             'full_payment_irr' => 'required|integer',
+            'full_payment_irr_ministry' => 'required|integer',
             'full_payment_usd' => 'required|integer',
+            'full_payment_usd_ministry' => 'required|integer',
             'two_installment_amount_irr' => 'required|integer',
+            'two_installment_amount_irr_ministry' => 'required|integer',
             'two_installment_amount_usd' => 'required|integer',
+            'two_installment_amount_usd_ministry' => 'required|integer',
             'two_installment_advance_irr' => 'required|integer',
+            'two_installment_advance_irr_ministry' => 'required|integer',
             'two_installment_advance_usd' => 'required|integer',
+            'two_installment_advance_usd_ministry' => 'required|integer',
             'two_installment_each_installment_irr' => 'required|integer',
+            'two_installment_each_installment_irr_ministry' => 'required|integer',
             'two_installment_each_installment_usd' => 'required|integer',
+            'two_installment_each_installment_usd_ministry' => 'required|integer',
             'date_of_installment1_two' => 'required|date',
             'date_of_installment2_two' => 'required|date',
             'four_installment_amount_irr' => 'required|integer',
+            'four_installment_amount_irr_ministry' => 'required|integer',
             'four_installment_amount_usd' => 'required|integer',
+            'four_installment_amount_usd_ministry' => 'required|integer',
             'four_installment_advance_irr' => 'required|integer',
+            'four_installment_advance_irr_ministry' => 'required|integer',
             'four_installment_advance_usd' => 'required|integer',
+            'four_installment_advance_usd_ministry' => 'required|integer',
             'four_installment_each_installment_irr' => 'required|integer',
+            'four_installment_each_installment_irr_ministry' => 'required|integer',
             'four_installment_each_installment_usd' => 'required|integer',
+            'four_installment_each_installment_usd_ministry' => 'required|integer',
             'date_of_installment1_four' => 'required|date',
             'date_of_installment2_four' => 'required|date',
             'date_of_installment3_four' => 'required|date',
@@ -121,6 +135,7 @@ class TuitionController extends Controller
 
         $tuition = TuitionDetail::find($request->tuition_details_id);
         $tuition->full_payment = json_encode(['full_payment_irr' => $request->full_payment_irr, 'full_payment_usd' => $request->full_payment_usd], true);
+        $tuition->full_payment_ministry = json_encode(['full_payment_irr_ministry' => $request->full_payment_irr_ministry, 'full_payment_usd_ministry' => $request->full_payment_usd_ministry], true);
         $tuition->two_installment_payment = json_encode([
             'two_installment_amount_irr' => $request->two_installment_amount_irr,
             'two_installment_amount_usd' => $request->two_installment_amount_usd,
@@ -130,6 +145,16 @@ class TuitionController extends Controller
             'two_installment_each_installment_usd' => $request->two_installment_each_installment_usd,
             'date_of_installment1_two' => $request->date_of_installment1_two,
             'date_of_installment2_two' => $request->date_of_installment2_two,
+        ], true);
+        $tuition->two_installment_payment_ministry = json_encode([
+            'two_installment_amount_irr_ministry' => $request->two_installment_amount_irr_ministry,
+            'two_installment_amount_usd_ministry' => $request->two_installment_amount_usd_ministry,
+            'two_installment_advance_irr_ministry' => $request->two_installment_advance_irr_ministry,
+            'two_installment_advance_usd_ministry' => $request->two_installment_advance_usd_ministry,
+            'two_installment_each_installment_irr_ministry' => $request->two_installment_each_installment_irr_ministry,
+            'two_installment_each_installment_usd_ministry' => $request->two_installment_each_installment_usd_ministry,
+            'date_of_installment1_two_ministry' => $request->date_of_installment1,
+            'date_of_installment2_two_ministry' => $request->date_of_installment2,
         ], true);
         $tuition->four_installment_payment = json_encode([
             'four_installment_amount_irr' => $request->four_installment_amount_irr,
@@ -142,6 +167,18 @@ class TuitionController extends Controller
             'date_of_installment2_four' => $request->date_of_installment2_four,
             'date_of_installment3_four' => $request->date_of_installment3_four,
             'date_of_installment4_four' => $request->date_of_installment4_four,
+        ], true);
+        $tuition->four_installment_payment_ministry = json_encode([
+            'four_installment_amount_irr_ministry' => $request->four_installment_amount_irr_ministry,
+            'four_installment_amount_usd_ministry' => $request->four_installment_amount_usd_ministry,
+            'four_installment_advance_irr_ministry' => $request->four_installment_advance_irr_ministry,
+            'four_installment_advance_usd_ministry' => $request->four_installment_advance_usd_ministry,
+            'four_installment_each_installment_irr_ministry' => $request->four_installment_each_installment_irr_ministry,
+            'four_installment_each_installment_usd_ministry' => $request->four_installment_each_installment_usd_ministry,
+            'date_of_installment1_four_ministry' => $request->date_of_installment1,
+            'date_of_installment2_four_ministry' => $request->date_of_installment2,
+            'date_of_installment3_four_ministry' => $request->date_of_installment3,
+            'date_of_installment4_four_ministry' => $request->date_of_installment4,
         ], true);
         $tuition->save();
         return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
