@@ -315,6 +315,18 @@
                                     </div>
                                     <div class="grid md:grid-cols-2">
                                         <div class="mt-3 mr-2">
+                                            <label for="foreign_school"
+                                                   class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                Did the student study in a foreign school last year?</label>
+                                            <select id="foreign_school" name="foreign_school"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    title="Select previous school country">
+                                                <option selected disabled value="">Select an option</option>
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="mt-3">
                                             <label for="previous_school_name"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Previous school name (Optional for KG1 and KG2)</label>
@@ -323,7 +335,7 @@
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter previous school name">
                                         </div>
-                                        <div class="mt-3 ml-2">
+                                        <div class="mt-3 mr-2">
                                             <label for="previous_school_country"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Previous school country (Optional for KG1 and KG2)</label>
