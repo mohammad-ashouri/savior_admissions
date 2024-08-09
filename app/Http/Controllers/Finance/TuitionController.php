@@ -52,6 +52,7 @@ class TuitionController extends Controller
         if ($tuitions->isEmpty()) {
             $tuitions = [];
         }
+
         return view('Finance.Tuition.index', compact('tuitions'));
     }
 
@@ -75,6 +76,7 @@ class TuitionController extends Controller
         if (empty($tuitions)) {
             $tuitions = [];
         }
+
         return view('Finance.Tuition.edit', compact('tuitions'));
 
     }
@@ -153,8 +155,8 @@ class TuitionController extends Controller
             'two_installment_advance_usd_ministry' => $request->two_installment_advance_usd_ministry,
             'two_installment_each_installment_irr_ministry' => $request->two_installment_each_installment_irr_ministry,
             'two_installment_each_installment_usd_ministry' => $request->two_installment_each_installment_usd_ministry,
-            'date_of_installment1_two_ministry' => $request->date_of_installment1,
-            'date_of_installment2_two_ministry' => $request->date_of_installment2,
+            'date_of_installment1_two_ministry' => $request->date_of_installment1_two,
+            'date_of_installment2_two_ministry' => $request->date_of_installment2_two,
         ], true);
         $tuition->four_installment_payment = json_encode([
             'four_installment_amount_irr' => $request->four_installment_amount_irr,
@@ -175,12 +177,13 @@ class TuitionController extends Controller
             'four_installment_advance_usd_ministry' => $request->four_installment_advance_usd_ministry,
             'four_installment_each_installment_irr_ministry' => $request->four_installment_each_installment_irr_ministry,
             'four_installment_each_installment_usd_ministry' => $request->four_installment_each_installment_usd_ministry,
-            'date_of_installment1_four_ministry' => $request->date_of_installment1,
-            'date_of_installment2_four_ministry' => $request->date_of_installment2,
-            'date_of_installment3_four_ministry' => $request->date_of_installment3,
-            'date_of_installment4_four_ministry' => $request->date_of_installment4,
+            'date_of_installment1_four_ministry' => $request->date_of_installment1_four,
+            'date_of_installment2_four_ministry' => $request->date_of_installment2_four,
+            'date_of_installment3_four_ministry' => $request->date_of_installment3_four,
+            'date_of_installment4_four_ministry' => $request->date_of_installment4_four,
         ], true);
         $tuition->save();
+
         return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
     }
 
@@ -565,7 +568,7 @@ class TuitionController extends Controller
             case 1:
                 switch ($paymentMethod) {
                     case 1:
-                        $tuitionInvoiceDetails = new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails = new TuitionInvoiceDetails;
                         $tuitionInvoiceDetails->tuition_invoice_id = $tuitionInvoice->id;
                         $tuitionInvoiceDetails->amount = $fullPaymentAmountWithDiscounts;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
@@ -580,7 +583,7 @@ class TuitionController extends Controller
                         return redirect()->route('TuitionInvoices.index')->with(['success' => 'You have successfully paid tuition amount. Please wait for financial approval!']);
                         break;
                     case 2:
-                        $tuitionInvoiceDetails = new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails = new TuitionInvoiceDetails;
                         $tuitionInvoiceDetails->tuition_invoice_id = $tuitionInvoice->id;
                         $tuitionInvoiceDetails->amount = $fullPaymentAmountWithDiscounts;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
@@ -593,7 +596,7 @@ class TuitionController extends Controller
                         return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionPayment')->purchase(
                             $invoice,
                             function ($driver, $transactionID) use ($fullPaymentAmountWithDiscounts, $tuitionInvoiceDetails) {
-                                $dataInvoice = new \App\Models\Invoice();
+                                $dataInvoice = new \App\Models\Invoice;
                                 $dataInvoice->user_id = auth()->user()->id;
                                 $dataInvoice->type = 'Tuition Payment (Full Payment)';
                                 $dataInvoice->amount = $fullPaymentAmountWithDiscounts;
@@ -608,7 +611,7 @@ class TuitionController extends Controller
             case 2:
                 switch ($paymentMethod) {
                     case 1:
-                        $tuitionInvoiceDetails = new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails = new TuitionInvoiceDetails;
                         $tuitionInvoiceDetails->tuition_invoice_id = $tuitionInvoice->id;
                         $tuitionInvoiceDetails->amount = $twoInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
@@ -623,7 +626,7 @@ class TuitionController extends Controller
                         return redirect()->route('TuitionInvoices.index')->with(['success' => 'You have successfully paid tuition amount. Please wait for financial approval!']);
                         break;
                     case 2:
-                        $tuitionInvoiceDetails = new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails = new TuitionInvoiceDetails;
                         $tuitionInvoiceDetails->tuition_invoice_id = $tuitionInvoice->id;
                         $tuitionInvoiceDetails->amount = $twoInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
@@ -636,7 +639,7 @@ class TuitionController extends Controller
                         return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionPayment')->purchase(
                             $invoice,
                             function ($driver, $transactionID) use ($twoInstallmentAdvance, $tuitionInvoiceDetails) {
-                                $dataInvoice = new \App\Models\Invoice();
+                                $dataInvoice = new \App\Models\Invoice;
                                 $dataInvoice->user_id = auth()->user()->id;
                                 $dataInvoice->type = 'Two Installment Advance';
                                 $dataInvoice->amount = $twoInstallmentAdvance;
@@ -651,7 +654,7 @@ class TuitionController extends Controller
             case 3:
                 switch ($paymentMethod) {
                     case 1:
-                        $tuitionInvoiceDetails = new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails = new TuitionInvoiceDetails;
                         $tuitionInvoiceDetails->tuition_invoice_id = $tuitionInvoice->id;
                         $tuitionInvoiceDetails->amount = $fourInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
@@ -666,7 +669,7 @@ class TuitionController extends Controller
                         return redirect()->route('TuitionInvoices.index')->with(['success' => 'You have successfully paid tuition amount. Please wait for financial approval!']);
                         break;
                     case 2:
-                        $tuitionInvoiceDetails = new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails = new TuitionInvoiceDetails;
                         $tuitionInvoiceDetails->tuition_invoice_id = $tuitionInvoice->id;
                         $tuitionInvoiceDetails->amount = $fourInstallmentAdvance;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
@@ -679,7 +682,7 @@ class TuitionController extends Controller
                         return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionPayment')->purchase(
                             $invoice,
                             function ($driver, $transactionID) use ($fourInstallmentAdvance, $tuitionInvoiceDetails) {
-                                $dataInvoice = new \App\Models\Invoice();
+                                $dataInvoice = new \App\Models\Invoice;
                                 $dataInvoice->user_id = auth()->user()->id;
                                 $dataInvoice->type = 'Four Installment Advance';
                                 $dataInvoice->amount = $fourInstallmentAdvance;
@@ -694,7 +697,7 @@ class TuitionController extends Controller
             case 4:
                 switch ($paymentMethod) {
                     case 1:
-                        $tuitionInvoiceDetails = new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails = new TuitionInvoiceDetails;
                         $tuitionInvoiceDetails->tuition_invoice_id = $tuitionInvoice->id;
                         $tuitionInvoiceDetails->amount = ($fullPaymentAmount * 30) / 100;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
@@ -709,7 +712,7 @@ class TuitionController extends Controller
                         return redirect()->route('TuitionInvoices.index')->with(['success' => 'You have successfully paid tuition amount. Please wait for financial approval!']);
                         break;
                     case 2:
-                        $tuitionInvoiceDetails = new TuitionInvoiceDetails();
+                        $tuitionInvoiceDetails = new TuitionInvoiceDetails;
                         $tuitionInvoiceDetails->tuition_invoice_id = $tuitionInvoice->id;
                         $tuitionInvoiceDetails->amount = ($fullPaymentAmount * 30) / 100;
                         $tuitionInvoiceDetails->payment_method = $paymentMethod;
@@ -722,7 +725,7 @@ class TuitionController extends Controller
                         return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionPayment')->purchase(
                             $invoice,
                             function ($driver, $transactionID) use ($fullPaymentAmount, $tuitionInvoiceDetails) {
-                                $dataInvoice = new \App\Models\Invoice();
+                                $dataInvoice = new \App\Models\Invoice;
                                 $dataInvoice->user_id = auth()->user()->id;
                                 $dataInvoice->type = 'Tuition Payment (Full Payment With Advance)';
                                 $dataInvoice->amount = ($fullPaymentAmount * 30) / 100;
@@ -747,21 +750,21 @@ class TuitionController extends Controller
 
         $students = [];
         if ($me->hasRole('Super Admin')) {
-//            $students = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder')
-//                ->whereTuitionPaymentStatus('Paid')
-//                ->orderBy('academic_year', 'desc')->paginate(150);
+            //            $students = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder')
+            //                ->whereTuitionPaymentStatus('Paid')
+            //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
-//
-//            // Finding academic years with status 1 in the specified schools
+            //
+            //            // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-//            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-//                ->whereIn('academic_year', $academicYears)
-//                ->whereTuitionPaymentStatus('Paid')
-//                ->orderBy('academic_year', 'desc')->paginate(150);
+            //            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+            //                ->whereIn('academic_year', $academicYears)
+            //                ->whereTuitionPaymentStatus('Paid')
+            //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::whereGuardian($me->id)->get()->pluck('student_id')->toArray();
@@ -769,6 +772,7 @@ class TuitionController extends Controller
                 ->whereIn('student_id', $students)
                 ->whereTuitionPaymentStatus('Paid')
                 ->orderBy('academic_year', 'desc')->paginate(150);
+
             return view('Finance.TuitionsStatus.index', compact('students'));
         }
 
