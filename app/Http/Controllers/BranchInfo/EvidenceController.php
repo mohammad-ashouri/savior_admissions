@@ -161,7 +161,15 @@ class EvidenceController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
-        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->whereId($appliance_id)->whereIn('academic_year', $academicYears)->where('documents_uploaded','!=', '0')->whereInterviewStatus('Admitted')->orderBy('documents_uploaded', 'asc')->first();
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')
+            ->with('academicYearInfo')
+            ->with('evidences')
+            ->whereId($appliance_id)
+            ->whereIn('academic_year', $academicYears)
+            ->where('documents_uploaded_approval','=', '1')
+            ->whereInterviewStatus('Admitted')
+            ->orderBy('documents_uploaded', 'asc')
+            ->first();
         if (empty($studentAppliance)) {
             abort(403);
         }
