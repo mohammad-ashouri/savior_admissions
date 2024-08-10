@@ -94,51 +94,103 @@
                                 </div>
                                 <div>
                                     @php
-                                        if (!empty($minimumLevelTuitionDetails)){
-                                        $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment,true)['full_payment_irr']);
-                                        $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment,true)['two_installment_amount_irr']);
-                                        $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment,true)['four_installment_amount_irr']);
-                                        $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
-                                        switch($minimumSignedStudentNumber){
-                                            case '1':
-                                                $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice;
-                                                $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*25)/100)-$previousDiscountPrice;
-                                                $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*25)/100)-$previousDiscountPrice;
-                                                break;
-                                            case '2':
-                                                $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice;
-                                                $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*30)/100)-$previousDiscountPrice;
-                                                $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*30)/100)-$previousDiscountPrice;
-                                                break;
-                                            case '3':
-                                                $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice;
-                                                $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*40)/100)-$previousDiscountPrice;
-                                                $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*40)/100)-$previousDiscountPrice;
-                                                break;
-                                            default:
-                                        }
-                                        }else{
-                                            $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
-                                        }
+                                        switch ($foreignSchool){
+                                                    case true:
+                                                        if (!empty($minimumLevelTuitionDetails)){
+                                                                $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment_ministry,true)['full_payment_irr_ministry']);
+                                                                $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment_ministry,true)['two_installment_amount_irr_ministry']);
+                                                                $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment_ministry,true)['four_installment_amount_irr_ministry']);
+                                                                $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
+                                                                switch($minimumSignedStudentNumber){
+                                                                    case '1':
+                                                                        $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*25)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*25)/100)-$previousDiscountPrice;
+                                                                        break;
+                                                                    case '2':
+                                                                        $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*30)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*30)/100)-$previousDiscountPrice;
+                                                                        break;
+                                                                    case '3':
+                                                                        $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*40)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*40)/100)-$previousDiscountPrice;
+                                                                        break;
+                                                                    default:
+                                                                }
+                                                            }
+                                                            else{
+                                                                    $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
+                                                                }
 
-                                            $fullPayment=json_decode($tuition->full_payment,true);
-                                            $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr']);
-                                            $fullPaymentAmountAdvance=((str_replace(",", "", $fullPayment['full_payment_irr']))*30)/100;
+                                                                    $fullPayment=json_decode($tuition->full_payment_ministry,true);
+                                                                    $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr_ministry']);
+                                                                    $fullPaymentAmountAdvance=((str_replace(",", "", $fullPayment['full_payment_irr_ministry']))*30)/100;
 
-                                            $twoInstallmentPayment=json_decode($tuition->two_installment_payment,true);
-                                            $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']);
-                                            $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $twoInstallmentPayment['two_installment_advance_irr']);
+                                                                    $twoInstallmentPayment=json_decode($tuition->two_installment_payment_ministry,true);
+                                                                    $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr_ministry']);
+                                                                    $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $twoInstallmentPayment['two_installment_advance_irr_ministry']);
 
-                                            $fourInstallmentPayment=json_decode($tuition->four_installment_payment,true);
-                                            $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr']);
-                                            $fourInstallmentPaymentAmountAdvance=(str_replace(",", "", $fourInstallmentPayment['four_installment_advance_irr']));
+                                                                    $fourInstallmentPayment=json_decode($tuition->four_installment_payment_ministry,true);
+                                                                    $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr_ministry']);
+                                                                    $fourInstallmentPaymentAmountAdvance=(str_replace(",", "", $fourInstallmentPayment['four_installment_advance_irr_ministry']));
 
-                                            $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
-                                            $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
+                                                                    $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
+                                                                    $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
 
-                                            $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100));
-                                            $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment);
-                                            $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment);
+                                                                    $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100));
+                                                                    $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment);
+                                                                    $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment);
+                                                        break;
+                                                        default:
+                                                            if (!empty($minimumLevelTuitionDetails)){
+                                                                $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment_ministry,true)['full_payment_irr_ministry']);
+                                                                $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment_ministry,true)['two_installment_amount_irr_ministry']);
+                                                                $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment_ministry,true)['four_installment_amount_irr_ministry']);
+                                                                $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
+                                                                switch($minimumSignedStudentNumber){
+                                                                    case '1':
+                                                                        $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*25)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*25)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*25)/100)-$previousDiscountPrice;
+                                                                        break;
+                                                                    case '2':
+                                                                        $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*30)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*30)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*30)/100)-$previousDiscountPrice;
+                                                                        break;
+                                                                    case '3':
+                                                                        $familyPercentagePriceFullPayment=(($minimumLevelTuitionDetailsFullPayment*40)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceTwoInstallment=(($minimumLevelTuitionDetailsTwoInstallment*40)/100)-$previousDiscountPrice;
+                                                                        $familyPercentagePriceFourInstallment=(($minimumLevelTuitionDetailsFourInstallment*40)/100)-$previousDiscountPrice;
+                                                                        break;
+                                                                    default:
+                                                                }
+                                                            }
+                                                            else{
+                                                                    $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
+                                                                }
+
+                                                                    $fullPayment=json_decode($tuition->full_payment,true);
+                                                                    $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr']);
+                                                                    $fullPaymentAmountAdvance=((str_replace(",", "", $fullPayment['full_payment_irr']))*30)/100;
+
+                                                                    $twoInstallmentPayment=json_decode($tuition->two_installment_payment,true);
+                                                                    $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']);
+                                                                    $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $twoInstallmentPayment['two_installment_advance_irr']);
+
+                                                                    $fourInstallmentPayment=json_decode($tuition->four_installment_payment,true);
+                                                                    $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr']);
+                                                                    $fourInstallmentPaymentAmountAdvance=(str_replace(",", "", $fourInstallmentPayment['four_installment_advance_irr']));
+
+                                                                    $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
+                                                                    $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
+
+                                                                    $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100));
+                                                                    $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment);
+                                                                    $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment);
+                                                            }
                                     @endphp
                                 </div>
                                 <div class="overflow-x-auto">
@@ -255,7 +307,11 @@
                                                         {{ $dateOfModified }}
                                                     </td>
                                                     <td class="w-4 p-4 text-center">
-                                                        {{ $twoInstallmentPayment['date_of_installment1_two'] }}
+                                                        @if ($foreignSchool)
+                                                            {{ $twoInstallmentPayment['date_of_installment1_two_ministry'] }}
+                                                        @else
+                                                            {{ $twoInstallmentPayment['date_of_installment1_two'] }}
+                                                        @endif
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
                                                         IRR {{ number_format((($totalFeeTwoInstallment-$twoInstallmentPaymentAmountAdvance)/2)) }}
@@ -270,7 +326,11 @@
                                                         {{ $dateOfModified }}
                                                     </td>
                                                     <td class="w-4 p-4 text-center">
-                                                        {{ $twoInstallmentPayment['date_of_installment2_two'] }}
+                                                        @if ($foreignSchool)
+                                                            {{ $twoInstallmentPayment['date_of_installment2_two_ministry'] }}
+                                                        @else
+                                                            {{ $twoInstallmentPayment['date_of_installment2_two'] }}
+                                                        @endif
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
                                                         IRR {{ number_format(($totalFeeTwoInstallment-$twoInstallmentPaymentAmountAdvance)/2) }}
@@ -389,7 +449,11 @@
                                                         {{ $dateOfModified }}
                                                     </td>
                                                     <td class="w-4 p-4 text-center">
-                                                        {{ $fourInstallmentPayment['date_of_installment1_four'] }}
+                                                        @if ($foreignSchool)
+                                                            {{ $fourInstallmentPayment['date_of_installment1_four_ministry'] }}
+                                                        @else
+                                                            {{ $fourInstallmentPayment['date_of_installment1_four'] }}
+                                                        @endif
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
                                                         IRR {{ number_format(($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4) }}
@@ -404,7 +468,11 @@
                                                         {{ $dateOfModified }}
                                                     </td>
                                                     <td class="w-4 p-4 text-center">
-                                                        {{ $fourInstallmentPayment['date_of_installment2_four'] }}
+                                                        @if ($foreignSchool)
+                                                            {{ $fourInstallmentPayment['date_of_installment2_four_ministry'] }}
+                                                        @else
+                                                            {{ $fourInstallmentPayment['date_of_installment2_four'] }}
+                                                        @endif
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
                                                         IRR {{ number_format(($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4) }}
@@ -419,7 +487,11 @@
                                                         {{ $dateOfModified }}
                                                     </td>
                                                     <td class="w-4 p-4 text-center">
-                                                        {{ $fourInstallmentPayment['date_of_installment3_four'] }}
+                                                        @if ($foreignSchool)
+                                                            {{ $fourInstallmentPayment['date_of_installment3_four_ministry'] }}
+                                                        @else
+                                                            {{ $fourInstallmentPayment['date_of_installment3_four'] }}
+                                                        @endif
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
                                                         IRR {{ number_format(($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4) }}
@@ -434,7 +506,11 @@
                                                         {{ $dateOfModified }}
                                                     </td>
                                                     <td class="w-4 p-4 text-center">
-                                                        {{ $fourInstallmentPayment['date_of_installment4_four'] }}
+                                                        @if ($foreignSchool)
+                                                            {{ $fourInstallmentPayment['date_of_installment4_four_ministry'] }}
+                                                        @else
+                                                            {{ $fourInstallmentPayment['date_of_installment4_four'] }}
+                                                        @endif
                                                     </td>
                                                     <td class="w-20 p-4 text-center">
                                                         IRR {{ number_format(($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4) }}

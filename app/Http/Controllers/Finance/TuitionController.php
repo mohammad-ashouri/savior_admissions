@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch\ApplicationReservation;
+use App\Models\Branch\Evidence;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\PaymentMethod;
@@ -193,7 +194,12 @@ class TuitionController extends Controller
             abort(403);
         }
 
-        $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereStudentId($student_id)->whereTuitionPaymentStatus('Pending')->whereIn('academic_year', $this->getActiveAcademicYears())->first();
+        $studentApplianceStatus = StudentApplianceStatus::with('studentInfo')
+            ->with('academicYearInfo')
+            ->whereStudentId($student_id)
+            ->whereTuitionPaymentStatus('Pending')
+            ->whereIn('academic_year', $this->getActiveAcademicYears())
+            ->first();
 
         if (empty($studentApplianceStatus)) {
             abort(403);
@@ -217,7 +223,16 @@ class TuitionController extends Controller
             ->where('tuition_details.level', $applicationInfo->level)
             ->first();
 
+        //Get payment methods
         $paymentMethods = PaymentMethod::get();
+
+        //Get evidence info for foreign school in last year
+        $evidence = Evidence::whereApplianceId($studentApplianceStatus->id)->first();
+        if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
+            $foreignSchool = true;
+        } else {
+            $foreignSchool = false;
+        }
 
         //Discount Percentages
         $discountPercentages = 0;
@@ -257,7 +272,7 @@ class TuitionController extends Controller
         }
         $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($me);
 
-        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages', 'previousDiscountPrice', 'minimumLevelTuitionDetails', 'minimumLevel', 'minimumSignedStudentNumber'));
+        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages', 'previousDiscountPrice', 'minimumLevelTuitionDetails', 'minimumLevel', 'minimumSignedStudentNumber','foreignSchool'));
     }
 
     public function tuitionPayment(Request $request)
@@ -313,6 +328,14 @@ class TuitionController extends Controller
             ->where('tuition_details.level', $applicationInfo->level)
             ->first();
 
+        //Get evidence info for foreign school in last year
+        $evidence = Evidence::whereApplianceId($studentApplianceStatus->id)->first();
+        if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
+            $foreignSchool = true;
+        } else {
+            $foreignSchool = false;
+        }
+
         $paymentMethod = $request->payment_method;
         $paymentType = $request->payment_type;
 
@@ -357,20 +380,37 @@ class TuitionController extends Controller
         }
 
         //Amount information
-        $fullPayment = json_decode($tuition->full_payment, true);
-        $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr']);
-        $totalDiscountsFull = (($fullPaymentAmount * $allDiscounts) / 100) + $familyPercentagePriceFullPayment;
-        $tuitionDiscountFull = ($fullPaymentAmount * 40) / 100;
-        if ($totalDiscountsFull > $tuitionDiscountFull) {
-            $totalDiscountsFull = $tuitionDiscountFull;
+        if ($foreignSchool){
+            $fullPayment = json_decode($tuition->full_payment_ministry, true);
+            $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr_ministry']);
+            $totalDiscountsFull = (($fullPaymentAmount * $allDiscounts) / 100) + $familyPercentagePriceFullPayment;
+            $tuitionDiscountFull = ($fullPaymentAmount * 40) / 100;
+            if ($totalDiscountsFull > $tuitionDiscountFull) {
+                $totalDiscountsFull = $tuitionDiscountFull;
+            }
+            $fullPaymentAmountWithDiscounts = $fullPaymentAmount - $totalDiscountsFull;
+
+            $twoInstallmentPayment = json_decode($tuition->two_installment_payment_ministry, true);
+            $twoInstallmentAdvance = str_replace(',', '', $twoInstallmentPayment['two_installment_advance_irr_ministry']);
+
+            $fourInstallmentPayment = json_decode($tuition->four_installment_payment_ministry, true);
+            $fourInstallmentAdvance = str_replace(',', '', $fourInstallmentPayment['four_installment_advance_irr_ministry']);
+        }else {
+            $fullPayment = json_decode($tuition->full_payment, true);
+            $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr']);
+            $totalDiscountsFull = (($fullPaymentAmount * $allDiscounts) / 100) + $familyPercentagePriceFullPayment;
+            $tuitionDiscountFull = ($fullPaymentAmount * 40) / 100;
+            if ($totalDiscountsFull > $tuitionDiscountFull) {
+                $totalDiscountsFull = $tuitionDiscountFull;
+            }
+            $fullPaymentAmountWithDiscounts = $fullPaymentAmount - $totalDiscountsFull;
+
+            $twoInstallmentPayment = json_decode($tuition->two_installment_payment, true);
+            $twoInstallmentAdvance = str_replace(',', '', $twoInstallmentPayment['two_installment_advance_irr']);
+
+            $fourInstallmentPayment = json_decode($tuition->four_installment_payment, true);
+            $fourInstallmentAdvance = str_replace(',', '', $fourInstallmentPayment['four_installment_advance_irr']);
         }
-        $fullPaymentAmountWithDiscounts = $fullPaymentAmount - $totalDiscountsFull;
-
-        $twoInstallmentPayment = json_decode($tuition->two_installment_payment, true);
-        $twoInstallmentAdvance = str_replace(',', '', $twoInstallmentPayment['two_installment_advance_irr']);
-
-        $fourInstallmentPayment = json_decode($tuition->four_installment_payment, true);
-        $fourInstallmentAdvance = str_replace(',', '', $fourInstallmentPayment['four_installment_advance_irr']);
 
         /*
          * Payment Types:
