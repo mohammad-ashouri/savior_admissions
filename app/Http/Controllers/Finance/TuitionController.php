@@ -272,7 +272,7 @@ class TuitionController extends Controller
         }
         $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($me);
 
-        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages', 'previousDiscountPrice', 'minimumLevelTuitionDetails', 'minimumLevel', 'minimumSignedStudentNumber','foreignSchool'));
+        return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethods', 'discountPercentages', 'allDiscountPercentages', 'previousDiscountPrice', 'minimumLevelTuitionDetails', 'minimumLevel', 'minimumSignedStudentNumber', 'foreignSchool'));
     }
 
     public function tuitionPayment(Request $request)
@@ -380,7 +380,7 @@ class TuitionController extends Controller
         }
 
         //Amount information
-        if ($foreignSchool){
+        if ($foreignSchool) {
             $fullPayment = json_decode($tuition->full_payment_ministry, true);
             $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr_ministry']);
             $totalDiscountsFull = (($fullPaymentAmount * $allDiscounts) / 100) + $familyPercentagePriceFullPayment;
@@ -395,7 +395,7 @@ class TuitionController extends Controller
 
             $fourInstallmentPayment = json_decode($tuition->four_installment_payment_ministry, true);
             $fourInstallmentAdvance = str_replace(',', '', $fourInstallmentPayment['four_installment_advance_irr_ministry']);
-        }else {
+        } else {
             $fullPayment = json_decode($tuition->full_payment, true);
             $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr']);
             $totalDiscountsFull = (($fullPaymentAmount * $allDiscounts) / 100) + $familyPercentagePriceFullPayment;

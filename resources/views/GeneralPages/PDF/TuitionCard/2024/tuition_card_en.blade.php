@@ -15,22 +15,43 @@
     $myTuitionInfo=TuitionInvoices::with('invoiceDetails')->whereApplianceId($applianceStatus->id)->first();
     $totalAmount=0;
 
+    if (isset($evidencesInfo['foreign_school']) and $evidencesInfo['foreign_school'] == 'Yes') {
+        $foreignSchool = true;
+    } else {
+        $foreignSchool = false;
+    }
+
     foreach($myTuitionInfo->invoiceDetails as $invoices){
         $totalAmount=$invoices->amount+$totalAmount;
     }
 
     $paymentAmount=null;
-    switch ($myTuitionInfo->payment_type){
-        case 1:
-        case 4:
-            $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr']);
-            break;
-        case 2:
-            $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr']);
-            break;
-        case 3:
-            $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr']);
-            break;
+    if ($foreignSchool){
+        switch ($myTuitionInfo->payment_type){
+            case 1:
+            case 4:
+                $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->full_payment_ministry,true)['full_payment_irr_ministry']);
+                break;
+            case 2:
+                $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->two_installment_payment_ministry,true)['two_installment_amount_irr_ministry']);
+                break;
+            case 3:
+                $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->four_installment_payment_ministry,true)['four_installment_amount_irr_ministry']);
+                break;
+        }
+    }else{
+        switch ($myTuitionInfo->payment_type){
+            case 1:
+            case 4:
+                $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->full_payment,true)['full_payment_irr']);
+                break;
+            case 2:
+                $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->two_installment_payment,true)['two_installment_amount_irr']);
+                break;
+            case 3:
+                $paymentAmount=str_replace(',','',json_decode($systemTuitionInfo->four_installment_payment,true)['four_installment_amount_irr']);
+                break;
+        }
     }
 
     //Discounts
