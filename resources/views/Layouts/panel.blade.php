@@ -23,7 +23,8 @@
         $(document).ready(function () {
             $('.select2').select2({
                 placeholder: 'Choose an option',
-                theme: "classic"
+                theme: "classic",
+                width:'100%'
             });
         });
     </script>
