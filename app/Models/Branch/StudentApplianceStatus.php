@@ -17,6 +17,7 @@ class StudentApplianceStatus extends Model
     protected $table = 'student_appliance_statuses';
 
     protected $fillable = [
+        'id',
         'student_id',
         'academic_year',
         'interview_status',

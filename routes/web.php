@@ -131,13 +131,13 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::post('ChangeTuitionPrice', [TuitionController::class, 'changeTuitionPrice'])->name('changeTuitionPrice');
             Route::get('TuitionsStatus', [TuitionController::class, 'tuitionsStatus'])->name('tuitionsStatus');
             Route::get('SearchTuitionsStatus', [TuitionController::class, 'searchTuitionsStatus'])->name('SearchTuitionStatus');
-            Route::get('ShowApplianceInvoices/{appliance_id}', [TuitionPaymentController::class,'applianceInvoices'])->name('applianceInvoices');
+            Route::get('ShowApplianceInvoices/{appliance_id}', [TuitionPaymentController::class, 'applianceInvoices'])->name('applianceInvoices');
             //Pay Tuition
             Route::get('PayTuition/{student_id}', [TuitionController::class, 'payTuition'])->name('Tuitions.PayTuition');
             Route::post('PayTuition', [TuitionController::class, 'tuitionPayment'])->name('Tuitions.Pay');
             //Payment list
             Route::resource('TuitionInvoices', TuitionPaymentController::class);
-            Route::get('searchTuitionInvoices', [TuitionPaymentController::class,'search'])->name('searchTuitionInvoices');
+            Route::get('searchTuitionInvoices', [TuitionPaymentController::class, 'search'])->name('searchTuitionInvoices');
             Route::post('TuitionInvoices/ChangeInvoiceStatus', [TuitionPaymentController::class, 'changeTuitionInvoiceStatus']);
             Route::get('PayTuitionInstallment/{tuition_id}', [TuitionPaymentController::class, 'prepareToPayTuition']);
             Route::post('PayTuitionInstallment', [TuitionPaymentController::class, 'payTuition'])->name('TuitionInvoices.payTuition');
@@ -158,7 +158,6 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             //Students management
             Route::resource('Students', StudentController::class);
             Route::post('Students/uploadPersonalPicture', [StudentController::class, 'uploadPersonalPicture'])->name('UploadPersonalPicture');
-
 
             //Applications
             Route::resource('Applications', ApplicationController::class);
@@ -201,6 +200,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             //Student status
             Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
             Route::get('SearchStudentApplianceStatuses', [StudentController::class, 'search'])->name('SearchStudentApplianceStatuses');
+            Route::get('StudentStatuses/export-excel', [ExcelController::class, 'exportStudentStatuses']);
 
             //Exports
             //PDF
