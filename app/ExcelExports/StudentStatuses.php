@@ -4,10 +4,12 @@ namespace App\ExcelExports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class StudentStatuses implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
+class StudentStatuses implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize,WithColumnFormatting
 {
     public $students;
 
@@ -34,9 +36,16 @@ class StudentStatuses implements FromCollection, WithHeadings, WithMapping, Shou
             'interview status',
             'document upload status',
             'document approval status',
-            'document approval seconder name',
+            'document uploaded seconder',
+            'document uploaded description',
             'tuition payment status',
             'approval status',
+        ];
+    }
+    public function columnFormats(): array
+    {
+        return [
+            'C' => NumberFormat::FORMAT_NUMBER,
         ];
     }
 
@@ -57,6 +66,15 @@ class StudentStatuses implements FromCollection, WithHeadings, WithMapping, Shou
                 $documentUploadStatus='Rejected';
                 break;
         }
+        $documentUploadedApprovalStatus=null;
+        switch($row->documents_uploaded_approval) {
+            case '1':
+                $documentUploadedApprovalStatus='Approved';
+                break;
+            case '2':
+                $documentUploadedApprovalStatus='Rejected';
+                break;
+        }
         return [
             $row->id,
             $row->studentInformations->guardianInfo->generalInformationInfo->first_name_en.' '.$row->studentInformations->guardianInfo->generalInformationInfo->last_name_en,
@@ -67,10 +85,11 @@ class StudentStatuses implements FromCollection, WithHeadings, WithMapping, Shou
             $row->studentInformations->generalInformations->gender,
             $row->interview_status,
             $documentUploadStatus,
-            $row->document_approval_status,
+            $documentUploadedApprovalStatus,
             @$row->documentSeconder->generalInformationInfo->first_name_en.' '.@$row->documentSeconder->generalInformationInfo->last_name_en,
+            $row->seconder_description,
             $row->tuition_payment_status,
-            $row->approval_status,
+            $row->approval_status ? 'Approved' : '',
         ];
     }
 }

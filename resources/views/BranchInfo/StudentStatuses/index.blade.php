@@ -120,7 +120,6 @@
                                                 responseType: 'blob'
                                             },
                                             success: function(response) {
-                                                spinner();
                                                 const url = window.URL.createObjectURL(new Blob([response]));
                                                 const a = document.createElement('a');
                                                 a.style.display = 'none';
@@ -133,14 +132,15 @@
                                             },
                                             error: function() {
                                                 spinner();
-                                                Swal.showValidationMessage('درخواست با خطا مواجه شد');
+                                                Swal.showValidationMessage('The request encountered an error!');
                                             }
                                         });
                                     });
                                 }
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    Swal.fire('درخواست ارسال شد!', '', 'success');
+                                    spinner();
+                                    Swal.fire('File download was done successfully!!', '', 'success');
                                 }
                             });
                         });
