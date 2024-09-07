@@ -946,6 +946,7 @@
                                         $totalDiscountsFour=$tuitionDiscountFour;
                                     }
                                 @endphp
+
                                 <div class="overflow-x-auto">
                                     <div hidden="" id="full-payment-invoice">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -975,7 +976,7 @@
                                                     Total Fee:
                                                 </th>
                                                 <td class="w-56 p-4">
-                                                    IRR {{ number_format($totalFeeFullPayment-$totalDiscountsFull) }}
+                                                    IRR {{ number_format($totalFeeFullPayment) }}
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -1074,7 +1075,7 @@
                                                     Total Fee:
                                                 </th>
                                                 <td class="w-56 p-4">
-                                                    IRR {{ number_format($totalFeeFullPayment-$totalDiscountsFull) }}
+                                                    IRR {{ number_format($totalFeeFullPayment) }}
                                                 </td>
                                             </tr>
                                             </tbody>
