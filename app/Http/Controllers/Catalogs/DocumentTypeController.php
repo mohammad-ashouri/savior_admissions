@@ -20,6 +20,7 @@ class DocumentTypeController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $types = DocumentType::orderBy('name', 'asc')->paginate(10);
+
         return view('Catalogs.DocumentTypes.index', compact('types'));
     }
 
@@ -53,12 +54,14 @@ class DocumentTypeController extends Controller
         if ($types->isEmpty()) {
             return redirect()->route('DocumentTypes.index')->withErrors('Not Found!')->withInput();
         }
+
         return view('Catalogs.DocumentTypes.index', compact('types', 'name'));
     }
 
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = DocumentType::find($id);
+
         return view('Catalogs.DocumentTypes.edit', compact('catalog'));
     }
 

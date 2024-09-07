@@ -23,6 +23,7 @@ class SchoolController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $schools = School::with('genderInfo')->orderBy('name')->paginate(10);
+
         return view('Catalogs.Schools.index', compact('schools'));
     }
 
@@ -47,7 +48,8 @@ class SchoolController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $school = School::create(['name' => $request->input('name'),'persian_name' => $request->input('persian_name'), 'gender' => $request->input('gender'), 'educational_charter' => $request->input('educational_charter'), 'address' => $request->input('address'), 'address_fa' => $request->input('address_fa')]);
+        $school = School::create(['name' => $request->input('name'), 'persian_name' => $request->input('persian_name'), 'gender' => $request->input('gender'), 'educational_charter' => $request->input('educational_charter'), 'address' => $request->input('address'), 'address_fa' => $request->input('address_fa')]);
+
         return redirect()->route('Schools.index')
             ->with('success', 'School created successfully');
     }
@@ -56,6 +58,7 @@ class SchoolController extends Controller
     {
         $catalog = School::find($id);
         $genders = Gender::get();
+
         return view('Catalogs.Schools.edit', compact('catalog', 'genders'));
     }
 
@@ -83,6 +86,7 @@ class SchoolController extends Controller
         $catalog->address_fa = $request->input('address_fa');
         $catalog->status = $request->input('status');
         $catalog->save();
+
         return redirect()->route('Schools.index')
             ->with('success', 'School updated successfully');
     }
@@ -95,6 +99,7 @@ class SchoolController extends Controller
         if ($schools->isEmpty()) {
             return redirect()->route('Schools.index')->withErrors('Not Found!')->withInput();
         }
+
         return view('Catalogs.Schools.index', compact('schools', 'name'));
     }
 
@@ -102,7 +107,7 @@ class SchoolController extends Controller
     {
         $academicYear = $request->input('academic_year');
         $checkAcademicYear = AcademicYear::whereId($academicYear)->whereStatus(1)->first();
-        if (!empty($checkAcademicYear)) {
+        if (! empty($checkAcademicYear)) {
             return School::whereId($checkAcademicYear->school_id)->whereStatus(1)->value('educational_charter');
         } else {
             abort(403, 'Access Denied');

@@ -43,10 +43,12 @@ class SignupController extends Controller
                 if ($validator->fails()) {
                     if ($validator->errors()->first('mobile')) {
                         $errorMessage = $validator->errors()->first('mobile', 'MobileInvalid');
+
                         return redirect()->back()->withErrors(['MobileInvalid' => $errorMessage])->withInput();
                     }
                     if ($validator->errors()->first('phone_code')) {
                         $errorMessage = $validator->errors()->first('phone_code', 'PhoneCodeInvalid');
+
                         return redirect()->back()->withErrors(['PhoneCodeInvalid' => $errorMessage])->withInput();
                     }
 
@@ -54,18 +56,18 @@ class SignupController extends Controller
                 break;
 
             case 'Email':
-//                $validator = Validator::make($request->all(), [
-//                    'email' => [
-//                        'required',
-//                        'email',
-//                    ],
-//                ]);
-//
-//                if ($validator->fails()) {
-//                    $errorMessage = $validator->errors()->first('email', 'EmailInvalid');
-//                    return redirect()->back()->withErrors(['EmailInvalid' => $errorMessage])->withInput();
-//                }
-                    return redirect()->back()->withErrors(['EmailInvalid' => 'Wrong register method'])->withInput();
+                //                $validator = Validator::make($request->all(), [
+                //                    'email' => [
+                //                        'required',
+                //                        'email',
+                //                    ],
+                //                ]);
+                //
+                //                if ($validator->fails()) {
+                //                    $errorMessage = $validator->errors()->first('email', 'EmailInvalid');
+                //                    return redirect()->back()->withErrors(['EmailInvalid' => $errorMessage])->withInput();
+                //                }
+                return redirect()->back()->withErrors(['EmailInvalid' => 'Wrong register method'])->withInput();
                 break;
             default:
                 abort(500);
@@ -107,7 +109,7 @@ class SignupController extends Controller
 
                 if (empty($lastToken)) {
                     //Make new token
-                    $tokenEntry = new RegisterToken();
+                    $tokenEntry = new RegisterToken;
                     $tokenEntry->register_method = 'Mobile';
                     $tokenEntry->value = $mobile;
                     $tokenEntry->token = $token;
@@ -202,7 +204,7 @@ class SignupController extends Controller
 
                 $tokenCreated = preg_replace('/[\/\\.]/', '', Str::random(32));
 
-                $token = new RegisterToken();
+                $token = new RegisterToken;
                 $token->register_method = 'Mobile';
                 $token->value = $mobile;
                 $token->token = $tokenCreated;
@@ -230,7 +232,7 @@ class SignupController extends Controller
 
                 $tokenCreated = preg_replace('/[\/\\.]/', '', Str::random(32));
 
-                $token = new RegisterToken();
+                $token = new RegisterToken;
                 $token->register_method = 'Email';
                 $token->value = $email;
                 $token->token = $tokenCreated;
@@ -252,6 +254,7 @@ class SignupController extends Controller
 
             return view('Auth.Signup.signup', ['tokenInfo' => $tokenInfo]);
         }
+
         return redirect()->route('login')
             ->withErrors(['WrongToken' => 'WrongToken']);
     }
@@ -276,7 +279,7 @@ class SignupController extends Controller
         $registerToken = RegisterToken::where('token', $request->token)->first();
         $gender = $request->gender;
 
-        $user = new User();
+        $user = new User;
         if ($registerToken->register_method == 'Email') {
             $user->email = $registerToken->value;
         } elseif ($registerToken->register_method == 'Mobile') {
@@ -288,7 +291,7 @@ class SignupController extends Controller
 
         $user->assignRole('Parent');
 
-        $generalInformations = new GeneralInformation();
+        $generalInformations = new GeneralInformation;
         $generalInformations->user_id = $user->id;
         $generalInformations->first_name_en = $request->first_name;
         $generalInformations->last_name_en = $request->last_name;

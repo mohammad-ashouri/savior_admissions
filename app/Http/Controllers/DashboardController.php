@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Charts\AbsenceInInterview;
 use App\Charts\AcceptedStudentsByAcademicYear;
 use App\Charts\AdmittedInterviews;
-use App\Charts\AllReservedApplications;
 use App\Charts\AllRegisteredStudentsInLastAcademicYear;
+use App\Charts\AllReservedApplications;
 use App\Charts\AllStudentsPendingForUploadDocuments;
 use App\Charts\RejectedInterviews;
 use App\Models\Branch\ApplicationReservation;
@@ -27,17 +27,20 @@ class DashboardController extends Controller
     protected AllReservedApplications $allReservedApplicationsInLastAcademicYear;
 
     protected AllStudentsPendingForUploadDocuments $allStudentsPendingForUploadDocument;
+
     protected RejectedInterviews $rejectedInterviews;
+
     protected AdmittedInterviews $admittedInterviews;
+
     protected AbsenceInInterview $absenceInInterview;
 
-    public function __construct(AcceptedStudentsByAcademicYear          $acceptedStudentNumberStatusByAcademicYear,
-                                AllRegisteredStudentsInLastAcademicYear $allReservedStudentsInLastAcademicYear,
-                                AllReservedApplications                 $allRegisteredApplicationsInLastAcademicYear,
-                                AllStudentsPendingForUploadDocuments                 $allStudentsPendingForUploadDocument,
-                                AdmittedInterviews                 $admittedInterviews,
-                                RejectedInterviews                 $rejectedInterviews,
-                                AbsenceInInterview                 $absenceInInterview,
+    public function __construct(AcceptedStudentsByAcademicYear $acceptedStudentNumberStatusByAcademicYear,
+        AllRegisteredStudentsInLastAcademicYear $allReservedStudentsInLastAcademicYear,
+        AllReservedApplications $allRegisteredApplicationsInLastAcademicYear,
+        AllStudentsPendingForUploadDocuments $allStudentsPendingForUploadDocument,
+        AdmittedInterviews $admittedInterviews,
+        RejectedInterviews $rejectedInterviews,
+        AbsenceInInterview $absenceInInterview,
     ) {
         $this->acceptedStudentNumberStatusByAcademicYear = $acceptedStudentNumberStatusByAcademicYear;
         $this->allRegisteredStudentsInLastAcademicYear = $allReservedStudentsInLastAcademicYear;
@@ -52,7 +55,7 @@ class DashboardController extends Controller
     {
         $me = User::with('generalInformationInfo')->find(auth()->user()->id);
 
-        if (empty($me)){
+        if (empty($me)) {
             redirect()->route('logout');
         }
         //Students

@@ -20,6 +20,7 @@ class LevelController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $levels = Level::orderBy('id', 'asc')->paginate(10);
+
         return view('Catalogs.Levels.index', compact('levels'));
     }
 
@@ -40,6 +41,7 @@ class LevelController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $level = Level::create(['name' => $request->input('name')]);
+
         return redirect()->route('Levels.index')
             ->with('success', 'Level created successfully');
     }
@@ -47,6 +49,7 @@ class LevelController extends Controller
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = Level::find($id);
+
         return view('Catalogs.Levels.edit', compact('catalog'));
     }
 
@@ -78,6 +81,7 @@ class LevelController extends Controller
         if ($levels->isEmpty()) {
             return redirect()->route('Levels.index')->withErrors('Not Found!')->withInput();
         }
+
         return view('Catalogs.Levels.index', compact('levels', 'name'));
     }
 }

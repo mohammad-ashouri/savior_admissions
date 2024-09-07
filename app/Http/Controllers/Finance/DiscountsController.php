@@ -41,6 +41,7 @@ class DiscountsController extends Controller
         if ($discounts->isEmpty()) {
             $discounts = [];
         }
+
         return view('Finance.Discounts.index', compact('discounts'));
     }
 
@@ -64,6 +65,7 @@ class DiscountsController extends Controller
         if (empty($discounts)) {
             $discounts = [];
         }
+
         return view('Finance.Discounts.edit', compact('discounts'));
     }
 
@@ -96,7 +98,7 @@ class DiscountsController extends Controller
         foreach ($request->name as $key => $name) {
             $discount_details = DiscountDetail::where('discount_id', $request->discount_id)->whereName($name)->first();
             if (empty($discount_details)) {
-                $discount_details = new DiscountDetail();
+                $discount_details = new DiscountDetail;
                 $discount_details->discount_id = $request->discount_id;
                 $discount_details->name = $name;
                 $discount_details->percentage = $request->percentage[$key];

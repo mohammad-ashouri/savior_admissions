@@ -233,7 +233,7 @@ class ApplicationReservationController extends Controller
         $applianceStatus = StudentApplianceStatus::whereStudentId($applicationReservation->student_id)->whereAcademicYear($applicationReservation->applicationInfo->applicationTimingInfo->academic_year)->first();
         if ($applicationStatus == 1) {
             if (empty($applianceStatus)) {
-                $applianceStatus = new StudentApplianceStatus();
+                $applianceStatus = new StudentApplianceStatus;
                 $applianceStatus->student_id = $applicationReservation->student_id;
                 $applianceStatus->academic_year = $applicationReservation->applicationInfo->applicationTimingInfo->academic_year;
                 $applianceStatus->interview_status = 'Pending Interview';
@@ -297,7 +297,7 @@ class ApplicationReservationController extends Controller
             }
             if (! empty($dateOfPayment)) {
                 $data->whereHas('applicationInvoiceInfo', function ($query) use ($dateOfPayment) {
-                    $query->where('created_at','like', "%$dateOfPayment%");
+                    $query->where('created_at', 'like', "%$dateOfPayment%");
                 });
             }
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {

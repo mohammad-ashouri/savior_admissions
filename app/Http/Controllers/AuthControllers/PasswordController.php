@@ -18,6 +18,7 @@ class PasswordController extends Controller
     public function showForgetPassword(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $countryPhoneCodes = CountryPhoneCodes::where('phonecode', '!=', 0)->get();
+
         return view('Auth.ForgotPassword.forgot_password', compact('countryPhoneCodes'));
     }
 
@@ -80,7 +81,7 @@ class PasswordController extends Controller
 
                 if (empty($lastToken)) {
                     //Make new token
-                    $tokenEntry = new PasswordResetToken();
+                    $tokenEntry = new PasswordResetToken;
                     $tokenEntry->user_id = $userInfo->id;
                     $tokenEntry->type = 2;
                     $tokenEntry->token = $token;
@@ -213,7 +214,7 @@ class PasswordController extends Controller
                         ],
                     ]);
                 }
-                $lastToken = new PasswordResetToken();
+                $lastToken = new PasswordResetToken;
                 $lastToken->user_id = $userInfo->id;
                 $lastToken->type = 2;
                 $newToken = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(20)));
@@ -264,7 +265,7 @@ class PasswordController extends Controller
                         ],
                     ]);
                 }
-                $lastToken = new PasswordResetToken();
+                $lastToken = new PasswordResetToken;
                 $lastToken->user_id = $userInfo->id;
                 $lastToken->type = 1;
                 $newToken = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(20)));
@@ -308,12 +309,14 @@ class PasswordController extends Controller
         $user->password = Hash::make($request->input('password'));
         if ($user->save()) {
             $resetTokenInfo->delete();
+
             return response()->json([
                 'success' => true,
                 'redirect' => route('login'),
                 'flash_message' => 'Password reset successful!',
             ]);
         }
+
         return response()->json(['error' => 'Unknown error'], 422);
     }
 
@@ -328,6 +331,7 @@ class PasswordController extends Controller
         if (password_verify($request->input('Current_password'), $user->password)) {
             $user->password = Hash::make($request->input('New_password'));
             $user->save();
+
             return response()->json(['message' => 'Password updated successfully!'], 200);
         }
 

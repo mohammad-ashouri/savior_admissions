@@ -20,6 +20,7 @@ class EducationTypeController extends Controller
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $types = EducationType::orderBy('name', 'asc')->paginate(10);
+
         return view('Catalogs.EducationTypes.index', compact('types'));
     }
 
@@ -41,6 +42,7 @@ class EducationTypeController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $educationType = EducationType::create(['name' => $request->input('name'), 'description' => $request->input('description')]);
+
         return redirect()->route('EducationTypes.index')
             ->with('success', 'Document type created successfully');
     }
@@ -48,6 +50,7 @@ class EducationTypeController extends Controller
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $catalog = EducationType::find($id);
+
         return view('Catalogs.EducationTypes.edit', compact('catalog'));
     }
 
@@ -81,6 +84,7 @@ class EducationTypeController extends Controller
         if ($types->isEmpty()) {
             return redirect()->route('EducationTypes.index')->withErrors('Not Found!')->withInput();
         }
+
         return view('Catalogs.EducationTypes.index', compact('types', 'name'));
     }
 }

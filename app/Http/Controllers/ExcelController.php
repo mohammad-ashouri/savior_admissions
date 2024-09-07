@@ -120,7 +120,7 @@ class ExcelController extends Controller
         $students = [];
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with(['studentInfo', 'academicYearInfo', 'documentSeconder'])
-                ->whereAcademicYear( $academicYear)
+                ->whereAcademicYear($academicYear)
                 ->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates

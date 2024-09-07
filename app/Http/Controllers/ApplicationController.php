@@ -79,6 +79,7 @@ class ApplicationController extends Controller
         if (empty($applications)) {
             $applications = [];
         }
+
         return view('Applications.index', compact('applications', 'me'));
     }
 
@@ -92,9 +93,8 @@ class ApplicationController extends Controller
 
         } elseif ($me->hasRole('Super Admin')) {
             $levels = Level::whereStatus(1)->get();
-            $myStudents = StudentInformation::
-                join('general_informations','student_informations.student_id','=','general_informations.user_id')
-            ->with('generalInformations')->orderBy('general_informations.last_name_en')->orderBy('general_informations.first_name_en')->get();
+            $myStudents = StudentInformation::join('general_informations', 'student_informations.student_id', '=', 'general_informations.user_id')
+                ->with('generalInformations')->orderBy('general_informations.last_name_en')->orderBy('general_informations.first_name_en')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -156,6 +156,7 @@ class ApplicationController extends Controller
                 abort(403);
             }
         }
+
         return view('Applications.show', compact('applicationInfo'));
     }
 
@@ -185,6 +186,7 @@ class ApplicationController extends Controller
             return redirect()->back()
                 ->withErrors(['errors' => 'Delete Failed!']);
         }
+
         return redirect()->back()
             ->with('success', 'Application deleted!');
     }
@@ -219,6 +221,7 @@ class ApplicationController extends Controller
             return redirect()->back()
                 ->withErrors(['errors' => 'Remove Application Reservation Failed!']);
         }
+
         return redirect()->back()
             ->with('success', 'Application Reservation Changed!');
     }
@@ -250,6 +253,7 @@ class ApplicationController extends Controller
             return redirect()->back()
                 ->withErrors(['errors' => 'Change Interview Status Failed!']);
         }
+
         return redirect()->back()
             ->with('success', 'Interview Status Changed!');
     }
@@ -284,6 +288,7 @@ class ApplicationController extends Controller
             $query->whereIn('school_id', $schoolWithGender);
         }
         $academicYears = $query->select('id', 'name')->get()->toArray();
+
         return $academicYears;
     }
 
@@ -305,10 +310,11 @@ class ApplicationController extends Controller
             ->orderBy('application_timings.start_date')
             ->get();
 
-        if (!empty($applicationTimings) and $applicationTimings->isNotEmpty()) {
+        if (! empty($applicationTimings) and $applicationTimings->isNotEmpty()) {
             return $applicationTimings;
         }
-        return response()->json(['error'=>'No capacity was found for this academic year!'],404);
+
+        return response()->json(['error' => 'No capacity was found for this academic year!'], 404);
     }
 
     public function checkDateAndTimeToBeFreeApplication(Request $request): \Illuminate\Http\JsonResponse|int
@@ -325,6 +331,7 @@ class ApplicationController extends Controller
         if (empty($applicationCheck)) {
             return response()->json(['error' => 'Unfortunately, the selected application was reserved a few minutes ago. Please choose another application'], 422);
         }
+
         return 0;
     }
 
@@ -364,7 +371,7 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors('Unfortunately, the selected application was reserved a few minutes ago. Please choose another application')->withInput();
         }
 
-        $applicationReservation = new ApplicationReservation();
+        $applicationReservation = new ApplicationReservation;
         $applicationReservation->application_id = $dateAndTime;
         $applicationReservation->student_id = $studentInfo->student_id;
         $applicationReservation->reservatore = $me->id;
@@ -376,6 +383,7 @@ class ApplicationController extends Controller
             $applications->reserved = 1;
             $applications->save();
         }
+
         return redirect()->route('PrepareToPayApplication', $applicationReservation->id);
     }
 
@@ -423,20 +431,20 @@ class ApplicationController extends Controller
 
                 $path = $request->file('document_file')->store('public/uploads/Documents/'.auth()->user()->id);
 
-                $document = new Document();
+                $document = new Document;
                 $document->user_id = $applicationInformation->student_id;
                 $document->document_type_id = DocumentType::whereName('Deposit slip')->first()->id;
                 $document->src = $path;
                 $document->save();
 
-                $document = new Document();
+                $document = new Document;
                 $document->user_id = auth()->user()->id;
                 $document->document_type_id = DocumentType::whereName('Deposit slip')->first()->id;
                 $document->src = $path;
                 $document->save();
 
                 if ($document) {
-                    $applicationReservationInvoice = new ApplicationReservationsInvoices();
+                    $applicationReservationInvoice = new ApplicationReservationsInvoices;
                     $applicationReservationInvoice->a_reservation_id = $request->id;
                     $applicationReservationInvoice->payment_information = json_encode([
                         'payment_method' => $request->payment_method,
@@ -448,6 +456,7 @@ class ApplicationController extends Controller
                     if ($applicationReservationInvoice) {
                         $applicationInformation->payment_status = 2; //For Pending
                         $applicationInformation->save();
+
                         return redirect()->route('Applications.index')->with('success', 'Application reserved successfully!');
                     }
                 }
@@ -464,7 +473,7 @@ class ApplicationController extends Controller
                 return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyApplicationPayment')->purchase(
                     $invoice,
                     function ($driver, $transactionID) use ($amount, $applicationInformation) {
-                        $dataInvoice = new \App\Models\Invoice();
+                        $dataInvoice = new \App\Models\Invoice;
                         $dataInvoice->user_id = auth()->user()->id;
                         $dataInvoice->type = 'Application Reservation';
                         $dataInvoice->amount = $amount;
@@ -493,6 +502,7 @@ class ApplicationController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
         $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->whereInterviewStatus('Pending For Principal Confirmation')->paginate(150);
+
         return view('BranchInfo.ConfirmAppliance.index', compact('studentAppliances'));
     }
 

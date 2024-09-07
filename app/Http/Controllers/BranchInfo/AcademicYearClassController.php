@@ -91,7 +91,7 @@ class AcademicYearClassController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $class = new AcademicYearClass();
+        $class = new AcademicYearClass;
         $class->name = $request->name;
         $class->academic_year = $request->academic_year;
         $class->level = $request->level;

@@ -115,13 +115,13 @@ class StudentController extends Controller
 
         //Check student information
         $allMyStudents = StudentInformation::whereGuardian($me->id)->get()->pluck('student_id')->toArray();
-        $allGeneralInformation=GeneralInformation::whereIn('user_id',$allMyStudents)
+        $allGeneralInformation = GeneralInformation::whereIn('user_id', $allMyStudents)
             ->whereFirstNameEn($request->first_name_en)
             ->whereLastNameEn($request->last_name_en)
             ->whereGender($request->gender)
             ->first();
 
-        if (!empty($allGeneralInformation)){
+        if (! empty($allGeneralInformation)) {
             return redirect()->back()->withErrors('Duplicate student entered. Please check your student list!')->withInput();
         }
 
@@ -129,14 +129,14 @@ class StudentController extends Controller
             $query->whereName('Student');
         })->orderByDesc('id')->first();
 
-        $user = new User();
+        $user = new User;
         $user->id = $lastStudent->id + 1;
         $user->password = Hash::make('Aa12345678');
         $user->status = 0;
         $user->save();
         $user->assignRole('Student');
 
-        $generalInformation = new GeneralInformation();
+        $generalInformation = new GeneralInformation;
         $generalInformation->user_id = $user->id;
         $generalInformation->first_name_fa = $request->first_name_fa;
         $generalInformation->last_name_fa = $request->last_name_fa;
@@ -148,7 +148,7 @@ class StudentController extends Controller
         $generalInformation->gender = $gender;
         $generalInformation->save();
 
-        $studentInformation = new StudentInformation();
+        $studentInformation = new StudentInformation;
         $studentInformation->student_id = $user->id;
         $studentInformation->guardian = auth()->user()->id;
         $studentInformation->current_nationality = $nationality;
@@ -255,7 +255,7 @@ class StudentController extends Controller
         $studentInformation = StudentInformation::whereStudentId($checkUser->id)->first();
 
         if (empty($studentInformation)) {
-            $studentInformation = new StudentInformation();
+            $studentInformation = new StudentInformation;
             $studentInformation->student_id = $checkUser->id;
             $studentInformation->save();
         }
@@ -289,7 +289,7 @@ class StudentController extends Controller
         if (isset($request->title)) {
             foreach ($extraInformationTitles as $index => $titles) {
                 if (! empty($titles)) {
-                    $studentExtraInformation = new StudentExtraInformation();
+                    $studentExtraInformation = new StudentExtraInformation;
                     $studentExtraInformation->student_informations_id = $studentInformation->id;
                     $studentExtraInformation->name = $titles;
                     $studentExtraInformation->description = $extraInformationDescriptions[$index];
@@ -385,7 +385,7 @@ class StudentController extends Controller
         $userThumbnail->personal_image = $thumbnailPath;
         $userThumbnail->save();
 
-        $userPersonalPictureDocument = new Document();
+        $userPersonalPictureDocument = new Document;
         $userPersonalPictureDocument->user_id = $userId;
         $userPersonalPictureDocument->document_type_id = 2;
         $userPersonalPictureDocument->src = $destinationPath;

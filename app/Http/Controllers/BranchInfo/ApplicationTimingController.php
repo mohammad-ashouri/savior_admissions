@@ -108,7 +108,7 @@ class ApplicationTimingController extends Controller
         }
 
         if (! empty($academicYears)) {
-            $applicationTiming = new ApplicationTiming();
+            $applicationTiming = new ApplicationTiming;
             $applicationTiming->academic_year = $request->academic_year;
             $applicationTiming->start_date = $request->start_date;
             $applicationTiming->start_time = $request->start_time;
@@ -143,7 +143,7 @@ class ApplicationTimingController extends Controller
                     $currentDateTime = $startTime;
 
                     for ($i = 1; $i <= $totalSessions; $i++) {
-                        $interview = new Applications();
+                        $interview = new Applications;
                         $interview->application_timing_id = $applicationTiming->id;
                         $interview->date = $day;
                         $start_from = $currentDateTime->format('H:i');

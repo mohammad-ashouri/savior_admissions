@@ -111,7 +111,7 @@ class UserController extends Controller
         //            $user->additional_information = json_encode($userAdditionalInformation);
         //        }
         if ($user->save()) {
-            $generalInformation = new GeneralInformation();
+            $generalInformation = new GeneralInformation;
             $generalInformation->user_id = $user->id;
             $generalInformation->first_name_fa = $request->first_name_fa;
             $generalInformation->last_name_fa = $request->last_name_fa;
@@ -121,6 +121,7 @@ class UserController extends Controller
 
             $user->assignRole($request->input('role'));
         }
+
         return redirect()->route('users.index')
             ->with('success', 'User created successfully');
     }

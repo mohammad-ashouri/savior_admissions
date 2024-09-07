@@ -166,7 +166,7 @@ class EvidenceController extends Controller
             ->with('evidences')
             ->whereId($appliance_id)
             ->whereIn('academic_year', $academicYears)
-            ->where('documents_uploaded_approval','=', '1')
+            ->where('documents_uploaded_approval', '=', '1')
             ->whereInterviewStatus('Admitted')
             ->orderBy('documents_uploaded', 'asc')
             ->first();
