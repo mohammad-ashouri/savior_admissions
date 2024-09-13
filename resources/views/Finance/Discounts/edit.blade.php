@@ -14,7 +14,7 @@
                 <div class="lg:col-span-3 col-span-3 ">
                     <div class=" bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">
-                            <h1 class="text-2xl font-medium"> All tuitions</h1>
+                            <h1 class="text-2xl font-medium"> All discounts</h1>
                         </div>
                         <form id="discounts-edit" method="post" action="{{ route('Discounts.store') }}">
                             @csrf
