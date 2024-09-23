@@ -897,7 +897,7 @@ $(document).ready(function () {
                             });
                             $('.AgreementDIV').show();
                         } else {
-                            swalFire('Warning', "No capacity was found for this academic year!", 'warning', 'OK');
+                            swalFire('Warning', "The interview capacity is currently full. New slots will be announced in the coming days.", 'warning', 'OK');
                         }
                     }, error: function (xhr, textStatus, errorThrown) {
                         $('.AgreementDIV').hide();
