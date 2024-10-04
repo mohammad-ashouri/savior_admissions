@@ -31,7 +31,10 @@ class RejectStudentApplianceAfter72hours_Documents extends Command
         $now = Carbon::now();
         $before72Hours = $now->subHours(72);
 
-        StudentApplianceStatus::where('updated_at', '<=', $before72Hours)->where('documents_uploaded', 0)->update([
+        StudentApplianceStatus::where('updated_at', '<=', $before72Hours)->where('documents_uploaded','=', '0')
+            ->where('tuition_payment_status','=',null)
+            ->where('documents_uploaded_seconder','=',null)
+            ->update([
             'documents_uploaded' => 3,
             'documents_uploaded_approval' => 3,
             'description' => 'Automatic Rejected (Documents could not be uploaded after 72 hours)',
