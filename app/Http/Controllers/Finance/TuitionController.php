@@ -444,16 +444,16 @@ class TuitionController extends Controller
                     if ($request->file('document_file_full_payment2') !== null) {
                         $extension = $request->file('document_file_full_payment2')->getClientOriginalExtension();
 
-                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
-                        $documentFileFullPayment2Src = $request->file('document_file_full_payment1')->storeAs(
+                        $bankSlip2 = 'Tuition2_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $documentFileFullPayment2Src = $request->file('document_file_full_payment2')->storeAs(
                             'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
-                            $bankSlip1
+                            $bankSlip2
                         );
                     }
                     if ($request->file('document_file_full_payment3') !== null) {
                         $extension = $request->file('document_file_full_payment3')->getClientOriginalExtension();
 
-                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $bankSlip1 = 'Tuition3_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                         $documentFileFullPayment3Src = $request->file('document_file_full_payment1')->storeAs(
                             'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                             $bankSlip1
@@ -496,7 +496,7 @@ class TuitionController extends Controller
                     if ($request->file('document_file_offline_installment2') !== null) {
                         $extension = $request->file('document_file_offline_installment2')->getClientOriginalExtension();
 
-                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $bankSlip1 = 'Tuition2_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                         $documentFileOfflineInstallment2Src = $request->file('document_file_offline_installment2')->storeAs(
                             'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                             $bankSlip1
@@ -505,7 +505,7 @@ class TuitionController extends Controller
                     if ($request->file('document_file_offline_installment3') !== null) {
                         $extension = $request->file('document_file_offline_installment3')->getClientOriginalExtension();
 
-                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $bankSlip1 = 'Tuition3_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                         $documentFileOfflineInstallment3Src = $request->file('document_file_offline_installment3')->storeAs(
                             'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                             $bankSlip1
@@ -549,7 +549,7 @@ class TuitionController extends Controller
                     if ($request->file('document_file_full_payment_with_advance2') !== null) {
                         $extension = $request->file('document_file_full_payment_with_advance2')->getClientOriginalExtension();
 
-                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $bankSlip1 = 'Tuition2_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                         $documentFileFullPayment2Src = $request->file('document_file_full_payment_with_advance2')->storeAs(
                             'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                             $bankSlip1
@@ -558,7 +558,7 @@ class TuitionController extends Controller
                     if ($request->file('document_file_full_payment_with_advance3') !== null) {
                         $extension = $request->file('document_file_full_payment_with_advance3')->getClientOriginalExtension();
 
-                        $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                        $bankSlip1 = 'Tuition3_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                         $documentFileFullPayment3Src = $request->file('document_file_full_payment_with_advance3')->storeAs(
                             'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                             $bankSlip1
@@ -778,8 +778,6 @@ class TuitionController extends Controller
                 }
                 break;
         }
-
-        dd($request->all());
 
         return view('Finance.Tuition.Pay.index', compact('studentApplianceStatus', 'tuition', 'applicationInfo', 'paymentMethod', 'discountPercentages', 'familyDiscount'));
     }
