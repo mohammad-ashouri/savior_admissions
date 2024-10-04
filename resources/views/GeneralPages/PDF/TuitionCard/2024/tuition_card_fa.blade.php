@@ -26,7 +26,10 @@
     }
 
     $systemTuitionInfo=Tuition::join('tuition_details','tuitions.id','=','tuition_details.tuition_id')->where('tuition_details.level',$levelInfo->id)->first();
-    $myTuitionInfo=TuitionInvoices::with('invoiceDetails')->whereApplianceId($applianceStatus->id)->first();
+    $myTuitionInfo=TuitionInvoices::with(['invoiceDetails' => function ($query) {
+        $query->where('is_paid', '!=', 3);
+    }])
+    ->whereApplianceId($applianceStatus->id)->first();
     $totalAmount=0;
 
     foreach($myTuitionInfo->invoiceDetails as $invoices){
@@ -393,6 +396,7 @@
                 class="font-light">{{ $myTuitionInfo->id }}</span></p>
         <p class="font-bold">{{ __('translated_fa.Date') }}: <span
                 class="font-light">{{ Jalalian::forge('today')->format('%A, %d %B %Y') }}</span></p>
+        <p class="font-bold">کد دانش آموز: <span class="font-light">{{ $applianceStatus->student_id }}</span></p>
     </div>
 </header>
 
