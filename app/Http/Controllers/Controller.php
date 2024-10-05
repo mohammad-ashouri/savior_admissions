@@ -291,7 +291,6 @@ class Controller extends BaseController
         //Found previous discounts
         $allStudentsWithGuardian = StudentInformation::whereGuardian($guardian_id)->pluck('student_id')->toArray();
         $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
-
         return GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->sum('discount_price');
     }
 

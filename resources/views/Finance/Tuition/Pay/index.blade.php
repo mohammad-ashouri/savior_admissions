@@ -145,9 +145,9 @@
                                                         break;
                                                         default:
                                                             if (!empty($minimumLevelTuitionDetails)){
-                                                                $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment_ministry,true)['full_payment_irr_ministry']);
-                                                                $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment_ministry,true)['two_installment_amount_irr_ministry']);
-                                                                $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment_ministry,true)['four_installment_amount_irr_ministry']);
+                                                                $minimumLevelTuitionDetailsFullPayment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->full_payment,true)['full_payment_irr']);
+                                                                $minimumLevelTuitionDetailsTwoInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->two_installment_payment,true)['two_installment_amount_irr']);
+                                                                $minimumLevelTuitionDetailsFourInstallment=(int)str_replace(',','',json_decode($minimumLevelTuitionDetails->four_installment_payment,true)['four_installment_amount_irr']);
                                                                 $familyPercentagePriceFullPayment=$familyPercentagePriceTwoInstallment=$familyPercentagePriceFourInstallment=0;
                                                                 switch($minimumSignedStudentNumber){
                                                                     case '1':
