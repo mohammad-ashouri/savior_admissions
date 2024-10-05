@@ -485,7 +485,7 @@
                                                                     <div class="grid grid-cols-2 gap-4 mb-4">
                                                                         <div class="flex">
                                                                             <input type="text"
-                                                                                   value="{{ isset($fourInstallmentDetails['four_installment_each_installment_irr_ministry']) ? $fourInstallmentDetails['four_installment_each_installment_irr_ministry'] : 0 }}"
+                                                                                   value="{{ isset($fourInstallmentMinistryDetails['four_installment_each_installment_irr_ministry']) ? $fourInstallmentMinistryDetails['four_installment_each_installment_irr_ministry'] : 0 }}"
                                                                                    id="four_installment_each_installment_irr_ministry"
                                                                                    name="four_installment_each_installment_irr_ministry"
                                                                                    placeholder="Enter the amount of each installment for {{$tuition->levelInfo->name}} in Rials"
@@ -496,7 +496,7 @@
                                                                         </div>
                                                                         <div class="flex ">
                                                                             <input type="text"
-                                                                                   value="{{ isset($fourInstallmentDetails['four_installment_each_installment_usd_ministry']) ? $fourInstallmentDetails['four_installment_each_installment_usd_ministry'] : 0 }}"
+                                                                                   value="{{ isset($fourInstallmentMinistryDetails['four_installment_each_installment_usd_ministry']) ? $fourInstallmentMinistryDetails['four_installment_each_installment_usd_ministry'] : 0 }}"
                                                                                    id="four_installment_each_installment_usd_ministry"
                                                                                    name="four_installment_each_installment_usd_ministry"
                                                                                    placeholder="Enter the amount of each installment for {{$tuition->levelInfo->name}} in USD"
