@@ -29,7 +29,7 @@
     $myTuitionInfo=TuitionInvoices::with(['invoiceDetails' => function ($query) {
         $query->where('is_paid', '!=', 3);
     }])
-    ->whereApplianceId($applianceStatus->id)->first();
+    ->whereApplianceId($applianceStatus->id)->latest()->first();
     $totalAmount=0;
 
     foreach($myTuitionInfo->invoiceDetails as $invoices){
