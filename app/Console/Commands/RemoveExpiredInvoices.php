@@ -31,11 +31,18 @@ class RemoveExpiredInvoices extends Command
     {
         $tenMinutesAgo = Carbon::now()->subMinutes(12);
 
-        $tuitionInvoiceDetails = TuitionInvoiceDetails::where('created_at', '<=', $tenMinutesAgo)->whereIsPaid(0)->where('payment_method',2)->get();
+        $tuitionInvoiceDetails = TuitionInvoiceDetails::with(['tuitionInvoiceDetails' => function ($query) {
+            $query->with(['applianceInformation' => function ($query) {
+                $query->where('approval_status', '!=', 1);
+            }]);
+        }])
+            ->where('created_at', '<=', $tenMinutesAgo)
+            ->whereIsPaid(0)->where('payment_method', 2)
+            ->get();
         foreach ($tuitionInvoiceDetails as $detail) {
-            Invoice::whereJsonContains('description->invoice_details_id',$detail->id)->delete();
+            Invoice::whereJsonContains('description->invoice_details_id', $detail->id)->delete();
             TuitionInvoices::destroy($detail->tuition_invoice_id);
         }
-        TuitionInvoiceDetails::where('created_at', '<=', $tenMinutesAgo)->whereIsPaid(0)->where('payment_method',2)->delete();
+        TuitionInvoiceDetails::where('created_at', '<=', $tenMinutesAgo)->whereIsPaid(0)->where('payment_method', 2)->delete();
     }
 }
