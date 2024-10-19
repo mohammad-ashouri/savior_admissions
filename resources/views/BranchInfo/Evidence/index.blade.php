@@ -5,7 +5,7 @@
     <div id="content" class="p-4 md:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-20 ">
             <div class="grid grid-cols-1 gap-4 mb-4">
-                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Evidences Uploaded For Confirm</h1>
+                <h1 class="text-3xl font-semibold text-black dark:text-white ">All Documents Uploaded For Confirm</h1>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
                 @include('GeneralPages.errors.session.success')
@@ -23,7 +23,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    There is not any evidences to show!
+                                    No documents found.
                                 </div>
                             </div>
                         </div>

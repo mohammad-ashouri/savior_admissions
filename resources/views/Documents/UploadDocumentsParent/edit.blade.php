@@ -7,7 +7,7 @@
     <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
         <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                <h1 class="text-2xl font-medium"> Upload Student's Documents And Informations</h1>
+                <h1 class="text-2xl font-medium"> Upload Student's Documents And Information</h1>
             </div>
             <div class="bg-yellow-100 border-t-4 border-red-500 rounded-b text-yellow-900 px-4 py-3 mb-3 shadow-md"
                  role="alert">
@@ -33,9 +33,9 @@
                               action="{{ route('Document.EditUploadedEvidences.update') }}">
                             <div class="grid gap-6 mb-6">
                                 <div>
-                                    {{--                                    Medical Informations--}}
+                                    {{--                                    Medical Information--}}
                                     <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
-                                        <h1 class="text-xl font-medium">1- Medical Informations</h1>
+                                        <h1 class="text-xl font-medium">1- Medical Information</h1>
                                     </div>
                                     <div>
                                         <label for="blood_group"
@@ -63,9 +63,9 @@
                                                   name="other_considerations"
                                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{$informations['other_considerations']}}</textarea>
                                     </div>
-                                    {{--                                    Family Informations--}}
+                                    {{--                                    Family Information--}}
                                     <div class="grid grid-cols-1 gap-4 mt-6 mb-4 text-black dark:text-white">
-                                        <h1 class="text-xl font-medium">2- Family Informations</h1>
+                                        <h1 class="text-xl font-medium">2- Family Information</h1>
                                     </div>
                                     <div class="grid grid-cols-2">
                                         <div class="mr-2">
@@ -135,7 +135,7 @@
                                             <div class="mt-3 mr-2">
                                                 <label for="father_mobile"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                    Father's mobile</label>
+                                                    Father's Phone Number</label>
                                                 <input type="text" id="father_mobile" name="father_mobile"
                                                        value="{{$informations['father_mobile']}}"
                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -204,14 +204,15 @@
                                                 <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                     <div class="dark:text-white font-medium mb-1">File requirements
                                                     </div>
-                                                    <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                    <div class="dark:text-gray-400 font-normal text-sm pb-1">Please
+                                                        ensure that
                                                         these
                                                         requirements
                                                         are met:
                                                     </div>
                                                     <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
                                                         <li>
-                                                            The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                            Acceptable Formats: png, jpg, jpeg, pdf, bmp
                                                         </li>
                                                         <li>
                                                             Maximum size: 2 MB
@@ -275,7 +276,7 @@
                                             <div class="mt-3 mr-2">
                                                 <label for="mother_mobile"
                                                        class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                    mother's mobile</label>
+                                                    mother's Phone Number</label>
                                                 <input type="text" id="mother_mobile" name="mother_mobile"
                                                        value="{{$informations['mother_mobile']}}"
                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -344,14 +345,15 @@
                                                 <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                     <div class="dark:text-white font-medium mb-1">File requirements
                                                     </div>
-                                                    <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                    <div class="dark:text-gray-400 font-normal text-sm pb-1">Please
+                                                        ensure that
                                                         these
                                                         requirements
                                                         are met:
                                                     </div>
                                                     <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
                                                         <li>
-                                                            The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                            Acceptable Formats: png, jpg, jpeg, pdf, bmp
                                                         </li>
                                                         <li>
                                                             Maximum size: 2 MB
@@ -389,9 +391,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{--                                    Educational Informations--}}
+                                    {{--                                    Educational Information--}}
                                     <div class="grid grid-cols-1 gap-4 mt-6 text-black dark:text-white">
-                                        <h1 class="text-xl font-medium">3- Educational Informations</h1>
+                                        <h1 class="text-xl font-medium">3- Educational Information</h1>
                                     </div>
                                     <div class="grid md:grid-cols-2">
                                         <div class="mt-3 mr-2">
@@ -457,14 +459,15 @@
                                                 accept=".pdf,.jpg,.bpm,.jpeg,.png">
                                             <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                 <div class="dark:text-white font-medium mb-1">File requirements</div>
-                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Please
+                                                    ensure that
                                                     these
                                                     requirements
                                                     are met:
                                                 </div>
                                                 <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
                                                     <li>
-                                                        The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                        Acceptable Formats: png, jpg, jpeg, pdf, bmp
                                                     </li>
                                                     <li>
                                                         Maximum size: 2 MB
@@ -501,9 +504,9 @@
                                             @endif
                                         </div>
                                     </div>
-                                    {{--                                    Miscellaneous Informations--}}
+                                    {{--                                    Miscellaneous Information--}}
                                     <div class="grid grid-cols-1 gap-4 mt-6 text-black dark:text-white">
-                                        <h1 class="text-xl font-medium">4- Miscellaneous Informations</h1>
+                                        <h1 class="text-xl font-medium">4- Miscellaneous Information</h1>
                                     </div>
                                     <div class="grid md:grid-cols-1">
                                         <div class="mt-3 mr-2">
@@ -518,7 +521,7 @@
                                     </div>
                                     {{--                                    Branch Specific--}}
                                     <div class="grid grid-cols-1 gap-4 mt-6 text-black dark:text-white">
-                                        <h1 class="text-xl font-medium">5- Student Informations</h1>
+                                        <h1 class="text-xl font-medium">5- Student Information</h1>
                                     </div>
                                     <div class="grid md:grid-cols-2">
                                         <div class="mt-3 mr-2">
@@ -609,14 +612,15 @@
                                                 accept=".pdf,.jpg,.bpm,.jpeg,.png">
                                             <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                 <div class="dark:text-white font-medium mb-1">File requirements</div>
-                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Please
+                                                    ensure that
                                                     these
                                                     requirements
                                                     are met:
                                                 </div>
                                                 <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
                                                     <li>
-                                                        The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                        Acceptable Formats: png, jpg, jpeg, pdf, bmp
                                                     </li>
                                                     <li>
                                                         Maximum size: 2 MB
@@ -663,14 +667,15 @@
                                                    accept=".pdf,.jpg,.bpm,.jpeg,.png">
                                             <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                 <div class="dark:text-white font-medium mb-1">File requirements</div>
-                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Please
+                                                    ensure that
                                                     these
                                                     requirements
                                                     are met:
                                                 </div>
                                                 <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
                                                     <li>
-                                                        The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                                        Acceptable Formats: png, jpg, jpeg, pdf, bmp
                                                     </li>
                                                     <li>
                                                         Maximum size: 2 MB

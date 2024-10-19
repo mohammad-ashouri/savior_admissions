@@ -7,7 +7,7 @@
             <div
                 class="fixed top-0 left-0 z-50 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50">
                 <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
-                <p class="ml-5 text-xl font-semibold text-gray-900 dark:text-white">Loading documents</p>
+                <p class="ml-5 text-xl font-semibold text-gray-900 dark:text-white">Loading Documents</p>
             </div>
         </div>
         <script>

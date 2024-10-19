@@ -235,9 +235,9 @@
                             <li>
                                 <a href="{{route('Evidences')}}"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <span class="menulist"><i class="nav-icon la la-id-card"
+                                    <span class="menulist text-nowrap"><i class="nav-icon la la-id-card"
                                                               style="font-size: 24px"></i>
-                                        Evidences</span>
+                                        Uploaded Documents</span>
                                 </a>
                             </li>
                         @endcan
