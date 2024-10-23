@@ -890,4 +890,28 @@ class TuitionController extends Controller
 
         return view('Finance.TuitionsStatus.index', compact('students', 'academicYears'));
     }
+
+    public function allTuitions(Request $request)
+    {
+        $selectedAcademicYear = $request->academic_year;
+        $academicYears = AcademicYear::get();
+        if (empty($selectedAcademicYear)) {
+            return view('Finance.AllTuitions.index', compact('academicYears', 'selectedAcademicYear'));
+        }
+        $students=StudentApplianceStatus::with([
+            'studentInformations'=>function ($query) {
+                $query->with([
+                    'guardianInfo'=>function ($query) {
+                        $query->pluck('id');
+                    }
+                ]);
+            }
+        ])->whereAcademicYear($selectedAcademicYear)->whereNotNull('tuition_payment_status')->get();
+
+        $parents=[];
+        foreach ($students as $student){
+            $parents[]=$student->studentInformations->guardianInfo->id;
+        }
+        return view('Finance.AllTuitions.index', compact('selectedAcademicYear','academicYears','parents'));
+    }
 }
