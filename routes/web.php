@@ -209,6 +209,10 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
                 Route::get('/tuition_card_en/{appliance_id}', [PDFExportController::class, 'tuitionCardEnExport'])->name('tuitionCard.en');
                 Route::get('/tuition_card_fa/{appliance_id}', [PDFExportController::class, 'tuitionCardFaExport'])->name('tuitionCard.fa');
             });
+
+            //Datatable
+            Route::get('/finance/all-tuitions-data', [TuitionController::class, 'getAllTuitionsData'])->name('finance.allTuitionsData');
+
         });
 
         //SMS
