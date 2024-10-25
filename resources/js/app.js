@@ -1316,6 +1316,33 @@ $(document).ready(function () {
                 });
             }
         });
+    } else if (fullPath.includes('AllTuitions')) {
+        pageTitle = 'All Tuitions';
+
+        let table = new DataTable('.guardian',{
+            "ordering": true,
+            "searching": true,
+            "paging": true,
+            "info": true,
+            "pageLength": 10,
+            "lengthChange": true,
+            responsive: true,
+            "language": {
+                "paginate": {
+                    "first": "&laquo;&laquo;",
+                    "last": "&raquo;&raquo;",
+                    "previous": "&laquo;",
+                    "next": "&raquo;"
+                }
+            },
+            "initComplete": function() {
+                // اضافه کردن کلاس‌های Tailwind به select
+                $('div.dt-length select').addClass('px-4 py-2 border border-gray-300 bg-white rounded-md text-sm');
+                // اضافه کردن کلاس‌های Tailwind به label
+                $('div.dt-length label').addClass('ml-2 text-gray-700 text-sm');
+            }
+        });
+
     } else if (fullPath.includes('ConfirmApplication')) {
         pageTitle = 'Application Confirmation';
         if (fullPath.includes('ConfirmApplication/')) {

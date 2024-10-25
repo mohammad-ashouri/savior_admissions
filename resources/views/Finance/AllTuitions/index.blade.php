@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     @else
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 guardian">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -108,9 +108,10 @@
                                         {{ $loop->iteration }}
                                     </td>
                                     <td class="w-40 p-2 border text-center">
-                                        {{ $parentInfo->user_id }} -
+
                                         {{ $parentInfo->first_name_en }}
                                         {{ $parentInfo->last_name_en }}
+                                        - {{ $parentInfo->user_id }}
                                     </td>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900  dark:text-white">
@@ -130,7 +131,7 @@
                                                         ])->whereStudentId($student->student_id)->wherePaymentStatus(1)->latest()->first();
                                                 @endphp
                                                 <table
-                                                    class="w-full mt-2 text-sm text-left text-gray-500 dark:text-gray-400">
+                                                    class="w-full mt-2 text-sm text-left text-gray-500 dark:text-gray-400 students">
                                                     <thead
                                                         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                     <tr>
@@ -289,7 +290,7 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 sum-table">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -334,4 +335,6 @@
             </div>
         </div>
     </div>
+    <script>
+    </script>
 @endsection

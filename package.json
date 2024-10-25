@@ -4,8 +4,9 @@
     "scripts": {
         "dev": "vite",
         "build-app": "vite build",
-        "build": "npm-run-all build-app copy-jquery copy-select2 copy-export-images copy-font-files",
+        "build": "npm-run-all build-app copy-jquery copy-select2 copy-export-images copy-font-files copy-datatable",
         "copy-select2": "mkdirp public/build/plugins && ncp node_modules/select2 public/build/plugins/select2",
+        "copy-datatable": "mkdirp public/build/plugins && ncp resources/OtherLibraries/DataTables public/build/plugins/DataTables",
         "copy-jquery": "mkdirp public/build/plugins && ncp node_modules/jquery public/build/plugins/jquery",
         "copy-export-images": "mkdirp public/build/export-images && ncp resources/images/export-pdf-images public/build/export-images",
         "copy-font-files": "mkdirp public/build/Fonts && ncp resources/css/Fonts public/build/Fonts"
@@ -14,7 +15,6 @@
         "autoprefixer": "^10.4.15",
         "axios": "^1.1.2",
         "flowbite": "^1.8.1",
-        "laravel-datatables-vite": "^0.5.2",
         "laravel-vite-plugin": "^0.8.1",
         "postcss": "^8.4.29",
         "sass": "^1.80.4",

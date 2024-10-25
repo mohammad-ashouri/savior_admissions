@@ -175,7 +175,6 @@ return [
         Kavenegar\Laravel\ServiceProvider::class,
         Lab404\Impersonate\ImpersonateServiceProvider::class,
         Stimulsoft\Laravel\StiServiceProvider::class,
-        Yajra\DataTables\DataTablesServiceProvider::class,
     ])->toArray(),
 
     /*
