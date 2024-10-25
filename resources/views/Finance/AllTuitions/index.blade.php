@@ -281,59 +281,6 @@
                                             @endforeach
                                         </div>
                                     </th>
-                                    {{--                                    <th scope="row"--}}
-                                    {{--                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">--}}
-                                    {{--                                        <div--}}
-                                    {{--                                            class="text-base font-semibold">--}}
-                                    {{--                                            @if($student->tuitionInvoices!=null)--}}
-                                    {{--                                                @php--}}
-                                    {{--                                                    $debtBalance=0;--}}
-                                    {{--                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){--}}
-                                    {{--                                                        if ($invoices->is_paid==1){ continue; }--}}
-                                    {{--                                                        $debtBalance=$debtBalance+$invoices->amount;--}}
-                                    {{--                                                    }--}}
-                                    {{--                                                    $sumDebt+=$debtBalance;--}}
-                                    {{--                                                @endphp--}}
-                                    {{--                                                {{ number_format($debtBalance) }} IRR--}}
-                                    {{--                                            @endif--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </th>--}}
-                                    {{--                                    <th scope="row"--}}
-                                    {{--                                        class="flex border justify-center text-center text-gray-900 dark:text-white">--}}
-                                    {{--                                        <a href="{{ route('tuitionCard.en',$student->id) }}"--}}
-                                    {{--                                           type="button"--}}
-                                    {{--                                           class="  font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">--}}
-                                    {{--                                            <div class="text-center">--}}
-                                    {{--                                                <i title="Click for view english tuition card "--}}
-                                    {{--                                                   class="las la-address-card "--}}
-                                    {{--                                                   style="font-size: 20px"></i>--}}
-                                    {{--                                                English--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </a>--}}
-                                    {{--                                        <a href="{{ route('tuitionCard.fa',$student->id) }}"--}}
-                                    {{--                                           type="button"--}}
-                                    {{--                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">--}}
-                                    {{--                                            <div class="text-center">--}}
-                                    {{--                                                <i title="Click for view english tuition card "--}}
-                                    {{--                                                   class="las la-address-card "--}}
-                                    {{--                                                   style="font-size: 20px"></i>--}}
-                                    {{--                                                Persian--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </a>--}}
-                                    {{--                                    </th>--}}
-                                    {{--                                    <th scope="row"--}}
-                                    {{--                                        class=" justify-center border text-center text-gray-900 whitespace-nowrap dark:text-white">--}}
-                                    {{--                                        <a href="{{ route('applianceInvoices',$student->id) }}"--}}
-                                    {{--                                           type="button"--}}
-                                    {{--                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">--}}
-                                    {{--                                            <div class="text-center">--}}
-                                    {{--                                                <i title="Click for view english tuition card "--}}
-                                    {{--                                                   class="las la-money-bill "--}}
-                                    {{--                                                   style="font-size: 20px"></i>--}}
-                                    {{--                                                Show invoices--}}
-                                    {{--                                            </div>--}}
-                                    {{--                                        </a>--}}
-                                    {{--                                    </th>--}}
                                 </tr>
                             @endforeach
                             </tbody>
