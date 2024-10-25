@@ -1,4 +1,4 @@
-@php use App\Models\Branch\ApplicationTiming;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\Level;use App\Models\GeneralInformation; @endphp
+@php use App\Models\Branch\ApplicationReservation;use App\Models\Branch\ApplicationTiming;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\Level;use App\Models\GeneralInformation; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -19,8 +19,8 @@
                                             <option value="" disabled selected>Select Academic Year...</option>
                                             @foreach($academicYears as $academicYear)
                                                 <option
-                                                    @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
-                                                    @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                                        @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                                        @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -60,7 +60,7 @@
                                          xmlns="http://www.w3.org/2000/svg"
                                          viewBox="0 0 20 20">
                                         <path
-                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                     </svg>
                                 </div>
                                 <div>
@@ -71,7 +71,7 @@
                     @else
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 border text-center">
                                     #
@@ -93,7 +93,7 @@
                                 @php
                                     $parentInfo=GeneralInformation::whereUserId($parent)->first();
                                     $students=StudentApplianceStatus::with([
-                                        'studentInformations'
+                                        'studentInformations',
                                     ])
                                     ->whereHas('studentInformations',function ($query) use ($parentInfo) {
                                             $query->whereGuardian($parentInfo->user_id);
@@ -103,11 +103,11 @@
                                     ->get();
                                 @endphp
                                 <tr
-                                    class="bg-white border dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 border-b dark:border-gray-700">
                                     <td class="w-2 border text-center">
                                         {{ $loop->iteration }}
                                     </td>
-                                    <td class="w-4 p-2 border text-center">
+                                    <td class="w-40 p-2 border text-center">
                                         {{ $parentInfo->user_id }} -
                                         {{ $parentInfo->first_name_en }}
                                         {{ $parentInfo->last_name_en }}
@@ -115,118 +115,172 @@
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900  dark:text-white">
                                         <div
-                                            class="text-base font-semibold">
-                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                <thead
-                                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th scope="col" class=" border text-center">
-                                                        Grade
-                                                    </th>
-                                                    <th scope="col" class=" border text-center">
-                                                        Tuition Type
-                                                    </th>
-                                                    <th scope="col" class=" border text-center">
-                                                        Total Tuition
-                                                    </th>
-                                                    <th scope="col" class=" border text-center">
-                                                        Total Paid
-                                                    </th>
-                                                    <th scope="col" class=" border text-center">
-                                                        Debt Balance
-                                                    </th>
-                                                    <th scope="col" class=" border text-center">
-                                                        Tuition Card
-                                                    </th>
-                                                    <th scope="col" class=" border text-center">
-                                                        Action
-                                                    </th>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row"
-                                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <div
-                                                            class="text-base font-semibold">
-                                                            {{ number_format($sumTuition) }} IRR
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                            </table>
+                                                class="text-base font-semibold">
+                                            @foreach($students as $student)
+                                                @php
+                                                    $application=ApplicationReservation::with([
+                                                        'levelInfo',
+                                                        'applicationInfo'=>function ($query) use ($academicYear) {
+                                                            $query->with([
+                                                                'applicationTimingInfo'=>function ($query) use ($academicYear) {
+                                                                    $query->whereAcademicYear($academicYear);
+                                                                }
+                                                            ]);
+                                                        }
+                                                        ])->whereStudentId($student->student_id)->wherePaymentStatus(1)->latest()->first();
+                                                @endphp
+                                                <table
+                                                        class="w-full mt-2 text-sm text-left text-gray-500 dark:text-gray-400">
+                                                    <thead
+                                                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                    <tr>
+                                                        <th scope="col" class=" border text-center">
+                                                            ID
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Information
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Grade
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Status
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Payment Type
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Total Tuition
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Total Paid
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Debt Balance
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Tuition Card
+                                                        </th>
+                                                        <th scope="col" class=" border text-center">
+                                                            Action
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="w-4 p-2 border text-center">
+                                                            {{ $student->student_id }}
+                                                        </td>
+                                                        <td class="w-56 p-2 border text-center">
+                                                            {{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}
+                                                        </td>
+                                                        <td class="w-20 p-2 border text-center">
+                                                            {{ $application->levelInfo->name }}
+                                                        </td>
+                                                        <td class="w-20 p-2 border text-center">
+                                                            {{ $student->tuition_payment_status }}
+                                                        </td>
+                                                        <td class="w-56 p-2 border text-center">
+                                                            @if($student->tuition_payment_status=='Paid')
+                                                                @switch($student->tuitionInvoices->payment_type)
+                                                                    @case('1')
+                                                                        Full Payment
+                                                                        @break
+                                                                    @case('2')
+                                                                        Two Installments
+                                                                        @break
+                                                                    @case('3')
+                                                                        Four Installments
+                                                                        @break
+                                                                    @case('4')
+                                                                        Full payment (With 30% Advance)
+                                                                        @break
+                                                                @endswitch
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-40 p-2 border text-center">
+                                                            @if($student->tuitionInvoices!=null)
+                                                                @php
+                                                                    $totalTuition=0;
+                                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                                        $totalTuition=$totalTuition+$invoices->amount;
+                                                                    }
+                                                                    $sumTuition+=$totalTuition;
+                                                                @endphp
+                                                                {{ number_format($totalTuition) }} IRR
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-40 p-2 border text-center">
+                                                            @if($student->tuitionInvoices!=null)
+                                                                @php
+                                                                    $totalPaid=0;
+                                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                                        if ($invoices->is_paid==0){ continue; }
+                                                                        $totalPaid=$totalPaid+$invoices->amount;
+                                                                    }
+                                                                    $sumPaid+=$totalPaid;
+                                                                @endphp
+                                                                {{ number_format($totalPaid) }} IRR
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-40 p-2 border text-center">
+                                                            @if($student->tuitionInvoices!=null)
+                                                                @php
+                                                                    $debtBalance=0;
+                                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                                        if ($invoices->is_paid==1){ continue; }
+                                                                        $debtBalance=$debtBalance+$invoices->amount;
+                                                                    }
+                                                                    $sumDebt+=$debtBalance;
+                                                                @endphp
+                                                                {{ number_format($debtBalance) }} IRR
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-56 p-2 border text-center">
+                                                            <a href="{{ route('tuitionCard.en',$student->id) }}"
+                                                               type="button"
+                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                <div class="text-center">
+                                                                    <i title="Click for view english tuition card "
+                                                                       class="las la-address-card "
+                                                                       style="font-size: 20px"></i>
+                                                                    English
+                                                                </div>
+                                                            </a>
+                                                            <a href="{{ route('tuitionCard.fa',$student->id) }}"
+                                                               type="button"
+                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                <div class="text-center">
+                                                                    <i title="Click for view english tuition card "
+                                                                       class="las la-address-card "
+                                                                       style="font-size: 20px"></i>
+                                                                    Persian
+                                                                </div>
+                                                            </a>
+                                                        </td>
+                                                        <td class="w-56 p-2 border text-center">
+                                                            <form
+                                                                    action="{{route('Evidences.showEvidence',$student->id)}}">
+                                                                <button type="submit"
+                                                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                                    Uploaded Documents
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            @endforeach
                                         </div>
                                     </th>
-                                    {{--                                    <th scope="row"--}}
-                                    {{--                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">--}}
-                                    {{--                                        <div--}}
-                                    {{--                                            class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}</div>--}}
-                                    {{--                                    </th>--}}
-                                    {{--                                    <th scope="row"--}}
-                                    {{--                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">--}}
-                                    {{--                                        <div--}}
-                                    {{--                                            class="text-base font-semibold">--}}
-                                    {{--                                            @php--}}
-                                    {{--                                                $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')--}}
-                                    {{--                                                    ->join('application_reservations','applications.id','=','application_reservations.application_id')--}}
-                                    {{--                                                    ->where('application_reservations.student_id',$student->student_id)--}}
-                                    {{--                                                    ->where('application_timings.academic_year',$student->academic_year)->latest('application_reservations.id')->first();--}}
-                                    {{--                                                $levelInfo=Level::find($applicationInformation->level);--}}
-                                    {{--                                            @endphp--}}
-                                    {{--                                            {{ $levelInfo->name }}--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </th>--}}
-                                    {{--                                    <th scope="row"--}}
-                                    {{--                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">--}}
-                                    {{--                                        <div--}}
-                                    {{--                                            class="text-base font-semibold">--}}
-                                    {{--                                            @switch(@$student->tuitionInvoices->payment_type)--}}
-                                    {{--                                                @case('1')--}}
-                                    {{--                                                    Full Payment--}}
-                                    {{--                                                    @break--}}
-                                    {{--                                                @case('2')--}}
-                                    {{--                                                    Two Installments--}}
-                                    {{--                                                    @break--}}
-                                    {{--                                                @case('3')--}}
-                                    {{--                                                    Four Installments--}}
-                                    {{--                                                    @break--}}
-                                    {{--                                                @case('4')--}}
-                                    {{--                                                    Full payment (With 30% Advance)--}}
-                                    {{--                                                    @break--}}
-                                    {{--                                            @endswitch--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </th>--}}
-                                    {{--                                    <th scope="row"--}}
-                                    {{--                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">--}}
-                                    {{--                                        <div--}}
-                                    {{--                                            class="text-base font-semibold">--}}
-                                    {{--                                            @if($student->tuitionInvoices!=null)--}}
-                                    {{--                                                @php--}}
-                                    {{--                                                    $totalTuition=0;--}}
-                                    {{--                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){--}}
-                                    {{--                                                        $totalTuition=$totalTuition+$invoices->amount;--}}
-                                    {{--                                                    }--}}
-                                    {{--                                                    $sumTuition+=$totalTuition;--}}
-                                    {{--                                                @endphp--}}
-                                    {{--                                                {{ number_format($totalTuition) }} IRR--}}
-                                    {{--                                            @endif--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </th>--}}
-                                    {{--                                    <th scope="row"--}}
-                                    {{--                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">--}}
-                                    {{--                                        <div--}}
-                                    {{--                                            class="text-base font-semibold">--}}
-                                    {{--                                            @if($student->tuitionInvoices!=null)--}}
-                                    {{--                                                @php--}}
-                                    {{--                                                    $totalPaid=0;--}}
-                                    {{--                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){--}}
-                                    {{--                                                        if ($invoices->is_paid==0){ continue; }--}}
-                                    {{--                                                        $totalPaid=$totalPaid+$invoices->amount;--}}
-                                    {{--                                                    }--}}
-                                    {{--                                                    $sumPaid+=$totalPaid;--}}
-                                    {{--                                                @endphp--}}
-                                    {{--                                                {{ number_format($totalPaid) }} IRR--}}
-                                    {{--                                            @endif--}}
-                                    {{--                                        </div>--}}
-                                    {{--                                    </th>--}}
                                     {{--                                    <th scope="row"--}}
                                     {{--                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">--}}
                                     {{--                                        <div--}}
@@ -286,7 +340,7 @@
                         </table>
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 border text-center">
                                     Total Tuition
@@ -302,21 +356,21 @@
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                        class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                         {{ number_format($sumTuition) }} IRR
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                        class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                         {{ number_format($sumPaid) }} IRR
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                        class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                         {{ number_format($sumDebt) }} IRR
                                     </div>
                                 </th>
