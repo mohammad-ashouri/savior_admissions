@@ -308,7 +308,7 @@ class StudentController extends Controller
         $students = [];
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-                ->orderBy('academic_year', 'desc')->paginate(150);
+                ->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
