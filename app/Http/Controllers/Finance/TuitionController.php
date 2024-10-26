@@ -31,6 +31,7 @@ class TuitionController extends Controller
         $this->middleware('permission:tuition-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:tuition-show', ['only' => ['show']]);
         $this->middleware('permission:tuition-change-price', ['only' => ['changeTuitionPrice']]);
+        $this->middleware('permission:all-tuitions-index', ['only' => ['allTuitions']]);
     }
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application

@@ -70,7 +70,7 @@
             $('.select2').select2({
                 placeholder: 'Choose an option',
                 theme: "classic",
-                width:'100%'
+                width: '100%'
             });
         });
     </script>
@@ -282,7 +282,7 @@
                                 <a href="{{route('Evidences')}}"
                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist text-nowrap"><i class="nav-icon la la-id-card"
-                                                              style="font-size: 24px"></i>
+                                                                          style="font-size: 24px"></i>
                                         Uploaded Documents</span>
                                 </a>
                             </li>
@@ -352,13 +352,15 @@
                                         Tuitions Status</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('allTuitions') }}"
-                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        @can('all-tuitions-index')
+                            <li>
+                                <a href="{{ route('allTuitions') }}"
+                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <span class="menulist"><i class="las la la-money" style="font-size: 24px"></i>
                                         All Tuitions</span>
-                            </a>
-                        </li>
+                                </a>
+                            </li>
+                        @endcan
                     </ul>
                 </li>
             @endcan
@@ -448,13 +450,13 @@
                 </a>
             </li>
             @if($me->hasRole('Super Admin'))
-            <li>
-                <a href="/telescope"
-                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                    <i class="las la-crosshairs" style="font-size: 24px"></i>
-                    <span class="ml-4">Telescope</span>
-                </a>
-            </li>
+                <li>
+                    <a href="/telescope"
+                       class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <i class="las la-crosshairs" style="font-size: 24px"></i>
+                        <span class="ml-4">Telescope</span>
+                    </a>
+                </li>
             @endif
             <li>
                 <a href="{{ route('logout') }}"
