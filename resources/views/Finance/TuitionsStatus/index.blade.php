@@ -129,18 +129,14 @@
                                     </td>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900  dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
+                                        {{ $student->academicYearInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                        {{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
                                             @php
                                                 $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
                                                     ->join('application_reservations','applications.id','=','application_reservations.application_id')
@@ -148,13 +144,10 @@
                                                     ->where('application_timings.academic_year',$student->academic_year)->latest('application_reservations.id')->first();
                                                 $levelInfo=Level::find($applicationInformation->level);
                                             @endphp
-                                            {{ $levelInfo->name }}
-                                        </div>
+                                            {{ trim($levelInfo->name) }}
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
                                             @switch(@$student->tuitionInvoices->payment_type)
                                                 @case('1')
                                                     Full Payment
@@ -169,12 +162,9 @@
                                                     Full payment (With 30% Advance)
                                                     @break
                                             @endswitch
-                                        </div>
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
                                             @if($student->tuitionInvoices!=null)
                                                 @php
                                                     $totalTuition=0;
@@ -185,12 +175,9 @@
                                                 @endphp
                                                 {{ number_format($totalTuition) }} IRR
                                             @endif
-                                        </div>
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
                                             @if($student->tuitionInvoices!=null)
                                                 @php
                                                     $totalPaid=0;
@@ -202,12 +189,9 @@
                                                 @endphp
                                                 {{ number_format($totalPaid) }} IRR
                                             @endif
-                                        </div>
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
                                             @if($student->tuitionInvoices!=null)
                                                 @php
                                                     $debtBalance=0;
@@ -219,7 +203,6 @@
                                                 @endphp
                                                 {{ number_format($debtBalance) }} IRR
                                             @endif
-                                        </div>
                                     </th>
                                     <th scope="row"
                                         class="flex border justify-center text-center text-gray-900 dark:text-white">

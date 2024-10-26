@@ -24,6 +24,49 @@
         }
 
         $(document).ready(function () {
+            let table = new DataTable('.datatable', {
+                "ordering": true,
+                "searching": true,
+                "paging": true,
+                "info": true,
+                "pageLength": 10,
+                "lengthChange": true,
+                responsive: true,
+                "language": {
+                    "paginate": {
+                        "first": "&laquo;&laquo;",
+                        "last": "&raquo;&raquo;",
+                        "previous": "&laquo;",
+                        "next": "&raquo;"
+                    }
+                },
+            });
+
+            $('.datatable thead').prepend('<tr class="filter-row"></tr>');
+
+            table.columns().every(function () {
+                let column = this;
+
+                let select = $('<th><select><option value="">All</option></select></th>')
+                    .appendTo('.datatable thead tr.filter-row')
+                    .find('select')
+                    .on('change', function () {
+                        let val = $.fn.DataTable.util.escapeRegex($(this).val());
+                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                    });
+
+                column.data().unique().sort().each(function (d, j) {
+                    let uniqueData = [];
+                    if (d) {
+                        let cleanData = $('<div>').html(d).text().trim();
+                        if (cleanData && !uniqueData.includes(cleanData)) {
+                            uniqueData.push(cleanData);
+                            select.append('<option value="' + cleanData + '">' + cleanData + '</option>');
+                        }
+                    }
+                });
+
+            });
             $('.select2').select2({
                 placeholder: 'Choose an option',
                 theme: "classic",
