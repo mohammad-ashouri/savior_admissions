@@ -255,11 +255,11 @@
                                                         @break
                                                     @case('1')
                                                         @can('interview-show')
-                                                            <a href="{{ route('Interviews.show',$interview->id) }}"
+                                                            <a href="/ConfirmApplication/{{ $interview->id }}/{{$studentApplianceStatus?->id}}"
                                                                type="button"
-                                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                 <i class="las la-eye mt-1 mr-1"></i>
-                                                                Details
+                                                                Show
                                                             </a>
                                                         @endcan
                                                         @if($studentApplianceStatus?->approval_status=='0' and $me->hasRole('Financial Manager'))
