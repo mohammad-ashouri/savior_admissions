@@ -45,12 +45,6 @@ $(document).ready(function () {
                 "next": "&raquo;"
             }
         },
-        "initComplete": function () {
-            // اضافه کردن کلاس‌های Tailwind به select
-            $('div.dt-length select').addClass('px-4 py-2 border border-gray-300 bg-white rounded-md text-sm');
-            // اضافه کردن کلاس‌های Tailwind به label
-            $('div.dt-length label').addClass('ml-2 text-gray-700 text-sm');
-        }
     });
 
 // config dark mode

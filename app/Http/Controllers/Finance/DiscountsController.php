@@ -26,7 +26,7 @@ class DiscountsController extends Controller
         $me = User::find(auth()->user()->id);
         $discounts = [];
         if ($me->hasRole('Super Admin')) {
-            $discounts = Discount::with('academicYearInfo')->orderBy('academic_year', 'desc')->paginate(10);
+            $discounts = Discount::with('academicYearInfo')->orderBy('academic_year', 'desc')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -35,7 +35,7 @@ class DiscountsController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
-            $discounts = Discount::with('academicYearInfo')->whereIn('academic_year', $academicYears)->orderBy('academic_year', 'desc')->paginate(10);
+            $discounts = Discount::with('academicYearInfo')->whereIn('academic_year', $academicYears)->orderBy('academic_year', 'desc')->get();
         }
 
         if ($discounts->isEmpty()) {

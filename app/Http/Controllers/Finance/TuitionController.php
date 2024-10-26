@@ -38,7 +38,7 @@ class TuitionController extends Controller
         $me = User::find(auth()->user()->id);
         $tuitions = [];
         if ($me->hasRole('Super Admin')) {
-            $tuitions = Tuition::with('academicYearInfo')->orderBy('academic_year', 'desc')->paginate(10);
+            $tuitions = Tuition::with('academicYearInfo')->orderBy('academic_year', 'desc')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -47,7 +47,7 @@ class TuitionController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
-            $tuitions = Tuition::with('academicYearInfo')->whereIn('academic_year', $academicYears)->orderBy('academic_year', 'desc')->paginate(10);
+            $tuitions = Tuition::with('academicYearInfo')->whereIn('academic_year', $academicYears)->orderBy('academic_year', 'desc')->get();
         }
 
         if ($tuitions->isEmpty()) {

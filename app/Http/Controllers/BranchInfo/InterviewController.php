@@ -46,7 +46,7 @@ class InterviewController extends Controller
                 ->orderBy('date', 'asc')
                 ->orderBy('ends_to', 'asc')
                 ->orderBy('start_from', 'asc')
-                ->paginate(150);
+                ->get();
         } elseif ($me->hasRole('Super Admin')) {
             $interviews = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -58,7 +58,7 @@ class InterviewController extends Controller
                 ->orderBy('date', 'asc')
                 ->orderBy('ends_to', 'asc')
                 ->orderBy('start_from', 'asc')
-                ->paginate(150);
+                ->get();
         } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -83,7 +83,7 @@ class InterviewController extends Controller
                 ->orderBy('date', 'asc')
                 ->orderBy('ends_to', 'asc')
                 ->orderBy('start_from', 'asc')
-                ->paginate(150);
+                ->get();
 
         } elseif ($me->hasRole('Interviewer')) {
             $interviews = Applications::with('applicationTimingInfo')
@@ -100,7 +100,7 @@ class InterviewController extends Controller
                 ->orderBy('date', 'asc')
                 ->orderBy('ends_to', 'asc')
                 ->orderBy('start_from', 'asc')
-                ->paginate(150);
+                ->get();
 
         }
 
