@@ -307,8 +307,8 @@ class StudentController extends Controller
 
         $students = [];
         if ($me->hasRole('Super Admin')) {
-            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-                ->orderBy('academic_year', 'desc')->get();
+//            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+//                ->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
@@ -326,9 +326,9 @@ class StudentController extends Controller
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-                ->whereIn('academic_year', $academicYears)
-                ->orderBy('academic_year', 'desc')->paginate(150);
+//            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+//                ->whereIn('academic_year', $academicYears)
+//                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));

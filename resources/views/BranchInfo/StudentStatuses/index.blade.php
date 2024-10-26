@@ -17,7 +17,6 @@
                             <div class="mr-3">
                                 <select id="academic_year" name="academic_year"
                                         class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" disabled selected>Select Academic Year...</option>
                                     @foreach($academicYears as $academicYear)
                                         <option
                                             @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
