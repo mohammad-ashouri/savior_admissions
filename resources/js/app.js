@@ -1318,6 +1318,19 @@ $(document).ready(function () {
         });
     } else if (fullPath.includes('AllTuitions')) {
         pageTitle = 'All Tuitions';
+    } else if (fullPath.includes('PayTuitionInstallment')) {
+        pageTitle = 'Pay Tuition Installment';
+        $('#payment_method').change(function (){
+            switch (parseInt($('#payment_method').val())){
+                case 1:
+                    $('#bank-slip-div').removeClass('hidden');
+                    break;
+                case 2:
+                    $('#bank-slip-div').addClass('hidden');
+                    break;
+                default:
+            }
+        });
     } else if (fullPath.includes('ConfirmApplication')) {
         pageTitle = 'Application Confirmation';
         if (fullPath.includes('ConfirmApplication/')) {

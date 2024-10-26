@@ -204,7 +204,7 @@ class TuitionPaymentController extends Controller
                 ->first();
         }
 
-        $paymentMethods = PaymentMethod::whereId(2)->get();
+        $paymentMethods = PaymentMethod::get();
 
         return view('Finance.TuitionInvoices.pay', compact('tuitionInvoiceDetails', 'paymentMethods'));
     }
