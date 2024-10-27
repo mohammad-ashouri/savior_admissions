@@ -205,15 +205,15 @@
                                         @endif
                                     </th>
                                     <th scope="row"
-                                        class="flex border justify-center text-center text-gray-900 dark:text-white">
+                                        class="flex w-48 border justify-center text-center text-gray-900 dark:text-white">
                                         <a href="{{ route('tuitionCard.en',$student->id) }}"
                                            type="button"
-                                           class="  font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                           class="font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                             <div class="text-center">
                                                 <i title="Click for view english tuition card "
                                                    class="las la-address-card "
                                                    style="font-size: 20px"></i>
-                                                English
+                                                En
                                             </div>
                                         </a>
                                         <a href="{{ route('tuitionCard.fa',$student->id) }}"
@@ -223,7 +223,7 @@
                                                 <i title="Click for view english tuition card "
                                                    class="las la-address-card "
                                                    style="font-size: 20px"></i>
-                                                Persian
+                                                Fa
                                             </div>
                                         </a>
                                     </th>
