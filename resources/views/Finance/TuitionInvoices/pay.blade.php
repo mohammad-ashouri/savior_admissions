@@ -7,6 +7,8 @@
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 <h1 class="text-2xl font-medium"> Prepare For Pay Tuition Installment</h1>
             </div>
+            @include('GeneralPages.errors.session.error')
+            @include('GeneralPages.errors.session.success')
             <div class="grid grid-cols-2 gap-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
@@ -45,7 +47,7 @@
                                     Pay: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
                             </div>
                         </div>
-                        <form action="{{ route('TuitionInvoices.payTuition') }}" method="post">
+                        <form action="{{ route('TuitionInvoices.payTuition') }}" method="post" id="pay-installment" enctype="multipart/form-data">
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-4">
                                 <div>
@@ -63,7 +65,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div id="bank-slip-div" class="hidden grid gap-6 mb-6 md:grid-cols-1">
+                                <div id="bank-slip-div" class="hidden grid gap-1 mb-6 md:grid-cols-1">
                                     <label
                                         class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
                                         for="document_file_full_payment1">Select your bank slip file 1

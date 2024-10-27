@@ -8,6 +8,7 @@ use App\Models\Branch\Evidence;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\PaymentMethod;
+use App\Models\Document;
 use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\Finance\Tuition;
 use App\Models\Finance\TuitionDetail;
@@ -215,7 +216,7 @@ class TuitionPaymentController extends Controller
 
         $validator = Validator::make($request->all(), [
             'tuition_invoice_id' => 'required|exists:tuition_invoice_details,id',
-            'payment_method' => 'required|exists:payment_methods,id|in:2',
+            'payment_method' => 'required|exists:payment_methods,id|in:1,2',
         ]);
 
         if ($validator->fails()) {
@@ -246,6 +247,102 @@ class TuitionPaymentController extends Controller
 
         $tuitionAmount = $tuitionInvoiceDetails->amount;
         switch ($paymentMethod) {
+            case 1:
+                $validator = Validator::make($request->all(), [
+                    'document_file_full_payment1' => 'required|mimes:png,jpg,jpeg,pdf,bmp',
+                    'document_file_full_payment2' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
+                    'document_file_full_payment3' => 'nullable|mimes:png,jpg,jpeg,pdf,bmp',
+                    'description' => 'nullable|string|max:256',
+                ]);
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+
+                $appliance_id = $tuitionInvoiceDetails->tuitionInvoiceDetails->appliance_id;
+                $student_id = $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->student_id;
+                $description = $request->description;
+
+                $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
+                    ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                    ->join('interviews', 'applications.id', '=', 'interviews.application_id')
+                    ->where('application_reservations.student_id', $student_id)
+                    ->where('applications.reserved', 1)
+                    ->where('application_reservations.payment_status', 1)
+                    ->where('applications.interviewed', 1)
+                    ->where('interviews.interview_type', 3)
+                    ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
+                    ->orderByDesc('application_reservations.id')
+                    ->first();
+
+                $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+                    ->where('tuitions.academic_year', $applicationInfo->academic_year)
+                    ->where('tuition_details.level', $applicationInfo->level)
+                    ->first();
+
+                if ($request->file('document_file_full_payment1') !== null) {
+                    $extension = $request->file('document_file_full_payment1')->getClientOriginalExtension();
+
+                    $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                    $documentFileFullPayment1Src = $request->file('document_file_full_payment1')->storeAs(
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                        $bankSlip1
+                    );
+                }
+                if ($request->file('document_file_full_payment2') !== null) {
+                    $extension = $request->file('document_file_full_payment2')->getClientOriginalExtension();
+
+                    $bankSlip2 = 'Tuition2_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                    $documentFileFullPayment2Src = $request->file('document_file_full_payment2')->storeAs(
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                        $bankSlip2
+                    );
+                }
+                if ($request->file('document_file_full_payment3') !== null) {
+                    $extension = $request->file('document_file_full_payment3')->getClientOriginalExtension();
+
+                    $bankSlip1 = 'Tuition3_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
+                    $documentFileFullPayment3Src = $request->file('document_file_full_payment1')->storeAs(
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
+                        $bankSlip1
+                    );
+                }
+                $filesSrc = [];
+
+                if (isset($documentFileFullPayment1Src) and $documentFileFullPayment1Src !== null) {
+                    $filesSrc['file1'] = $documentFileFullPayment1Src;
+                }
+
+                if (isset($documentFileFullPayment2Src) and $documentFileFullPayment2Src !== null) {
+                    $filesSrc['file2'] = $documentFileFullPayment2Src;
+                }
+
+                if (isset($documentFileFullPayment3Src) and $documentFileFullPayment3Src !== null) {
+                    $filesSrc['file3'] = $documentFileFullPayment3Src;
+                }
+                foreach ($filesSrc as $file) {
+                    Document::create([
+                        'user_id' => auth()->user()->id,
+                        'document_type_id' => 7,
+                        'src' => $file,
+                        'description' => $description,
+                    ]);
+                    Document::create([
+                        'user_id' => $student_id,
+                        'document_type_id' => 7,
+                        'src' => $file,
+                        'description' => $description,
+                    ]);
+                }
+                $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuitionInvoiceDetails->id);
+                $tuitionInvoiceDetails->payment_method = $paymentMethod;
+                $tuitionInvoiceDetails->is_paid = 2;
+                $tuitionInvoiceDetails->date_of_payment = now();
+                $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_type' => json_decode($tuitionInvoiceDetails->description, true)['tuition_type'], 'tuition_details_id' => $tuition->id], true);
+                $tuitionInvoiceDetails->save();
+
+                return redirect()->route('TuitionInvoices.index')->with(['success' => 'You have successfully paid tuition installment. Please wait for financial approval!']);
+
+                break;
             case 2:
                 $invoice = (new Invoice)->amount($tuitionAmount);
 
@@ -270,7 +367,6 @@ class TuitionPaymentController extends Controller
     public function changeTuitionInvoiceStatus(Request $request)
     {
         $me = User::find(auth()->user()->id);
-
         $validator = Validator::make($request->all(), [
             'invoice_id' => 'required|exists:tuition_invoice_details,id',
             'status' => 'required|integer|in:1,3',
@@ -278,7 +374,7 @@ class TuitionPaymentController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
         }
-        $tuitionInvoiceDetails = null;
+
         $tuition_id = $request->invoice_id;
         if ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
@@ -293,7 +389,10 @@ class TuitionPaymentController extends Controller
                 ->whereIn('student_appliance_statuses.academic_year', $academicYears)
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')
+                ->with('invoiceDetails')
+                ->with('paymentMethodInfo')
+                ->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->whereId($tuition_id)->first();
         } else {
             $tuitionInvoices = TuitionInvoices::pluck('id')->toArray();
@@ -304,6 +403,39 @@ class TuitionPaymentController extends Controller
             return response()->json(['message' => 'Failed to change tuition invoice status!'], 422);
         }
 
+        $tuitionType = json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
+        if (! strpos($tuitionType, 'Advance')) {
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
+
+            $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceDetails->tuitionInvoiceDetails->appliance_id);
+            $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
+            switch ($request->status) {
+                case 1:
+                    $tuitionInvoiceDetails->is_paid = $request->status;
+                    $tuitionInvoiceDetails->save();
+                    $message = "Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
+                    $this->sendSMS($guardianMobile, $message);
+
+                    return response()->json(['message' => 'Successfully accepted!']);
+                case 3:
+                    $newTuitionInvoiceDetails = $tuitionInvoiceDetails->replicate();
+                    $newTuitionInvoiceDetails->payment_method = null;
+                    $newTuitionInvoiceDetails->is_paid = 0;
+                    $newTuitionInvoiceDetails->date_of_payment = null;
+                    $newTuitionInvoiceDetails->created_at = now();
+                    $newTuitionInvoiceDetails->updated_at = now();
+                    $newTuitionInvoiceDetails->save();
+
+                    $tuitionInvoiceDetails->is_paid = $request->status;
+                    $tuitionInvoiceDetails->save();
+                    $message = "Your tuition payment with ID: $tuition_id has been rejected. Please contact the financial expert of the relevant school.\nSavior Schools";
+                    $this->sendSMS($guardianMobile, $message);
+
+                    return response()->json(['message' => 'Payment rejected!']);
+                default:
+                    abort(503);
+            }
+        }
         switch ($request->status) {
             case 1:
                 $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);

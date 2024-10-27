@@ -1320,6 +1320,8 @@ $(document).ready(function () {
         pageTitle = 'All Tuitions';
     } else if (fullPath.includes('PayTuitionInstallment')) {
         pageTitle = 'Pay Tuition Installment';
+        $('#payment_method,#document_file_full_payment1,#document_file_full_payment2,#document_file_full_payment3').val('');
+
         $('#payment_method').change(function (){
             switch (parseInt($('#payment_method').val())){
                 case 1:
@@ -1331,6 +1333,80 @@ $(document).ready(function () {
                 default:
             }
         });
+        $('#document_file_full_payment1').change(function () {
+            const fileInput = $('#document_file_full_payment1');
+            const imagePreview = $('#image_preview_full_payment1');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+        $('#document_file_full_payment2').change(function () {
+            const fileInput = $('#document_file_full_payment2');
+            const imagePreview = $('#image_preview_full_payment2');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+        $('#document_file_full_payment3').change(function () {
+            const fileInput = $('#document_file_full_payment3');
+            const imagePreview = $('#image_preview_full_payment3');
+
+            if (fileInput[0].files && fileInput[0].files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.attr('src', e.target.result);
+                    imagePreview.css('display', 'block');
+                    imagePreview.css('height', '400px');
+                    imagePreview.css('width', 'full');
+                };
+
+                reader.readAsDataURL(fileInput[0].files[0]);
+            } else {
+                imagePreview.css('display', 'none');
+            }
+        });
+
+        $('#pay-installment').submit(function (e){
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'After confirmation, you will be transferred to the next payment process.',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(this).off('submit');
+                    $(this).submit();
+                }
+            });
+        })
     } else if (fullPath.includes('ConfirmApplication')) {
         pageTitle = 'Application Confirmation';
         if (fullPath.includes('ConfirmApplication/')) {
@@ -2067,9 +2143,10 @@ $(document).ready(function () {
                                 headers: {
                                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                                 }, success: function (response) {
-                                    swalFire('Done', JSON.parse(response).message, 'success', 'Ok');
+                                    console.log(response);
+                                    swalFire('Done', response.message, 'success', 'Ok');
                                 }, error: function (xhr, textStatus, errorThrown) {
-                                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                                    swalFire('Error', xhr.responseText.message, 'error', 'Try again');
                                 }
                             });
                         }
@@ -2094,7 +2171,7 @@ $(document).ready(function () {
                                 headers: {
                                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
                                 }, success: function (response) {
-                                    swalFire('Done', JSON.parse(response).message, 'success', 'Ok');
+                                    swalFire('Done', response.message, 'warning', 'Ok');
                                 }, error: function (xhr, textStatus, errorThrown) {
                                     swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
                                 }
