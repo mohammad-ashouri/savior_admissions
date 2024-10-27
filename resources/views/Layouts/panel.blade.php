@@ -16,6 +16,16 @@
     <link href="/build/plugins/DataTables/datatables.min.css" rel="stylesheet">
     <script src="/build/plugins/DataTables/datatables.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="/build/plugins/Buttons-3.1.2/css/buttons.dataTables.min.css"/>
+    <script src="/build/plugins/Buttons-3.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="/build/plugins/Buttons-3.1.2/js/buttons.dataTables.min.js"></script>
+    <script src="/build/plugins/Buttons-3.1.2/js/buttons.html5.min.js"></script>
+    <script src="/build/plugins/Buttons-3.1.2/js/buttons.print.min.js"></script>
+
+    <script src="/build/plugins/jszip/dist/jszip.min.js"></script>
+    <script src="/build/plugins/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/build/plugins/pdfmake/build/vfs_fonts.js"></script>
+
     <script>
         function swalFire(title = null, text, icon, confirmButtonText) {
             Swal.fire({
@@ -41,7 +51,81 @@
                             "next": "&raquo;"
                         }
                     },
+                    dom: '<"top"lfB>rt<"bottom"ip><"clear">',
+                    buttons: [
+                        'copy',
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Excel',
+                            title: document.title,
+                            filename: function() {
+                                let date = new Date();
+                                let formattedDate = date.getFullYear() + '-' +
+                                    (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                                    date.getDate().toString().padStart(2, '0') + '_' +
+                                    date.getHours().toString().padStart(2, '0') + '-' +
+                                    date.getMinutes().toString().padStart(2, '0');
+                                return document.title + '_' + formattedDate;
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            text: 'PDF (Portrait)',
+                            orientation: 'portrait',
+                            pageSize: 'A4',
+                            title: 'Report (Portrait)',
+                            filename: function() {
+                                let date = new Date();
+                                let formattedDate = date.getFullYear() + '-' +
+                                    (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                                    date.getDate().toString().padStart(2, '0') + '_' +
+                                    date.getHours().toString().padStart(2, '0') + '-' +
+                                    date.getMinutes().toString().padStart(2, '0');
+                                return document.title + '_' + formattedDate;
+                            },
+                            customize: function (doc) {
+                                doc.styles.footer = {
+                                    alignment: 'center',
+                                    fontSize: 8,
+                                    margin: [0, 10, 0, 0]
+                                };
+
+                                doc.footer = function (currentPage, pageCount) {
+                                    return { text: currentPage.toString() + ' of ' + pageCount, style: 'footer' };
+                                };
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            text: 'PDF (Landscape)',
+                            orientation: 'landscape',
+                            pageSize: 'A4',
+                            title: 'Report (Landscape)',
+                            filename: function() {
+                                let date = new Date();
+                                let formattedDate = date.getFullYear() + '-' +
+                                    (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+                                    date.getDate().toString().padStart(2, '0') + '_' +
+                                    date.getHours().toString().padStart(2, '0') + '-' +
+                                    date.getMinutes().toString().padStart(2, '0');
+                                return document.title + '_' + formattedDate;
+                            },
+                            customize: function (doc) {
+                                doc.styles.footer = {
+                                    alignment: 'center',
+                                    fontSize: 8,
+                                    margin: [0, 10, 0, 0]
+                                };
+
+                                doc.footer = function (currentPage, pageCount) {
+                                    return { text: currentPage.toString() + ' of ' + pageCount, style: 'footer' };
+                                };
+                            }
+                        },
+                        'print', 'csv'
+                    ]
                 });
+
 
                 $('.datatable thead').prepend('<tr class="filter-row"></tr>');
 

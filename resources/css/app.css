@@ -253,3 +253,27 @@
 table th{
     text-align: center;
 }
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.dt-length {
+    order: 1;
+    flex-grow: 1;
+}
+
+.dt-search {
+    order: 2;
+    margin-left: auto;
+}
+
+.dt-buttons {
+    order: 3;
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+}
