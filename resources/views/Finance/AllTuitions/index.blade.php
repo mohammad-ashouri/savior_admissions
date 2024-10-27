@@ -336,5 +336,22 @@
         </div>
     </div>
     <script>
+        let table = new DataTable('.datatable', {
+            "ordering": true,
+            "searching": true,
+            "paging": true,
+            "info": true,
+            "pageLength": 10,
+            "lengthChange": true,
+            responsive: true,
+            "language": {
+                "paginate": {
+                    "first": "&laquo;&laquo;",
+                    "last": "&raquo;&raquo;",
+                    "previous": "&laquo;",
+                    "next": "&raquo;"
+                }
+            },
+        });
     </script>
 @endsection
