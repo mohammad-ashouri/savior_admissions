@@ -76,10 +76,10 @@
                                     Academic Year
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Student ID
+                                    Student
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
-                                    Student
+                                    Guardian
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Type Of Payment
@@ -114,12 +114,10 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }}
+                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
-                                    </th>
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo->id }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo->mobile }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                         @switch($invoice->tuitionInvoiceDetails->payment_type)
