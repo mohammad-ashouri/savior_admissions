@@ -106,104 +106,68 @@
                             @foreach($tuitionInvoiceDetails as $invoice)
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
-                                        <div class="flex items-center">
-                                            {{ $invoice->id }}
-                                        </div>
+                                        {{ $invoice->id }}
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div>
-                                            <div
-                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->academicYearInfo->name }}</div>
-                                        </div>
+                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->academicYearInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div>
-                                            <div
-                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }}</div>
-                                        </div>
+                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div>
-                                            <div
-                                                class="text-base font-semibold">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div>
-                                            <div
-                                                class="text-base font-semibold">
-                                                @switch($invoice->tuitionInvoiceDetails->payment_type)
-                                                    @case('1')
-                                                        Full Payment
-                                                        @break
-                                                    @case('2')
-                                                        Two installment
-                                                        @break
-                                                    @case('3')
-                                                        Four Installment
-                                                        @break
-                                                    @case('4')
-                                                        Full Payment With Advance
-                                                        @break
-                                                @endswitch
-                                            </div>
-                                        </div>
+                                        @switch($invoice->tuitionInvoiceDetails->payment_type)
+                                            @case('1')
+                                                Full Payment
+                                                @break
+                                            @case('2')
+                                                Two installment
+                                                @break
+                                            @case('3')
+                                                Four Installment
+                                                @break
+                                            @case('4')
+                                                Full Payment With Advance
+                                                @break
+                                        @endswitch
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div>
-                                            <div
-                                                class="text-base font-semibold">
-                                                @if(isset($invoice->paymentMethodInfo->name))
-                                                    {{$invoice->paymentMethodInfo->name}}
-                                                @else
-                                                    Not Paid!
-                                                @endif
-                                            </div>
-                                        </div>
+                                        @if(isset($invoice->paymentMethodInfo->name))
+                                            {{$invoice->paymentMethodInfo->name}}
+                                        @else
+                                            Not Paid!
+                                        @endif
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div>
-                                            <div
-                                                class="text-base font-semibold">
-                                                {{ @json_decode($invoice->description,true)['tuition_type'] }}
-                                            </div>
-                                        </div>
+                                        {{ @json_decode($invoice->description,true)['tuition_type'] }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div>
-                                            <div
-                                                class="text-base font-semibold">
-                                                {{ number_format($invoice->amount).' IRR' }}
-                                            </div>
-                                        </div>
+                                        {{ number_format($invoice->amount).' IRR' }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div>
-                                            <div
-                                                class="text-base font-semibold">
-                                                @switch($invoice->is_paid)
-                                                    @case('1')
-                                                        Paid
-                                                        @break
-                                                    @case('2')
-                                                        Pending To Review
-                                                        @break
-                                                    @case('3')
-                                                        Rejected
-                                                        @break
-                                                    @default
-                                                        Pending To Pay
-                                                @endswitch
-                                            </div>
-                                        </div>
+                                        @switch($invoice->is_paid)
+                                            @case('1')
+                                                Paid
+                                                @break
+                                            @case('2')
+                                                Pending To Review
+                                                @break
+                                            @case('3')
+                                                Rejected
+                                                @break
+                                            @default
+                                                Pending To Pay
+                                        @endswitch
                                     </th>
                                     <td class="px-3 py-1 text-center">
                                         @switch($invoice->is_paid)

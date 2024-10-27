@@ -98,45 +98,27 @@
                                     </td>
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->studentInfo->id }}</div>
-                                        </div>
+                                        {{ $application->studentInfo->id }}
                                     </th>
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        {{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->applicationInfo->date }}</div>
-                                        </div>
+                                        {{ $application->applicationInfo->date }}
                                     </th>
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->applicationInfo->start_from }}</div>
-                                        </div>
+                                        {{ $application->applicationInfo->start_from }}
                                     </th>
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->applicationInfo->ends_to }}</div>
-                                        </div>
+                                       {{ $application->applicationInfo->ends_to }}
                                     </th>
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $application->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        {{ $application->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $application->reservatoreInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <td class=" border px-1 text-center">
                                         <!-- Modal toggle -->

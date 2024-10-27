@@ -161,92 +161,63 @@
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class="font-semibold">{{ $application->applicationInfo->applicationTimingInfo->academicYearInfo->name }}</div>
-                                        </div>
+                                        {{ $application->applicationInfo->applicationTimingInfo->academicYearInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->studentInfo->id }}</div>
-                                        </div>
+                                        {{ $application->studentInfo->id }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        {{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ $application->created_at }}</div>
-                                        </div>
+                                        {{ $application->created_at }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">
-                                                @if($application->payment_status==0)
-                                                    Not Paid Yet!
-                                                @else
-                                                    {{$application->applicationInvoiceInfo->created_at}}
-                                                @endif
-                                            </div>
-                                        </div>
+                                        @if($application->payment_status==0)
+                                            Not Paid Yet!
+                                        @else
+                                            {{$application->applicationInvoiceInfo->created_at}}
+                                        @endif
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            <div
-                                                class=" font-semibold">{{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }} </div>
-                                        </div>
+                                        {{ number_format($application->applicationInfo->applicationTimingInfo->fee) . " Rials" }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
-                                            @if($application->applicationInvoiceInfo)
-                                                @php
-                                                    $method=PaymentMethod::find(json_decode($application->applicationInvoiceInfo->payment_information,true)['payment_method']);
-                                                @endphp
-                                                <div
-                                                    class=" font-semibold">{{ $method->name }}</div>
-                                            @endif
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="">
+                                        @if($application->applicationInvoiceInfo)
                                             @php
-                                                $totalPaid+=$application->applicationInfo->applicationTimingInfo->fee;
-                                                if ($application->payment_status!=1){
-                                                    $totalPaid-=$application->applicationInfo->applicationTimingInfo->fee;
-                                                }
+                                                $method=PaymentMethod::find(json_decode($application->applicationInvoiceInfo->payment_information,true)['payment_method']);
                                             @endphp
-                                            <div
-                                                class=" font-semibold">
-                                                @switch($application->payment_status)
-                                                    @case(0)
-                                                        Payment Processing
-                                                        @break
-                                                    @case(1)
-                                                        Paid
-                                                        @break
-                                                    @case(2)
-                                                        Awaiting Confirmation
-                                                        @break
-                                                    @case(3)
-                                                        Rejected
-                                                        @break
-                                                @endswitch
-                                            </div>
-
-                                        </div>
+                                            {{ $method->name }}
+                                        @endif
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @php
+                                            $totalPaid+=$application->applicationInfo->applicationTimingInfo->fee;
+                                            if ($application->payment_status!=1){
+                                                $totalPaid-=$application->applicationInfo->applicationTimingInfo->fee;
+                                            }
+                                        @endphp
+                                        @switch($application->payment_status)
+                                            @case(0)
+                                                Payment Processing
+                                                @break
+                                            @case(1)
+                                                Paid
+                                                @break
+                                            @case(2)
+                                                Awaiting Confirmation
+                                                @break
+                                            @case(3)
+                                                Rejected
+                                                @break
+                                        @endswitch
                                     </th>
 
                                     <td class="text-center border">

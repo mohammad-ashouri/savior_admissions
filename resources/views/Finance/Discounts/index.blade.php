@@ -53,23 +53,15 @@
                             @foreach($discounts as $discount)
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
-                                        <div class="flex items-center">
-                                            {{ $loop->iteration }}
-                                        </div>
+                                        {{ $loop->iteration }}
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $discount->academicYearInfo->name }}</div>
-                                        </div>
+                                        {{ $discount->academicYearInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $discount->academicYearInfo->schoolInfo->name }}</div>
-                                        </div>
+                                        {{ $discount->academicYearInfo->schoolInfo->name }}
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->

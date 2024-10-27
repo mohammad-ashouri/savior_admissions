@@ -92,47 +92,39 @@
                             @foreach($applicationTimings as $applicationTiming)
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4 text-center border">
-                                            {{ $loop->iteration }}
+                                        {{ $loop->iteration }}
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div
-                                                class="text-base font-semibold">{{ $applicationTiming->academicYearInfo->name }}</div>
+                                        {{ $applicationTiming->academicYearInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div
-                                                class="text-base font-semibold">{{ $applicationTiming->start_date . " " . $applicationTiming->start_time }}</div>
+                                        {{ $applicationTiming->start_date . " " . $applicationTiming->start_time }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div
-                                                class="text-base font-semibold">{{ $applicationTiming->end_date . " " . $applicationTiming->end_time }}</div>
+                                        {{ $applicationTiming->end_date . " " . $applicationTiming->end_time }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div
-                                                class="text-base font-semibold">{{ $applicationTiming->interview_time }}</div>
+                                        {{ $applicationTiming->interview_time }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div
-                                                class="text-base font-semibold">{{ $applicationTiming->delay_between_reserve }}</div>
+                                        {{ $applicationTiming->delay_between_reserve }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div
-                                                class="text-base font-semibold">{{ number_format($applicationTiming->fee) . ' Rials' }}</div>
+                                        {{ number_format($applicationTiming->fee) . ' Rials' }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div
-                                                class="text-base font-semibold">{{ $applicationTiming->firstInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->firstInterviewer->generalInformationInfo->last_name_en }}</div>
+                                        {{ $applicationTiming->firstInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->firstInterviewer->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div
-                                                class="text-base font-semibold">{{ $applicationTiming->secondInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->secondInterviewer->generalInformationInfo->last_name_en }}</div>
+                                        {{ $applicationTiming->secondInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->secondInterviewer->generalInformationInfo->last_name_en }}
                                     </th>
                                     <td class="flex text-center">
                                         <!-- Modal toggle -->

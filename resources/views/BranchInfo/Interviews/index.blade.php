@@ -93,88 +93,59 @@
                                     </td>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">{{ $interview->reservationInfo->studentInfo->id }}</div>
-                                        </div>
+                                        {{ $interview->reservationInfo->studentInfo->id }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">{{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        {{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">{{ $interview->date . ' - ' . $interview->start_from . ' - ' .  $interview->ends_to}}</div>
-                                        </div>
+                                        {{ $interview->date . ' - ' . $interview->start_from . ' - ' .  $interview->ends_to}}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">{{ $interview->reservationInfo->levelInfo->name }}</div>
-                                        </div>
+                                        {{ $interview->reservationInfo->levelInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">{{ $interview->reservationInfo->interview_type }}</div>
-                                        </div>
+                                        {{ $interview->reservationInfo->interview_type }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">{{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">{{ $interview->firstInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->firstInterviewerInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        {{ $interview->firstInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->firstInterviewerInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">{{ $interview->secondInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->secondInterviewerInfo->generalInformationInfo->last_name_en }}</div>
-                                        </div>
+                                        {{ $interview->secondInterviewerInfo->generalInformationInfo->first_name_en }} {{ $interview->secondInterviewerInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class=" font-semibold">
-                                                @switch($interview->reservationInfo->payment_status)
+                                        @switch($interview->reservationInfo->payment_status)
+                                            @case(0)
+                                                Awaiting for pay
+                                                @break
+                                            @case(1)
+                                                @switch($interview->Interviewed)
                                                     @case(0)
-                                                        Awaiting for pay
+                                                        {{$studentApplianceStatus->interview_status}}
                                                         @break
                                                     @case(1)
-                                                        @switch($interview->Interviewed)
-                                                            @case(0)
-                                                                {{$studentApplianceStatus->interview_status}}
-                                                                @break
-                                                            @case(1)
-                                                                Interviewed
-                                                                @break
-                                                            @case(2)
-                                                                Absence
-                                                                @break
-                                                        @endswitch
+                                                        Interviewed
                                                         @break
                                                     @case(2)
-                                                        Waiting for payment confirmation
+                                                        Absence
                                                         @break
                                                 @endswitch
-                                            </div>
-                                        </div>
+                                                @break
+                                            @case(2)
+                                                Waiting for payment confirmation
+                                                @break
+                                        @endswitch
                                     </th>
                                     <td class="border text-center">
                                         <div class="flex">

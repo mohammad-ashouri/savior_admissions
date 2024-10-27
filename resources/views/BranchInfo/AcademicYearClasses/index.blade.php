@@ -92,63 +92,39 @@
                             @foreach($academicYearClasses as $academicYearClass)
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
-                                        <div class="flex items-center">
-                                            {{ $loop->iteration }}
-                                        </div>
+                                        {{ $loop->iteration }}
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div class="text-base font-semibold">{{ $academicYearClass->name }}</div>
-                                        </div>
+                                        {{ $academicYearClass->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $academicYearClass->academicYearInfo->name }}</div>
-                                        </div>
+                                        {{ $academicYearClass->academicYearInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $academicYearClass->levelInfo->name }}</div>
-                                        </div>
+                                        {{ $academicYearClass->levelInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $academicYearClass->educationTypeInfo->name }}</div>
-                                        </div>
+                                        {{ $academicYearClass->educationTypeInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $academicYearClass->capacity }}</div>
-                                        </div>
+                                        {{ $academicYearClass->capacity }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ $academicYearClass->educationGenderInfo->name }}</div>
-                                        </div>
+                                        {{ $academicYearClass->educationGenderInfo->name }}
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold @if($academicYearClass->status===1) text-green-600 @else text-red-600 @endif">
-                                                @if($academicYearClass->status===1)
-                                                    Active
-                                                @else
-                                                    Deactive
-                                                @endif
-                                            </div>
-                                        </div>
+                                        class=" items-center text-center px-6 py-4 text-gray-900 @if($academicYearClass->status===1) bg-green-600 @else bg-red-600 @endif whitespace-nowrap dark:text-white">
+                                        @if($academicYearClass->status===1)
+                                            Active
+                                        @else
+                                            Deactive
+                                        @endif
                                     </th>
                                     <td class="px-6 py-4 text-center">
                                         <!-- Modal toggle -->

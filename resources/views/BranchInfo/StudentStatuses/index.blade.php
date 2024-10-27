@@ -24,36 +24,36 @@
                                     @endforeach
                                 </select>
                             </div>
-{{--                            <div>--}}
-{{--                                <input type="text" id="student_id" name="student_id"--}}
-{{--                                       value="{{ isset($_GET['student_id']) ? $_GET['student_id'] : '' }}"--}}
-{{--                                       class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-{{--                                       placeholder="Enter student id">--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <input type="text" id="student_first_name" name="student_first_name"--}}
-{{--                                       value="{{ isset($_GET['student_first_name']) ? $_GET['student_first_name'] : '' }}"--}}
-{{--                                       class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-{{--                                       placeholder="Enter student first name">--}}
-{{--                            </div>--}}
-{{--                            <div>--}}
-{{--                                <input type="text" id="student_last_name" name="student_last_name"--}}
-{{--                                       value="{{ isset($_GET['student_last_name']) ? $_GET['student_last_name'] : '' }}"--}}
-{{--                                       class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-{{--                                       placeholder="Enter student last name">--}}
-{{--                            </div>--}}
-{{--                            <div class="mr-3">--}}
-{{--                                <select id="gender" name="gender"--}}
-{{--                                        class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">--}}
-{{--                                    <option value="" disabled selected>Select Gender...</option>--}}
-{{--                                    <option @if(isset($_GET['gender']) and $_GET['gender']=='Male') selected--}}
-{{--                                            @endif value="Male">Male--}}
-{{--                                    </option>--}}
-{{--                                    <option @if(isset($_GET['gender']) and $_GET['gender']=='Female') selected--}}
-{{--                                            @endif  value="Female">Female--}}
-{{--                                    </option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
+                            {{--                            <div>--}}
+                            {{--                                <input type="text" id="student_id" name="student_id"--}}
+                            {{--                                       value="{{ isset($_GET['student_id']) ? $_GET['student_id'] : '' }}"--}}
+                            {{--                                       class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+                            {{--                                       placeholder="Enter student id">--}}
+                            {{--                            </div>--}}
+                            {{--                            <div>--}}
+                            {{--                                <input type="text" id="student_first_name" name="student_first_name"--}}
+                            {{--                                       value="{{ isset($_GET['student_first_name']) ? $_GET['student_first_name'] : '' }}"--}}
+                            {{--                                       class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+                            {{--                                       placeholder="Enter student first name">--}}
+                            {{--                            </div>--}}
+                            {{--                            <div>--}}
+                            {{--                                <input type="text" id="student_last_name" name="student_last_name"--}}
+                            {{--                                       value="{{ isset($_GET['student_last_name']) ? $_GET['student_last_name'] : '' }}"--}}
+                            {{--                                       class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+                            {{--                                       placeholder="Enter student last name">--}}
+                            {{--                            </div>--}}
+                            {{--                            <div class="mr-3">--}}
+                            {{--                                <select id="gender" name="gender"--}}
+                            {{--                                        class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">--}}
+                            {{--                                    <option value="" disabled selected>Select Gender...</option>--}}
+                            {{--                                    <option @if(isset($_GET['gender']) and $_GET['gender']=='Male') selected--}}
+                            {{--                                            @endif value="Male">Male--}}
+                            {{--                                    </option>--}}
+                            {{--                                    <option @if(isset($_GET['gender']) and $_GET['gender']=='Female') selected--}}
+                            {{--                                            @endif  value="Female">Female--}}
+                            {{--                                    </option>--}}
+                            {{--                                </select>--}}
+                            {{--                            </div>--}}
                             <div>
                                 <button type="submit"
                                         class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -85,7 +85,7 @@
                         Export
                     </button>
                     <script>
-                        function spinner(text='Please Wait!') {
+                        function spinner(text = 'Please Wait!') {
                             $('#spinner-text').text('Please Wait');
 
                             if ($('#spinner').hasClass('hidden')) {
@@ -94,16 +94,17 @@
                                 $('#spinner').addClass('hidden');
                             }
                         }
-                        $('#export-details').click(function() {
+
+                        $('#export-details').click(function () {
                             Swal.fire({
                                 title: 'Choose academic year:',
                                 html: `
                                     <select id="academic_year_export" class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         @foreach($academicYears as $academicYear)
-                                            <option value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                <option value="{{$academicYear->id}}">{{$academicYear->name}}</option>
                                         @endforeach
-                                    </select>
-                                `,
+                                </select>
+`,
                                 showCancelButton: true,
                                 confirmButtonText: 'Export',
                                 cancelButtonText: 'Cancel',
@@ -114,11 +115,11 @@
                                         $.ajax({
                                             url: 'StudentStatuses/export-excel',
                                             method: 'GET',
-                                            data: { academicYear: academicYear },
+                                            data: {academicYear: academicYear},
                                             xhrFields: {
                                                 responseType: 'blob'
                                             },
-                                            success: function(response) {
+                                            success: function (response) {
                                                 const url = window.URL.createObjectURL(new Blob([response]));
                                                 const a = document.createElement('a');
                                                 a.style.display = 'none';
@@ -129,7 +130,7 @@
                                                 window.URL.revokeObjectURL(url);
                                                 resolve(response);
                                             },
-                                            error: function() {
+                                            error: function () {
                                                 spinner();
                                                 Swal.showValidationMessage('The request encountered an error!');
                                             }
@@ -239,24 +240,19 @@
                                     </td>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $student->academicYearInfo->name }}</div>
+                                        {{ $student->academicYearInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                        {{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->gender }}</div>
+                                        {{ $student->studentInfo->generalInformationInfo->gender }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
-                                            {{ $student->interview_status }}</div>
+                                        {{ $student->interview_status }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
@@ -276,117 +272,99 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
-                                            @switch($student->documents_uploaded)
-                                                @case('0')
-                                                    Pending For Upload
-                                                    @break
-                                                @case('1')
-                                                    Admitted
-                                                    @break
-                                                @case('2')
-                                                    Pending For Review
-                                                    @break
-                                                @case('3')
-                                                    Rejected
-                                                    @break
-                                                @default
-                                                    -
-                                            @endswitch
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
-                                            @switch($student->documents_uploaded_approval)
-                                                @case(1)
-                                                    Approved
-                                                    @break
-                                                @case(2)
-                                                    Rejected
-                                                    @break
-                                                @default
-                                                    -
-                                            @endswitch
-                                        </div>
-                                    </th>
-                                    <th scope="row"
-                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
-                                            @if($student->documentSeconder)
-                                                {{ $student->documentSeconder->generalInformationInfo->first_name_en }} {{ $student->documentSeconder->generalInformationInfo->last_name_en }}
-                                            @else
+                                        @switch($student->documents_uploaded)
+                                            @case('0')
+                                                Pending For Upload
+                                                @break
+                                            @case('1')
+                                                Admitted
+                                                @break
+                                            @case('2')
+                                                Pending For Review
+                                                @break
+                                            @case('3')
+                                                Rejected
+                                                @break
+                                            @default
                                                 -
-                                            @endif
-                                        </div>
+                                        @endswitch
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
-                                            @switch($student->tuition_payment_status)
-                                                @case('Not Paid')
-                                                    Not Paid Yet!
-                                                    @break
-                                                @case('Paid')
-                                                    Paid
-                                                    @break
-                                                @case('Pending')
-                                                    Pending For Pay
-                                                    @break
-                                                @case('Pending For Review')
-                                                    Pending For Review
-                                                    @break
-                                                @default
-                                                    -
-                                            @endswitch
-                                        </div>
+                                        @switch($student->documents_uploaded_approval)
+                                            @case(1)
+                                                Approved
+                                                @break
+                                            @case(2)
+                                                Rejected
+                                                @break
+                                            @default
+                                                -
+                                        @endswitch
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
-                                            @switch($student->approval_status)
-                                                @case(1)
-                                                    Approved
-                                                    @break
-                                                @case(2)
-                                                    Rejected
-                                                    @break
-                                                @default
-                                                    -
-                                            @endswitch
-                                        </div>
+                                        @if($student->documentSeconder)
+                                            {{ $student->documentSeconder->generalInformationInfo->first_name_en }} {{ $student->documentSeconder->generalInformationInfo->last_name_en }}
+                                        @else
+                                            -
+                                        @endif
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">
-                                            {{$student->description}}
-                                            @if($student->documents_uploaded_approval=='3' and $student->documents_uploaded_approval=='3')
-                                                <form class="mt-2 extension_document" method="post"
-                                                      action="{{route('Evidences.extensionOfDocumentUpload')}}">
-                                                    @csrf
-                                                    <input type="hidden" value="{{ $student->id }}" name="appliance_id">
-                                                    <button type="submit"
-                                                            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                                                        Extension Of Document Upload
-                                                    </button>
-                                                </form>
-                                            @endif
-                                            @if($student->documents_uploaded_seconder!=null)
-                                                <form class="mt-2" method="get"
-                                                      action="{{route('Evidences.showEvidence',$student->id)}}">
-                                                    <button type="submit"
-                                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                        Uploaded Documents
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
+                                        @switch($student->tuition_payment_status)
+                                            @case('Not Paid')
+                                                Not Paid Yet!
+                                                @break
+                                            @case('Paid')
+                                                Paid
+                                                @break
+                                            @case('Pending')
+                                                Pending For Pay
+                                                @break
+                                            @case('Pending For Review')
+                                                Pending For Review
+                                                @break
+                                            @default
+                                                -
+                                        @endswitch
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch($student->approval_status)
+                                            @case(1)
+                                                Approved
+                                                @break
+                                            @case(2)
+                                                Rejected
+                                                @break
+                                            @default
+                                                -
+                                        @endswitch
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{$student->description}}
+                                        @if($student->documents_uploaded_approval=='3' and $student->documents_uploaded_approval=='3')
+                                            <form class="mt-2 extension_document" method="post"
+                                                  action="{{route('Evidences.extensionOfDocumentUpload')}}">
+                                                @csrf
+                                                <input type="hidden" value="{{ $student->id }}" name="appliance_id">
+                                                <button type="submit"
+                                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                    Extension Of Document Upload
+                                                </button>
+                                            </form>
+                                        @endif
+                                        @if($student->documents_uploaded_seconder!=null)
+                                            <form class="mt-2" method="get"
+                                                  action="{{route('Evidences.showEvidence',$student->id)}}">
+                                                <button type="submit"
+                                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    Uploaded Documents
+                                                </button>
+                                            </form>
+                                        @endif
                                     </th>
                                 </tr>
                             @endforeach
@@ -398,9 +376,9 @@
             </div>
         </div>
         @if(!empty($students))
-{{--            <div class="pagination text-center">--}}
-{{--                {{ $students->links() }}--}}
-{{--            </div>--}}
+            {{--            <div class="pagination text-center">--}}
+            {{--                {{ $students->links() }}--}}
+            {{--            </div>--}}
         @endif
     </div>
 @endsection

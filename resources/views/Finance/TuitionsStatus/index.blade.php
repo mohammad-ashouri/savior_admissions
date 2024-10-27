@@ -137,72 +137,72 @@
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @php
+                                            $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
+                                                ->join('application_reservations','applications.id','=','application_reservations.application_id')
+                                                ->where('application_reservations.student_id',$student->student_id)
+                                                ->where('application_timings.academic_year',$student->academic_year)->latest('application_reservations.id')->first();
+                                            $levelInfo=Level::find($applicationInformation->level);
+                                        @endphp
+                                        {{ trim($levelInfo->name) }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('1')
+                                                Full Payment
+                                                @break
+                                            @case('2')
+                                                Two Installments
+                                                @break
+                                            @case('3')
+                                                Four Installments
+                                                @break
+                                            @case('4')
+                                                Full payment (With 30% Advance)
+                                                @break
+                                        @endswitch
+                                    </th>
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @if($student->tuitionInvoices!=null)
                                             @php
-                                                $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
-                                                    ->join('application_reservations','applications.id','=','application_reservations.application_id')
-                                                    ->where('application_reservations.student_id',$student->student_id)
-                                                    ->where('application_timings.academic_year',$student->academic_year)->latest('application_reservations.id')->first();
-                                                $levelInfo=Level::find($applicationInformation->level);
+                                                $totalTuition=0;
+                                                foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                    $totalTuition=$totalTuition+$invoices->amount;
+                                                }
+                                                $sumTuition+=$totalTuition;
                                             @endphp
-                                            {{ trim($levelInfo->name) }}
+                                            {{ number_format($totalTuition) }} IRR
+                                        @endif
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                            @switch(@$student->tuitionInvoices->payment_type)
-                                                @case('1')
-                                                    Full Payment
-                                                    @break
-                                                @case('2')
-                                                    Two Installments
-                                                    @break
-                                                @case('3')
-                                                    Four Installments
-                                                    @break
-                                                @case('4')
-                                                    Full payment (With 30% Advance)
-                                                    @break
-                                            @endswitch
+                                        @if($student->tuitionInvoices!=null)
+                                            @php
+                                                $totalPaid=0;
+                                                foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                    if ($invoices->is_paid==0){ continue; }
+                                                    $totalPaid=$totalPaid+$invoices->amount;
+                                                }
+                                                $sumPaid+=$totalPaid;
+                                            @endphp
+                                            {{ number_format($totalPaid) }} IRR
+                                        @endif
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                            @if($student->tuitionInvoices!=null)
-                                                @php
-                                                    $totalTuition=0;
-                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                        $totalTuition=$totalTuition+$invoices->amount;
-                                                    }
-                                                    $sumTuition+=$totalTuition;
-                                                @endphp
-                                                {{ number_format($totalTuition) }} IRR
-                                            @endif
-                                    </th>
-                                    <th scope="row"
-                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                            @if($student->tuitionInvoices!=null)
-                                                @php
-                                                    $totalPaid=0;
-                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                        if ($invoices->is_paid==0){ continue; }
-                                                        $totalPaid=$totalPaid+$invoices->amount;
-                                                    }
-                                                    $sumPaid+=$totalPaid;
-                                                @endphp
-                                                {{ number_format($totalPaid) }} IRR
-                                            @endif
-                                    </th>
-                                    <th scope="row"
-                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                            @if($student->tuitionInvoices!=null)
-                                                @php
-                                                    $debtBalance=0;
-                                                    foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                        if ($invoices->is_paid==1){ continue; }
-                                                        $debtBalance=$debtBalance+$invoices->amount;
-                                                    }
-                                                    $sumDebt+=$debtBalance;
-                                                @endphp
-                                                {{ number_format($debtBalance) }} IRR
-                                            @endif
+                                        @if($student->tuitionInvoices!=null)
+                                            @php
+                                                $debtBalance=0;
+                                                foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
+                                                    if ($invoices->is_paid==1){ continue; }
+                                                    $debtBalance=$debtBalance+$invoices->amount;
+                                                }
+                                                $sumDebt+=$debtBalance;
+                                            @endphp
+                                            {{ number_format($debtBalance) }} IRR
+                                        @endif
                                     </th>
                                     <th scope="row"
                                         class="flex border justify-center text-center text-gray-900 dark:text-white">

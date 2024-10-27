@@ -69,29 +69,24 @@
                                     </td>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $appliance->academicYearInfo->name }}</div>
+                                        {{ $appliance->academicYearInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $appliance->student_id }}</div>
+                                        {{ $appliance->student_id }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $appliance->studentInfo->generalInformationInfo->first_name_en }} {{ $appliance->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                        {{ $appliance->studentInfo->generalInformationInfo->first_name_en }} {{ $appliance->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $appliance->studentInformations->guardian }}
-                                            - {{ $appliance->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $appliance->studentInformations->guardianInfo->generalInformationInfo->last_name_en }} </div>
+                                        {{ $appliance->studentInformations->guardian }}
+                                            - {{ $appliance->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $appliance->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div
-                                            class="text-base font-semibold">{{ $applicationReservation->levelInfo->name }}</div>
+                                        {{ $applicationReservation->levelInfo->name }}
                                     </th>
                                     <td class="text-center border">
                                         <a href="/ConfirmEvidences/{{$appliance->id}}"
