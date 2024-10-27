@@ -4,12 +4,13 @@
     "scripts": {
         "dev": "vite",
         "build-app": "vite build",
-        "build": "npm-run-all build-app copy-jquery copy-select2 copy-export-images copy-font-files copy-datatable copy-datatable-buttons copy-datatable-jszip copy-datatable-pdfmake",
+        "build": "npm-run-all build-app copy-jquery copy-select2 copy-export-images copy-font-files copy-datatable copy-datatable-buttons copy-datatable-jszip copy-datatable-pdfmake copy-datatable-colreorder",
         "copy-select2": "mkdirp public/build/plugins && ncp node_modules/select2 public/build/plugins/select2",
         "copy-datatable": "mkdirp public/build/plugins && ncp resources/OtherLibraries/DataTables public/build/plugins/DataTables",
         "copy-datatable-buttons": "mkdirp public/build/plugins && ncp resources/OtherLibraries/Buttons-3.1.2 public/build/plugins/Buttons-3.1.2",
         "copy-datatable-jszip": "mkdirp public/build/plugins && ncp resources/OtherLibraries/jszip public/build/plugins/jszip",
         "copy-datatable-pdfmake": "mkdirp public/build/plugins && ncp node_modules/pdfmake public/build/plugins/pdfmake",
+        "copy-datatable-colreorder": "mkdirp public/build/plugins && ncp resources/OtherLibraries/ColReorder-2.0.4 public/build/plugins/ColReorder-2.0.4",
         "copy-jquery": "mkdirp public/build/plugins && ncp node_modules/jquery public/build/plugins/jquery",
         "copy-export-images": "mkdirp public/build/export-images && ncp resources/images/export-pdf-images public/build/export-images",
         "copy-font-files": "mkdirp public/build/Fonts && ncp resources/css/Fonts public/build/Fonts"

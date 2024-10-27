@@ -13,6 +13,7 @@
     <script src="/build/plugins/jquery/dist/jquery.js"></script>
     <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="/build/plugins/select2/dist/js/select2.min.js"></script>
+
     <link href="/build/plugins/DataTables/datatables.min.css" rel="stylesheet">
     <script src="/build/plugins/DataTables/datatables.min.js"></script>
 
@@ -21,6 +22,10 @@
     <script src="/build/plugins/Buttons-3.1.2/js/buttons.dataTables.min.js"></script>
     <script src="/build/plugins/Buttons-3.1.2/js/buttons.html5.min.js"></script>
     <script src="/build/plugins/Buttons-3.1.2/js/buttons.print.min.js"></script>
+
+    <script src="/build/plugins/ColReorder-2.0.4/js/dataTables.colReorder.min.js"></script>
+    <script src="/build/plugins/ColReorder-2.0.4/js/colReorder.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/build/plugins/ColReorder-2.0.4/css/colReorder.dataTables.min.css"/>
 
     <script src="/build/plugins/jszip/dist/jszip.min.js"></script>
     <script src="/build/plugins/pdfmake/build/pdfmake.min.js"></script>
@@ -42,6 +47,7 @@
                     "info": true,
                     "pageLength": 10,
                     "lengthChange": true,
+                    colReorder: true,
                     responsive: true,
                     "language": {
                         "paginate": {
