@@ -38,7 +38,7 @@
                 </div>
                 @include('GeneralPages.errors.session.error')
 
-            @if ($message = Session::get('success'))
+                @if ($message = Session::get('success'))
                     <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                          role="alert">
                         <div class="flex">
@@ -77,16 +77,13 @@
                         <tbody>
                         @foreach($roles as $role)
                             <tr
-                                class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 border-b dark:border-gray-700">                            <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        {{ $loop->iteration }}
-                                    </div>
+                                class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <td class="w-4 p-4">
+                                    {{ $loop->iteration }}
                                 </td>
                                 <th scope="row"
                                     class=" items-center text-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                    <div class="pl-3">
-                                        <div class="text-base font-semibold">{{ $role->name }}</div>
-                                    </div>
+                                    {{ $role->name }}
                                 </th>
                                 <td class="px-6 py-4 text-center">
                                     <!-- Modal toggle -->
