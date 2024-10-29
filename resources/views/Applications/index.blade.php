@@ -78,7 +78,7 @@
                                 <th scope="col" class="px-1 text-center">
                                     Reserved By
                                 </th>
-                                <th scope="col" class="px-1 text-center">
+                                <th scope="col" class="px-1 text-center action">
                                     Action
                                 </th>
                             </tr>

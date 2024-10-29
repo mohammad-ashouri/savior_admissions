@@ -138,7 +138,7 @@
                                 <th scope="col" class="text-center">
                                     Status
                                 </th>
-                                <th scope="col" class="text-center">
+                                <th scope="col" class="text-center action">
                                     Action
                                 </th>
                             </tr>

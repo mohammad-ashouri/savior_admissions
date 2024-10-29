@@ -82,7 +82,7 @@
                                 <th scope="col" class=" text-center">
                                     Second Interviewer
                                 </th>
-                                <th scope="col" class=" text-center">
+                                <th scope="col" class=" text-center action">
                                     Action
                                 </th>
                             </tr>

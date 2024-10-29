@@ -106,7 +106,7 @@
                                 <th scope="col" class=" border text-center">
                                     Tuition Card
                                 </th>
-                                <th scope="col" class=" border text-center">
+                                <th scope="col" class=" border text-center action">
                                     Action
                                 </th>
                             </tr>

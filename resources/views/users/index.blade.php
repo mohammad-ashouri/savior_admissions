@@ -137,7 +137,7 @@
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Position(s)
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-6 py-3 text-center action">
                                     Actions
                                 </th>
                             </tr>

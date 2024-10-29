@@ -478,7 +478,7 @@
                                                     Description
                                                 </div>
                                             </th>
-                                            <th scope="col" class="p-4">
+                                            <th scope="col" class="p-4 action">
                                                 <div class=" items-center text-center">
                                                     Action
                                                 </div>

@@ -43,7 +43,7 @@
                                 <th scope="col" class="px-6 py-3 text-center">
                                     School
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-6 py-3 text-center action">
                                     Action
                                 </th>
                             </tr>

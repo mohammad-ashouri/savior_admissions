@@ -121,7 +121,7 @@
                                         </div>
                                     </th>
                                     <th scope="col" class="p-4">
-                                        <div class=" items-center">
+                                        <div class=" items-center action">
                                             Action
                                         </div>
                                     </th>
