@@ -156,10 +156,5 @@
 
             </div>
         </div>
-        @if(!empty($applicationTimings))
-            <div class="pagination text-center">
-                {{ $applicationTimings->links() }}
-            </div>
-        @endif
     </div>
 @endsection

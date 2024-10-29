@@ -16,11 +16,10 @@
                                     <div class="">
                                         <select id="academic_year" name="academic_year"
                                                 class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option value="" disabled selected>Select Academic Year...</option>
                                             @foreach($academicYears as $academicYear)
                                                 <option
-                                                    @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
-                                                    @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                                        @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                                        @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -60,7 +59,7 @@
                                          xmlns="http://www.w3.org/2000/svg"
                                          viewBox="0 0 20 20">
                                         <path
-                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                     </svg>
                                 </div>
                                 <div>
@@ -71,7 +70,7 @@
                     @else
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
                             <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 border text-center">
                                     #
@@ -103,7 +102,7 @@
                                     ->get();
                                 @endphp
                                 <tr
-                                    class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                        class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 border-b dark:border-gray-700">
                                     <td class="w-2 border text-center">
                                         {{ $loop->iteration }}
                                     </td>
@@ -128,9 +127,9 @@
                                                     ])->whereStudentId($student->student_id)->wherePaymentStatus(1)->latest()->first();
                                             @endphp
                                             <table
-                                                class="w-full mt-2 text-sm text-left text-gray-500 dark:text-gray-400 students">
+                                                    class="w-full mt-2 text-sm text-left text-gray-500 dark:text-gray-400 students">
                                                 <thead
-                                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                 <tr>
                                                     <th scope="col" class=" border text-center">
                                                         ID
@@ -272,7 +271,7 @@
                                                     </td>
                                                     <td class="w-56 p-2 border text-center">
                                                         <form
-                                                            action="{{route('Evidences.showEvidence',$student->id)}}">
+                                                                action="{{route('Evidences.showEvidence',$student->id)}}">
                                                             <button type="submit"
                                                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                                 Uploaded Documents
@@ -290,7 +289,7 @@
                         </table>
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 sum-table">
                             <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 border text-center">
                                     Total Tuition
@@ -306,21 +305,21 @@
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                        class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                         {{ number_format($sumTuition) }} IRR
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                        class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                         {{ number_format($sumPaid) }} IRR
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                        class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                         {{ number_format($sumDebt) }} IRR
                                     </div>
                                 </th>

@@ -258,10 +258,5 @@
 
             </div>
         </div>
-        @if(!empty($applications))
-            <div class="pagination text-center">
-                {{ $applications->links() }}
-            </div>
-        @endif
     </div>
 @endsection

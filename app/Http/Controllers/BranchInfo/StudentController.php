@@ -41,7 +41,7 @@ class StudentController extends Controller
         if ($me->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->whereTuitionPaymentStatus('Paid')
-                ->orderBy('academic_year', 'desc')->paginate(100);
+                ->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
 
             return view('Students.index', compact('students', 'academicYears', 'me'));
@@ -51,7 +51,7 @@ class StudentController extends Controller
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
-                ->orderBy('student_id', 'asc')->paginate(100);
+                ->orderBy('student_id', 'asc')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -62,7 +62,7 @@ class StudentController extends Controller
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->whereIn('academic_year', $academicYears)
                 ->whereTuitionPaymentStatus('Paid')
-                ->orderBy('academic_year', 'desc')->paginate(100);
+                ->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
             return view('Students.index', compact('students', 'academicYears', 'me'));
@@ -318,7 +318,7 @@ class StudentController extends Controller
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
-                ->orderBy('student_id', 'asc')->paginate(10);
+                ->orderBy('student_id', 'asc')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -442,14 +442,14 @@ class StudentController extends Controller
             if (! empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
-            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
-            $students->appends([
-                'student_id' => $studentId,
-                'student_first_name' => $studentFirstName,
-                'student_last_name' => $studentLastName,
-                'gender' => $gender,
-                'academic_year' => $academicYear,
-            ]);
+            $students = $data->orderBy('academic_year', 'desc')->get();
+//            $students->appends([
+//                'student_id' => $studentId,
+//                'student_first_name' => $studentFirstName,
+//                'student_last_name' => $studentLastName,
+//                'gender' => $gender,
+//                'academic_year' => $academicYear,
+//            ]);
 
             $academicYears = AcademicYear::get();
 
@@ -487,14 +487,14 @@ class StudentController extends Controller
             if (! empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
-            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
-            $students->appends([
-                'student_id' => $studentId,
-                'student_first_name' => $studentFirstName,
-                'student_last_name' => $studentLastName,
-                'gender' => $gender,
-                'academic_year' => $academicYear,
-            ]);
+            $students = $data->orderBy('academic_year', 'desc')->get();
+//            $students->appends([
+//                'student_id' => $studentId,
+//                'student_first_name' => $studentFirstName,
+//                'student_last_name' => $studentLastName,
+//                'gender' => $gender,
+//                'academic_year' => $academicYear,
+//            ]);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -531,14 +531,14 @@ class StudentController extends Controller
             if (! empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
-            $students = $data->orderBy('academic_year', 'desc')->paginate(150);
-            $students->appends([
-                'student_id' => $studentId,
-                'student_first_name' => $studentFirstName,
-                'student_last_name' => $studentLastName,
-                'gender' => $gender,
-                'academic_year' => $academicYear,
-            ]);
+            $students = $data->orderBy('academic_year', 'desc')->get();
+//            $students->appends([
+//                'student_id' => $studentId,
+//                'student_first_name' => $studentFirstName,
+//                'student_last_name' => $studentLastName,
+//                'gender' => $gender,
+//                'academic_year' => $academicYear,
+//            ]);
 
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 

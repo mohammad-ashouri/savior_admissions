@@ -68,7 +68,7 @@
                             </div>
                         </div>
                     @else
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-40 datatable0">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -186,10 +186,5 @@
 
             </div>
         </div>
-        @if(!empty($students))
-            <div class="pagination text-center">
-                {{ $students->links() }}
-            </div>
-        @endif
     </div>
 @endsection

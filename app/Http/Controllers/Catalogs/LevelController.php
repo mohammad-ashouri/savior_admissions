@@ -19,7 +19,7 @@ class LevelController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $levels = Level::orderBy('id', 'asc')->paginate(10);
+        $levels = Level::orderBy('id', 'asc')->get();
 
         return view('Catalogs.Levels.index', compact('levels'));
     }
@@ -76,7 +76,7 @@ class LevelController extends Controller
     public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
-        $levels = Level::whereName('LIKE', "%$name%")->paginate(10);
+        $levels = Level::whereName('LIKE', "%$name%")->get();
         $levels->appends(request()->query())->links();
         if ($levels->isEmpty()) {
             return redirect()->route('Levels.index')->withErrors('Not Found!')->withInput();

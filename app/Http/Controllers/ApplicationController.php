@@ -46,9 +46,9 @@ class ApplicationController extends Controller
         $applications = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
-            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myStudents)->paginate(150);
+            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->whereIn('student_id', $myStudents)->get();
         } elseif ($me->hasRole('Super Admin')) {
-            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->paginate(150);
+            $applications = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -73,7 +73,7 @@ class ApplicationController extends Controller
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
                 ->whereIn('application_id', $applications)
-                ->paginate(150);
+                ->get();
         }
 
         if (empty($applications)) {
@@ -501,7 +501,7 @@ class ApplicationController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
-        $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->whereInterviewStatus('Pending For Principal Confirmation')->paginate(150);
+        $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->whereInterviewStatus('Pending For Principal Confirmation')->get();
 
         return view('BranchInfo.ConfirmAppliance.index', compact('studentAppliances'));
     }

@@ -71,7 +71,7 @@
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div class="lg:col-span-2 col-span-3 ">
                         <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4 overflow-x-auto">
-                            <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400 ">
+                            <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400 datatable">
                                 <thead
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>

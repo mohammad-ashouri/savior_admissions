@@ -9,9 +9,6 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">
-                        <input type="text" id="search-navbar"
-                               class="font-normal text-lg block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                               placeholder="Search it...">
                     </div>
                     <div class="flex">
                         @can('academic-year-class-create')
@@ -154,10 +151,5 @@
 
             </div>
         </div>
-        @if(!empty($academicYearClasses))
-            <div class="pagination text-center">
-                {{ $academicYearClasses->onEachSide(5)->links() }}
-            </div>
-        @endif
     </div>
 @endsection

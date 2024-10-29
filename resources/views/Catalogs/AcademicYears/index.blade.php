@@ -9,19 +9,19 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">
-                        <form method="get" action="{{ route('AcademicYears.search') }}">
-                            <div class="flex">
-                                <input type="text" id="search-navbar" name="name" required
-                                       value="@if(isset($name)){{$name}}@else{{ old('name') }}@endif"
-                                       class="font-normal block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                       placeholder="Search it...">
-                                <button type="submit"
-                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 text-center inline-flex items-center ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    <i class="las la-search" style="font-size: 24px"></i>
-                                    Search
-                                </button>
-                            </div>
-                        </form>
+{{--                        <form method="get" action="{{ route('AcademicYears.search') }}">--}}
+{{--                            <div class="flex">--}}
+{{--                                <input type="text" id="search-navbar" name="name" required--}}
+{{--                                       value="@if(isset($name)){{$name}}@else{{ old('name') }}@endif"--}}
+{{--                                       class="font-normal block w-full p-3 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
+{{--                                       placeholder="Search it...">--}}
+{{--                                <button type="submit"--}}
+{{--                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 text-center inline-flex items-center ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">--}}
+{{--                                    <i class="las la-search" style="font-size: 24px"></i>--}}
+{{--                                    Search--}}
+{{--                                </button>--}}
+{{--                            </div>--}}
+{{--                        </form>--}}
                     </div>
                     <div class="flex">
                         @can('academic-year-create')
@@ -46,7 +46,7 @@
 
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="p-4">
@@ -81,7 +81,7 @@
                         <tbody>
                         @foreach($academicYears as $academicYear)
                             <tr
-                                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-200 even:dark:bg-gray-800 border-b dark:border-gray-700">
                                 <td class="w-4 p-4">
                                     <div class="flex items-center">
                                         {{ $loop->iteration }}
@@ -156,8 +156,5 @@
 
             </div>
         </div>
-    </div>
-    <div class="pagination text-center">
-        {{ $academicYears->onEachSide(5)->links() }}
     </div>
 @endsection

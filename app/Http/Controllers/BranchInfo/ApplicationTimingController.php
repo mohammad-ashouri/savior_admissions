@@ -31,7 +31,7 @@ class ApplicationTimingController extends Controller
             $applicationTimings = ApplicationTiming::with('academicYearInfo')
                 ->with('firstInterviewer')
                 ->with('secondInterviewer')
-                ->orderBy('start_date', 'desc')->paginate(150);
+                ->orderBy('start_date', 'desc')->get();
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
@@ -45,7 +45,7 @@ class ApplicationTimingController extends Controller
                 ->whereIn('academic_years.school_id', $filteredArray)
                 ->orderBy('application_timings.start_date', 'desc')
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
-                ->paginate(150);
+                ->get();
 
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];

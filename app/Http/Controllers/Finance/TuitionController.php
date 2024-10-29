@@ -810,7 +810,7 @@ class TuitionController extends Controller
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('student_id', $students)
                 ->whereTuitionPaymentStatus('Paid')
-                ->orderBy('academic_year', 'desc')->paginate(150);
+                ->orderBy('academic_year', 'desc')->get();
 
             return view('Finance.TuitionsStatus.index', compact('students'));
         }

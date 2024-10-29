@@ -982,7 +982,7 @@ class InterviewController extends Controller
             ->orderBy('applications.date', 'asc')
             ->orderBy('applications.ends_to', 'asc')
             ->orderBy('applications.start_from', 'asc')
-            ->paginate(150);
+            ->get();
         if (empty($interviews) or $interviews->isEmpty()) {
             $interviews = [];
         }

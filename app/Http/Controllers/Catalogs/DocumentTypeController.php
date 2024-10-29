@@ -19,7 +19,7 @@ class DocumentTypeController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $types = DocumentType::orderBy('name', 'asc')->paginate(10);
+        $types = DocumentType::orderBy('name', 'asc')->get();
 
         return view('Catalogs.DocumentTypes.index', compact('types'));
     }
@@ -49,7 +49,7 @@ class DocumentTypeController extends Controller
     public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
-        $types = DocumentType::whereName('LIKE', "%$name%")->paginate(10);
+        $types = DocumentType::whereName('LIKE', "%$name%")->get();
         $types->appends(request()->query())->links();
         if ($types->isEmpty()) {
             return redirect()->route('DocumentTypes.index')->withErrors('Not Found!')->withInput();

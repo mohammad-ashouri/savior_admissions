@@ -28,7 +28,7 @@ class AcademicYearClassController extends Controller
     {
         $me = User::find(auth()->user()->id);
         if ($me->hasRole('Super Admin')) {
-            $academicYearClasses = AcademicYearClass::with('academicYearInfo')->with('levelInfo')->with('educationTypeInfo')->with('educationGenderInfo')->orderBy('id', 'desc')->paginate(10);
+            $academicYearClasses = AcademicYearClass::with('academicYearInfo')->with('levelInfo')->with('educationTypeInfo')->with('educationGenderInfo')->orderBy('id', 'desc')->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Retrieve user access information
             // Convert accesses to arrays and remove duplicates
@@ -42,7 +42,7 @@ class AcademicYearClassController extends Controller
             $academicYearIds = $academicYears->pluck('id')->toArray();
 
             // Retrieve classes associated with academic years
-            $academicYearClasses = AcademicYearClass::with('academicYearInfo')->with('levelInfo')->with('educationTypeInfo')->with('educationGenderInfo')->orderBy('id', 'desc')->whereIn('academic_year', $academicYearIds)->paginate(10);
+            $academicYearClasses = AcademicYearClass::with('academicYearInfo')->with('levelInfo')->with('educationTypeInfo')->with('educationGenderInfo')->orderBy('id', 'desc')->whereIn('academic_year', $academicYearIds)->get();
             if ($academicYearClasses->count() == 0) {
                 $academicYearClasses = [];
             }

@@ -19,7 +19,7 @@ class EducationTypeController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $types = EducationType::orderBy('name', 'asc')->paginate(10);
+        $types = EducationType::orderBy('name', 'asc')->get();
 
         return view('Catalogs.EducationTypes.index', compact('types'));
     }
@@ -79,7 +79,7 @@ class EducationTypeController extends Controller
     public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
-        $types = EducationType::whereName('LIKE', "%$name%")->paginate(10);
+        $types = EducationType::whereName('LIKE', "%$name%")->get();
         $types->appends(request()->query())->links();
         if ($types->isEmpty()) {
             return redirect()->route('EducationTypes.index')->withErrors('Not Found!')->withInput();

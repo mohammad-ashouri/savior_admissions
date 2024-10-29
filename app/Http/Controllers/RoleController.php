@@ -19,7 +19,7 @@ class RoleController extends Controller
 
     public function index(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $roles = Role::orderBy('name', 'asc')->paginate(10);
+        $roles = Role::orderBy('name', 'asc')->get();
 
         return view('Catalogs.Roles.index', compact('roles'));
     }
@@ -86,7 +86,7 @@ class RoleController extends Controller
     public function search(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
-        $roles = Role::where('name', 'LIKE', "%$name%")->paginate(10);
+        $roles = Role::where('name', 'LIKE', "%$name%")->get();
         if ($roles->isEmpty()) {
             return redirect()->route('Roles.index')->withErrors('Not Found!')->withInput();
         }

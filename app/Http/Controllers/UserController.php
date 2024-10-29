@@ -37,14 +37,14 @@ class UserController extends Controller
         $data = [];
         if ($me) {
             if ($me->hasRole('Super Admin')) {
-                $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->paginate(100);
+                $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->get();
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
                 $data = User::whereStatus(1)
                     ->WhereHas('roles', function ($query) {
                         $query->whereName('Parent');
                         $query->orWhere('name', 'Student');
                     })
-                    ->paginate(100);
+                    ->get();
                 if ($data->isEmpty()) {
                     $data = [];
                 }
@@ -136,7 +136,7 @@ class UserController extends Controller
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
-            $schools = School::whereStatus(1)->whereIn('id', $filteredArray)->paginate(20);
+            $schools = School::whereStatus(1)->whereIn('id', $filteredArray)->get();
             if ($schools->count() == 0) {
                 $schools = [];
             }
@@ -254,7 +254,7 @@ class UserController extends Controller
         if ($searchMobile != null) {
             $query->where('mobile', 'like', "%$searchMobile%");
         }
-        $data = $query->paginate(100);
+        $data = $query->get();
         $data->appends(request()->query())->links();
         if ($data->isEmpty()) {
             $data = [];

@@ -58,7 +58,7 @@ class AcademicYearController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $academicYears = AcademicYear::with('schoolInfo')->orderBy('id', 'desc')->paginate(10);
+        $academicYears = AcademicYear::with('schoolInfo')->orderBy('id', 'desc')->get();
 
         return view('Catalogs.AcademicYears.index', compact('academicYears'));
     }
@@ -435,7 +435,7 @@ class AcademicYearController extends Controller
     public function show(Request $request): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $name = $request->name;
-        $academicYears = AcademicYear::with('schoolInfo')->whereName('LIKE', "%$name%")->paginate(10);
+        $academicYears = AcademicYear::with('schoolInfo')->whereName('LIKE', "%$name%")->get();
         $academicYears->appends(request()->query())->links();
         if ($academicYears->isEmpty()) {
             return redirect()->route('AcademicYears.index')->withErrors('Not Found!')->withInput();
