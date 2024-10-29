@@ -38,7 +38,8 @@ class DatabaseSeeder extends Seeder
             //            RemoveMobileThatUserNotGuardian::class,
             //            AddSearchTuitionStatusPermission::class,
             //            AddImpersonatePermission::class,
-            AllTuitionsPermission::class,
+            //            AllTuitionsPermission::class,
+            RevokeSomePermissions::class,
         ]);
     }
 }
