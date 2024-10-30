@@ -37,14 +37,13 @@ class UserController extends Controller
         if ($me) {
             $data = collect();
             if ($me->hasRole('Super Admin')) {
-                User::with(['generalInformationInfo' => function ($query) {
-                    $query->select('user_id', 'first_name_en', 'last_name_en');
-                }])
-                    ->select('id')
-                    ->orderBy('id', 'DESC')
-                    ->chunk(100, function ($users) use (&$data) {
-                        $data = $data->merge($users);
-                    });
+                $data = DB::select("
+    SELECT users.id, users.mobile, general_informations.first_name_en, general_informations.last_name_en
+    FROM users
+    LEFT JOIN general_informations ON users.id = general_informations.user_id
+    ORDER BY users.id DESC
+");
+
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
                 User::with(['generalInformationInfo' => function ($query) {
                     $query->select('user_id', 'first_name_en', 'last_name_en');

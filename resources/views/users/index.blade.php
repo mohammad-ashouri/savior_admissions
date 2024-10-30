@@ -85,6 +85,9 @@
 
                             <tbody>
                             @foreach($data as $user)
+                                @php
+                                    $userRoles=User::whereId($user->id)->first();
+                                @endphp
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
                                         <div class="flex items-center">
@@ -97,20 +100,20 @@
                                              src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
                                              alt="User Personal Image">
                                         <div class="pl-3">
-                                            <div class="text-base font-semibold">{{ $user->generalInformationInfo->first_name_en ?? '' }} {{ $user->generalInformationInfo->last_name_en ?? '' }}</div>
+                                            <div class="text-base font-semibold">{{ $user->first_name_en ?? '' }} {{ $user->last_name_en ?? '' }}</div>
                                             <div class="font-normal text-gray-500">{{ $user->mobile }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
-                                        @if(!empty($user->getRoleNames()))
-                                            @foreach($user->getRoleNames() as $v)
+                                        @if(isset($userRoles) and !empty($userRoles->getRoleNames()))
+                                            @foreach($userRoles->getRoleNames() as $v)
                                                 <label class="badge badge-success">{{ $v }}</label>
                                             @endforeach
                                         @endif
                                     </td>
                                     <td class="w-96 text-center">
                                         <div class="flex">
-                                            @if($user->hasRole('Student'))
+                                            @if(isset($userRoles) and $userRoles->hasRole('Student'))
                                                 @php
                                                     $studentInformation=StudentInformation::whereStudentId($user->id)->value('guardian');
                                                 @endphp
