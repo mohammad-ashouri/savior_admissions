@@ -264,7 +264,7 @@ class UserController extends Controller
         if ($searchMobile != null) {
             $query->where('mobile', 'like', "%$searchMobile%");
         }
-        $data = $query->get();
+        $data = $query->paginate(100);
         $data->appends(request()->query())->links();
         if ($data->isEmpty()) {
             $data = [];
