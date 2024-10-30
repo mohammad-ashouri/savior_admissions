@@ -145,8 +145,7 @@
 
                             <tbody>
                             @foreach($data as $user)
-                                <tr
-                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
                                         <div class="flex items-center">
                                             {{ $user->id }}
@@ -158,8 +157,7 @@
                                              src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
                                              alt="User Personal Image">
                                         <div class="pl-3">
-                                            <div
-                                                class="text-base font-semibold">{{ @$user->generalInformationInfo->first_name_en }} {{ @$user->generalInformationInfo->last_name_en }}</div>
+                                            <div class="text-base font-semibold">{{ $user->generalInformationInfo->first_name_en ?? '' }} {{ $user->generalInformationInfo->last_name_en ?? '' }}</div>
                                             <div class="font-normal text-gray-500">{{ $user->mobile }}</div>
                                         </div>
                                     </th>

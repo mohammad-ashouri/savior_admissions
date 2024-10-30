@@ -34,20 +34,30 @@ class UserController extends Controller
         $me = User::find(auth()->user()->id);
         $roles = Role::orderBy('name', 'asc')->get();
 
-        $data = [];
         if ($me) {
+            $data = collect();
             if ($me->hasRole('Super Admin')) {
-                $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->get();
+                User::with(['generalInformationInfo' => function ($query) {
+                    $query->select('user_id', 'first_name_en', 'last_name_en');
+                }])
+                    ->select('id')
+                    ->orderBy('id', 'DESC')
+                    ->chunk(100, function ($users) use (&$data) {
+                        $data = $data->merge($users);
+                    });
             } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-                $data = User::whereStatus(1)
+                User::with(['generalInformationInfo' => function ($query) {
+                    $query->select('user_id', 'first_name_en', 'last_name_en');
+                }])
+                    ->select('id')
+                    ->whereStatus(1)
                     ->WhereHas('roles', function ($query) {
                         $query->whereName('Parent');
                         $query->orWhere('name', 'Student');
                     })
-                    ->get();
-                if ($data->isEmpty()) {
-                    $data = [];
-                }
+                    ->chunk(100, function ($users) use (&$data) {
+                        $data = $data->merge($users);
+                    });
             }
 
             return view('users.index', compact('data', 'roles', 'me'));
