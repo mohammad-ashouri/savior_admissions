@@ -11,7 +11,67 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 <div class="flex justify-between">
                     <div class="relative hidden md:block w-96">
+                        <form id="search-user" action="{{ route('searchUser') }}" method="get">
+                            <div class="flex w-96">
+                                <div>
+                                    <input type="text" id="search-user-code" name="search-user-code"
+                                           value="{{ @$_GET['search-user-code'] }}"
+                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Enter user code">
+                                </div>
+                                <div>
+                                    <input type="text" id="search-first-name" name="search-first-name"
+                                           value="{{ @$_GET['search-first-name'] }}"
+                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Enter first name">
+                                </div>
+                                <div>
+                                    <input type="text" id="search-last-name" name="search-last-name"
+                                           value="{{ @$_GET['search-last-name'] }}"
+                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Enter last name">
+                                </div>
+                                <div>
+                                    <input type="text" id="search-mobile" name="search-mobile"
+                                           value="{{ @$_GET['search-mobile'] }}"
+                                           class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Enter mobile">
+                                </div>
+                                <div>
+                                    <select name="role" id="role"
+                                            class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    >
+                                        <option value="" selected disabled>Select role</option>
+                                        @foreach ($roles as $role)
+                                            @if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and ($role->name == 'Super Admin' or $role->name == 'Principal' or $role->name == 'Admissions Officer' or $role->name == 'Financial Manager' or $role->name == 'Interviewer'))
+                                                @continue
+                                            @endif
 
+                                            <option value="{{ $role->name }}"
+                                                    @if($role->name == @$_GET['role']) selected @endif>{{ $role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="submit"
+                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <i class="fas fa-search mr-2" aria-hidden="true"></i>
+                                        Filter
+                                    </button>
+                                </div>
+                                @if(isset($_GET['search-user-code']) || isset($_GET['search-first-name']) || isset($_GET['search-last-name']) || isset($_GET['role']))
+                                    <div class="ml-3">
+                                        <a href="/users">
+                                            <button type="button"
+                                                    class="text-white bg-red-700 hover:bg-red-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 RemoveFilter">
+                                                <i class="fas fa-remove mr-2" aria-hidden="true"></i>
+                                                Remove
+                                            </button>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </form>
                     </div>
                     <div class="flex">
                         <a href="{{ route('users.create') }}">
@@ -62,7 +122,7 @@
                             </div>
                         </div>
                     @else
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
@@ -85,9 +145,6 @@
 
                             <tbody>
                             @foreach($data as $user)
-                                @php
-                                    $userRoles=User::whereId($user->id)->first();
-                                @endphp
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
                                         <div class="flex items-center">
@@ -100,27 +157,27 @@
                                              src="{{ Vite::asset('resources/images/Panel/default_user_icon.png') }}"
                                              alt="User Personal Image">
                                         <div class="pl-3">
-                                            <div class="text-base font-semibold">{{ $user->first_name_en ?? '' }} {{ $user->last_name_en ?? '' }}</div>
-                                            <div class="font-normal text-gray-500">{{ $user->mobile }}</div>
+                                            <div
+                                                class="text-base text-left font-semibold">{{ $user->generalInformationInfo->first_name_en ?? '' }} {{ $user->generalInformationInfo->last_name_en ?? '' }}</div>
+                                            <div class="font-normal text-left text-gray-500">{{ $user->mobile }}</div>
                                         </div>
                                     </th>
                                     <td class="px-6 py-4 text-center">
-                                        @if(isset($userRoles) and !empty($userRoles->getRoleNames()))
-                                            @foreach($userRoles->getRoleNames() as $v)
-                                                <label class="badge badge-success">{{ $v }}</label>
-                                            @endforeach
-                                        @endif
+                                        @foreach($user->getRoleNames() as $v)
+                                            <label class="badge badge-success">{{ $v }}</label>
+                                        @endforeach
                                     </td>
                                     <td class="w-96 text-center">
                                         <div class="flex">
-                                            @if(isset($userRoles) and $userRoles->hasRole('Student'))
+                                            @if($user->hasRole('Student'))
                                                 @php
                                                     $studentInformation=StudentInformation::whereStudentId($user->id)->value('guardian');
                                                 @endphp
                                                 @if(isset($studentInformation))
-                                                    <form id="search-user" action="{{ route('searchUser') }}" method="get">
-                                                                <input type="hidden" name="search-user-code"
-                                                                       value="{{ $studentInformation }}">
+                                                    <form id="search-user" action="{{ route('searchUser') }}"
+                                                          method="get">
+                                                        <input type="hidden" name="search-user-code"
+                                                               value="{{ $studentInformation }}">
                                                         <button
                                                             class="min-w-max inline-flex font-medium text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:ring-teal-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-teal-600 dark:hover:bg-teal-700 focus:outline-none dark:focus:ring-teal-800 hover:underline">
                                                             <i class="las la-male" style="font-size: 20px"></i>
@@ -166,5 +223,10 @@
 
             </div>
         </div>
+        @if(!empty($data))
+            <div class="pagination text-center">
+                {{ $data->links() }}
+            </div>
+        @endif
     </div>
 @endsection

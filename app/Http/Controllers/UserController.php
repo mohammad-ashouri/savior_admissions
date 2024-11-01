@@ -34,30 +34,19 @@ class UserController extends Controller
         $me = User::find(auth()->user()->id);
         $roles = Role::orderBy('name', 'asc')->get();
 
-        if ($me) {
-            $data = collect();
-            if ($me->hasRole('Super Admin')) {
-                $data = DB::select("
-    SELECT users.id, users.mobile, general_informations.first_name_en, general_informations.last_name_en
-    FROM users
-    LEFT JOIN general_informations ON users.id = general_informations.user_id
-    ORDER BY users.id DESC
-");
-
-            } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-                $data = DB::select("
-    SELECT users.id, users.mobile, general_informations.first_name_en, general_informations.last_name_en
-    FROM users
-    LEFT JOIN general_informations ON users.id = general_informations.user_id
-    LEFT JOIN model_has_roles ON users.id = model_has_roles.model_id
-    LEFT JOIN roles ON model_has_roles.role_id = roles.id
-    WHERE users.status = 1
-      AND (roles.name = 'Parent' OR roles.name = 'Student')
-    ORDER BY users.id DESC
-");
-
+        if ($me->hasRole('Super Admin')) {
+            $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->paginate(150);
+            return view('users.index', compact('data', 'roles', 'me'));
+        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            $data = User::whereStatus(1)
+                ->WhereHas('roles', function ($query) {
+                    $query->whereName('Parent');
+                    $query->orWhere('name', 'Student');
+                })
+                ->paginate(150);
+            if ($data->isEmpty()) {
+                $data = [];
             }
-
             return view('users.index', compact('data', 'roles', 'me'));
         }
         abort(403);
