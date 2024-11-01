@@ -708,7 +708,6 @@ class TuitionPaymentController extends Controller
     public function applianceInvoices($applianceId)
     {
         $me = User::find(auth()->user()->id);
-
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->where('student_informations.guardian', auth()->user()->id)
@@ -725,13 +724,15 @@ class TuitionPaymentController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
-            $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+            $myStudent = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
                 ->whereIn('student_appliance_statuses.academic_year', $academicYears)
                 ->where('student_appliance_statuses.id', $applianceId)
                 ->pluck('student_appliance_statuses.id')->toArray();
-            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->get();
+            $tuitionInvoices = TuitionInvoices::where('appliance_id', $myStudent)->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with(['tuitionInvoiceDetails','invoiceDetails','paymentMethodInfo'])
+                ->whereIn('tuition_invoice_id', $tuitionInvoices)
+                ->get();
         } elseif ($me->hasRole('Super Admin')) {
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
