@@ -104,6 +104,9 @@
                                     Debt Balance
                                 </th>
                                 <th scope="col" class=" border text-center">
+                                    Amount per Installment
+                                </th>
+                                <th scope="col" class=" border text-center">
                                     Tuition Card
                                 </th>
                                 <th scope="col" class=" border text-center action">
@@ -203,6 +206,36 @@
                                             @endphp
                                             {{ number_format($debtBalance) }} IRR
                                         @endif
+                                    </th>
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('1')
+                                            @case('4')
+                                                0
+                                                @break
+                                            @case('2')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return !isset($description['tuition_type']) || $description['tuition_type'] !== 'Two Installment Advance';
+                                                    });
+                                                @endphp
+                                                {{ number_format($filteredRow->amount) }} IRR
+                                                @break
+                                            @case('3')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return !isset($description['tuition_type']) || $description['tuition_type'] !== 'Four Installment Advance';
+                                                    });
+                                                @endphp
+{{--                                                @if(!isset($filteredRow->amount))--}}
+{{--                                                    @dd($student->tuitionInvoices->invoiceDetails)--}}
+{{--                                                @endif--}}
+                                                {{ number_format($filteredRow->amount) }} IRR
+                                                @break
+                                        @endswitch
                                     </th>
                                     <th scope="row"
                                         class="flex w-48 border justify-center text-center text-gray-900 dark:text-white">
