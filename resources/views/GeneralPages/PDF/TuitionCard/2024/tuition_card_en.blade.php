@@ -429,7 +429,7 @@
             </div>
             <div class="flex justify-between">
                 <p>Grade: <span>{{$levelInfo->name}}</span></p>
-                <p>Nationality: <span>{{ $applianceStatus->studentInformations->nationality }}</span></p>
+                <p>Nationality: <span>{{ $fatherNationality->en_short_name }}</span></p>
             </div>
             <div class="flex justify-between">
                 <p>Guardian Full Name:
@@ -488,7 +488,7 @@
                     </td>
                     <td style="white-space: nowrap">{{ number_format($paymentAmount) }} </td>
 
-                    <td style="white-space: nowrap">{{ number_format((($paymentAmount*$allDiscounts)/100)+$allFamilyDiscounts->discount_price) }}
+                    <td style="white-space: nowrap">{{ number_format($paymentAmount-$totalAmount) }}
                     </td>
                     <td style="white-space: nowrap">{{ number_format($totalAmount) }}
                     </td>

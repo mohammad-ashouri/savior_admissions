@@ -513,7 +513,7 @@
                         @endswitch
                     </td>
                     <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">{{ number_format($paymentAmount) }} </td>
-                    <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">{{ number_format((($paymentAmount*$allDiscounts)/100)+$allFamilyDiscounts->discount_price) }}</td>
+                    <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">{{ number_format($paymentAmount-$totalAmount) }}</td>
                     <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">{{ number_format($totalAmount) }}
                     </td>
                 </tr>
