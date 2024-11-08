@@ -1,0 +1,4 @@
+/*! semantic ui integration for DataTables' SearchPanes
+ * © SpryMedia Ltd - datatables.net/license
+ */
+import jQuery from"jquery";import DataTable from"datatables.net-se";import SearchPanes from"datatables.net-searchpanes";let $=jQuery;$.extend(!0,DataTable.SearchPane.classes,{buttonGroup:"right floated ui buttons column",disabledButton:"disabled",narrowSearch:"dtsp-narrowSearch",narrowSub:"dtsp-narrow",paneButton:"basic ui",paneInputButton:"circular search link icon",topRow:"row dtsp-topRow"}),$.extend(!0,DataTable.SearchPanes.classes,{clearAll:"dtsp-clearAll basic ui button",collapseAll:"dtsp-collapseAll basic ui button",disabledButton:"disabled",showAll:"dtsp-showAll basic ui button"}),DataTable.SearchPane.prototype._searchContSetup=function(){$('<i class="'+this.classes.paneInputButton+'"></i>').appendTo(this.dom.searchCont)};export default DataTable;

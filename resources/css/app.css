@@ -277,3 +277,13 @@ table th{
     text-align: left;
     margin-top: 10px;
 }
+.datatable thead tr.filter-row th select {
+    width: auto;
+    min-width: 10px;
+    height: 35px;
+    font-size: 12px;
+}
+table.dataTable > tbody > tr > th, table.dataTable > tbody > tr > td{
+    text-align: center;
+    padding: 2px 8px !important;
+}

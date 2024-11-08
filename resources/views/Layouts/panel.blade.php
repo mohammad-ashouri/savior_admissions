@@ -27,6 +27,10 @@
     <script src="/build/plugins/ColReorder-2.0.4/js/colReorder.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/build/plugins/ColReorder-2.0.4/css/colReorder.dataTables.min.css"/>
 
+    <link rel="stylesheet" type="text/css" href="/build/plugins/Select-2.1.0/css/select.dataTables.css"/>
+    <script src="/build/plugins/Select-2.1.0/js/dataTables.select.js"></script>
+    <script src="/build/plugins/Select-2.1.0/js/select.dataTables.js"></script>
+
     <script src="/build/plugins/jszip/dist/jszip.min.js"></script>
     <script src="/build/plugins/pdfmake/build/pdfmake.min.js"></script>
     <script src="/build/plugins/pdfmake/build/vfs_fonts.js"></script>
@@ -39,7 +43,7 @@
         }
 
         $(document).ready(function () {
-            if (!window.location.pathname.includes('AllTuitions')) {
+            if (!window.location.pathname.includes('AllTuitions') && (!window.location.pathname.includes('Tuition') && !window.location.pathname.includes('edit'))) {
                 let table = new DataTable('.datatable', {
                     "ordering": true,
                     "searching": true,
@@ -47,6 +51,7 @@
                     "info": true,
                     "pageLength": 10,
                     "lengthChange": true,
+                    select: true,
                     colReorder: true,
                     responsive: true,
                     "language": {
@@ -195,6 +200,7 @@
 
                 });
             }
+
             $('.select2').select2({
                 placeholder: 'Choose an option',
                 theme: "classic",
