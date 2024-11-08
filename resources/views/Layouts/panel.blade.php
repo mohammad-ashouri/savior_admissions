@@ -43,7 +43,7 @@
         }
 
         $(document).ready(function () {
-            if (!window.location.pathname.includes('AllTuitions') && (!window.location.pathname.includes('Tuition') && !window.location.pathname.includes('edit'))) {
+            if (!window.location.pathname.includes('AllTuitions') && !(window.location.pathname.includes('/Tuition') && window.location.pathname.includes('edit'))) {
                 let table = new DataTable('.datatable', {
                     "ordering": true,
                     "searching": true,
