@@ -67,6 +67,9 @@
                                     Student
                                 </th>
                                 <th scope="col" class="px-1 text-center">
+                                    Grade
+                                </th>
+                                <th scope="col" class="px-1 text-center">
                                     Date
                                 </th>
                                 <th scope="col" class="px-1 text-center">
@@ -100,6 +103,10 @@
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $application->studentInfo->generalInformationInfo->first_name_en }} {{ $application->studentInfo->generalInformationInfo->last_name_en }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $application->levelInfo->name }}
                                     </th>
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
