@@ -463,7 +463,6 @@ class TuitionPaymentController extends Controller
                 $allStudentsWithGuardian = StudentInformation::whereGuardian($studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
                 $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
                 $allGrantedFamilyDiscounts = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->get();
-
                 $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
                     ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
                     ->join('interviews', 'applications.id', '=', 'interviews.application_id')
@@ -478,13 +477,24 @@ class TuitionPaymentController extends Controller
 
                 if ($allGrantedFamilyDiscounts->isEmpty()) {
                     $familyPercentagePriceFullPayment = $familyPercentagePriceTwoInstallment = $familyPercentagePriceFourInstallment = 0;
-                    $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                    $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                    $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                    $newGrantedFamilyDiscount->discount_percent = 0;
-                    $newGrantedFamilyDiscount->discount_price = 0;
-                    $newGrantedFamilyDiscount->signed_child_number = 1;
-                    $newGrantedFamilyDiscount->save();
+                    $newGrantedFamilyDiscount = GrantedFamilyDiscount::withTrashed()->where('appliance_id', $studentAppliance->id)->first();
+                    if (!empty($newGrantedFamilyDiscount)) {
+                        $newGrantedFamilyDiscount->restore();
+                        $newGrantedFamilyDiscount->update([
+                            'level' => $applicationInfo->level,
+                            'discount_percent' => 0,
+                            'discount_price' => 0,
+                            'signed_child_number' => 1,
+                        ]);
+                    } else {
+                        $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
+                        $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
+                        $newGrantedFamilyDiscount->level = $applicationInfo->level;
+                        $newGrantedFamilyDiscount->discount_percent = 0;
+                        $newGrantedFamilyDiscount->discount_price = 0;
+                        $newGrantedFamilyDiscount->signed_child_number = 1;
+                        $newGrantedFamilyDiscount->save();
+                    }
                 } else {
                     $student_id = $studentAppliance->student_id;
 
@@ -730,7 +740,7 @@ class TuitionPaymentController extends Controller
                 ->where('student_appliance_statuses.id', $applianceId)
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::where('appliance_id', $myStudent)->pluck('id')->toArray();
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::with(['tuitionInvoiceDetails','invoiceDetails','paymentMethodInfo'])
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with(['tuitionInvoiceDetails', 'invoiceDetails', 'paymentMethodInfo'])
                 ->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->get();
         } elseif ($me->hasRole('Super Admin')) {

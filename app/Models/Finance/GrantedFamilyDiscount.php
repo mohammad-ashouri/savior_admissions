@@ -8,7 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GrantedFamilyDiscount extends Model
 {
-    use HasFactory,SoftDeletes;
+    use SoftDeletes;
     protected $table = 'granted_family_discounts';
-    protected $fillable = [];
+    protected $fillable = [
+        'id',
+        'appliance_id',
+        'level',
+        'discount_percentage',
+        'discount_price',
+        'signed_child_number',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 }
