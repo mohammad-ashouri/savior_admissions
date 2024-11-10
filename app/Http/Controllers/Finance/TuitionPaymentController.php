@@ -487,13 +487,24 @@ class TuitionPaymentController extends Controller
                             'signed_child_number' => 1,
                         ]);
                     } else {
-                        $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                        $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                        $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                        $newGrantedFamilyDiscount->discount_percent = 0;
-                        $newGrantedFamilyDiscount->discount_price = 0;
-                        $newGrantedFamilyDiscount->signed_child_number = 1;
-                        $newGrantedFamilyDiscount->save();
+                        $newGrantedFamilyDiscount = GrantedFamilyDiscount::withTrashed()->where('appliance_id', $studentAppliance->id)->first();
+                        if (!empty($newGrantedFamilyDiscount)) {
+                            $newGrantedFamilyDiscount->restore();
+                            $newGrantedFamilyDiscount->update([
+                                'level' => $applicationInfo->level,
+                                'discount_percent' => 0,
+                                'discount_price' => 0,
+                                'signed_child_number' => 1,
+                            ]);
+                        } else {
+                            $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
+                            $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
+                            $newGrantedFamilyDiscount->level = $applicationInfo->level;
+                            $newGrantedFamilyDiscount->discount_percent = 0;
+                            $newGrantedFamilyDiscount->discount_price = 0;
+                            $newGrantedFamilyDiscount->signed_child_number = 1;
+                            $newGrantedFamilyDiscount->save();
+                        }
                     }
                 } else {
                     $student_id = $studentAppliance->student_id;
