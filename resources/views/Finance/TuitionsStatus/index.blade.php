@@ -1,4 +1,4 @@
-@php use App\Models\Branch\ApplicationTiming;use App\Models\Catalogs\Level; @endphp
+@php use App\Models\Branch\ApplicationTiming;use App\Models\Catalogs\Level;use App\Models\Finance\Tuition;use Carbon\Carbon;use Morilog\Jalali\Jalalian; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -104,9 +104,21 @@
                                     Debt Balance
                                 </th>
                                 <th scope="col" class=" border text-center">
-                                    Amount per Installment
+                                    Advance
                                 </th>
                                 <th scope="col" class=" border text-center">
+                                    Installment 1
+                                </th>
+                                <th scope="col" class=" border text-center">
+                                    Installment 2
+                                </th>
+                                <th scope="col" class=" border text-center">
+                                    Installment 3
+                                </th>
+                                <th scope="col" class=" border text-center">
+                                    Installment 4
+                                </th>
+                                <th scope="col" class=" border text-center action">
                                     Tuition Card
                                 </th>
                                 <th scope="col" class=" border text-center action">
@@ -120,6 +132,19 @@
                                 $sumTuition=$sumDebt=$sumPaid=0;
                             @endphp
                             @foreach($students as $student)
+                                @php
+                                    $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
+                                        ->join('application_reservations','applications.id','=','application_reservations.application_id')
+                                        ->where('application_reservations.student_id',$student->student_id)
+                                        ->where('application_timings.academic_year',$student->academic_year)->latest('application_reservations.id')->first();
+                                    $levelInfo=Level::find($applicationInformation->level);
+                                    $tuitionInfo=Tuition::with(['allTuitions'=>function ($query) use ($levelInfo){
+                                        $query->whereLevel($levelInfo->id);
+                                    }])->whereAcademicYear($student->academicYearInfo->id)->first();
+                                    $twoInstallmentTuitionInfo=json_decode($tuitionInfo->allTuitions->first()->two_installment_payment,true);
+                                    $fourInstallmentTuitionInfo=json_decode($tuitionInfo->allTuitions->first()->four_installment_payment,true);
+                                    $currentDate = now()->format('Y-m-d');
+                                @endphp
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-2 border text-center">
                                         {{ $loop->iteration }}
@@ -130,25 +155,22 @@
                                     <td class="w-4 p-2 border text-center">
                                         {{ $student->student_id }}
                                     </td>
+                                    {{--                                    Academic year--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900  dark:text-white">
                                         {{ $student->academicYearInfo->name }}
                                     </th>
+                                    {{--                                    Information--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
+                                    {{--                                    Grade--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        @php
-                                            $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
-                                                ->join('application_reservations','applications.id','=','application_reservations.application_id')
-                                                ->where('application_reservations.student_id',$student->student_id)
-                                                ->where('application_timings.academic_year',$student->academic_year)->latest('application_reservations.id')->first();
-                                            $levelInfo=Level::find($applicationInformation->level);
-                                        @endphp
                                         {{ trim($levelInfo->name) }}
                                     </th>
+                                    {{--                                    Payment type--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         @switch(@$student->tuitionInvoices->payment_type)
@@ -166,6 +188,7 @@
                                                 @break
                                         @endswitch
                                     </th>
+                                    {{--                                    Total tuition--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         @if($student->tuitionInvoices!=null)
@@ -179,6 +202,7 @@
                                             {{ number_format($totalTuition) }} IRR
                                         @endif
                                     </th>
+                                    {{--                                    Total paid--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         @if($student->tuitionInvoices!=null)
@@ -193,6 +217,7 @@
                                             {{ number_format($totalPaid) }} IRR
                                         @endif
                                     </th>
+                                    {{--                                    Debt balance--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         @if($student->tuitionInvoices!=null)
@@ -207,34 +232,305 @@
                                             {{ number_format($debtBalance) }} IRR
                                         @endif
                                     </th>
+                                    {{--                                    Advance--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         @switch(@$student->tuitionInvoices->payment_type)
                                             @case('1')
+                                                -
+                                                @break
                                             @case('4')
-                                                0
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Full Payment With Advance';
+                                                    });
+                                                @endphp
+                                                {{ number_format($filteredRow->amount) }} IRR
                                                 @break
                                             @case('2')
                                                 @php
                                                     $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
                                                         $description = json_decode($detail->description, true);
-                                                        return !isset($description['tuition_type']) || $description['tuition_type'] !== 'Two Installment Advance';
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Two Installment Advance'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
                                                     });
                                                 @endphp
-                                                {{ number_format($filteredRow->amount) }} IRR
+                                                {{ number_format(@$filteredRow->amount) }} IRR
                                                 @break
                                             @case('3')
                                                 @php
                                                     $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
                                                         $description = json_decode($detail->description, true);
-                                                        return !isset($description['tuition_type']) || $description['tuition_type'] !== 'Four Installment Advance';
+                                                        return !isset($description['tuition_type']) || $description['tuition_type'] == 'Four Installment Advance';
                                                     });
                                                 @endphp
-{{--                                                @if(!isset($filteredRow->amount))--}}
-{{--                                                    @dd($student->tuitionInvoices->invoiceDetails)--}}
-{{--                                                @endif--}}
                                                 {{ number_format($filteredRow->amount) }} IRR
                                                 @break
+                                        @endswitch
+                                    </th>
+                                    {{--                                    Installment 1--}}
+                                    <th scope="row"
+                                        class="
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('2')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Two Installment - Installment 1'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                @if($filteredRow->is_paid==1)
+                                                    bg-green-400
+                                                @elseif($filteredRow->is_paid==0 and Carbon::createFromFormat('Y-m-d', $twoInstallmentTuitionInfo['date_of_installment1_two'])->lessThan(Carbon::createFromFormat('Y-m-d', $currentDate)))
+                                                    bg-red-400
+                                                @else
+                                                    bg-blue-400
+                                                @endif
+                                                @break
+                                            @case('4')
+                                                @php
+                                                    if (!function_exists('getEndOfShahrivarInGregorian')) {
+                                                        function getEndOfShahrivarInGregorian($gregorianDate) {
+                                                            $inputDate = Carbon::createFromFormat('Y-m-d', $gregorianDate);
+
+                                                            $jalaliYear = Jalalian::fromCarbon($inputDate)->getYear();
+                                                            $endOfShahrivar = Jalalian::fromFormat('Y-m-d', "$jalaliYear-06-31")->toCarbon();
+
+                                                            return $endOfShahrivar->toDateString();
+                                                        }
+                                                    }
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Full Payment With Advance - Installment'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+
+                                                    $currentDate = Carbon::now()->format('Y-m-d');
+                                                @endphp
+
+                                                @if($filteredRow->is_paid == 1)
+                                                    bg-green-400
+                                                @elseif($filteredRow->is_paid == 0 && getEndOfShahrivarInGregorian($twoInstallmentTuitionInfo['date_of_installment1_two']) < $currentDate)
+                                                    bg-red-400
+                                                @else
+                                                    bg-blue-400
+                                                @endif
+                                                @break
+                                            @case('3')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Four Installment - Installment 1'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                @if($filteredRow->is_paid==1)
+                                                    bg-green-400
+                                                @elseif($filteredRow->is_paid==0 and Carbon::createFromFormat('Y-m-d', $fourInstallmentTuitionInfo['date_of_installment1_four'])->lessThan(Carbon::createFromFormat('Y-m-d', $currentDate)))
+                                                    bg-red-400
+                                                @else
+                                                    bg-blue-400
+                                                @endif
+                                                @break
+                                        @endswitch
+                                         p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('1')
+                                                -
+                                                @break
+                                            @case('4')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Full Payment With Advance - Installment';
+                                                    });
+                                                @endphp
+                                                {{ number_format($filteredRow->amount) }} IRR
+                                                @break
+                                            @case('2')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Two Installment - Installment 1'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                {{ number_format(@$filteredRow->amount) }} IRR
+                                                @break
+                                            @case('3')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Four Installment - Installment 1'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                {{ number_format(@$filteredRow->amount) }} IRR
+                                                @break
+                                        @endswitch
+                                    </th>
+                                    {{--                                    Installment 2--}}
+                                    <th scope="row"
+                                        class="
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('2')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Two Installment - Installment 2'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                @if($filteredRow->is_paid==1)
+                                                    bg-green-400
+                                                @elseif($filteredRow->is_paid==0 and Carbon::createFromFormat('Y-m-d', $twoInstallmentTuitionInfo['date_of_installment2_two'])->lessThan(Carbon::createFromFormat('Y-m-d', $currentDate)))
+                                                    bg-red-400
+                                                @else
+                                                    bg-blue-400
+                                                @endif
+                                                @break
+                                            @case('3')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Four Installment - Installment 2'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                @if($filteredRow->is_paid==1)
+                                                    bg-green-400
+                                                @elseif($filteredRow->is_paid==0 and Carbon::createFromFormat('Y-m-d', $fourInstallmentTuitionInfo['date_of_installment2_four'])->lessThan(Carbon::createFromFormat('Y-m-d', $currentDate)))
+                                                    bg-red-400
+                                                @else
+                                                    bg-blue-400
+                                                @endif
+                                                @break
+                                        @endswitch
+                                         p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('1')
+                                                -
+                                                @break
+                                            @case('2')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Two Installment - Installment 2'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                {{ number_format(@$filteredRow->amount) }} IRR
+                                                @break
+                                            @case('3')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Four Installment - Installment 2'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                {{ number_format(@$filteredRow->amount) }} IRR
+                                                @break
+                                            @default
+                                                -
+                                        @endswitch
+                                    </th>
+                                    {{--                                    Installment 3--}}
+                                    <th scope="row"
+                                        class="
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('3')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Four Installment - Installment 3'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                @if($filteredRow->is_paid==1)
+                                                    bg-green-400
+                                                @elseif($filteredRow->is_paid==0 and Carbon::createFromFormat('Y-m-d', $fourInstallmentTuitionInfo['date_of_installment3_four'])->lessThan(Carbon::createFromFormat('Y-m-d', $currentDate)))
+                                                    bg-red-400
+                                                @else
+                                                    bg-blue-400
+                                                @endif
+                                                @break
+                                        @endswitch
+                                         p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('3')
+                                                {{ number_format(@$filteredRow->amount) }} IRR
+                                                @break
+                                            @default
+                                                -
+                                        @endswitch
+                                    </th>
+                                    {{--                                    Installment 4--}}
+                                    <th scope="row"
+                                        class="
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('3')
+                                                @php
+                                                    $filteredRow = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Four Installment - Installment 4'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                @if($filteredRow->is_paid==1)
+                                                    bg-green-400
+                                                @elseif($filteredRow->is_paid==0 and Carbon::createFromFormat('Y-m-d', $fourInstallmentTuitionInfo['date_of_installment4_four'])->lessThan(Carbon::createFromFormat('Y-m-d', $currentDate)))
+                                                    bg-red-400
+                                                @else
+                                                    bg-blue-400
+                                                @endif
+                                                @break
+                                        @endswitch
+                                         p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('3')
+                                                {{ number_format(@$filteredRow->amount) }} IRR
+                                                @break
+                                            @default
+                                                -
                                         @endswitch
                                     </th>
                                     <th scope="row"
@@ -269,7 +565,7 @@
                                                 <i title="Click for view english tuition card "
                                                    class="las la-money-bill "
                                                    style="font-size: 20px"></i>
-                                                Show invoices
+                                                Invoices
                                             </div>
                                         </a>
                                     </th>
