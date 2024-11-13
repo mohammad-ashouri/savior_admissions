@@ -104,19 +104,37 @@
                                     Debt Balance
                                 </th>
                                 <th scope="col" class=" border text-center">
+                                    Date (Full Payment)
+                                </th>
+                                <th scope="col" class=" border text-center">
                                     Advance
+                                </th>
+                                <th scope="col" class=" border text-center">
+                                    Date
                                 </th>
                                 <th scope="col" class=" border text-center">
                                     Installment 1
                                 </th>
                                 <th scope="col" class=" border text-center">
+                                    Date
+                                </th>
+                                <th scope="col" class=" border text-center">
                                     Installment 2
+                                </th>
+                                <th scope="col" class=" border text-center">
+                                    Date
                                 </th>
                                 <th scope="col" class=" border text-center">
                                     Installment 3
                                 </th>
                                 <th scope="col" class=" border text-center">
+                                    Date
+                                </th>
+                                <th scope="col" class=" border text-center">
                                     Installment 4
+                                </th>
+                                <th scope="col" class=" border text-center">
+                                    Date
                                 </th>
                                 <th scope="col" class=" border text-center action">
                                     Tuition Card
@@ -245,6 +263,21 @@
                                             {{ number_format($debtBalance) }} IRR
                                         @endif
                                     </th>
+                                    {{-- Date (Full Payment) --}}
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('1')
+                                                @php
+                                                    $filteredRowFP = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Full Payment';
+                                                    });
+                                                @endphp
+                                                @break
+                                        @endswitch
+                                        {{ isset($filteredRowFP->date_of_payment) ? $filteredRowFP->date_of_payment : '-' }}
+                                    </th>
                                     {{--                                    Advance--}}
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
@@ -284,6 +317,41 @@
                                                 {{ number_format($filteredRow->amount) }} IRR
                                                 @break
                                         @endswitch
+                                    </th>
+                                    {{--                                    Advance - Date--}}
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('4')
+                                                @php
+                                                    $filteredRowA = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Full Payment With Advance';
+                                                    });
+                                                @endphp
+                                                @break
+                                            @case('2')
+                                                @php
+                                                    $filteredRowA = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+
+                                                        if (isset($description['tuition_type']) && $description['tuition_type'] == 'Two Installment Advance'){
+                                                            return $detail->amount;
+                                                        }
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                @break
+                                            @case('3')
+                                                @php
+                                                    $filteredRowA = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return !isset($description['tuition_type']) || $description['tuition_type'] == 'Four Installment Advance';
+                                                    });
+                                                @endphp
+                                                @break
+                                        @endswitch
+                                        {{ isset($filteredRowA->date_of_payment) ? $filteredRowA->date_of_payment : '-' }}
                                     </th>
                                     {{--                                    Installment 1--}}
                                     <th scope="row"
@@ -402,6 +470,37 @@
                                                 @break
                                         @endswitch
                                     </th>
+                                    {{--                                    Installment 1 - Date--}}
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('4')
+                                                @php
+                                                    $filteredRow1 = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Full Payment With Advance - Installment';
+                                                    });
+                                                @endphp
+                                                @break
+                                            @case('2')
+                                                @php
+                                                    $filteredRow1 = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Two Installment - Installment 1';
+                                                    });
+                                                @endphp
+                                                @break
+                                            @case('3')
+                                                @php
+                                                    $filteredRow1 = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Four Installment - Installment 1';
+                                                    });
+                                                @endphp
+                                                @break
+                                        @endswitch
+                                        {{ isset($filteredRow1->date_of_payment) ? $filteredRow1->date_of_payment : '-' }}
+                                    </th>
                                     {{--                                    Installment 2--}}
                                     <th scope="row"
                                         class="
@@ -480,6 +579,30 @@
                                                 -
                                         @endswitch
                                     </th>
+                                    {{--                                    Installment 2 - Date--}}
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('2')
+                                                @php
+                                                    $filteredRow2 = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Two Installment - Installment 2';
+                                                        return 0;
+                                                    });
+                                                @endphp
+                                                @break
+                                            @case('3')
+                                                @php
+                                                    $filteredRow2 = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return isset($description['tuition_type']) && $description['tuition_type'] == 'Four Installment - Installment 2';
+                                                    });
+                                                @endphp
+                                                @break
+                                        @endswitch
+                                            {{ isset($filteredRow2->date_of_payment) ? $filteredRow2->date_of_payment : '-' }}
+                                    </th>
                                     {{--                                    Installment 3--}}
                                     <th scope="row"
                                         class="
@@ -513,6 +636,21 @@
                                                 -
                                         @endswitch
                                     </th>
+                                    {{--                                    Installment 3 - Date--}}
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('3')
+                                                @php
+                                                    $filteredRow3 = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return !isset($description['tuition_type']) || $description['tuition_type'] == 'Four Installment - Installment 3';
+                                                    });
+                                                @endphp
+                                                @break
+                                        @endswitch
+                                            {{ isset($filteredRow3->date_of_payment) ? $filteredRow3->date_of_payment : '-' }}
+                                    </th>
                                     {{--                                    Installment 4--}}
                                     <th scope="row"
                                         class="
@@ -543,8 +681,23 @@
                                                 {{ number_format(@$filteredRow->amount) }} IRR
                                                 @break
                                             @default
-                                                -
+                                            -
                                         @endswitch
+                                    </th>
+                                    {{--                                    Installment 4 - Date--}}
+                                    <th scope="row"
+                                        class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch(@$student->tuitionInvoices->payment_type)
+                                            @case('3')
+                                                @php
+                                                    $filteredRow4 = $student->tuitionInvoices->invoiceDetails->first(function ($detail) {
+                                                        $description = json_decode($detail->description, true);
+                                                        return !isset($description['tuition_type']) || $description['tuition_type'] == 'Four Installment - Installment 4';
+                                                    });
+                                                @endphp
+                                                @break
+                                        @endswitch
+                                            {{ isset($filteredRow4->date_of_payment) ? $filteredRow4->date_of_payment : '-' }}
                                     </th>
                                     <th scope="row"
                                         class="flex w-48 border justify-center text-center text-gray-900 dark:text-white">
@@ -583,6 +736,12 @@
                                         </a>
                                     </th>
                                 </tr>
+                                {{ $filteredRowFP=null }}
+                                {{ $filteredRowA=null }}
+                                {{ $filteredRow1=null }}
+                                {{ $filteredRow2=null }}
+                                {{ $filteredRow3=null }}
+                                {{ $filteredRow4=null }}
                             @endforeach
                             </tbody>
                         </table>
