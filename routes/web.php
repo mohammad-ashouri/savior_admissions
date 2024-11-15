@@ -21,6 +21,7 @@ use App\Http\Controllers\Finance\ApplicationReservationController;
 use App\Http\Controllers\Finance\DiscountsController;
 use App\Http\Controllers\Finance\TuitionController;
 use App\Http\Controllers\Finance\TuitionPaymentController;
+use App\Http\Controllers\GeneralControllers\ChartController;
 use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\PaymentController;
@@ -133,9 +134,11 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('SearchTuitionsStatus', [TuitionController::class, 'searchTuitionsStatus'])->name('SearchTuitionStatus');
             Route::get('ShowApplianceInvoices/{appliance_id}', [TuitionPaymentController::class, 'applianceInvoices'])->name('applianceInvoices');
             Route::get('AllTuitions/{academic_year?}', [TuitionController::class, 'allTuitions'])->name('allTuitions');
+
             //Pay Tuition
             Route::get('PayTuition/{student_id}', [TuitionController::class, 'payTuition'])->name('Tuitions.PayTuition');
             Route::post('PayTuition', [TuitionController::class, 'tuitionPayment'])->name('Tuitions.Pay');
+
             //Payment list
             Route::resource('TuitionInvoices', TuitionPaymentController::class);
             Route::get('searchTuitionInvoices', [TuitionPaymentController::class, 'search'])->name('searchTuitionInvoices');
@@ -202,6 +205,9 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
             Route::get('SearchStudentApplianceStatuses', [StudentController::class, 'search'])->name('SearchStudentApplianceStatuses');
             Route::get('StudentStatuses/export-excel', [ExcelController::class, 'exportStudentStatuses']);
+
+            //Charts
+            Route::get('charts/bar/registered-students-in-last-academic-year',[ChartController::class,'registeredStudentsInLastAcademicYear']);
 
             //Exports
             //PDF

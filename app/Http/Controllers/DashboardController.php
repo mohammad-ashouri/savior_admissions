@@ -9,6 +9,7 @@ use App\Charts\AllRegisteredStudentsInLastAcademicYear;
 use App\Charts\AllReservedApplications;
 use App\Charts\AllStudentsPendingForUploadDocuments;
 use App\Charts\RejectedInterviews;
+use App\Http\Controllers\GeneralControllers\ChartController;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -17,38 +18,17 @@ use App\Models\Catalogs\AcademicYear;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
+use App\Traits\ChartFunctions;
 
 class DashboardController extends Controller
 {
-    protected AcceptedStudentsByAcademicYear $acceptedStudentNumberStatusByAcademicYear;
+    use ChartFunctions;
+    protected $allRegisteredStudentsInLastAcademicYear;
+    protected $acceptedStudentNumberStatusByAcademicYear;
 
-    protected AllRegisteredStudentsInLastAcademicYear $allRegisteredStudentsInLastAcademicYear;
-
-    protected AllReservedApplications $allReservedApplicationsInLastAcademicYear;
-
-    protected AllStudentsPendingForUploadDocuments $allStudentsPendingForUploadDocument;
-
-    protected RejectedInterviews $rejectedInterviews;
-
-    protected AdmittedInterviews $admittedInterviews;
-
-    protected AbsenceInInterview $absenceInInterview;
-
-    public function __construct(AcceptedStudentsByAcademicYear $acceptedStudentNumberStatusByAcademicYear,
-        AllRegisteredStudentsInLastAcademicYear $allReservedStudentsInLastAcademicYear,
-        AllReservedApplications $allRegisteredApplicationsInLastAcademicYear,
-        AllStudentsPendingForUploadDocuments $allStudentsPendingForUploadDocument,
-        AdmittedInterviews $admittedInterviews,
-        RejectedInterviews $rejectedInterviews,
-        AbsenceInInterview $absenceInInterview,
-    ) {
-        $this->acceptedStudentNumberStatusByAcademicYear = $acceptedStudentNumberStatusByAcademicYear;
-        $this->allRegisteredStudentsInLastAcademicYear = $allReservedStudentsInLastAcademicYear;
-        $this->allReservedApplicationsInLastAcademicYear = $allRegisteredApplicationsInLastAcademicYear;
-        $this->allStudentsPendingForUploadDocument = $allStudentsPendingForUploadDocument;
-        $this->admittedInterviews = $admittedInterviews;
-        $this->rejectedInterviews = $rejectedInterviews;
-        $this->absenceInInterview = $absenceInInterview;
+    public function __construct() {
+        $this->allRegisteredStudentsInLastAcademicYear = $this->registeredStudentsInLastAcademicYear($this->getActiveAcademicYears());
+        $this->acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear($this->getActiveAcademicYears());
     }
 
     public function index()
@@ -69,23 +49,23 @@ class DashboardController extends Controller
                 ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
         }
         if ($me->hasRole('Super Admin')) {
-            $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear->build();
-            $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear->build();
-            $allReservedApplicationsInLastAcademicYear = $this->allReservedApplicationsInLastAcademicYear->build();
-            $allStudentsPendingForUploadDocument = $this->allStudentsPendingForUploadDocument->build();
-            $admittedInterviews = $this->admittedInterviews->build();
-            $rejectedInterviews = $this->rejectedInterviews->build();
-            $absenceInInterview = $this->absenceInInterview->build();
+            $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear;
+            $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear;
+//            $allReservedApplicationsInLastAcademicYear = $this->allReservedApplicationsInLastAcademicYear->build();
+//            $allStudentsPendingForUploadDocument = $this->allStudentsPendingForUploadDocument->build();
+//            $admittedInterviews = $this->admittedInterviews->build();
+//            $rejectedInterviews = $this->rejectedInterviews->build();
+//            $absenceInInterview = $this->absenceInInterview->build();
 
             return view('Dashboards.Main', compact(
                 'me',
-                'acceptedStudentNumberStatusByAcademicYear',
                 'allRegisteredStudentsInLastAcademicYear',
-                'allReservedApplicationsInLastAcademicYear',
-                'allStudentsPendingForUploadDocument',
-                'admittedInterviews',
-                'rejectedInterviews',
-                'absenceInInterview',
+                'acceptedStudentNumberStatusByAcademicYear',
+//                'allReservedApplicationsInLastAcademicYear',
+//                'allStudentsPendingForUploadDocument',
+//                'admittedInterviews',
+//                'rejectedInterviews',
+//                'absenceInInterview',
             ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
