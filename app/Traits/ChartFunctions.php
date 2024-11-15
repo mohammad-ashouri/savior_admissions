@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Branch\Applications;
 use App\Models\Branch\StudentApplianceStatus;
 
 trait ChartFunctions
@@ -34,7 +35,7 @@ trait ChartFunctions
         $data = [
             'labels' => array_keys($applianceCount),
             'data' => array_values($applianceCount),
-            'chart_label' => 'Total Number of Enrolled Students by Academic Year',
+            'chart_label' => 'Enrolled Students',
             'unit' => 'students',
         ];
 
@@ -46,7 +47,6 @@ trait ChartFunctions
      */
     public function acceptedStudentNumberStatusByAcademicYear($activeAcademicYears)
     {
-        // Replace this with your actual data retrieval logic
         $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
             ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
                 $query->whereIn('id', $activeAcademicYears);
@@ -70,7 +70,78 @@ trait ChartFunctions
         $data = [
             'labels' => array_keys($applianceCount),
             'data' => array_values($applianceCount),
-            'chart_label' => 'Total Number of Accepted Students by Academic Year',
+            'chart_label' => 'Accepted Students ',
+            'unit' => 'students',
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Return chart of reserved applications in last academic year
+     */
+    public function reservedApplicationsByAcademicYear($activeAcademicYears)
+    {
+        // Replace this with your actual data retrieval logic
+        $applicationReservedByAcademicYear = Applications::with('applicationTimingInfo')
+            ->whereHas('applicationTimingInfo', function ($query) use ($activeAcademicYears) {
+                $query->whereIn('academic_year', $activeAcademicYears);
+            })
+            ->whereReserved('1')
+            ->get();
+
+        /**
+         * Getting academic year names
+         */
+        $academicYearNames = [];
+        foreach ($applicationReservedByAcademicYear as $applicationReserved) {
+            $academicYearNames[] = $applicationReserved->applicationTimingInfo->academicYearInfo->name;
+        }
+
+        /**
+         * Getting appliance count by academic year
+         */
+        $applianceCount = array_count_values(array_filter($academicYearNames));
+
+        $data = [
+            'labels' => array_keys($applianceCount),
+            'data' => array_values($applianceCount),
+            'chart_label' => 'Total Number of Applications reserved ',
+            'unit' => 'Application',
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Return chart of students absence in interview
+     */
+    public function absenceInInterview($activeAcademicYears)
+    {
+        $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
+            ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
+                $query->whereIn('id', $activeAcademicYears);
+            })
+            ->whereInterviewStatus('Absence')
+            ->get();
+
+        /**
+         * Getting academic year names
+         */
+        $academicYearNames = [];
+        foreach ($studentStatusesByAcademicYear as $studentStatus) {
+            $academicYearNames[] = $studentStatus->academicYearInfo->name;
+        }
+
+        /**
+         * Getting appliance count by academic year
+         */
+        $applianceCount = array_count_values(array_filter($academicYearNames));
+
+        $data = [
+            'labels' => array_keys($applianceCount),
+            'data' => array_values($applianceCount),
+            'chart_label' => 'Absence In Interview',
             'unit' => 'students',
         ];
 
