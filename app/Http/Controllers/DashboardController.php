@@ -26,6 +26,8 @@ class DashboardController extends Controller
     protected $allRegisteredStudentsInLastAcademicYear;
     protected $acceptedStudentNumberStatusByAcademicYear;
     protected $reservedApplicationsByAcademicYear;
+    protected $admittedInterviews;
+    protected $rejectedInterviews;
     protected $absenceInInterview;
 
     public function __construct() {
@@ -33,6 +35,8 @@ class DashboardController extends Controller
         $this->acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear($this->getActiveAcademicYears());
         $this->reservedApplicationsByAcademicYear = $this->reservedApplicationsByAcademicYear($this->getActiveAcademicYears());
         $this->absenceInInterview = $this->absenceInInterview($this->getActiveAcademicYears());
+        $this->admittedInterviews = $this->admittedInterviews($this->getActiveAcademicYears());
+        $this->rejectedInterviews = $this->rejectedInterviews($this->getActiveAcademicYears());
     }
 
     public function index()
@@ -57,9 +61,8 @@ class DashboardController extends Controller
             $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear;
             $reservedApplicationsByAcademicYear = $this->reservedApplicationsByAcademicYear;
             $absenceInInterview = $this->absenceInInterview;
-//            $allStudentsPendingForUploadDocument = $this->allStudentsPendingForUploadDocument->build();
-//            $admittedInterviews = $this->admittedInterviews->build();
-//            $rejectedInterviews = $this->rejectedInterviews->build();
+            $admittedInterviews = $this->admittedInterviews;
+            $rejectedInterviews = $this->rejectedInterviews;
 
             return view('Dashboards.Main', compact(
                 'me',
@@ -67,9 +70,8 @@ class DashboardController extends Controller
                 'acceptedStudentNumberStatusByAcademicYear',
                 'reservedApplicationsByAcademicYear',
                 'absenceInInterview',
-//                'allStudentsPendingForUploadDocument',
-//                'admittedInterviews',
-//                'rejectedInterviews',
+                'admittedInterviews',
+                'rejectedInterviews',
             ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {

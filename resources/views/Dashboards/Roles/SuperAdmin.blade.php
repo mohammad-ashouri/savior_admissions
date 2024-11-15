@@ -34,6 +34,8 @@
                 <h1 class="text-xl font-semibold text-black dark:text-white mb-4">Interviews Status</h1>
             </div>
             <div class="overflow-x-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
+                <x-charts.pie :data="$admittedInterviews" />
+                <x-charts.pie :data="$rejectedInterviews" />
                 <x-charts.pie :data="$absenceInInterview" />
             </div>
         </div>

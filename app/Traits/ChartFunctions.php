@@ -114,6 +114,75 @@ trait ChartFunctions
     }
 
     /**
+     * Return chart of students admitted in interview
+     */
+    public function admittedInterviews($activeAcademicYears)
+    {
+        $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
+            ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
+                $query->whereIn('id', $activeAcademicYears);
+            })
+            ->whereInterviewStatus('Admitted')
+            ->get();
+
+        /**
+         * Getting academic year names
+         */
+        $academicYearNames = [];
+        foreach ($studentStatusesByAcademicYear as $studentStatus) {
+            $academicYearNames[] = $studentStatus->academicYearInfo->name;
+        }
+
+        /**
+         * Getting appliance count by academic year
+         */
+        $applianceCount = array_count_values(array_filter($academicYearNames));
+
+        $data = [
+            'labels' => array_keys($applianceCount),
+            'data' => array_values($applianceCount),
+            'chart_label' => 'Admitted Interviews',
+            'unit' => 'students',
+        ];
+
+        return $data;
+    }
+    /**
+     * Return chart of students rejected in interview
+     */
+    public function rejectedInterviews($activeAcademicYears)
+    {
+        $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
+            ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
+                $query->whereIn('id', $activeAcademicYears);
+            })
+            ->whereInterviewStatus('Rejected')
+            ->get();
+
+        /**
+         * Getting academic year names
+         */
+        $academicYearNames = [];
+        foreach ($studentStatusesByAcademicYear as $studentStatus) {
+            $academicYearNames[] = $studentStatus->academicYearInfo->name;
+        }
+
+        /**
+         * Getting appliance count by academic year
+         */
+        $applianceCount = array_count_values(array_filter($academicYearNames));
+
+        $data = [
+            'labels' => array_keys($applianceCount),
+            'data' => array_values($applianceCount),
+            'chart_label' => 'Rejected Interviews',
+            'unit' => 'students',
+        ];
+
+        return $data;
+    }
+
+    /**
      * Return chart of students absence in interview
      */
     public function absenceInInterview($activeAcademicYears)
