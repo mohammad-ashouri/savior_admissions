@@ -29,6 +29,7 @@ class DashboardController extends Controller
     protected $admittedInterviews;
     protected $rejectedInterviews;
     protected $absenceInInterview;
+    protected $interviewTypes;
 
     public function __construct() {
         $this->allRegisteredStudentsInLastAcademicYear = $this->registeredStudentsInLastAcademicYear($this->getActiveAcademicYears());
@@ -37,6 +38,7 @@ class DashboardController extends Controller
         $this->absenceInInterview = $this->absenceInInterview($this->getActiveAcademicYears());
         $this->admittedInterviews = $this->admittedInterviews($this->getActiveAcademicYears());
         $this->rejectedInterviews = $this->rejectedInterviews($this->getActiveAcademicYears());
+        $this->interviewTypes = $this->interviewTypes($this->getActiveAcademicYears());
     }
 
     public function index()
@@ -63,6 +65,7 @@ class DashboardController extends Controller
             $absenceInInterview = $this->absenceInInterview;
             $admittedInterviews = $this->admittedInterviews;
             $rejectedInterviews = $this->rejectedInterviews;
+            $interviewTypes = $this->interviewTypes;
 
             return view('Dashboards.Main', compact(
                 'me',
@@ -72,6 +75,7 @@ class DashboardController extends Controller
                 'absenceInInterview',
                 'admittedInterviews',
                 'rejectedInterviews',
+                'interviewTypes',
             ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {

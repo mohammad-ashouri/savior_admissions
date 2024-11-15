@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\StudentApplianceStatus;
 
@@ -13,7 +14,7 @@ trait ChartFunctions
     public function registeredStudentsInLastAcademicYear($activeAcademicYears)
     {
         // Replace this with your actual data retrieval logic
-        $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
+        $data = StudentApplianceStatus::with('academicYearInfo')
             ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
                 $query->whereIn('id', $activeAcademicYears);
             })
@@ -23,7 +24,7 @@ trait ChartFunctions
          * Getting academic year names
          */
         $academicYearNames = [];
-        foreach ($studentStatusesByAcademicYear as $studentStatus) {
+        foreach ($data as $studentStatus) {
             $academicYearNames[] = $studentStatus->academicYearInfo->name;
         }
 
@@ -47,7 +48,7 @@ trait ChartFunctions
      */
     public function acceptedStudentNumberStatusByAcademicYear($activeAcademicYears)
     {
-        $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
+        $data = StudentApplianceStatus::with('academicYearInfo')
             ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
                 $query->whereIn('id', $activeAcademicYears);
             })
@@ -58,7 +59,7 @@ trait ChartFunctions
          * Getting academic year names
          */
         $academicYearNames = [];
-        foreach ($studentStatusesByAcademicYear as $studentStatus) {
+        foreach ($data as $studentStatus) {
             $academicYearNames[] = $studentStatus->academicYearInfo->name;
         }
 
@@ -118,7 +119,7 @@ trait ChartFunctions
      */
     public function admittedInterviews($activeAcademicYears)
     {
-        $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
+        $data = StudentApplianceStatus::with('academicYearInfo')
             ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
                 $query->whereIn('id', $activeAcademicYears);
             })
@@ -129,7 +130,7 @@ trait ChartFunctions
          * Getting academic year names
          */
         $academicYearNames = [];
-        foreach ($studentStatusesByAcademicYear as $studentStatus) {
+        foreach ($data as $studentStatus) {
             $academicYearNames[] = $studentStatus->academicYearInfo->name;
         }
 
@@ -147,12 +148,13 @@ trait ChartFunctions
 
         return $data;
     }
+
     /**
      * Return chart of students rejected in interview
      */
     public function rejectedInterviews($activeAcademicYears)
     {
-        $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
+        $data = StudentApplianceStatus::with('academicYearInfo')
             ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
                 $query->whereIn('id', $activeAcademicYears);
             })
@@ -163,7 +165,7 @@ trait ChartFunctions
          * Getting academic year names
          */
         $academicYearNames = [];
-        foreach ($studentStatusesByAcademicYear as $studentStatus) {
+        foreach ($data as $studentStatus) {
             $academicYearNames[] = $studentStatus->academicYearInfo->name;
         }
 
@@ -187,7 +189,7 @@ trait ChartFunctions
      */
     public function absenceInInterview($activeAcademicYears)
     {
-        $studentStatusesByAcademicYear = StudentApplianceStatus::with('academicYearInfo')
+        $data = StudentApplianceStatus::with('academicYearInfo')
             ->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
                 $query->whereIn('id', $activeAcademicYears);
             })
@@ -198,7 +200,7 @@ trait ChartFunctions
          * Getting academic year names
          */
         $academicYearNames = [];
-        foreach ($studentStatusesByAcademicYear as $studentStatus) {
+        foreach ($data as $studentStatus) {
             $academicYearNames[] = $studentStatus->academicYearInfo->name;
         }
 
@@ -212,6 +214,45 @@ trait ChartFunctions
             'data' => array_values($applianceCount),
             'chart_label' => 'Absence In Interview',
             'unit' => 'students',
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Return chart of interview types
+     */
+    public function interviewTypes($activeAcademicYears)
+    {
+        $onCampus = ApplicationReservation::with('applicationInfo')
+            ->whereInterviewType('On-Campus')
+            ->whereHas('applicationInfo', function ($query) use ($activeAcademicYears) {
+                $query->whereHas('applicationTimingInfo', function ($query) use ($activeAcademicYears) {
+                    $query->whereIn('academic_year', $activeAcademicYears);
+                });
+            })
+            ->count();
+        $onSight = ApplicationReservation::with('applicationInfo')
+            ->whereInterviewType('On-Sight')
+            ->whereHas('applicationInfo', function ($query) use ($activeAcademicYears) {
+                $query->whereHas('applicationTimingInfo', function ($query) use ($activeAcademicYears) {
+                    $query->whereIn('academic_year', $activeAcademicYears);
+                });
+            })
+            ->count();
+        /**
+         * Interview Types
+         */
+        $types = [
+            'On-Campus' => $onCampus,
+            'On-Sight' => $onSight,
+        ];
+
+        $data = [
+            'labels' => array_keys($types),
+            'data' => array_values($types),
+            'chart_label' => 'Interview Types',
+            'unit' => 'interview',
         ];
 
         return $data;
