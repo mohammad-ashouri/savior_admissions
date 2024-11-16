@@ -2,13 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\AbsenceInInterview;
-use App\Charts\AcceptedStudentsByAcademicYear;
-use App\Charts\AdmittedInterviews;
-use App\Charts\AllRegisteredStudentsInLastAcademicYear;
-use App\Charts\AllReservedApplications;
-use App\Charts\AllStudentsPendingForUploadDocuments;
-use App\Charts\RejectedInterviews;
 use App\Http\Controllers\GeneralControllers\ChartController;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
@@ -23,6 +16,7 @@ use App\Traits\ChartFunctions;
 class DashboardController extends Controller
 {
     use ChartFunctions;
+
     protected $allRegisteredStudentsInLastAcademicYear;
     protected $acceptedStudentNumberStatusByAcademicYear;
     protected $reservedApplicationsByAcademicYear;
@@ -30,8 +24,10 @@ class DashboardController extends Controller
     protected $rejectedInterviews;
     protected $absenceInInterview;
     protected $interviewTypes;
+    protected $paymentTypes;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->allRegisteredStudentsInLastAcademicYear = $this->registeredStudentsInLastAcademicYear($this->getActiveAcademicYears());
         $this->acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear($this->getActiveAcademicYears());
         $this->reservedApplicationsByAcademicYear = $this->reservedApplicationsByAcademicYear($this->getActiveAcademicYears());
@@ -39,6 +35,7 @@ class DashboardController extends Controller
         $this->admittedInterviews = $this->admittedInterviews($this->getActiveAcademicYears());
         $this->rejectedInterviews = $this->rejectedInterviews($this->getActiveAcademicYears());
         $this->interviewTypes = $this->interviewTypes($this->getActiveAcademicYears());
+        $this->paymentTypes = $this->paymentTypes($this->getActiveAcademicYears());
     }
 
     public function index()
@@ -66,6 +63,7 @@ class DashboardController extends Controller
             $admittedInterviews = $this->admittedInterviews;
             $rejectedInterviews = $this->rejectedInterviews;
             $interviewTypes = $this->interviewTypes;
+            $paymentTypes = $this->paymentTypes;
 
             return view('Dashboards.Main', compact(
                 'me',
@@ -76,6 +74,7 @@ class DashboardController extends Controller
                 'admittedInterviews',
                 'rejectedInterviews',
                 'interviewTypes',
+                'paymentTypes',
             ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
