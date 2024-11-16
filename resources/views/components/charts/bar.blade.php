@@ -1,7 +1,7 @@
 <div>
     <style>
         #barChart-{{ $data['chart_label'] }} {
-            height: 300px;
+            height: {{ $height ?? 0 }};
         }
     </style>
     <div style="width: 100%; margin: auto;">
@@ -84,11 +84,13 @@
                             callbacks: {
                                 label: function (context) {
                                     let label = context.label || '';
-                                    let value = context.raw || '';
+                                    let value = context.raw || 0;
+                                    let total = context.dataset.data.reduce((sum, val) => sum + val, 0);
                                     if (unit === 'IRR') {
                                         value = parseFloat(value).toLocaleString('en-US');
                                     }
-                                    return `${label}: ${value} @json($data['unit'])`;
+                                    const percentage = ((value / total) * 100).toFixed(2);
+                                    return `${label}: ${value} ${unit} (${percentage}%)`;
                                 },
                             }
                         },
@@ -105,6 +107,16 @@
                             },
                         },
                     }
+                }
+            });
+            document.getElementById('barChart-{{ $data['chart_label'] }}').addEventListener('click', function (event) {
+                const points = myChart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+                if (points.length) {
+                    const datasetIndex = points[0].datasetIndex;
+                    const index = points[0].index;
+                    const label = myChart.data.labels[index];
+                    const value = myChart.data.datasets[datasetIndex].data[index];
+                    alert(`Label: ${label}\nValue: ${value}`);
                 }
             });
         })();

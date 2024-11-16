@@ -1,6 +1,11 @@
 <div>
+    <style>
+        #pieChart-{{ $data['chart_label'] }} {
+            height: {{ $height ?? 0 }};
+        }
+    </style>
     <div style="width: 100%; margin: auto;">
-        <canvas id="barChart-{{ $data['chart_label'] }}"></canvas>
+        <canvas id="pieChart-{{ $data['chart_label'] }}"></canvas>
     </div>
 
     <script>
@@ -60,7 +65,7 @@
 
             const unit = @json($data['unit']);
 
-            const ctx = document.getElementById('barChart-{{ $data['chart_label'] }}').getContext('2d');
+            const ctx = document.getElementById('pieChart-{{ $data['chart_label'] }}').getContext('2d');
             const myChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -81,6 +86,7 @@
                     },
                     responsive: true,
                     maintainAspectRatio: false,
+                    rotation: Math.PI / 4,
                     plugins: {
                         zoom: {
                             zoom: {
@@ -111,7 +117,7 @@
                                 usePointStyle: true,
                                 pointStyle: 'circle',
                             },
-                            position: 'bottom',
+                            position: 'right',
                             onHover: handleHover,
                             onLeave: handleLeave
                         },
@@ -120,11 +126,13 @@
                             callbacks: {
                                 label: function (context) {
                                     let label = context.label || '';
-                                    let value = context.raw || '';
+                                    let value = context.raw || 0;
+                                    let total = context.dataset.data.reduce((sum, val) => sum + val, 0);
                                     if (unit === 'IRR') {
                                         value = parseFloat(value).toLocaleString('en-US');
                                     }
-                                    return `${label}: ${value} ${unit}`;
+                                    const percentage = ((value / total) * 100).toFixed(2);
+                                    return `${label}: ${value} ${unit} (${percentage}%)`;
                                 },
                             },
                         },
@@ -135,8 +143,8 @@
                 },
             });
 
-            ctx.onclick = function (event) {
-                const points = myChart.getElementsAtEventForMode(event, 'nearest', {intersect: true}, true);
+            document.getElementById('pieChart-{{ $data['chart_label'] }}').addEventListener('click', function (event) {
+                const points = myChart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
                 if (points.length) {
                     const datasetIndex = points[0].datasetIndex;
                     const index = points[0].index;
@@ -144,7 +152,7 @@
                     const value = myChart.data.datasets[datasetIndex].data[index];
                     alert(`Label: ${label}\nValue: ${value}`);
                 }
-            };
+            });
         })();
     </script>
 </div>

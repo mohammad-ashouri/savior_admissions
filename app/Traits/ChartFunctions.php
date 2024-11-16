@@ -8,6 +8,7 @@ use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Finance\TuitionInvoices;
+use Spatie\Permission\Models\Role;
 
 trait ChartFunctions
 {
@@ -433,6 +434,30 @@ trait ChartFunctions
             'data' => array_values($data),
             'chart_label' => 'Levels',
             'unit' => 'student(s)',
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Return chart of users count
+     */
+    public function userRolesChart()
+    {
+        $rolesWithUserCount = Role::withCount('users')->get();
+
+        /**
+         * users count by role
+         */
+        $data=[];
+        foreach ($rolesWithUserCount as $role) {
+            $data[$role->name]=$role->users_count;
+        }
+        $data = [
+            'labels' => array_keys($data),
+            'data' => array_values($data),
+            'chart_label' => 'Users By Role',
+            'unit' => 'user(s)',
         ];
 
         return $data;

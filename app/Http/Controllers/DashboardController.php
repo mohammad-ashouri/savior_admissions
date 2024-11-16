@@ -28,6 +28,7 @@ class DashboardController extends Controller
     protected $tuitionPaidAcademicYear;
     protected $tuitionPaidPaymentType;
     protected $levels;
+    protected $userRolesChart;
 
     public function __construct()
     {
@@ -42,6 +43,7 @@ class DashboardController extends Controller
         $this->tuitionPaidAcademicYear = $this->tuitionPaidAcademicYear($this->getActiveAcademicYears());
         $this->tuitionPaidPaymentType = $this->tuitionPaidPaymentType($this->getActiveAcademicYears());
         $this->levels = $this->levels($this->getActiveAcademicYears());
+        $this->userRolesChart = $this->userRolesChart();
     }
 
     public function index()
@@ -73,6 +75,7 @@ class DashboardController extends Controller
             $tuitionPaidPaymentType = $this->tuitionPaidPaymentType;
             $tuitionPaidAcademicYear = $this->tuitionPaidAcademicYear;
             $levels = $this->levels;
+            $userRolesChart = $this->userRolesChart;
 
             return view('Dashboards.Main', compact(
                 'me',
@@ -87,6 +90,7 @@ class DashboardController extends Controller
                 'tuitionPaidAcademicYear',
                 'tuitionPaidPaymentType',
                 'levels',
+                'userRolesChart',
             ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
