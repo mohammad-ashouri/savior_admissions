@@ -344,13 +344,13 @@ trait ChartFunctions
                 case 1:
                     $fullPayment += $amount;
                     break;
-                case 2:
+                case 4:
                     $fullPaymentWithAdvance += $amount;
                     break;
-                case 3:
+                case 2:
                     $twoInstallments += $amount;
                     break;
-                case 4:
+                case 3:
                     $fourInstallments += $amount;
                     break;
             }

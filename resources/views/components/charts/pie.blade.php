@@ -122,6 +122,9 @@
                                 label: function (context) {
                                     let label = context.label || '';
                                     let value = context.raw || '';
+                                    if (unit === 'IRR') {
+                                        value = parseFloat(value).toLocaleString('en-US');
+                                    }
                                     return `${label}: ${value} ${unit}`;
                                 },
                             },
