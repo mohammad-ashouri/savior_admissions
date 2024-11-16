@@ -26,6 +26,7 @@ class DashboardController extends Controller
     protected $interviewTypes;
     protected $paymentTypes;
     protected $tuitionPaid;
+    protected $levels;
 
     public function __construct()
     {
@@ -38,6 +39,7 @@ class DashboardController extends Controller
         $this->interviewTypes = $this->interviewTypes($this->getActiveAcademicYears());
         $this->paymentTypes = $this->paymentTypes($this->getActiveAcademicYears());
         $this->tuitionPaid = $this->tuitionPaid($this->getActiveAcademicYears());
+        $this->levels = $this->levels($this->getActiveAcademicYears());
     }
 
     public function index()
@@ -67,6 +69,7 @@ class DashboardController extends Controller
             $interviewTypes = $this->interviewTypes;
             $paymentTypes = $this->paymentTypes;
             $tuitionPaid = $this->tuitionPaid;
+            $levels = $this->levels;
 
             return view('Dashboards.Main', compact(
                 'me',
@@ -79,6 +82,7 @@ class DashboardController extends Controller
                 'interviewTypes',
                 'paymentTypes',
                 'tuitionPaid',
+                'levels',
             ));
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {

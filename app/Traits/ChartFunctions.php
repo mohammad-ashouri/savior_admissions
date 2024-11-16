@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\StudentApplianceStatus;
+use App\Models\Catalogs\Level;
 use App\Models\Finance\TuitionInvoices;
 
 trait ChartFunctions
@@ -367,6 +368,35 @@ trait ChartFunctions
             'data' => array_values($tuitionInfo),
             'chart_label' => 'Tuition Payment Amount',
             'unit' => 'IRR',
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Return chart of levels
+     */
+    public function levels($activeAcademicYears)
+    {
+        $levels = Level::all();
+        $data = [];
+        foreach ($levels as $level) {
+            $reservations = ApplicationReservation::with('applicationInfo')
+                ->whereHas('applicationInfo', function ($query) use ($activeAcademicYears) {
+                    $query->whereHas('applicationTimingInfo', function ($query) use ($activeAcademicYears) {
+                        $query->whereIn('academic_year', $activeAcademicYears);
+                    });
+                })
+                ->whereLevel($level->id)
+                ->wherePaymentStatus(1)
+                ->count();
+            $data[$level->name] = $reservations;
+        }
+        $data = [
+            'labels' => array_keys($data),
+            'data' => array_values($data),
+            'chart_label' => 'Levels',
+            'unit' => 'student(s)',
         ];
 
         return $data;

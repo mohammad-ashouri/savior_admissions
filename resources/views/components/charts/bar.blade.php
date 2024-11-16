@@ -1,30 +1,15 @@
 <div>
+    <style>
+        #barChart-{{ $data['chart_label'] }} {
+            height: 300px;
+        }
+    </style>
     <div style="width: 100%; margin: auto;">
         <canvas id="barChart-{{ $data['chart_label'] }}"></canvas>
     </div>
 
     <script>
         (function () {
-            // Append '4d' to the colors (alpha channel), except for the hovered index
-            function handleHover(evt, item, legend) {
-                legend.chart.data.datasets[0].backgroundColor.forEach((color, index, colors) => {
-                    if (index === item.index) {
-                        colors[index] = color.replace(/rgba\((\d+), (\d+), (\d+), [^)]+\)/, 'rgba($1, $2, $3, 0.8)');
-                    } else {
-                        colors[index] = color.replace(/rgba\((\d+), (\d+), (\d+), [^)]+\)/, 'rgba($1, $2, $3, 0.2)');
-                    }
-                });
-                legend.chart.update();
-            }
-
-            // Removes the alpha channel from background colors
-            function handleLeave(evt, item, legend) {
-                legend.chart.data.datasets[0].backgroundColor.forEach((color, index, colors) => {
-                    colors[index] = color.replace(/rgba\((\d+), (\d+), (\d+), [^)]+\)/, 'rgba($1, $2, $3, 0.2)');
-                });
-                legend.chart.update();
-            }
-
             function generateRandomColorWithOpacity(opacity) {
                 const r = Math.floor(Math.random() * 255);
                 const g = Math.floor(Math.random() * 255);
@@ -55,14 +40,13 @@
             }
 
             const backgroundColors = generateDistinctColorsWithOpacity(@json($data['labels']).length, 0.2);
-
             const borderColors = backgroundColors.map(color => color.replace(/0.2\)$/, "1)"));
 
             const unit = @json($data['unit']);
 
             const ctx = document.getElementById('barChart-{{ $data['chart_label'] }}').getContext('2d');
             const myChart = new Chart(ctx, {
-                type: 'pie',
+                type: 'bar',
                 data: {
                     labels: @json($data['labels']),
                     datasets: [{
@@ -70,18 +54,44 @@
                         backgroundColor: backgroundColors,
                         borderColor: borderColors,
                         borderWidth: 1,
-                    }],
+                    }]
                 },
                 options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
                     animation: {
                         duration: 1500,
-                        easing: 'easeOutElastic',
-                        animateRotate: true,
-                        animateScale: true,
+                        easing: 'easeOutElastic'
                     },
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        title: {
+                            display: true,
+                            text: @json($data['chart_label']),
+                            font: {
+                                size: 16,
+                            },
+                        },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.label || '';
+                                    let value = context.raw || '';
+                                    if (unit === 'IRR') {
+                                        value = parseFloat(value).toLocaleString('en-US');
+                                    }
+                                    return `${label}: ${value} @json($data['unit'])`;
+                                },
+                            }
+                        },
                         zoom: {
                             zoom: {
                                 wheel: {
@@ -94,57 +104,9 @@
                                 mode: 'xy',
                             },
                         },
-                        title: {
-                            display: true,
-                            text: @json($data['chart_label']),
-                            font: {
-                                size: 16,
-                            },
-                        },
-                        legend: {
-                            labels: {
-                                font: {
-                                    size: 14,
-                                    weight: 'bold',
-                                },
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle',
-                            },
-                            position: 'bottom',
-                            onHover: handleHover,
-                            onLeave: handleLeave
-                        },
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                label: function (context) {
-                                    let label = context.label || '';
-                                    let value = context.raw || '';
-                                    if (unit === 'IRR') {
-                                        value = parseFloat(value).toLocaleString('en-US');
-                                    }
-                                    return `${label}: ${value} ${unit}`;
-                                },
-                            },
-                        },
-                    },
-                    layout: {
-                        padding: 10,
-                    },
-                },
-            });
-
-            ctx.onclick = function (event) {
-                const points = myChart.getElementsAtEventForMode(event, 'nearest', {intersect: true}, true);
-                if (points.length) {
-                    const datasetIndex = points[0].datasetIndex;
-                    const index = points[0].index;
-                    const label = myChart.data.labels[index];
-                    const value = myChart.data.datasets[datasetIndex].data[index];
-                    alert(`Label: ${label}\nValue: ${value}`);
+                    }
                 }
-            };
+            });
         })();
     </script>
 </div>
