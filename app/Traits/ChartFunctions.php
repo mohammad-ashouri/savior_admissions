@@ -317,34 +317,41 @@ trait ChartFunctions
      */
     public function tuitionPaid($activeAcademicYears)
     {
-        $data = TuitionInvoices::with('applianceInformation')
+        $data = TuitionInvoices::with(['applianceInformation', 'invoiceDetails'])
             ->whereHas('applianceInformation', function ($query) use ($activeAcademicYears) {
                 $query->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
                     $query->whereIn('id', $activeAcademicYears);
                 });
             })
+            ->whereHas('invoiceDetails', function ($query) {
+                $query->whereIsPaid(1);
+            })
             ->get();
 
         /**
-         * Getting payment types
+         * Getting tuition invoice details
          */
         $fullPayment = 0;
         $fullPaymentWithAdvance = 0;
         $twoInstallments = 0;
         $fourInstallments = 0;
         foreach ($data as $tuitionInvoices) {
+            $amount = 0;
+            foreach ($tuitionInvoices->invoiceDetails as $invoiceDetail) {
+                $amount += $invoiceDetail->amount;
+            }
             switch ($tuitionInvoices->payment_type) {
                 case 1:
-                    $fullPayment++;
+                    $fullPayment += $amount;
                     break;
                 case 2:
-                    $fullPaymentWithAdvance++;
+                    $fullPaymentWithAdvance += $amount;
                     break;
                 case 3:
-                    $twoInstallments++;
+                    $twoInstallments += $amount;
                     break;
                 case 4:
-                    $fourInstallments++;
+                    $fourInstallments += $amount;
                     break;
             }
         }
@@ -358,8 +365,8 @@ trait ChartFunctions
         $data = [
             'labels' => array_keys($tuitionInfo),
             'data' => array_values($tuitionInfo),
-            'chart_label' => 'Tuition Payment Types',
-            'unit' => '',
+            'chart_label' => 'Tuition Payment Amount',
+            'unit' => 'IRR',
         ];
 
         return $data;
