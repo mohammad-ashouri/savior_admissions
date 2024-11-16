@@ -319,14 +319,15 @@ trait ChartFunctions
      */
     public function tuitionPaidPaymentType($activeAcademicYears)
     {
-        $data = TuitionInvoices::with(['applianceInformation', 'invoiceDetails'])
+        $data = TuitionInvoices::with(['applianceInformation', 'invoiceDetails'=>function ($query) {
+            $query->whereHas('invoiceDetails', function ($query) {
+                    $query->whereIsPaid(1);
+                });
+        }])
             ->whereHas('applianceInformation', function ($query) use ($activeAcademicYears) {
                 $query->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
                     $query->whereIn('id', $activeAcademicYears);
                 });
-            })
-            ->whereHas('invoiceDetails', function ($query) {
-                $query->whereIsPaid(1);
             })
             ->get();
 
