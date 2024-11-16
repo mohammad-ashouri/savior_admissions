@@ -379,28 +379,29 @@ trait ChartFunctions
      */
     public function tuitionPaidAcademicYear($activeAcademicYears)
     {
-        $academicYearTuition=[];
+        $academicYearTuition = [];
         foreach ($activeAcademicYears as $activeAcademicYear) {
-            $data = TuitionInvoices::with(['applianceInformation', 'invoiceDetails'])
+            $data = TuitionInvoices::with(['applianceInformation', 'invoiceDetails' => function ($query) {
+                $query->whereHas('invoiceDetails', function ($query) {
+                    $query->whereIsPaid(1);
+                });
+            }])
                 ->whereHas('applianceInformation', function ($query) use ($activeAcademicYear) {
                     $query->whereHas('academicYearInfo', function ($query) use ($activeAcademicYear) {
                         $query->where('id', $activeAcademicYear);
                     });
                 })
-                ->whereHas('invoiceDetails', function ($query) {
-                    $query->whereIsPaid(1);
-                })
                 ->get()
                 ->sum(function ($invoice) {
                     return $invoice->invoiceDetails->sum('amount');
                 });
-            $academicYearInfo=AcademicYear::find($activeAcademicYear)->first();
+            $academicYearInfo = AcademicYear::find($activeAcademicYear);
             $academicYearTuition[$academicYearInfo->name] = $data;
         }
         $data = [
             'labels' => array_keys($academicYearTuition),
             'data' => array_values($academicYearTuition),
-            'chart_label' => 'Tuition Paid (Payment Type)',
+            'chart_label' => 'Tuition Paid (Academic Year)',
             'unit' => 'IRR',
         ];
 
