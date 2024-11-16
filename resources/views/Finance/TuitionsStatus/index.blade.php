@@ -220,7 +220,6 @@
                                                     }
                                                 }
                                                 $sumTuition += $totalTuition;
-                                                $sumPaid += $totalPaid;
 
                                                 $paidPercentage = $totalTuition > 0 ? ($totalPaid / $totalTuition) * 100 : 0;
                                             @endphp
