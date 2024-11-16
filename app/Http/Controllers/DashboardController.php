@@ -25,7 +25,8 @@ class DashboardController extends Controller
     protected $absenceInInterview;
     protected $interviewTypes;
     protected $paymentTypes;
-    protected $tuitionPaid;
+    protected $tuitionPaidAcademicYear;
+    protected $tuitionPaidPaymentType;
     protected $levels;
 
     public function __construct()
@@ -38,7 +39,8 @@ class DashboardController extends Controller
         $this->rejectedInterviews = $this->rejectedInterviews($this->getActiveAcademicYears());
         $this->interviewTypes = $this->interviewTypes($this->getActiveAcademicYears());
         $this->paymentTypes = $this->paymentTypes($this->getActiveAcademicYears());
-        $this->tuitionPaid = $this->tuitionPaid($this->getActiveAcademicYears());
+        $this->tuitionPaidAcademicYear = $this->tuitionPaidAcademicYear($this->getActiveAcademicYears());
+        $this->tuitionPaidPaymentType = $this->tuitionPaidPaymentType($this->getActiveAcademicYears());
         $this->levels = $this->levels($this->getActiveAcademicYears());
     }
 
@@ -68,7 +70,8 @@ class DashboardController extends Controller
             $rejectedInterviews = $this->rejectedInterviews;
             $interviewTypes = $this->interviewTypes;
             $paymentTypes = $this->paymentTypes;
-            $tuitionPaid = $this->tuitionPaid;
+            $tuitionPaidPaymentType = $this->tuitionPaidPaymentType;
+            $tuitionPaidAcademicYear = $this->tuitionPaidAcademicYear;
             $levels = $this->levels;
 
             return view('Dashboards.Main', compact(
@@ -81,7 +84,8 @@ class DashboardController extends Controller
                 'rejectedInterviews',
                 'interviewTypes',
                 'paymentTypes',
-                'tuitionPaid',
+                'tuitionPaidAcademicYear',
+                'tuitionPaidPaymentType',
                 'levels',
             ));
         }

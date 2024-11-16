@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\StudentApplianceStatus;
+use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\Level;
 use App\Models\Finance\TuitionInvoices;
 
@@ -314,9 +315,9 @@ trait ChartFunctions
     }
 
     /**
-     * Return chart of tuition paid
+     * Return chart of tuition paid (Payment Type)
      */
-    public function tuitionPaid($activeAcademicYears)
+    public function tuitionPaidPaymentType($activeAcademicYears)
     {
         $data = TuitionInvoices::with(['applianceInformation', 'invoiceDetails'])
             ->whereHas('applianceInformation', function ($query) use ($activeAcademicYears) {
@@ -366,7 +367,40 @@ trait ChartFunctions
         $data = [
             'labels' => array_keys($tuitionInfo),
             'data' => array_values($tuitionInfo),
-            'chart_label' => 'Tuition Payment Amount',
+            'chart_label' => 'Tuition Paid (Payment Type)',
+            'unit' => 'IRR',
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Return chart of tuition paid (Academic Year)
+     */
+    public function tuitionPaidAcademicYear($activeAcademicYears)
+    {
+        $academicYearTuition=[];
+        foreach ($activeAcademicYears as $activeAcademicYear) {
+            $data = TuitionInvoices::with(['applianceInformation', 'invoiceDetails'])
+                ->whereHas('applianceInformation', function ($query) use ($activeAcademicYear) {
+                    $query->whereHas('academicYearInfo', function ($query) use ($activeAcademicYear) {
+                        $query->where('id', $activeAcademicYear);
+                    });
+                })
+                ->whereHas('invoiceDetails', function ($query) {
+                    $query->whereIsPaid(1);
+                })
+                ->get()
+                ->sum(function ($invoice) {
+                    return $invoice->invoiceDetails->sum('amount');
+                });
+            $academicYearInfo=AcademicYear::find($activeAcademicYear)->first();
+            $academicYearTuition[$academicYearInfo->name] = $data;
+        }
+        $data = [
+            'labels' => array_keys($academicYearTuition),
+            'data' => array_values($academicYearTuition),
+            'chart_label' => 'Tuition Paid (Payment Type)',
             'unit' => 'IRR',
         ];
 

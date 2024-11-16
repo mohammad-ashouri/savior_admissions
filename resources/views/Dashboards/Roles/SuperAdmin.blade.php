@@ -51,7 +51,8 @@
             </div>
             <div class="overflow-x-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full">
                 <x-charts.pie :data="$paymentTypes" />
-                <x-charts.pie :data="$tuitionPaid" />
+                <x-charts.pie :data="$tuitionPaidAcademicYear" />
+                <x-charts.pie :data="$tuitionPaidPaymentType" />
             </div>
         </div>
     </div>
