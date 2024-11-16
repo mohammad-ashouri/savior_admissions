@@ -284,6 +284,59 @@ trait ChartFunctions
                 case 1:
                     $fullPayment++;
                     break;
+                case 4:
+                    $fullPaymentWithAdvance++;
+                    break;
+                case 2:
+                    $twoInstallments++;
+                    break;
+                case 3:
+                    $fourInstallments++;
+                    break;
+            }
+        }
+
+        $tuitionInfo = [
+            'Full Payment' => $fullPayment,
+            'Full Payment With Advance' => $fullPaymentWithAdvance,
+            'Two Installments' => $twoInstallments,
+            'Four Installments' => $fourInstallments,
+        ];
+        $data = [
+            'labels' => array_keys($tuitionInfo),
+            'data' => array_values($tuitionInfo),
+            'chart_label' => 'Tuition Payment Types',
+            'unit' => '',
+        ];
+
+        return $data;
+    }
+
+    /**
+     * Return chart of tuition paid
+     */
+    public function tuitionPaid($activeAcademicYears)
+    {
+        $data = TuitionInvoices::with('applianceInformation')
+            ->whereHas('applianceInformation', function ($query) use ($activeAcademicYears) {
+                $query->whereHas('academicYearInfo', function ($query) use ($activeAcademicYears) {
+                    $query->whereIn('id', $activeAcademicYears);
+                });
+            })
+            ->get();
+
+        /**
+         * Getting payment types
+         */
+        $fullPayment = 0;
+        $fullPaymentWithAdvance = 0;
+        $twoInstallments = 0;
+        $fourInstallments = 0;
+        foreach ($data as $tuitionInvoices) {
+            switch ($tuitionInvoices->payment_type) {
+                case 1:
+                    $fullPayment++;
+                    break;
                 case 2:
                     $fullPaymentWithAdvance++;
                     break;
