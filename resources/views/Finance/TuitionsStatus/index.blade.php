@@ -1,4 +1,4 @@
-@php use App\Models\Branch\ApplicationTiming;use App\Models\Catalogs\Level;use App\Models\Finance\Tuition;use Carbon\Carbon;use Morilog\Jalali\Jalalian; @endphp
+@php use App\Models\Branch\ApplicationTiming;use App\Models\Catalogs\Level;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use Carbon\Carbon;use Morilog\Jalali\Jalalian; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -19,8 +19,8 @@
                                                 class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                             @foreach($academicYears as $academicYear)
                                                 <option
-                                                        @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
-                                                        @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                                    @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                                    @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -60,7 +60,7 @@
                                          xmlns="http://www.w3.org/2000/svg"
                                          viewBox="0 0 20 20">
                                         <path
-                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                     </svg>
                                 </div>
                                 <div>
@@ -71,7 +71,7 @@
                     @else
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
                             <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 border text-center">
                                     #
@@ -146,9 +146,7 @@
                             </thead>
 
                             <tbody>
-                            @php
-                                $sumTuition=$sumDebt=$sumPaid=0;
-                            @endphp
+
                             @foreach($students as $student)
                                 @php
                                     $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
@@ -219,7 +217,6 @@
                                                         $totalPaid += $invoices->amount;
                                                     }
                                                 }
-                                                $sumTuition += $totalTuition;
 
                                                 $paidPercentage = $totalTuition > 0 ? ($totalPaid / $totalTuition) * 100 : 0;
                                             @endphp
@@ -228,7 +225,8 @@
 
                                             <div style="display: flex; width: 100%; height: 10px; margin-top: 5px;">
                                                 <div style="width: {{ $paidPercentage }}%;" class="bg-green-500"></div>
-                                                <div style="width: {{ 100 - $paidPercentage }}%;" class="bg-red-500"></div>
+                                                <div style="width: {{ 100 - $paidPercentage }}%;"
+                                                     class="bg-red-500"></div>
                                             </div>
                                         @endif
                                     </th>
@@ -242,7 +240,6 @@
                                                     if ($invoices->is_paid==0){ continue; }
                                                     $totalPaid=$totalPaid+$invoices->amount;
                                                 }
-                                                $sumPaid+=$totalPaid;
                                             @endphp
                                             {{ number_format($totalPaid) }} IRR
                                         @endif
@@ -257,7 +254,6 @@
                                                     if ($invoices->is_paid==1){ continue; }
                                                     $debtBalance=$debtBalance+$invoices->amount;
                                                 }
-                                                $sumDebt+=$debtBalance;
                                             @endphp
                                             {{ number_format($debtBalance) }} IRR
                                         @endif
@@ -600,7 +596,7 @@
                                                 @endphp
                                                 @break
                                         @endswitch
-                                            {{ isset($filteredRow2->date_of_payment) ? $filteredRow2->date_of_payment : '-' }}
+                                        {{ isset($filteredRow2->date_of_payment) ? $filteredRow2->date_of_payment : '-' }}
                                     </th>
                                     {{--                                    Installment 3--}}
                                     <th scope="row"
@@ -648,7 +644,7 @@
                                                 @endphp
                                                 @break
                                         @endswitch
-                                            {{ isset($filteredRow3->date_of_payment) ? $filteredRow3->date_of_payment : '-' }}
+                                        {{ isset($filteredRow3->date_of_payment) ? $filteredRow3->date_of_payment : '-' }}
                                     </th>
                                     {{--                                    Installment 4--}}
                                     <th scope="row"
@@ -680,7 +676,7 @@
                                                 {{ number_format(@$filteredRow->amount) }} IRR
                                                 @break
                                             @default
-                                            -
+                                                -
                                         @endswitch
                                     </th>
                                     {{--                                    Installment 4 - Date--}}
@@ -696,7 +692,7 @@
                                                 @endphp
                                                 @break
                                         @endswitch
-                                            {{ isset($filteredRow4->date_of_payment) ? $filteredRow4->date_of_payment : '-' }}
+                                        {{ isset($filteredRow4->date_of_payment) ? $filteredRow4->date_of_payment : '-' }}
                                     </th>
                                     <th scope="row"
                                         class="flex w-48 border justify-center text-center text-gray-900 dark:text-white">
@@ -744,9 +740,37 @@
                             @endforeach
                             </tbody>
                         </table>
+                        @php
+                            $sumTuition=$sumDebt=$sumPaid=0;
+                            $activeAcademicYear=$_GET['academic_year'];
+                            $totalTuition = TuitionInvoices::with(['applianceInformation', 'invoiceDetails'])
+                                    ->whereHas('applianceInformation', function ($query) use ($activeAcademicYear) {
+                                        $query->whereHas('academicYearInfo', function ($query) use ($activeAcademicYear) {
+                                            $query->where('id', $activeAcademicYear);
+                                        });
+                                    })
+                                    ->get()
+                                    ->sum(function ($invoice) {
+                                        return $invoice->invoiceDetails->sum('amount');
+                                    });
+                            $totalIsPaid = TuitionInvoices::with(['applianceInformation', 'invoiceDetails' => function ($query) {
+                                    $query->whereHas('invoiceDetails', function ($query) {
+                                        $query->whereIsPaid(1);
+                                    });
+                                }])
+                                    ->whereHas('applianceInformation', function ($query) use ($activeAcademicYear) {
+                                        $query->whereHas('academicYearInfo', function ($query) use ($activeAcademicYear) {
+                                            $query->where('id', $activeAcademicYear);
+                                        });
+                                    })
+                                    ->get()
+                                    ->sum(function ($invoice) {
+                                        return $invoice->invoiceDetails->sum('amount');
+                                    });
+                        @endphp
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 border text-center">
                                     Total Tuition
@@ -762,22 +786,22 @@
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                            class="text-base font-semibold">
-                                        {{ number_format($sumTuition) }} IRR
+                                        class="text-base font-semibold">
+                                        {{ number_format($totalTuition) }} IRR
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                            class="text-base font-semibold">
-                                        {{ number_format($sumPaid) }} IRR
+                                        class="text-base font-semibold">
+                                        {{ number_format($totalIsPaid) }} IRR
                                     </div>
                                 </th>
                                 <th scope="row"
                                     class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                     <div
-                                            class="text-base font-semibold">
-                                        {{ number_format($sumDebt) }} IRR
+                                        class="text-base font-semibold">
+                                        {{ number_format($totalTuition-$totalIsPaid) }} IRR
                                     </div>
                                 </th>
                             </tr>
