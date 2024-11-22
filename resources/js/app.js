@@ -2184,6 +2184,15 @@ $(document).ready(function () {
                 }
 
             });
+
+            const lightbox = new PhotoSwipeLightbox({
+                gallery: '.my-gallery',
+                children: 'a',
+                pswpModule: () => import('photoswipe'),
+                wheelToZoom: true,
+                padding: {top: 80, bottom: 80}
+            });
+            lightbox.init();
         }
     } else if (fullPath.includes('TuitionsStatus')) {
         pageTitle = 'Tuitions Status';

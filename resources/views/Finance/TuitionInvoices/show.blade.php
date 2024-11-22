@@ -149,17 +149,16 @@
                                                 @else
                                                     <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
                                                     >
-                                                        <button data-modal-target="openImage"
-                                                                data-modal-toggle="openImage"
-                                                                data-image-src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
-                                                                class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
-                                                                type="button">
-                                                            <img
-                                                                class="h-96 text-blue-500 align-center max-w-full rounded-lg image-preview"
-                                                                style="width: 500px; height: 350px" id="openImage"
-                                                                src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
-                                                                alt="Document Not Found!">
-                                                        </button>
+                                                        <div
+                                                            class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                            <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
+                                                               data-pswp-width="1669"
+                                                               data-pswp-height="1500">
+                                                                <img
+                                                                    src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
+                                                                    alt="Document Not Found!"/>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 @endif
                                             @endforeach
