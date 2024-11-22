@@ -404,6 +404,17 @@ class TuitionPaymentController extends Controller
         }
 
         $tuitionType = json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
+        $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+        $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+
+        //Get evidence info for foreign school in last year
+        $evidence = Evidence::whereApplianceId($studentAppliance->id)->first();
+        if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
+            $foreignSchool = true;
+        } else {
+            $foreignSchool = false;
+        }
+
         if (! strpos($tuitionType, 'Advance')) {
             $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
 
@@ -411,12 +422,126 @@ class TuitionPaymentController extends Controller
             $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
             switch ($request->status) {
                 case 1:
+                    //Found previous discounts
+                    $allStudentsWithGuardian = StudentInformation::whereGuardian($studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
+                    $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
+                    $allGrantedFamilyDiscounts = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->get();
+                    $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
+                        ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
+                        ->join('interviews', 'applications.id', '=', 'interviews.application_id')
+                        ->where('application_reservations.student_id', $studentAppliance->student_id)
+                        ->where('applications.reserved', 1)
+                        ->where('application_reservations.payment_status', 1)
+                        ->where('applications.interviewed', 1)
+                        ->where('interviews.interview_type', 3)
+                        ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
+                        ->orderByDesc('application_reservations.id')
+                        ->first();
+
+                    if ($allGrantedFamilyDiscounts->isEmpty()) {
+                        $newGrantedFamilyDiscount = GrantedFamilyDiscount::withTrashed()->where('appliance_id', $studentAppliance->id)->first();
+                        if (!empty($newGrantedFamilyDiscount)) {
+                            $newGrantedFamilyDiscount->restore();
+                            $newGrantedFamilyDiscount->update([
+                                'level' => $applicationInfo->level,
+                                'discount_percent' => 0,
+                                'discount_price' => 0,
+                                'signed_child_number' => 1,
+                            ]);
+                        } else {
+                            $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
+                            $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
+                            $newGrantedFamilyDiscount->level = $applicationInfo->level;
+                            $newGrantedFamilyDiscount->discount_percent = 0;
+                            $newGrantedFamilyDiscount->discount_price = 0;
+                            $newGrantedFamilyDiscount->signed_child_number = 1;
+                            $newGrantedFamilyDiscount->save();
+                        }
+                    } else {
+                        $student_id = $studentAppliance->student_id;
+
+                        $previousDiscountPrice = $this->getAllFamilyDiscountPrice($studentAppliance->studentInformations->guardianInfo->id);
+
+                        //Calculate discount for minimum level
+                        $minimumLevel = $this->getMinimumApplianceLevelInfo($studentAppliance->studentInformations->guardianInfo->id);
+
+                        $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+                            ->where('tuitions.academic_year', $minimumLevel['academic_year'])->where('tuition_details.level', $minimumLevel['level']->level)->first();
+                        if ($minimumLevelTuitionDetails->level > $applicationInfo->level) {
+                            $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
+                                ->where('tuitions.academic_year', $applicationInfo->academic_year)->where('tuition_details.level', $applicationInfo->level)->first();
+                        }
+
+                        $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($studentAppliance->studentInformations->guardianInfo->id);
+                        if ($foreignSchool) {
+                            $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment_ministry, true)['full_payment_irr_ministry']);
+                        } else {
+                            $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment, true)['full_payment_irr']);
+                        }
+
+                        switch ($minimumSignedStudentNumber) {
+                            case '1':
+                                $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 25) / 100) - $previousDiscountPrice;
+
+                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
+                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
+                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
+                                $newGrantedFamilyDiscount->discount_percent = 25;
+                                switch ($tuitionInvoiceInfo->payment_type) {
+                                    case 1:
+                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
+                                        break;
+                                }
+                                $newGrantedFamilyDiscount->signed_child_number = 2;
+                                $newGrantedFamilyDiscount->save();
+                                break;
+                            case '2':
+
+                                $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 30) / 100) - $previousDiscountPrice;
+
+                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
+                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
+                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
+                                $newGrantedFamilyDiscount->discount_percent = 30;
+                                switch ($tuitionInvoiceInfo->payment_type) {
+                                    case 1:
+                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
+                                        break;
+                                }
+                                $newGrantedFamilyDiscount->signed_child_number = 3;
+                                $newGrantedFamilyDiscount->save();
+                                break;
+                            case '3':
+                                $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 40) / 100) - $previousDiscountPrice;
+
+                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
+                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
+                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
+                                $newGrantedFamilyDiscount->discount_percent = 40;
+                                switch ($tuitionInvoiceInfo->payment_type) {
+                                    case 1:
+                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
+                                        break;
+                                }
+                                $newGrantedFamilyDiscount->signed_child_number = 4;
+                                $newGrantedFamilyDiscount->save();
+                                break;
+                            default:
+                        }
+                    }
+
                     $tuitionInvoiceDetails->is_paid = $request->status;
                     $tuitionInvoiceDetails->save();
+
+                    $studentAppliance->tuition_payment_status = 'Paid';
+                    $studentAppliance->approval_status = 1;
+                    $studentAppliance->save();
+
                     $message = "Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
                     $this->sendSMS($guardianMobile, $message);
 
-                    return response()->json(['message' => 'Successfully accepted!']);
+                    return response()->json(['message' => 'Payment accepted!']);
+
                 case 3:
                     $newTuitionInvoiceDetails = $tuitionInvoiceDetails->replicate();
                     $newTuitionInvoiceDetails->payment_method = null;
@@ -442,21 +567,11 @@ class TuitionPaymentController extends Controller
                 $tuitionInvoiceDetails->is_paid = 1;
                 $tuitionInvoiceDetails->save();
 
-                $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
-                $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
                 $studentAppliance->tuition_payment_status = 'Paid';
                 $studentAppliance->approval_status = 1;
                 $studentAppliance->save();
 
                 $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id);
-
-                //Get evidence info for foreign school in last year
-                $evidence = Evidence::whereApplianceId($studentAppliance->id)->first();
-                if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
-                    $foreignSchool = true;
-                } else {
-                    $foreignSchool = false;
-                }
 
                 //Found previous discounts
                 $familyPercentagePriceTwoInstallment = 0;
