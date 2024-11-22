@@ -811,8 +811,8 @@ class TuitionController extends Controller
                 ->whereIn('student_id', $students)
                 ->whereTuitionPaymentStatus('Paid')
                 ->orderBy('academic_year', 'desc')->get();
-
-            return view('Finance.TuitionsStatus.index', compact('students'));
+            $academicYears=$students->pluck('academic_year')->toArray();
+            $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
         }
 
         return view('Finance.TuitionsStatus.index', compact('students', 'academicYears'));
@@ -830,6 +830,7 @@ class TuitionController extends Controller
         $students = [];
         $firstName = $request->student_first_name;
         $lastName = $request->student_last_name;
+        $isParent=false;
         if ($me->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with('studentInfo')->with('tuitionInvoices')->with('academicYearInfo')->with('documentSeconder');
             if ($request->student_id) {
@@ -887,9 +888,19 @@ class TuitionController extends Controller
             $data->whereTuitionPaymentStatus('Paid');
             $students = $data->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+        } elseif ($me->hasRole('Parent')) {
+            $students = StudentInformation::whereGuardian($me->id)->get()->pluck('student_id')->toArray();
+            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+                ->whereIn('student_id', $students)
+                ->whereAcademicYear($request->academic_year)
+                ->whereTuitionPaymentStatus('Paid')
+                ->orderBy('academic_year', 'desc')->get();
+            $academicYears=$students->pluck('academic_year')->toArray();
+            $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
+            $isParent=true;
         }
 
-        return view('Finance.TuitionsStatus.index', compact('students', 'academicYears'));
+        return view('Finance.TuitionsStatus.index', compact('students', 'academicYears','isParent'));
     }
 
     public function allTuitions(Request $request)
