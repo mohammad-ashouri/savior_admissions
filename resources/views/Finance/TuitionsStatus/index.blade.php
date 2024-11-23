@@ -212,8 +212,10 @@
                                                 $totalTuition = 0;
                                                 $totalPaid = 0;
                                                 foreach ($student->tuitionInvoices->invoiceDetails as $invoices) {
+                                                    if ($invoices->is_paid!=1){ continue; }
+
                                                     $totalTuition += $invoices->amount;
-                                                    if ($invoices->is_paid) {
+                                                    if ($invoices->is_paid=='1') {
                                                         $totalPaid += $invoices->amount;
                                                     }
                                                 }
@@ -237,7 +239,7 @@
                                             @php
                                                 $totalPaid=0;
                                                 foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                    if ($invoices->is_paid==0){ continue; }
+                                                    if ($invoices->is_paid!=1){ continue; }
                                                     $totalPaid=$totalPaid+$invoices->amount;
                                                 }
                                             @endphp
@@ -251,7 +253,7 @@
                                             @php
                                                 $debtBalance=0;
                                                 foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                    if ($invoices->is_paid==1){ continue; }
+                                                    if ($invoices->is_paid!=1){ continue; }
                                                     $debtBalance=$debtBalance+$invoices->amount;
                                                 }
                                             @endphp
