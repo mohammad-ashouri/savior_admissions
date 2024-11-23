@@ -543,16 +543,20 @@ class TuitionPaymentController extends Controller
                     return response()->json(['message' => 'Payment accepted!']);
 
                 case 3:
-                    $newTuitionInvoiceDetails = $tuitionInvoiceDetails->replicate();
-                    $newTuitionInvoiceDetails->payment_method = null;
-                    $newTuitionInvoiceDetails->is_paid = 0;
-                    $newTuitionInvoiceDetails->date_of_payment = null;
-                    $newTuitionInvoiceDetails->created_at = now();
-                    $newTuitionInvoiceDetails->updated_at = now();
-                    $newTuitionInvoiceDetails->save();
-
                     $tuitionInvoiceDetails->is_paid = $request->status;
                     $tuitionInvoiceDetails->save();
+
+//                    $newTuitionInvoiceDetails = $tuitionInvoiceDetails->replicate();
+//                    $newTuitionInvoiceDetails->payment_method = null;
+//                    $newTuitionInvoiceDetails->is_paid = 0;
+//                    $newTuitionInvoiceDetails->date_of_payment = null;
+//                    $newTuitionInvoiceDetails->created_at = now();
+//                    $newTuitionInvoiceDetails->updated_at = now();
+//                    $newTuitionInvoiceDetails->save();
+
+                    $studentAppliance->tuition_payment_status = 'Pending';
+                    $studentAppliance->approval_status = 0;
+                    $studentAppliance->save();
                     $message = "Your tuition payment with ID: $tuition_id has been rejected. Please contact the financial expert of the relevant school.\nSavior Schools";
                     $this->sendSMS($guardianMobile, $message);
 
@@ -561,6 +565,7 @@ class TuitionPaymentController extends Controller
                     abort(503);
             }
         }
+
         switch ($request->status) {
             case 1:
                 $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
