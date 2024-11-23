@@ -561,38 +561,6 @@ class TuitionPaymentController extends Controller
                     abort(503);
             }
         }
-        if ($tuitionType != 'Full Payment' and $tuitionType != 'Full Payment With Advance' and strpos($tuitionType, 'Installment')) {
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
-
-            $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceDetails->tuitionInvoiceDetails->appliance_id);
-            $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
-            switch ($request->status) {
-                case 1:
-                    $tuitionInvoiceDetails->is_paid = $request->status;
-                    $tuitionInvoiceDetails->save();
-                    $message = "Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
-                    $this->sendSMS($guardianMobile, $message);
-
-                    return response()->json(['message' => 'Successfully accepted!']);
-                case 3:
-                    $newTuitionInvoiceDetails = $tuitionInvoiceDetails->replicate();
-                    $newTuitionInvoiceDetails->payment_method = null;
-                    $newTuitionInvoiceDetails->is_paid = 0;
-                    $newTuitionInvoiceDetails->date_of_payment = null;
-                    $newTuitionInvoiceDetails->created_at = now();
-                    $newTuitionInvoiceDetails->updated_at = now();
-                    $newTuitionInvoiceDetails->save();
-
-                    $tuitionInvoiceDetails->is_paid = $request->status;
-                    $tuitionInvoiceDetails->save();
-                    $message = "Your tuition payment with ID: $tuition_id has been rejected. Please contact the financial expert of the relevant school.\nSavior Schools";
-                    $this->sendSMS($guardianMobile, $message);
-
-                    return response()->json(['message' => 'Payment rejected!']);
-                default:
-                    abort(503);
-            }
-        }
         switch ($request->status) {
             case 1:
                 $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
