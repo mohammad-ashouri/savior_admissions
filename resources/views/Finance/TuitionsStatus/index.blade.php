@@ -253,7 +253,7 @@
                                             @php
                                                 $debtBalance=0;
                                                 foreach ($student->tuitionInvoices->invoiceDetails as $invoices){
-                                                    if ($invoices->is_paid!=1){ continue; }
+                                                    if ($invoices->is_paid!=0){ continue; }
                                                     $debtBalance=$debtBalance+$invoices->amount;
                                                 }
                                             @endphp
