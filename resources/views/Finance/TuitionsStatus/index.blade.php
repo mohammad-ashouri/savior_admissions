@@ -19,8 +19,8 @@
                                                 class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                             @foreach($academicYears as $academicYear)
                                                 <option
-                                                        @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
-                                                        @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                                    @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                                    @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -60,7 +60,7 @@
                                          xmlns="http://www.w3.org/2000/svg"
                                          viewBox="0 0 20 20">
                                         <path
-                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                     </svg>
                                 </div>
                                 <div>
@@ -71,7 +71,7 @@
                     @else
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
                             <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="p-4 border text-center">
                                     #
@@ -212,9 +212,9 @@
                                                 $totalTuition = 0;
                                                 $totalPaid = 0;
                                                 foreach ($student->tuitionInvoices->invoiceDetails as $invoices) {
-                                                    if ($invoices->is_paid!=1){ continue; }
 
                                                     $totalTuition += $invoices->amount;
+                                                    if ($invoices->is_paid!=1){ continue; }
                                                     if ($invoices->is_paid=='1') {
                                                         $totalPaid += $invoices->amount;
                                                     }
@@ -773,7 +773,7 @@
                             @endphp
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead
-                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="p-4 border text-center">
                                         Total Tuition
@@ -789,21 +789,21 @@
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
-                                                class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                             {{ number_format($totalTuition) }} IRR
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
-                                                class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                             {{ number_format($totalIsPaid) }} IRR
                                         </div>
                                     </th>
                                     <th scope="row"
                                         class=" p-2 items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         <div
-                                                class="text-base font-semibold">
+                                            class="text-base font-semibold">
                                             {{ number_format($totalTuition-$totalIsPaid) }} IRR
                                         </div>
                                     </th>
