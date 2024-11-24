@@ -300,10 +300,10 @@ class TuitionPaymentController extends Controller
                 if ($request->file('document_file_full_payment3') !== null) {
                     $extension = $request->file('document_file_full_payment3')->getClientOriginalExtension();
 
-                    $bankSlip1 = 'Tuition3_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                    $bankSlip3 = 'Tuition3_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
                     $documentFileFullPayment3Src = $request->file('document_file_full_payment3')->storeAs(
                         'public/uploads/Documents/' . $student_id . '/Appliance_' . "$appliance_id" . '/Tuitions',
-                        $bankSlip1
+                        $bankSlip3
                     );
                 }
                 $filesSrc = [];
