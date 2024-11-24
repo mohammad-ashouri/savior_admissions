@@ -304,32 +304,32 @@
                                                 @endif
 
                                                 @if($applicationStatus->tuition_payment_status=='Paid')
-{{--                                                    <div--}}
-{{--                                                        class="text-base font-semibold">--}}
-{{--                                                        <a href="{{ route('tuitionCard.en',$applicationStatus->id) }}"--}}
-{{--                                                           type="button"--}}
-{{--                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">--}}
-{{--                                                            <div class="text-center">--}}
-{{--                                                                <i title="Click for view english tuition card "--}}
-{{--                                                                   class="las la-address-card "--}}
-{{--                                                                   style="font-size: 20px"></i>--}}
-{{--                                                                English Tuition Card--}}
-{{--                                                            </div>--}}
-{{--                                                        </a>--}}
-{{--                                                    </div>--}}
-{{--                                                    <div--}}
-{{--                                                        class="text-base font-semibold">--}}
-{{--                                                        <a href="{{ route('tuitionCard.fa',$applicationStatus->id) }}"--}}
-{{--                                                           type="button"--}}
-{{--                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">--}}
-{{--                                                            <div class="text-center">--}}
-{{--                                                                <i title="Click for view english tuition card "--}}
-{{--                                                                   class="las la-address-card "--}}
-{{--                                                                   style="font-size: 20px"></i>--}}
-{{--                                                                Persian Tuition Card--}}
-{{--                                                            </div>--}}
-{{--                                                        </a>--}}
-{{--                                                    </div>--}}
+                                                    <div
+                                                        class="text-base font-semibold">
+                                                        <a href="{{ route('tuitionCard.en',$applicationStatus->id) }}"
+                                                           type="button"
+                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                            <div class="text-center">
+                                                                <i title="Click for view english tuition card "
+                                                                   class="las la-address-card "
+                                                                   style="font-size: 20px"></i>
+                                                                English Tuition Card
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div
+                                                        class="text-base font-semibold">
+                                                        <a href="{{ route('tuitionCard.fa',$applicationStatus->id) }}"
+                                                           type="button"
+                                                           class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                            <div class="text-center">
+                                                                <i title="Click for view english tuition card "
+                                                                   class="las la-address-card "
+                                                                   style="font-size: 20px"></i>
+                                                                Persian Tuition Card
+                                                            </div>
+                                                        </a>
+                                                    </div>
                                                 @endif
                                             </div>
                                         </th>
