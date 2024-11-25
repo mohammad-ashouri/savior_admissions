@@ -180,7 +180,7 @@
                                         @if($application->payment_status==0)
                                             Not Paid Yet!
                                         @else
-                                            {{$application->applicationInvoiceInfo->created_at}}
+                                            {{$application->applicationInvoiceInfo?->created_at}}
                                         @endif
                                     </th>
                                     <th scope="row"
