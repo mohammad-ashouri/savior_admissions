@@ -17,6 +17,8 @@ use Kavenegar\Exceptions\ApiException;
 use Kavenegar\Exceptions\HttpException;
 use Kavenegar\Laravel\Facade as Kavenegar;
 
+use function PHPUnit\Framework\isEmpty;
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
@@ -291,6 +293,7 @@ class Controller extends BaseController
         //Found previous discounts
         $allStudentsWithGuardian = StudentInformation::whereGuardian($guardian_id)->pluck('student_id')->toArray();
         $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
+
         return GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->sum('discount_price');
     }
 
@@ -303,5 +306,16 @@ class Controller extends BaseController
         }
 
         return $grantedDiscountInfo;
+    }
+
+    public function getMyStudentsAcademicYears()
+    {
+        $allStudents = StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
+        $allStudentsStatus = StudentApplianceStatus::whereIn('student_id', $allStudents)->whereInterviewStatus('Admitted')->pluck('academic_year')->toArray();
+        if (empty($allStudentsStatus)) {
+            return null;
+        }
+
+        return array_unique($allStudentsStatus);
     }
 }

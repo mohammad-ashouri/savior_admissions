@@ -517,6 +517,12 @@ class ApplicationController extends Controller
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+        } elseif ($me->hasRole('Parent')) {
+            // Finding academic years with status 1 in the specified academic years
+            $academicYears = AcademicYear::whereIn('id', $this->getMyStudentsAcademicYears())->pluck('id')->toArray();
+            // Checking appliance id
+            $myStudents=StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
+            StudentApplianceStatus::whereId($appliance_id)->whereIn('student_id',$myStudents)->firstOrFail();
         }
         $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->whereId($appliance_id)->first();
         if (empty($studentAppliance)) {
