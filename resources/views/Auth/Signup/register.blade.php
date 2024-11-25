@@ -6,6 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/signup.js'])
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="/build/plugins/jquery/dist/jquery.js"></script>
+    <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="/build/plugins/select2/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                placeholder: 'Choose an option',
+                theme: "classic",
+                width: '100%',
+                dropdownCssClass: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                containerCssClass: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+            });
+        });
+    </script>
     <title>Create Account</title>
 </head>
 
@@ -67,7 +82,7 @@
                     country phone
                     prefix</label>
                 <select name="phone_code" id="phone-code" required
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     @foreach($countryPhoneCodes as $countryPhoneCode)
                         <option @if($countryPhoneCode->phonecode==98) selected
                                 @endif value="{{$countryPhoneCode->id}}">{{$countryPhoneCode->name}}
