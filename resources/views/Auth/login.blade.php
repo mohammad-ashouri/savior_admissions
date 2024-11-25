@@ -22,7 +22,7 @@
     <div class="lg:w-2/3 w-full flex flex-col justify-center items-center p-8">
 
         <div>
-            <h2 class="lg:text-3xl text-2xl font-bold mb-8 w-full text-left ">Sign in to Savior International
+            <h2 class="lg:text-3xl text-xl font-bold mb-8 w-full text-center ">Sign in to Savior International
                 School's Admission Portal</h2>
         </div>
         <div>
