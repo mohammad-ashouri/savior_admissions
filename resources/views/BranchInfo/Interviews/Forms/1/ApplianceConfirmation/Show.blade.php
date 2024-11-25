@@ -8,7 +8,7 @@
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div class="grid gap-6 mb-6 md:grid-cols-4">
                             <div>
                                 <label
                                     class="block mb-2  font-bold text-gray-900 dark:text-white">
@@ -21,7 +21,22 @@
                                     Class: </label>
                                 {{ $applicationReservation->levelInfo->name }}
                             </div>
+                            <div>
+                                <label
+                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    First Interviewer: </label>
+                                {{ $applicationReservation->applicationInfo->firstInterviewerInfo->generalInformationInfo->first_name_en }}
+                                {{ $applicationReservation->applicationInfo->firstInterviewerInfo->generalInformationInfo->last_name_en }}
+                            </div>
+                            <div>
+                                <label
+                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Second Interviewer: </label>
+                                {{ $applicationReservation->applicationInfo->secondInterviewerInfo->generalInformationInfo->first_name_en }}
+                                {{ $applicationReservation->applicationInfo->secondInterviewerInfo->generalInformationInfo->last_name_en }}
+                            </div>
                         </div>
+                        <hr>
                         @if ($applicationReservation->level == 1 or $applicationReservation->level==2)
                             @include('BranchInfo.Interviews.Forms.1.ApplianceConfirmation.KG.index')
                         @else
