@@ -81,6 +81,12 @@
                                 <th scope="col" class="px-1 text-center">
                                     Reserved By
                                 </th>
+                                <th scope="col" class="px-1 text-center">
+                                    Created At
+                                </th>
+                                <th scope="col" class="px-1 text-center">
+                                    Paid At
+                                </th>
                                 <th scope="col" class="px-1 text-center action">
                                     Action
                                 </th>
@@ -123,6 +129,14 @@
                                     <th scope="row"
                                         class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $application->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $application->reservatoreInfo->generalInformationInfo->last_name_en }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $application->created_at }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" border items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $application->applicationInvoiceInfo?->created_at }}
                                     </th>
                                     <td class=" border px-1 text-center">
                                         <!-- Modal toggle -->
