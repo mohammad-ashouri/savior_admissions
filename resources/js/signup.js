@@ -105,6 +105,9 @@ $(document).ready(function () {
                         spinner();
                         return;
                     }
+                    if (!$('#phone_code').val()) {
+                        $('#phone_code').val('98');
+                    }
                     break;
                 default:
                     swalFire('Error', "The signup method is not selected", 'error', 'Try again');

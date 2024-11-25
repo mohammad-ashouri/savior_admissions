@@ -194,7 +194,9 @@ $(document).ready(function () {
                     } else {
                         let form = $(this);
                         let data = form.serialize();
-
+                        if (!$('#phone_code').val()) {
+                            $('#phone_code').val('98');
+                        }
                         $.ajax({
                             type: 'POST', url: '/password/sendToken', data: data, headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
@@ -237,7 +239,7 @@ $(document).ready(function () {
                                 } else {
                                     if (response.errors) {
                                         spinner();
-                                        swalFire('Email Error', response.errors, 'error', 'Try again');
+                                        swalFire('Email Error', response.errors[0], 'error', 'Try again');
                                     }
                                     if (response.error) {
                                         spinner();

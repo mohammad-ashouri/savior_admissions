@@ -40,7 +40,7 @@ class PasswordController extends Controller
                 $validator = Validator::make($request->all(), [
                     'phone_code' => [
                         'required',
-                        'exists:country_phone_codes,id',
+                        'exists:country_phone_codes,phonecode',
                     ],
                     'mobile' => [
                         'required',
@@ -52,9 +52,10 @@ class PasswordController extends Controller
                         'errors' => $validator->errors(),
                     ]);
                 }
+
                 $prefix = CountryPhoneCodes::find($request->phone_code);
 
-                $mobile = '+'.$prefix->phonecode.$request->mobile;
+                $mobile = '+'.$request->phone_code.$request->mobile;
 
                 $userInfo = User::whereMobile($mobile)->first();
 
