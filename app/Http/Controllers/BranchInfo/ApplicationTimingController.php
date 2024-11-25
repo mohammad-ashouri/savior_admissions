@@ -77,7 +77,7 @@ class ApplicationTimingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
-            'start_date' => 'required|date',
+            'start_date' => 'required|date|after_or_equal:today',
             'start_time' => 'required|date_format:H:i',
             'end_date' => 'required|date|after_or_equal:start_date',
             'end_time' => 'required|date_format:H:i|after:start_time',

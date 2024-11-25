@@ -32,7 +32,7 @@
                                     <label for="start_date"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         App Begins At</label>
-                                    <input type="date" id="start_date" value="{{ old('start_date') }}" name="start_date"
+                                    <input type="date" id="start_date" value="{{ old('start_date') }}" name="start_date" min="{{ date('Y-m-d') }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            title="Select start date" required>
                                 </div>
@@ -40,7 +40,7 @@
                                     <label for="end_date"
                                            class="block mb-2  font-bold text-gray-900 dark:text-white">
                                         App Ends At</label>
-                                    <input type="date" id="end_date" value="{{ old('end_date') }}" name="end_date"
+                                    <input type="date" id="end_date" value="{{ old('end_date') }}" name="end_date" min="{{ date('Y-m-d') }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                            title="Select end date" required>
                                 </div>
