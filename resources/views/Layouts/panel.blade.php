@@ -50,7 +50,7 @@
                     "searching": true,
                     "paging": true,
                     "info": true,
-                    "pageLength": 10,
+                    "pageLength": 25,
                     "lengthChange": true,
                     select: true,
                     colReorder: true,
