@@ -82,6 +82,9 @@
                                 <th scope="col" class=" text-center">
                                     Second Interviewer
                                 </th>
+                                <th scope="col" class=" text-center">
+                                    Created At
+                                </th>
                                 <th scope="col" class=" text-center action">
                                     Action
                                 </th>
@@ -125,6 +128,10 @@
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $applicationTiming->secondInterviewer->generalInformationInfo->first_name_en }} {{ $applicationTiming->secondInterviewer->generalInformationInfo->last_name_en }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $applicationTiming->created_at }}
                                     </th>
                                     <td class="flex text-center">
                                         <!-- Modal toggle -->
