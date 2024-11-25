@@ -843,7 +843,14 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('Applications')) {
         pageTitle = 'Applications';
-
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: '.my-gallery',
+            children: 'a',
+            pswpModule: () => import('photoswipe'),
+            wheelToZoom: true,
+            padding: {top: 80, bottom: 80}
+        });
+        lightbox.init();
         if (fullPath.includes('Applications/create')) {
             resetAllSelectValues();
             $('#student').change(function () {

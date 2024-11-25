@@ -115,8 +115,25 @@
                                             $paymentMethod=Document::find(json_decode($applicationInfo->applicationInvoiceInfo->payment_information,true)['document_id']);
                                             $paymentMethod->src = str_replace('public', 'storage', $paymentMethod->src);
                                         @endphp
-                                        <img class="w-96" src="{{ env('APP_URL')}}/{{$paymentMethod->src }}"
-                                             alt="Payment Receipt Not Found!">
+                                        @if(substr($paymentMethod->src,-4)=='.pdf')
+                                            <div class="flex justify-center items-center">
+                                                <a target="_blank"
+                                                   href="{{ env('APP_URL')}}/{{$paymentMethod->src }}">
+                                                    <img class="pdf-documents-icons">
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div
+                                                class="w-96 h-96 cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                <a href="{{ env('APP_URL')}}/{{$paymentMethod->src }}"
+                                                   data-pswp-width="1669"
+                                                   data-pswp-height="1500">
+                                                    <img
+                                                        src="{{ env('APP_URL')}}/{{$paymentMethod->src }}"
+                                                        alt="Document Not Found!"/>
+                                                </a>
+                                            </div>
+                                        @endif
                                     </div>
                                     @break
                                 @case(2)
