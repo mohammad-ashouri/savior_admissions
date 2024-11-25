@@ -57,10 +57,7 @@ class DashboardController extends Controller
         $students = [];
         if ($me->hasRole('Parent')) {
             $students = StudentInformation::whereGuardian(auth()->user()->id)
-                ->with('studentInfo')
-                ->with('nationalityInfo')
-                ->with('identificationTypeInfo')
-                ->with('generalInformations')
+                ->with(['studentInfo','nationalityInfo','identificationTypeInfo','generalInformations'])
                 ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
         }
         if ($me->hasRole('Super Admin')) {
@@ -115,7 +112,10 @@ class DashboardController extends Controller
         $applicationStatuses = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
-            $applicationStatuses = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('student_id', $myStudents)->orderByDesc('academic_year')->get();
+            $applicationStatuses = StudentApplianceStatus::with('studentInfo','academicYearInfo','levelInfo')
+                ->whereIn('student_id', $myStudents)
+                ->orderByDesc('academic_year')
+                ->get();
         }
         if ($me->hasRole('Super Admin')) {
             $applicationStatuses = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->get();

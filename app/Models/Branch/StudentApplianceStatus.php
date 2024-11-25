@@ -43,6 +43,7 @@ class StudentApplianceStatus extends Model
     {
         return $this->belongsTo(User::class, 'student_id', 'id');
     }
+
     public function studentInfo()
     {
         return $this->belongsTo(User::class, 'student_id', 'id');
@@ -62,12 +63,23 @@ class StudentApplianceStatus extends Model
     {
         return $this->belongsTo(User::class, 'documents_uploaded_seconder', 'id');
     }
+
     public function evidences()
     {
         return $this->belongsTo(Evidence::class, 'id', 'appliance_id');
     }
+
     public function tuitionInvoices()
     {
         return $this->belongsTo(TuitionInvoices::class, 'id', 'appliance_id');
+    }
+
+    public function levelInfo()
+    {
+        return $this->belongsTo(ApplicationReservation::class, 'student_id', 'student_id')
+            ->whereHas('applicationInfo', function ($query) {
+                $query->where('reserved', 1)->where('interviewed', 1);
+            })
+            ->orderByDesc('id');
     }
 }

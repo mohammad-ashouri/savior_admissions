@@ -143,6 +143,9 @@
                                         Student
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
+                                        Grade
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-center">
                                         Status
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
@@ -155,7 +158,7 @@
                                 @foreach($applicationStatuses as $applicationStatus)
                                     <tr
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <td class="w-56 p-4">
+                                        <td class="w-56 p-4 text-center">
                                             {{$applicationStatus->academicYearInfo->name}}
                                         </td>
                                         <th scope="row"
@@ -170,6 +173,13 @@
                                             <div>
                                                 <div
                                                     class="text-base font-semibold">{{ $applicationStatus->studentInfo->generalInformationInfo->first_name_en }} {{ $applicationStatus->studentInfo->generalInformationInfo->last_name_en }}</div>
+                                            </div>
+                                        </th>
+                                        <th scope="row"
+                                            class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
+                                            <div>
+                                                <div
+                                                    class="text-base font-semibold">{{ $applicationStatus->levelInfo->levelInfo->name }}</div>
                                             </div>
                                         </th>
                                         <th scope="row"
