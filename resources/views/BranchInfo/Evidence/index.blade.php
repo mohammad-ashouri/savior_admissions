@@ -69,7 +69,7 @@
                                 @php
                                     $applicationReservation=ApplicationReservation::with('levelInfo')->whereStudentId($appliance->studentInfo->id)->wherePaymentStatus(1)->latest()->first();
                                 @endphp
-                                <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                <tr class="odd:bg-white even:bg-gray-300 bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4 text-center">
                                         {{ $loop->iteration }}
                                     </td>
@@ -83,12 +83,58 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $appliance->studentInfo->generalInformationInfo->first_name_en }} {{ $appliance->studentInfo->generalInformationInfo->last_name_en }}
+                                        <div class="flex items-center">
+                                            {{ $appliance->studentInfo->generalInformationInfo->first_name_en }} {{ $appliance->studentInfo->generalInformationInfo->last_name_en }}
+                                            <a target="_blank"
+                                               href="{{ route('users.edit',['user'=>$appliance->student_id]) }}">
+                                                <button type="button"
+                                                        class="flex ml-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                    <div class="text-center">
+                                                        <i class="las la-money mr-1"></i>
+                                                    </div>
+                                                    Profile
+                                                </button>
+                                            </a>
+                                            <a target="_blank"
+                                               href="{{ route('show-user-documents',['user_id'=>$appliance->student_id]) }}">
+                                                <button type="button"
+                                                        class="flex ml-2 text-white bg-blue-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    <div class="text-center">
+                                                        <i class="las la-money mr-1"></i>
+                                                    </div>
+                                                    Documents
+                                                </button>
+                                            </a>
+                                        </div>
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $appliance->studentInformations->guardian }}
+                                        class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
+
+                                        <div class="flex items-center">
+                                            {{ $appliance->studentInformations->guardian }}
                                             - {{ $appliance->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $appliance->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}
+
+                                            <a target="_blank"
+                                               href="{{ route('users.edit',['user'=>$appliance->studentInformations->guardian]) }}">
+                                                <button type="button"
+                                                        class="flex ml-2 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                    <div class="text-center">
+                                                        <i class="las la-money mr-1"></i>
+                                                    </div>
+                                                    Profile
+                                                </button>
+                                            </a>
+                                            <a target="_blank"
+                                               href="{{ route('show-user-documents',['user_id'=>$appliance->studentInformations->guardian]) }}">
+                                                <button type="button"
+                                                        class="flex ml-2 text-white bg-blue-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    <div class="text-center">
+                                                        <i class="las la-money mr-1"></i>
+                                                    </div>
+                                                    Documents
+                                                </button>
+                                            </a>
+                                        </div>
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">

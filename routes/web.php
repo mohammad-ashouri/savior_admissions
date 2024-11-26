@@ -178,7 +178,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
             Route::prefix('Documents')->group(function () {
                 Route::get('/', [DocumentController::class, 'index']);
-                Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
+                Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->name('show-user-documents');
                 Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-Principal');
                 Route::post('/Create', [DocumentController::class, 'createDocument']);
                 Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
@@ -207,7 +207,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('StudentStatuses/export-excel', [ExcelController::class, 'exportStudentStatuses']);
 
             //Charts
-            Route::get('charts/bar/registered-students-in-last-academic-year',[ChartController::class,'registeredStudentsInLastAcademicYear']);
+            Route::get('charts/bar/registered-students-in-last-academic-year', [ChartController::class, 'registeredStudentsInLastAcademicYear']);
 
             //Exports
             //PDF
