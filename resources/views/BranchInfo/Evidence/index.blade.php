@@ -53,6 +53,12 @@
                                     Level
                                 </th>
                                 <th scope="col" class=" text-center">
+                                    Created At
+                                </th>
+                                <th scope="col" class=" text-center">
+                                    Updated At
+                                </th>
+                                <th scope="col" class=" text-center">
                                     Documents Form
                                 </th>
                             </tr>
@@ -87,6 +93,14 @@
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $applicationReservation->levelInfo->name }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $appliance->evidences->created_at }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $appliance->evidences->updated_at }}
                                     </th>
                                     <td class="text-center border">
                                         <a href="/ConfirmEvidences/{{$appliance->id}}"
