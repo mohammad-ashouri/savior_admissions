@@ -921,6 +921,13 @@ class TuitionController extends Controller
     {
         $selectedAcademicYear = $request->academic_year;
         $academicYears = AcademicYear::get();
+        if (auth()->user()->hasRole('Principal') or auth()->user()->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->get();
+        }
         if (empty($selectedAcademicYear)) {
             return view('Finance.AllTuitions.index', compact('academicYears', 'selectedAcademicYear'));
         }
