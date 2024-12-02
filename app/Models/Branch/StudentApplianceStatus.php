@@ -78,7 +78,7 @@ class StudentApplianceStatus extends Model
     {
         return $this->belongsTo(ApplicationReservation::class, 'student_id', 'student_id')
             ->whereHas('applicationInfo', function ($query) {
-                $query->where('reserved', 1)->where('interviewed', 1);
+                $query->where('reserved', 1);
             })
             ->orderByDesc('id');
     }
