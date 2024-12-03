@@ -274,6 +274,9 @@ class ApplicationController extends Controller
 
         $studentGender = GeneralInformation::whereUserId($request->student)->value('gender');
 
+        if (!$studentGender){
+            return response()->json(['error' => 'Student gender not found. Please contact the admissions office.'], 422);
+        }
         switch ($studentGender) {
             case 'Male':
                 $gender = 1;
