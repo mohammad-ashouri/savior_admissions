@@ -55,6 +55,7 @@ class ApplicationReservation extends Model
     }
     public function levelInfo()
     {
-        return $this->belongsTo(Level::class, 'level', 'id');
+        return $this->belongsTo(Level::class, 'level', 'id')
+            ->orderByDesc('id');
     }
 }

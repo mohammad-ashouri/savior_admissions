@@ -188,18 +188,31 @@
                             column.search(val ? '^' + val + '$' : '', true, false).draw();
                         });
 
-                    column.data().unique().sort().each(function (d, j) {
-                        let uniqueData = [];
+                    let uniqueData = [];
+                    column.data().unique().each(function (d, j) {
                         if (d) {
                             let cleanData = $('<div>').html(d).text().trim();
                             if (cleanData && !uniqueData.includes(cleanData)) {
                                 uniqueData.push(cleanData);
-                                select.append('<option value="' + cleanData + '">' + cleanData + '</option>');
                             }
                         }
                     });
 
+                    uniqueData.sort(function (a, b) {
+                        let numA = parseInt(a.match(/\d+/)) || 0;
+                        let numB = parseInt(b.match(/\d+/)) || 0;
+
+                        if (numA === numB) {
+                            return a.localeCompare(b);
+                        }
+                        return numA - numB;
+                    });
+
+                    uniqueData.forEach(function (cleanData) {
+                        select.append('<option value="' + cleanData + '">' + cleanData + '</option>');
+                    });
                 });
+
             }
 
             $('.select2').select2({

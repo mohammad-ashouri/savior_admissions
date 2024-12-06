@@ -89,6 +89,44 @@
                             </div>
                         </div>
                     @else
+                        @php
+                            $gradesCount=[];
+                            foreach ($students as $student){
+                                $gradesCount[]=$student->levelInfo->levelInfo->name;
+                            }
+                                $gradesCount = array_count_values($gradesCount);
+                            uksort($gradesCount, function ($a, $b) {
+                                preg_match('/\d+/', $a, $matchesA);
+                                preg_match('/\d+/', $b, $matchesB);
+
+                                $numA = $matchesA[0] ?? 0;
+                                $numB = $matchesB[0] ?? 0;
+
+                                return $numA - $numB;
+                            });
+                        @endphp
+                        <table class="w-full text-sm text-left text-gray-500 mb-3 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                @foreach($gradesCount as $key => $item)
+                                    <th scope="col" class="p-4 text-center">
+                                        {{ $key }}
+                                    </th>
+                                @endforeach
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                @foreach($gradesCount as $key => $item)
+                                    <td class="w-4 p-4 border text-center">
+                                        {{ $item }} student(s)
+                                    </td>
+                                @endforeach
+                            </tr>
+                            </tbody>
+                        </table>
+
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
