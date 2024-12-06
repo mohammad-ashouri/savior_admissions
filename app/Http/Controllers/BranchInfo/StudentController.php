@@ -551,7 +551,7 @@ class StudentController extends Controller
         return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
     }
 
-    public function studentStatisticsReportIndex()
+    public function StudentStatisticsReportIndex()
     {
         $me = User::find(auth()->user()->id);
 
@@ -559,7 +559,7 @@ class StudentController extends Controller
         if ($me->hasRole('Super Admin')) {
             $academicYears = AcademicYear::get();
 
-            return view('BranchInfo.studentStatisticsReport.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Parent')) {
             $students = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
@@ -579,7 +579,7 @@ class StudentController extends Controller
 //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
-            return view('BranchInfo.studentStatisticsReport.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
 
         }
 
@@ -587,7 +587,7 @@ class StudentController extends Controller
             $students = [];
         }
 
-        return view('BranchInfo.studentStatisticsReport.index', compact('students', 'me'));
+        return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'me'));
     }
 
     public function searchStudentStatisticsReport(Request $request)
@@ -613,7 +613,7 @@ class StudentController extends Controller
 
             $academicYears = AcademicYear::get();
 
-            return view('BranchInfo.studentStatisticsReport.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -630,7 +630,7 @@ class StudentController extends Controller
 
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
-            return view('BranchInfo.studentStatisticsReport.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
 
         }
 
@@ -638,7 +638,7 @@ class StudentController extends Controller
             $students = [];
         }
 
-        return view('BranchInfo.studentStatisticsReport.index', compact('students', 'me'));
+        return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'me'));
     }
 
 }
