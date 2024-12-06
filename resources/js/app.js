@@ -1731,7 +1731,9 @@ $(document).ready(function () {
             });
         });
 
-    } else if (fullPath.includes('StudentStatuses')) {
+    } else if (fullPath.includes('StudentStatisticsReport')) {
+        pageTitle = 'Student Statistics Report';
+    }else if (fullPath.includes('StudentStatuses')) {
         pageTitle = 'Student Statuses';
         $('.show-guardian-mobile').click(function () {
             let dataId = this.getAttribute('data-id');
