@@ -87,6 +87,7 @@ class EvidenceController extends Controller
 
         switch (request('status')) {
             case 'Accept':
+                $studentAppliance->interview_status = 'Admitted';
                 $studentAppliance->documents_uploaded = 1;
                 $studentAppliance->documents_uploaded_approval = 1;
                 $studentAppliance->tuition_payment_status = 'Pending';
