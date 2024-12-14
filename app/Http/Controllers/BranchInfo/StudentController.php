@@ -402,53 +402,13 @@ class StudentController extends Controller
             'student_last_name' => 'nullable|string',
             'gender' => 'nullable|string|in:Male,Female',
         ]);
-
         $me = User::find(auth()->user()->id);
-        $studentId = $request->student_id;
-        $studentFirstName = $request->student_first_name;
-        $studentLastName = $request->student_last_name;
-        $gender = $request->gender;
         $academicYear = $request->academic_year;
 
         $students = [];
         if ($me->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
-            if (!empty($studentId)) {
-                $data->whereStudentId($studentId);
-            }
-            if (!empty($studentFirstName)) {
-                $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($studentFirstName) {
-                        $query->where('first_name_en', 'like', "%$studentFirstName%");
-                    });
-                });
-            }
-            if (!empty($studentLastName)) {
-                $data->whereHas('studentInfo', function ($query) use ($studentLastName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($studentLastName) {
-                        $query->where('last_name_en', 'like', "%$studentLastName%");
-                    });
-                });
-            }
-            if (!empty($gender)) {
-                $data->whereHas('studentInfo', function ($query) use ($gender) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
-                        $query->whereGender($gender);
-                    });
-                });
-            }
-            if (!empty($academicYear)) {
-                $data->whereAcademicYear($academicYear);
-            }
             $students = $data->orderBy('academic_year', 'desc')->get();
-//            $students->appends([
-//                'student_id' => $studentId,
-//                'student_first_name' => $studentFirstName,
-//                'student_last_name' => $studentLastName,
-//                'gender' => $gender,
-//                'academic_year' => $academicYear,
-//            ]);
-
             $academicYears = AcademicYear::get();
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
@@ -458,41 +418,10 @@ class StudentController extends Controller
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations');
-            if (!empty($studentId)) {
-                $data->whereStudentId($studentId);
-            }
-            if (!empty($studentFirstName)) {
-                $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($studentFirstName) {
-                        $query->where('first_name_en', 'like', "%$studentFirstName%");
-                    });
-                });
-            }
-            if (!empty($studentLastName)) {
-                $data->whereHas('studentInfo', function ($query) use ($studentLastName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($studentLastName) {
-                        $query->where('last_name_en', 'like', "%$studentLastName%");
-                    });
-                });
-            }
-            if (!empty($gender)) {
-                $data->whereHas('studentInfo', function ($query) use ($gender) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
-                        $query->whereGender($gender);
-                    });
-                });
-            }
             if (!empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->get();
-//            $students->appends([
-//                'student_id' => $studentId,
-//                'student_first_name' => $studentFirstName,
-//                'student_last_name' => $studentLastName,
-//                'gender' => $gender,
-//                'academic_year' => $academicYear,
-//            ]);
         } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -502,42 +431,10 @@ class StudentController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('academic_year', $academicYears);
-            if (!empty($studentId)) {
-                $data->whereStudentId($studentId);
-            }
-            if (!empty($studentFirstName)) {
-                $data->whereHas('studentInfo', function ($query) use ($studentFirstName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($studentFirstName) {
-                        $query->where('first_name_en', 'like', "%$studentFirstName%");
-                    });
-                });
-            }
-            if (!empty($studentLastName)) {
-                $data->whereHas('studentInfo', function ($query) use ($studentLastName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($studentLastName) {
-                        $query->where('last_name_en', 'like', "%$studentLastName%");
-                    });
-                });
-            }
-            if (!empty($gender)) {
-                $data->whereHas('studentInfo', function ($query) use ($gender) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($gender) {
-                        $query->whereGender($gender);
-                    });
-                });
-            }
             if (!empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->get();
-//            $students->appends([
-//                'student_id' => $studentId,
-//                'student_first_name' => $studentFirstName,
-//                'student_last_name' => $studentLastName,
-//                'gender' => $gender,
-//                'academic_year' => $academicYear,
-//            ]);
-
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));

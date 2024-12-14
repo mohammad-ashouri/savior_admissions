@@ -244,11 +244,11 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $student->studentInfo->generalInformationInfo->first_name_en }} {{ $student->studentInfo->generalInformationInfo->last_name_en }}
+                                        {{ $student->studentInfo?->generalInformationInfo->first_name_en }} {{ $student->studentInfo?->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $student->studentInfo->generalInformationInfo->gender }}
+                                        {{ $student->studentInfo?->generalInformationInfo->gender }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
