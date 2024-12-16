@@ -469,7 +469,7 @@
                 <p>{{ __('translated_fa.Student ID') }}: <span>{{ $applianceStatus->student_id }}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>{{ __('translated_fa.Country') }}: <span>{{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->nationalityInfo?->en_short_name}}</span></p>
+                <p>{{ __('translated_fa.Country') }}: <span>{{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->nationalityInfo?->nationality}}</span></p>
                 <p>{{ __('translated_fa.Contact Number') }}:
                     <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
             </div>
