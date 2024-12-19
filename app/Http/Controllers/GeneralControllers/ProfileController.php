@@ -47,6 +47,7 @@ class ProfileController extends Controller
                 'phone' => 'required|string',
                 'zip/postalcode' => 'required|string',
                 'email' => 'nullable|email',
+                'gender' => 'required|string|in:Male,Female',
             ]);
             $generalInformation = GeneralInformation::whereUserId(auth()->user()->id)->update(
                 [
@@ -61,6 +62,7 @@ class ProfileController extends Controller
                     'state_city' => $request->input('city'),
                     'address' => $request->input('address'),
                     'phone' => $request->input('phone'),
+                    'gender' => $request->input('gender'),
                     'postal_code' => $request->input('zip/postalcode'),
                     'status' => 1,
                     'adder' => auth()->user()->id,

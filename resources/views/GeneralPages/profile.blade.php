@@ -27,7 +27,7 @@
                     </div>
                 </div>
             @endif
-            <div class="grid grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-3 mt-4 gap-4 mb-4">
                 {{--                <div class="lg:col-span-1 col-span-3 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">--}}
                 {{--                    <div>--}}
                 {{--                        <div class="lg:flex grid lg:items-center items-start lg:space-x-4">--}}
