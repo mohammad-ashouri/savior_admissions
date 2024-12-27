@@ -76,10 +76,10 @@ class StudentApplianceStatus extends Model
 
     public function levelInfo()
     {
-        return $this->belongsTo(ApplicationReservation::class, 'student_id', 'student_id')
+        return $this->hasOne(ApplicationReservation::class, 'student_id', 'student_id')
             ->whereHas('applicationInfo', function ($query) {
                 $query->where('reserved', 1);
             })
-            ->orderByDesc('id');
+            ->latest('id');
     }
 }
