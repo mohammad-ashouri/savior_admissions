@@ -139,7 +139,7 @@
                                                                     $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
                                                                     $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
 
-                                                                    $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100));
+                                                                    $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFullPayment);
                                                                     $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment);
                                                                     $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFourInstallment);
                                                         break;
@@ -932,6 +932,7 @@
                                     $tuitionDiscountFull=($fullPaymentAmount*40)/100;
                                     if($totalDiscountsFull>$tuitionDiscountFull){
                                         $totalDiscountsFull=$tuitionDiscountFull;
+                                        $totalFeeFullPayment=$fullPaymentAmount-$totalDiscountsFull;
                                     }
 
                                     $totalDiscountsTwo=(($twoInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceTwoInstallment;

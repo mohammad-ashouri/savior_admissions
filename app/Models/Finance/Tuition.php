@@ -24,6 +24,6 @@ class Tuition extends Model
 
     public function allTuitions()
     {
-        return $this->hasMany(TuitionDetail::class, 'tuition_id');
+        return $this->hasMany(TuitionDetail::class, 'tuition_id', 'id');
     }
 }
