@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BranchInfo;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch\ApplianceConfirmationInformation;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -310,140 +311,55 @@ class InterviewController extends Controller
             case 'kga':
                 $interview->interview_type = 3;
 
+                // Define a helper function for file upload and document creation
+                function uploadAndCreateDocument($file, $description, $index, $studentApplianceStatus)
+                {
+                    $fileName = "document_file{$index}_".now()->format('Y-m-d_H-i-s');
+                    $fileExtension = $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs(
+                        "public/uploads/Documents/{$studentApplianceStatus->student_id}/Appliance_{$studentApplianceStatus->id}/Financial_Files",
+                        "$fileName.$fileExtension"
+                    );
+
+                    // Return the file data and create document entries
+                    Document::create([
+                        'user_id' => auth()->user()->id,
+                        'document_type_id' => 8,
+                        'src' => $filePath,
+                        'description' => $description,
+                    ]);
+
+                    Document::create([
+                        'user_id' => $studentApplianceStatus->student_id,
+                        'document_type_id' => 8,
+                        'src' => $filePath,
+                        'description' => $description,
+                    ]);
+
+                    return [
+                        "src{$index}" => $filePath,
+                        "description{$index}" => $description,
+                    ];
+                }
+
+                // Initialize files array
                 $files = [];
-                if ($request->file('document_file1')) {
-                    $document_file1_name = 'document_file1_'.now()->format('Y-m-d_H-i-s');
-                    $document_file1_extension = $request->file('document_file1')->getClientOriginalExtension();
-                    $document_file1_path = $request->file('document_file1')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                        "$document_file1_name.$document_file1_extension"
-                    );
-                    $files['file1'] = [
-                        'src1' => $document_file1_path,
-                        'description1' => $request->document_description1,
-                    ];
 
-                    Document::create([
-                        'user_id' => auth()->user()->id,
-                        'document_type_id' => 8,
-                        'src' => $document_file1_path,
-                        'description' => $request->document_description1,
-                    ]);
+                // Loop through the possible files
+                for ($i = 1; $i <= 5; $i++) {
+                    $fileKey = "document_file{$i}";
+                    $descriptionKey = "document_description{$i}";
 
-                    Document::create([
-                        'user_id' => $studentApplianceStatus->student_id,
-                        'document_type_id' => 8,
-                        'src' => $document_file1_path,
-                        'description' => $request->document_description1,
-                    ]);
+                    if ($request->file($fileKey)) {
+                        $files["file{$i}"] = uploadAndCreateDocument(
+                            $request->file($fileKey),
+                            $request->input($descriptionKey),
+                            $i,
+                            $studentApplianceStatus
+                        );
+                    }
                 }
 
-                if ($request->file('document_file2')) {
-                    $document_file2_name = 'document_file2_'.now()->format('Y-m-d_H-i-s');
-                    $document_file2_extension = $request->file('document_file2')->getClientOriginalExtension();
-                    $document_file2_path = $request->file('document_file2')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                        "$document_file2_name.$document_file2_extension"
-                    );
-                    $files['file2'] = [
-                        'src2' => $document_file2_path,
-                        'description2' => $request->document_description2,
-                    ];
-
-                    Document::create([
-                        'user_id' => auth()->user()->id,
-                        'document_type_id' => 8,
-                        'src' => $document_file2_path,
-                        'description' => $request->document_description2,
-                    ]);
-
-                    Document::create([
-                        'user_id' => $studentApplianceStatus->student_id,
-                        'document_type_id' => 8,
-                        'src' => $document_file2_path,
-                        'description' => $request->document_description2,
-                    ]);
-                }
-
-                if ($request->file('document_file3')) {
-                    $document_file3_name = 'document_file3_'.now()->format('Y-m-d_H-i-s');
-                    $document_file3_extension = $request->file('document_file3')->getClientOriginalExtension();
-                    $document_file3_path = $request->file('document_file3')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                        "$document_file3_name.$document_file3_extension"
-                    );
-                    $files['file3'] = [
-                        'src3' => $document_file3_path,
-                        'description3' => $request->document_description3,
-                    ];
-
-                    Document::create([
-                        'user_id' => auth()->user()->id,
-                        'document_type_id' => 8,
-                        'src' => $document_file3_path,
-                        'description' => $request->document_description3,
-                    ]);
-
-                    Document::create([
-                        'user_id' => $studentApplianceStatus->student_id,
-                        'document_type_id' => 8,
-                        'src' => $document_file3_path,
-                        'description' => $request->document_description3,
-                    ]);
-                }
-
-                if ($request->file('document_file4')) {
-                    $document_file4_name = 'document_file4_'.now()->format('Y-m-d_H-i-s');
-                    $document_file4_extension = $request->file('document_file4')->getClientOriginalExtension();
-                    $document_file4_path = $request->file('document_file4')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                        "$document_file4_name.$document_file4_extension"
-                    );
-                    $files['file4'] = [
-                        'src4' => $document_file4_path,
-                        'description4' => $request->document_description4,
-                    ];
-
-                    Document::create([
-                        'user_id' => auth()->user()->id,
-                        'document_type_id' => 8,
-                        'src' => $document_file4_path,
-                        'description' => $request->document_description4,
-                    ]);
-
-                    Document::create([
-                        'user_id' => $studentApplianceStatus->student_id,
-                        'document_type_id' => 8,
-                        'src' => $document_file4_path,
-                        'description' => $request->document_description4,
-                    ]);
-                }
-
-                if ($request->file('document_file5')) {
-                    $document_file5_name = 'document_file5_'.now()->format('Y-m-d_H-i-s');
-                    $document_file5_extension = $request->file('document_file5')->getClientOriginalExtension();
-                    $document_file5_path = $request->file('document_file5')->storeAs(
-                        'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                        "$document_file5_name.$document_file5_extension"
-                    );
-                    $files['file5'] = [
-                        'src5' => $document_file5_path,
-                        'description5' => $request->document_description5,
-                    ];
-                    Document::create([
-                        'user_id' => auth()->user()->id,
-                        'document_type_id' => 8,
-                        'src' => $document_file5_path,
-                        'description' => $request->document_description5,
-                    ]);
-
-                    Document::create([
-                        'user_id' => $studentApplianceStatus->student_id,
-                        'document_type_id' => 8,
-                        'src' => $document_file5_path,
-                        'description' => $request->document_description5,
-                    ]);
-                }
                 $interview->files = json_encode($files, true);
 
                 break;
@@ -452,19 +368,21 @@ class InterviewController extends Controller
         $interview->interview_form = json_encode($request->all(), true);
 
         if ($interview->save()) {
-            //Check if 3 interviews completed then make that to principal for confirmation
-            $checkInterview1Completed = Interview::whereApplicationId($request->application_id)
-                ->where('interview_type', 1)
-                ->exists();
-            $checkInterview2Completed = Interview::whereApplicationId($request->application_id)
-                ->where('interview_type', 2)
-                ->exists();
-            $checkInterview3Completed = Interview::whereApplicationId($request->application_id)
-                ->where('interview_type', 3)
-                ->exists();
-            if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {
+            // Check if all interviews are completed, then update status to principal confirmation
+            $completedInterviews = Interview::whereApplicationId($request->application_id)
+                ->whereIn('interview_type', [1, 2, 3])
+                ->pluck('interview_type')
+                ->toArray();
+
+            if (count($completedInterviews) === 3) {
                 $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
                 $studentApplianceStatus->save();
+
+                //Add to appliance confirmation information
+                ApplianceConfirmationInformation::firstOrCreate([
+                    'appliance_id' => $studentApplianceStatus->id,
+                    'referrer' => auth()->user()->id,
+                ]);
             }
 
             return redirect()->route('interviews.index')
@@ -693,138 +611,44 @@ class InterviewController extends Controller
         $interview = Interview::find($request->interview_id);
         $interview->interview_form = json_encode($request->all(), true);
         $files = [];
-        if ($request->hasFile('document_file1')) {
-            $document_file1_name = 'document_file1_'.now()->format('Y-m-d_H-i-s');
-            $document_file1_extension = $request->file('document_file1')->getClientOriginalExtension();
-            $document_file1_path = $request->file('document_file1')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                "$document_file1_name.$document_file1_extension"
-            );
-            $files['file1'] = [
-                'src1' => $document_file1_path,
-                'description1' => $request->document_description1,
-            ];
+        $document_files = [
+            'document_file1' => $request->document_description1,
+            'document_file2' => $request->document_description2,
+            'document_file3' => $request->document_description3,
+            'document_file4' => $request->document_description4,
+            'document_file5' => $request->document_description5,
+        ];
 
-            Document::create([
-                'user_id' => auth()->user()->id,
-                'document_type_id' => 8,
-                'src' => $document_file1_path,
-                'description' => $request->document_description1,
-            ]);
+        foreach ($document_files as $fileKey => $description) {
+            if ($request->hasFile($fileKey)) {
+                $file = $request->file($fileKey);
+                $fileName = $fileKey.'_'.now()->format('Y-m-d_H-i-s');
+                $fileExtension = $file->getClientOriginalExtension();
+                $filePath = $file->storeAs(
+                    'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
+                    "$fileName.$fileExtension"
+                );
 
-            Document::create([
-                'user_id' => $studentApplianceStatus->student_id,
-                'document_type_id' => 8,
-                'src' => $document_file1_path,
-                'description' => $request->document_description1,
-            ]);
-        }
+                $files[$fileKey] = [
+                    'src' => $filePath,
+                    'description' => $description,
+                ];
 
-        if ($request->hasFile('document_file2')) {
-            $document_file2_name = 'document_file2_'.now()->format('Y-m-d_H-i-s');
-            $document_file2_extension = $request->file('document_file2')->getClientOriginalExtension();
-            $document_file2_path = $request->file('document_file2')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                "$document_file2_name.$document_file2_extension"
-            );
-            $files['file2'] = [
-                'src2' => $document_file2_path,
-                'description2' => $request->document_description2,
-            ];
+                // Create the document for the current user and student
+                Document::create([
+                    'user_id' => auth()->user()->id,
+                    'document_type_id' => 8,
+                    'src' => $filePath,
+                    'description' => $description,
+                ]);
 
-            Document::create([
-                'user_id' => auth()->user()->id,
-                'document_type_id' => 8,
-                'src' => $document_file2_path,
-                'description' => $request->document_description2,
-            ]);
-
-            Document::create([
-                'user_id' => $studentApplianceStatus->student_id,
-                'document_type_id' => 8,
-                'src' => $document_file2_path,
-                'description' => $request->document_description2,
-            ]);
-        }
-
-        if ($request->hasFile('document_file3')) {
-            $document_file3_name = 'document_file3_'.now()->format('Y-m-d_H-i-s');
-            $document_file3_extension = $request->file('document_file3')->getClientOriginalExtension();
-            $document_file3_path = $request->file('document_file3')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                "$document_file3_name.$document_file3_extension"
-            );
-            $files['file3'] = [
-                'src3' => $document_file3_path,
-                'description3' => $request->document_description3,
-            ];
-
-            Document::create([
-                'user_id' => auth()->user()->id,
-                'document_type_id' => 8,
-                'src' => $document_file3_path,
-                'description' => $request->document_description3,
-            ]);
-
-            Document::create([
-                'user_id' => $studentApplianceStatus->student_id,
-                'document_type_id' => 8,
-                'src' => $document_file3_path,
-                'description' => $request->document_description3,
-            ]);
-        }
-
-        if ($request->hasFile('document_file4')) {
-            $document_file4_name = 'document_file4_'.now()->format('Y-m-d_H-i-s');
-            $document_file4_extension = $request->file('document_file4')->getClientOriginalExtension();
-            $document_file4_path = $request->file('document_file4')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                "$document_file4_name.$document_file4_extension"
-            );
-            $files['file4'] = [
-                'src4' => $document_file4_path,
-                'description4' => $request->document_description4,
-            ];
-
-            Document::create([
-                'user_id' => auth()->user()->id,
-                'document_type_id' => 8,
-                'src' => $document_file4_path,
-                'description' => $request->document_description4,
-            ]);
-
-            Document::create([
-                'user_id' => $studentApplianceStatus->student_id,
-                'document_type_id' => 8,
-                'src' => $document_file4_path,
-                'description' => $request->document_description4,
-            ]);
-        }
-
-        if ($request->hasFile('document_file5')) {
-            $document_file5_name = 'document_file5_'.now()->format('Y-m-d_H-i-s');
-            $document_file5_extension = $request->file('document_file5')->getClientOriginalExtension();
-            $document_file5_path = $request->file('document_file5')->storeAs(
-                'public/uploads/Documents/'.$studentApplianceStatus->student_id.'/Appliance_'.$studentApplianceStatus->id.'/Financial_Files',
-                "$document_file5_name.$document_file5_extension"
-            );
-            $files['file5'] = [
-                'src5' => $document_file5_path,
-                'description5' => $request->document_description5,
-            ];
-            Document::create([
-                'user_id' => auth()->user()->id,
-                'document_type_id' => 8,
-                'src' => $document_file5_path,
-                'description' => $request->document_description5,
-            ]);
-
-            Document::create([
-                'user_id' => $studentApplianceStatus->student_id,
-                'document_type_id' => 8,
-                'src' => $document_file5_path,
-                'description' => $request->document_description5,
-            ]);
+                Document::create([
+                    'user_id' => $studentApplianceStatus->student_id,
+                    'document_type_id' => 8,
+                    'src' => $filePath,
+                    'description' => $description,
+                ]);
+            }
         }
 
         $interview->files = json_encode($files, true);
@@ -833,19 +657,27 @@ class InterviewController extends Controller
 
         $studentApplianceStatus = StudentApplianceStatus::whereAcademicYear($application->applicationTimingInfo->academic_year)->whereStudentId($application->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
 
-        //        Check if 3 interviews completed then make that to principal for confirmation
-        $checkInterview1Completed = Interview::whereApplicationId($application->id)
-            ->where('interview_type', 1)
-            ->exists();
-        $checkInterview2Completed = Interview::whereApplicationId($application->id)
-            ->where('interview_type', 2)
-            ->exists();
-        $checkInterview3Completed = Interview::whereApplicationId($application->id)
-            ->where('interview_type', 3)
-            ->exists();
-        if ($checkInterview1Completed and $checkInterview2Completed and $checkInterview3Completed) {
-            $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
+        // Check if all 3 interviews are completed, then make it pending for principal confirmation
+        $interviewTypes = [1, 2, 3];
+        $allInterviewsCompleted = true;
+
+        foreach ($interviewTypes as $interviewType) {
+            if (! Interview::whereApplicationId($application->id)->where('interview_type', $interviewType)->exists()) {
+                $allInterviewsCompleted = false;
+                break;
+            }
         }
+
+        if ($allInterviewsCompleted) {
+            $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
+
+            //Add to appliance confirmation information
+            ApplianceConfirmationInformation::firstOrCreate([
+                'appliance_id' => $studentApplianceStatus->id,
+                'referrer' => auth()->user()->id,
+            ]);
+        }
+
         $studentApplianceStatus->save();
 
         if ($interview->save()) {

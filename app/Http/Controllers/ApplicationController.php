@@ -567,12 +567,6 @@ class ApplicationController extends Controller
         switch ($request->type) {
             case 'Accept':
                 StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Admitted', 'documents_uploaded' => 0]);
-                ApplianceConfirmationInformation::create([
-                    'appliance_id' => $request->appliance_id,
-                    'status' => 1,
-                    'description' => $request->description,
-                    'adder' => auth()->user()->id,
-                ]);
                 $messageText = "Your interview has been successfully accepted. You have up to 72 hours to upload documents. Please upload documents on the dashboard page.\nSavior Schools";
                 $this->sendSMS($reservatoreMobile, $messageText);
                 break;
@@ -581,14 +575,19 @@ class ApplicationController extends Controller
                 $messageText = "Your application with reservation id ($reservationID) has been rejected.\nSavior Schools";
                 $this->sendSMS($reservatoreMobile, $messageText);
                 StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Rejected']);
-                ApplianceConfirmationInformation::create([
-                    'appliance_id' => $request->appliance_id,
-                    'status' => 2,
-                    'description' => $request->description,
-                    'adder' => auth()->user()->id,
-                ]);
                 break;
         }
+
+        ApplianceConfirmationInformation::updateOrCreate(
+            ['appliance_id' => $request->appliance_id],
+            [
+                'status' => $request->type,
+                'description' => $request->description,
+                'date_of_confirm' => now(),
+                'seconder' => auth()->user()->id,
+            ]
+        );
+
         Applications::find($request->application_id)->update(['Interviewed' => 1]);
 
         $applianceStatus = StudentApplianceStatus::with('studentInfo')->find($request->appliance_id);
