@@ -206,6 +206,9 @@
                                     Document Approval Seconder
                                 </th>
                                 <th scope="col" class=" text-center">
+                                    Document Approval Date
+                                </th>
+                                <th scope="col" class=" text-center">
                                     Tuition Payment Status
                                 </th>
                                 <th scope="col" class=" text-center">
@@ -308,6 +311,10 @@
                                         @else
                                             -
                                         @endif
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                            {{ $student->date_of_document_approval }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">

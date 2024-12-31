@@ -91,6 +91,7 @@ class EvidenceController extends Controller
                 $studentAppliance->documents_uploaded = 1;
                 $studentAppliance->documents_uploaded_approval = 1;
                 $studentAppliance->tuition_payment_status = 'Pending';
+                $studentAppliance->date_of_document_approval = now();
                 $studentAppliance->description = null;
                 $this->sendSMS($guardianMobile, "Your documents have been approved. Please pay the tuition within the next 72 hours.\nSavior Schools");
                 break;
@@ -98,6 +99,7 @@ class EvidenceController extends Controller
                 $studentAppliance->documents_uploaded = 3;
                 $studentAppliance->documents_uploaded_approval = 2;
                 $studentAppliance->description = 'Documents Rejected';
+                $studentAppliance->date_of_document_approval = now();
                 $this->sendSMS($guardianMobile, "Your documents were rejected. To review and see the reason for rejection, please refer to your panel.\nSavior Schools");
                 break;
             default:
