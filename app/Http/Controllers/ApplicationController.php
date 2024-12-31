@@ -583,7 +583,7 @@ class ApplicationController extends Controller
             [
                 'status' => $request->type,
                 'description' => $request->description,
-                'date_of_confirm' => now(),
+                'date_of_confirm' => Carbon::now(),
                 'seconder' => auth()->user()->id,
             ]
         );

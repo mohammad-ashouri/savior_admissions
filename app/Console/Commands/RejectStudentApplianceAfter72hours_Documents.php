@@ -37,7 +37,7 @@ class RejectStudentApplianceAfter72hours_Documents extends Command
             ->update([
                 'documents_uploaded' => 3,
                 'documents_uploaded_approval' => 3,
-                'date_of_document_approval' => now(),
+                'date_of_document_approval' => $now,
                 'description' => 'Automatic Rejected (Documents could not be uploaded after 72 hours)',
             ]);
 
