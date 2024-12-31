@@ -69,7 +69,9 @@
                             @if(substr($document->src,-4)=='.pdf')
                                 <div class="flex justify-center items-center">
                                     <a target="_blank" href="{{ env('APP_URL')}}/{{ $document->src }}">
-                                        <img class="pdf-documents-icons">
+                                        <img
+                                            id="{{ $document->id }}"
+                                            class="pdf-documents-icons">
                                     </a>
                                 </div>
                             @else
@@ -80,8 +82,10 @@
                                             data-image-title="{{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->description .' - ' . $document->created_at }}"
                                             class="block w-full md:w-auto text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm text-center show-image"
                                             type="button">
-                                        <img class="h-auto text-blue-500 align-center max-w-full rounded-lg"
-                                             src="{{ env('APP_URL')}}/{{$document->src }}" alt="Document Not Found!">
+                                        <img
+                                            id="{{ $document->id }}"
+                                            class="h-auto text-blue-500 align-center max-w-full rounded-lg"
+                                            src="{{ env('APP_URL')}}/{{$document->src }}" alt="Document Not Found!">
                                     </button>
                                 </div>
                             @endif
@@ -89,14 +93,25 @@
                                 {{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}
                             </p>
                         </div>
-                        @can('document-delete')
-                            <button
-                                data-document-id="{{ $document->id }}"
-                                class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 remove-document"
-                                type="button">
-                                <i class="las la-trash-alt" style="font-size: 20px"></i>Delete Document
-                            </button>
-                        @endcan
+                        <div class="grid grid-cols-2 gap-2">
+                            @can('document-delete')
+                                <button
+                                    data-document-id="{{ $document->id }}"
+                                    class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 remove-document"
+                                    type="button">
+                                    <i class="las la-trash-alt" style="font-size: 20px"></i>Delete Document
+                                </button>
+                            @endcan
+                            @if(substr($document->src,-4)!='.pdf')
+                                <button
+                                    data-document-src="{{ env('APP_URL')}}/{{ $document->src }}"
+                                    class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 print-document"
+                                    type="button">
+                                    <i class="las la-print" style="font-size: 20px"></i>Print
+                                </button>
+                            @endif
+
+                        </div>
                     </div>
                 @endforeach
             </div>

@@ -475,6 +475,34 @@ $(document).ready(function () {
                 }
             });
         });
+        $('.print-document').click(function () {
+            const documentSrc = $(this).data('document-src');
+            const isPdf = documentSrc.slice(-4).toLowerCase() === '.pdf';
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.open();
+
+            if (isPdf) {
+                printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Print PDF</title>
+                    <style>
+                        body { margin: 0; padding: 0; }
+                        iframe { width: 100%; height: 100vh; border: none; }
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${documentSrc}" frameborder="0"></iframe>
+                </body>
+            </html>
+        `);
+            }
+
+            printWindow.document.close();
+            printWindow.print();
+        });
+
         $('#create-document-for-user').submit(function (e) {
             e.preventDefault();
             if ($('#document_type').val('')) {
