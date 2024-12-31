@@ -446,6 +446,35 @@ $(document).ready(function () {
                 });
             }
         });
+        $('.remove-document').click(function (e) {
+            let documentId = $(this).data('document-id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Your document will be removed permanently!',
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                confirmButtonText: 'Yes',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let documentId = $(this).data('document-id');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Documents/Delete',
+                        data: {
+                            documentId: documentId
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                        }, success: function (response) {
+                            location.reload();
+                        }, error: function (xhr, textStatus, errorThrown) {
+                            swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                        }
+                    });
+                }
+            });
+        });
         $('#create-document-for-user').submit(function (e) {
             e.preventDefault();
             if ($('#document_type').val('')) {
@@ -1330,8 +1359,8 @@ $(document).ready(function () {
         pageTitle = 'Pay Tuition Installment';
         $('#payment_method,#document_file_full_payment1,#document_file_full_payment2,#document_file_full_payment3').val('');
 
-        $('#payment_method').change(function (){
-            switch (parseInt($('#payment_method').val())){
+        $('#payment_method').change(function () {
+            switch (parseInt($('#payment_method').val())) {
                 case 1:
                     $('#bank-slip-div').removeClass('hidden');
                     break;
@@ -1399,7 +1428,7 @@ $(document).ready(function () {
             }
         });
 
-        $('#pay-installment').submit(function (e){
+        $('#pay-installment').submit(function (e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
@@ -1733,7 +1762,7 @@ $(document).ready(function () {
 
     } else if (fullPath.includes('StudentStatisticsReport')) {
         pageTitle = 'Student Statistics Report';
-    }else if (fullPath.includes('StudentStatuses')) {
+    } else if (fullPath.includes('StudentStatuses')) {
         pageTitle = 'Student Statuses';
         $('.show-guardian-mobile').click(function () {
             let dataId = this.getAttribute('data-id');

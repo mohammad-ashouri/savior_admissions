@@ -16,6 +16,8 @@
             });
         </script>
         <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
+            @include('GeneralPages.errors.session.success')
+            @include('GeneralPages.errors.session.error')
             @if(isset($user_id) and isset($documentOwner))
                 <div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
@@ -87,6 +89,14 @@
                                 {{ $document->id . ' - ' . $document->documentType->name . '- ' . $document->created_at }}
                             </p>
                         </div>
+                        @can('document-delete')
+                            <button
+                                data-document-id="{{ $document->id }}"
+                                class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 remove-document"
+                                type="button">
+                                <i class="las la-trash-alt" style="font-size: 20px"></i>Delete Document
+                            </button>
+                        @endcan
                     </div>
                 @endforeach
             </div>

@@ -12,6 +12,7 @@ use App\Models\Document;
 use App\Models\StudentInformation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -22,7 +23,7 @@ class DocumentController extends Controller
         $this->middleware('permission:document-list', ['only' => ['index', 'showUserDocuments']]);
         $this->middleware('permission:document-create', ['only' => ['createDocument', 'createDocumentForUser']]);
         $this->middleware('permission:document-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:document-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:document-delete', ['only' => ['deleteUserDocument']]);
         ini_set('post_max_size', '8M');
         ini_set('upload_max_filesize', '8M');
     }
@@ -492,5 +493,19 @@ class DocumentController extends Controller
         $this->sendSMS($studentInformation->guardianInfo->mobile, "Documents uploaded successfully. Please wait for the confirmation of the documents sent.\nSavior Schools");
 
         return redirect()->route('dashboard')->with('success', 'Documents Uploaded Successfully!');
+    }
+
+    public function deleteUserDocument(Request $request)
+    {
+        $this->validate($request, [
+            'documentId' => 'required|integer|exists:documents,id',
+        ]);
+        $document = Document::findOrFail($request->documentId);
+        $document->update(['remover' => auth()->user()->id]);
+        $document->delete();
+
+        Session::flash('success', 'Document Deleted Successfully!');
+
+        return true;
     }
 }
