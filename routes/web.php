@@ -204,6 +204,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             //Student status
             Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
             Route::get('SearchStudentApplianceStatuses', [StudentController::class, 'search'])->name('SearchStudentApplianceStatuses');
+            Route::get('GetApplianceConfirmationInformation', [StudentController::class, 'getApplianceConfirmationInformation']);
             Route::get('StudentStatisticsReport', [StudentController::class, 'studentStatisticsReportIndex'])->name('StudentStatisticsReport');
             Route::get('SearchStudentStatisticsReport', [StudentController::class, 'searchStudentStatisticsReport'])->name('SearchStudentStatisticsReport');
             Route::get('StudentStatuses/export-excel', [ExcelController::class, 'exportStudentStatuses']);

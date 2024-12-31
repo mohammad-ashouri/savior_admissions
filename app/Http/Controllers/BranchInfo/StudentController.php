@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BranchInfo;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch\ApplianceConfirmationInformation;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\CurrentIdentificationType;
@@ -121,7 +122,7 @@ class StudentController extends Controller
             ->whereGender($request->gender)
             ->first();
 
-        if (!empty($allGeneralInformation)) {
+        if (! empty($allGeneralInformation)) {
             return redirect()->back()->withErrors('Duplicate student entered. Please check your student list!')->withInput();
         }
 
@@ -288,7 +289,7 @@ class StudentController extends Controller
 
         if (isset($request->title)) {
             foreach ($extraInformationTitles as $index => $titles) {
-                if (!empty($titles)) {
+                if (! empty($titles)) {
                     $studentExtraInformation = new StudentExtraInformation;
                     $studentExtraInformation->student_informations_id = $studentInformation->id;
                     $studentExtraInformation->name = $titles;
@@ -324,9 +325,9 @@ class StudentController extends Controller
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-//            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-//                ->whereIn('academic_year', $academicYears)
-//                ->orderBy('academic_year', 'desc')->paginate(150);
+            //            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+            //                ->whereIn('academic_year', $academicYears)
+            //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
@@ -356,28 +357,28 @@ class StudentController extends Controller
         // Get the file from the request
         $file = $request->file('personal_picture');
 
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $destinationPath = storage_path('app/public/uploads/Documents/' . $userId . '/personal_image/');
-        $thumbnailPath = storage_path('app/public/uploads/Documents/' . $userId . '/personal_image/' . '/thumbnails');
+        $filename = time().'.'.$file->getClientOriginalExtension();
+        $destinationPath = storage_path('app/public/uploads/Documents/'.$userId.'/personal_image/');
+        $thumbnailPath = storage_path('app/public/uploads/Documents/'.$userId.'/personal_image/'.'/thumbnails');
 
-        if (!File::exists($destinationPath)) {
+        if (! File::exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true);
         }
 
-        if (!File::exists($thumbnailPath)) {
+        if (! File::exists($thumbnailPath)) {
             File::makeDirectory($thumbnailPath, 0755, true);
         }
 
         $file->move($destinationPath, $filename);
 
-        $thumbnail = Image::make($destinationPath . '/' . $filename)->resize(200, null, function ($constraint) {
+        $thumbnail = Image::make($destinationPath.'/'.$filename)->resize(200, null, function ($constraint) {
             $constraint->aspectRatio();
         });
 
-        $thumbnail->save($thumbnailPath . '/thumb_' . $filename);
+        $thumbnail->save($thumbnailPath.'/thumb_'.$filename);
 
-        $destinationPath = 'public/uploads/Documents/' . $userId . '/personal_image/' . $filename;
-        $thumbnailPath = 'public/uploads/Documents/' . $userId . '/personal_image/' . 'thumbnails/thumb_' . $filename;
+        $destinationPath = 'public/uploads/Documents/'.$userId.'/personal_image/'.$filename;
+        $thumbnailPath = 'public/uploads/Documents/'.$userId.'/personal_image/'.'thumbnails/thumb_'.$filename;
 
         $userThumbnail = User::find($userId);
         $userThumbnail->personal_image = $thumbnailPath;
@@ -418,7 +419,7 @@ class StudentController extends Controller
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations');
-            if (!empty($academicYear)) {
+            if (! empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->get();
@@ -431,7 +432,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('academic_year', $academicYears);
-            if (!empty($academicYear)) {
+            if (! empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->get();
@@ -471,9 +472,9 @@ class StudentController extends Controller
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-//            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
-//                ->whereIn('academic_year', $academicYears)
-//                ->orderBy('academic_year', 'desc')->paginate(150);
+            //            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
+            //                ->whereIn('academic_year', $academicYears)
+            //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
             return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
@@ -502,8 +503,8 @@ class StudentController extends Controller
 
         $students = [];
         if ($me->hasRole('Super Admin')) {
-            $data = StudentApplianceStatus::with(['studentInfo','levelInfo','academicYearInfo','documentSeconder']);
-            if (!empty($academicYear)) {
+            $data = StudentApplianceStatus::with(['studentInfo', 'levelInfo', 'academicYearInfo', 'documentSeconder']);
+            if (! empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
             $students = $data->where('approval_status', '1')->orderBy('academic_year', 'desc')->get();
@@ -520,7 +521,7 @@ class StudentController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder')
                 ->whereIn('academic_year', $academicYears);
-            if (!empty($academicYear)) {
+            if (! empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
             }
             $students = $data->where('approval_status', '1')->orderBy('academic_year', 'desc')->get();
@@ -538,4 +539,20 @@ class StudentController extends Controller
         return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'me'));
     }
 
+    public function getApplianceConfirmationInformation(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|integer|exists:appliance_confirmation_information,id',
+        ]);
+
+        //Todo => Check academic years permission!!!
+
+        $applianceConfirmationInformation = ApplianceConfirmationInformation::with('seconderInfo','referrerInfo')->findOrFail($request->id);
+
+        if (! $applianceConfirmationInformation) {
+            return response()->json(['error' => 'Error on Getting Confirmation Data'], 422);
+        }
+
+        return response()->json(['data' => $applianceConfirmationInformation]);
+    }
 }

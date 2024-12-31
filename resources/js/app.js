@@ -1052,7 +1052,67 @@ $(document).ready(function () {
     } else if (fullPath.includes('Schools')) {
         pageTitle = 'Schools';
     } else if (fullPath.includes('SearchStudentApplianceStatuses')) {
-        pageTitle = 'Search In  Student Appliance Statuses';
+        pageTitle = 'Search In Student Appliance Statuses';
+        $(document).on('click', '.get-appliance-confirmation-info',function (){
+            $.ajax({
+                type: 'GET',
+                url: '/GetApplianceConfirmationInformation',
+                data: {
+                    id: $(this).data('appliance-confirmation-information-id')
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                }, success: function (response) {
+                    console.log(response);
+                    const seconderInfo = response.seconder_info
+                        ? `
+                            <p><strong>ID:</strong> ${response.seconder_info.id}</p>
+                            <p><strong>Email:</strong> ${response.seconder_info.email || 'N/A'}</p>
+                        `
+                                    : '<p>No Seconder Info Available</p>';
+
+
+                                const referrerInfo = response.referrer_info
+                                    ? `
+                            <p><strong>ID:</strong> ${response.referrer_info.id}</p>
+                            <p><strong>Email:</strong> ${response.referrer_info.email || 'N/A'}</p>
+                            <p><strong>Mobile:</strong> ${response.referrer_info.mobile || 'N/A'}</p>
+                            <p><strong>Personal Image:</strong> ${response.referrer_info.personal_image || 'N/A'}</p>
+                        `
+                                    : '<p>No Referrer Info Available</p>';
+
+
+                                const content = `
+                        <div style="text-align: left;">
+                            <p><strong>Appliance ID:</strong> ${response.appliance_id}</p>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Description:</strong> ${response.description || 'N/A'}</p>
+                            <p><strong>Date of Confirm:</strong> ${response.date_of_confirm || 'N/A'}</p>
+                            <p><strong>Date of Referral:</strong> ${response.date_of_referral || 'N/A'}</p>
+
+                            <hr>
+                            <h4>Seconder Info</h4>
+                            ${seconderInfo}
+
+                            <hr>
+                            <h4>Referrer Info</h4>
+                            ${referrerInfo}
+                        </div>
+                    `;
+
+                    Swal.fire({
+                        title: 'Appliance Confirmation Info',
+                        html: content,
+                        icon: 'info',
+                        confirmButtonText: 'OK',
+                        width: '700px',
+                    });
+
+                }, error: function (xhr, textStatus, errorThrown) {
+                    swalFire('Error', 'Error on Getting Confirmation Data', 'error', 'Try again');
+                }
+            });
+        });
     } else if (fullPath.includes('Students')) {
         pageTitle = 'Students';
 

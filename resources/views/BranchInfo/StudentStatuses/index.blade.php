@@ -1,4 +1,4 @@
-@php use App\Models\Branch\ApplicationReservation;use App\Models\User; @endphp
+@php use App\Models\Branch\ApplianceConfirmationInformation;use App\Models\Branch\ApplicationReservation;use App\Models\User; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -197,6 +197,9 @@
                                     Interview Form
                                 </th>
                                 <th scope="col" class=" text-center">
+                                    Confirmation Data
+                                </th>
+                                <th scope="col" class=" text-center">
                                     Document Upload Status
                                 </th>
                                 <th scope="col" class=" text-center">
@@ -274,6 +277,21 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        @if(($student->interview_status=='Admitted' or $student->interview_status=='Rejected'))
+                                            @php
+                                                $applianceConfirmationInformation=ApplianceConfirmationInformation::whereApplianceId($student->id)->latest()->first();
+                                            @endphp
+                                            @if($applianceConfirmationInformation != null)
+                                                <button data-appliance-confirmation-information-id="{{ $applianceConfirmationInformation->id }}"
+                                                   type="button"
+                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline get-appliance-confirmation-info">
+                                                    <i class="las la-eye mt-1"></i>
+                                                </button>
+                                            @endif
+                                        @endif
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         @switch($student->documents_uploaded)
                                             @case('0')
                                                 Pending For Upload
@@ -314,7 +332,7 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $student->date_of_document_approval }}
+                                        {{ $student->date_of_document_approval }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
