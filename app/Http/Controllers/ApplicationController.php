@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch\ApplianceConfirmationInformation;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
@@ -274,7 +275,7 @@ class ApplicationController extends Controller
 
         $studentGender = GeneralInformation::whereUserId($request->student)->value('gender');
 
-        if (!$studentGender){
+        if (! $studentGender) {
             return response()->json(['error' => 'Student gender not found. Please contact the admissions office.'], 422);
         }
         switch ($studentGender) {
@@ -524,8 +525,8 @@ class ApplicationController extends Controller
             // Finding academic years with status 1 in the specified academic years
             $academicYears = AcademicYear::whereIn('id', $this->getMyStudentsAcademicYears())->pluck('id')->toArray();
             // Checking appliance id
-            $myStudents=StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
-            StudentApplianceStatus::whereId($appliance_id)->whereIn('student_id',$myStudents)->firstOrFail();
+            $myStudents = StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
+            StudentApplianceStatus::whereId($appliance_id)->whereIn('student_id', $myStudents)->firstOrFail();
         }
         $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->whereId($appliance_id)->first();
         if (empty($studentAppliance)) {
@@ -566,6 +567,12 @@ class ApplicationController extends Controller
         switch ($request->type) {
             case 'Accept':
                 StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Admitted', 'documents_uploaded' => 0]);
+                ApplianceConfirmationInformation::create([
+                    'appliance_id' => $request->appliance_id,
+                    'status' => 1,
+                    'description' => $request->description,
+                    'adder' => auth()->user()->id,
+                ]);
                 $messageText = "Your interview has been successfully accepted. You have up to 72 hours to upload documents. Please upload documents on the dashboard page.\nSavior Schools";
                 $this->sendSMS($reservatoreMobile, $messageText);
                 break;
@@ -574,6 +581,12 @@ class ApplicationController extends Controller
                 $messageText = "Your application with reservation id ($reservationID) has been rejected.\nSavior Schools";
                 $this->sendSMS($reservatoreMobile, $messageText);
                 StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Rejected']);
+                ApplianceConfirmationInformation::create([
+                    'appliance_id' => $request->appliance_id,
+                    'status' => 2,
+                    'description' => $request->description,
+                    'adder' => auth()->user()->id,
+                ]);
                 break;
         }
         Applications::find($request->application_id)->update(['Interviewed' => 1]);
