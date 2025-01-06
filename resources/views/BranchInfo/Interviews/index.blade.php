@@ -113,7 +113,7 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->reservatoreInfo->generalInformationInfo->last_name_en }}
+                                        {{ $interview->reservationInfo->reservatoreInfo?->generalInformationInfo?->first_name_en }} {{ $interview->reservationInfo->reservatoreInfo?->generalInformationInfo?->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
