@@ -80,20 +80,20 @@ class TuitionPaymentController extends Controller
         $lastName = $request->student_last_name;
 
         $data = StudentApplianceStatus::with('studentInfo')->where('documents_uploaded_approval', '=', 1);
-        if (!empty($studentId)) {
+        if (! empty($studentId)) {
             $data->whereStudentId($studentId);
         }
-        if (!empty($academicYear)) {
+        if (! empty($academicYear)) {
             $data->whereAcademicYear($academicYear);
         }
-        if (!empty($firstName)) {
+        if (! empty($firstName)) {
             $data->whereHas('studentInfo', function ($query) use ($firstName) {
                 $query->whereHas('generalInformationInfo', function ($query) use ($firstName) {
                     $query->where('first_name_en', 'like', "%$firstName%");
                 });
             });
         }
-        if (!empty($lastName)) {
+        if (! empty($lastName)) {
             $data->whereHas('studentInfo', function ($query) use ($lastName) {
                 $query->whereHas('generalInformationInfo', function ($query) use ($lastName) {
                     $query->where('last_name_en', 'like', "%$lastName%");
@@ -282,27 +282,27 @@ class TuitionPaymentController extends Controller
                 if ($request->file('document_file_full_payment1') !== null) {
                     $extension = $request->file('document_file_full_payment1')->getClientOriginalExtension();
 
-                    $bankSlip1 = 'Tuition_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                    $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                     $documentFileFullPayment1Src = $request->file('document_file_full_payment1')->storeAs(
-                        'public/uploads/Documents/' . $student_id . '/Appliance_' . "$appliance_id" . '/Tuitions',
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                         $bankSlip1
                     );
                 }
                 if ($request->file('document_file_full_payment2') !== null) {
                     $extension = $request->file('document_file_full_payment2')->getClientOriginalExtension();
 
-                    $bankSlip2 = 'Tuition2_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                    $bankSlip2 = 'Tuition2_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                     $documentFileFullPayment2Src = $request->file('document_file_full_payment2')->storeAs(
-                        'public/uploads/Documents/' . $student_id . '/Appliance_' . "$appliance_id" . '/Tuitions',
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                         $bankSlip2
                     );
                 }
                 if ($request->file('document_file_full_payment3') !== null) {
                     $extension = $request->file('document_file_full_payment3')->getClientOriginalExtension();
 
-                    $bankSlip3 = 'Tuition3_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                    $bankSlip3 = 'Tuition3_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                     $documentFileFullPayment3Src = $request->file('document_file_full_payment3')->storeAs(
-                        'public/uploads/Documents/' . $student_id . '/Appliance_' . "$appliance_id" . '/Tuitions',
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                         $bankSlip3
                     );
                 }
@@ -346,12 +346,12 @@ class TuitionPaymentController extends Controller
             case 2:
                 $invoice = (new Invoice)->amount($tuitionAmount);
 
-                return Payment::via('behpardakht')->callbackUrl(env('APP_URL') . '/VerifyTuitionInstallmentPayment')->purchase(
+                return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionInstallmentPayment')->purchase(
                     $invoice,
                     function ($driver, $transactionID) use ($tuitionAmount, $tuitionInvoiceDetails, $paymentMethod) {
                         $dataInvoice = new \App\Models\Invoice;
                         $dataInvoice->user_id = auth()->user()->id;
-                        $dataInvoice->type = 'Tuition Payment ' . json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
+                        $dataInvoice->type = 'Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
                         $dataInvoice->amount = $tuitionAmount;
                         $dataInvoice->description = json_encode(['amount' => $tuitionAmount, 'invoice_details_id' => $tuitionInvoiceDetails->id, 'payment_method' => $paymentMethod], true);
                         $dataInvoice->transaction_id = $transactionID;
@@ -407,7 +407,7 @@ class TuitionPaymentController extends Controller
         $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
         $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
 
-        //Get evidence info for foreign school in last year
+        // Get evidence info for foreign school in last year
         $evidence = Evidence::whereApplianceId($studentAppliance->id)->first();
         if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
             $foreignSchool = true;
@@ -422,7 +422,7 @@ class TuitionPaymentController extends Controller
             $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
             switch ($request->status) {
                 case 1:
-                    //Found previous discounts
+                    // Found previous discounts
                     $allStudentsWithGuardian = StudentInformation::whereGuardian($studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
                     $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
                     $allGrantedFamilyDiscounts = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->get();
@@ -440,7 +440,7 @@ class TuitionPaymentController extends Controller
 
                     if ($allGrantedFamilyDiscounts->isEmpty()) {
                         $newGrantedFamilyDiscount = GrantedFamilyDiscount::withTrashed()->where('appliance_id', $studentAppliance->id)->first();
-                        if (!empty($newGrantedFamilyDiscount)) {
+                        if (! empty($newGrantedFamilyDiscount)) {
                             $newGrantedFamilyDiscount->restore();
                             $newGrantedFamilyDiscount->update([
                                 'level' => $applicationInfo->level,
@@ -462,7 +462,7 @@ class TuitionPaymentController extends Controller
 
                         $previousDiscountPrice = $this->getAllFamilyDiscountPrice($studentAppliance->studentInformations->guardianInfo->id);
 
-                        //Calculate discount for minimum level
+                        // Calculate discount for minimum level
                         $minimumLevel = $this->getMinimumApplianceLevelInfo($studentAppliance->studentInformations->guardianInfo->id);
 
                         $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
@@ -474,9 +474,9 @@ class TuitionPaymentController extends Controller
 
                         $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($studentAppliance->studentInformations->guardianInfo->id);
                         if ($foreignSchool) {
-                            $minimumLevelTuitionDetailsFullPayment = (int)str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment_ministry, true)['full_payment_irr_ministry']);
+                            $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment_ministry, true)['full_payment_irr_ministry']);
                         } else {
-                            $minimumLevelTuitionDetailsFullPayment = (int)str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment, true)['full_payment_irr']);
+                            $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment, true)['full_payment_irr']);
                         }
 
                         switch ($minimumSignedStudentNumber) {
@@ -546,13 +546,13 @@ class TuitionPaymentController extends Controller
                     $tuitionInvoiceDetails->is_paid = $request->status;
                     $tuitionInvoiceDetails->save();
 
-//                    $newTuitionInvoiceDetails = $tuitionInvoiceDetails->replicate();
-//                    $newTuitionInvoiceDetails->payment_method = null;
-//                    $newTuitionInvoiceDetails->is_paid = 0;
-//                    $newTuitionInvoiceDetails->date_of_payment = null;
-//                    $newTuitionInvoiceDetails->created_at = now();
-//                    $newTuitionInvoiceDetails->updated_at = now();
-//                    $newTuitionInvoiceDetails->save();
+                    //                    $newTuitionInvoiceDetails = $tuitionInvoiceDetails->replicate();
+                    //                    $newTuitionInvoiceDetails->payment_method = null;
+                    //                    $newTuitionInvoiceDetails->is_paid = 0;
+                    //                    $newTuitionInvoiceDetails->date_of_payment = null;
+                    //                    $newTuitionInvoiceDetails->created_at = now();
+                    //                    $newTuitionInvoiceDetails->updated_at = now();
+                    //                    $newTuitionInvoiceDetails->save();
 
                     $studentAppliance->tuition_payment_status = 'Pending';
                     $studentAppliance->approval_status = 0;
@@ -572,13 +572,20 @@ class TuitionPaymentController extends Controller
                 $tuitionInvoiceDetails->is_paid = 1;
                 $tuitionInvoiceDetails->save();
 
+                if ($studentAppliance->tuition_payment_status == 'Paid') {
+                    $guardianMobile = $studentAppliance->studentInformations->guardianInfo->mobile;
+                    $message = "Your payment with ID $tuition_id has been Approved. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
+                    $this->sendSMS($guardianMobile, $message);
+
+                    return response()->json(['message' => 'Approved!']);
+                }
                 $studentAppliance->tuition_payment_status = 'Paid';
                 $studentAppliance->approval_status = 1;
                 $studentAppliance->save();
 
                 $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id);
 
-                //Found previous discounts
+                // Found previous discounts
                 $familyPercentagePriceTwoInstallment = 0;
                 $allStudentsWithGuardian = StudentInformation::whereGuardian($studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
                 $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
@@ -598,7 +605,7 @@ class TuitionPaymentController extends Controller
                 if ($allGrantedFamilyDiscounts->isEmpty()) {
                     $familyPercentagePriceFullPayment = $familyPercentagePriceTwoInstallment = $familyPercentagePriceFourInstallment = 0;
                     $newGrantedFamilyDiscount = GrantedFamilyDiscount::withTrashed()->where('appliance_id', $studentAppliance->id)->first();
-                    if (!empty($newGrantedFamilyDiscount)) {
+                    if (! empty($newGrantedFamilyDiscount)) {
                         $newGrantedFamilyDiscount->restore();
                         $newGrantedFamilyDiscount->update([
                             'level' => $applicationInfo->level,
@@ -621,7 +628,7 @@ class TuitionPaymentController extends Controller
                     $allDiscountPercentages = $this->getAllDiscounts($student_id);
                     $previousDiscountPrice = $this->getAllFamilyDiscountPrice($studentAppliance->studentInformations->guardianInfo->id);
 
-                    //Calculate discount for minimum level
+                    // Calculate discount for minimum level
                     $minimumLevel = $this->getMinimumApplianceLevelInfo($studentAppliance->studentInformations->guardianInfo->id);
 
                     $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
@@ -633,13 +640,13 @@ class TuitionPaymentController extends Controller
 
                     $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($studentAppliance->studentInformations->guardianInfo->id);
                     if ($foreignSchool) {
-                        $minimumLevelTuitionDetailsFullPayment = (int)str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment_ministry, true)['full_payment_irr_ministry']);
-                        $minimumLevelTuitionDetailsTwoInstallment = (int)str_replace(',', '', json_decode($minimumLevelTuitionDetails->two_installment_payment_ministry, true)['two_installment_amount_irr_ministry']);
-                        $minimumLevelTuitionDetailsFourInstallment = (int)str_replace(',', '', json_decode($minimumLevelTuitionDetails->four_installment_payment_ministry, true)['four_installment_amount_irr_ministry']);
+                        $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment_ministry, true)['full_payment_irr_ministry']);
+                        $minimumLevelTuitionDetailsTwoInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->two_installment_payment_ministry, true)['two_installment_amount_irr_ministry']);
+                        $minimumLevelTuitionDetailsFourInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->four_installment_payment_ministry, true)['four_installment_amount_irr_ministry']);
                     } else {
-                        $minimumLevelTuitionDetailsFullPayment = (int)str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment, true)['full_payment_irr']);
-                        $minimumLevelTuitionDetailsTwoInstallment = (int)str_replace(',', '', json_decode($minimumLevelTuitionDetails->two_installment_payment, true)['two_installment_amount_irr']);
-                        $minimumLevelTuitionDetailsFourInstallment = (int)str_replace(',', '', json_decode($minimumLevelTuitionDetails->four_installment_payment, true)['four_installment_amount_irr']);
+                        $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment, true)['full_payment_irr']);
+                        $minimumLevelTuitionDetailsTwoInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->two_installment_payment, true)['two_installment_amount_irr']);
+                        $minimumLevelTuitionDetailsFourInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->four_installment_payment, true)['four_installment_amount_irr']);
                     }
                     $familyPercentagePriceFullPayment = $familyPercentagePriceTwoInstallment = $familyPercentagePriceFourInstallment = 0;
 
@@ -748,7 +755,7 @@ class TuitionPaymentController extends Controller
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
                             $newInvoice->amount = (($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2) - ($totalDiscountsTwo / 2);
                             $newInvoice->is_paid = 0;
-                            $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment ' . $counter], true);
+                            $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
                             $newInvoice->save();
                             $counter++;
                         }
@@ -776,7 +783,7 @@ class TuitionPaymentController extends Controller
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
                             $newInvoice->amount = (($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4) - ($totalDiscountsFour / 4);
                             $newInvoice->is_paid = 0;
-                            $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment ' . $counter], true);
+                            $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
                             $newInvoice->save();
                             $counter++;
                         }
