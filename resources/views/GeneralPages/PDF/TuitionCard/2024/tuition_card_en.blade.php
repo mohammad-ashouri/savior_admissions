@@ -8,6 +8,7 @@
     $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
                                                 ->join('application_reservations','applications.id','=','application_reservations.application_id')
                                                 ->where('application_reservations.student_id',$applianceStatus->student_id)
+                                                ->where('application_reservations.payment_status',1)
                                                 ->where('application_timings.academic_year',$applianceStatus->academic_year)
                                                 ->where('application_reservations.deleted_at',null)
                                                 ->latest('application_reservations.id')
