@@ -53,60 +53,46 @@ class DashboardController extends Controller
         if (empty($me)) {
             redirect()->route('logout');
         }
-        //Students
-        $students = [];
-        if ($me->hasRole('Parent')) {
-            $students = StudentInformation::whereGuardian(auth()->user()->id)
-                ->with(['studentInfo','nationalityInfo','identificationTypeInfo','generalInformations'])
-                ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
-        }
-        if ($me->hasRole('Super Admin')) {
-            $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear;
-            $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear;
-            $reservedApplicationsByAcademicYear = $this->reservedApplicationsByAcademicYear;
-            $absenceInInterview = $this->absenceInInterview;
-            $admittedInterviews = $this->admittedInterviews;
-            $rejectedInterviews = $this->rejectedInterviews;
-            $interviewTypes = $this->interviewTypes;
-            $paymentTypes = $this->paymentTypes;
-            $tuitionPaidPaymentType = $this->tuitionPaidPaymentType;
-            $tuitionPaidAcademicYear = $this->tuitionPaidAcademicYear;
-            $levels = $this->levels;
-            $userRolesChart = $this->userRolesChart;
 
-            return view('Dashboards.Main', compact(
-                'me',
-                'allRegisteredStudentsInLastAcademicYear',
-                'acceptedStudentNumberStatusByAcademicYear',
-                'reservedApplicationsByAcademicYear',
-                'absenceInInterview',
-                'admittedInterviews',
-                'rejectedInterviews',
-                'interviewTypes',
-                'paymentTypes',
-                'tuitionPaidAcademicYear',
-                'tuitionPaidPaymentType',
-                'levels',
-                'userRolesChart',
-            ));
+        $allRegisteredStudentsInLastAcademicYear = $this->allRegisteredStudentsInLastAcademicYear;
+        $acceptedStudentNumberStatusByAcademicYear = $this->acceptedStudentNumberStatusByAcademicYear;
+        $reservedApplicationsByAcademicYear = $this->reservedApplicationsByAcademicYear;
+        $absenceInInterview = $this->absenceInInterview;
+        $admittedInterviews = $this->admittedInterviews;
+        $rejectedInterviews = $this->rejectedInterviews;
+        $interviewTypes = $this->interviewTypes;
+        $paymentTypes = $this->paymentTypes;
+        $tuitionPaidPaymentType = $this->tuitionPaidPaymentType;
+        $tuitionPaidAcademicYear = $this->tuitionPaidAcademicYear;
+        $levels = $this->levels;
+        $userRolesChart = $this->userRolesChart;
+
+        //Students
+        $students = collect();
+        if ($me->hasRole('Parent')) {
+            $parentStudents = StudentInformation::whereGuardian(auth()->user()->id)
+                ->with(['studentInfo', 'nationalityInfo', 'identificationTypeInfo', 'generalInformations'])
+                ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
+            $students = $students->merge($parentStudents);
         }
-        if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            // Convert accesses to arrays and remove duplicates
+
+        if ($me->hasRole('Principal') || $me->hasRole('Admissions Officer')) {
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
-            // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-            $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
+            $principalStudents = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->whereIn('academic_year', $academicYears)
                 ->whereTuitionPaymentStatus('Paid')
                 ->distinct('student_id')
                 ->orderBy('id', 'desc')->orderBy('academic_year', 'desc')->take(5)->get();
+            $students = $students->merge($principalStudents);
         }
 
-        if (empty($students) or $students->isEmpty()) {
-            $students = [];
+        if ($students->isEmpty()) {
+            $students = collect();
         }
+
 
         //Applications
         $applicationStatuses = [];
@@ -116,9 +102,6 @@ class DashboardController extends Controller
                 ->whereIn('student_id', $myStudents)
                 ->orderByDesc('academic_year')
                 ->get();
-        }
-        if ($me->hasRole('Super Admin')) {
-            $applicationStatuses = ApplicationReservation::with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->get();
         }
         if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
             // Convert accesses to arrays and remove duplicates
@@ -148,6 +131,19 @@ class DashboardController extends Controller
             $applicationStatuses = [];
         }
 
-        return view('Dashboards.Main', compact('me', 'students', 'applicationStatuses'));
+        return view('Dashboards.Main', compact('me',
+            'allRegisteredStudentsInLastAcademicYear',
+            'acceptedStudentNumberStatusByAcademicYear',
+            'reservedApplicationsByAcademicYear',
+            'absenceInInterview',
+            'admittedInterviews',
+            'rejectedInterviews',
+            'interviewTypes',
+            'paymentTypes',
+            'tuitionPaidAcademicYear',
+            'tuitionPaidPaymentType',
+            'levels',
+            'userRolesChart',
+            'students', 'applicationStatuses'));
     }
 }
