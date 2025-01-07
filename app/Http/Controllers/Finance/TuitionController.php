@@ -946,7 +946,7 @@ class TuitionController extends Controller
 
         $parents = [];
         foreach ($students as $student) {
-            $parents[] = $student->studentInformations->guardianInfo->id;
+            $parents[] = $student->studentInformations->guardianInfo?->id;
         }
         $parents = array_unique($parents);
 
