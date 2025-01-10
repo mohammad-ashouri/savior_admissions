@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build-app": "vite build",
-        "build": "npm-run-all build-app copy-jquery copy-select2 copy-export-images copy-chartjs copy-datatable-select copy-datatable-SearchPanes copy-font-files copy-datatable copy-datatable-buttons copy-datatable-jszip copy-datatable-pdfmake copy-datatable-colreorder",
+        "build": "npm-run-all build-app copy-jquery copy-persian-date copy-persian-date-picker copy-select2 copy-export-images copy-chartjs copy-datatable-select copy-datatable-SearchPanes copy-font-files copy-datatable copy-datatable-buttons copy-datatable-jszip copy-datatable-pdfmake copy-datatable-colreorder",
         "copy-select2": "mkdirp public/build/plugins && ncp node_modules/select2 public/build/plugins/select2",
         "copy-datatable": "mkdirp public/build/plugins && ncp resources/OtherLibraries/DataTables public/build/plugins/DataTables",
         "copy-datatable-buttons": "mkdirp public/build/plugins && ncp resources/OtherLibraries/Buttons-3.1.2 public/build/plugins/Buttons-3.1.2",
@@ -13,6 +13,8 @@
         "copy-datatable-colreorder": "mkdirp public/build/plugins && ncp resources/OtherLibraries/ColReorder-2.0.4 public/build/plugins/ColReorder-2.0.4",
         "copy-datatable-select": "mkdirp public/build/plugins && ncp resources/OtherLibraries/Select-2.1.0 public/build/plugins/Select-2.1.0",
         "copy-datatable-SearchPanes": "mkdirp public/build/plugins && ncp resources/OtherLibraries/SearchPanes public/build/plugins/SearchPanes",
+        "copy-persian-date": "mkdirp public/build/plugins && ncp node_modules/persian-date public/build/plugins/persian-date",
+        "copy-persian-date-picker": "mkdirp public/build/plugins && ncp node_modules/persian-datepicker public/build/plugins/persian-datepicker",
         "copy-jquery": "mkdirp public/build/plugins && ncp node_modules/jquery public/build/plugins/jquery",
         "copy-export-images": "mkdirp public/build/export-images && ncp resources/images/export-pdf-images public/build/export-images",
         "copy-font-files": "mkdirp public/build/Fonts && ncp resources/css/Fonts public/build/Fonts",
@@ -45,6 +47,7 @@
         "ncp": "^2.0.0",
         "npm-run-all": "^4.1.5",
         "pdfmake": "^0.2.14",
+        "persian-datepicker": "^1.2.0",
         "photoswipe": "^5.4.4",
         "sweetalert2": "^11.6.13"
     }

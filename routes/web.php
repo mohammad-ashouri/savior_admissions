@@ -143,6 +143,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::resource('TuitionInvoices', TuitionPaymentController::class);
             Route::get('searchTuitionInvoices', [TuitionPaymentController::class, 'search'])->name('searchTuitionInvoices');
             Route::post('TuitionInvoices/ChangeInvoiceStatus', [TuitionPaymentController::class, 'changeTuitionInvoiceStatus']);
+            Route::post('TuitionInvoices/changeTuitionInvoiceDetails', [TuitionPaymentController::class, 'changeTuitionInvoiceDetails']);
             Route::get('PayTuitionInstallment/{tuition_id}', [TuitionPaymentController::class, 'prepareToPayTuition']);
             Route::post('PayTuitionInstallment', [TuitionPaymentController::class, 'payTuition'])->name('TuitionInvoices.payTuition');
 

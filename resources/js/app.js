@@ -1053,7 +1053,7 @@ $(document).ready(function () {
         pageTitle = 'Schools';
     } else if (fullPath.includes('SearchStudentApplianceStatuses')) {
         pageTitle = 'Search In Student Appliance Statuses';
-        $(document).on('click', '.get-appliance-confirmation-info',function (){
+        $(document).on('click', '.get-appliance-confirmation-info', function () {
             $.ajax({
                 type: 'GET',
                 url: '/GetApplianceConfirmationInformation',
@@ -1069,20 +1069,20 @@ $(document).ready(function () {
                             <p><strong>ID:</strong> ${response.seconder_info.id}</p>
                             <p><strong>Email:</strong> ${response.seconder_info.email || 'N/A'}</p>
                         `
-                                    : '<p>No Seconder Info Available</p>';
+                        : '<p>No Seconder Info Available</p>';
 
 
-                                const referrerInfo = response.referrer_info
-                                    ? `
+                    const referrerInfo = response.referrer_info
+                        ? `
                             <p><strong>ID:</strong> ${response.referrer_info.id}</p>
                             <p><strong>Email:</strong> ${response.referrer_info.email || 'N/A'}</p>
                             <p><strong>Mobile:</strong> ${response.referrer_info.mobile || 'N/A'}</p>
                             <p><strong>Personal Image:</strong> ${response.referrer_info.personal_image || 'N/A'}</p>
                         `
-                                    : '<p>No Referrer Info Available</p>';
+                        : '<p>No Referrer Info Available</p>';
 
 
-                                const content = `
+                    const content = `
                         <div style="text-align: left;">
                             <p><strong>Appliance ID:</strong> ${response.appliance_id}</p>
                             <p><strong>Status:</strong> ${response.status}</p>
@@ -2308,6 +2308,48 @@ $(document).ready(function () {
                 } else if ($('#payment_status').val() == 2) {
                     swalFire('Error', "You can't change status to this!", 'error', 'Try again');
                 }
+
+            });
+            $('#tracking_code').change(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/TuitionInvoices/changeTuitionInvoiceDetails',
+                    data: {
+                        tuition_invoice_id: $('#tuition_invoice_id').val(),
+                        data: $(this).val(),
+                        job: 'change_tracking_code'
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                    }, success: function (response) {
+                        swalFire('Done', 'Tracking code changed!', 'success', 'Ok');
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', xhr.responseText.message, 'error', 'Try again');
+                    }
+                });
+            });
+            $('#description').change(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/TuitionInvoices/changeTuitionInvoiceDetails',
+                    data: {
+                        tuition_invoice_id: $('#tuition_invoice_id').val(),
+                        data: $(this).val(),
+                        job: 'change_financial_manager_description'
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                    }, success: function (response) {
+                        swalFire('Done', 'Description changed!', 'success', 'Ok');
+                    }, error: function (xhr, textStatus, errorThrown) {
+                        swalFire('Error', xhr.responseText.message, 'error', 'Try again');
+                    }
+                });
+            });
+            $('#date_of_payment').on('change',function (e) {
+                e.preventDefault();
 
             });
 

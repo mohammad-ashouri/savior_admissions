@@ -1,4 +1,4 @@
-@php use App\Models\Catalogs\PaymentMethod;use App\Models\Document; @endphp
+@php use App\Models\Catalogs\PaymentMethod;use App\Models\Document;use Morilog\Jalali\Jalalian; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -125,8 +125,7 @@
                                     Type: </p> {{ json_decode($tuitionInvoiceDetails->description,true)['tuition_type'] }}
                             </div>
                             <div>
-                                <p class="font-bold">Date And Time Of
-                                    Payment: </p> {{ $tuitionInvoiceDetails->date_of_payment }}
+                                <p class="font-bold">Invoice Created At: </p> {{ $tuitionInvoiceDetails->created_at }}
                             </div>
                         </div>
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
@@ -162,6 +161,45 @@
                                                     </div>
                                                 @endif
                                             @endforeach
+                                        </div>
+                                    </div>
+                                @php
+                                    $date = '2024-06-11 10:17:09';
+                                @endphp
+                                    <div class="mt-3 ">
+                                        <input type="hidden" id="tuition_invoice_id" value="{{$tuitionInvoiceDetails->id}}">
+
+                                        <p class="font-bold mb-3">Payment Date</p>
+                                        <div class="flex">
+                                            <input type="text"
+                                                   id="date_of_payment"
+                                                   name="date_of_payment"
+                                                   value="{{ !is_null($tuitionInvoiceDetails->date_of_payment) ? Jalalian::fromDateTime($tuitionInvoiceDetails->date_of_payment)->format('Y/m/d H:i:s') : '' }}"
+                                                   class="persian_date_with_clock rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 ">
+                                        <p class="font-bold mb-3">Tracking Code</p>
+                                        <div class="flex">
+                                            <input type="text"
+                                                   value="{{ $tuitionInvoiceDetails->tracking_code }}"
+                                                   id="tracking_code"
+                                                   name="tracking_code"
+                                                   placeholder="Enter tracking code"
+                                                   class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 ">
+                                        <p class="font-bold mb-3">Description</p>
+                                        <div class="flex">
+                                            <textarea
+                                                id="description"
+                                                rows="5"
+                                                name="description"
+                                                placeholder="Enter description"
+                                                class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price">{{ $tuitionInvoiceDetails->financial_manager_description }}</textarea>
                                         </div>
                                     </div>
                                     @break

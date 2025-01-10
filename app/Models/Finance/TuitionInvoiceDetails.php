@@ -23,6 +23,9 @@ class TuitionInvoiceDetails extends Model
         'description',
         'payment_details',
         'date_of_payment',
+        'tracking_code',
+        'financial_manager_description',
+        'editor',
     ];
 
     protected $hidden = [

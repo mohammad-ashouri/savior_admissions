@@ -14,6 +14,10 @@
     <link href="/build/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="/build/plugins/select2/dist/js/select2.min.js"></script>
 
+    <script src="/build/plugins/persian-date/dist/persian-date.js"></script>
+    <script src="/build/plugins/persian-datepicker/dist/js/persian-datepicker.js"></script>
+    <link rel="stylesheet" href="/build/plugins/persian-datepicker/dist/css/persian-datepicker.css"/>
+
     <link href="/build/plugins/DataTables/datatables.min.css" rel="stylesheet">
     <script src="/build/plugins/DataTables/datatables.min.js"></script>
 
@@ -44,6 +48,123 @@
         }
 
         $(document).ready(function () {
+            $(".persian_date_with_clock").pDatepicker(
+                {
+                    "format": "YYYY/MM/DD H:m:ss",
+                    "viewMode": "day",
+                    "initialValue": false,
+                    "minDate": null,
+                    "maxDate": null,
+                    "autoClose": false,
+                    "position": "auto",
+                    "altFormat": "lll",
+                    "altField": "#altfieldExample",
+                    "onlyTimePicker": false,
+                    "onlySelectOnDate": true,
+                    "calendarType": "persian",
+                    "inputDelay": 800,
+                    "observer": false,
+                    "calendar": {
+                        "persian": {
+                            "locale": "fa",
+                            "showHint": true,
+                            "leapYearMode": "algorithmic"
+                        },
+                        "gregorian": {
+                            "locale": "en",
+                            "showHint": false
+                        }
+                    },
+                    "navigator": {
+                        "enabled": true,
+                        "scroll": {
+                            "enabled": true
+                        },
+                        "text": {
+                            "btnNextText": "<",
+                            "btnPrevText": ">"
+                        }
+                    },
+                    "toolbox": {
+                        "enabled": true,
+                        "calendarSwitch": {
+                            "enabled": false,
+                            "format": "MMMM"
+                        },
+                        "todayButton": {
+                            "enabled": true,
+                            "text": {
+                                "fa": "امروز",
+                                "en": "Today"
+                            }
+                        },
+                        "submitButton": {
+                            "enabled": false,
+                            "text": {
+                                "fa": "تایید",
+                                "en": "Submit"
+                            }
+                        },
+                        "text": {
+                            "btnToday": "امروز"
+                        }
+                    },
+                    timePicker: {
+                        enabled: true,
+                        step: 1,
+                        hour: {
+                            enabled: true,
+                            step: 1
+                        },
+                        minute: {
+                            enabled: true,
+                            step: 1
+                        },
+                        second: {
+                            enabled: true,
+                            step: 1
+                        },
+                        meridian: {
+                            enabled: false
+                        }
+                    },
+                    "dayPicker": {
+                        "enabled": true,
+                        "titleFormat": "YYYY MMMM"
+                    },
+                    "monthPicker": {
+                        "enabled": true,
+                        "titleFormat": "YYYY"
+                    },
+                    "yearPicker": {
+                        "enabled": true,
+                        "titleFormat": "YYYY"
+                    },
+                    "responsive": true,
+                    "onHide": function () {
+                        let inputValue = $('#date_of_payment').val();
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/TuitionInvoices/changeTuitionInvoiceDetails',
+                            data: {
+                                tuition_invoice_id: $('#tuition_invoice_id').val(),
+                                data: inputValue,
+                                job: 'change_payment_date'
+                            },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function (response) {
+                                swalFire('Done', 'Payment date changed!', 'success', 'Ok');
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                swalFire('Error', xhr.responseJSON?.message || 'An error occurred', 'error', 'Try again');
+                            }
+                        });
+                    }
+                }
+            );
             if (!window.location.pathname.includes('AllTuitions') && !(window.location.pathname.includes('/Tuition') && window.location.pathname.includes('edit'))) {
                 let table = new DataTable('.datatable', {
                     "ordering": true,
