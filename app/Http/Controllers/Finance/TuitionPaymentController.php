@@ -887,7 +887,7 @@ class TuitionPaymentController extends Controller
     public function changeTuitionInvoiceDetails(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'tuition_invoice_id' => 'required|integer|exists:tuition_invoice_details',
+            'tuition_invoice_id' => 'required|integer|exists:tuition_invoice_details,id',
             'data' => 'required|string',
             'job' => 'required|string',
         ]);
