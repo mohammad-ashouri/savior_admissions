@@ -1,4 +1,4 @@
-@php use App\Models\Branch\ApplianceConfirmationInformation;use App\Models\Branch\ApplicationReservation;use App\Models\User; @endphp
+@php use App\Models\Branch\ApplianceConfirmationInformation;use App\Models\Branch\ApplicationReservation;use App\Models\User;use Illuminate\Support\Facades\Storage; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -176,6 +176,9 @@
                                     Appliance
                                 </th>
                                 <th scope="col" class="p-4 text-center">
+                                    IMG
+                                </th>
+                                <th scope="col" class="p-4 text-center">
                                     Student
                                 </th>
                                 <th scope="col" class="p-4 text-center">
@@ -230,6 +233,13 @@
                                         {{ $student->id }}
                                     </td>
                                     <td class="w-4 p-2 border text-center">
+                                        @if(!empty($student->studentInfo->getPersonalPicture->src))
+                                            <img
+                                                src="{{ Storage::url($student->studentInfo->getPersonalPicture->src) }}"
+                                                alt="Image not found!">
+                                        @endif
+                                    </td>
+                                    <td class="w-4 p-2 border text-center">
                                         {{ $student->student_id }}
                                     </td>
                                     @php
@@ -282,9 +292,10 @@
                                                 $applianceConfirmationInformation=ApplianceConfirmationInformation::whereApplianceId($student->id)->latest()->first();
                                             @endphp
                                             @if($applianceConfirmationInformation != null)
-                                                <button data-appliance-confirmation-information-id="{{ $applianceConfirmationInformation->id }}"
-                                                   type="button"
-                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline get-appliance-confirmation-info">
+                                                <button
+                                                    data-appliance-confirmation-information-id="{{ $applianceConfirmationInformation->id }}"
+                                                    type="button"
+                                                    class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline get-appliance-confirmation-info">
                                                     <i class="las la-eye mt-1"></i>
                                                 </button>
                                             @endif

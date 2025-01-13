@@ -14,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, hasPermissions, hasRoles, Impersonate, SoftDeletes;
+    use HasApiTokens, HasFactory, hasPermissions, hasRoles, Impersonate, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -44,7 +44,7 @@ class User extends Authenticatable
         'deleted_at',
         'remember_token',
         'status',
-        'email_verified_at'
+        'email_verified_at',
     ];
 
     /**
@@ -75,10 +75,10 @@ class User extends Authenticatable
         return $this->hasAnyPermission('impersonate');
     }
 
-//    public function canBeImpersonated()
-//    {
-//            $this->can_be_impersonated == 1;
-//    }
+    //    public function canBeImpersonated()
+    //    {
+    //            $this->can_be_impersonated == 1;
+    //    }
 
     public function hasRoles($role)
     {
@@ -86,5 +86,12 @@ class User extends Authenticatable
         // For example, if you're using Laravel's built-in roles and permissions,
         // you can use something like:
         return $this->hasRole($role);
+    }
+
+    public function getPersonalPicture()
+    {
+        return $this->hasOne(Document::class, 'user_id', 'id')
+            ->where('document_type_id', 2)
+            ->latest();
     }
 }
