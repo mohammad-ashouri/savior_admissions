@@ -2269,11 +2269,31 @@ $(document).ready(function () {
                                 },
                                 headers: {
                                     'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                                }, success: function (response) {
+                                },
+                                success: function (response) {
                                     console.log(response);
                                     swalFire('Done', response.message, 'success', 'Ok');
-                                }, error: function (xhr, textStatus, errorThrown) {
-                                    swalFire('Error', xhr.responseText.message, 'error', 'Try again');
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    let errorMessage = 'An error occurred. Please try again.';
+
+                                    // اگر خطای مربوط به نام هاست باشد
+                                    if (textStatus === 'error' && errorThrown === '') {
+                                        errorMessage = 'Could not resolve host: api.kavenegar.com';
+                                    } else if (xhr.responseText) {
+                                        // اگر خطای برگشتی از سرور دارای پیام باشد
+                                        try {
+                                            const response = JSON.parse(xhr.responseText);
+                                            if (response.message) {
+                                                errorMessage = response.message;
+                                            }
+                                        } catch (e) {
+                                            // اگر responseText قابل parse نباشد
+                                            errorMessage = xhr.responseText;
+                                        }
+                                    }
+
+                                    swalFire('Error', errorMessage, 'error', 'Try again');
                                 }
                             });
                         }
