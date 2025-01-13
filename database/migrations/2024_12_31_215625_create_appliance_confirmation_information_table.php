@@ -15,14 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('appliance_id');
             $table->foreign('appliance_id')->references('id')->on('student_appliance_statuses');
-            $table->dateTime('date_of_referral')->nullable();
-            $table->dateTime('date_of_confirm')->nullable();
             $table->string('status')->nullable();
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('referrer')->nullable();
-            $table->foreign('referrer')->references('id')->on('users');
-            $table->unsignedBigInteger('seconder')->nullable();
-            $table->foreign('seconder')->references('id')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });
