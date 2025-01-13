@@ -12,6 +12,7 @@ return [
     'Postal Code' => 'کدپستی',
     'Registration Number' => 'کد ثبتی',
     'National ID' => 'شناسه ملی',
+    'Nationality' => 'ملیت',
     'Address' => 'آدرس',
     'Student Details' => 'اطلاعات دانش آموز',
     'Full Name of Student' => 'مشخصات دانش آموز',
