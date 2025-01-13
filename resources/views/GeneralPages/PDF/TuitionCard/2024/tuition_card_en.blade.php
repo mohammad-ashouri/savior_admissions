@@ -430,7 +430,7 @@
             </div>
             <div class="flex justify-between">
                 <p>Grade: <span>{{$levelInfo->name}}</span></p>
-                <p>Nationality: <span> {{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->nationalityInfo?->nationality}}</span></p>
+                <p>Country: <span> {{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->nationalityInfo?->nationality}}</span></p>
             </div>
             <div class="flex justify-between">
                 <p>Guardian Full Name:
