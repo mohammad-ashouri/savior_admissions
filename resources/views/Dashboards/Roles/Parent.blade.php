@@ -134,6 +134,9 @@
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="p-4">
+                                        Appliance Id
+                                    </th>
+                                    <th scope="col" class="p-4">
                                         Academic Year
                                     </th>
                                     <th scope="col" class="px-6 py-3 text-center">
@@ -158,6 +161,9 @@
                                 @foreach($applicationStatuses as $applicationStatus)
                                     <tr
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <td class="w-4 p-4 text-center">
+                                            {{$applicationStatus->id}}
+                                        </td>
                                         <td class="w-56 p-4 text-center">
                                             {{$applicationStatus->academicYearInfo->name}}
                                         </td>
