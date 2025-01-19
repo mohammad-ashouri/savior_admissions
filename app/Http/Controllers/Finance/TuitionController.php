@@ -218,16 +218,16 @@ class TuitionController extends Controller
             ->orderByDesc('application_reservations.id')
             ->first();
 
-        //Get tuition price
+        // Get tuition price
         $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
             ->where('tuitions.academic_year', $applicationInfo->academic_year)
             ->where('tuition_details.level', $applicationInfo->level)
             ->first();
 
-        //Get payment methods
+        // Get payment methods
         $paymentMethods = PaymentMethod::get();
 
-        //Get evidence info for foreign school in last year
+        // Get evidence info for foreign school in last year
         $evidence = Evidence::whereApplianceId($studentApplianceStatus->id)->first();
         if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
             $foreignSchool = true;
@@ -235,14 +235,14 @@ class TuitionController extends Controller
             $foreignSchool = false;
         }
 
-        //Discount Percentages
+        // Discount Percentages
         $discountPercentages = 0;
         if (isset(json_decode($applicationInfo->interview_form, true)['discount'])) {
             $interviewFormDiscounts = json_decode($applicationInfo->interview_form, true)['discount'];
             $discountPercentages = DiscountDetail::whereIn('id', $interviewFormDiscounts)->pluck('percentage')->sum();
         }
 
-        //Get all students with paid status in all active academic years
+        // Get all students with paid status in all active academic years
         $me = auth()->user()->id;
 
         $allStudentsWithMyGuardian = StudentInformation::whereGuardian($me)->pluck('student_id')->toArray();
@@ -256,7 +256,7 @@ class TuitionController extends Controller
         $allDiscountPercentages = $this->getAllDiscounts($student_id);
         $previousDiscountPrice = $this->getAllFamilyDiscountPrice($me);
 
-        //Calculate discount for minimum level
+        // Calculate discount for minimum level
         $minimumLevel = $this->getMinimumApplianceLevelInfo($me);
 
         if (! empty($minimumLevel['academic_year']) and ! $minimumLevel['level'] == null) {
@@ -323,13 +323,13 @@ class TuitionController extends Controller
             abort(403);
         }
 
-        //Get tuition price
+        // Get tuition price
         $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
             ->where('tuitions.academic_year', $applicationInfo->academic_year)
             ->where('tuition_details.level', $applicationInfo->level)
             ->first();
 
-        //Get evidence info for foreign school in last year
+        // Get evidence info for foreign school in last year
         $evidence = Evidence::whereApplianceId($studentApplianceStatus->id)->first();
         if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
             $foreignSchool = true;
@@ -344,7 +344,7 @@ class TuitionController extends Controller
 
         $previousDiscountPrice = $this->getAllFamilyDiscountPrice($studentApplianceStatus->studentInformations->guardianInfo->id);
 
-        //Calculate discount for minimum level
+        // Calculate discount for minimum level
         $minimumLevel = $this->getMinimumApplianceLevelInfo($studentApplianceStatus->studentInformations->guardianInfo->id);
 
         if (! empty($minimumLevel['academic_year']) and ! $minimumLevel['level'] == null) {
@@ -380,7 +380,7 @@ class TuitionController extends Controller
             $familyPercentagePriceFullPayment = 0;
         }
 
-        //Amount information
+        // Amount information
         if ($foreignSchool) {
             $fullPayment = json_decode($tuition->full_payment_ministry, true);
             $fullPaymentAmount = str_replace(',', '', $fullPayment['full_payment_irr_ministry']);
@@ -420,7 +420,7 @@ class TuitionController extends Controller
         3 for 3 installments
          */
 
-        //Save files if payment method is offline
+        // Save files if payment method is offline
         if ($paymentMethod == 1) {
             switch ($paymentType) {
                 case 1:
@@ -598,13 +598,13 @@ class TuitionController extends Controller
             }
         }
 
-        //Make new tuition invoice
+        // Make new tuition invoice
         $tuitionInvoice = TuitionInvoices::firstOrCreate([
             'appliance_id' => $appliance_id,
             'payment_type' => $paymentType,
         ]);
 
-        //Make invoice details by payment type
+        // Make invoice details by payment type
         switch ($paymentType) {
             case 1:
                 switch ($paymentMethod) {
@@ -821,50 +821,26 @@ class TuitionController extends Controller
     public function searchTuitionsStatus(Request $request)
     {
         $this->validate($request, [
-            'student_id' => 'nullable|exists:student_appliance_statuses,student_id',
-            'student_first_name' => 'nullable|string',
-            'student_last_name' => 'nullable|string',
             'academic_year' => 'nullable|exists:academic_years,id',
         ]);
         $me = User::find(auth()->user()->id);
         $students = [];
-        $firstName = $request->student_first_name;
-        $lastName = $request->student_last_name;
         $isParent = false;
         if ($me->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with([
                 'studentInfo',
                 'tuitionInvoices' => function ($query) {
                     $query->whereHas('invoiceDetails', function ($query) {
-                        $query->whereIsPaid(1);
+                        $query->where('is_paid', '1');
                     });
                 },
                 'academicYearInfo',
                 'documentSeconder',
             ]);
-            if ($request->student_id) {
-                $data->whereStudentId($request->student_id);
-            }
-            if (! empty($firstName)) {
-                $data->whereHas('studentInfo', function ($query) use ($firstName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($firstName) {
-                        $query->where('first_name_en', 'like', "%$firstName%");
-                    });
-                });
-            }
-            if (! empty($lastName)) {
-                $data->whereHas('studentInfo', function ($query) use ($lastName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($lastName) {
-                        $query->where('last_name_en', 'like', "%$lastName%");
-                    });
-                });
-            }
-            if ($request->academic_year) {
-                $data->whereAcademicYear($request->academic_year);
-            }
+            $data->whereAcademicYear($request->academic_year);
             $data->whereHas('tuitionInvoices', function ($query) {
                 $query->whereHas('invoiceDetails', function ($query) {
-                    $query->whereIsPaid(1);
+                    $query->where('is_paid', '1');
                 });
             });
             $data->whereTuitionPaymentStatus('Paid');
@@ -878,26 +854,7 @@ class TuitionController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
             $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
-            if ($request->student_id) {
-                $data->whereStudentId($request->student_id);
-            }
-            if (! empty($firstName)) {
-                $data->whereHas('studentInfo', function ($query) use ($firstName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($firstName) {
-                        $query->where('first_name_en', 'like', "%$firstName%");
-                    });
-                });
-            }
-            if (! empty($lastName)) {
-                $data->whereHas('studentInfo', function ($query) use ($lastName) {
-                    $query->whereHas('generalInformationInfo', function ($query) use ($lastName) {
-                        $query->where('last_name_en', 'like', "%$lastName%");
-                    });
-                });
-            }
-            if ($request->academic_year) {
-                $data->whereAcademicYear($request->academic_year);
-            }
+            $data->whereAcademicYear($request->academic_year);
             $data->whereIn('academic_year', $academicYears);
             $data->whereTuitionPaymentStatus('Paid');
             $students = $data->orderBy('academic_year', 'desc')->get();
