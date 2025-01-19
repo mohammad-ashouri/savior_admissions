@@ -484,48 +484,48 @@ class TuitionPaymentController extends Controller
                             case '1':
                                 $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 25) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                                $newGrantedFamilyDiscount->discount_percent = 25;
-                                switch ($tuitionInvoiceInfo->payment_type) {
-                                    case 1:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
-                                        break;
-                                }
-                                $newGrantedFamilyDiscount->signed_child_number = 2;
-                                $newGrantedFamilyDiscount->save();
+                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
+                                    [
+                                        'appliance_id' => $studentAppliance->id,
+                                    ],
+                                    [
+                                        'level' => $applicationInfo->level,
+                                        'discount_percent' => 25,
+                                        'discount_price' => $tuitionInvoiceInfo->payment_type == 1 ? $familyPercentagePriceFullPayment : null,
+                                        'signed_child_number' => 2,
+                                    ]
+                                );
                                 break;
                             case '2':
 
                                 $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 30) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                                $newGrantedFamilyDiscount->discount_percent = 30;
-                                switch ($tuitionInvoiceInfo->payment_type) {
-                                    case 1:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
-                                        break;
-                                }
-                                $newGrantedFamilyDiscount->signed_child_number = 3;
-                                $newGrantedFamilyDiscount->save();
+                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
+                                    [
+                                        'appliance_id' => $studentAppliance->id,
+                                    ],
+                                    [
+                                        'level' => $applicationInfo->level,
+                                        'discount_percent' => 30,
+                                        'discount_price' => $tuitionInvoiceInfo->payment_type == 1 ? $familyPercentagePriceFullPayment : null,
+                                        'signed_child_number' => 3
+                                    ]
+                                );
                                 break;
                             case '3':
                                 $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 40) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                                $newGrantedFamilyDiscount->discount_percent = 40;
-                                switch ($tuitionInvoiceInfo->payment_type) {
-                                    case 1:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
-                                        break;
-                                }
-                                $newGrantedFamilyDiscount->signed_child_number = 4;
-                                $newGrantedFamilyDiscount->save();
+                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
+                                    [
+                                        'appliance_id' => $studentAppliance->id,
+                                    ],
+                                    [
+                                        'level' => $applicationInfo->level,
+                                        'discount_percent' => 40,
+                                        'discount_price' => $tuitionInvoiceInfo->payment_type == 1 ? $familyPercentagePriceFullPayment : null,
+                                        'signed_child_number' => 4,
+                                    ]
+                                );
                                 break;
                             default:
                         }
