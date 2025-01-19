@@ -397,19 +397,17 @@ class StudentController extends Controller
     public function search(Request $request)
     {
         $this->validate($request, [
-            'student_id' => 'nullable|exists:student_appliance_statuses,student_id',
             'academic_year' => 'nullable|exists:academic_years,id',
-            'student_first_name' => 'nullable|string',
-            'student_last_name' => 'nullable|string',
-            'gender' => 'nullable|string|in:Male,Female',
         ]);
         $me = User::find(auth()->user()->id);
         $academicYear = $request->academic_year;
 
         $students = [];
         if ($me->hasRole('Super Admin')) {
-            $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
-            $students = $data->orderBy('academic_year', 'desc')->get();
+            $data = StudentApplianceStatus::with(['studentInfo','academicYearInfo','documentSeconder']);
+            $students = $data
+                ->where('academic_year',$academicYear)
+                ->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
 
             return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
