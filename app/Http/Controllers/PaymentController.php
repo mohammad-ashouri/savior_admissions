@@ -210,72 +210,72 @@ class PaymentController extends Controller
                                 $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 25) / 100) - $previousDiscountPrice;
                                 $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 25) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                                $newGrantedFamilyDiscount->discount_percent = 25;
-                                switch ($tuitionInvoiceInfo->payment_type) {
-                                    case 2:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceTwoInstallment;
-                                        break;
-                                    case 3:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFourInstallment;
-                                        break;
-                                    case 4:
-                                    case 1:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
-                                        break;
-                                }
-                                $newGrantedFamilyDiscount->signed_child_number = 2;
-                                $newGrantedFamilyDiscount->save();
+                                $discountPrice = match ($tuitionInvoiceInfo->payment_type) {
+                                    2 => $familyPercentagePriceTwoInstallment,
+                                    3 => $familyPercentagePriceFourInstallment,
+                                    1, 4 => $familyPercentagePriceFullPayment,
+                                    default => null,
+                                };
+
+                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
+                                    [
+                                        'appliance_id' => $studentAppliance->id,
+                                    ],
+                                    [
+                                        'level' => $applicationInfo->level,
+                                        'discount_percent' => 25,
+                                        'discount_price' => $discountPrice,
+                                        'signed_child_number' => 2,
+                                    ]
+                                );
                                 break;
                             case '2':
                                 $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 30) / 100) - $previousDiscountPrice;
                                 $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 30) / 100) - $previousDiscountPrice;
                                 $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 30) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                                $newGrantedFamilyDiscount->discount_percent = 30;
-                                switch ($tuitionInvoiceInfo->payment_type) {
-                                    case 2:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceTwoInstallment;
-                                        break;
-                                    case 3:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFourInstallment;
-                                        break;
-                                    case 4:
-                                    case 1:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
-                                        break;
-                                }
-                                $newGrantedFamilyDiscount->signed_child_number = 3;
-                                $newGrantedFamilyDiscount->save();
+                                $discountPrice = match ($tuitionInvoiceInfo->payment_type) {
+                                    2 => $familyPercentagePriceTwoInstallment,
+                                    3 => $familyPercentagePriceFourInstallment,
+                                    1, 4 => $familyPercentagePriceFullPayment,
+                                    default => null,
+                                };
+
+                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
+                                    [
+                                        'appliance_id' => $studentAppliance->id,
+                                    ],
+                                    [
+                                        'level' => $applicationInfo->level,
+                                        'discount_percent' => 30,
+                                        'discount_price' => $discountPrice,
+                                        'signed_child_number' => 3,
+                                    ]
+                                );
                                 break;
                             case '3':
                                 $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 40) / 100) - $previousDiscountPrice;
                                 $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 40) / 100) - $previousDiscountPrice;
                                 $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 40) / 100) - $previousDiscountPrice;
 
-                                $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                                $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                                $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                                $newGrantedFamilyDiscount->discount_percent = 40;
-                                switch ($tuitionInvoiceInfo->payment_type) {
-                                    case 2:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceTwoInstallment;
-                                        break;
-                                    case 3:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFourInstallment;
-                                        break;
-                                    case 4:
-                                    case 1:
-                                        $newGrantedFamilyDiscount->discount_price = $familyPercentagePriceFullPayment;
-                                        break;
-                                }
-                                $newGrantedFamilyDiscount->signed_child_number = 4;
-                                $newGrantedFamilyDiscount->save();
+                                $discountPrice = match ($tuitionInvoiceInfo->payment_type) {
+                                    2 => $familyPercentagePriceTwoInstallment,
+                                    3 => $familyPercentagePriceFourInstallment,
+                                    1, 4 => $familyPercentagePriceFullPayment,
+                                    default => null,
+                                };
+
+                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
+                                    [
+                                        'appliance_id' => $studentAppliance->id,
+                                    ],
+                                    [
+                                        'level' => $applicationInfo->level,
+                                        'discount_percent' => 40,
+                                        'discount_price' => $discountPrice,
+                                        'signed_child_number' => 4,
+                                    ]
+                                );
                                 break;
                             default:
                         }
