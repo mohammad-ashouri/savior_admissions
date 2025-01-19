@@ -327,7 +327,7 @@
                                 <div>
                                     @foreach($parents as $guardian)
                                         @if(!isset($guardian->generalInformationInfo->first_name_en) or $guardian->generalInformationInfo->first_name_en == null)
-                                            @dd($guardian)
+{{--                                            @dd($guardian)--}}
                                         @endif
                                     @endforeach
 
