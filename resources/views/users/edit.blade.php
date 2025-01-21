@@ -338,7 +338,7 @@
                                             required>
                                         <option value="" disabled selected>Select guardian...</option>
                                         @foreach($parents as $guardian)
-                                            @if($guardian->generalInformationInfo->first_name_en == null)
+                                            @if(!isset($guardian->generalInformationInfo->first_name_en) or $guardian->generalInformationInfo->first_name_en == null)
                                                 @continue
                                             @endif
                                             <option
