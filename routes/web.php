@@ -133,6 +133,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('TuitionsStatus', [TuitionController::class, 'tuitionsStatus'])->name('tuitionsStatus');
             Route::get('SearchTuitionsStatus', [TuitionController::class, 'searchTuitionsStatus'])->name('SearchTuitionStatus');
             Route::get('ShowApplianceInvoices/{appliance_id}', [TuitionPaymentController::class, 'applianceInvoices'])->name('applianceInvoices');
+            Route::get('EditApplianceInvoices/{appliance_id}', [TuitionPaymentController::class, 'applianceInvoicesEdit'])->name('applianceInvoices.edit');
             Route::get('AllTuitions/{academic_year?}', [TuitionController::class, 'allTuitions'])->name('allTuitions');
 
             //Pay Tuition

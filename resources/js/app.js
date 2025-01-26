@@ -2388,6 +2388,9 @@ $(document).ready(function () {
     } else if (fullPath.includes('InvoicesDetails')) {
         pageTitle = 'Invoices Details';
 
+    }  else if (fullPath.includes('EditApplianceInvoices')) {
+        pageTitle = 'Edit Tuition Invoices ';
+
     } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';
 

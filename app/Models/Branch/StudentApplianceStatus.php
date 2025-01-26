@@ -3,6 +3,7 @@
 namespace App\Models\Branch;
 
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -82,5 +83,10 @@ class StudentApplianceStatus extends Model
                 $query->where('reserved', 1);
             })
             ->latest('id');
+    }
+
+    public function grantedFamilyDiscounts()
+    {
+        return $this->belongsTo(GrantedFamilyDiscount::class, 'id', 'appliance_id');
     }
 }
