@@ -14,6 +14,7 @@ use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\Finance\Tuition;
 use App\Models\Finance\TuitionDetail;
 use App\Models\Finance\TuitionInvoiceDetails;
+use App\Models\Finance\TuitionInvoiceDetailsPayment;
 use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -349,7 +350,15 @@ class TuitionPaymentController extends Controller
 
                 break;
             case 2:
-                if ($paymentAmount == $tuitionAmount) {
+                $allCustomTuitionInvoices = TuitionInvoiceDetailsPayment::where('invoice_details_id', $tuitionInvoiceDetails->id)->sum('amount');
+
+                if ($paymentAmount > $tuitionAmount-$allCustomTuitionInvoices) {
+                    return back()->withErrors([
+                        'payment_amount' => "The payment amount cannot exceed " . number_format($tuitionAmount) . " Rials"
+                    ]);
+                }
+
+                if ($paymentAmount < $tuitionAmount-$allCustomTuitionInvoices) {
                     $invoice = (new Invoice)->amount($tuitionAmount);
 
                     return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionInstallmentPayment')->purchase(
@@ -357,7 +366,7 @@ class TuitionPaymentController extends Controller
                         function ($driver, $transactionID) use ($tuitionAmount, $tuitionInvoiceDetails, $paymentMethod) {
                             $dataInvoice = new \App\Models\Invoice;
                             $dataInvoice->user_id = auth()->user()->id;
-                            $dataInvoice->type = 'Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
+                            $dataInvoice->type = 'Custom Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
                             $dataInvoice->amount = $tuitionAmount;
                             $dataInvoice->description = json_encode(['amount' => $tuitionAmount, 'invoice_details_id' => $tuitionInvoiceDetails->id, 'payment_method' => $paymentMethod], true);
                             $dataInvoice->transaction_id = $transactionID;
@@ -372,7 +381,7 @@ class TuitionPaymentController extends Controller
                         function ($driver, $transactionID) use ($paymentAmount, $tuitionInvoiceDetails, $paymentMethod) {
                             $dataInvoice = new \App\Models\Invoice;
                             $dataInvoice->user_id = auth()->user()->id;
-                            $dataInvoice->type = 'Custom Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
+                            $dataInvoice->type = 'Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
                             $dataInvoice->amount = $paymentAmount;
                             $dataInvoice->description = json_encode(['amount' => $paymentAmount, 'invoice_details_id' => $tuitionInvoiceDetails->id, 'payment_method' => $paymentMethod], true);
                             $dataInvoice->transaction_id = $transactionID;
