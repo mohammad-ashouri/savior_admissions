@@ -11,6 +11,7 @@ use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\Finance\Tuition;
 use App\Models\Finance\TuitionDetail;
 use App\Models\Finance\TuitionInvoiceDetails;
+use App\Models\Finance\TuitionInvoiceDetailsPayment;
 use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -132,7 +133,7 @@ class PaymentController extends Controller
                     $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
                     $allDiscountPercentages = $this->getAllDiscounts($student_id);
 
-                    //Found previous discounts
+                    // Found previous discounts
                     $familyPercentagePriceTwoInstallment = 0;
                     $allStudentsWithGuardian = StudentInformation::whereGuardian($studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
                     $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
@@ -149,7 +150,7 @@ class PaymentController extends Controller
                         ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
                         ->orderByDesc('application_reservations.id')
                         ->first();
-                    //Get evidence info for foreign school in last year
+                    // Get evidence info for foreign school in last year
                     $evidence = Evidence::whereApplianceId($studentAppliance->id)->first();
                     if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
                         $foreignSchool = true;
@@ -158,7 +159,7 @@ class PaymentController extends Controller
                     }
                     if ($allGrantedFamilyDiscounts->isEmpty()) {
                         $newGrantedFamilyDiscount = GrantedFamilyDiscount::withTrashed()->where('appliance_id', $studentAppliance->id)->first();
-                        if (!empty($newGrantedFamilyDiscount)) {
+                        if (! empty($newGrantedFamilyDiscount)) {
                             $newGrantedFamilyDiscount->restore();
                             $newGrantedFamilyDiscount->update([
                                 'level' => $applicationInfo->level,
@@ -181,7 +182,7 @@ class PaymentController extends Controller
                         $allDiscountPercentages = $this->getAllDiscounts($student_id);
                         $previousDiscountPrice = $this->getAllFamilyDiscountPrice($studentAppliance->studentInformations->guardianInfo->id);
 
-                        //Calculate discount for minimum level
+                        // Calculate discount for minimum level
                         $minimumLevel = $this->getMinimumApplianceLevelInfo($studentAppliance->studentInformations->guardianInfo->id);
 
                         $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
@@ -417,25 +418,55 @@ class PaymentController extends Controller
                     }
 
                     $invoiceDescription = json_decode($transactionDetail->description, true);
+                    $transactionRefId = $request->SaleOrderId;
 
                     $tuitionInvoiceDetails = TuitionInvoiceDetails::find($invoiceDescription['invoice_details_id']);
-                    $tuitionInvoiceDetails->is_paid = 1;
-                    $tuitionInvoiceDetails->invoice_id = $transactionDetail->id;
-                    $tuitionInvoiceDetails->payment_method = $invoiceDescription['payment_method'];
-                    $tuitionInvoiceDetails->payment_details = json_encode($request->all(), true);
-                    $tuitionInvoiceDetails->date_of_payment = now();
-                    $tuitionInvoiceDetails->save();
 
-                    $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+                    if ($tuitionInvoiceDetails->amount == $invoiceDescription['amount']) {
+                        $tuitionInvoiceDetails->is_paid = 1;
+                        $tuitionInvoiceDetails->invoice_id = $transactionDetail->id;
+                        $tuitionInvoiceDetails->payment_method = $invoiceDescription['payment_method'];
+                        $tuitionInvoiceDetails->payment_details = json_encode($request->all(), true);
+                        $tuitionInvoiceDetails->date_of_payment = now();
+                        $tuitionInvoiceDetails->save();
 
-                    $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
-                    $studentAppliance->tuition_payment_status = 'Paid';
-                    $studentAppliance->approval_status = 1;
-                    $studentAppliance->save();
+                        $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+
+                        $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+                        $studentAppliance->tuition_payment_status = 'Paid';
+                        $studentAppliance->approval_status = 1;
+                        $studentAppliance->save();
+                        $messageText = "You have successfully paid tuition installment. \nTransaction number: $transactionRefId \nSavior Schools";
+                    } else {
+                        TuitionInvoiceDetailsPayment::create([
+                            'invoice_details_id' => $tuitionInvoiceDetails->id,
+                            'invoice_id' => $transactionDetail->id,
+                            'amount' => $invoiceDescription['amount'],
+                            'adder' => auth()->user()->id,
+                        ]);
+                        $allCustomTuitionInvoices = TuitionInvoiceDetailsPayment::where('invoice_details_id', $tuitionInvoiceDetails->id)->sum('amount');
+
+                        if ($allCustomTuitionInvoices==$tuitionInvoiceDetails->amount){
+                            $tuitionInvoiceDetails->is_paid = 1;
+                            $tuitionInvoiceDetails->invoice_id = $transactionDetail->id;
+                            $tuitionInvoiceDetails->payment_method = $invoiceDescription['payment_method'];
+                            $tuitionInvoiceDetails->payment_details = json_encode($request->all(), true);
+                            $tuitionInvoiceDetails->date_of_payment = now();
+                            $tuitionInvoiceDetails->save();
+
+                            $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+
+                            $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+                            $studentAppliance->tuition_payment_status = 'Paid';
+                            $studentAppliance->approval_status = 1;
+                            $studentAppliance->save();
+                            $messageText = "You have successfully paid tuition installment. \nTransaction number: $transactionRefId \nSavior Schools";
+                        }else{
+                            $messageText = "Your entered tuition amount has been successfully paid. \nTransaction number: $transactionRefId \nSavior Schools";
+                        }
+                    }
 
                     $reservatoreMobile = $user->mobile;
-                    $transactionRefId = $request->SaleOrderId;
-                    $messageText = "You have successfully paid tuition installment. \nTransaction number: $transactionRefId \nSavior Schools";
                     $this->sendSMS($reservatoreMobile, $messageText);
                 } else {
                     return redirect()->route('dashboard')->withErrors(['Failed to verify application payment.']);

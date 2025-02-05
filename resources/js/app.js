@@ -1451,8 +1451,10 @@ $(document).ready(function () {
             switch (parseInt($('#payment_method').val())) {
                 case 1:
                     $('#bank-slip-div').removeClass('hidden');
+                    $('#set-amount-div').addClass('hidden');
                     break;
                 case 2:
+                    $('#set-amount-div').removeClass('hidden');
                     $('#bank-slip-div').addClass('hidden');
                     break;
                 default:
