@@ -122,19 +122,49 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div id="set-amount-div" class="hidden grid gap-1 mb-6 md:grid-cols-1">
+                                <div id="set-amount-div" class=" grid gap-1 mb-6 md:grid-cols-1">
                                     <label
                                         class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
                                         for="payment_amount">Please enter the desired amount for your
                                         payment; <br>otherwise, click on the "Payment" button.</label>
                                     <input
-                                        class="block mb-4 mr-2 w-full text-sm text-gray-900 border border-gray-300 rounded-lg  bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                        name="payment_amount" id="payment_amount"
-                                        max="{{ $tuitionInvoiceDetails->amount }}"
-                                        min="20000"
-                                        value="{{ $tuitionInvoiceDetails->amount }}"
-                                        type="number"
-                                    >
+                                        class="block mb-4 mr-2 w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="payment_amount_display"
+                                        type="text"
+                                        value="{{ $tuitionInvoiceDetails->amount }}">
+                                    <input type="hidden" name="payment_amount" id="payment_amount"
+                                           min="20000"
+                                           max="{{ $tuitionInvoiceDetails->amount }}"
+                                           value="{{ $tuitionInvoiceDetails->amount }}">
+                                    <script>
+                                        const initialValue = {{ $tuitionInvoiceDetails->amount }};
+                                        document.getElementById('payment_amount_display').value =
+                                            new Intl.NumberFormat().format(initialValue);
+
+                                        new Cleave('#payment_amount_display', {
+                                            numeral: true,
+                                            numeralThousandsGroupStyle: 'thousand',
+                                            numeralDecimalMark: '',
+                                            delimiter: ',',
+                                            onValueChanged: (e) => {
+                                                const rawValue = e.target.rawValue || '0';
+                                                document.getElementById('payment_amount').value = rawValue;
+                                            }
+                                        });
+
+                                        // اعتبارسنجی قبل از ارسال فرم
+                                        document.querySelector('form').addEventListener('submit', function(e) {
+                                            const input = document.getElementById('payment_amount');
+                                            const value = parseInt(input.value);
+                                            const min = parseInt(input.getAttribute('min'));
+                                            const max = parseInt(input.getAttribute('max'));
+
+                                            if (value < min || value > max) {
+                                                e.preventDefault();
+                                                alert(`مبلغ باید بین ${min.toLocaleString()} و ${max.toLocaleString()} ریال باشد.`);
+                                            }
+                                        });
+                                    </script>
                                     <div class=" mb-5">
                                         <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1 list-disc">
                                             <li class="mb-2">

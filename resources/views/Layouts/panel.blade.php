@@ -40,6 +40,8 @@
     <script src="/build/plugins/pdfmake/build/vfs_fonts.js"></script>
 
     <script src="/build/plugins/ChartJs-4.4.0/chart.js"></script>
+
+    <script src="/build/plugins/Cleave/Cleave.js"></script>
     <script>
         function swalFire(title = null, text, icon, confirmButtonText) {
             Swal.fire({
