@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tuition_invoice_details_payments', function (Blueprint $table) {
-            $table->dropColumn(['payment_method', 'status']);
+            $table->dropColumn(['payment_method', 'payment_details', 'status']);
         });
     }
 };

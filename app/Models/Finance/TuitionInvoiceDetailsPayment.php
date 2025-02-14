@@ -2,6 +2,7 @@
 
 namespace App\Models\Finance;
 
+use App\Models\Catalogs\PaymentMethod;
 use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,10 @@ class TuitionInvoiceDetailsPayment extends Model
     protected $fillable = [
         'invoice_details_id',
         'invoice_id',
+        'payment_details',
+        'payment_method',
         'amount',
+        'status',
         'adder',
     ];
 
@@ -26,18 +30,23 @@ class TuitionInvoiceDetailsPayment extends Model
         'deleted_at',
     ];
 
-    public function tuitionInvoiceDetails()
+    public function tuitionInvoiceDetails(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(TuitionInvoiceDetails::class, 'invoice_details_id');
     }
 
-    public function invoiceDetails()
+    public function invoiceDetails(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Invoice::class, 'invoice_id');
     }
 
-    public function adder()
+    public function paymentMethodInfo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasMany(User::class, 'adder');
+        return $this->belongsTo(PaymentMethod::class, 'payment_method', 'id');
+    }
+
+    public function adder(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'adder', 'id');
     }
 }
