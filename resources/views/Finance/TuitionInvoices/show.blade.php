@@ -20,7 +20,7 @@
                             </div>
                             <div>
                                 <p class="font-bold">Student
-                                    Info: </p> {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
+                                    Info: </p> {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->student_id }} - {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
                                 <p class="font-bold">Type Of Payment: </p>
@@ -111,14 +111,20 @@
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <div class="grid gap-6 mb-6 md:grid-cols-4">
+                        <div class="grid gap-6 mb-6 md:grid-cols-6">
                             <div>
                                 <p class="font-bold">Payment
-                                    Method: </p> {{$tuitionInvoiceDetails->paymentMethodInfo->name}}
+                                    Method: </p> {{isset($tuitionInvoiceDetails->paymentMethodInfo->name) ? $tuitionInvoiceDetails->paymentMethodInfo->name : 'Custom Payment'}}
+                            </div>
+                            <div>
+                                <p class="font-bold">Tuition Payment Due: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
                             </div>
                             <div>
                                 <p class="font-bold">Amount
-                                    Paid: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
+                                    Paid: </p> {{ number_format($tuitionInvoiceDetails->customPayments->sum('amount')) }} IRR
+                            </div>
+                            <div>
+                                <p class="font-bold">Debt: </p> {{ number_format($tuitionInvoiceDetails->amount-$tuitionInvoiceDetails->customPayments->sum('amount')) }} IRR
                             </div>
                             <div>
                                 <p class="font-bold">Tuition
@@ -129,115 +135,228 @@
                             </div>
                         </div>
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
-                            @switch($tuitionInvoiceDetails->paymentMethodInfo->id)
-                                @case('1')
-                                    <div class="mt-3 ">
-                                        <p class="font-bold mb-3">Payment Receipts</p>
-                                        <div class="flex">
-                                            @php
-                                                $files=@json_decode($tuitionInvoiceDetails->description,true)['files'];
-                                            @endphp
-                                            @foreach($files as $key=>$file)
-                                                @if(substr($file,-4)=='.pdf')
-                                                    <div class="flex justify-center items-center">
-                                                        <a target="_blank"
-                                                           href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}">
-                                                            <img class="pdf-documents-icons">
-                                                        </a>
-                                                    </div>
-                                                @else
-                                                    <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
-                                                    >
-                                                        <div
-                                                            class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
-                                                            <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
-                                                               data-pswp-width="1669"
-                                                               data-pswp-height="1500">
-                                                                <img
-                                                                    src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
-                                                                    alt="Document Not Found!"/>
+                            @if($tuitionInvoiceDetails->is_paid==1)
+                                @switch($tuitionInvoiceDetails->paymentMethodInfo->id)
+                                    @case('1')
+                                        <div class="mt-3 ">
+                                            <p class="font-bold mb-3">Payment Receipts</p>
+                                            <div class="flex">
+                                                @php
+                                                    $files=@json_decode($tuitionInvoiceDetails->description,true)['files'];
+                                                @endphp
+                                                @foreach($files as $key=>$file)
+                                                    @if(substr($file,-4)=='.pdf')
+                                                        <div class="flex justify-center items-center">
+                                                            <a target="_blank"
+                                                               href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}">
+                                                                <img class="pdf-documents-icons">
                                                             </a>
                                                         </div>
-                                                    </div>
+                                                    @else
+                                                        <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
+                                                        >
+                                                            <div
+                                                                class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                                <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
+                                                                   data-pswp-width="1669"
+                                                                   data-pswp-height="1500">
+                                                                    <img
+                                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
+                                                                        alt="Document Not Found!"/>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @php
+                                            $date = '2024-06-11 10:17:09';
+                                        @endphp
+                                        <div class="mt-3 ">
+                                            <input type="hidden" id="tuition_invoice_id"
+                                                   value="{{$tuitionInvoiceDetails->id}}">
+
+                                            <p class="font-bold mb-3">Payment Date</p>
+                                            <div class="flex">
+                                                @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
+                                                    <input type="text"
+                                                           id="date_of_payment"
+                                                           name="date_of_payment"
+                                                           value="{{ !is_null($tuitionInvoiceDetails->date_of_payment) ? Jalalian::fromDateTime($tuitionInvoiceDetails->date_of_payment)->format('Y/m/d H:i:s') : '' }}"
+                                                           class="persian_date_with_clock rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                           required>
+                                                @else
+                                                    <p class="font-bold mb-3">{{ $tuitionInvoiceDetails->date_of_payment }}</p>
                                                 @endif
-                                            @endforeach
+                                            </div>
                                         </div>
-                                    </div>
-                                    @php
-                                        $date = '2024-06-11 10:17:09';
-                                    @endphp
-                                    <div class="mt-3 ">
-                                        <input type="hidden" id="tuition_invoice_id"
-                                               value="{{$tuitionInvoiceDetails->id}}">
+                                        <div class="mt-3 ">
+                                            <p class="font-bold mb-3">Tracking Code</p>
+                                            <div class="flex">
+                                                @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
+                                                    <input type="text"
+                                                           value="{{ $tuitionInvoiceDetails->tracking_code }}"
+                                                           id="tracking_code"
+                                                           name="tracking_code"
+                                                           placeholder="Enter tracking code"
+                                                           class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
+                                                           required>
+                                                @else
+                                                    <p class="font-bold mb-3">{{ $tuitionInvoiceDetails->tracking_code }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="mt-3 ">
+                                            <p class="font-bold mb-3">Description</p>
+                                            <div class="flex">
+                                                @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
+                                                    <textarea
+                                                        id="description"
+                                                        rows="5"
+                                                        name="description"
+                                                        placeholder="Enter description"
+                                                        class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price">{{ $tuitionInvoiceDetails->financial_manager_description }}</textarea>
 
-                                        <p class="font-bold mb-3">Payment Date</p>
-                                        <div class="flex">
-                                            @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
-                                                <input type="text"
-                                                       id="date_of_payment"
-                                                       name="date_of_payment"
-                                                       value="{{ !is_null($tuitionInvoiceDetails->date_of_payment) ? Jalalian::fromDateTime($tuitionInvoiceDetails->date_of_payment)->format('Y/m/d H:i:s') : '' }}"
-                                                       class="persian_date_with_clock rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
-                                                       required>
-                                            @else
-                                                <p class="font-bold mb-3">{{ $tuitionInvoiceDetails->date_of_payment }}</p>
-                                            @endif
+                                                @else
+                                                    <p class="font-bold mb-3">{{ $tuitionInvoiceDetails->financial_manager_description }}</p>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="mt-3 ">
-                                        <p class="font-bold mb-3">Tracking Code</p>
-                                        <div class="flex">
-                                            @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
-                                                <input type="text"
-                                                       value="{{ $tuitionInvoiceDetails->tracking_code }}"
-                                                       id="tracking_code"
-                                                       name="tracking_code"
-                                                       placeholder="Enter tracking code"
-                                                       class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price"
-                                                       required>
-                                            @else
-                                                <p class="font-bold mb-3">{{ $tuitionInvoiceDetails->tracking_code }}</p>
-                                            @endif
+                                        @break
+                                    @case('2')
+                                        @php
+                                            $paymentDetails=json_decode($tuitionInvoiceDetails->payment_details,true);
+                                        @endphp
+                                        <div>
+                                            <p class="font-bold">Transaction
+                                                ID: </p> {{ $paymentDetails['SaleOrderId'] }}
                                         </div>
-                                    </div>
-                                    <div class="mt-3 ">
-                                        <p class="font-bold mb-3">Description</p>
-                                        <div class="flex">
-                                            @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
-                                                <textarea
-                                                    id="description"
-                                                    rows="5"
-                                                    name="description"
-                                                    placeholder="Enter description"
-                                                    class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price">{{ $tuitionInvoiceDetails->financial_manager_description }}</textarea>
-
-                                            @else
-                                                <p class="font-bold mb-3">{{ $tuitionInvoiceDetails->financial_manager_description }}</p>
-                                            @endif
+                                        <div>
+                                            <p class="font-bold">Reference
+                                                ID: </p> {{ $paymentDetails['SaleReferenceId'] }}
                                         </div>
-                                    </div>
-                                    @break
-                                @case('2')
-                                    @php
-                                        $paymentDetails=json_decode($tuitionInvoiceDetails->payment_details,true);
-                                    @endphp
-                                    <div>
-                                        <p class="font-bold">Transaction ID: </p> {{ $paymentDetails['SaleOrderId'] }}
-                                    </div>
-                                    <div>
-                                        <p class="font-bold">Reference ID: </p> {{ $paymentDetails['SaleReferenceId'] }}
-                                    </div>
-                                    <div>
-                                        <p class="font-bold">Card Holder
-                                            Pan: </p> {{ $paymentDetails['CardHolderPan'] }}
-                                    </div>
-                                    <div>
-                                        <p class="font-bold">Date Of
-                                            Payment: </p> {{ $tuitionInvoiceDetails->date_of_payment }}
-                                    </div>
-                                    @break
-                            @endswitch
+                                        <div>
+                                            <p class="font-bold">Card Holder
+                                                Pan: </p> {{ $paymentDetails['CardHolderPan'] }}
+                                        </div>
+                                        <div>
+                                            <p class="font-bold">Date Of
+                                                Payment: </p> {{ $tuitionInvoiceDetails->date_of_payment }}
+                                        </div>
+                                        @break
+                                @endswitch
+                            @endif
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 mt-4 gap-4 mb-4 text-black dark:text-white">
+                <h1 class="text-2xl font-medium"> Custom Payment Invoices</h1>
+            </div>
+            <div class="mt-4 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
+                <div class=" gap-6 mb-6 ">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="text-center">
+                                    #
+                                </th>
+                                <th scope="col" class="text-center">
+                                    ID
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Payment Method
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center nofilter">
+                                    Payment Information
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Amount
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Date
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Status
+                                </th>
+                                @if(auth()->user()->hasRole('Super Admin') or auth()->user()->hasRole('Financial Manager'))
+                                    <th scope="col" class="px-2 py-3 text-center">
+                                        Action
+                                    </th>
+                                @endif
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($tuitionInvoiceDetails->customPayments as $customPaymentInvoice)
+                                <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <td class="w-4 p-4">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="w-4 p-4">
+                                        {{ $customPaymentInvoice->id }}
+                                    </td>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $customPaymentInvoice->paymentMethodInfo->name }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch($customPaymentInvoice->payment_method)
+                                            @case(1)
+
+                                                @break
+                                            @case(2)
+                                                @foreach(json_decode($customPaymentInvoice->payment_details,true) as $key=>$info)
+                                                    {{ $key }}: {{ $info }} <br>
+                                                @endforeach
+                                                @break
+                                        @endswitch
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ number_format($customPaymentInvoice->amount) }} IRR
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $customPaymentInvoice->created_at }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch($customPaymentInvoice->status)
+                                            @case(1)
+                                                Paid
+                                                @break
+                                            @case(2)
+                                                Pending To Confirm
+                                                @break
+                                            @case(3)
+                                                Rejected
+                                                @break
+                                        @endswitch
+                                    </th>
+                                    @if(auth()->user()->hasRole('Super Admin') or auth()->user()->hasRole('Financial Manager'))
+                                        <th scope="row"
+                                            class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                            @if($customPaymentInvoice->is_paid==2)
+                                                <form method="post" action="{{ route('') }}">
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                        <i class="fas fa-search mr-2" aria-hidden="true"></i>
+                                                        Filter
+                                                    </button>
+                                                </form>
+                                            @endif
+                                        </th>
+                                    @endif
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

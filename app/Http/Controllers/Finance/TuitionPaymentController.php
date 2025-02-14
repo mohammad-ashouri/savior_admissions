@@ -199,9 +199,7 @@ class TuitionPaymentController extends Controller
                 ->whereNotNull('tuition_payment_status')
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')
-                ->with('invoiceDetails')
-                ->with('paymentMethodInfo')
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with(['tuitionInvoiceDetails','invoiceDetails','paymentMethodInfo','paymentMethodInfo','customPayments'])
                 ->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->whereId($tuition_id)
                 ->whereIsPaid(0)

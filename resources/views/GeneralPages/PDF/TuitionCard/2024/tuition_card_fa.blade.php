@@ -642,6 +642,9 @@
                                         @case('Offline Payment')
                                             پرداخت آفلاین
                                             @break
+                                        @case('Custom Payment')
+                                            پرداخت سفارشی
+                                            @break
                                         @default
                                             پرداخت آنلاین - به پرداخت ملت
                                     @endswitch

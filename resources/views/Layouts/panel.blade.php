@@ -302,7 +302,9 @@
 
                 table.columns().every(function () {
                     let column = this;
+                    let header = $(column.header());
 
+                    // ایجاد سلکت در یک th در ردیف فیلتر
                     let select = $('<th><select><option value="">All</option></select></th>')
                         .appendTo('.datatable thead tr.filter-row')
                         .find('select')
@@ -310,6 +312,11 @@
                             let val = $.fn.DataTable.util.escapeRegex($(this).val());
                             column.search(val ? '^' + val + '$' : '', true, false).draw();
                         });
+
+                    // اگر هدر ستون دارای کلاس nofilter است، گزینه‌ای اضافه نکنید
+                    if (header.hasClass('nofilter')) {
+                        return;
+                    }
 
                     let uniqueData = [];
                     column.data().unique().each(function (d, j) {
@@ -324,7 +331,6 @@
                     uniqueData.sort(function (a, b) {
                         let numA = parseInt(a.match(/\d+/)) || 0;
                         let numB = parseInt(b.match(/\d+/)) || 0;
-
                         if (numA === numB) {
                             return a.localeCompare(b);
                         }
@@ -335,7 +341,6 @@
                         select.append('<option value="' + cleanData + '">' + cleanData + '</option>');
                     });
                 });
-
             }
 
             $('.select2').select2({

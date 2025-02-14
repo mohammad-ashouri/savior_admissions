@@ -34,18 +34,23 @@ class TuitionInvoiceDetails extends Model
         'deleted_at',
     ];
 
-    public function tuitionInvoiceDetails()
+    public function tuitionInvoiceDetails(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(TuitionInvoices::class, 'tuition_invoice_id','id');
     }
 
-    public function invoiceDetails()
+    public function invoiceDetails(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Invoice::class, 'invoice_id','id');
     }
 
-    public function paymentMethodInfo()
+    public function paymentMethodInfo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method','id');
+    }
+
+    public function customPayments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TuitionInvoiceDetailsPayment::class, 'invoice_details_id','id');
     }
 }

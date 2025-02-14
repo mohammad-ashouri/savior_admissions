@@ -454,7 +454,8 @@ class PaymentController extends Controller
                         TuitionInvoiceDetailsPayment::create([
                             'invoice_details_id' => $tuitionInvoiceDetails->id,
                             'invoice_id' => $transactionDetail->id,
-                            'payment_method' => $invoiceDescription['payment_method'],
+                            'payment_details' => json_encode($request->all(), true),
+                            'payment_method' => 3,
                             'amount' => $invoiceDescription['amount'],
                             'status' => 1,
                             'adder' => auth()->user()->id,

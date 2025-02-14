@@ -114,10 +114,13 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
+                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }}
+                                        - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations?->guardianInfo?->id }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations?->guardianInfo?->mobile }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo?->generalInformationInfo?->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo?->generalInformationInfo?->last_name_en }}</th>
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations?->guardianInfo?->id }}
+                                        - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations?->guardianInfo?->mobile }}
+                                        - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo?->generalInformationInfo?->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo?->generalInformationInfo?->last_name_en }}</th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                         @switch($invoice->tuitionInvoiceDetails->payment_type)
@@ -167,7 +170,7 @@
                                                 Pending To Pay
                                         @endswitch
                                     </th>
-                                    <td class="px-3 py-1 text-center">
+                                    <td class="flex px-3 gap-2 py-1 text-center">
                                         @switch($invoice->is_paid)
                                             @case('1')
                                                 <a href="{{ route('TuitionInvoices.show',$invoice->id) }}">
@@ -192,12 +195,9 @@
                                                         </button>
                                                     </a>
                                                 @endif
-                                                @break
-                                            @case('2')
-                                                @if($me->hasRole('Financial Manager') or $me->hasRole('Principal') or $me->hasRole('Super Admin')) @endif
                                                 <a href="/TuitionInvoices/{{ $invoice->id }}">
                                                     <button type="button"
-                                                            class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                                            class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                         <div class="text-center">
                                                             <i class="las la-money mr-1"></i>
                                                         </div>
@@ -206,6 +206,7 @@
                                                 </a>
                                                 @break
                                         @endswitch
+
                                     </td>
                                 </tr>
                             @endforeach

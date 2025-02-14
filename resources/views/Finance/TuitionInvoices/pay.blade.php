@@ -13,42 +13,42 @@
                 <div class="lg:col-span-2 col-span-3 ">
                     <form action="{{ route('TuitionInvoices.payTuition') }}" method="post" id="pay-installment"
                           enctype="multipart/form-data">
-                    <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <div class="grid gap-6 mb-6 md:grid-cols-4">
-                            <div>
-                                <p class="font-bold">Invoice ID: </p> {{ $tuitionInvoiceDetails->id }}
+                        <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
+                            <div class="grid gap-6 mb-6 md:grid-cols-4">
+                                <div>
+                                    <p class="font-bold">Invoice ID: </p> {{ $tuitionInvoiceDetails->id }}
+                                </div>
+                                <div>
+                                    <p class="font-bold">Academic
+                                        Year: </p> {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->academicYearInfo->name }}
+                                </div>
+                                <div>
+                                    <p class="font-bold">Academic
+                                        Year: </p> {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
+                                </div>
+                                <div>
+                                    <p class="font-bold">Type Of Payment: </p>
+                                    @switch($tuitionInvoiceDetails->tuitionInvoiceDetails->payment_type)
+                                        @case('1')
+                                            Full Payment
+                                            @break
+                                        @case('2')
+                                            Two installment
+                                            @break
+                                        @case('3')
+                                            Four Installment
+                                            @break
+                                    @endswitch
+                                </div>
+                                <div>
+                                    <p class="font-bold">Tuition
+                                        Type: </p> {{ json_decode($tuitionInvoiceDetails->description,true)['tuition_type'] }}
+                                </div>
+                                <div>
+                                    <p class="font-bold">Amount For
+                                        Pay: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
+                                </div>
                             </div>
-                            <div>
-                                <p class="font-bold">Academic
-                                    Year: </p> {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->academicYearInfo->name }}
-                            </div>
-                            <div>
-                                <p class="font-bold">Academic
-                                    Year: </p> {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
-                            </div>
-                            <div>
-                                <p class="font-bold">Type Of Payment: </p>
-                                @switch($tuitionInvoiceDetails->tuitionInvoiceDetails->payment_type)
-                                    @case('1')
-                                        Full Payment
-                                        @break
-                                    @case('2')
-                                        Two installment
-                                        @break
-                                    @case('3')
-                                        Four Installment
-                                        @break
-                                @endswitch
-                            </div>
-                            <div>
-                                <p class="font-bold">Tuition
-                                    Type: </p> {{ json_decode($tuitionInvoiceDetails->description,true)['tuition_type'] }}
-                            </div>
-                            <div>
-                                <p class="font-bold">Amount For
-                                    Pay: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
-                            </div>
-                        </div>
 
                             @csrf
                             <div class="grid gap-6 mb-6 md:grid-cols-4">
@@ -139,7 +139,7 @@
                                            max="{{ $tuitionInvoiceDetails->amount-$customTuitionPaid }}"
                                            value="{{ $tuitionInvoiceDetails->amount-$customTuitionPaid }}">
 
-                                    <p id="numberInWords" class="text-sm text-gray-700"></p>
+                                    <p id="numberInWords" class="text-sm text-gray-700 dark:text-gray-400 mb-4"></p>
 
                                     <script src="/build/plugins/number-to-words/numberToWords.min.js"></script>
                                     <script>
@@ -160,7 +160,7 @@
                                                 const rawValue = e.target.rawValue || '0';
                                                 paymentHidden.value = rawValue;
                                                 const numericValue = parseInt(rawValue, 10) || 0;
-                                                numberInWordsElement.textContent = numberToWords.toWords(numericValue)+' Rials';
+                                                numberInWordsElement.textContent = numberToWords.toWords(numericValue) + ' Rials';
                                             }
                                         });
                                     </script>
@@ -183,19 +183,108 @@
                                     </div>
                                 </div>
                             </div>
-
-                    </div>
-                    <button type="submit"
-                            class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
-                        Payment
-                    </button>
-                    <a href="{{ url()->previous() }}">
-                        <button type="button"
-                                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
-                            Back
+                        </div>
+                        <button type="submit"
+                                class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                            Payment
                         </button>
-                    </a>
+                        <a href="{{ url()->previous() }}">
+                            <button type="button"
+                                    class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                Back
+                            </button>
+                        </a>
                     </form>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 mt-4 gap-4 mb-4 text-black dark:text-white">
+                <h1 class="text-2xl font-medium"> Custom Payment Invoices</h1>
+            </div>
+            <div class="mt-4 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
+                <div class=" gap-6 mb-6 ">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
+                            <thead
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="text-center">
+                                    #
+                                </th>
+                                <th scope="col" class="text-center">
+                                    ID
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Payment Method
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center nofilter">
+                                    Payment Information
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Amount
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Date
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Status
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($tuitionInvoiceDetails->customPayments as $customPaymentInvoice)
+                                <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <td class="w-4 p-4">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td class="w-4 p-4">
+                                        {{ $customPaymentInvoice->id }}
+                                    </td>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $customPaymentInvoice->paymentMethodInfo->name }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch($customPaymentInvoice->payment_method)
+                                            @case(1)
+
+                                                @break
+                                            @case(2)
+                                                @foreach(json_decode($customPaymentInvoice->payment_details,true) as $key=>$info)
+                                                    @continue($key=='ResCode')
+                                                    @continue($key=='CardHolderInfo')
+                                                    {{ $key }}: {{ $info }} <br>
+                                                @endforeach
+                                                @break
+                                        @endswitch
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ number_format($customPaymentInvoice->amount) }} IRR
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $customPaymentInvoice->created_at }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        @switch($customPaymentInvoice->status)
+                                            @case(1)
+                                                Paid
+                                                @break
+                                            @case(2)
+                                                Pending To Confirm
+                                                @break
+                                            @case(3)
+                                                Rejected
+                                                @break
+                                        @endswitch
+                                    </th>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
