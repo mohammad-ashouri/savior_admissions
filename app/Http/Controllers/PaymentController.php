@@ -442,7 +442,9 @@ class PaymentController extends Controller
                         TuitionInvoiceDetailsPayment::create([
                             'invoice_details_id' => $tuitionInvoiceDetails->id,
                             'invoice_id' => $transactionDetail->id,
+                            'payment_method' => $invoiceDescription['payment_method'],
                             'amount' => $invoiceDescription['amount'],
+                            'status' => 1,
                             'adder' => auth()->user()->id,
                         ]);
                         $messageText = "Your entered tuition amount has been successfully paid. \nTransaction number: $transactionRefId \nSavior Schools";
