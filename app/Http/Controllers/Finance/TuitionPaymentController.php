@@ -376,16 +376,16 @@ class TuitionPaymentController extends Controller
                     )->pay()->render();
                 }
                 if ($paymentAmount < $tuitionAmount - $allCustomTuitionInvoices) {
-                    $invoice = (new Invoice)->amount($tuitionAmount - $allCustomTuitionInvoices);
+                    $invoice = (new Invoice)->amount($paymentAmount);
 
                     return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionInstallmentPayment')->purchase(
                         $invoice,
-                        function ($driver, $transactionID) use ($tuitionAmount, $allCustomTuitionInvoices, $tuitionInvoiceDetails, $paymentMethod) {
+                        function ($driver, $transactionID) use ($tuitionAmount, $paymentAmount, $tuitionInvoiceDetails, $paymentMethod) {
                             $dataInvoice = new \App\Models\Invoice;
                             $dataInvoice->user_id = auth()->user()->id;
                             $dataInvoice->type = 'Custom Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
-                            $dataInvoice->amount = $tuitionAmount - $allCustomTuitionInvoices;
-                            $dataInvoice->description = json_encode(['amount' => $tuitionAmount - $allCustomTuitionInvoices, 'invoice_details_id' => $tuitionInvoiceDetails->id, 'payment_method' => $paymentMethod], true);
+                            $dataInvoice->amount = $paymentAmount;
+                            $dataInvoice->description = json_encode(['amount' => $paymentAmount, 'invoice_details_id' => $tuitionInvoiceDetails->id, 'payment_method' => $paymentMethod], true);
                             $dataInvoice->transaction_id = $transactionID;
                             $dataInvoice->save();
                         }
