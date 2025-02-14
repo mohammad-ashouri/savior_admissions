@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('tuition_invoice_details_payments', function (Blueprint $table) {
             $table->tinyInteger('payment_method')->after('invoice_id');
-            $table->tinyInteger('status')->default(0)->after('amount');
+            $table->json('payment_details')->after('amount');
+            $table->tinyInteger('status')->default(0)->after('payment_details');
         });
     }
 
