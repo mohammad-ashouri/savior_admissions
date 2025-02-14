@@ -423,12 +423,24 @@ class PaymentController extends Controller
                     $tuitionInvoiceDetails = TuitionInvoiceDetails::find($invoiceDescription['invoice_details_id']);
                     $allCustomTuitionInvoices = TuitionInvoiceDetailsPayment::where('invoice_details_id', $tuitionInvoiceDetails->id)->sum('amount');
 
-                    if ($tuitionInvoiceDetails->amount - $allCustomTuitionInvoices == $invoiceDescription['amount']) {
+                    if ($tuitionInvoiceDetails->amount == $invoiceDescription['amount']) {
                         $tuitionInvoiceDetails->is_paid = 1;
                         $tuitionInvoiceDetails->invoice_id = $transactionDetail->id;
                         $tuitionInvoiceDetails->payment_method = $invoiceDescription['payment_method'];
                         $tuitionInvoiceDetails->payment_details = json_encode($request->all(), true);
                         $tuitionInvoiceDetails->date_of_payment = now();
+                        $tuitionInvoiceDetails->save();
+
+                        $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
+
+                        $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
+                        $studentAppliance->tuition_payment_status = 'Paid';
+                        $studentAppliance->approval_status = 1;
+                        $studentAppliance->save();
+                        $messageText = "You have successfully paid tuition installment. \nTransaction number: $transactionRefId \nSavior Schools";
+                    } elseif ($tuitionInvoiceDetails->amount - $allCustomTuitionInvoices == $invoiceDescription['amount']) {
+                        $tuitionInvoiceDetails->is_paid = 1;
+                        $tuitionInvoiceDetails->payment_method = 3;
                         $tuitionInvoiceDetails->save();
 
                         $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
