@@ -128,7 +128,7 @@
                                         for="payment_amount">Please enter the desired amount for your
                                         payment; <br>otherwise, click on the "Payment" button.</label>
                                     <input
-                                        class="block mb-4 mr-2 w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        class="block mb-1 mr-2 w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
                                         id="payment_amount_display"
                                         type="text"
                                         min="20000"
@@ -138,10 +138,18 @@
                                            min="20000"
                                            max="{{ $tuitionInvoiceDetails->amount-$customTuitionPaid }}"
                                            value="{{ $tuitionInvoiceDetails->amount-$customTuitionPaid }}">
+
+                                    <p id="numberInWords" class="text-sm text-gray-700"></p>
+
+                                    <script src="/build/plugins/number-to-words/numberToWords.min.js"></script>
                                     <script>
-                                        const initialValue = {{ $tuitionInvoiceDetails->amount-$customTuitionPaid }};
-                                        document.getElementById('payment_amount_display').value =
-                                            new Intl.NumberFormat().format(initialValue);
+                                        const initialValue = {{ $tuitionInvoiceDetails->amount - $customTuitionPaid }};
+                                        const paymentDisplay = document.getElementById('payment_amount_display');
+                                        const paymentHidden = document.getElementById('payment_amount');
+                                        const numberInWordsElement = document.getElementById('numberInWords');
+
+                                        paymentDisplay.value = new Intl.NumberFormat().format(initialValue);
+                                        numberInWordsElement.textContent = numberToWords.toWords(initialValue);
 
                                         new Cleave('#payment_amount_display', {
                                             numeral: true,
@@ -150,7 +158,9 @@
                                             delimiter: ',',
                                             onValueChanged: (e) => {
                                                 const rawValue = e.target.rawValue || '0';
-                                                document.getElementById('payment_amount').value = rawValue;
+                                                paymentHidden.value = rawValue;
+                                                const numericValue = parseInt(rawValue, 10) || 0;
+                                                numberInWordsElement.textContent = numberToWords.toWords(numericValue)+' Rials';
                                             }
                                         });
                                     </script>
