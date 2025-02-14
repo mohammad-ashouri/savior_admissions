@@ -123,18 +123,18 @@
                             <tbody>
                             @foreach($tuitionInvoiceDetails as $invoice)
                                 @php
-                                $transactionId=$trackingCode=$referenceId=$cardHolderPan=null;
-                                switch ($invoice->payment_method){
-                                    case('1'):
-                                        $trackingCode=$invoice->tracking_code;
-                                        break;
-                                    case ('2'):
-                                        $paymentDetails=json_decode($invoice->payment_details,true);
-                                        $transactionId=$paymentDetails['SaleOrderId'];
-                                        $referenceId=$paymentDetails['SaleReferenceId'];
-                                        $cardHolderPan=$paymentDetails['CardHolderPan'];
-                                        break;
-                                }
+                                    $transactionId=$trackingCode=$referenceId=$cardHolderPan=null;
+                                    switch ($invoice->payment_method){
+                                        case('1'):
+                                            $trackingCode=$invoice->tracking_code;
+                                            break;
+                                        case ('2'):
+                                            $paymentDetails=json_decode($invoice->payment_details,true);
+                                            $transactionId=$paymentDetails['SaleOrderId'];
+                                            $referenceId=$paymentDetails['SaleReferenceId'];
+                                            $cardHolderPan=$paymentDetails['CardHolderPan'];
+                                            break;
+                                    }
                                 @endphp
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 p-4">
@@ -146,10 +146,13 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
+                                        {{ $invoice->tuitionInvoiceDetails->applianceInformation->student_id }}
+                                        - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
-                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations?->guardianInfo?->id }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations?->guardianInfo?->mobile }} - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo?->generalInformationInfo?->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo?->generalInformationInfo?->last_name_en }}</th>
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">{{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations?->guardianInfo?->id }}
+                                        - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations?->guardianInfo?->mobile }}
+                                        - {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo?->generalInformationInfo?->first_name_en }} {{ $invoice->tuitionInvoiceDetails->applianceInformation->studentInformations->guardianInfo?->generalInformationInfo?->last_name_en }}</th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                         @switch($invoice->tuitionInvoiceDetails->payment_type)
@@ -224,15 +227,17 @@
                                         @endswitch
                                     </th>
                                     <td class="px-3 py-1 text-center">
-                                        <a href="{{ route('TuitionInvoices.show',$invoice->id) }}">
-                                            <button type="button"
-                                                    class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                <div class="text-center">
-                                                    <i class="las la-eye mr-1"></i>
-                                                </div>
-                                                Details
-                                            </button>
-                                        </a>
+                                        @if($invoice->is_paid)
+                                            <a href="{{ route('TuitionInvoices.show',$invoice->id) }}">
+                                                <button type="button"
+                                                        class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    <div class="text-center">
+                                                        <i class="las la-eye mr-1"></i>
+                                                    </div>
+                                                    Details
+                                                </button>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
