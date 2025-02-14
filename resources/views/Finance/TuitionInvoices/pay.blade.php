@@ -132,14 +132,14 @@
                                         id="payment_amount_display"
                                         type="text"
                                         min="20000"
-                                        max="{{ $tuitionInvoiceDetails->amount }}"
-                                        value="{{ $tuitionInvoiceDetails->amount }}">
+                                        max="{{ $tuitionInvoiceDetails->amount-$customTuitionPaid }}"
+                                        value="{{ $tuitionInvoiceDetails->amount-$customTuitionPaid }}">
                                     <input type="hidden" name="payment_amount" id="payment_amount"
                                            min="20000"
-                                           max="{{ $tuitionInvoiceDetails->amount }}"
-                                           value="{{ $tuitionInvoiceDetails->amount }}">
+                                           max="{{ $tuitionInvoiceDetails->amount-$customTuitionPaid }}"
+                                           value="{{ $tuitionInvoiceDetails->amount-$customTuitionPaid }}">
                                     <script>
-                                        const initialValue = {{ $tuitionInvoiceDetails->amount }};
+                                        const initialValue = {{ $tuitionInvoiceDetails->amount-$customTuitionPaid }};
                                         document.getElementById('payment_amount_display').value =
                                             new Intl.NumberFormat().format(initialValue);
 
@@ -189,6 +189,5 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
