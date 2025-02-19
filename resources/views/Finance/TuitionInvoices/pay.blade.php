@@ -67,62 +67,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div id="bank-slip-div" class="hidden grid gap-1 mb-6 md:grid-cols-1">
-                                    <label
-                                        class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                        for="document_file_full_payment1">Select your bank slip file 1
-                                        (Required)</label>
-                                    <input
-                                        class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                        name="document_file_full_payment1" id="document_file_full_payment1"
-                                        type="file"
-                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
-                                    <img class="w-full h-auto" id="image_preview_full_payment1" src=""
-                                         alt="Preview Image"
-                                         style="display:none; ">
-                                    <label
-                                        class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                        for="document_file_full_payment2">Select your bank slip file 2
-                                        (Optional)</label>
-                                    <input
-                                        class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                        name="document_file_full_payment2" id="document_file_full_payment2"
-                                        type="file"
-                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
-                                    <img class="w-full h-auto" id="image_preview_full_payment2" src=""
-                                         alt="Preview Image"
-                                         style="display:none; ">
-                                    <label
-                                        class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
-                                        for="document_file_full_payment3">Select your bank slip file 3
-                                        (Optional)</label>
-                                    <input
-                                        class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                        name="document_file_full_payment3" id="document_file_full_payment3"
-                                        type="file"
-                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
-                                    <img class="w-full h-auto" id="image_preview_full_payment3" src=""
-                                         alt="Preview Image"
-                                         style="display:none; ">
-                                    <div class="info mb-5">
-                                        <div class="dark:text-white font-medium mb-1">File requirements:
-                                        </div>
-                                        <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
-                                            these
-                                            requirements
-                                            are met:
-                                        </div>
-                                        <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
-                                            <li>
-                                                The files must be in this format: png, jpg, jpeg, pdf, bmp
-                                            </li>
-                                            <li>
-                                                Maximum size: 5 MB
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div id="set-amount-div" class="hidden grid gap-1 mb-6 md:grid-cols-1">
+                                <div id="set-amount-div" class="hidden  gap-1 mb-6 md:grid-cols-1">
                                     <label
                                         class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
                                         for="payment_amount">Please enter the desired amount for your
@@ -178,6 +123,61 @@
                                             </li>
                                             <li>
                                                 The minimum payment amount is 200,000 Rials.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div id="bank-slip-div" class="hidden grid gap-1 mb-6 md:grid-cols-1">
+                                    <label
+                                        class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="document_file_full_payment1">Select your bank slip file 1
+                                        (Required)</label>
+                                    <input
+                                        class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        name="document_file_full_payment1" id="document_file_full_payment1"
+                                        type="file"
+                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                    <img class="w-full h-auto" id="image_preview_full_payment1" src=""
+                                         alt="Preview Image"
+                                         style="display:none; ">
+                                    <label
+                                        class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="document_file_full_payment2">Select your bank slip file 2
+                                        (Optional)</label>
+                                    <input
+                                        class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        name="document_file_full_payment2" id="document_file_full_payment2"
+                                        type="file"
+                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                    <img class="w-full h-auto" id="image_preview_full_payment2" src=""
+                                         alt="Preview Image"
+                                         style="display:none; ">
+                                    <label
+                                        class="block mb-2 mt-4 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="document_file_full_payment3">Select your bank slip file 3
+                                        (Optional)</label>
+                                    <input
+                                        class="mb-4 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
+                                        name="document_file_full_payment3" id="document_file_full_payment3"
+                                        type="file"
+                                        accept=".png,.jpg,.jpeg,.pdf,.bmp">
+                                    <img class="w-full h-auto" id="image_preview_full_payment3" src=""
+                                         alt="Preview Image"
+                                         style="display:none; ">
+                                    <div class="info mb-5">
+                                        <div class="dark:text-white font-medium mb-1">File requirements:
+                                        </div>
+                                        <div class="dark:text-gray-400 font-normal text-sm pb-1">Ensure that
+                                            these
+                                            requirements
+                                            are met:
+                                        </div>
+                                        <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                            <li>
+                                                The files must be in this format: png, jpg, jpeg, pdf, bmp
+                                            </li>
+                                            <li>
+                                                Maximum size: 5 MB
                                             </li>
                                         </ul>
                                     </div>

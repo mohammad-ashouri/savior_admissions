@@ -199,15 +199,15 @@ class TuitionPaymentController extends Controller
                 ->whereNotNull('tuition_payment_status')
                 ->pluck('student_appliance_statuses.id')->toArray();
             $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::with(['tuitionInvoiceDetails','invoiceDetails','paymentMethodInfo','paymentMethodInfo','customPayments'])
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with(['tuitionInvoiceDetails', 'invoiceDetails', 'paymentMethodInfo', 'paymentMethodInfo', 'customPayments'])
                 ->whereIn('tuition_invoice_id', $tuitionInvoices)
                 ->whereId($tuition_id)
                 ->whereIsPaid(0)
                 ->first();
         }
 
-        $paymentMethods = PaymentMethod::where('id', 2)->get();
-        $customTuitionPaid = TuitionInvoiceDetailsPayment::with('tuitionInvoiceDetails')->where('invoice_details_id', $tuitionInvoiceDetails->id)->sum('amount');
+        $paymentMethods = PaymentMethod::where('id', 2)->orWhere('id', 1)->get();
+        $customTuitionPaid = TuitionInvoiceDetailsPayment::with('tuitionInvoiceDetails')->where('status','!=', 3)->where('invoice_details_id', $tuitionInvoiceDetails->id)->sum('amount');
 
         return view('Finance.TuitionInvoices.pay', compact('tuitionInvoiceDetails', 'paymentMethods', 'customTuitionPaid'));
     }
@@ -218,7 +218,7 @@ class TuitionPaymentController extends Controller
 
         $validator = Validator::make($request->all(), [
             'tuition_invoice_id' => 'required|exists:tuition_invoice_details,id',
-            'payment_method' => 'required|exists:payment_methods,id|in:2',
+            'payment_method' => 'required|exists:payment_methods,id|in:1,2',
             'payment_amount' => 'nullable|integer|min:200000',
         ]);
 
@@ -249,8 +249,15 @@ class TuitionPaymentController extends Controller
         if (empty($tuitionInvoiceDetails)) {
             abort(403);
         }
-
         $tuitionAmount = (int) $tuitionInvoiceDetails->amount;
+
+        $allCustomTuitionInvoices = TuitionInvoiceDetailsPayment::where('invoice_details_id', $tuitionInvoiceDetails->id)->where('status','!=', 3)->sum('amount');
+        if ($paymentAmount > $tuitionAmount - $allCustomTuitionInvoices) {
+            return back()->withErrors([
+                'payment_amount' => 'The payment amount cannot exceed '.number_format($tuitionAmount - $allCustomTuitionInvoices).' Rials',
+            ]);
+        }
+
         switch ($paymentMethod) {
             case 1:
                 $validator = Validator::make($request->all(), [
@@ -338,25 +345,29 @@ class TuitionPaymentController extends Controller
                         'description' => $description,
                     ]);
                 }
-                $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuitionInvoiceDetails->id);
-                $tuitionInvoiceDetails->payment_method = $paymentMethod;
-                $tuitionInvoiceDetails->is_paid = 2;
-                $tuitionInvoiceDetails->date_of_payment = now();
-                $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_type' => json_decode($tuitionInvoiceDetails->description, true)['tuition_type'], 'tuition_details_id' => $tuition->id], true);
-                $tuitionInvoiceDetails->save();
+                if ($paymentAmount == $tuitionAmount) {
+                    $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuitionInvoiceDetails->id);
+                    $tuitionInvoiceDetails->payment_method = $paymentMethod;
+                    $tuitionInvoiceDetails->is_paid = 2;
+                    $tuitionInvoiceDetails->date_of_payment = now();
+                    $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_type' => json_decode($tuitionInvoiceDetails->description, true)['tuition_type'], 'tuition_details_id' => $tuition->id], true);
+                    $tuitionInvoiceDetails->save();
+                }
+                if ($paymentAmount < $tuitionAmount - $allCustomTuitionInvoices) {
+                    TuitionInvoiceDetailsPayment::create([
+                        'invoice_details_id' => $tuitionInvoiceDetails->id,
+                        'payment_details' => json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_type' => json_decode($tuitionInvoiceDetails->description, true)['tuition_type'], 'tuition_details_id' => $tuition->id], true),
+                        'payment_method' => 1,
+                        'amount' => $paymentAmount,
+                        'status' => 2,
+                        'adder' => auth()->user()->id,
+                    ]);
+                }
 
                 return redirect()->route('TuitionInvoices.index')->with(['success' => 'You have successfully paid tuition installment. Please wait for financial approval!']);
 
                 break;
             case 2:
-                $allCustomTuitionInvoices = TuitionInvoiceDetailsPayment::where('invoice_details_id', $tuitionInvoiceDetails->id)->sum('amount');
-
-                if ($paymentAmount > $tuitionAmount - $allCustomTuitionInvoices) {
-                    return back()->withErrors([
-                        'payment_amount' => 'The payment amount cannot exceed '.number_format($tuitionAmount - $allCustomTuitionInvoices).' Rials',
-                    ]);
-                }
-
                 if ($paymentAmount == $tuitionAmount) {
                     $invoice = (new Invoice)->amount($paymentAmount);
 
@@ -378,7 +389,7 @@ class TuitionPaymentController extends Controller
 
                     return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionInstallmentPayment')->purchase(
                         $invoice,
-                        function ($driver, $transactionID) use ($tuitionAmount, $paymentAmount, $tuitionInvoiceDetails, $paymentMethod) {
+                        function ($driver, $transactionID) use ($paymentAmount, $tuitionInvoiceDetails, $paymentMethod) {
                             $dataInvoice = new \App\Models\Invoice;
                             $dataInvoice->user_id = auth()->user()->id;
                             $dataInvoice->type = 'Custom Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
@@ -1097,5 +1108,49 @@ class TuitionPaymentController extends Controller
         }
 
         return view('Finance.InvoicesDetails.index', compact('tuitionInvoiceDetails', 'me', 'academicYears'));
+    }
+
+    public function changeCustomTuitionInvoiceDetails(Request $request)
+    {
+        $this->validate($request, [
+            'invoice_id' => 'required|integer|exists:tuition_invoice_details_payments,id',
+            'type' => 'required|string|in:Accept,Reject',
+        ]);
+        $tuitionInvoiceDetailsPayment = TuitionInvoiceDetailsPayment::where('id', request('invoice_id'))->firstOrFail();
+        if (auth()->user()->hasRole('Financial Manager')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
+            $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with([
+                'tuitionInvoiceDetails' => function ($query) use ($academicYears) {
+                    $query->with([
+                        'applianceInformation' => function ($query) use ($academicYears) {
+                            $query->whereIn('academic_year', $academicYears);
+                        },
+                    ]);
+                },
+            ])
+                ->where('id', $tuitionInvoiceDetailsPayment->invoice_details_id)
+                ->firstOrFail();
+        } elseif (! auth()->user()->hasRole('Super Admin')) {
+            abort(403);
+        }
+        switch ($request->type) {
+            case 'Accept':
+                $tuitionInvoiceDetailsPayment->status = 1;
+                $tuitionInvoiceDetailsPayment->approval_date = now();
+                break;
+            case 'Reject':
+                $tuitionInvoiceDetailsPayment->status = 3;
+                break;
+        }
+        $tuitionInvoiceDetailsPayment->seconder = auth()->user()->id;
+        $tuitionInvoiceDetailsPayment->save();
+
+        return back()->with('success', 'Tuition Invoice Details Status Changed Successfully');
     }
 }

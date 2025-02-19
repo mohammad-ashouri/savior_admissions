@@ -45,6 +45,11 @@ class TuitionInvoiceDetailsPayment extends Model
         return $this->belongsTo(PaymentMethod::class, 'payment_method', 'id');
     }
 
+    public function seconderInfo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'seconder', 'id');
+    }
+
     public function adder(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'adder', 'id');

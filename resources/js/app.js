@@ -1451,7 +1451,7 @@ $(document).ready(function () {
             switch (parseInt($('#payment_method').val())) {
                 case 1:
                     $('#bank-slip-div').removeClass('hidden');
-                    $('#set-amount-div').addClass('hidden');
+                    $('#set-amount-div').removeClass('hidden');
                     break;
                 case 2:
                     $('#set-amount-div').removeClass('hidden');
@@ -1533,7 +1533,7 @@ $(document).ready(function () {
                     $(this).submit();
                 }
             });
-        })
+        });
     } else if (fullPath.includes('ConfirmApplication')) {
         pageTitle = 'Application Confirmation';
         if (fullPath.includes('ConfirmApplication/')) {
@@ -2247,6 +2247,21 @@ $(document).ready(function () {
         pageTitle = 'Tuition Invoices';
         if (fullPath.includes('TuitionInvoices/')) {
             pageTitle = 'Tuition Payment Details';
+            $('.custom-payment-invoice-form').submit(function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Yes',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(this).off('submit');
+                        $(this).submit();
+                    }
+                });
+            });
 
             $('#set-payment-status').click(function (e) {
                 e.preventDefault();

@@ -24,12 +24,12 @@ class TuitionInvoices extends Model
         'deleted_at',
     ];
 
-    public function applianceInformation()
+    public function applianceInformation(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(StudentApplianceStatus::class, 'appliance_id','id');
     }
 
-    public function invoiceDetails()
+    public function invoiceDetails(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(TuitionInvoiceDetails::class, 'tuition_invoice_id');
     }

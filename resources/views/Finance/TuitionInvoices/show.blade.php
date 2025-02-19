@@ -7,6 +7,8 @@
             <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
                 <h1 class="text-2xl font-medium"> Tuition Payment Details</h1>
             </div>
+            @include('GeneralPages.errors.session.error')
+            @include('GeneralPages.errors.session.success')
             <div class="grid grid-cols-2 gap-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
@@ -121,10 +123,10 @@
                             </div>
                             <div>
                                 <p class="font-bold">Amount
-                                    Paid: </p> {{ number_format($tuitionInvoiceDetails->customPayments->sum('amount')) }} IRR
+                                    Paid: </p> {{ number_format($tuitionInvoiceDetails->customPayments->where('status','!=',3)->where('status','!=',2)->sum('amount')) }} IRR
                             </div>
                             <div>
-                                <p class="font-bold">Debt: </p> {{ number_format($tuitionInvoiceDetails->amount-$tuitionInvoiceDetails->customPayments->sum('amount')) }} IRR
+                                <p class="font-bold">Debt: </p> {{ number_format($tuitionInvoiceDetails->amount-$tuitionInvoiceDetails->customPayments->where('status','!=',3)->where('status','!=',2)->sum('amount')) }} IRR
                             </div>
                             <div>
                                 <p class="font-bold">Tuition
@@ -170,9 +172,6 @@
                                                 @endforeach
                                             </div>
                                         </div>
-                                        @php
-                                            $date = '2024-06-11 10:17:09';
-                                        @endphp
                                         <div class="mt-3 ">
                                             <input type="hidden" id="tuition_invoice_id"
                                                    value="{{$tuitionInvoiceDetails->id}}">
@@ -281,6 +280,12 @@
                                     Date
                                 </th>
                                 <th scope="col" class="px-2 py-3 text-center">
+                                    Seconder
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
+                                    Approval Date
+                                </th>
+                                <th scope="col" class="px-2 py-3 text-center">
                                     Status
                                 </th>
                                 @if(auth()->user()->hasRole('Super Admin') or auth()->user()->hasRole('Financial Manager'))
@@ -307,7 +312,15 @@
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                         @switch($customPaymentInvoice->payment_method)
                                             @case(1)
-
+                                                @foreach(json_decode($customPaymentInvoice->payment_details,true)['files'] as $key=>$info)
+                                                    <a href="{{Storage::url($info)}}"
+                                                       type="button"
+                                                       target="_blank"
+                                                       class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                        <i class="las la-eye mr-1 mt-1"></i>
+                                                        {{ $key }}
+                                                    </a>
+                                                @endforeach
                                                 @break
                                             @case(2)
                                                 @foreach(json_decode($customPaymentInvoice->payment_details,true) as $key=>$info)
@@ -326,6 +339,14 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $customPaymentInvoice->seconder }} - {{ $customPaymentInvoice->seconderInfo?->generalInformationInfo->first_name_en }} {{ $customPaymentInvoice->seconderInfo?->generalInformationInfo->last_name_en }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $customPaymentInvoice->approval_date }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                         @switch($customPaymentInvoice->status)
                                             @case(1)
                                                 Paid
@@ -341,14 +362,31 @@
                                     @if(auth()->user()->hasRole('Super Admin') or auth()->user()->hasRole('Financial Manager'))
                                         <th scope="row"
                                             class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                            @if($customPaymentInvoice->is_paid==2)
-                                                <form method="post" action="{{ route('') }}">
-                                                    @csrf
-                                                    <button type="submit"
-                                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                                        <i class="fas fa-search mr-2" aria-hidden="true"></i>
-                                                        Filter
-                                                    </button>
+                                            @if($customPaymentInvoice->status===2)
+                                                <form method="post" class="custom-payment-invoice-form"
+                                                      action="{{ route('ChangeCustomTuitionInvoiceDetails') }}">
+                                                    <div class="flex">
+                                                        @csrf
+                                                        <div class="mr-3">
+                                                            <select name="type" id="type" required
+                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                                <option selected disabled value="">Select status</option>
+                                                                <option value="Accept">Accept</option>
+                                                                <option value="Reject">Reject</option>
+                                                            </select>
+                                                        </div>
+                                                        <div>
+                                                            <input type="hidden"
+                                                                   value="{{$customPaymentInvoice->id}}"
+                                                                   name="invoice_id">
+                                                            <button
+                                                                type="submit"
+                                                                class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                Confirm
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </form>
                                             @endif
                                         </th>
