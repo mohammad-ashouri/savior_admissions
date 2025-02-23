@@ -121,12 +121,24 @@
                             <div>
                                 <p class="font-bold">Tuition Payment Due: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
                             </div>
+                            @php
+                                $amountPaid=$debt=0;
+                                if($tuitionInvoiceDetails->paymentMethodInfo->id!=3){
+                                    if ($tuitionInvoiceDetails->is_paid==1){
+                                        $amountPaid = $tuitionInvoiceDetails->amount;
+                                    }
+                                }else{
+                                    $amountPaid =$tuitionInvoiceDetails->customPayments->where('status','!=',3)->where('status','!=',2)->sum('amount');
+                                    $debt=$tuitionInvoiceDetails->amount-$amountPaid;
+                                }
+                            @endphp
+
                             <div>
                                 <p class="font-bold">Amount
-                                    Paid: </p> {{ number_format($tuitionInvoiceDetails->customPayments->where('status','!=',3)->where('status','!=',2)->sum('amount')) }} IRR
+                                    Paid: </p> {{ number_format($amountPaid) }} IRR
                             </div>
                             <div>
-                                <p class="font-bold">Debt: </p> {{ number_format($tuitionInvoiceDetails->amount-$tuitionInvoiceDetails->customPayments->where('status','!=',3)->where('status','!=',2)->sum('amount')) }} IRR
+                                <p class="font-bold">Debt: </p> {{ number_format($debt) }} IRR
                             </div>
                             <div>
                                 <p class="font-bold">Tuition
