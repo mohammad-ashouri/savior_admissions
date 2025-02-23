@@ -63,6 +63,7 @@
                                             title="Select payment method" required>
                                         <option selected disabled value="">Select payment method</option>
                                         @foreach($paymentMethods as $paymentMethod)
+                                            @continue($paymentMethod->id==3)
                                             <option value="{{$paymentMethod->id}}">{{$paymentMethod->name}}</option>
                                         @endforeach
                                     </select>
