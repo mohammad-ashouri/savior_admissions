@@ -123,7 +123,7 @@
                             </div>
                             @php
                                 $amountPaid=$debt=0;
-                                if($tuitionInvoiceDetails->paymentMethodInfo->id!=3){
+                                if(isset($tuitionInvoiceDetails->paymentMethodInfo->id) and $tuitionInvoiceDetails->paymentMethodInfo->id!=3){
                                     if ($tuitionInvoiceDetails->is_paid==1){
                                         $amountPaid = $tuitionInvoiceDetails->amount;
                                     }
