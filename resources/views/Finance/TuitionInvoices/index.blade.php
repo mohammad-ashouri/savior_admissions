@@ -171,7 +171,7 @@
                                         @endswitch
                                     </th>
                                     <td class="flex px-3 gap-2 py-1 text-center">
-                                        @switch($invoice->is_paid)
+                                        @switch((string)$invoice->is_paid)
                                             @case('1')
                                                 <a href="{{ route('TuitionInvoices.show',$invoice->id) }}">
                                                     <button type="button"
@@ -205,8 +205,18 @@
                                                     </button>
                                                 </a>
                                                 @break
+                                            @case('2')
+                                                <a href="/TuitionInvoices/{{ $invoice->id }}">
+                                                    <button type="button"
+                                                            class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                        <div class="text-center">
+                                                            <i class="las la-money mr-1"></i>
+                                                        </div>
+                                                        Details
+                                                    </button>
+                                                </a>
+                                                @break
                                         @endswitch
-
                                     </td>
                                 </tr>
                             @endforeach
