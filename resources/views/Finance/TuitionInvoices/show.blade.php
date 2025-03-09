@@ -149,7 +149,7 @@
                             </div>
                         </div>
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
-                            @if($tuitionInvoiceDetails->is_paid==1)
+{{--                            @if($tuitionInvoiceDetails->is_paid==1)--}}
                                 @switch($tuitionInvoiceDetails->paymentMethodInfo->id)
                                     @case('1')
                                         <div class="mt-3 ">
@@ -257,7 +257,7 @@
                                         </div>
                                         @break
                                 @endswitch
-                            @endif
+{{--                            @endif--}}
                         </div>
                     </div>
                 </div>
