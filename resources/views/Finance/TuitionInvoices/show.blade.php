@@ -22,7 +22,8 @@
                             </div>
                             <div>
                                 <p class="font-bold">Student
-                                    Info: </p> {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->student_id }} - {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
+                                    Info: </p> {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->student_id }}
+                                - {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $tuitionInvoiceDetails->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
                                 <p class="font-bold">Type Of Payment: </p>
@@ -119,7 +120,8 @@
                                     Method: </p> {{isset($tuitionInvoiceDetails->paymentMethodInfo->name) ? $tuitionInvoiceDetails->paymentMethodInfo->name : 'Custom Payment'}}
                             </div>
                             <div>
-                                <p class="font-bold">Tuition Payment Due: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
+                                <p class="font-bold">Tuition Payment
+                                    Due: </p> {{ number_format($tuitionInvoiceDetails->amount) }} IRR
                             </div>
                             @php
                                 $amountPaid=$debt=0;
@@ -149,7 +151,7 @@
                             </div>
                         </div>
                         <div class="grid gap-6 mb-6 md:grid-cols-4">
-{{--                            @if($tuitionInvoiceDetails->is_paid==1)--}}
+                            @if($tuitionInvoiceDetails->is_paid==1 or $tuitionInvoiceDetails->is_paid==2)
                                 @switch($tuitionInvoiceDetails->paymentMethodInfo->id)
                                     @case('1')
                                         <div class="mt-3 ">
@@ -170,13 +172,13 @@
                                                         <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
                                                         >
                                                             <div
-                                                                class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+                                                                    class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
                                                                 <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
                                                                    data-pswp-width="1669"
                                                                    data-pswp-height="1500">
                                                                     <img
-                                                                        src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
-                                                                        alt="Document Not Found!"/>
+                                                                            src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
+                                                                            alt="Document Not Found!"/>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -223,11 +225,11 @@
                                             <div class="flex">
                                                 @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
                                                     <textarea
-                                                        id="description"
-                                                        rows="5"
-                                                        name="description"
-                                                        placeholder="Enter description"
-                                                        class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price">{{ $tuitionInvoiceDetails->financial_manager_description }}</textarea>
+                                                            id="description"
+                                                            rows="5"
+                                                            name="description"
+                                                            placeholder="Enter description"
+                                                            class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price">{{ $tuitionInvoiceDetails->financial_manager_description }}</textarea>
 
                                                 @else
                                                     <p class="font-bold mb-3">{{ $tuitionInvoiceDetails->financial_manager_description }}</p>
@@ -257,7 +259,7 @@
                                         </div>
                                         @break
                                 @endswitch
-{{--                            @endif--}}
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -271,7 +273,7 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
                             <thead
-                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="text-center">
                                     #
@@ -351,7 +353,8 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $customPaymentInvoice->seconder }} - {{ $customPaymentInvoice->seconderInfo?->generalInformationInfo->first_name_en }} {{ $customPaymentInvoice->seconderInfo?->generalInformationInfo->last_name_en }}
+                                        {{ $customPaymentInvoice->seconder }}
+                                        - {{ $customPaymentInvoice->seconderInfo?->generalInformationInfo->first_name_en }} {{ $customPaymentInvoice->seconderInfo?->generalInformationInfo->last_name_en }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
@@ -382,7 +385,8 @@
                                                         <div class="mr-3">
                                                             <select name="type" id="type" required
                                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                                <option selected disabled value="">Select status</option>
+                                                                <option selected disabled value="">Select status
+                                                                </option>
                                                                 <option value="Accept">Accept</option>
                                                                 <option value="Reject">Reject</option>
                                                             </select>
@@ -392,8 +396,8 @@
                                                                    value="{{$customPaymentInvoice->id}}"
                                                                    name="invoice_id">
                                                             <button
-                                                                type="submit"
-                                                                class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                    type="submit"
+                                                                    class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                 <i class="las la-eye mt-1 mr-1"></i>
                                                                 Confirm
                                                             </button>

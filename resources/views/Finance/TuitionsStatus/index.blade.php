@@ -311,6 +311,9 @@
                                                         return !isset($description['tuition_type']) || $description['tuition_type'] == 'Four Installment Advance';
                                                     });
                                                 @endphp
+                                            @if(!isset($filteredRow->amount))
+                                                @dd($student)
+                                            @endif
                                                 {{ number_format($filteredRow->amount) }} IRR
                                                 @break
                                         @endswitch
