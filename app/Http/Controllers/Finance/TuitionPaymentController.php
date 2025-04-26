@@ -207,7 +207,7 @@ class TuitionPaymentController extends Controller
         }
 
         $paymentMethods = PaymentMethod::where('id', 2)->orWhere('id', 1)->get();
-        $customTuitionPaid = TuitionInvoiceDetailsPayment::with('tuitionInvoiceDetails')->where('status','!=', 3)->where('invoice_details_id', $tuitionInvoiceDetails->id)->sum('amount');
+        $customTuitionPaid = TuitionInvoiceDetailsPayment::with('tuitionInvoiceDetails')->where('status', '!=', 3)->where('invoice_details_id', $tuitionInvoiceDetails->id)->sum('amount');
 
         return view('Finance.TuitionInvoices.pay', compact('tuitionInvoiceDetails', 'paymentMethods', 'customTuitionPaid'));
     }
@@ -251,7 +251,7 @@ class TuitionPaymentController extends Controller
         }
         $tuitionAmount = (int) $tuitionInvoiceDetails->amount;
 
-        $allCustomTuitionInvoices = TuitionInvoiceDetailsPayment::where('invoice_details_id', $tuitionInvoiceDetails->id)->where('status','!=', 3)->sum('amount');
+        $allCustomTuitionInvoices = TuitionInvoiceDetailsPayment::where('invoice_details_id', $tuitionInvoiceDetails->id)->where('status', '!=', 3)->sum('amount');
         if ($paymentAmount > $tuitionAmount - $allCustomTuitionInvoices) {
             return back()->withErrors([
                 'payment_amount' => 'The payment amount cannot exceed '.number_format($tuitionAmount - $allCustomTuitionInvoices).' Rials',
@@ -860,8 +860,22 @@ class TuitionPaymentController extends Controller
                 return response()->json(['message' => 'Installments were made!']);
             case 3:
                 $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
+                $originalInvoice = $tuitionInvoiceDetails->replicate();
                 $tuitionInvoiceDetails->is_paid = 3;
                 $tuitionInvoiceDetails->save();
+
+                $newInvoice = $originalInvoice->replicate();
+                $newInvoice->payment_method = null;
+                $newInvoice->date_of_payment = null;
+                $newInvoice->is_paid = 0;
+
+                $data = json_decode($newInvoice->description, true);
+                $filteredData = [
+                    'tuition_type' => $data['tuition_type']
+                ];
+                $newInvoice->description = json_encode($filteredData);
+
+                $newInvoice->save();
 
                 $tuitionInvoiceInfo = TuitionInvoices::find($tuitionInvoiceDetails->tuition_invoice_id);
                 $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
