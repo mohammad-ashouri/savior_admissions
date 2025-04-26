@@ -39,7 +39,7 @@
                             </div>
                             <hr>
                             <div
-                                class="bg-teal-100 border-t-4 border-teal-500 rounded-b md:w-1/2 mb-4 mt-3 text-teal-900 px-4 py-3 shadow-md"
+                                class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b md:w-1/2 mb-4 mt-3 text-teal-900 px-4 py-3 shadow-md"
                                 role="alert">
                                 <div class="flex">
                                     <div class="py-1">
@@ -51,7 +51,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="font-bold">Choose your payment type and method and click on the get
+                                        <p class="font-bold dark:text-white">Choose your payment type and method and click on the get
                                             invoice button.</p>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@
                                     {{--                                    Full payment divs--}}
                                     <div id="full-payment-div" hidden="">
                                         <div id="full-payment-online" hidden=""
-                                             class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                             class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                              role="alert">
                                             <div class="flex">
                                                 <div class="py-1">
@@ -210,7 +210,7 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">You have to pay the entire fee through the
+                                                    <p class="font-bold dark:text-white">You have to pay the entire fee through the
                                                         online payment portal (Iranian) within the next 72 hours
                                                         .<br> After payment, you will be
                                                         It will take you to the invoices page.</p>
@@ -219,7 +219,7 @@
                                         </div>
                                     </div>
                                     <div id="full-payment-online" hidden=""
-                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                          role="alert">
                                         <div class="flex">
                                             <div class="py-1">
@@ -241,7 +241,7 @@
                                     {{--                                    2 installments divs--}}
                                     <div id="installment2-div" hidden="">
                                         <div
-                                            class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                            class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                             role="alert">
                                             <div class="flex">
                                                 <div class="py-1">
@@ -253,7 +253,7 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">In the installment method, you are allowed to
+                                                    <p class="font-bold dark:text-white">In the installment method, you are allowed to
                                                         pay the first row of the table below within the next 72 hours.
                                                         After payment, you can pay other rows separately in the payments
                                                         section.</p>
@@ -383,7 +383,7 @@
                                     {{--                                    4 installments divs--}}
                                     <div id="installment4-div" hidden="">
                                         <div
-                                            class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                            class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                             role="alert">
                                             <div class="flex">
                                                 <div class="py-1">
@@ -395,7 +395,7 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">In the installment method, you are allowed to
+                                                    <p class="font-bold dark:text-white">In the installment method, you are allowed to
                                                         pay the first row of the table below within the next 72 hours.
                                                         After payment, you can pay other rows separately in the payments
                                                         section.</p>
@@ -563,7 +563,7 @@
                                     {{--                                    Full payment with advance divs--}}
                                     <div id="full-payment-with-advance-div" hidden="">
                                         <div id="full-payment-with-advance-online" hidden=""
-                                             class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                             class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                              role="alert">
                                             <div class="flex">
                                                 <div class="py-1">
@@ -575,7 +575,7 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold">You have to pay 30% of the total tuition fee
+                                                    <p class="font-bold dark:text-white">You have to pay 30% of the total tuition fee
                                                         and you have to pay the remaining 70% by the end of September.
                                                         <br> After payment, you will be
                                                         It will take you to the invoices page.</p>
@@ -584,7 +584,7 @@
                                         </div>
                                     </div>
                                     <div id="full-payment-with-advance-online" hidden=""
-                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                          role="alert">
                                         <div class="flex">
                                             <div class="py-1">
@@ -606,7 +606,7 @@
 
                                     {{--                                    File divs--}}
                                     <div id="offline-full-payment-div" hidden=""
-                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                          role="alert">
                                         <div>
                                             <div class="flex mb-4">
@@ -618,7 +618,7 @@
                                                             d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                                     </svg>
                                                 </div>
-                                                <div>
+                                                <div class="dark:text-white">
                                                     You must deposit
                                                     total fee amount using one of the following methods (bank
                                                     account number, bank card
@@ -709,7 +709,7 @@
                                         </div>
                                     </div>
                                     <div id="offline-full-payment-with-advance-div" hidden=""
-                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                          role="alert">
                                         <div>
                                             <div class="flex mb-4">
@@ -721,7 +721,7 @@
                                                             d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                                     </svg>
                                                 </div>
-                                                <div>
+                                                <div class="dark:text-white">
                                                     You must deposit
                                                     ({{ number_format($fullPaymentAmountAdvance) }} IRR) using one of
                                                     the following methods (bank
@@ -821,7 +821,7 @@
                                         </div>
                                     </div>
                                     <div id="offline-installment-div" hidden=""
-                                         class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                         class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
                                          role="alert">
                                         <div>
                                             <div class="flex mb-4">
@@ -833,7 +833,7 @@
                                                             d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
                                                     </svg>
                                                 </div>
-                                                <div>
+                                                <div class="dark:text-white">
                                                     You must deposit the advance payment amount (the amount of the first
                                                     row) using one of the following methods (bank account number, bank
                                                     card number or Shaba number) and upload the image of your bank slip
