@@ -218,6 +218,7 @@ class Controller extends BaseController
             ->where('application_reservations.payment_status', 1)
             ->where('applications.interviewed', 1)
             ->where('interviews.interview_type', 3)
+            ->whereNull('interviews.deleted_at')
             ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
             ->orderByDesc('application_reservations.id')
             ->first();
