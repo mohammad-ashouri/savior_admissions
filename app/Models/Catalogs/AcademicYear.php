@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AcademicYear extends Model
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'academic_years';
 
     protected $fillable = [
         'name',
+        'persian_name',
         'school_id',
         'start_date',
         'end_date',
