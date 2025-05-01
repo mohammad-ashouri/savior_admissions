@@ -404,7 +404,7 @@ class ApplicationController extends Controller
         $createdAt = $checkApplication->created_at;
 
         $deadline = Carbon::parse($createdAt)->addHour()->toDateTimeString();
-        $paymentMethods = PaymentMethod::whereStatus(1)->get();
+        $paymentMethods = PaymentMethod::whereStatus(1)->where('id', '!=', '3')->get();
 
         return view('Applications.application_payment', compact('checkApplication', 'deadline', 'paymentMethods'));
     }
@@ -458,7 +458,7 @@ class ApplicationController extends Controller
                     $applicationReservationInvoice->save();
 
                     if ($applicationReservationInvoice) {
-                        $applicationInformation->payment_status = 2; //For Pending
+                        $applicationInformation->payment_status = 2; // For Pending
                         $applicationInformation->save();
 
                         return redirect()->route('Applications.index')->with('success', 'Application reserved successfully!');
