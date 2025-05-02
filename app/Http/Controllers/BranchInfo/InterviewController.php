@@ -51,23 +51,7 @@ class InterviewController extends Controller
                 ->orderBy('start_from', 'asc')
                 ->get();
         }
-        if ($me->hasRole('Super Admin')) {
-            $academicYears = AcademicYear::get();
-        } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
-            // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
-            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
-            // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-        } elseif ($me->hasRole('Interviewer')) {
-            // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
-            $filteredArray = $this->getFilteredAccessesI($myAllAccesses);
-
-            // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-        }
 
         if ($request->academic_year) {
             if ($me->hasRole('Super Admin')) {
@@ -121,13 +105,6 @@ class InterviewController extends Controller
                     ->get();
 
             } elseif ($me->hasRole('Interviewer')) {
-                // Convert accesses to arrays and remove duplicates
-                $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
-                $filteredArray = $this->getFilteredAccessesI($myAllAccesses);
-
-                // Finding academic years with status 1 in the specified schools
-                $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-
                 $interviews = Applications::with('firstInterviewerInfo')
                     ->with('secondInterviewerInfo')
                     ->with('reservationInfo')
@@ -154,6 +131,24 @@ class InterviewController extends Controller
         }
         if (empty($interviews) or $interviews->isEmpty()) {
             $interviews = [];
+        }
+
+        if ($me->hasRole('Super Admin')) {
+            $academicYears = AcademicYear::get();
+        } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
+        } elseif ($me->hasRole('Interviewer')) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $filteredArray = $this->getFilteredAccessesI($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
         }
 
         return view('BranchInfo.Interviews.index', compact('interviews', 'academicYears'));
@@ -423,6 +418,7 @@ class InterviewController extends Controller
 
             if (count($completedInterviews) === 3) {
                 $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
+                $studentApplianceStatus->tuition_payment_status = 'Pending';
                 $studentApplianceStatus->save();
 
                 // Add to appliance confirmation information
@@ -717,6 +713,7 @@ class InterviewController extends Controller
 
         if ($allInterviewsCompleted) {
             $studentApplianceStatus->interview_status = 'Pending For Principal Confirmation';
+            $studentApplianceStatus->tuition_payment_status = 'Pending';
 
             // Add to appliance confirmation information
             ApplianceConfirmationInformation::firstOrCreate([
