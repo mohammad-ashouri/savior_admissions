@@ -94,4 +94,13 @@ class User extends Authenticatable
             ->where('document_type_id', 2)
             ->latest();
     }
+
+    public function hasExactRoles(array $roles): bool
+    {
+        $userRoles = $this->roles->pluck('name')->toArray();
+        sort($userRoles);
+        sort($roles);
+
+        return $userRoles === $roles;
+    }
 }

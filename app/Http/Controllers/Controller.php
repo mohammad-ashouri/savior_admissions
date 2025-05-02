@@ -107,6 +107,18 @@ class Controller extends BaseController
         return array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
     }
 
+    //Getting principal and financial manager accesses
+    public function getFilteredAccessesI($userAccessInfo): array
+    {
+        $interviewerAccess = [];
+
+        if (! empty($userAccessInfo->interviewer)) {
+            $interviewerAccess = explode('|', $userAccessInfo->interviewer);
+        }
+
+        return array_filter(array_unique(array_merge($interviewerAccess, $interviewerAccess)));
+    }
+
     //Getting principal and admissions officer accesses
     public function getFilteredAccessesPA($userAccessInfo): array
     {

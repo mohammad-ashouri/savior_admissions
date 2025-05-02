@@ -10,6 +10,46 @@
                 <h1 class="text-3xl font-semibold text-black dark:text-white ">Interviews</h1>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
+                <div class="flex justify-between">
+                    @if(!auth()->user()->hasExactRoles(['Parent']))
+                        <form action="{{ route('interviews.index') }}"
+                              method="get">
+                            <div class="flex w-full">
+                                <div class="mr-3">
+                                    <label for="academic_year"
+                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Academic Year</label>
+                                    <select id="academic_year" name="academic_year"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        @foreach($academicYears as $academicYear)
+                                            <option
+                                                @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                                @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="submit"
+                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <i class="fas fa-search mr-2" aria-hidden="true"></i>
+                                        Filter
+                                    </button>
+                                </div>
+                                @if(isset($_GET['academic_year']))
+                                    <div class="ml-3">
+                                        <a href="{{ route('interviews.index') }}">
+                                            <button type="button"
+                                                    class="text-white bg-red-700 hover:bg-red-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                <i class="fas fa-remove mr-2" aria-hidden="true"></i>
+                                                Remove Filter
+                                            </button>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </form>
+                    @endif
+                </div>
                 @include('GeneralPages.errors.session.success')
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -82,7 +122,7 @@
                                     @continue
                                 @endif
                                 @php
-                                    $studentApplianceStatus=StudentApplianceStatus::whereAcademicYear($interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
+                                    $studentApplianceStatus=StudentApplianceStatus::whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
                                 @endphp
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                                     <td class="w-4 text-center border p-4">
@@ -150,9 +190,6 @@
                                     <td class="border text-center">
                                         <div class="flex">
                                             <!-- Modal toggle -->
-                                            @php
-                                                $studentApplianceStatus=StudentApplianceStatus::whereAcademicYear($interview->applicationTimingInfo->academic_year)->whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
-                                            @endphp
                                             @if($interview->reservationInfo->payment_status==1)
                                                 @switch($interview->Interviewed)
                                                     @case(0)
