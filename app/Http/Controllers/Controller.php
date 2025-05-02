@@ -189,8 +189,8 @@ class Controller extends BaseController
             $sender = '+9890005085';
             $message = $messageText;
             $receptor = [$mobile];
-            $result = Kavenegar::Send($sender, $receptor, $message."\nلغو11");
-            $this->format($result);
+//            $result = Kavenegar::Send($sender, $receptor, $message."\nلغو11");
+//            $this->format($result);
         } catch (ApiException $e) {
             echo $e->errorMessage();
         } catch (HttpException $e) {
