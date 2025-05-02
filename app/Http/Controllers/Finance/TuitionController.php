@@ -212,7 +212,7 @@ class TuitionController extends Controller
             ->where('application_reservations.student_id', $student_id)
             ->where('applications.reserved', 1)
             ->where('application_reservations.payment_status', 1)
-            ->where('applications.interviewed', 1)
+//            ->where('applications.interviewed', 1)
             ->where('interviews.interview_type', 3)
             ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
             ->orderByDesc('application_reservations.id')
@@ -228,8 +228,7 @@ class TuitionController extends Controller
         $paymentMethods = PaymentMethod::get();
 
         // Get evidence info for foreign school in last year
-        $evidence = Evidence::whereApplianceId($studentApplianceStatus->id)->first();
-        if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
+        if (json_decode($applicationInfo['interview_form'],true)['foreign_school']=='Yes') {
             $foreignSchool = true;
         } else {
             $foreignSchool = false;
