@@ -16,7 +16,7 @@
                             </div>
                             <div>
                                 <p class="font-bold">Student
-                                    Information: </p>{{ $applicationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->studentInfo->generalInformationInfo->last_name_en }}
+                                    Information: </p>{{ $applicationInfo->studentInfo->id }} - {{ $applicationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $applicationInfo->studentInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
                                 <p class="font-bold">Level: </p>{{ $applicationInfo->levelInfo->name }}
