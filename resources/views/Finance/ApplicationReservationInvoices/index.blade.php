@@ -25,49 +25,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="mr-3">
-                                <label for="date_of_payment"
-                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Date Of Payment</label>
-                                <input type="date" id="date_of_payment" name="date_of_payment"
-                                       value="{{ @$_GET['date_of_payment'] }}"
-                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            </div>
-                            <div class="mr-3">
-                                <label for="payment_method"
-                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Payment Method</label>
-                                <select id="payment_method" name="payment_method"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" disabled selected>Select Payment Method...</option>
-                                    @foreach($paymentMethods as $paymentMethod)
-                                        <option
-                                            @if(isset($_GET['payment_method']) and $_GET['payment_method']==$paymentMethod->id) selected
-                                            @endif value="{{$paymentMethod->id}}">{{$paymentMethod->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="mr-3">
-                                <label for="status"
-                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Status</label>
-                                <select id="status" name="status"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="" disabled selected>Select Status...</option>
-                                    <option @if(isset($_GET['status']) and $_GET['status']==0) selected
-                                            @endif value="0">Payment Processing
-                                    </option>
-                                    <option @if(isset($_GET['status']) and $_GET['status']==1) selected
-                                            @endif value="1">Paid
-                                    </option>
-                                    <option @if(isset($_GET['status']) and $_GET['status']==2) selected
-                                            @endif value="2">Awaiting Confirmation
-                                    </option>
-                                    <option @if(isset($_GET['status']) and $_GET['status']==3) selected
-                                            @endif value="3">Rejected
-                                    </option>
-                                </select>
-                            </div>
                             <div>
                                 <button type="submit"
                                         class="text-white bg-blue-700 hover:bg-blue-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
