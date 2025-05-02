@@ -21,7 +21,6 @@ use App\Http\Controllers\Finance\ApplicationReservationController;
 use App\Http\Controllers\Finance\DiscountsController;
 use App\Http\Controllers\Finance\TuitionController;
 use App\Http\Controllers\Finance\TuitionPaymentController;
-use App\Http\Controllers\GeneralControllers\ChartController;
 use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\PaymentController;
@@ -33,6 +32,7 @@ use App\Http\Middleware\CheckImpersonatePermission;
 use App\Http\Middleware\CheckLoginMiddleware;
 use App\Http\Middleware\NoCache;
 use App\Http\Middleware\SettingsCheck;
+use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -189,7 +189,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
                 Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
                 Route::post('/Delete', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
             });
-            Route::get('UploadStudentDocumentByParent/{student_id}', [DocumentController::class, 'uploadStudentDocumentByParent'])->name('Document.UploadByParent');
+            Route::get('UploadStudentDocumentByParent/{student_id}', UploadDocumentsParentCreate::class)->name('Document.UploadByParent');
             Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
             Route::get('EditUploadedEvidences/{student_id}', [DocumentController::class, 'editUploadedEvidences'])->name('Document.EditUploadedEvidences');
             Route::post('EditUploadedEvidences', [DocumentController::class, 'updateStudentDocuments'])->name('Document.EditUploadedEvidences.update');

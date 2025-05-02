@@ -350,6 +350,7 @@
             });
         });
     </script>
+    @livewireStyles
 </head>
 
 <body class=" bg-light-theme-color-base dark:bg-gray-800 ">
@@ -772,6 +773,7 @@
 </aside>
 
 @yield('content')
-
+{{ $slot ?? '' }}
+@livewireScripts
 </body>
 </html>
