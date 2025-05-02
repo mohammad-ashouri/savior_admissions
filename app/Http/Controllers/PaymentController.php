@@ -127,17 +127,10 @@ class PaymentController extends Controller
                     $studentAppliance->tuition_payment_status = 'Paid';
                     $studentAppliance->approval_status = 1;
                     $studentAppliance->save();
-                    $allDiscounts = $this->getAllDiscounts($studentAppliance->student_id);
 
                     $student_id = $studentAppliance->student_id;
                     $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
                     $allDiscountPercentages = $this->getAllDiscounts($student_id);
-
-                    // Found previous discounts
-                    $familyPercentagePriceTwoInstallment = 0;
-                    $allStudentsWithGuardian = StudentInformation::whereGuardian($studentAppliance->studentInformations->guardianInfo->id)->pluck('student_id')->toArray();
-                    $allApplianceStudents = StudentApplianceStatus::whereIn('student_id', $allStudentsWithGuardian)->whereIn('academic_year', $this->getActiveAcademicYears())->whereTuitionPaymentStatus('Paid')->pluck('id')->toArray();
-                    $allGrantedFamilyDiscounts = GrantedFamilyDiscount::whereIn('appliance_id', $allApplianceStudents)->get();
 
                     $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
                         ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
@@ -150,191 +143,69 @@ class PaymentController extends Controller
                         ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
                         ->orderByDesc('application_reservations.id')
                         ->first();
-                    // Get evidence info for foreign school in last year
-                    $evidence = Evidence::whereApplianceId($studentAppliance->id)->first();
-                    if (isset(json_decode($evidence->informations, true)['foreign_school']) and json_decode($evidence->informations, true)['foreign_school'] == 'Yes') {
+
+                    if (json_decode($applicationInfo['interview_form'],true)['foreign_school']=='Yes') {
                         $foreignSchool = true;
                     } else {
                         $foreignSchool = false;
                     }
-                    if ($allGrantedFamilyDiscounts->isEmpty()) {
-                        $newGrantedFamilyDiscount = GrantedFamilyDiscount::withTrashed()->where('appliance_id', $studentAppliance->id)->first();
-                        if (! empty($newGrantedFamilyDiscount)) {
-                            $newGrantedFamilyDiscount->restore();
-                            $newGrantedFamilyDiscount->update([
-                                'level' => $applicationInfo->level,
-                                'discount_percent' => 0,
-                                'discount_price' => 0,
-                                'signed_child_number' => 1,
-                            ]);
-                        } else {
-                            $newGrantedFamilyDiscount = new GrantedFamilyDiscount;
-                            $newGrantedFamilyDiscount->appliance_id = $studentAppliance->id;
-                            $newGrantedFamilyDiscount->level = $applicationInfo->level;
-                            $newGrantedFamilyDiscount->discount_percent = 0;
-                            $newGrantedFamilyDiscount->discount_price = 0;
-                            $newGrantedFamilyDiscount->signed_child_number = 1;
-                            $newGrantedFamilyDiscount->save();
-                        }
-                    } else {
-                        $student_id = $studentAppliance->student_id;
 
-                        $allDiscountPercentages = $this->getAllDiscounts($student_id);
-                        $previousDiscountPrice = $this->getAllFamilyDiscountPrice($studentAppliance->studentInformations->guardianInfo->id);
+                    $familyPercentagePriceThreeInstallment = $familyPercentagePriceSevenInstallment = $familyPercentagePriceFullPayment = 0;
 
-                        // Calculate discount for minimum level
-                        $minimumLevel = $this->getMinimumApplianceLevelInfo($studentAppliance->studentInformations->guardianInfo->id);
-
-                        $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
-                            ->where('tuitions.academic_year', $minimumLevel['academic_year'])->where('tuition_details.level', $minimumLevel['level']->level)->first();
-                        if ($minimumLevelTuitionDetails->level > $applicationInfo->level) {
-                            $minimumLevelTuitionDetails = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
-                                ->where('tuitions.academic_year', $applicationInfo->academic_year)->where('tuition_details.level', $applicationInfo->level)->first();
-                        }
-
-                        $minimumSignedStudentNumber = $this->getMinimumSignedChildNumber($studentAppliance->studentInformations->guardianInfo->id);
-
-                        if ($foreignSchool) {
-                            $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment_ministry, true)['full_payment_irr_ministry']);
-                            $minimumLevelTuitionDetailsTwoInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->two_installment_payment_ministry, true)['two_installment_amount_irr_ministry']);
-                            $minimumLevelTuitionDetailsFourInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->four_installment_payment_ministry, true)['four_installment_amount_irr_ministry']);
-                        } else {
-                            $minimumLevelTuitionDetailsFullPayment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->full_payment, true)['full_payment_irr']);
-                            $minimumLevelTuitionDetailsTwoInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->two_installment_payment, true)['two_installment_amount_irr']);
-                            $minimumLevelTuitionDetailsFourInstallment = (int) str_replace(',', '', json_decode($minimumLevelTuitionDetails->four_installment_payment, true)['four_installment_amount_irr']);
-                        }
-                        $familyPercentagePriceFullPayment = $familyPercentagePriceTwoInstallment = $familyPercentagePriceFourInstallment = 0;
-
-                        switch ($minimumSignedStudentNumber) {
-                            case '1':
-                                $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 25) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 25) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 25) / 100) - $previousDiscountPrice;
-
-                                $discountPrice = match ($tuitionInvoiceInfo->payment_type) {
-                                    2 => $familyPercentagePriceTwoInstallment,
-                                    3 => $familyPercentagePriceFourInstallment,
-                                    1, 4 => $familyPercentagePriceFullPayment,
-                                    default => null,
-                                };
-
-                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
-                                    [
-                                        'appliance_id' => $studentAppliance->id,
-                                    ],
-                                    [
-                                        'level' => $applicationInfo->level,
-                                        'discount_percent' => 25,
-                                        'discount_price' => $discountPrice,
-                                        'signed_child_number' => 2,
-                                    ]
-                                );
-                                break;
-                            case '2':
-                                $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 30) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 30) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 30) / 100) - $previousDiscountPrice;
-
-                                $discountPrice = match ($tuitionInvoiceInfo->payment_type) {
-                                    2 => $familyPercentagePriceTwoInstallment,
-                                    3 => $familyPercentagePriceFourInstallment,
-                                    1, 4 => $familyPercentagePriceFullPayment,
-                                    default => null,
-                                };
-
-                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
-                                    [
-                                        'appliance_id' => $studentAppliance->id,
-                                    ],
-                                    [
-                                        'level' => $applicationInfo->level,
-                                        'discount_percent' => 30,
-                                        'discount_price' => $discountPrice,
-                                        'signed_child_number' => 3,
-                                    ]
-                                );
-                                break;
-                            case '3':
-                                $familyPercentagePriceFullPayment = (($minimumLevelTuitionDetailsFullPayment * 40) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceTwoInstallment = (($minimumLevelTuitionDetailsTwoInstallment * 40) / 100) - $previousDiscountPrice;
-                                $familyPercentagePriceFourInstallment = (($minimumLevelTuitionDetailsFourInstallment * 40) / 100) - $previousDiscountPrice;
-
-                                $discountPrice = match ($tuitionInvoiceInfo->payment_type) {
-                                    2 => $familyPercentagePriceTwoInstallment,
-                                    3 => $familyPercentagePriceFourInstallment,
-                                    1, 4 => $familyPercentagePriceFullPayment,
-                                    default => null,
-                                };
-
-                                $newGrantedFamilyDiscount = GrantedFamilyDiscount::updateOrCreate(
-                                    [
-                                        'appliance_id' => $studentAppliance->id,
-                                    ],
-                                    [
-                                        'level' => $applicationInfo->level,
-                                        'discount_percent' => 40,
-                                        'discount_price' => $discountPrice,
-                                        'signed_child_number' => 4,
-                                    ]
-                                );
-                                break;
-                            default:
-                        }
-                    }
                     switch ($tuitionInvoiceInfo->payment_type) {
-                        case 2:
+                        case 5:
                             $counter = 1;
                             if ($foreignSchool) {
-                                $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment_ministry, true);
-                                $twoInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_amount_irr_ministry']);
-                                $totalFeeTwoInstallment = $twoInstallmentPaymentAmount - (($twoInstallmentPaymentAmount * $allDiscountPercentages) / 100);
-                                $twoInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_advance_irr_ministry']);
+                                $tuitionDetailsForThreeInstallments = json_decode($tuitionDetails->three_installment_payment_ministry, true);
+                                $threeInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_amount_irr_ministry']);
+                                $totalFeeThreeInstallment = $threeInstallmentPaymentAmount - (($threeInstallmentPaymentAmount * $allDiscountPercentages) / 100);
+                                $threeInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_advance_irr_ministry']);
                             } else {
-                                $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
-                                $twoInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_amount_irr']);
-                                $totalFeeTwoInstallment = $twoInstallmentPaymentAmount - (($twoInstallmentPaymentAmount * $allDiscountPercentages) / 100);
-                                $twoInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_advance_irr']);
+                                $tuitionDetailsForThreeInstallments = json_decode($tuitionDetails->three_installment_payment, true);
+                                $threeInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_amount_irr']);
+                                $totalFeeThreeInstallment = $threeInstallmentPaymentAmount - (($threeInstallmentPaymentAmount * $allDiscountPercentages) / 100);
+                                $threeInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_advance_irr']);
                             }
-                            $totalDiscountsTwo = (($twoInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceTwoInstallment;
-                            $tuitionDiscountTwo = ($twoInstallmentPaymentAmount * 40) / 100;
-                            if ($totalDiscountsTwo > $tuitionDiscountTwo) {
-                                $totalDiscountsTwo = $tuitionDiscountTwo;
+                            $totalDiscountsThree = (($threeInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceThreeInstallment;
+                            $tuitionDiscountThree = ($threeInstallmentPaymentAmount * 40) / 100;
+                            if ($totalDiscountsThree > $tuitionDiscountThree) {
+                                $totalDiscountsThree = $tuitionDiscountThree;
                             }
 
-                            while ($counter < 3) {
+                            while ($counter < 4) {
                                 $newInvoice = new TuitionInvoiceDetails;
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = (($totalFeeTwoInstallment - $twoInstallmentPaymentAmountAdvance) / 2) - ($totalDiscountsTwo / 2);
+                                $newInvoice->amount = (($totalFeeThreeInstallment - $threeInstallmentPaymentAmountAdvance) / 3) - ($totalDiscountsThree / 3);
                                 $newInvoice->is_paid = 0;
-                                $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
+                                $newInvoice->description = json_encode(['tuition_type' => 'Three Installment - Installment '.$counter], true);
                                 $newInvoice->save();
                                 $counter++;
                             }
                             break;
-                        case 3:
+                        case 6:
                             $counter = 1;
                             if ($foreignSchool) {
-                                $tuitionDetailsForFourInstallments = json_decode($tuitionDetails->four_installment_payment_ministry, true);
-                                $fourInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_amount_irr_ministry']);
-                                $totalFeeFourInstallment = $fourInstallmentPaymentAmount - (($fourInstallmentPaymentAmount * $allDiscountPercentages) / 100);
-                                $fourInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_advance_irr_ministry']);
+                                $tuitionDetailsForSevenInstallments = json_decode($tuitionDetails->seven_installment_payment_ministry, true);
+                                $sevenInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_amount_irr_ministry']);
+                                $totalFeeSevenInstallment = $sevenInstallmentPaymentAmount - (($sevenInstallmentPaymentAmount * $allDiscountPercentages) / 100);
+                                $sevenInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_advance_irr_ministry']);
                             } else {
-                                $tuitionDetailsForFourInstallments = json_decode($tuitionDetails->four_installment_payment, true);
-                                $fourInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_amount_irr']);
-                                $totalFeeFourInstallment = $fourInstallmentPaymentAmount - (($fourInstallmentPaymentAmount * $allDiscountPercentages) / 100);
-                                $fourInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_advance_irr']);
+                                $tuitionDetailsForSevenInstallments = json_decode($tuitionDetails->seven_installment_payment, true);
+                                $sevenInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_amount_irr']);
+                                $totalFeeSevenInstallment = $sevenInstallmentPaymentAmount - (($sevenInstallmentPaymentAmount * $allDiscountPercentages) / 100);
+                                $sevenInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_advance_irr']);
                             }
-                            $totalDiscountsFour = (($fourInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceFourInstallment;
-                            $tuitionDiscountFour = ($fourInstallmentPaymentAmount * 40) / 100;
-                            if ($totalDiscountsFour > $tuitionDiscountFour) {
-                                $totalDiscountsFour = $tuitionDiscountFour;
+                            $totalDiscountsSeven = (($sevenInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceSevenInstallment;
+                            $tuitionDiscountSeven = ($sevenInstallmentPaymentAmount * 40) / 100;
+                            if ($totalDiscountsSeven > $tuitionDiscountSeven) {
+                                $totalDiscountsSeven = $tuitionDiscountSeven;
                             }
-                            while ($counter < 5) {
+                            while ($counter < 8) {
                                 $newInvoice = new TuitionInvoiceDetails;
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = (($totalFeeFourInstallment - $fourInstallmentPaymentAmountAdvance) / 4) - ($totalDiscountsFour / 4);
+                                $newInvoice->amount = (($totalFeeSevenInstallment - $sevenInstallmentPaymentAmountAdvance) / 7) - ($totalDiscountsSeven / 7);
                                 $newInvoice->is_paid = 0;
-                                $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
+                                $newInvoice->description = json_encode(['tuition_type' => 'Seven Installment - Installment '.$counter], true);
                                 $newInvoice->save();
                                 $counter++;
                             }

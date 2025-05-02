@@ -8,38 +8,40 @@
             </div>
             <div class="flex justify-between mb-3">
                 <div class="relative hidden md:block w-96">
-                    <form action="{{ route('searchTuitionInvoices') }}" method="get">
-                        <div class="flex w-96">
-                            <div class="mr-3">
-                                <select id="academic_year" name="academic_year"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    @foreach($academicYears as $academicYear)
-                                        <option
-                                            @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
-                                            @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div>
-                                <button type="submit"
-                                        class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    <i class="fas fa-search mr-2" aria-hidden="true"></i>
-                                    Filter
-                                </button>
-                            </div>
-                            @if(isset($_GET['student_id']))
-                                <div class="ml-3">
-                                    <a href="/TuitionInvoices">
-                                        <button type="button"
-                                                class="text-white bg-red-700 hover:bg-red-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 RemoveFilter">
-                                            <i class="fas fa-remove mr-2" aria-hidden="true"></i>
-                                            Remove
-                                        </button>
-                                    </a>
+                    @if(!auth()->user()->hasExactRoles(['Parent']))
+                        <form action="{{ route('searchTuitionInvoices') }}" method="get">
+                            <div class="flex w-96">
+                                <div class="mr-3">
+                                    <select id="academic_year" name="academic_year"
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        @foreach($academicYears as $academicYear)
+                                            <option
+                                                @if(isset($_GET['academic_year']) and $_GET['academic_year']==$academicYear->id) selected
+                                                @endif value="{{$academicYear->id}}">{{$academicYear->name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            @endif
-                        </div>
-                    </form>
+                                <div>
+                                    <button type="submit"
+                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        <i class="fas fa-search mr-2" aria-hidden="true"></i>
+                                        Filter
+                                    </button>
+                                </div>
+                                @if(isset($_GET['student_id']))
+                                    <div class="ml-3">
+                                        <a href="/TuitionInvoices">
+                                            <button type="button"
+                                                    class="text-white bg-red-700 hover:bg-red-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 RemoveFilter">
+                                                <i class="fas fa-remove mr-2" aria-hidden="true"></i>
+                                                Remove
+                                            </button>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        </form>
+                    @endif
                 </div>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
@@ -135,6 +137,12 @@
                                                 @break
                                             @case('4')
                                                 Full Payment With Advance
+                                                @break
+                                            @case('5')
+                                                Three Installment
+                                                @break
+                                            @case('6')
+                                                Seven Installment
                                                 @break
                                         @endswitch
                                     </th>

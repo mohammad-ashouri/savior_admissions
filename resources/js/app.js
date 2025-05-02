@@ -1953,20 +1953,19 @@ $(document).ready(function () {
 
         $('#payment_type,#payment_method').change(function () {
             $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
-            $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
-            $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
+            $('#installment3-div, #installment3-payment-invoice, #installment3-online').hide();
+            $('#installment7-div, #installment7-payment-invoice, #installment7-online').hide();
             $('#offline-full-payment-div, #offline-installment-div').hide();
             $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
             $('#accept-div').addClass('hidden');
             $('#payment-button').hide();
-
         });
         $('.get-invoice').on('click', function () {
             let paymentMethod = $('#payment_method').val();
 
             $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
-            $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
-            $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
+            $('#installment3-div, #installment3-payment-invoice, #installment3-online').hide();
+            $('#installment7-div, #installment7-payment-invoice, #installment7-online').hide();
             $('#offline-full-payment-div, #offline-installment-div').hide();
             $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
 
@@ -1986,11 +1985,11 @@ $(document).ready(function () {
                     case '1':
                         $('#full-payment-div, #full-payment-invoice').show();
                         break;
-                    case '2':
-                        $('#installment2-div, #installment2-payment-invoice').show();
+                    case '5':
+                        $('#installment3-div, #installment3-payment-invoice').show();
                         break;
-                    case '3':
-                        $('#installment4-div, #installment4-payment-invoice').show();
+                    case '6':
+                        $('#installment7-div, #installment7-payment-invoice').show();
                         break;
                     case '4':
                         $('#full-payment-with-advance-div, #full-payment-with-advance-invoice').show();
@@ -2006,14 +2005,14 @@ $(document).ready(function () {
                                 $('#full-payment-online').hide();
                                 $('#document_file_full_payment1').attr('required', true);
                                 break;
-                            case '2':
+                            case '5':
                                 $('#offline-installment-div').show();
-                                $('#installment2-online').hide();
+                                $('#installment3-online').hide();
                                 $('#document_file_offline_installment1').attr('required', true);
                                 break;
-                            case '3':
+                            case '6':
                                 $('#offline-installment-div').show();
-                                $('#installment4-online').hide();
+                                $('#installment7-online').hide();
                                 $('#document_file_offline_installment1').attr('required', true);
                                 break;
                             case '4':
@@ -2029,13 +2028,13 @@ $(document).ready(function () {
                                 $('#offline-full-payment-div').hide();
                                 $('#full-payment-online').show();
                                 break;
-                            case '2':
+                            case '5':
                                 $('#offline-installment-div').hide();
-                                $('#installment2-online').show();
+                                $('#installment3-online').show();
                                 break;
-                            case '3':
+                            case '6':
                                 $('#offline-installment-div').hide();
-                                $('#installment4-online').show();
+                                $('#installment7-online').show();
                                 break;
                             case '4':
                                 $('#offline-full-payment-with-advance-div').hide();
