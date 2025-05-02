@@ -779,16 +779,19 @@ class TuitionController extends Controller
         $me = User::find(auth()->user()->id);
         $students = [];
         $isParent = false;
+        $academicYears = [];
         if ($me->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with([
                 'studentInfo',
-                'tuitionInvoices' => function ($query) {
-                    $query->whereHas('invoiceDetails', function ($query) {
-                        $query->where('is_paid', '1');
-                    });
-                },
                 'academicYearInfo',
                 'documentSeconder',
+                'tuitionInvoices' => function ($query) {
+                    $query->with([
+                        'invoiceDetails' => function ($query) {
+                            $query->where('is_paid', '!=', 3);
+                        },
+                    ]);
+                },
             ]);
             $data->whereAcademicYear($request->academic_year);
             $data->whereHas('tuitionInvoices', function ($query) {
@@ -799,14 +802,25 @@ class TuitionController extends Controller
             $data->whereTuitionPaymentStatus('Paid');
             $students = $data->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif ($me->hasAnyRole(['Principal', 'Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
-            $data = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('documentSeconder');
+            $data = StudentApplianceStatus::with([
+                'studentInfo',
+                'academicYearInfo',
+                'documentSeconder',
+                'tuitionInvoices' => function ($query) {
+                    $query->with([
+                        'invoiceDetails' => function ($query) {
+                            $query->where('is_paid', '!=', 3);
+                        },
+                    ]);
+                },
+            ]);
             $data->whereAcademicYear($request->academic_year);
             $data->whereIn('academic_year', $academicYears);
             $data->whereTuitionPaymentStatus('Paid');
@@ -824,7 +838,12 @@ class TuitionController extends Controller
             $isParent = true;
         }
 
-        return view('Finance.TuitionsStatus.index', compact('students', 'academicYears', 'isParent'));
+        $old_ids = [1, 2, 3];
+        if (in_array($request->academic_year, $old_ids)) {
+            return view('Finance.TuitionsStatus.old.index', compact('students', 'academicYears', 'isParent'));
+        }
+
+        return view('Finance.TuitionsStatus.new.index', compact('students', 'academicYears', 'isParent'));
     }
 
     public function allTuitions(Request $request)
