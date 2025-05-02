@@ -314,26 +314,6 @@
                                     <h1 class="text-xl font-medium">3- Educational Information</h1>
                                 </div>
                                 <div class="grid md:grid-cols-2">
-                                    <div class="mt-3 mr-2">
-                                        <label for="foreign_school"
-                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                            Did the student study in a foreign school last year?</label>
-                                        <select id="foreign_school" name="foreign_school" disabled
-                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                            <option
-                                                @if(isset($informations['foreign_school']) and $informations['foreign_school']=='Yes')
-                                                    selected
-                                                @endif
-                                                value="Yes">Yes
-                                            </option>
-                                            <option
-                                                @if(!isset($informations['foreign_school']) or $informations['foreign_school']=='No')
-                                                    selected
-                                                @endif
-                                                value="No">No
-                                            </option>
-                                        </select>
-                                    </div>
                                     <div class="mt-3">
                                         <label for="previous_school_name"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
