@@ -195,7 +195,7 @@
                                                     @php
                                                         $statusPercent=0;
                                                         $statusText='';
-                                                        $statusColor='green';
+                                                        $statusColor='yellow';
                                                          if ($applicationStatus->interview_status=='Absence'){
                                                              $statusText='Absence of attendance at the interview';
                                                              $statusColor='red';
@@ -247,7 +247,13 @@
                                                          }
                                                          if ($applicationStatus->tuition_payment_status=='Paid'){
                                                              $statusPercent=100;
+                                                             $statusColor='green';
                                                              $statusText='Tuition Paid. Application Done!';
+                                                         }
+                                                         if ($applicationStatus->tuition_payment_status=='Paid' and !$applicationStatus->approval_status){
+                                                             $statusPercent-=25;
+                                                             $statusColor='yellow';
+                                                             $statusText="Tuition Paid. Waiting For Upload Documents";
                                                          }
                                                          if ($applicationStatus->tuition_payment_status=='Pending For Review'){
                                                              $statusText='Checking tuition payment!';
@@ -258,17 +264,10 @@
                                                     <span
                                                         class="text-sm font-medium text-{{$statusColor}}-700 dark:text-white">{{$statusPercent}}%</span>
                                                 </div>
-                                                @if($statusColor=='green')
-                                                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                                        <div class="bg-green-600 h-2.5 rounded-full"
-                                                             style="width: {{$statusPercent}}%"></div>
-                                                    </div>
-                                                @elseif($statusColor=='red')
-                                                    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                                                        <div class="bg-red-600 h-2.5 rounded-full"
-                                                             style="width: {{$statusPercent}}%"></div>
-                                                    </div>
-                                                @endif
+                                                <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                                    <div class="bg-{{$statusColor}}-500 h-2.5 rounded-full"
+                                                         style="width: {{$statusPercent}}%"></div>
+                                                </div>
                                             </div>
                                         </th>
                                         <th scope="row"

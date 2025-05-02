@@ -477,7 +477,8 @@ class TuitionPaymentController extends Controller
                     $tuitionInvoiceDetails->save();
 
                     $studentAppliance->tuition_payment_status = 'Paid';
-                    $studentAppliance->approval_status = 1;
+//                    $studentAppliance->approval_status = 1;
+                    $studentAppliance->documents_uploaded = 0;
                     $studentAppliance->save();
 
                     $message = "Tuition payment confirmation with id $tuition_id has been done successfully. To view more information, refer to the tuition invoices page from the Finance menu.\nSavior Schools";
@@ -515,7 +516,8 @@ class TuitionPaymentController extends Controller
                     return response()->json(['message' => 'Approved!']);
                 }
                 $studentAppliance->tuition_payment_status = 'Paid';
-                $studentAppliance->approval_status = 1;
+//                $studentAppliance->approval_status = 1;
+                $studentAppliance->documents_uploaded = 0;
                 $studentAppliance->save();
 
                 $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id);

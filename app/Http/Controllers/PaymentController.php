@@ -125,7 +125,8 @@ class PaymentController extends Controller
 
                     $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
                     $studentAppliance->tuition_payment_status = 'Paid';
-                    $studentAppliance->approval_status = 1;
+//                    $studentAppliance->approval_status = 1;
+                    $studentAppliance->documents_uploaded = 0;
                     $studentAppliance->save();
 
                     $student_id = $studentAppliance->student_id;
@@ -306,7 +307,8 @@ class PaymentController extends Controller
 
                         $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
                         $studentAppliance->tuition_payment_status = 'Paid';
-                        $studentAppliance->approval_status = 1;
+//                        $studentAppliance->approval_status = 1;
+                        $studentAppliance->documents_uploaded = 0;
                         $studentAppliance->save();
                         $messageText = "You have successfully paid tuition installment. \nTransaction number: $transactionRefId \nSavior Schools";
                     } elseif ($tuitionInvoiceDetails->amount - $allCustomTuitionInvoices == $invoiceDescription['amount']) {
@@ -318,7 +320,8 @@ class PaymentController extends Controller
 
                         $studentAppliance = StudentApplianceStatus::find($tuitionInvoiceInfo->appliance_id);
                         $studentAppliance->tuition_payment_status = 'Paid';
-                        $studentAppliance->approval_status = 1;
+//                        $studentAppliance->approval_status = 1;
+                        $studentAppliance->documents_uploaded = 0;
                         $studentAppliance->save();
                         $messageText = "You have successfully paid tuition installment. \nTransaction number: $transactionRefId \nSavior Schools";
                     } else {
