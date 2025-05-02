@@ -56,7 +56,7 @@
                                                 @if($tuition->status!=1)
                                                     @continue
                                                 @endif
-                                                <form class="tuition-details">
+                                                <form>
                                                     <tr
                                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                                         <td class="p-4 text-center">

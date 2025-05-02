@@ -18,6 +18,9 @@ use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
 use App\Models\UserAccessInformation;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Shetabit\Multipay\Invoice;
@@ -34,7 +37,7 @@ class TuitionController extends Controller
         $this->middleware('permission:all-tuitions-index', ['only' => ['allTuitions']]);
     }
 
-    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(auth()->user()->id);
         $tuitions = [];
@@ -58,7 +61,7 @@ class TuitionController extends Controller
         return view('Finance.Tuition.index', compact('tuitions'));
     }
 
-    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function edit($id): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(auth()->user()->id);
         $tuitions = [];
@@ -79,8 +82,11 @@ class TuitionController extends Controller
             $tuitions = [];
         }
 
-        return view('Finance.Tuition.edit', compact('tuitions'));
-
+        $old_ids=[1,2,3];
+        if (in_array($id,$old_ids)) {
+            return view('Finance.Tuition.old.edit', compact('tuitions'));
+        }
+        return view('Finance.Tuition.new.edit', compact('tuitions'));
     }
 
     public function changeTuitionPrice(Request $request)
@@ -95,38 +101,28 @@ class TuitionController extends Controller
             'tuition_details_id' => 'required|integer|exists:tuition_details,id',
             'full_payment_irr' => 'required|integer',
             'full_payment_irr_ministry' => 'required|integer',
-            'full_payment_usd' => 'required|integer',
-            'full_payment_usd_ministry' => 'required|integer',
-            'two_installment_amount_irr' => 'required|integer',
-            'two_installment_amount_irr_ministry' => 'required|integer',
-            'two_installment_amount_usd' => 'required|integer',
-            'two_installment_amount_usd_ministry' => 'required|integer',
-            'two_installment_advance_irr' => 'required|integer',
-            'two_installment_advance_irr_ministry' => 'required|integer',
-            'two_installment_advance_usd' => 'required|integer',
-            'two_installment_advance_usd_ministry' => 'required|integer',
-            'two_installment_each_installment_irr' => 'required|integer',
-            'two_installment_each_installment_irr_ministry' => 'required|integer',
-            'two_installment_each_installment_usd' => 'required|integer',
-            'two_installment_each_installment_usd_ministry' => 'required|integer',
-            'date_of_installment1_two' => 'required|date',
-            'date_of_installment2_two' => 'required|date',
-            'four_installment_amount_irr' => 'required|integer',
-            'four_installment_amount_irr_ministry' => 'required|integer',
-            'four_installment_amount_usd' => 'required|integer',
-            'four_installment_amount_usd_ministry' => 'required|integer',
-            'four_installment_advance_irr' => 'required|integer',
-            'four_installment_advance_irr_ministry' => 'required|integer',
-            'four_installment_advance_usd' => 'required|integer',
-            'four_installment_advance_usd_ministry' => 'required|integer',
-            'four_installment_each_installment_irr' => 'required|integer',
-            'four_installment_each_installment_irr_ministry' => 'required|integer',
-            'four_installment_each_installment_usd' => 'required|integer',
-            'four_installment_each_installment_usd_ministry' => 'required|integer',
-            'date_of_installment1_four' => 'required|date',
-            'date_of_installment2_four' => 'required|date',
-            'date_of_installment3_four' => 'required|date',
-            'date_of_installment4_four' => 'required|date',
+            'three_installment_amount_irr' => 'required|integer',
+            'three_installment_amount_irr_ministry' => 'required|integer',
+            'three_installment_advance_irr' => 'required|integer',
+            'three_installment_advance_irr_ministry' => 'required|integer',
+            'three_installment_each_installment_irr' => 'required|integer',
+            'three_installment_each_installment_irr_ministry' => 'required|integer',
+            'date_of_installment1_three' => 'required|date',
+            'date_of_installment2_three' => 'required|date',
+            'date_of_installment3_three' => 'required|date',
+            'seven_installment_amount_irr' => 'required|integer',
+            'seven_installment_amount_irr_ministry' => 'required|integer',
+            'seven_installment_advance_irr' => 'required|integer',
+            'seven_installment_advance_irr_ministry' => 'required|integer',
+            'seven_installment_each_installment_irr' => 'required|integer',
+            'seven_installment_each_installment_irr_ministry' => 'required|integer',
+            'date_of_installment1_seven' => 'required|date',
+            'date_of_installment2_seven' => 'required|date',
+            'date_of_installment3_seven' => 'required|date',
+            'date_of_installment4_seven' => 'required|date',
+            'date_of_installment5_seven' => 'required|date',
+            'date_of_installment6_seven' => 'required|date',
+            'date_of_installment7_seven' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -138,52 +134,47 @@ class TuitionController extends Controller
         }
 
         $tuition = TuitionDetail::find($request->tuition_details_id);
-        $tuition->full_payment = json_encode(['full_payment_irr' => $request->full_payment_irr, 'full_payment_usd' => $request->full_payment_usd], true);
-        $tuition->full_payment_ministry = json_encode(['full_payment_irr_ministry' => $request->full_payment_irr_ministry, 'full_payment_usd_ministry' => $request->full_payment_usd_ministry], true);
-        $tuition->two_installment_payment = json_encode([
-            'two_installment_amount_irr' => $request->two_installment_amount_irr,
-            'two_installment_amount_usd' => $request->two_installment_amount_usd,
-            'two_installment_advance_irr' => $request->two_installment_advance_irr,
-            'two_installment_advance_usd' => $request->two_installment_advance_usd,
-            'two_installment_each_installment_irr' => $request->two_installment_each_installment_irr,
-            'two_installment_each_installment_usd' => $request->two_installment_each_installment_usd,
-            'date_of_installment1_two' => $request->date_of_installment1_two,
-            'date_of_installment2_two' => $request->date_of_installment2_two,
-        ], true);
-        $tuition->two_installment_payment_ministry = json_encode([
-            'two_installment_amount_irr_ministry' => $request->two_installment_amount_irr_ministry,
-            'two_installment_amount_usd_ministry' => $request->two_installment_amount_usd_ministry,
-            'two_installment_advance_irr_ministry' => $request->two_installment_advance_irr_ministry,
-            'two_installment_advance_usd_ministry' => $request->two_installment_advance_usd_ministry,
-            'two_installment_each_installment_irr_ministry' => $request->two_installment_each_installment_irr_ministry,
-            'two_installment_each_installment_usd_ministry' => $request->two_installment_each_installment_usd_ministry,
-            'date_of_installment1_two_ministry' => $request->date_of_installment1_two,
-            'date_of_installment2_two_ministry' => $request->date_of_installment2_two,
-        ], true);
-        $tuition->four_installment_payment = json_encode([
-            'four_installment_amount_irr' => $request->four_installment_amount_irr,
-            'four_installment_amount_usd' => $request->four_installment_amount_usd,
-            'four_installment_advance_irr' => $request->four_installment_advance_irr,
-            'four_installment_advance_usd' => $request->four_installment_advance_usd,
-            'four_installment_each_installment_irr' => $request->four_installment_each_installment_irr,
-            'four_installment_each_installment_usd' => $request->four_installment_each_installment_usd,
-            'date_of_installment1_four' => $request->date_of_installment1_four,
-            'date_of_installment2_four' => $request->date_of_installment2_four,
-            'date_of_installment3_four' => $request->date_of_installment3_four,
-            'date_of_installment4_four' => $request->date_of_installment4_four,
-        ], true);
-        $tuition->four_installment_payment_ministry = json_encode([
-            'four_installment_amount_irr_ministry' => $request->four_installment_amount_irr_ministry,
-            'four_installment_amount_usd_ministry' => $request->four_installment_amount_usd_ministry,
-            'four_installment_advance_irr_ministry' => $request->four_installment_advance_irr_ministry,
-            'four_installment_advance_usd_ministry' => $request->four_installment_advance_usd_ministry,
-            'four_installment_each_installment_irr_ministry' => $request->four_installment_each_installment_irr_ministry,
-            'four_installment_each_installment_usd_ministry' => $request->four_installment_each_installment_usd_ministry,
-            'date_of_installment1_four_ministry' => $request->date_of_installment1_four,
-            'date_of_installment2_four_ministry' => $request->date_of_installment2_four,
-            'date_of_installment3_four_ministry' => $request->date_of_installment3_four,
-            'date_of_installment4_four_ministry' => $request->date_of_installment4_four,
-        ], true);
+        $tuition->full_payment = json_encode(['full_payment_irr' => $request->full_payment_irr]);
+        $tuition->full_payment_ministry = json_encode(['full_payment_irr_ministry' => $request->full_payment_irr_ministry]);
+        $tuition->three_installment_payment = json_encode([
+            'three_installment_amount_irr' => $request->three_installment_amount_irr,
+            'three_installment_advance_irr' => $request->three_installment_advance_irr,
+            'three_installment_each_installment_irr' => $request->three_installment_each_installment_irr,
+            'date_of_installment1_three' => $request->date_of_installment1_three,
+            'date_of_installment2_three' => $request->date_of_installment2_three,
+            'date_of_installment3_three' => $request->date_of_installment3_three,
+        ]);
+        $tuition->three_installment_payment_ministry = json_encode([
+            'three_installment_amount_irr_ministry' => $request->three_installment_amount_irr_ministry,
+            'three_installment_advance_irr_ministry' => $request->three_installment_advance_irr_ministry,
+            'three_installment_each_installment_irr_ministry' => $request->three_installment_each_installment_irr_ministry,
+            'date_of_installment1_three_ministry' => $request->date_of_installment1_three,
+            'date_of_installment2_three_ministry' => $request->date_of_installment2_three,
+        ]);
+        $tuition->seven_installment_payment = json_encode([
+            'seven_installment_amount_irr' => $request->seven_installment_amount_irr,
+            'seven_installment_advance_irr' => $request->seven_installment_advance_irr,
+            'seven_installment_each_installment_irr' => $request->seven_installment_each_installment_irr,
+            'date_of_installment1_seven' => $request->date_of_installment1_seven,
+            'date_of_installment2_seven' => $request->date_of_installment2_seven,
+            'date_of_installment3_seven' => $request->date_of_installment3_seven,
+            'date_of_installment4_seven' => $request->date_of_installment4_seven,
+            'date_of_installment5_seven' => $request->date_of_installment5_seven,
+            'date_of_installment6_seven' => $request->date_of_installment6_seven,
+            'date_of_installment7_seven' => $request->date_of_installment7_seven,
+        ]);
+        $tuition->seven_installment_payment_ministry = json_encode([
+            'seven_installment_amount_irr_ministry' => $request->seven_installment_amount_irr_ministry,
+            'seven_installment_advance_irr_ministry' => $request->seven_installment_advance_irr_ministry,
+            'seven_installment_each_installment_irr_ministry' => $request->seven_installment_each_installment_irr_ministry,
+            'date_of_installment1_seven_ministry' => $request->date_of_installment1_seven,
+            'date_of_installment2_seven_ministry' => $request->date_of_installment2_seven,
+            'date_of_installment3_seven_ministry' => $request->date_of_installment3_seven,
+            'date_of_installment4_seven_ministry' => $request->date_of_installment4_seven,
+            'date_of_installment5_seven_ministry' => $request->date_of_installment5_seven,
+            'date_of_installment6_seven_ministry' => $request->date_of_installment6_seven,
+            'date_of_installment7_seven_ministry' => $request->date_of_installment7_seven,
+        ]);
         $tuition->save();
 
         return response()->json(['message' => 'Tuition fee changed successfully!'], 200);
