@@ -2,14 +2,14 @@ import 'flowbite';
 import $ from 'jquery';
 import 'ionicons';
 import moment from 'moment';
-import Alpine from 'alpinejs'
+// import Alpine from 'alpinejs'
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
 import ApexCharts from 'apexcharts'
 
-Alpine.start()
+// Alpine.start()
 // If you want Alpine's instance to be available everywhere.
-window.Alpine = Alpine
+// window.Alpine = Alpine
 
 import {
     checkAge,

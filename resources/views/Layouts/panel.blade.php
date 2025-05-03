@@ -775,5 +775,6 @@
 @yield('content')
 {{ $slot ?? '' }}
 @livewireScripts
+@filepondScripts
 </body>
 </html>
