@@ -532,11 +532,11 @@ class TuitionPaymentController extends Controller
                         if ($foreignSchool) {
                             $tuitionDetailsForThreeInstallments = json_decode($tuitionDetails->three_installment_payment_ministry, true);
                             $threeInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_amount_irr_ministry']);
-                            $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForThreeInstallments['seven_installment_each_installment_irr_ministry']);
+                            $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_each_installment_irr_ministry']);
                         } else {
                             $tuitionDetailsForThreeInstallments = json_decode($tuitionDetails->three_installment_payment, true);
                             $threeInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_amount_irr']);
-                            $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForThreeInstallments['seven_installment_each_installment_irr']);
+                            $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_each_installment_irr']);
                         }
                         $totalDiscountsThree = (($threeInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceThreeInstallment;
                         $tuitionDiscountThree = ($threeInstallmentPaymentAmount * 40) / 100;
