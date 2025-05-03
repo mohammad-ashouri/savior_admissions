@@ -33,6 +33,7 @@ use App\Http\Middleware\CheckLoginMiddleware;
 use App\Http\Middleware\NoCache;
 use App\Http\Middleware\SettingsCheck;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
+use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -190,8 +191,8 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
                 Route::post('/Delete', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
             });
             Route::get('UploadStudentDocumentByParent/{student_id}', UploadDocumentsParentCreate::class)->name('Document.UploadByParent');
-            Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
-            Route::get('EditUploadedEvidences/{student_id}', [DocumentController::class, 'editUploadedEvidences'])->name('Document.EditUploadedEvidences');
+//            Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
+            Route::get('EditUploadedEvidences/{student_id}', UploadDocumentsParentEdit::class)->name('Document.EditUploadedEvidences');
             Route::post('EditUploadedEvidences', [DocumentController::class, 'updateStudentDocuments'])->name('Document.EditUploadedEvidences.update');
 
             //Application confirmation
