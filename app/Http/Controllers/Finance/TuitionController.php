@@ -151,6 +151,7 @@ class TuitionController extends Controller
             'three_installment_each_installment_irr_ministry' => $request->three_installment_each_installment_irr_ministry,
             'date_of_installment1_three_ministry' => $request->date_of_installment1_three,
             'date_of_installment2_three_ministry' => $request->date_of_installment2_three,
+            'date_of_installment3_three_ministry' => $request->date_of_installment3_three,
         ]);
         $tuition->seven_installment_payment = json_encode([
             'seven_installment_amount_irr' => $request->seven_installment_amount_irr,
