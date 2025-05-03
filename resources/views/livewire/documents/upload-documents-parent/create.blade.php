@@ -3,12 +3,10 @@
         <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
             <h1 class="text-2xl font-medium"> Application Completion</h1>
         </div>
-        @include('GeneralPages.errors.session.error')
-
         <div class="grid grid-cols-3 gap-4 mb-4">
             <div class="lg:col-span-2 col-span-3 ">
                 <div class=" bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                    <form enctype="multipart/form-data">
+                    <form wire:submit="store">
                         @csrf
                         <div class="grid gap-6 mb-6">
                             <div>
@@ -22,15 +20,13 @@
                                         Student blood group</label>
                                     <select id="blood_group" wire:model="form.blood_group"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            title="Select blood group" required>
-                                        <option selected disabled value="">Select an option</option>
+                                            title="Select blood group">
+                                        <option @selected(!$form->blood_group)>Select an option</option>
                                         @foreach($bloodGroups as $bloodGroup)
                                             <option value="{{$bloodGroup->id}}">{{$bloodGroup->name}}</option>
                                         @endforeach
                                     </select>
-                                    @error('form.blood_group')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                    <x-input-error class="mt-2" :messages="$errors->get('form.blood_group')"/>
                                 </div>
                                 <div class="mt-3">
                                     <label for="other_considerations"
@@ -39,46 +35,56 @@
                                     <textarea id="other_considerations"
                                               placeholder="example: hospitalisations, surgery, allergies, accidents"
                                               name="other_considerations"
+                                              wire:model="form.other_considerations"
                                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                    <x-input-error class="mt-2" :messages="$errors->get('form.other_considerations')"/>
                                 </div>
                                 {{--                                    Family Informations--}}
                                 <div class="grid grid-cols-1 gap-4 mt-6 mb-4 text-black dark:text-white">
                                     <h1 class="text-xl font-medium">2- Family Information</h1>
                                 </div>
-                                <div class="grid grid-cols-2">
+                                <div class="grid grid-cols-2" x-data="{ relationship: '' }">
                                     <div class="mr-2">
                                         <label for="relationship"
-                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Your relationship with the child</label>
                                         <select id="relationship" name="relationship"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                title="Select relationship" required>
-                                            <option selected disabled value="">Select an option</option>
+                                                x-model="relationship"
+                                                wire:model="form.relationship"
+                                                title="Select relationship">
+                                            <option @selected(!$form->relationship)>Select an option</option>
                                             @foreach($guardianStudentRelationships as $guardianStudentRelationship)
                                                 <option
                                                     value="{{$guardianStudentRelationship->id}}">{{$guardianStudentRelationship->name}}</option>
                                             @endforeach
                                         </select>
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.relationship')"/>
                                     </div>
                                     <div class="ml-2" id="martial-status-div">
                                         <label for="marital_status"
-                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Marital status</label>
                                         <select id="marital_status" name="marital_status"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                title="Select blood group" required>
-                                            <option selected disabled value="">Select an option</option>
+                                                wire:model="form.marital_status"
+                                                title="Select blood group">
+                                            <option @selected(!$form->marital_status)>Select an option</option>
                                             <option value="Married">Married</option>
                                             <option value="Divorced">Divorced</option>
                                         </select>
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.marital_status')"/>
                                     </div>
-                                    <div class="mt-3 mr-2" id="relation-name-div" hidden="hidden">
+                                    <div class="mt-3 mr-2" x-transition x-show="relationship == '3'">
                                         <label for="relation_name"
-                                               class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Relation name</label>
-                                        <input type="text" id="relation_name" name="relation_name" value=""
+                                        <input type="text" id="relation_name" name="relation_name"
+                                               wire:model="form.relation_name"
+                                               x-bind="relationship == '3'"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                placeholder="example: Grandfather">
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.relation_name')"/>
                                     </div>
                                 </div>
                                 <div id="father-div">
@@ -90,51 +96,61 @@
                                             <label for="father_name"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's name</label>
-                                            <input type="text" id="father_name" name="father_name" value=""
+                                            <input type="text" id="father_name" name="father_name"
+                                                   wire:model="form.father_name"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Father's Name">
+                                                   placeholder="Enter Father's Name">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_name')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="father_family"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's family</label>
-                                            <input type="text" id="father_family" name="father_family" value=""
+                                            <input type="text" id="father_family" name="father_family"
+                                                   wire:model="form.father_family"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Father's Family">
+                                                   placeholder="Enter Father's Family">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_family')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="father_mobile"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's Phone Number</label>
-                                            <input type="text" id="father_mobile" name="father_mobile" value=""
+                                            <input type="text" id="father_mobile" name="father_mobile"
+                                                   wire:model="form.father_mobile"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Father's Mobile">
+                                                   placeholder="Enter Father's Mobile">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_mobile')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="father_email"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's email (Optional)</label>
-                                            <input type="email" id="father_email" name="father_email" value=""
+                                            <input type="email" id="father_email" name="father_email"
+                                                   wire:model="form.father_email"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter Father's Email">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_email')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="father_occupation"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's occupation</label>
                                             <input type="text" id="father_occupation" name="father_occupation"
-                                                   value=""
+                                                   wire:model="form.father_occupation"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Father's Occupation">
+                                                   placeholder="Enter Father's Occupation">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_occupation')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="father_qualification"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Father's degree</label>
                                             <input type="text" id="father_qualification" name="father_qualification"
-                                                   value=""
+                                                   wire:model="form.father_qualification"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Father's Degree">
+                                                   placeholder="Enter Father's Degree">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_qualification')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="father_passport_number"
@@ -142,9 +158,10 @@
                                                 Father's passport number</label>
                                             <input type="text" id="father_passport_number"
                                                    name="father_passport_number"
-                                                   value=""
+                                                   wire:model="form.father_passport_number"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter father's passport number">
+                                                   placeholder="Enter father's passport number">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_passport_number')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="father_nationality"
@@ -152,22 +169,27 @@
                                                 Father nationality</label>
                                             <select id="father_nationality" name="father_nationality"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    title="Select father nationality" required>
-                                                <option selected disabled value="">Select an option</option>
+                                                    wire:model="form.father_nationality"
+                                                    title="Select father nationality">
+                                                <option @selected(!$form->father_nationality)>Select an option</option>
                                                 @foreach($nationalities as $nationality)
                                                     <option
                                                         value="{{$nationality->id}}">{{$nationality->nationality}}</option>
                                                 @endforeach
                                             </select>
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_nationality')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
                                                    for="father_passport_file">Father's passport Bio-Data page scan
                                                 (file)</label>
-                                            <input required
-                                                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                   id="father_passport_file" name="father_passport_file" type="file"
-                                                   accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                            <x-filepond::upload wire:model="form.father_passport_file"
+                                                                :allowMultiple="false"
+                                                                :instantUpload="true"
+                                                                server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                                :chunkSize="2000000"
+                                                                :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_passport_file')"/>
                                             <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                 <div class="dark:text-white font-medium mb-1">File requirements
                                                 </div>
@@ -188,12 +210,6 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="mt-3 ml-2">
-                                            <label for="father_passport_file_preview"
-                                                   class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                Father passport file preview</label>
-                                            <img id="father_passport_file_preview">
-                                        </div>
                                     </div>
                                 </div>
                                 <div id="mother-div" class="">
@@ -205,51 +221,61 @@
                                             <label for="mother_name"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Mother's name</label>
-                                            <input type="text" id="mother_name" name="mother_name" value=""
+                                            <input type="text" id="mother_name" name="mother_name"
+                                                   wire:model="form.mother_name"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Mother's Name">
+                                                   placeholder="Enter Mother's Name">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_name')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="mother_family"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Mother's family</label>
-                                            <input type="text" id="mother_family" name="mother_family" value=""
+                                            <input type="text" id="mother_family" name="mother_family"
+                                                   wire:model="form.mother_family"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Mother's Family">
+                                                   placeholder="Enter Mother's Family">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_family')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="mother_mobile"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Mother's Phone Number</label>
-                                            <input type="text" id="mother_mobile" name="mother_mobile" value=""
+                                            <input type="text" id="mother_mobile" name="mother_mobile"
+                                                   wire:model="form.mother_mobile"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Mother's Mobile">
+                                                   placeholder="Enter Mother's Mobile">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_mobile')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="mother_email"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Mother's email (Optional)</label>
-                                            <input type="email" id="mother_email" name="mother_email" value=""
+                                            <input type="email" id="mother_email" name="mother_email"
+                                                   wire:model="form.mother_email"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter Mother's Email">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_email')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="mother_occupation"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Mother's occupation</label>
                                             <input type="text" id="mother_occupation" name="mother_occupation"
-                                                   value=""
+                                                   wire:model="form.mother_occupation"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Mother's Occupation">
+                                                   placeholder="Enter Mother's Occupation">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_occupation')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="mother_qualification"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Mother's degree</label>
                                             <input type="text" id="mother_qualification" name="mother_qualification"
-                                                   value=""
+                                                   wire:model="form.mother_qualification"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Mother's Degree">
+                                                   placeholder="Enter Mother's Degree">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_qualification')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="mother_passport_number"
@@ -257,32 +283,38 @@
                                                 Mother's passport number</label>
                                             <input type="text" id="mother_passport_number"
                                                    name="mother_passport_number"
-                                                   value=""
+                                                   wire:model="form.mother_passport_number"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                   required placeholder="Enter Mother's Passport Number">
+                                                   placeholder="Enter Mother's Passport Number">
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_passport_number')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="mother_nationality"
                                                    class="block mb-2 font-bold text-gray-900 dark:text-white">
                                                 Mother nationality</label>
                                             <select id="mother_nationality" name="mother_nationality"
+                                                    wire:model="form.mother_nationality"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                    title="Select previous school country" required>
-                                                <option selected disabled value="">Select an option</option>
+                                                    title="Select previous school country">
+                                                <option @selected(!$form->mother_nationality)>Select an option</option>
                                                 @foreach($nationalities as $nationality)
                                                     <option
                                                         value="{{$nationality->id}}">{{$nationality->nationality}}</option>
                                                 @endforeach
                                             </select>
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_nationality')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
                                                    for="mother_passport_file">Mother's passport Bio-Data page scan
                                                 (file)</label>
-                                            <input required
-                                                   class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                                   id="mother_passport_file" name="mother_passport_file" type="file"
-                                                   accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                            <x-filepond::upload wire:model="form.mother_passport_file"
+                                                                :allowMultiple="false"
+                                                                :instantUpload="true"
+                                                                server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                                :chunkSize="2000000"
+                                                                :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_passport_file')"/>
                                             <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                 <div class="dark:text-white font-medium mb-1">File requirements
                                                 </div>
@@ -302,59 +334,61 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="mt-3 ml-2">
-                                            <label for="mother_passport_file_preview"
-                                                   class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                                Mother passport file preview</label>
-                                            <img id="mother_passport_file_preview">
-                                        </div>
                                     </div>
                                 </div>
                                 {{--                                    Educational Informations--}}
                                 <div class="grid grid-cols-1 gap-4 mt-6 text-black dark:text-white">
                                     <h1 class="text-xl font-medium">3- Educational Informations</h1>
                                 </div>
-                                <div class="grid md:grid-cols-2">
+                                <div class="grid md:grid-cols-2 gap-2">
                                     <div class="mt-3">
                                         <label for="previous_school_name"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Previous school name (Optional for KG1 and KG2)</label>
                                         <input type="text" id="previous_school_name" name="previous_school_name"
-                                               value=""
+                                               wire:model="form.previous_school_name"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                placeholder="Enter previous school name">
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.previous_school_name')"/>
                                     </div>
-                                    <div class="mt-3 mr-2">
+                                    <div class="mt-3">
                                         <label for="previous_school_country"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Previous school country (Optional for KG1 and KG2)</label>
                                         <select id="previous_school_country" name="previous_school_country"
+                                                wire:model="form.previous_school_country"
                                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 title="Select previous school country">
-                                            <option selected disabled value="">Select an option</option>
+                                            <option @selected(!$form->previous_school_country)>Select an option</option>
                                             @foreach($countries as $country)
                                                 <option
                                                     value="{{$country->id}}">{{$country->en_short_name}}</option>
                                             @endforeach
                                         </select>
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.previous_school_country')"/>
                                     </div>
-                                    <div class="mt-3 mr-2">
+                                    <div class="mt-3">
                                         <label for="student_skills"
                                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                                             Student skills (Optional for KG1 and KG2)</label>
                                         <textarea id="student_skills"
+                                                  wire:model="form.student_skills"
                                                   placeholder="please enter student's skill and abilities..."
                                                   name="student_skills"
                                                   class="bg-gray-50 border border-gray-300 text-gray-900 h-48 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_skills')"/>
                                     </div>
-                                    <div class="mt-3 ml-2">
+                                    <div class="mt-3">
                                         <label class="block mb-2  font-bold text-gray-900 dark:text-white"
                                                for="latest_report_card">Latest report card (Optional for KG1 and
                                             KG2)</label>
-                                        <input
-                                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                            id="latest_report_card" name="latest_report_card" type="file"
-                                            accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                        <x-filepond::upload wire:model="form.latest_report_card"
+                                                            :allowMultiple="false"
+                                                            :instantUpload="true"
+                                                            server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                            :chunkSize="2000000"
+                                                            :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.latest_report_card')"/>
                                         <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                             <div class="dark:text-white font-medium mb-1">File requirements</div>
                                             <div class="dark:text-gray-400 font-normal text-sm pb-1">Please ensure that
@@ -383,9 +417,11 @@
                                                class="block mb-2  font-bold text-gray-900 dark:text-white">
                                             Miscellaneous (Optional)</label>
                                         <textarea id="miscellaneous"
+                                                  wire:model="form.miscellaneous"
                                                   placeholder="Enter miscellaneous informations"
                                                   name="miscellaneous"
                                                   class="bg-gray-50 border border-gray-300 text-gray-900 h-48 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.miscellaneous')"/>
                                     </div>
                                 </div>
                                 {{--                                    Branch Specific--}}
@@ -415,62 +451,77 @@
                                         <label for="student_passport_number"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Passport number</label>
-                                        <input required type="text" value=""
+                                        <input type="text"
+                                               wire:model="form.student_passport_number"
                                                placeholder="ID Number for Iranian students"
                                                name="student_passport_number" id="student_passport_number"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_passport_number')"/>
                                     </div>
                                     <div class="mt-3 ml-2">
                                         <label for="passport_expiry_date"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Passport expiry date</label>
-                                        <input required type="date" value="" name="passport_expiry_date"
+                                        <input type="date" name="passport_expiry_date"
+                                               wire:model="form.passport_expiry_date"
                                                id="passport_expiry_date"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.passport_expiry_date')"/>
                                     </div>
                                     <div class="mt-3 mr-2">
                                         <label for="student_iranian_visa"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Iranian visa/Residence number</label>
-                                        <input required type="text" value=""
+                                        <input type="text"
+                                               wire:model="form.student_iranian_visa"
                                                placeholder="Please enter student's iranian visa..."
                                                name="student_iranian_visa" id="student_iranian_visa"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_iranian_visa')"/>
                                     </div>
                                     <div class="mt-3 ml-2">
                                         <label for="iranian_residence_expiry"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Iranian visa/Residence expiry</label>
-                                        <input required type="date" value="" name="iranian_residence_expiry"
+                                        <input type="date" name="iranian_residence_expiry"
+                                               wire:model="form.iranian_residence_expiry"
                                                id="iranian_residence_expiry"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.iranian_residence_expiry')"/>
                                     </div>
                                     <div class="mt-3 mr-2">
                                         <label for="student_iranian_faragir_code"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Iranian faragir code</label>
-                                        <input required type="text" value=""
+                                        <input type="text"
                                                placeholder="Please enter student's iranian faragir code ..."
+                                               wire:model="form.student_iranian_faragir_code"
                                                name="student_iranian_faragir_code" id="student_iranian_faragir_code"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_iranian_faragir_code')"/>
                                     </div>
                                     <div class="mt-3 ml-2">
                                         <label for="student_iranian_sanad_code"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
                                             Iranian yekta code</label>
-                                        <input required type="text" value=""
+                                        <input type="text"
                                                placeholder="Please enter student's iranian yekta code ..."
+                                               wire:model="form.student_iranian_sanad_code"
                                                name="student_iranian_sanad_code" id="student_iranian_sanad_code"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_iranian_sanad_code')"/>
                                     </div>
                                     <div class="mt-3 mr-2">
                                         <label class="block mb-2  font-bold text-gray-900 dark:text-white"
                                                for="student_passport_file">Student's passport Bio-Data page scan
                                             (file)</label>
-                                        <input required
-                                               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                               id="student_passport_file" name="student_passport_file" type="file"
-                                               accept=".pdf,.jpg,.bpm,.jpeg,.png">
+                                        <x-filepond::upload wire:model="form.student_passport_file"
+                                                            :allowMultiple="false"
+                                                            :instantUpload="true"
+                                                            server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                            :chunkSize="2000000"
+                                                            :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_passport_file')"/>
                                         <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                             <div class="dark:text-white font-medium mb-1">File requirements</div>
                                             <div class="dark:text-gray-400 font-normal text-sm pb-1">Please ensure that
@@ -487,43 +538,6 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div>
-                                    <div class="mt-3 ml-2">
-                                        <label for="student_passport_file_preview"
-                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                            Student passport file preview</label>
-                                        <img id="student_passport_file_preview">
-                                    </div>
-                                    <div class="mt-3 mr-2">
-                                        <label class="block mb-2  font-bold text-gray-900 dark:text-white"
-                                               for="residence_document_file">Residence document scan (file)</label>
-                                        <input required
-                                               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                               id="residence_document_file" name="residence_document_file"
-                                               type="file"
-                                               accept=".pdf,.jpg,.bpm,.jpeg,.png">
-                                        <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                                            <div class="dark:text-white font-medium mb-1">File requirements</div>
-                                            <div class="dark:text-gray-400 font-normal text-sm pb-1">Please ensure that
-                                                these
-                                                requirements
-                                                are met:
-                                            </div>
-                                            <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
-                                                <li>
-                                                    Acceptable Formats: png, jpg, jpeg, pdf, bmp
-                                                </li>
-                                                <li>
-                                                    Maximum size: 2 MB
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="mt-3 ml-2">
-                                        <label for="residence_document_file_preview"
-                                               class="block mb-2 font-bold text-gray-900 dark:text-white">
-                                            Residence document file file preview</label>
-                                        <img id="residence_document_file_preview">
                                     </div>
                                 </div>
                             </div>
@@ -531,9 +545,11 @@
                                 <input type="hidden" name="student_id"
                                        value="{{ $student_information->student_id }}">
                                 <button type="submit"
+                                        wire:loading.remove
                                         class="text-white mr-1 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Upload
                                 </button>
+                                <span wire:loading class="text-sm">Uploading...</span>
                                 <a href="{{ url()->previous() }}">
                                     <button type="button"
                                             class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

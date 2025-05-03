@@ -159,26 +159,25 @@ class PaymentController extends Controller
                             if ($foreignSchool) {
                                 $tuitionDetailsForThreeInstallments = json_decode($tuitionDetails->three_installment_payment_ministry, true);
                                 $threeInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_amount_irr_ministry']);
-                                $totalFeeThreeInstallment = $threeInstallmentPaymentAmount - (($threeInstallmentPaymentAmount * $allDiscountPercentages) / 100);
-                                $threeInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_advance_irr_ministry']);
+                                $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForThreeInstallments['seven_installment_each_installment_irr_ministry']);
                             } else {
                                 $tuitionDetailsForThreeInstallments = json_decode($tuitionDetails->three_installment_payment, true);
                                 $threeInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_amount_irr']);
-                                $totalFeeThreeInstallment = $threeInstallmentPaymentAmount - (($threeInstallmentPaymentAmount * $allDiscountPercentages) / 100);
-                                $threeInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForThreeInstallments['three_installment_advance_irr']);
+                                $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForThreeInstallments['seven_installment_each_installment_irr']);
                             }
                             $totalDiscountsThree = (($threeInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceThreeInstallment;
                             $tuitionDiscountThree = ($threeInstallmentPaymentAmount * 40) / 100;
                             if ($totalDiscountsThree > $tuitionDiscountThree) {
                                 $totalDiscountsThree = $tuitionDiscountThree;
                             }
+                            $totalDiscountThree = $totalDiscountsThree / 7;
 
                             while ($counter < 4) {
                                 $newInvoice = new TuitionInvoiceDetails;
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = (($totalFeeThreeInstallment - $threeInstallmentPaymentAmountAdvance) / 3) - ($totalDiscountsThree / 3);
+                                $newInvoice->amount = $amountOfEachInstallment - $totalDiscountThree;
                                 $newInvoice->is_paid = 0;
-                                $newInvoice->description = json_encode(['tuition_type' => 'Three Installment - Installment '.$counter], true);
+                                $newInvoice->description = json_encode(['tuition_type' => 'Three Installment - Installment ' . $counter], true);
                                 $newInvoice->save();
                                 $counter++;
                             }
@@ -188,25 +187,24 @@ class PaymentController extends Controller
                             if ($foreignSchool) {
                                 $tuitionDetailsForSevenInstallments = json_decode($tuitionDetails->seven_installment_payment_ministry, true);
                                 $sevenInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_amount_irr_ministry']);
-                                $totalFeeSevenInstallment = $sevenInstallmentPaymentAmount - (($sevenInstallmentPaymentAmount * $allDiscountPercentages) / 100);
-                                $sevenInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_advance_irr_ministry']);
+                                $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_each_installment_irr_ministry']);
                             } else {
                                 $tuitionDetailsForSevenInstallments = json_decode($tuitionDetails->seven_installment_payment, true);
                                 $sevenInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_amount_irr']);
-                                $totalFeeSevenInstallment = $sevenInstallmentPaymentAmount - (($sevenInstallmentPaymentAmount * $allDiscountPercentages) / 100);
-                                $sevenInstallmentPaymentAmountAdvance = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_advance_irr']);
+                                $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForSevenInstallments['seven_installment_each_installment_irr']);
                             }
                             $totalDiscountsSeven = (($sevenInstallmentPaymentAmount * $allDiscountPercentages) / 100) + $familyPercentagePriceSevenInstallment;
                             $tuitionDiscountSeven = ($sevenInstallmentPaymentAmount * 40) / 100;
                             if ($totalDiscountsSeven > $tuitionDiscountSeven) {
                                 $totalDiscountsSeven = $tuitionDiscountSeven;
                             }
+                            $totalDiscountSeven = $totalDiscountsSeven / 7;
                             while ($counter < 8) {
                                 $newInvoice = new TuitionInvoiceDetails;
                                 $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
-                                $newInvoice->amount = (($totalFeeSevenInstallment - $sevenInstallmentPaymentAmountAdvance) / 7) - ($totalDiscountsSeven / 7);
+                                $newInvoice->amount = $amountOfEachInstallment - $totalDiscountSeven;
                                 $newInvoice->is_paid = 0;
-                                $newInvoice->description = json_encode(['tuition_type' => 'Seven Installment - Installment '.$counter], true);
+                                $newInvoice->description = json_encode(['tuition_type' => 'Seven Installment - Installment ' . $counter], true);
                                 $newInvoice->save();
                                 $counter++;
                             }
