@@ -205,9 +205,13 @@
                                                              $statusText='Pending Interview';
                                                              $statusPercent+=5;
                                                          }
-                                                         if ($applicationStatus->interview_status=='Pending For Principal Confirmation'){
+                                                         if ($applicationStatus->interview_status=='Pending For Principal Confirmation' and $applicationStatus->tuition_payment_status!='Pending'){
                                                              $statusText='Pending For Principal Confirmation';
                                                              $statusPercent+=20;
+                                                         }
+                                                         if ($applicationStatus->tuition_payment_status=='Pending'){
+                                                             $statusPercent+=25;
+                                                             $statusText='Waiting For Tuition Payment';
                                                          }
                                                          if ($applicationStatus->interview_status=='Rejected'){
                                                              $statusText='Rejected Interview';
