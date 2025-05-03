@@ -195,6 +195,12 @@
                                                                 @case('4')
                                                                     Full payment (With 30% Advance)
                                                                     @break
+                                                                @case('5')
+                                                                    Three Installments
+                                                                    @break
+                                                                @case('6')
+                                                                    Seven Installments
+                                                                    @break
                                                             @endswitch
                                                         @else
                                                             -
