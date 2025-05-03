@@ -768,7 +768,7 @@ class TuitionController extends Controller
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
         }
 
-        return view('Finance.TuitionsStatus.index', compact('students', 'academicYears'));
+        return view('Finance.TuitionsStatus.new.index', compact('students', 'academicYears'));
     }
 
     public function searchTuitionsStatus(Request $request)
