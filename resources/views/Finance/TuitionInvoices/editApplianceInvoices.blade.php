@@ -47,6 +47,12 @@
                                 @case('4')
                                     Full Payment With Advance
                                     @break
+                                @case('5')
+                                    Three Installment
+                                    @break
+                                @case('6')
+                                    Seven Installment
+                                    @break
                             @endswitch
                         </h4>
                     </div>
