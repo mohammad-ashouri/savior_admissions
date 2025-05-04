@@ -265,6 +265,11 @@
                                                              $statusPercent=100;
                                                              $statusColor='red';
                                                          }
+                                                         if ($applicationStatus->approval_status==1){
+                                                             $statusPercent=100;
+                                                             $statusColor='green';
+                                                             $statusText='Application Done!';
+                                                         }
                                                     @endphp
                                                     <span
                                                         class="text-base font-medium text-{{$statusColor}}-700 dark:text-white">{{$statusText}}</span>
