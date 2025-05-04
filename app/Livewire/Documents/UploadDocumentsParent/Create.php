@@ -82,6 +82,13 @@ class Create extends Component
             "$studentPassportFileName.$studentPassportFileExtension"
         );
 
+        $studentPassportPhotoFileName = 'StudentPassportPhotoFile_' . now()->format('Y-m-d_H-i-s');
+        $studentPassportPhotoFileExtension = $this->form->student_passport_photo_file->getClientOriginalExtension();
+        $studentPassportPhotoFileName = $this->form->student_passport_photo_file->storeAs(
+            'public/uploads/Documents/' . $this->student_appliance_status->student_id . '/Appliance_' . $this->student_appliance_status->id,
+            "$studentPassportPhotoFileName.$studentPassportPhotoFileExtension"
+        );
+
         $latestReportCard_FileName = '';
         if ($this->form->latest_report_card) {
             $latestReportCard_FileName = 'LatestReportCard_' . now()->format('Y-m-d_H-i-s');
@@ -131,6 +138,7 @@ class Create extends Component
                 'latest_report_card' => $latestReportCard_FileName,
                 'student_passport_file' => $studentPassportFileName,
                 'residence_document_file' => $residenceDocumentFile_FileName,
+                'student_passport_photo_file' => $studentPassportPhotoFileName,
             ], true);
 
         $this->form->toArray()['student_id'] = $this->student_appliance_status->student_id;

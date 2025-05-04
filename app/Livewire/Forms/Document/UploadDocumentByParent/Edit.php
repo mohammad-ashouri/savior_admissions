@@ -99,17 +99,20 @@ class Edit extends Form
     #[Validate(['required', 'string', 'max:25'])]
     public $student_iranian_sanad_code;
 
-    #[Validate(['nullable', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
+    #[Validate(['required', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
     public $father_passport_file;
 
-    #[Validate(['nullable', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
+    #[Validate(['required', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
     public $mother_passport_file;
 
     #[Validate(['nullable', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
     public $latest_report_card;
 
-    #[Validate(['nullable', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
+    #[Validate(['required', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
     public $student_passport_file;
+
+    #[Validate(['required', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
+    public $student_passport_photo_file;
 
     #[Validate(['nullable', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
     public $residence_document_file;

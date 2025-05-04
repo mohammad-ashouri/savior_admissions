@@ -539,6 +539,34 @@
                                             </ul>
                                         </div>
                                     </div>
+                                    <div class="mt-3 mr-2">
+                                        <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                               for="student_passport_file">Student's Passport photo
+                                            (file)</label>
+                                        <x-filepond::upload wire:model="form.student_passport_photo_file"
+                                                            :allowMultiple="false"
+                                                            :instantUpload="true"
+                                                            server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                            :chunkSize="2000000"
+                                                            :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_passport_photo_file')"/>
+                                        <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
+                                            <div class="dark:text-white font-medium mb-1">File requirements</div>
+                                            <div class="dark:text-gray-400 font-normal text-sm pb-1">Please ensure that
+                                                these
+                                                requirements
+                                                are met:
+                                            </div>
+                                            <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                <li>
+                                                    Acceptable Formats: png, jpg, jpeg, pdf, bmp
+                                                </li>
+                                                <li>
+                                                    Maximum size: 2 MB
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex">

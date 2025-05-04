@@ -111,6 +111,9 @@ class Create extends Form
     #[Validate(['required', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
     public $student_passport_file;
 
+    #[Validate(['required', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
+    public $student_passport_photo_file;
+
     #[Validate(['nullable', 'file', 'mimes:pdf,jpg,bmp,jpeg,png'])]
     public $residence_document_file;
 }

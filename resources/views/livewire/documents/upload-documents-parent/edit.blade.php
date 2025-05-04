@@ -14,14 +14,14 @@
                     </svg>
                 </div>
                 <div>
-                    <p class="font-bold">Seconder description: {{ $studentAppliance->seconder_description }}</p>
+                    <p class="font-bold">Seconder description: {{ $student_appliance_status->seconder_description }}</p>
                 </div>
             </div>
         </div>
         <div class="grid grid-cols-3 gap-4 mb-4">
             <div class="lg:col-span-2 col-span-3 ">
                 <div class=" bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                    <form wire:submit="store">
+                    <form wire:submit="update">
                         @csrf
                         <div class="grid gap-6 mb-6">
                             <div>
@@ -58,7 +58,7 @@
                                 <div class="grid grid-cols-1 gap-4 mt-6 mb-4 text-black dark:text-white">
                                     <h1 class="text-xl font-medium">2- Family Information</h1>
                                 </div>
-                                <div class="grid grid-cols-2" x-data="{ relationship: '' }">
+                                <div class="grid grid-cols-2" x-data="{ relationship: {{$form->relationship}} }">
                                     <div class="mr-2">
                                         <label for="relationship"
                                                class="block mb-2 font-bold text-gray-900 dark:text-white">
@@ -155,7 +155,8 @@
                                                    wire:model="form.father_occupation"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter Father's Occupation">
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_occupation')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.father_occupation')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="father_qualification"
@@ -165,7 +166,8 @@
                                                    wire:model="form.father_qualification"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter Father's Degree">
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_qualification')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.father_qualification')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="father_passport_number"
@@ -176,7 +178,8 @@
                                                    wire:model="form.father_passport_number"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter father's passport number">
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_passport_number')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.father_passport_number')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="father_nationality"
@@ -192,7 +195,8 @@
                                                         value="{{$nationality->id}}">{{$nationality->nationality}}</option>
                                                 @endforeach
                                             </select>
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_nationality')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.father_nationality')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
@@ -204,7 +208,21 @@
                                                                 server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
                                                                 :chunkSize="2000000"
                                                                 :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.father_passport_file')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.father_passport_file')"/>
+                                            @if(isset($form->father_passport_file) and substr($form->father_passport_file,-4)=='.pdf')
+                                                <div class="mt-3">
+                                                    <label for="father_passport_file_preview"
+                                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                        Father's passport file preview</label>
+                                                    <div class="flex justify-center items-center">
+                                                        <a target="_blank"
+                                                           href="{{ $form->father_passport_file }}">
+                                                            <img class="pdf-documents-icons">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @endif
                                             <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                                 <div class="dark:text-white font-medium mb-1">File requirements
                                                 </div>
@@ -280,7 +298,8 @@
                                                    wire:model="form.mother_occupation"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter Mother's Occupation">
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_occupation')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.mother_occupation')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="mother_qualification"
@@ -290,7 +309,8 @@
                                                    wire:model="form.mother_qualification"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter Mother's Degree">
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_qualification')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.mother_qualification')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label for="mother_passport_number"
@@ -301,7 +321,8 @@
                                                    wire:model="form.mother_passport_number"
                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                    placeholder="Enter Mother's Passport Number">
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_passport_number')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.mother_passport_number')"/>
                                         </div>
                                         <div class="mt-3 ml-2">
                                             <label for="mother_nationality"
@@ -317,7 +338,8 @@
                                                         value="{{$nationality->id}}">{{$nationality->nationality}}</option>
                                                 @endforeach
                                             </select>
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_nationality')"/>
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.mother_nationality')"/>
                                         </div>
                                         <div class="mt-3 mr-2">
                                             <label class="block mb-2  font-bold text-gray-900 dark:text-white"
@@ -329,25 +351,21 @@
                                                                 server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
                                                                 :chunkSize="2000000"
                                                                 :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
-                                            <x-input-error class="mt-2" :messages="$errors->get('form.mother_passport_file')"/>
-                                            <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                                                <div class="dark:text-white font-medium mb-1">File requirements
+                                            <x-input-error class="mt-2"
+                                                           :messages="$errors->get('form.mother_passport_file')"/>
+                                            @if(isset($form->mother_passport_file) and substr($form->mother_passport_file,-4)=='.pdf')
+                                                <div class="mt-3">
+                                                    <label for="mother_passport_file_preview"
+                                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                        Mother's passport file preview</label>
+                                                    <div class="flex justify-center items-center">
+                                                        <a target="_blank"
+                                                           href="{{ $form->mother_passport_file }}">
+                                                            <img class="pdf-documents-icons">
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                                <div class="dark:text-gray-400 font-normal text-sm pb-1">Please
-                                                    ensure that
-                                                    these
-                                                    requirements
-                                                    are met:
-                                                </div>
-                                                <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
-                                                    <li>
-                                                        Acceptable Formats: png, jpg, jpeg, pdf, bmp
-                                                    </li>
-                                                    <li>
-                                                        Maximum size: 2 MB
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -364,7 +382,8 @@
                                                wire:model="form.previous_school_name"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                placeholder="Enter previous school name">
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.previous_school_name')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.previous_school_name')"/>
                                     </div>
                                     <div class="mt-3">
                                         <label for="previous_school_country"
@@ -380,7 +399,8 @@
                                                     value="{{$country->id}}">{{$country->en_short_name}}</option>
                                             @endforeach
                                         </select>
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.previous_school_country')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.previous_school_country')"/>
                                     </div>
                                     <div class="mt-3">
                                         <label for="student_skills"
@@ -403,7 +423,21 @@
                                                             server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
                                                             :chunkSize="2000000"
                                                             :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.latest_report_card')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.latest_report_card')"/>
+                                        @if(isset($form->latest_report_card) and substr($form->latest_report_card,-4)=='.pdf')
+                                            <div class="mt-3">
+                                                <label for="latest_report_card_preview"
+                                                       class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                    Latest report card file preview</label>
+                                                <div class="flex justify-center items-center">
+                                                    <a target="_blank"
+                                                       href="{{ $form->latest_report_card }}">
+                                                        <img class="pdf-documents-icons">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @endif
                                         <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                             <div class="dark:text-white font-medium mb-1">File requirements</div>
                                             <div class="dark:text-gray-400 font-normal text-sm pb-1">Please ensure that
@@ -471,7 +505,8 @@
                                                placeholder="ID Number for Iranian students"
                                                name="student_passport_number" id="student_passport_number"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_passport_number')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.student_passport_number')"/>
                                     </div>
                                     <div class="mt-3 ml-2">
                                         <label for="passport_expiry_date"
@@ -481,7 +516,8 @@
                                                wire:model="form.passport_expiry_date"
                                                id="passport_expiry_date"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.passport_expiry_date')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.passport_expiry_date')"/>
                                     </div>
                                     <div class="mt-3 mr-2">
                                         <label for="student_iranian_visa"
@@ -492,7 +528,8 @@
                                                placeholder="Please enter student's iranian visa..."
                                                name="student_iranian_visa" id="student_iranian_visa"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_iranian_visa')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.student_iranian_visa')"/>
                                     </div>
                                     <div class="mt-3 ml-2">
                                         <label for="iranian_residence_expiry"
@@ -502,7 +539,8 @@
                                                wire:model="form.iranian_residence_expiry"
                                                id="iranian_residence_expiry"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.iranian_residence_expiry')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.iranian_residence_expiry')"/>
                                     </div>
                                     <div class="mt-3 mr-2">
                                         <label for="student_iranian_faragir_code"
@@ -513,7 +551,8 @@
                                                wire:model="form.student_iranian_faragir_code"
                                                name="student_iranian_faragir_code" id="student_iranian_faragir_code"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_iranian_faragir_code')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.student_iranian_faragir_code')"/>
                                     </div>
                                     <div class="mt-3 ml-2">
                                         <label for="student_iranian_sanad_code"
@@ -524,7 +563,8 @@
                                                wire:model="form.student_iranian_sanad_code"
                                                name="student_iranian_sanad_code" id="student_iranian_sanad_code"
                                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_iranian_sanad_code')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.student_iranian_sanad_code')"/>
                                     </div>
                                     <div class="mt-3 mr-2">
                                         <label class="block mb-2  font-bold text-gray-900 dark:text-white"
@@ -536,7 +576,63 @@
                                                             server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
                                                             :chunkSize="2000000"
                                                             :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
-                                        <x-input-error class="mt-2" :messages="$errors->get('form.student_passport_file')"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.student_passport_file')"/>
+                                        @if(isset($form->student_passport_file) and substr($form->student_passport_file,-4)=='.pdf')
+                                            <div class="mt-3">
+                                                <label for="student_passport_file_preview"
+                                                       class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                    Student's passport file preview</label>
+                                                <div class="flex justify-center items-center">
+                                                    <a target="_blank"
+                                                       href="{{ $form->student_passport_file }}">
+                                                        <img class="pdf-documents-icons">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
+                                            <div class="dark:text-white font-medium mb-1">File requirements</div>
+                                            <div class="dark:text-gray-400 font-normal text-sm pb-1">Please ensure that
+                                                these
+                                                requirements
+                                                are met:
+                                            </div>
+                                            <ul class="text-gray-500 dark:text-gray-400 text-xs font-normal ml-4 space-y-1">
+                                                <li>
+                                                    Acceptable Formats: png, jpg, jpeg, pdf, bmp
+                                                </li>
+                                                <li>
+                                                    Maximum size: 2 MB
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 mr-2">
+                                        <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                               for="student_passport_file">Student's Passport photo
+                                            (file)</label>
+                                        <x-filepond::upload wire:model="form.student_passport_photo_file"
+                                                            :allowMultiple="false"
+                                                            :instantUpload="true"
+                                                            server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                            :chunkSize="2000000"
+                                                            :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                        <x-input-error class="mt-2"
+                                                       :messages="$errors->get('form.student_passport_photo_file')"/>
+                                        @if(isset($form->student_passport_photo_file) and substr($form->student_passport_photo_file,-4)=='.pdf')
+                                            <div class="mt-3">
+                                                <label for="student_passport_photo_file_preview"
+                                                       class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                                    Student's passport photo file preview</label>
+                                                <div class="flex justify-center items-center">
+                                                    <a target="_blank"
+                                                       href="{{ $form->student_passport_photo_file }}">
+                                                        <img class="pdf-documents-icons">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @endif
                                         <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
                                             <div class="dark:text-white font-medium mb-1">File requirements</div>
                                             <div class="dark:text-gray-400 font-normal text-sm pb-1">Please ensure that

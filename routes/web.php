@@ -34,6 +34,7 @@ use App\Http\Middleware\NoCache;
 use App\Http\Middleware\SettingsCheck;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
+use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -49,7 +50,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if (! Auth::check()) {
+    if (!Auth::check()) {
         return redirect()->route('login');
     }
 
@@ -99,7 +100,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
                 $resources = ['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
                 foreach ($resources as $resource) {
-                    Route::get("$resource/search", [ucfirst($resource).'Controller', 'search'])->name("$resource.search");
+                    Route::get("$resource/search", [ucfirst($resource) . 'Controller', 'search'])->name("$resource.search");
                 }
             });
 
@@ -149,7 +150,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::post('TuitionInvoices/ChangeCustomTuitionInvoiceDetails', [TuitionPaymentController::class, 'changeCustomTuitionInvoiceDetails'])->name('ChangeCustomTuitionInvoiceDetails');
             Route::get('PayTuitionInstallment/{tuition_id}', [TuitionPaymentController::class, 'prepareToPayTuition']);
             Route::post('PayTuitionInstallment', [TuitionPaymentController::class, 'payTuition'])->name('TuitionInvoices.payTuition');
-            Route::get('InvoicesDetails', [TuitionPaymentController::class,'invoicesDetailsIndex']);
+            Route::get('InvoicesDetails', [TuitionPaymentController::class, 'invoicesDetailsIndex']);
             Route::get('SearchInvoicesDetails', [TuitionPaymentController::class, 'searchInvoicesDetails'])->name('searchInvoicesDetails');
 
             Route::resource('Discounts', DiscountsController::class);
@@ -193,7 +194,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('UploadStudentDocumentByParent/{student_id}', UploadDocumentsParentCreate::class)->name('Document.UploadByParent');
 //            Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
             Route::get('EditUploadedEvidences/{student_id}', UploadDocumentsParentEdit::class)->name('Document.EditUploadedEvidences');
-            Route::post('EditUploadedEvidences', [DocumentController::class, 'updateStudentDocuments'])->name('Document.EditUploadedEvidences.update');
+//            Route::post('EditUploadedEvidences', [DocumentController::class, 'updateStudentDocuments'])->name('Document.EditUploadedEvidences.update');
 
             //Application confirmation
             Route::get('ConfirmApplication', [ApplicationController::class, 'confirmApplication'])->name('Application.ConfirmApplicationList');
@@ -202,9 +203,9 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
             //Evidences confirmation
             Route::get('ConfirmEvidences', [EvidenceController::class, 'index'])->name('Evidences');
-            Route::get('ConfirmEvidences/{appliance_id}', [EvidenceController::class, 'show'])->name('Evidences.show');
-            Route::get('Evidences/show/{appliance_id}', [EvidenceController::class, 'showEvidence'])->name('Evidences.showEvidence');
-            Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
+            Route::get('ConfirmEvidences/{appliance_id}', UploadDocumentsParentShow::class)->name('Evidences.show');
+            Route::get('Evidences/show/{appliance_id}', UploadDocumentsParentShow::class)->name('Evidences.showEvidence');
+//            Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
             Route::post('ExtensionOfDocumentUpload', [EvidenceController::class, 'extensionOfDocumentUpload'])->name('Evidences.extensionOfDocumentUpload');
 
             //Student status
