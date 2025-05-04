@@ -205,10 +205,6 @@
                                                              $statusText='Pending Interview';
                                                              $statusPercent+=5;
                                                          }
-                                                         if ($applicationStatus->interview_status=='Pending For Principal Confirmation' and $applicationStatus->tuition_payment_status!='Pending'){
-                                                             $statusText='Pending For Principal Confirmation';
-                                                             $statusPercent+=20;
-                                                         }
                                                          if ($applicationStatus->tuition_payment_status=='Pending'){
                                                              $statusPercent+=25;
                                                              $statusText='Waiting For Tuition Payment';
@@ -259,6 +255,15 @@
                                                          }
                                                          if ($applicationStatus->tuition_payment_status=='Pending For Review'){
                                                              $statusText='Checking tuition payment!';
+                                                         }
+                                                         if ($applicationStatus->interview_status=='Pending For Principal Confirmation' and $applicationStatus->tuition_payment_status!='Pending'){
+                                                             $statusText='Pending For Principal Confirmation';
+                                                             $statusPercent+=20;
+                                                         }
+                                                         if ($applicationStatus->interview_status=='Rejected' and !$applicationStatus->approval_status){
+                                                             $statusText="Rejected By Principal: $applicationStatus->description";
+                                                             $statusPercent=100;
+                                                             $statusColor='red';
                                                          }
                                                     @endphp
                                                     <span

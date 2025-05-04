@@ -164,7 +164,7 @@ class ApplicationController extends Controller
     public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(auth()->user()->id);
-        if (! $me->hasRole('Super Admin')) {
+        if (!$me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
@@ -175,7 +175,7 @@ class ApplicationController extends Controller
                 ->where('applications.id', $id)
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->first();
-            if (! $checkAccessToApplication) {
+            if (!$checkAccessToApplication) {
                 return redirect()->back()
                     ->withErrors(['errors' => 'Delete Failed!']);
             }
@@ -183,7 +183,7 @@ class ApplicationController extends Controller
 
         $removeApplication = Applications::find($id)->delete();
 
-        if (! $removeApplication) {
+        if (!$removeApplication) {
             return redirect()->back()
                 ->withErrors(['errors' => 'Delete Failed!']);
         }
@@ -195,7 +195,7 @@ class ApplicationController extends Controller
     public function removeFromReserve($id): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(auth()->user()->id);
-        if (! $me->hasRole('Super Admin')) {
+        if (!$me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
@@ -206,7 +206,7 @@ class ApplicationController extends Controller
                 ->where('applications.id', $id)
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->first();
-            if (! $checkAccessToApplication) {
+            if (!$checkAccessToApplication) {
                 return redirect()->back()
                     ->withErrors(['errors' => 'Delete Failed!']);
             }
@@ -218,7 +218,7 @@ class ApplicationController extends Controller
         $applicationReservations = ApplicationReservation::whereApplicationId($removeApplicationReserve->id)->first();
         $applicationReservationInvoice = ApplicationReservationsInvoices::whereAReservationId($applicationReservations->id)->delete();
         $applicationReservations->delete();
-        if (! $removeApplicationReserve->save() or ! $applicationReservations or ! $applicationReservationInvoice) {
+        if (!$removeApplicationReserve->save() or !$applicationReservations or !$applicationReservationInvoice) {
             return redirect()->back()
                 ->withErrors(['errors' => 'Remove Application Reservation Failed!']);
         }
@@ -230,7 +230,7 @@ class ApplicationController extends Controller
     public function changeApplicationStatus($id): \Illuminate\Http\RedirectResponse
     {
         $me = User::find(auth()->user()->id);
-        if (! $me->hasRole('Super Admin')) {
+        if (!$me->hasRole('Super Admin')) {
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
@@ -241,7 +241,7 @@ class ApplicationController extends Controller
                 ->where('applications.id', $id)
                 ->select('application_timings.*', 'academic_years.id as academic_year_id')
                 ->first();
-            if (! $checkAccessToApplication) {
+            if (!$checkAccessToApplication) {
                 return redirect()->back()
                     ->withErrors(['errors' => 'Delete Failed!']);
             }
@@ -250,7 +250,7 @@ class ApplicationController extends Controller
         $changeApplicationStatus = Applications::find($id);
         $changeApplicationStatus->status = ($changeApplicationStatus->status == 0) ? 1 : 0;
 
-        if (! $changeApplicationStatus->save()) {
+        if (!$changeApplicationStatus->save()) {
             return redirect()->back()
                 ->withErrors(['errors' => 'Change Interview Status Failed!']);
         }
@@ -265,7 +265,7 @@ class ApplicationController extends Controller
             'level' => 'required|exists:levels,id',
             'student' => 'required|exists:general_informations,user_id',
         ]);
-        if (! $request->student) {
+        if (!$request->student) {
             return response()->json(['error' => 'Select student first!'], 422);
         }
         if ($validator->fails()) {
@@ -275,7 +275,7 @@ class ApplicationController extends Controller
 
         $studentGender = GeneralInformation::whereUserId($request->student)->value('gender');
 
-        if (! $studentGender) {
+        if (!$studentGender) {
             return response()->json(['error' => 'Student gender not found. Please contact the admissions office.'], 422);
         }
         switch ($studentGender) {
@@ -314,7 +314,7 @@ class ApplicationController extends Controller
             ->orderBy('application_timings.start_date')
             ->get();
 
-        if (! empty($applicationTimings) and $applicationTimings->isNotEmpty()) {
+        if (!empty($applicationTimings) and $applicationTimings->isNotEmpty()) {
             return $applicationTimings;
         }
 
@@ -433,7 +433,7 @@ class ApplicationController extends Controller
                     return redirect()->back()->withErrors($validator)->withInput();
                 }
 
-                $path = $request->file('document_file')->store('public/uploads/Documents/'.auth()->user()->id);
+                $path = $request->file('document_file')->store('public/uploads/Documents/' . auth()->user()->id);
 
                 $document = new Document;
                 $document->user_id = $applicationInformation->student_id;
@@ -474,7 +474,7 @@ class ApplicationController extends Controller
                 // Create new invoice.
                 $invoice = (new Invoice)->amount($amount);
 
-                return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyApplicationPayment')->purchase(
+                return Payment::via('behpardakht')->callbackUrl(env('APP_URL') . '/VerifyApplicationPayment')->purchase(
                     $invoice,
                     function ($driver, $transactionID) use ($amount, $applicationInformation) {
                         $dataInvoice = new \App\Models\Invoice;
@@ -505,7 +505,11 @@ class ApplicationController extends Controller
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
-        $studentAppliances = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->whereIn('academic_year', $academicYears)->whereInterviewStatus('Pending For Principal Confirmation')->get();
+        $studentAppliances = StudentApplianceStatus::with('studentInfo')
+            ->with('academicYearInfo')
+            ->whereIn('academic_year', $academicYears)
+            ->whereInterviewStatus('Pending For Principal Confirmation')
+            ->get();
 
         return view('BranchInfo.ConfirmAppliance.index', compact('studentAppliances'));
     }
@@ -556,6 +560,7 @@ class ApplicationController extends Controller
             'appliance_id' => 'required|exists:student_appliance_statuses,id',
             'application_id' => 'required|exists:applications,id',
             'type' => 'required|in:Accept,Reject',
+            'description' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -566,15 +571,15 @@ class ApplicationController extends Controller
 
         switch ($request->type) {
             case 'Accept':
-                StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Admitted', 'documents_uploaded' => 0]);
-                $messageText = "Your interview has been successfully accepted. You have up to 72 hours to upload documents. Please upload documents on the dashboard page.\nSavior Schools";
+                StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Admitted', 'approval_status' => 1, 'description' => $request->description]);
+                $messageText = "Your appliance has been successfully accepted.\nSavior Schools";
                 $this->sendSMS($reservatoreMobile, $messageText);
                 break;
             case 'Reject':
                 $reservationID = $applicationInfo->reservationInfo->id;
                 $messageText = "Your application with reservation id ($reservationID) has been rejected.\nSavior Schools";
                 $this->sendSMS($reservatoreMobile, $messageText);
-                StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Rejected']);
+                StudentApplianceStatus::find($request->appliance_id)->update(['interview_status' => 'Rejected', 'description' => $request->description]);
                 break;
         }
 
@@ -593,6 +598,6 @@ class ApplicationController extends Controller
         $applianceStatus = StudentApplianceStatus::with('studentInfo')->find($request->appliance_id);
 
         return redirect()->route('Application.ConfirmApplicationList')
-            ->with('success', 'Appliance Status Confirmed For This Student: '.$applianceStatus->studentInfo->generalInformationInfo->first_name_en.' '.$applianceStatus->studentInfo->generalInformationInfo->last_name_en.' - Chosen status: '.$request->type.'ed');
+            ->with('success', 'Appliance Status Confirmed For This Student: ' . $applianceStatus->studentInfo->generalInformationInfo->first_name_en . ' ' . $applianceStatus->studentInfo->generalInformationInfo->last_name_en . ' - Chosen status: ' . $request->type . 'ed');
     }
 }

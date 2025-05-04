@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentApplianceStatus extends Model
 {
-    use HasFactory,SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'student_appliance_statuses';
 
@@ -28,6 +28,7 @@ class StudentApplianceStatus extends Model
         'seconder_description',
         'date_of_document_approval',
         'tuition_payment_status',
+        'approval_status',
         'description',
     ];
 
