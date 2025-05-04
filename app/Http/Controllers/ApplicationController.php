@@ -508,7 +508,10 @@ class ApplicationController extends Controller
         $studentAppliances = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
             ->whereIn('academic_year', $academicYears)
-            ->whereInterviewStatus('Pending For Principal Confirmation')
+            ->where('interview_status', 'Pending For Principal Confirmation')
+            ->where('approval_status', 0)
+            ->where('documents_uploaded', 1)
+            ->where('documents_uploaded_approval', 1)
             ->get();
 
         return view('BranchInfo.ConfirmAppliance.index', compact('studentAppliances'));
