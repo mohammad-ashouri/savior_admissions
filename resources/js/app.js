@@ -965,7 +965,8 @@ $(document).ready(function () {
                     type: 'GET',
                     url: '/GetApplicationsByAcademicYear',
                     data: {
-                        academic_year: $(this).val()
+                        academic_year: $(this).val(),
+                        grade: $('#level').val()
                     },
                     headers: {
                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),

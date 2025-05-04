@@ -299,7 +299,8 @@ class ApplicationController extends Controller
     public function getApplicationsByAcademicYear(Request $request): \Illuminate\Database\Eloquent\Collection|\Illuminate\Http\JsonResponse|array
     {
         $validator = Validator::make($request->all(), [
-            'academic_year' => 'required|exists:academic_years,id',
+            'academic_year' => 'required|integer|exists:academic_years,id',
+            'grade' => 'required|integer|exists:levels,id',
         ]);
         if ($validator->fails()) {
             return response()->json(['error' => 'Error on choosing academic year!'], 422);
@@ -310,6 +311,7 @@ class ApplicationController extends Controller
             ->where('application_timings.academic_year', $request->academic_year)
             ->where('applications.status', 1)
             ->where('applications.reserved', 0)
+            ->whereRaw('JSON_SEARCH(application_timings.grades, "one", ?) IS NOT NULL', [(string)$request->grade])
             ->select('applications.*', 'application_timings.id as application_timings_id')
             ->orderBy('application_timings.start_date')
             ->get();
