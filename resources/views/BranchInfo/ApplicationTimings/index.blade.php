@@ -77,6 +77,9 @@
                                     Fee
                                 </th>
                                 <th scope="col" class=" text-center">
+                                    Grades
+                                </th>
+                                <th scope="col" class=" text-center">
                                     First Interviewer
                                 </th>
                                 <th scope="col" class=" text-center">
@@ -120,6 +123,12 @@
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ number_format($applicationTiming->fee) . ' Rials' }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">
+                                        @foreach($applicationTiming->gradeModels() as $grades)
+                                            {{ $grades->name }} {{ !$loop->last ? '-' : '' }}
+                                        @endforeach
                                     </th>
                                     <th scope="row"
                                         class=" items-center text-center border text-gray-900 whitespace-nowrap dark:text-white">

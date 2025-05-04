@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Branch\Applications;
 use App\Models\Branch\ApplicationTiming;
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Catalogs\Level;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Carbon\Carbon;
@@ -87,6 +88,8 @@ class ApplicationTimingController extends Controller
             'second_interviewer' => 'required|exists:users,id',
             'interview_fee' => 'required|min:0',
             'meeting_link' => 'required|string',
+            'grades' => 'required|array',
+            'grades.*' => 'required|integer|min:1|exists:levels,id',
         ]);
 
         if ($validator->fails()) {
@@ -122,6 +125,7 @@ class ApplicationTimingController extends Controller
             $applicationTiming->first_interviewer = $request->first_interviewer;
             $applicationTiming->second_interviewer = $request->second_interviewer;
             $applicationTiming->fee = $request->interview_fee;
+            $applicationTiming->grades = json_encode($request->grades);
             $applicationTiming->status = 1;
             $applicationTiming->meeting_link = $request->meeting_link;
 
@@ -229,6 +233,32 @@ class ApplicationTimingController extends Controller
         }
 
         return $interviewers;
+    }
+
+    public function grades(Request $request)
+    {
+        $me = User::find(auth()->user()->id);
+        $validator = Validator::make($request->all(), [
+            'academic_year' => 'required|exists:academic_years,id',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Error on choosing academic year!'], 422);
+        }
+
+        $academicYear = $request->academic_year;
+
+        $academicYearGrades = [];
+        if ($me->hasRole('Super Admin')) {
+            $academicYearGrades = AcademicYear::whereStatus(1)->whereId($academicYear)->pluck('levels')->first();
+            $grades = Level::whereIn('id', json_decode($academicYearGrades, true))->get()->toArray();
+        } else {
+            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
+            $academicYearGrades = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->pluck('levels')->first();
+            $grades = Level::whereIn('id', json_decode($academicYearGrades, true))->get()->toArray();
+        }
+
+        return $grades;
     }
 
     public function destroy($id): \Illuminate\Http\RedirectResponse

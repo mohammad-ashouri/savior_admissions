@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Level extends Model
 {
-    use HasFactory;
     protected $table = 'levels';
     protected $fillable = [
         'name',
         'status',
     ];
     protected $hidden = [
+        'status',
         'created_at',
         'updated_at',
     ];

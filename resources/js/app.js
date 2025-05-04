@@ -709,6 +709,25 @@ $(document).ready(function () {
                     swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
                 }
             });
+            $.ajax({
+                type: 'GET',
+                url: '/GetGrades',
+                data: {
+                    academic_year: $(this).val()
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+                }, success: function (response) {
+                    let selectGrades = $('#grades');
+                    selectGrades.empty();
+                    resetAllInputValues();
+                    $.each(response, function (index, grade) {
+                        selectGrades.append('<option value="' + grade.id + '">' + grade.name + '</option>');
+                    });
+                }, error: function (xhr, textStatus, errorThrown) {
+                    swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+                }
+            });
 
             //Set app start and end date min and max attributes
             // $.ajax({

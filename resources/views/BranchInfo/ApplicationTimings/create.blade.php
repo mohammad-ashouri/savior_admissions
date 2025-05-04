@@ -16,7 +16,7 @@
                             <div class="grid gap-6 mb-6 md:grid-cols-2">
                                 <div>
                                     <label for="academic_year"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
                                         Academic Year</label>
                                     <select id="academic_year" name="academic_year"
                                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -29,8 +29,18 @@
                                     </select>
                                 </div>
                                 <div>
+                                    <label for="grades"
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
+                                        Grades</label>
+                                    <select id="grades" name="grades[]" multiple
+                                            class="select2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            title="Select grades" required>
+                                        <option selected disabled value="">Select grades</option>
+                                    </select>
+                                </div>
+                                <div>
                                     <label for="start_date"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
                                         App Begins At</label>
                                     <input type="date" id="start_date" value="{{ old('start_date') }}" name="start_date" min="{{ date('Y-m-d') }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -38,7 +48,7 @@
                                 </div>
                                 <div>
                                     <label for="end_date"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
                                         App Ends At</label>
                                     <input type="date" id="end_date" value="{{ old('end_date') }}" name="end_date" min="{{ date('Y-m-d') }}"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -46,7 +56,7 @@
                                 </div>
                                 <div>
                                     <label for="start_time"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
                                         App Start Time</label>
                                     <input type="time" id="start_time" value="{{ old('start_time') }}" name="start_time"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -54,7 +64,7 @@
                                 </div>
                                 <div>
                                     <label for="end_time"
-                                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                           class="block mb-2 font-bold text-gray-900 dark:text-white">
                                         App End Time</label>
                                     <input type="time" id="end_time" value="{{ old('end_time') }}" name="end_time"
                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -67,7 +77,7 @@
                                     <div class="flex justify-between">
                                         <input type="text" id="interview_time" name="interview_time"
                                                value="{{ old('interview_time') }}" required
-                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <span
                                             class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                                             Minutes
@@ -81,7 +91,7 @@
                                     <div class="flex justify-between">
                                         <input type="number" id="delay_between_reserve" name="delay_between_reserve"
                                                value="{{ old('delay_between_reserve') }}" required min="1" max="20"
-                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <span
                                             class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                                             Minutes
@@ -113,7 +123,7 @@
                                     <div class="flex justify-between">
                                         <input type="number" id="interview_fee" name="interview_fee"
                                                value="{{ old('interview_fee') }}" required min="0"
-                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                               class="rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <span
                                             class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 rounded-e-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                                             Rials
@@ -128,7 +138,7 @@
                                 <div class="flex justify-between">
                                     <input type="text" id="meeting_link" name="meeting_link"
                                            value="{{ old('meeting_link') }}" required placeholder="Enter meeting link for this interview team. (For insight interviews)."
-                                           class="rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                           class="rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 </div>
                             </div>
                             <button type="submit"

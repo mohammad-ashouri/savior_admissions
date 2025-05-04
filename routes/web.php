@@ -117,6 +117,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('/GetFinancialCharterFile', [AcademicYearClassController::class, 'academicYearFinancialCharterFile']);
             Route::resource('ApplicationTimings', ApplicationTimingController::class);
             Route::get('/GetInterviewersForApplications', [ApplicationTimingController::class, 'interviewers']);
+            Route::get('/GetGrades', [ApplicationTimingController::class, 'grades']);
             Route::resource('Interviews', InterviewController::class)->names([
                 'index' => 'interviews.index',
             ]);
