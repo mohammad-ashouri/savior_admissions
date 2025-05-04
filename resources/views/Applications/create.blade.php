@@ -1,4 +1,4 @@
-@php use App\Models\Branch\ApplicationReservation;use App\Models\Branch\StudentApplianceStatus; @endphp
+@php use App\Models\Branch\ApplicationReservation;use App\Models\Branch\StudentApplianceStatus;use App\Models\Finance\TuitionInvoices; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -51,13 +51,24 @@
                                                         ->where('application_reservations.student_id',$student->student_id)
                                                         ->where('applications.interviewed',0)
                                                         ->exists();
+
+                                                        $allAcademicYearAppliances=StudentApplianceStatus::where('student_id',$student->student_id)->pluck('id')->toArray();
+
+                                                        $checkUnpaidTuition=TuitionInvoices::with([
+                                                            'invoiceDetails'=>function ($query) {
+                                                                $query->where('is_paid','=','0');
+                                                            }
+                                                        ])
+                                                        ->whereHas('invoiceDetails', function($query) {
+                                                            $query->where('is_paid', 0);
+                                                        })
+                                                        ->whereIn('appliance_id',$allAcademicYearAppliances)
+                                                        ->exists();
                                                     @endphp
-                                                    @if($studentsOnInterview) disabled @endif
+                                                    @if($studentsOnInterview or $checkUnpaidTuition) disabled @endif
                                                     @if(old('student')==$student->id) selected
                                                     @endif value="{{$student->student_id}}">
-                                                    {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }} @if($studentsOnInterview)
-                                                        (On interview)
-                                                    @endif
+                                                    {{ $student->generalInformations->first_name_en }} {{ $student->generalInformations->last_name_en }} {{ $studentsOnInterview ? '(On interview)' : '' }} {{ $checkUnpaidTuition ? '(Unpaid Tuition!)' : '' }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -140,7 +151,8 @@
                                         ></textarea>
                                     </div>
                                     <div class="mt-3">
-                                        <a target="_blank" id="financial_charter_file" class="font-bold text-blue-500 mb-2 animate__animated animate__fadeIn animate__infinite">
+                                        <a target="_blank" id="financial_charter_file"
+                                           class="font-bold text-blue-500 mb-2 animate__animated animate__fadeIn animate__infinite">
                                             Click to download financial rules and charters file.
                                         </a>
                                     </div>
@@ -149,9 +161,11 @@
                                     <input id="agreement" type="checkbox" value="agreed" required
                                            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
                                     >
-                                    <label for="agreement" class="ml-2 text-sm font-medium text-gray-900 dark:text-white">I
+                                    <label for="agreement"
+                                           class="ml-2 text-sm font-medium text-gray-900 dark:text-white">I
                                         have read and agreed
-                                        all the rules and regulations (financial and ethical) and by continuing with this
+                                        all the rules and regulations (financial and ethical) and by continuing with
+                                        this
                                         application.</label>
                                 </div>
                                 <div class="mt-3">

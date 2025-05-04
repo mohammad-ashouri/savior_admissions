@@ -16,6 +16,7 @@ use App\Models\Catalogs\School;
 use App\Models\Document;
 use App\Models\Finance\ApplicationReservationsInvoices;
 use App\Models\Finance\Discount;
+use App\Models\Finance\TuitionInvoices;
 use App\Models\GeneralInformation;
 use App\Models\StudentInformation;
 use App\Models\User;
@@ -91,7 +92,6 @@ class ApplicationController extends Controller
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::whereGuardian($me->id)->orderBy('student_id')->get();
             $levels = Level::whereStatus(1)->get();
-
         } elseif ($me->hasRole('Super Admin')) {
             $levels = Level::whereStatus(1)->get();
             $myStudents = StudentInformation::join('general_informations', 'student_informations.student_id', '=', 'general_informations.user_id')
@@ -352,6 +352,49 @@ class ApplicationController extends Controller
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $studentsOnInterview=ApplicationReservation::join('applications','application_reservations.application_id','=','applications.id')
+            ->join('application_timings','applications.application_timing_id','=','application_timings.id')
+            ->whereIn('application_timings.academic_year',$this->getActiveAcademicYears())
+            ->where('applications.reserved',1)
+            ->where('application_reservations.student_id',$request->student)
+            ->where('applications.interviewed',0)
+            ->exists();
+
+        if ($studentsOnInterview){
+            abort(403,'On Interview!');
+        }
+
+        $allAcademicYearAppliances=StudentApplianceStatus::where('student_id',$request->student)->pluck('id')->toArray();
+
+        $checkUnpaidTuition=TuitionInvoices::with([
+            'invoiceDetails'=>function ($query) {
+                $query->where('is_paid','=','0');
+            }
+        ])
+            ->whereHas('invoiceDetails', function($query) {
+                $query->where('is_paid', 0);
+            })
+            ->whereIn('appliance_id',$allAcademicYearAppliances)
+            ->exists();
+
+        if ($checkUnpaidTuition){
+            abort(403,'Unpaid Tuition!');
+        }
+
+        $applicationTimings = ApplicationTiming::with('applications')
+            ->join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
+            ->where('application_timings.academic_year', $request->academic_year)
+            ->where('applications.status', 1)
+            ->where('applications.reserved', 0)
+            ->whereRaw('JSON_SEARCH(application_timings.grades, "one", ?) IS NOT NULL', [(string)$request->level])
+            ->select('applications.*', 'application_timings.id as application_timings_id')
+            ->orderBy('application_timings.start_date')
+            ->exists();
+
+        if ($applicationTimings){
+            abort(404,'Application Not Found!');
         }
 
         $me = User::find(auth()->user()->id);
