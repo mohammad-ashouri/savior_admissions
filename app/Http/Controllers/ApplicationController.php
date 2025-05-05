@@ -393,7 +393,7 @@ class ApplicationController extends Controller
             ->orderBy('application_timings.start_date')
             ->exists();
 
-        if ($applicationTimings){
+        if (!$applicationTimings){
             abort(404,'Application Not Found!');
         }
 
