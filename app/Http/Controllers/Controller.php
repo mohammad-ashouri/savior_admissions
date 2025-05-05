@@ -96,11 +96,11 @@ class Controller extends BaseController
         $principalAccess = [];
         $financialManagerAccess = [];
 
-        if (! empty($userAccessInfo->principal)) {
+        if (!empty($userAccessInfo->principal)) {
             $principalAccess = explode('|', $userAccessInfo->principal);
         }
 
-        if (! empty($userAccessInfo->financial_manager)) {
+        if (!empty($userAccessInfo->financial_manager)) {
             $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
         }
 
@@ -112,7 +112,7 @@ class Controller extends BaseController
     {
         $interviewerAccess = [];
 
-        if (! empty($userAccessInfo->interviewer)) {
+        if (!empty($userAccessInfo->interviewer)) {
             $interviewerAccess = explode('|', $userAccessInfo->interviewer);
         }
 
@@ -125,11 +125,11 @@ class Controller extends BaseController
         $principalAccess = [];
         $admissionsOfficerAccess = [];
 
-        if (! empty($userAccessInfo->principal)) {
+        if (!empty($userAccessInfo->principal)) {
             $principalAccess = explode('|', $userAccessInfo->principal);
         }
 
-        if (! empty($userAccessInfo->admissions_officer)) {
+        if (!empty($userAccessInfo->admissions_officer)) {
             $admissionsOfficerAccess = explode('|', $userAccessInfo->admissions_officer);
         }
 
@@ -142,17 +142,17 @@ class Controller extends BaseController
         $principalAccess = [];
         $admissionsOfficerAccess = [];
 
-        if (! empty($userAccessInfo->principal)) {
+        if (!empty($userAccessInfo->principal)) {
             $principalAccess = explode('|', $userAccessInfo->principal);
         }
 
-        if (! empty($userAccessInfo->admissions_officer)) {
+        if (!empty($userAccessInfo->admissions_officer)) {
             $admissionsOfficerAccess = explode('|', $userAccessInfo->admissions_officer);
         }
 
         $financialManagerAccess = [];
 
-        if (! empty($userAccessInfo->financial_manager)) {
+        if (!empty($userAccessInfo->financial_manager)) {
             $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
         }
 
@@ -164,7 +164,7 @@ class Controller extends BaseController
     {
         $financialManagerAccess = [];
 
-        if (! empty($userAccessInfo->financial_manager)) {
+        if (!empty($userAccessInfo->financial_manager)) {
             $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
         }
 
@@ -176,7 +176,7 @@ class Controller extends BaseController
     {
         $principalAccess = [];
 
-        if (! empty($userAccessInfo->principal)) {
+        if (!empty($userAccessInfo->principal)) {
             $principalAccess = explode('|', $userAccessInfo->principal);
         }
 
@@ -189,8 +189,8 @@ class Controller extends BaseController
             $sender = '+9890005085';
             $message = $messageText;
             $receptor = [$mobile];
-//            $result = Kavenegar::Send($sender, $receptor, $message."\nلغو11");
-//            $this->format($result);
+            $result = Kavenegar::Send($sender, $receptor, $message . "\nلغو11");
+            $this->format($result);
         } catch (ApiException $e) {
             echo $e->errorMessage();
         } catch (HttpException $e) {
@@ -220,7 +220,7 @@ class Controller extends BaseController
     }
 
     //For return all discounts
-    public function getAllDiscounts($student_id,$academic_year)
+    public function getAllDiscounts($student_id, $academic_year)
     {
         $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
             ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
@@ -279,7 +279,7 @@ class Controller extends BaseController
             ->orderBy('level', 'asc')
             ->first();
         $academicYear = [];
-        if (! empty($level)) {
+        if (!empty($level)) {
             $academicYear = StudentApplianceStatus::whereId($level->appliance_id)->value('academic_year');
         }
 
@@ -331,7 +331,9 @@ class Controller extends BaseController
 
         return array_unique($allStudentsStatus);
     }
-    function convertPersianToEnglish($string) {
+
+    function convertPersianToEnglish($string)
+    {
         $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         return str_replace($persian, $english, $string);
