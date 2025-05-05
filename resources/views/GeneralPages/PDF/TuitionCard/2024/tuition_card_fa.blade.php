@@ -3,7 +3,7 @@
 @php
     use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Evidence;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Country;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
     use \Morilog\Jalali\Jalalian;
-
+    app()->setLocale('fa');
     $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
     $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
                                                 ->join('application_reservations','applications.id','=','application_reservations.application_id')
