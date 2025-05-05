@@ -30,13 +30,12 @@ class TuitionPaymentController extends Controller
     public function index()
     {
         $me = User::find(auth()->user()->id);
+        $academicYears = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->where('student_informations.guardian', auth()->user()->id)
                 ->whereNotNull('tuition_payment_status')
                 ->pluck('student_appliance_statuses.id')->toArray();
-            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->get();
             $myStudentsAcademicYears = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->where('student_informations.guardian', auth()->user()->id)
                 ->whereNotNull('tuition_payment_status')
@@ -49,12 +48,10 @@ class TuitionPaymentController extends Controller
 
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->orderByDesc('created_at')->get();
         } elseif ($me->hasRole('Super Admin')) {
-            $tuitionInvoices = TuitionInvoices::orderByDesc('created_at')->pluck('id')->toArray();
-            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->get();
             $academicYears = AcademicYear::get();
         }
 
-        return view('Finance.TuitionInvoices.index', compact('tuitionInvoiceDetails', 'me', 'academicYears'));
+        return view('Finance.TuitionInvoices.index', compact('me', 'academicYears'));
     }
 
     public function search(Request $request)
@@ -130,7 +127,7 @@ class TuitionPaymentController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
@@ -485,7 +482,7 @@ class TuitionPaymentController extends Controller
                 $studentAppliance->documents_uploaded = 0;
                 $studentAppliance->save();
 
-                $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id,$studentAppliance->academic_year);
+                $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id, $studentAppliance->academic_year);
 
                 // Found previous discounts
                 $familyPercentagePriceThreeInstallment = $familyPercentagePriceSevenInstallment = $familyPercentagePriceFullPayment = 0;
@@ -632,7 +629,7 @@ class TuitionPaymentController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $myStudent = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
@@ -673,7 +670,7 @@ class TuitionPaymentController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $myStudent = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
@@ -756,7 +753,7 @@ class TuitionPaymentController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
@@ -851,7 +848,7 @@ class TuitionPaymentController extends Controller
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $tuitionInvoiceDetails = TuitionInvoiceDetails::with([
                 'tuitionInvoiceDetails' => function ($query) use ($academicYears) {
