@@ -99,7 +99,7 @@ class ApplicationReservationController extends Controller
         $me = User::find(auth()->user()->id);
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::with('generalInformations')->whereGuardian($me->id)->orderBy('id')->get();
-            $levels = Level::whereStatus(1)->get();
+            $levels = Level::get();
 
             return view('Finance.ApplicationReservationInvoices.create', compact('myStudents', 'levels'));
         }
@@ -127,7 +127,7 @@ class ApplicationReservationController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -306,10 +306,10 @@ class ApplicationReservationController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
-            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
+            $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->where('academic_year',$request->academic_year)->pluck('id')->toArray();
 
             // Finding applications related to the application timings
             $applications = Applications::whereIn('application_timing_id', $applicationTimings)
@@ -349,7 +349,7 @@ class ApplicationReservationController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->get();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->orderByDesc('id')->get();
         }
 
         return view('Finance.ApplicationReservationInvoices.index', compact('applications', 'paymentMethods', 'academicYears'));
