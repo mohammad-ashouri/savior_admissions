@@ -79,7 +79,7 @@ class InterviewController extends Controller
                 $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
                 // Finding academic years with status 1 in the specified schools
-                $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+                $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
                 // Finding application timings based on academic years
                 $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -134,21 +134,21 @@ class InterviewController extends Controller
         }
 
         if ($me->hasRole('Super Admin')) {
-            $academicYears = AcademicYear::get();
+            $academicYears = AcademicYear::orderByDesc('id')->get();
         } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->orderByDesc('id')->get();
         } elseif ($me->hasRole('Interviewer')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
             $filteredArray = $this->getFilteredAccessesI($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->orderByDesc('id')->get();
         }
 
         return view('BranchInfo.Interviews.index', compact('interviews', 'academicYears'));
@@ -175,7 +175,7 @@ class InterviewController extends Controller
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -198,7 +198,7 @@ class InterviewController extends Controller
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -279,7 +279,7 @@ class InterviewController extends Controller
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -470,7 +470,7 @@ class InterviewController extends Controller
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -490,7 +490,7 @@ class InterviewController extends Controller
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -541,7 +541,7 @@ class InterviewController extends Controller
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -601,7 +601,7 @@ class InterviewController extends Controller
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
@@ -802,7 +802,7 @@ class InterviewController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             // Finding application timings based on academic years
             $applicationTimings = ApplicationTiming::whereIn('academic_year', $academicYears)->pluck('id')->toArray();
