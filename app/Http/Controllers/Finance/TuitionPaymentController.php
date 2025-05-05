@@ -385,7 +385,7 @@ class TuitionPaymentController extends Controller
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
-            $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
 
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->whereNotNull('tuition_payment_status')
@@ -422,7 +422,8 @@ class TuitionPaymentController extends Controller
             ->orderByDesc('application_reservations.id')
             ->first();
 
-        if (json_decode($applicationInfo['interview_form'], true)['foreign_school'] == 'Yes') {
+        $interview_form=json_decode($applicationInfo['interview_form'], true);
+        if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
             $foreignSchool = false;
