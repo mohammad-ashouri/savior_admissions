@@ -64,6 +64,6 @@ class ApplicationTiming extends Model
 
     public function gradeModels()
     {
-        return Level::whereIn('id', $this->grades ?? [])->get();
+        return Level::whereIn('id', json_decode($this->grades,true) ?? [])->get();
     }
 }
