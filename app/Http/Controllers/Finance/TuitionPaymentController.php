@@ -282,9 +282,10 @@ class TuitionPaymentController extends Controller
                     ->where('application_reservations.payment_status', 1)
                     ->where('applications.interviewed', 1)
                     ->where('interviews.interview_type', 3)
-                    ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
+//                    ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
                     ->orderByDesc('application_reservations.id')
                     ->first();
+//                dd($applicationInfo);
 
                 $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
                     ->where('tuitions.academic_year', $applicationInfo->academic_year)
@@ -456,7 +457,7 @@ class TuitionPaymentController extends Controller
             ->where('application_reservations.payment_status', 1)
 //            ->where('applications.interviewed', 1)
             ->where('interviews.interview_type', 3)
-            ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
+//            ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
             ->orderByDesc('application_reservations.id')
             ->first();
 
