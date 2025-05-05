@@ -131,7 +131,7 @@ class PaymentController extends Controller
 
                     $student_id = $studentAppliance->student_id;
                     $tuitionDetails = TuitionDetail::find(json_decode($tuitionInvoiceDetails->description, true)['tuition_details_id']);
-                    $allDiscountPercentages = $this->getAllDiscounts($student_id);
+                    $allDiscountPercentages = $this->getAllDiscounts($student_id,$studentAppliance->academic_year);
 
                     $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
                         ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')

@@ -27,7 +27,7 @@ class PDFExportController extends Controller
                 abort(403);
             }
         }
-        $allDiscounts = $this->getAllDiscounts($applianceStatus->student_id);
+        $allDiscounts = $this->getAllDiscounts($applianceStatus->student_id,$applianceStatus->academic_year);
         $allFamilyDiscounts = $this->getGrantedDiscountInfo($appliance_id);
 
         return view('GeneralPages.PDF.TuitionCard.2024.tuition_card_en', compact('applianceStatus', 'allDiscounts', 'allFamilyDiscounts'));
@@ -52,7 +52,7 @@ class PDFExportController extends Controller
             }
         }
         $applianceStatus = StudentApplianceStatus::find($appliance_id);
-        $allDiscounts = $this->getAllDiscounts($applianceStatus->student_id);
+        $allDiscounts = $this->getAllDiscounts($applianceStatus->student_id,$applianceStatus->academic_year);
         $allFamilyDiscounts = $this->getGrantedDiscountInfo($appliance_id);
 
         return view('GeneralPages.PDF.TuitionCard.2024.tuition_card_fa', compact('applianceStatus', 'allDiscounts', 'allFamilyDiscounts'));

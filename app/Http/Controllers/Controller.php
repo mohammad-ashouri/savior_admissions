@@ -220,7 +220,7 @@ class Controller extends BaseController
     }
 
     //For return all discounts
-    public function getAllDiscounts($student_id)
+    public function getAllDiscounts($student_id,$academic_year)
     {
         $applicationInfo = ApplicationReservation::join('applications', 'application_reservations.application_id', '=', 'applications.id')
             ->join('application_timings', 'applications.application_timing_id', '=', 'application_timings.id')
@@ -231,7 +231,7 @@ class Controller extends BaseController
 //            ->where('applications.interviewed', 1)
             ->where('interviews.interview_type', 3)
             ->whereNull('interviews.deleted_at')
-            ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
+            ->where('application_timings.academic_year', $academic_year)
             ->orderByDesc('application_reservations.id')
             ->first();
 

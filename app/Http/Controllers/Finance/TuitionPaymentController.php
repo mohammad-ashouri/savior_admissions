@@ -520,7 +520,7 @@ class TuitionPaymentController extends Controller
                 $studentAppliance->documents_uploaded = 0;
                 $studentAppliance->save();
 
-                $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id);
+                $allDiscountPercentages = $this->getAllDiscounts($studentAppliance->student_id,$studentAppliance->academic_year);
 
                 // Found previous discounts
                 $familyPercentagePriceThreeInstallment = $familyPercentagePriceSevenInstallment = $familyPercentagePriceFullPayment = 0;

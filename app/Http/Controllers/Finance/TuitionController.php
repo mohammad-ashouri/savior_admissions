@@ -245,7 +245,7 @@ class TuitionController extends Controller
             ->whereIn('academic_year', $this->getActiveAcademicYears())
             ->count();
 
-        $allDiscountPercentages = $this->getAllDiscounts($student_id);
+        $allDiscountPercentages = $this->getAllDiscounts($student_id,$studentApplianceStatus->academic_year);
         $previousDiscountPrice = $this->getAllFamilyDiscountPrice($me);
 
         // Calculate discount for minimum level
@@ -330,7 +330,7 @@ class TuitionController extends Controller
         $paymentMethod = $request->payment_method;
         $paymentType = $request->payment_type;
 
-        $allDiscounts = $this->getAllDiscounts($student_id);
+        $allDiscounts = $this->getAllDiscounts($student_id,$studentApplianceStatus->academic_year);
 
         $familyPercentagePriceThreeInstallment = $familyPercentagePriceSevenInstallment = $familyPercentagePriceFullPayment = 0;
 
