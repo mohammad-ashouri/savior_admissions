@@ -205,103 +205,74 @@
                                                                         ->where('interviewer',auth()->user()->id)
                                                                         ->exists();
                                                                     @endphp
-                                                                    @if(!$checkInterview)
-                                                                        @can('interview-set')
-                                                                            @if($interview->firstInterviewerInfo->id==$me->id)
-                                                                                <a href="/SetInterview/i1/{{ $interview->id }}"
+                                                                    @can('interview-set')
+                                                                        @if($interview->firstInterviewerInfo->id==$me->id and !$interview->interview->where('interview_type',1)->first())
+                                                                            <a href="/SetInterview/i1/{{ $interview->id }}"
+                                                                               type="button"
+                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                                Form 1
+                                                                            </a>
+                                                                        @endif
+                                                                        @if($interview->secondInterviewerInfo->id==$me->id and !$interview->interview->where('interview_type',2)->first())
+                                                                            <a href="/SetInterview/i2/{{ $interview->id }}"
+                                                                               type="button"
+                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                                Form 2
+                                                                            </a>
+                                                                        @endif
+                                                                        @if($me->hasRole('Financial Manager') and !$interview->interview->where('interview_type',3)->first())
+                                                                            <a href="/SetInterview/fm/{{ $interview->id }}"
+                                                                               type="button"
+                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                                <i class="las la-eye mt-1 mr-1"></i>
+                                                                                Finance
+                                                                            </a>
+                                                                        @endif
+                                                                    @endcan
+                                                                    @if($interview->firstInterviewerInfo->id==$me->id)
+                                                                        <form class="submit-absence" method="post"
+                                                                              action="{{ route('interviews.submitAbsence') }}">
+                                                                            @csrf
+                                                                            <input type="hidden"
+                                                                                   value="{{ $interview->id }}"
+                                                                                   name="application_id">
+                                                                            <button
+                                                                                type="button"
+                                                                                class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">
+                                                                                <i class="las la-times-circle mt-1 mr-1"></i>
+                                                                                Submit Absence
+                                                                            </button>
+                                                                        </form>
+                                                                    @endif
+                                                                    @if($studentApplianceStatus->interview_status=='Pending Interview')
+                                                                        @can('interview-edit')
+                                                                            @if($interview->firstInterviewerInfo->id==$me->id and $interview->interview->where('interview_type',1)->first())
+                                                                                <a href="{{ route('interviews.edit',['form'=>'i1','id'=>$interview->id]) }}"
                                                                                    type="button"
                                                                                    class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                     <i class="las la-eye mt-1 mr-1"></i>
-                                                                                    Form 1
+                                                                                    Edit Form 1
                                                                                 </a>
                                                                             @endif
-                                                                            @if($interview->secondInterviewerInfo->id==$me->id)
-                                                                                <a href="/SetInterview/i2/{{ $interview->id }}"
+                                                                            @if($interview->secondInterviewerInfo->id==$me->id and $interview->interview->where('interview_type',2)->first())
+                                                                                <a href="{{ route('interviews.edit',['form'=>'i2','id'=>$interview->id]) }}"
                                                                                    type="button"
                                                                                    class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                     <i class="las la-eye mt-1 mr-1"></i>
-                                                                                    Form 2
+                                                                                    Edit Form 2
                                                                                 </a>
                                                                             @endif
-                                                                            @if($me->hasRole('Financial Manager'))
-                                                                                <a href="/SetInterview/fm/{{ $interview->id }}"
+                                                                            @if($me->hasRole('Financial Manager') and $interview->interview->where('interview_type',3)->first())
+                                                                                <a href="{{ route('interviews.edit',['form'=>'fm','id'=>$interview->id]) }}"
                                                                                    type="button"
                                                                                    class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                     <i class="las la-eye mt-1 mr-1"></i>
-                                                                                    Finance
+                                                                                    Edit Finance
                                                                                 </a>
                                                                             @endif
                                                                         @endcan
-                                                                        @if($interview->firstInterviewerInfo->id==$me->id)
-                                                                            <form class="submit-absence" method="post"
-                                                                                  action="{{ route('interviews.submitAbsence') }}">
-                                                                                @csrf
-                                                                                <input type="hidden"
-                                                                                       value="{{ $interview->id }}"
-                                                                                       name="application_id">
-                                                                                <button
-                                                                                    type="button"
-                                                                                    class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">
-                                                                                    <i class="las la-times-circle mt-1 mr-1"></i>
-                                                                                    Submit Absence
-                                                                                </button>
-                                                                            </form>
-                                                                        @endif
-                                                                    @else
-                                                                        @can('interview-show')
-                                                                            @if($interview->firstInterviewerInfo->id==$me->id)
-                                                                                <a href="{{ route('interviews.show',['form'=>'i1','id'=>$interview->id]) }}"
-                                                                                   type="button"
-                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                                    <i class="las la-eye mt-1 mr-1"></i>
-                                                                                    Show Form 1
-                                                                                </a>
-                                                                            @endif
-                                                                            @if($interview->secondInterviewerInfo->id==$me->id)
-                                                                                <a href="{{ route('interviews.show',['form'=>'i2','id'=>$interview->id]) }}"
-                                                                                   type="button"
-                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                                    <i class="las la-eye mt-1 mr-1"></i>
-                                                                                    Show Form 2
-                                                                                </a>
-                                                                            @endif
-                                                                            @if($me->hasRole('Financial Manager'))
-                                                                                <a href="{{ route('interviews.show',['form'=>'fm','id'=>$interview->id]) }}"
-                                                                                   type="button"
-                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                                    <i class="las la-eye mt-1 mr-1"></i>
-                                                                                    Show Finance
-                                                                                </a>
-                                                                            @endif
-                                                                        @endcan
-                                                                        @if(!$studentApplianceStatus->interview_status!='Rejected' and !$studentApplianceStatus->interview_status!='Admitted')
-                                                                            @can('interview-edit')
-                                                                                @if($interview->firstInterviewerInfo->id==$me->id)
-                                                                                    <a href="{{ route('interviews.edit',['form'=>'i1','id'=>$interview->id]) }}"
-                                                                                       type="button"
-                                                                                       class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                                        <i class="las la-eye mt-1 mr-1"></i>
-                                                                                        Edit Form 1
-                                                                                    </a>
-                                                                                @endif
-                                                                                @if($interview->secondInterviewerInfo->id==$me->id)
-                                                                                    <a href="{{ route('interviews.edit',['form'=>'i2','id'=>$interview->id]) }}"
-                                                                                       type="button"
-                                                                                       class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                                        <i class="las la-eye mt-1 mr-1"></i>
-                                                                                        Edit Form 2
-                                                                                    </a>
-                                                                                @endif
-                                                                                @if($me->hasRole('Financial Manager'))
-                                                                                    <a href="{{ route('interviews.edit',['form'=>'fm','id'=>$interview->id]) }}"
-                                                                                       type="button"
-                                                                                       class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
-                                                                                        <i class="las la-eye mt-1 mr-1"></i>
-                                                                                        Edit Finance
-                                                                                    </a>
-                                                                                @endif
-                                                                            @endcan
-                                                                        @endif
                                                                     @endif
                                                                 @endif
                                                                 @break

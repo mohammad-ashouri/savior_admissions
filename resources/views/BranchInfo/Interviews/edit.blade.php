@@ -1,21 +1,5 @@
 @php use App\Models\User;
-$me=User::find(auth()->user()->id);
-foreach ($interview->interview as $item) {
-    if ($item->interview_type == 1 and $interview->first_interviewer == $me->id) {
-        $interviewID=$item->id;
-        $interviewFields=json_decode($item->interview_form,true);
-    }
-    if ($item->interview_type == 2 and $interview->second_interviewer == $me->id) {
-        $interviewID=$item->id;
-        $interviewFields=json_decode($item->interview_form,true);
-    }
-    if ($item->interview_type == 3 and $me->hasRole('Financial Manager')) {
-        $interviewFields=json_decode($item->interview_form,true);
-        $interviewID=$item->id;
-        $interviewFiles=json_decode($item->files,true);
-    }
-}
-
+$me=User::find(auth()->user()->id)
 @endphp
 @extends('Layouts.panel')
 
@@ -54,8 +38,8 @@ foreach ($interview->interview as $item) {
                         </div>
                         @if ($interview->first_interviewer == $me->id and $form=='i1')
                             @php
-                                $interviewID=$interview->interview->where('interview_type',3)->first()->id;
-                                $interviewFields=json_decode($interview->interview->where('interview_type',3)->first()->interview_form,true);
+                                $interviewID=$interview->interview->where('interview_type',1)->first()->id;
+                                $interviewFields=json_decode($interview->interview->where('interview_type',1)->first()->interview_form,true);
                             @endphp
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                 @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer1')
@@ -64,8 +48,8 @@ foreach ($interview->interview as $item) {
                             @endif
                         @elseif ($interview->second_interviewer == $me->id and $form=='i2')
                             @php
-                                $interviewID=$interview->interview->where('interview_type',3)->first()->id;
-                                $interviewFields=json_decode($interview->interview->where('interview_type',3)->first()->interview_form,true);
+                                $interviewID=$interview->interview->where('interview_type',2)->first()->id;
+                                $interviewFields=json_decode($interview->interview->where('interview_type',2)->first()->interview_form,true);
                             @endphp
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                 @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer2')
