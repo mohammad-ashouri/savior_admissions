@@ -4,13 +4,11 @@ namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch\ApplicationReservation;
-use App\Models\Branch\Evidence;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Catalogs\PaymentMethod;
 use App\Models\Document;
 use App\Models\Finance\Discount;
-use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\Finance\Tuition;
 use App\Models\Finance\TuitionDetail;
 use App\Models\Finance\TuitionInvoiceDetails;
@@ -30,17 +28,19 @@ class TuitionPaymentController extends Controller
     public function index()
     {
         $me = User::find(auth()->user()->id);
-        $academicYears = [];
+        $academicYears = $tuitionInvoices = $tuitionInvoiceDetails = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->where('student_informations.guardian', auth()->user()->id)
                 ->whereNotNull('tuition_payment_status')
                 ->pluck('student_appliance_statuses.id')->toArray();
+            $tuitionInvoices = TuitionInvoices::whereIn('appliance_id', $myStudents)->pluck('id')->toArray();
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::with('tuitionInvoiceDetails')->with('invoiceDetails')->with('paymentMethodInfo')->whereIn('tuition_invoice_id', $tuitionInvoices)->get();
             $myStudentsAcademicYears = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
                 ->where('student_informations.guardian', auth()->user()->id)
                 ->whereNotNull('tuition_payment_status')
                 ->pluck('student_appliance_statuses.academic_year')->toArray();
-            $academicYears = AcademicYear::whereIn('id', $myStudentsAcademicYears)->orderByDesc('created_at')->get();
+            $academicYears = AcademicYear::whereIn('id', $myStudentsAcademicYears)->get();
         } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
             $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
@@ -51,7 +51,7 @@ class TuitionPaymentController extends Controller
             $academicYears = AcademicYear::get();
         }
 
-        return view('Finance.TuitionInvoices.index', compact('me', 'academicYears'));
+        return view('Finance.TuitionInvoices.index', compact('me', 'academicYears', 'tuitionInvoices', 'tuitionInvoiceDetails'));
     }
 
     public function search(Request $request)
@@ -63,7 +63,7 @@ class TuitionPaymentController extends Controller
         $academicYear = $request->academic_year;
 
         $data = StudentApplianceStatus::with('studentInfo')->where('documents_uploaded_approval', '=', 1);
-        if (!empty($academicYear)) {
+        if (! empty($academicYear)) {
             $data->whereAcademicYear($academicYear);
         }
         $studentApplianceStatus = $data->get()->pluck('id')->toArray();
@@ -188,7 +188,7 @@ class TuitionPaymentController extends Controller
         }
         $tuition_id = $request->tuition_invoice_id;
         $paymentMethod = $request->payment_method;
-        $paymentAmount = (int)$request->payment_amount;
+        $paymentAmount = (int) $request->payment_amount;
 
         $tuitionInvoiceDetails = [];
 
@@ -210,12 +210,12 @@ class TuitionPaymentController extends Controller
         if (empty($tuitionInvoiceDetails)) {
             abort(403);
         }
-        $tuitionAmount = (int)$tuitionInvoiceDetails->amount;
+        $tuitionAmount = (int) $tuitionInvoiceDetails->amount;
 
         $allCustomTuitionInvoices = TuitionInvoiceDetailsPayment::where('invoice_details_id', $tuitionInvoiceDetails->id)->where('status', '!=', 3)->sum('amount');
         if ($paymentAmount > $tuitionAmount - $allCustomTuitionInvoices) {
             return back()->withErrors([
-                'payment_amount' => 'The payment amount cannot exceed ' . number_format($tuitionAmount - $allCustomTuitionInvoices) . ' Rials',
+                'payment_amount' => 'The payment amount cannot exceed '.number_format($tuitionAmount - $allCustomTuitionInvoices).' Rials',
             ]);
         }
 
@@ -246,7 +246,7 @@ class TuitionPaymentController extends Controller
 //                    ->whereIn('application_timings.academic_year', $this->getActiveAcademicYears())
                     ->orderByDesc('application_reservations.id')
                     ->first();
-//                dd($applicationInfo);
+                //                dd($applicationInfo);
 
                 $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
                     ->where('tuitions.academic_year', $applicationInfo->academic_year)
@@ -256,27 +256,27 @@ class TuitionPaymentController extends Controller
                 if ($request->file('document_file_full_payment1') !== null) {
                     $extension = $request->file('document_file_full_payment1')->getClientOriginalExtension();
 
-                    $bankSlip1 = 'Tuition_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                    $bankSlip1 = 'Tuition_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                     $documentFileFullPayment1Src = $request->file('document_file_full_payment1')->storeAs(
-                        'public/uploads/Documents/' . $student_id . '/Appliance_' . "$appliance_id" . '/Tuitions',
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                         $bankSlip1
                     );
                 }
                 if ($request->file('document_file_full_payment2') !== null) {
                     $extension = $request->file('document_file_full_payment2')->getClientOriginalExtension();
 
-                    $bankSlip2 = 'Tuition2_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                    $bankSlip2 = 'Tuition2_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                     $documentFileFullPayment2Src = $request->file('document_file_full_payment2')->storeAs(
-                        'public/uploads/Documents/' . $student_id . '/Appliance_' . "$appliance_id" . '/Tuitions',
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                         $bankSlip2
                     );
                 }
                 if ($request->file('document_file_full_payment3') !== null) {
                     $extension = $request->file('document_file_full_payment3')->getClientOriginalExtension();
 
-                    $bankSlip3 = 'Tuition3_' . now()->format('Y-m-d_H-i-s') . '.' . $extension;
+                    $bankSlip3 = 'Tuition3_'.now()->format('Y-m-d_H-i-s').'.'.$extension;
                     $documentFileFullPayment3Src = $request->file('document_file_full_payment3')->storeAs(
-                        'public/uploads/Documents/' . $student_id . '/Appliance_' . "$appliance_id" . '/Tuitions',
+                        'public/uploads/Documents/'.$student_id.'/Appliance_'."$appliance_id".'/Tuitions',
                         $bankSlip3
                     );
                 }
@@ -333,12 +333,12 @@ class TuitionPaymentController extends Controller
                 if ($paymentAmount == $tuitionAmount) {
                     $invoice = (new Invoice)->amount($paymentAmount);
 
-                    return Payment::via('behpardakht')->callbackUrl(env('APP_URL') . '/VerifyTuitionInstallmentPayment')->purchase(
+                    return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionInstallmentPayment')->purchase(
                         $invoice,
                         function ($driver, $transactionID) use ($paymentAmount, $tuitionInvoiceDetails, $paymentMethod) {
                             $dataInvoice = new \App\Models\Invoice;
                             $dataInvoice->user_id = auth()->user()->id;
-                            $dataInvoice->type = 'Tuition Payment ' . json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
+                            $dataInvoice->type = 'Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
                             $dataInvoice->amount = $paymentAmount;
                             $dataInvoice->description = json_encode(['amount' => $paymentAmount, 'invoice_details_id' => $tuitionInvoiceDetails->id, 'payment_method' => $paymentMethod], true);
                             $dataInvoice->transaction_id = $transactionID;
@@ -349,12 +349,12 @@ class TuitionPaymentController extends Controller
                 if ($paymentAmount < $tuitionAmount - $allCustomTuitionInvoices) {
                     $invoice = (new Invoice)->amount($paymentAmount);
 
-                    return Payment::via('behpardakht')->callbackUrl(env('APP_URL') . '/VerifyTuitionInstallmentPayment')->purchase(
+                    return Payment::via('behpardakht')->callbackUrl(env('APP_URL').'/VerifyTuitionInstallmentPayment')->purchase(
                         $invoice,
                         function ($driver, $transactionID) use ($paymentAmount, $tuitionInvoiceDetails, $paymentMethod) {
                             $dataInvoice = new \App\Models\Invoice;
                             $dataInvoice->user_id = auth()->user()->id;
-                            $dataInvoice->type = 'Custom Tuition Payment ' . json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
+                            $dataInvoice->type = 'Custom Tuition Payment '.json_decode($tuitionInvoiceDetails->description, true)['tuition_type'];
                             $dataInvoice->amount = $paymentAmount;
                             $dataInvoice->description = json_encode(['amount' => $paymentAmount, 'invoice_details_id' => $tuitionInvoiceDetails->id, 'payment_method' => $paymentMethod], true);
                             $dataInvoice->transaction_id = $transactionID;
@@ -422,7 +422,7 @@ class TuitionPaymentController extends Controller
             ->orderByDesc('application_reservations.id')
             ->first();
 
-        $interview_form=json_decode($applicationInfo['interview_form'], true);
+        $interview_form = json_decode($applicationInfo['interview_form'], true);
         if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
@@ -440,7 +440,7 @@ class TuitionPaymentController extends Controller
                     $tuitionInvoiceDetails->save();
 
                     $studentAppliance->tuition_payment_status = 'Paid';
-//                    $studentAppliance->approval_status = 1;
+                    //                    $studentAppliance->approval_status = 1;
                     $studentAppliance->documents_uploaded = 0;
                     $studentAppliance->save();
 
@@ -479,7 +479,7 @@ class TuitionPaymentController extends Controller
                     return response()->json(['message' => 'Approved!']);
                 }
                 $studentAppliance->tuition_payment_status = 'Paid';
-//                $studentAppliance->approval_status = 1;
+                //                $studentAppliance->approval_status = 1;
                 $studentAppliance->documents_uploaded = 0;
                 $studentAppliance->save();
 
@@ -513,7 +513,7 @@ class TuitionPaymentController extends Controller
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
                             $newInvoice->amount = $amountOfEachInstallment - $totalDiscountThree;
                             $newInvoice->is_paid = 0;
-                            $newInvoice->description = json_encode(['tuition_type' => 'Three Installment - Installment ' . $counter], true);
+                            $newInvoice->description = json_encode(['tuition_type' => 'Three Installment - Installment '.$counter], true);
                             $newInvoice->save();
                             $counter++;
                         }
@@ -540,7 +540,7 @@ class TuitionPaymentController extends Controller
                             $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
                             $newInvoice->amount = $amountOfEachInstallment - $totalDiscountSeven;
                             $newInvoice->is_paid = 0;
-                            $newInvoice->description = json_encode(['tuition_type' => 'Seven Installment - Installment ' . $counter], true);
+                            $newInvoice->description = json_encode(['tuition_type' => 'Seven Installment - Installment '.$counter], true);
                             $newInvoice->save();
                             $counter++;
                         }
@@ -587,7 +587,7 @@ class TuitionPaymentController extends Controller
 
                 $data = json_decode($newInvoice->description, true);
                 $filteredData = [
-                    'tuition_type' => $data['tuition_type']
+                    'tuition_type' => $data['tuition_type'],
                 ];
                 $newInvoice->description = json_encode($filteredData);
 
@@ -862,7 +862,7 @@ class TuitionPaymentController extends Controller
             ])
                 ->where('id', $tuitionInvoiceDetailsPayment->invoice_details_id)
                 ->firstOrFail();
-        } elseif (!auth()->user()->hasRole('Super Admin')) {
+        } elseif (! auth()->user()->hasRole('Super Admin')) {
             abort(403);
         }
         switch ($request->type) {
