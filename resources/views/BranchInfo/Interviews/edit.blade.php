@@ -32,50 +32,52 @@ foreach ($interview->interview as $item) {
                     <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         {!! Form::model($interview, ['method' => 'PATCH','id'=>'update-interview','enctype'=>'multipart/form-data','route' => ['Interviews.update', $interview->id]]) !!}
                         @csrf
-                        <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div class="grid gap-6 mb-6 md:grid-cols-3">
                             <div>
                                 <label
                                     class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Student ID: </label>
+                                {{ $interview->reservationInfo->studentInfo->id }}
+                            </div>
+                            <div>
+                                <label
+                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
                                     Name And Surname: </label>
                                 {{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}
                             </div>
                             <div>
                                 <label
-                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
                                     Class: </label>
                                 {{ $interview->reservationInfo->levelInfo->name }}
                             </div>
                         </div>
-                        @php
-                            foreach ($interview->interview as $item) {
-                                if ($item->interview_type == 1 and $interview->first_interviewer == $me->id) {
-                                    $interviewID=$item->id;
-                                    $interviewFields=json_decode($item->interview_form,true);
-                                }
-                                if ($item->interview_type == 2 and $interview->second_interviewer == $me->id) {
-                                    $interviewID=$item->id;
-                                    $interviewFields=json_decode($item->interview_form,true);
-                                }
-                                if ($item->interview_type == 3 and $me->hasRole('Financial Manager')) {
-                                    $interviewFields=json_decode($item->interview_form,true);
-                                    $interviewID=$item->id;
-                                    $interviewFiles=json_decode($item->files,true);
-                                }
-                            }
-                        @endphp
-                        @if ($interview->first_interviewer == $me->id)
+                        @if ($interview->first_interviewer == $me->id and $form=='i1')
+                            @php
+                                $interviewID=$interview->interview->where('interview_type',3)->first()->id;
+                                $interviewFields=json_decode($interview->interview->where('interview_type',3)->first()->interview_form,true);
+                            @endphp
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                 @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer1')
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer1')
                             @endif
-                        @elseif ($me->hasRole('Interviewer') and !$me->hasRole('Admissions Officer') and $interview->second_interviewer == $me->id)
+                        @elseif ($interview->second_interviewer == $me->id and $form=='i2')
+                            @php
+                                $interviewID=$interview->interview->where('interview_type',3)->first()->id;
+                                $interviewFields=json_decode($interview->interview->where('interview_type',3)->first()->interview_form,true);
+                            @endphp
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                 @include('BranchInfo.Interviews.Forms.1.KG.Edit.interviewer2')
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer2')
                             @endif
-                        @elseif ($me->hasRole('Financial Manager'))
+                        @elseif ($me->hasRole('Financial Manager') and $form=='fm')
+                            @php
+                                $interviewFields=json_decode($interview->interview->where('interview_type',3)->first()->interview_form,true);
+                                $interviewID=$interview->interview->where('interview_type',3)->first()->id;
+                                $interviewFiles=json_decode($interview->interview->where('interview_type',3)->first()->files,true);
+                            @endphp
                             @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                 @include('BranchInfo.Interviews.Forms.1.KG.Edit.admissions_officer')
                             @else

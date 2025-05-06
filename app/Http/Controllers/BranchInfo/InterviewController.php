@@ -155,9 +155,13 @@ class InterviewController extends Controller
 
     }
 
-    public function GetInterviewForm($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function GetInterviewForm($form,$id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(auth()->user()->id);
+        if ($form!='i1' and $form!='i2' and $form!='fm'){
+            abort(403);
+        }
+
         $interview = [];
         if ($me->hasRole('Super Admin')) {
             $interview = Applications::with('applicationTimingInfo')
@@ -255,7 +259,7 @@ class InterviewController extends Controller
             ->where('discount_details.interviewer_permission', 1)
             ->get();
 
-        return view('BranchInfo.Interviews.set', compact('interview', 'discounts'));
+        return view('BranchInfo.Interviews.set', compact('interview', 'discounts','form'));
     }
 
     public function SetInterview(Request $request)
@@ -436,9 +440,12 @@ class InterviewController extends Controller
             ->withErrors(['errors' => 'Recording the interview failed!']);
     }
 
-    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function show($form,$id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(auth()->user()->id);
+        if ($form!='i1' and $form!='i2' and $form!='fm'){
+            abort(403);
+        }
         $interview = [];
         if ($me->hasRole('Parent')) {
             $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
@@ -528,12 +535,15 @@ class InterviewController extends Controller
             ->where('discount_details.interviewer_permission', 1)
             ->get();
 
-        return view('BranchInfo.Interviews.show', compact('interview', 'discounts'));
+        return view('BranchInfo.Interviews.show', compact('interview', 'discounts','form'));
     }
 
-    public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function edit($form,$id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $me = User::find(auth()->user()->id);
+        if ($form!='i1' and $form!='i2' and $form!='fm'){
+            abort(403);
+        }
         $interview = [];
         if ($me->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
@@ -588,7 +598,7 @@ class InterviewController extends Controller
             ->where('discount_details.interviewer_permission', 1)
             ->get();
 
-        return view('BranchInfo.Interviews.edit', compact('interview', 'discounts'));
+        return view('BranchInfo.Interviews.edit', compact('interview', 'discounts','form'));
     }
 
     public function update(Request $request): \Illuminate\Http\RedirectResponse

@@ -13,35 +13,44 @@
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
-                        <form id="set-interview" method="post" enctype="multipart/form-data" action="{{route('interviews.SetInterview')}}">
-                            @csrf
-                            <div class="grid gap-6 mb-6 md:grid-cols-2">
-                                <div>
-                                    <label
-                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Name And Surname: </label>
-                                    {{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}
-                                </div>
-                                <div>
-                                    <label
-                                        class="block mb-2  font-bold text-gray-900 dark:text-white">
-                                        Class: </label>
-                                    {{ $interview->reservationInfo->levelInfo->name }}
-                                </div>
+                        <div class="grid gap-6 mb-6 md:grid-cols-3">
+                            <div>
+                                <label
+                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Student ID: </label>
+                                {{ $interview->reservationInfo->studentInfo->id }}
                             </div>
-                            @if ($interview->first_interviewer == $me->id)
+                            <div>
+                                <label
+                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Name And Surname: </label>
+                                {{ $interview->reservationInfo->studentInfo->generalInformationInfo->first_name_en }} {{ $interview->reservationInfo->studentInfo->generalInformationInfo->last_name_en }}
+                            </div>
+                            <div>
+                                <label
+                                    class="block mb-2  font-bold text-gray-900 dark:text-white">
+                                    Class: </label>
+                                {{ $interview->reservationInfo->levelInfo->name }}
+                            </div>
+                        </div>
+                        <form id="set-interview" method="post" enctype="multipart/form-data"
+                              action="{{route('interviews.SetInterview')}}">
+                            @csrf
+                            @if ($interview->first_interviewer == $me->id and $form=='i1')
                                 @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                     @include('BranchInfo.Interviews.Forms.1.KG.Set.interviewer1')
                                 @else
                                     @include('BranchInfo.Interviews.Forms.1.Levels.Set.interviewer1')
                                 @endif
-                            @elseif ($me->hasRole('Interviewer') and !$me->hasRole('Admissions Officer') and $interview->second_interviewer == $me->id)
+                            @endif
+                            @if ($interview->second_interviewer == $me->id and $form=='i2')
                                 @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                     @include('BranchInfo.Interviews.Forms.1.KG.Set.interviewer2')
                                 @else
                                     @include('BranchInfo.Interviews.Forms.1.Levels.Set.interviewer2')
                                 @endif
-                            @elseif ($me->hasRole('Admissions Officer'))
+                            @endif
+                            @if ($me->hasRole('Financial Manager') and $form=='fm')
                                 @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                     @include('BranchInfo.Interviews.Forms.1.KG.Set.admissions_officer')
                                 @else
