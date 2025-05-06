@@ -30,7 +30,7 @@
                                 </div>
                                 <div>
                                     <button type="submit"
-                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            class="text-white bg-blue-700 hover:bg-blue-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-2 py-1 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                         <i class="fas fa-search mr-2" aria-hidden="true"></i>
                                         Filter
                                     </button>
@@ -39,7 +39,7 @@
                                     <div class="ml-3">
                                         <a href="{{ route('interviews.index') }}">
                                             <button type="button"
-                                                    class="text-white bg-red-700 hover:bg-red-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
+                                                    class="text-white bg-red-700 hover:bg-red-800 w-full mt-7 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm pl-2 px-2 py-1 text-center inline-flex items-center mr-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
                                                 <i class="fas fa-remove mr-2" aria-hidden="true"></i>
                                                 Remove Filter
                                             </button>
@@ -80,7 +80,7 @@
                                         #
                                     </div>
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-center">
+                                <th scope="col" class="px-1 py-2 text-center">
                                     Application ID
                                 </th>
                                 <th scope="col" class="px-6 py-3 text-center">
@@ -125,7 +125,7 @@
                                     $studentApplianceStatus=StudentApplianceStatus::whereStudentId($interview->reservationInfo->studentInfo->id)->orderByDesc('id')->first();
                                 @endphp
                                 <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <td class="w-4 text-center border p-4">
+                                    <td class="w-4 text-center border">
                                         {{ $loop->iteration }}
                                     </td>
                                     <td class="w-4 text-center border">
@@ -209,7 +209,7 @@
                                                                         @if($interview->firstInterviewerInfo->id==$me->id and !$interview->interview->where('interview_type',1)->first())
                                                                             <a href="/SetInterview/i1/{{ $interview->id }}"
                                                                                type="button"
-                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                 <i class="las la-eye mt-1 mr-1"></i>
                                                                                 Form 1
                                                                             </a>
@@ -217,7 +217,7 @@
                                                                         @if($interview->secondInterviewerInfo->id==$me->id and !$interview->interview->where('interview_type',2)->first())
                                                                             <a href="/SetInterview/i2/{{ $interview->id }}"
                                                                                type="button"
-                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                 <i class="las la-eye mt-1 mr-1"></i>
                                                                                 Form 2
                                                                             </a>
@@ -225,7 +225,7 @@
                                                                         @if($me->hasRole('Financial Manager') and !$interview->interview->where('interview_type',3)->first())
                                                                             <a href="/SetInterview/fm/{{ $interview->id }}"
                                                                                type="button"
-                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                               class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                 <i class="las la-eye mt-1 mr-1"></i>
                                                                                 Finance
                                                                             </a>
@@ -240,7 +240,7 @@
                                                                                    name="application_id">
                                                                             <button
                                                                                 type="button"
-                                                                                class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">
+                                                                                class="min-w-max inline-flex font-medium text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 hover:underline">
                                                                                 <i class="las la-times-circle mt-1 mr-1"></i>
                                                                                 Submit Absence
                                                                             </button>
@@ -251,7 +251,7 @@
                                                                             @if($interview->firstInterviewerInfo->id==$me->id and $interview->interview->where('interview_type',1)->first())
                                                                                 <a href="{{ route('interviews.edit',['form'=>'i1','id'=>$interview->id]) }}"
                                                                                    type="button"
-                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                     <i class="las la-eye mt-1 mr-1"></i>
                                                                                     Edit Form 1
                                                                                 </a>
@@ -259,7 +259,7 @@
                                                                             @if($interview->secondInterviewerInfo->id==$me->id and $interview->interview->where('interview_type',2)->first())
                                                                                 <a href="{{ route('interviews.edit',['form'=>'i2','id'=>$interview->id]) }}"
                                                                                    type="button"
-                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                     <i class="las la-eye mt-1 mr-1"></i>
                                                                                     Edit Form 2
                                                                                 </a>
@@ -267,7 +267,7 @@
                                                                             @if($me->hasRole('Financial Manager') and $interview->interview->where('interview_type',3)->first())
                                                                                 <a href="{{ route('interviews.edit',['form'=>'fm','id'=>$interview->id]) }}"
                                                                                    type="button"
-                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                                     <i class="las la-eye mt-1 mr-1"></i>
                                                                                     Edit Finance
                                                                                 </a>
@@ -280,7 +280,7 @@
                                                         @if($interview->reservationInfo->interview_type=='On-Sight' and $me->hasRole('Parent'))
                                                             <a href="{{$interview->applicationTimingInfo->meeting_link}}"
                                                                type="button"
-                                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                               class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                                 <i class="las la-eye mt-1 mr-1"></i>
                                                                 Interview Meeting
                                                             </a>
@@ -291,7 +291,7 @@
                                                             @if($interview->firstInterviewerInfo->id==$me->id)
                                                                 <a href="{{ route('interviews.show',['form'=>'i1','id'=>$interview->id]) }}"
                                                                    type="button"
-                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                     <i class="las la-eye mt-1 mr-1"></i>
                                                                     Show Form 1
                                                                 </a>
@@ -299,7 +299,7 @@
                                                             @if($interview->secondInterviewerInfo->id==$me->id)
                                                                 <a href="{{ route('interviews.show',['form'=>'i2','id'=>$interview->id]) }}"
                                                                    type="button"
-                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                     <i class="las la-eye mt-1 mr-1"></i>
                                                                     Show Form 2
                                                                 </a>
@@ -307,7 +307,7 @@
                                                             @if($me->hasRole('Financial Manager'))
                                                                 <a href="{{ route('interviews.show',['form'=>'fm','id'=>$interview->id]) }}"
                                                                    type="button"
-                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                   class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                     <i class="las la-eye mt-1 mr-1"></i>
                                                                     Show Finance
                                                                 </a>
@@ -317,7 +317,7 @@
                                                             @can('interview-edit')
                                                                 <a href="/Interviews/fm/{{ $interview->id }}/edit"
                                                                    type="button"
-                                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
+                                                                   class="min-w-max inline-flex font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 hover:underline">
                                                                     <i class="las la-pen mt-1 mr-1"></i>
                                                                     Edit Finance
                                                                 </a>
