@@ -70,6 +70,7 @@
                                         <option selected disabled value="">Select payment method</option>
                                         @foreach($paymentMethods as $paymentMethod)
                                             @continue($paymentMethod->id==3)
+                                            @continue($paymentMethod->id==1 and auth()->check() and !auth()->user()->isImpersonated())
                                             <option value="{{$paymentMethod->id}}">{{$paymentMethod->name}}</option>
                                         @endforeach
                                     </select>

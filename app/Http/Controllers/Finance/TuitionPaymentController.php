@@ -186,9 +186,15 @@ class TuitionPaymentController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+
         $tuition_id = $request->tuition_invoice_id;
         $paymentMethod = $request->payment_method;
         $paymentAmount = (int) $request->payment_amount;
+
+        if ($paymentMethod==1 and auth()->check() and !auth()->user()->isImpersonated()){
+            abort(403,'INCORRECT PAYMENT METHOD!');
+        }
 
         $tuitionInvoiceDetails = [];
 

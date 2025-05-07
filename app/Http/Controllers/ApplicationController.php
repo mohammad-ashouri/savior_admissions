@@ -467,6 +467,10 @@ class ApplicationController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        if ($request->payment_method==1 and auth()->check() and !auth()->user()->isImpersonated()){
+            abort(403,'INCORRECT PAYMENT METHOD!');
+        }
+
         $applicationInformation = ApplicationReservation::with('applicationInfo')->find($request->id);
 
         switch ($request->payment_method) {
