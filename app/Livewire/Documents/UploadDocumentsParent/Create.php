@@ -168,6 +168,6 @@ class Create extends Component
             'guardianStudentRelationships' => GuardianStudentRelationship::get(),
             'countries' => Country::orderBy('en_short_name', 'asc')->get(),
             'nationalities' => Country::orderBy('nationality', 'asc')->get(),
-        ])->layout('layouts.panel');
+        ])->layout('Layouts.panel');
     }
 }
