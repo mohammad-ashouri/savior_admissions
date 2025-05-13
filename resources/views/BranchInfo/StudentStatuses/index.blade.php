@@ -24,36 +24,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                            {{--                            <div>--}}
-                            {{--                                <input type="text" id="student_id" name="student_id"--}}
-                            {{--                                       value="{{ isset($_GET['student_id']) ? $_GET['student_id'] : '' }}"--}}
-                            {{--                                       class="font-normal block w-40 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-                            {{--                                       placeholder="Enter student id">--}}
-                            {{--                            </div>--}}
-                            {{--                            <div>--}}
-                            {{--                                <input type="text" id="student_first_name" name="student_first_name"--}}
-                            {{--                                       value="{{ isset($_GET['student_first_name']) ? $_GET['student_first_name'] : '' }}"--}}
-                            {{--                                       class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-                            {{--                                       placeholder="Enter student first name">--}}
-                            {{--                            </div>--}}
-                            {{--                            <div>--}}
-                            {{--                                <input type="text" id="student_last_name" name="student_last_name"--}}
-                            {{--                                       value="{{ isset($_GET['student_last_name']) ? $_GET['student_last_name'] : '' }}"--}}
-                            {{--                                       class="font-normal block w-48 p-3 mr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"--}}
-                            {{--                                       placeholder="Enter student last name">--}}
-                            {{--                            </div>--}}
-                            {{--                            <div class="mr-3">--}}
-                            {{--                                <select id="gender" name="gender"--}}
-                            {{--                                        class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">--}}
-                            {{--                                    <option value="" disabled selected>Select Gender...</option>--}}
-                            {{--                                    <option @if(isset($_GET['gender']) and $_GET['gender']=='Male') selected--}}
-                            {{--                                            @endif value="Male">Male--}}
-                            {{--                                    </option>--}}
-                            {{--                                    <option @if(isset($_GET['gender']) and $_GET['gender']=='Female') selected--}}
-                            {{--                                            @endif  value="Female">Female--}}
-                            {{--                                    </option>--}}
-                            {{--                                </select>--}}
-                            {{--                            </div>--}}
                             <div>
                                 <button type="submit"
                                         class="text-white bg-blue-700 hover:bg-blue-800 w-full h-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-2 px-3 py-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -61,7 +31,7 @@
                                     Filter
                                 </button>
                             </div>
-                            @if(isset($_GET['student_id']))
+                            @if(isset($_GET['academic_year']))
                                 <div class="ml-3">
                                     <a href="/StudentStatuses">
                                         <button type="button"
@@ -74,16 +44,6 @@
                             @endif
                         </div>
                     </form>
-                    <button type="button" id="export-details"
-                            class="4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2  text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                  d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
-                                  clip-rule="evenodd"></path>
-                        </svg>
-                        Export
-                    </button>
                     <script>
                         function spinner(text = 'Please Wait!') {
                             $('#spinner-text').text('Please Wait');
@@ -95,55 +55,6 @@
                             }
                         }
 
-                        $('#export-details').click(function () {
-                            Swal.fire({
-                                title: 'Choose academic year:',
-                                html: `
-                                    <select id="academic_year_export" class="bg-gray-50 border p-3 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        @foreach($academicYears as $academicYear)
-                                <option value="{{$academicYear->id}}">{{$academicYear->name}}</option>
-                                        @endforeach
-                                </select>
-`,
-                                showCancelButton: true,
-                                confirmButtonText: 'Export',
-                                cancelButtonText: 'Cancel',
-                                preConfirm: () => {
-                                    return new Promise((resolve) => {
-                                        const academicYear = $('#academic_year_export').val();
-                                        spinner();
-                                        $.ajax({
-                                            url: 'StudentStatuses/export-excel',
-                                            method: 'GET',
-                                            data: {academicYear: academicYear},
-                                            xhrFields: {
-                                                responseType: 'blob'
-                                            },
-                                            success: function (response) {
-                                                const url = window.URL.createObjectURL(new Blob([response]));
-                                                const a = document.createElement('a');
-                                                a.style.display = 'none';
-                                                a.href = url;
-                                                a.download = 'file.xlsx';
-                                                document.body.appendChild(a);
-                                                a.click();
-                                                window.URL.revokeObjectURL(url);
-                                                resolve(response);
-                                            },
-                                            error: function () {
-                                                spinner();
-                                                Swal.showValidationMessage('The request encountered an error!');
-                                            }
-                                        });
-                                    });
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    spinner();
-                                    Swal.fire('File download was done successfully!!', '', 'success');
-                                }
-                            });
-                        });
                     </script>
                 </div>
                 @include('GeneralPages.errors.session.success')
@@ -274,7 +185,16 @@
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
                                         @if(($student->interview_status=='Admitted' or $student->interview_status=='Rejected'))
                                             @php
-                                                $applicationReservation=ApplicationReservation::with('levelInfo')->whereStudentId($student->student_id)->wherePaymentStatus(1)->latest()->first();
+                                                $applicationReservation=ApplicationReservation::with('levelInfo')
+                                                ->whereHas('applicationInfo',function ($query) use ($student){
+                                                    $query->whereHas('applicationTimingInfo',function ($query) use ($student){
+                                                        $query->where('academic_year',$student->academic_year);
+                                                    });
+                                                })
+                                                ->whereStudentId($student->student_id)
+                                                ->wherePaymentStatus(1)
+                                                ->latest()
+                                                ->first();
                                             @endphp
                                             @if($applicationReservation != null)
                                                 <a href="/ConfirmApplication/{{ $applicationReservation->application_id }}/{{$student->id}}"
