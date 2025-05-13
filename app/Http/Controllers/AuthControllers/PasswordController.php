@@ -104,45 +104,45 @@ class PasswordController extends Controller
                 return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
 
                 break;
-            case 'Email':
-                $validator = Validator::make($request->all(), [
-                    'email' => [
-                        'required', 'email', 'exists:users,email',
-                    ],
-                ]);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'errors' => $validator->errors(),
-                    ]);
-                }
-                $email = request('email');
-                $userInfo = User::where('email', $email)->first();
-
-                //Delete previous tokens
-                $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                PasswordResetToken::whereUserId($userInfo->id)
-                    ->where('created_at', '<=', $twoMinutesAgo)
-                    ->delete();
-
-                $lastToken = PasswordResetToken::whereUserId($userInfo->id)
-                    ->where('created_at', '>', $twoMinutesAgo)
-                    ->first();
-
-                if (empty($lastToken)) {
-                    //Send token
-                    Mail::to($email)->send(
-                        new ResetPasswordMailer($email)
-                    );
-
-                    return response()->json([
-                        'success' => true,
-                    ], 200);
-                }
-
-                $twoMinutesAgo = Carbon::now()->subMinutes(2);
-                $createdTime = Carbon::parse($lastToken->created_at);
-
-                return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
+//            case 'Email':
+//                $validator = Validator::make($request->all(), [
+//                    'email' => [
+//                        'required', 'email', 'exists:users,email',
+//                    ],
+//                ]);
+//                if ($validator->fails()) {
+//                    return response()->json([
+//                        'errors' => $validator->errors(),
+//                    ]);
+//                }
+//                $email = request('email');
+//                $userInfo = User::where('email', $email)->first();
+//
+//                //Delete previous tokens
+//                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+//                PasswordResetToken::whereUserId($userInfo->id)
+//                    ->where('created_at', '<=', $twoMinutesAgo)
+//                    ->delete();
+//
+//                $lastToken = PasswordResetToken::whereUserId($userInfo->id)
+//                    ->where('created_at', '>', $twoMinutesAgo)
+//                    ->first();
+//
+//                if (empty($lastToken)) {
+//                    //Send token
+//                    Mail::to($email)->send(
+//                        new ResetPasswordMailer($email)
+//                    );
+//
+//                    return response()->json([
+//                        'success' => true,
+//                    ], 200);
+//                }
+//
+//                $twoMinutesAgo = Carbon::now()->subMinutes(2);
+//                $createdTime = Carbon::parse($lastToken->created_at);
+//
+//                return ['timer' => $createdTime->diffInSeconds($twoMinutesAgo)];
 
                 break;
         }
@@ -229,57 +229,57 @@ class PasswordController extends Controller
                     ],
                 ]);
                 break;
-            case 'Email':
-                $validator = Validator::make($request->all(), [
-                    'email' => [
-                        'required',
-                        'email',
-                    ],
-                ]);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'success' => false,
-                        'errors' => $validator->errors(),
-                    ]);
-                }
-
-                $email = $request->email;
-
-                $userInfo = User::where('email', $email)->first();
-
-                if (empty($userInfo)) {
-                    return response()->json([
-                        'success' => false,
-                        'errors' => [
-                            'Email is not found!',
-                        ],
-                    ]);
-                }
-
-                //Delete previous tokens
-                $deletedToken = PasswordResetToken::whereUserId($userInfo->id)->where('token', $token)->where('type', 1)->delete();
-
-                if (! $deletedToken) {
-                    return response()->json([
-                        'errors' => [
-                            'Failed To Reset Password!',
-                        ],
-                    ]);
-                }
-                $lastToken = new PasswordResetToken;
-                $lastToken->user_id = $userInfo->id;
-                $lastToken->type = 1;
-                $newToken = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(20)));
-                $lastToken->token = $newToken;
-                $lastToken->save();
-
-                return response()->json([
-                    'success' => true,
-                    'redirect_url' => [
-                        env('APP_URL')."/password/reset/$newToken",
-                    ],
-                ]);
-                break;
+//            case 'Email':
+//                $validator = Validator::make($request->all(), [
+//                    'email' => [
+//                        'required',
+//                        'email',
+//                    ],
+//                ]);
+//                if ($validator->fails()) {
+//                    return response()->json([
+//                        'success' => false,
+//                        'errors' => $validator->errors(),
+//                    ]);
+//                }
+//
+//                $email = $request->email;
+//
+//                $userInfo = User::where('email', $email)->first();
+//
+//                if (empty($userInfo)) {
+//                    return response()->json([
+//                        'success' => false,
+//                        'errors' => [
+//                            'Email is not found!',
+//                        ],
+//                    ]);
+//                }
+//
+//                //Delete previous tokens
+//                $deletedToken = PasswordResetToken::whereUserId($userInfo->id)->where('token', $token)->where('type', 1)->delete();
+//
+//                if (! $deletedToken) {
+//                    return response()->json([
+//                        'errors' => [
+//                            'Failed To Reset Password!',
+//                        ],
+//                    ]);
+//                }
+//                $lastToken = new PasswordResetToken;
+//                $lastToken->user_id = $userInfo->id;
+//                $lastToken->type = 1;
+//                $newToken = str_replace(['/', '\\', '.'], '', bcrypt(random_bytes(20)));
+//                $lastToken->token = $newToken;
+//                $lastToken->save();
+//
+//                return response()->json([
+//                    'success' => true,
+//                    'redirect_url' => [
+//                        env('APP_URL')."/password/reset/$newToken",
+//                    ],
+//                ]);
+//                break;
         }
 
         return response()->json([
