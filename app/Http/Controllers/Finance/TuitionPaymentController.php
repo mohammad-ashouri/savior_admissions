@@ -321,7 +321,7 @@ class TuitionPaymentController extends Controller
                     $tuitionInvoiceDetails->description = json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_type' => json_decode($tuitionInvoiceDetails->description, true)['tuition_type'], 'tuition_details_id' => $tuition->id], true);
                     $tuitionInvoiceDetails->save();
                 }
-                if ($paymentAmount < $tuitionAmount - $allCustomTuitionInvoices) {
+                if ($paymentAmount <= $tuitionAmount - $allCustomTuitionInvoices) {
                     TuitionInvoiceDetailsPayment::create([
                         'invoice_details_id' => $tuitionInvoiceDetails->id,
                         'payment_details' => json_encode(['user_description' => $description, 'files' => $filesSrc, 'tuition_type' => json_decode($tuitionInvoiceDetails->description, true)['tuition_type'], 'tuition_details_id' => $tuition->id], true),
