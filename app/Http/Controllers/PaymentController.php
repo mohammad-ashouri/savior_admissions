@@ -145,16 +145,80 @@ class PaymentController extends Controller
                         ->orderByDesc('application_reservations.id')
                         ->first();
 
-                    $interview_form=json_decode($applicationInfo['interview_form'], true);
-                    if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
-                        $foreignSchool = true;
-                    } else {
-                        $foreignSchool = false;
+                    if (in_array($studentAppliance->academic_year,[1,2,3])){
+                        $evidence=Evidence::where('appliance_id',$studentAppliance->id)->first()->informations;
+                        if (json_decode($evidence, true)['foreign_school'] == 'Yes') {
+                            $foreignSchool = true;
+                        } else {
+                            $foreignSchool = false;
+                        }
+                    }else{
+                        $interview_form = json_decode($applicationInfo['interview_form'], true);
+                        if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
+                            $foreignSchool = true;
+                        } else {
+                            $foreignSchool = false;
+                        }
                     }
 
                     $familyPercentagePriceThreeInstallment = $familyPercentagePriceSevenInstallment = $familyPercentagePriceFullPayment = 0;
 
                     switch ($tuitionInvoiceInfo->payment_type) {
+                        case 2:
+                            $counter = 1;
+                            if ($foreignSchool) {
+                                $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment_ministry, true);
+                                $twoInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_amount_irr_ministry']);
+                                $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_each_installment_irr_ministry']);
+                            } else {
+                                $tuitionDetailsForTwoInstallments = json_decode($tuitionDetails->two_installment_payment, true);
+                                $twoInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_amount_irr']);
+                                $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForTwoInstallments['two_installment_each_installment_irr']);
+                            }
+                            $totalDiscountsTwo = (($twoInstallmentPaymentAmount * $allDiscountPercentages) / 100);
+                            $tuitionDiscountTwo = ($twoInstallmentPaymentAmount * 40) / 100;
+                            if ($totalDiscountsTwo > $tuitionDiscountTwo) {
+                                $totalDiscountsTwo = $tuitionDiscountTwo;
+                            }
+                            $totalDiscountTwo = $totalDiscountsTwo / 2;
+
+                            while ($counter < 3) {
+                                $newInvoice = new TuitionInvoiceDetails;
+                                $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
+                                $newInvoice->amount = $amountOfEachInstallment - $totalDiscountTwo;
+                                $newInvoice->is_paid = 0;
+                                $newInvoice->description = json_encode(['tuition_type' => 'Two Installment - Installment '.$counter], true);
+                                $newInvoice->save();
+                                $counter++;
+                            }
+                            break;
+                        case 3:
+                            $counter = 1;
+                            if ($foreignSchool) {
+                                $tuitionDetailsForFourInstallments = json_decode($tuitionDetails->four_installment_payment_ministry, true);
+                                $fourInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_amount_irr_ministry']);
+                                $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_each_installment_irr_ministry']);
+                            } else {
+                                $tuitionDetailsForFourInstallments = json_decode($tuitionDetails->four_installment_payment, true);
+                                $fourInstallmentPaymentAmount = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_amount_irr']);
+                                $amountOfEachInstallment = str_replace(',', '', $tuitionDetailsForFourInstallments['four_installment_each_installment_irr']);
+                            }
+                            $totalDiscountsFour = (($fourInstallmentPaymentAmount * $allDiscountPercentages) / 100);
+                            $tuitionDiscountFour = ($fourInstallmentPaymentAmount * 40) / 100;
+                            if ($totalDiscountsFour > $tuitionDiscountFour) {
+                                $totalDiscountsFour = $tuitionDiscountFour;
+                            }
+                            $totalDiscountFour = $totalDiscountsFour / 4;
+                            while ($counter < 5) {
+                                $newInvoice = new TuitionInvoiceDetails;
+                                $newInvoice->tuition_invoice_id = $tuitionInvoiceDetails->tuition_invoice_id;
+                                $newInvoice->amount = $amountOfEachInstallment - $totalDiscountFour;
+                                $newInvoice->is_paid = 0;
+                                $newInvoice->description = json_encode(['tuition_type' => 'Four Installment - Installment '.$counter], true);
+                                $newInvoice->save();
+                                $counter++;
+                            }
+                            break;
                         case 5:
                             $counter = 1;
                             if ($foreignSchool) {

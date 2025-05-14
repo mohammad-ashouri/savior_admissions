@@ -1973,7 +1973,9 @@ $(document).ready(function () {
 
         $('#payment_type,#payment_method').change(function () {
             $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
+            $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
             $('#installment3-div, #installment3-payment-invoice, #installment3-online').hide();
+            $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
             $('#installment7-div, #installment7-payment-invoice, #installment7-online').hide();
             $('#offline-full-payment-div, #offline-installment-div').hide();
             $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
@@ -1984,7 +1986,9 @@ $(document).ready(function () {
             let paymentMethod = $('#payment_method').val();
 
             $('#full-payment-div, #full-payment-invoice, #offline-full-payment-div, #full-payment-online').hide();
+            $('#installment2-div, #installment2-payment-invoice, #installment2-online').hide();
             $('#installment3-div, #installment3-payment-invoice, #installment3-online').hide();
+            $('#installment4-div, #installment4-payment-invoice, #installment4-online').hide();
             $('#installment7-div, #installment7-payment-invoice, #installment7-online').hide();
             $('#offline-full-payment-div, #offline-installment-div').hide();
             $('#full-payment-with-advance-div, #full-payment-with-advance-invoice, #offline-full-payment-with-advance-div, #full-payment-with-advance-online').hide();
@@ -2005,6 +2009,12 @@ $(document).ready(function () {
                     case '1':
                         $('#full-payment-div, #full-payment-invoice').show();
                         break;
+                    case '2':
+                        $('#installment2-div, #installment2-payment-invoice').show();
+                        break;
+                    case '3':
+                        $('#installment4-div, #installment4-payment-invoice').show();
+                        break;
                     case '5':
                         $('#installment3-div, #installment3-payment-invoice').show();
                         break;
@@ -2024,6 +2034,16 @@ $(document).ready(function () {
                                 $('#offline-full-payment-div').show();
                                 $('#full-payment-online').hide();
                                 $('#document_file_full_payment1').attr('required', true);
+                                break;
+                            case '2':
+                                $('#offline-installment-div').show();
+                                $('#installment2-online').hide();
+                                $('#document_file_offline_installment1').attr('required', true);
+                                break;
+                            case '3':
+                                $('#offline-installment-div').show();
+                                $('#installment4-online').hide();
+                                $('#document_file_offline_installment1').attr('required', true);
                                 break;
                             case '5':
                                 $('#offline-installment-div').show();

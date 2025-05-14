@@ -69,8 +69,13 @@
                                             <option selected disabled value="">Select type</option>
                                             <option value="1">Full payment</option>
                                             <option value="4">Full payment (With 30% advance)</option>
-                                            <option value="5">Three installments</option>
-                                            <option value="6">Seven installments</option>
+                                            @if(in_array($studentApplianceStatus->academic_year,[1,2,3]))
+                                                <option value="2">Two installments</option>
+                                                <option value="3">Four installments</option>
+                                            @else
+                                                <option value="5">Three installments</option>
+                                                <option value="6">Seven installments</option>
+                                            @endif
                                         </select>
                                     </div>
                                     <div>
@@ -106,20 +111,36 @@
                                                     $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr_ministry']);
                                                     $fullPaymentAmountAdvance=((str_replace(",", "", $fullPayment['full_payment_irr_ministry']))*30)/100;
 
-                                                    $threeInstallmentPayment=json_decode($tuition->three_installment_payment_ministry,true);
-                                                    $threeInstallmentPaymentAmount=str_replace(",", "", $threeInstallmentPayment['three_installment_amount_irr_ministry']);
-                                                    $threeInstallmentPaymentAmountAdvance=str_replace(",", "", $threeInstallmentPayment['three_installment_advance_irr_ministry']);
+                                                    if(in_array($studentApplianceStatus->academic_year,[1,2,3])){
+                                                            $twoInstallmentPayment=json_decode($tuition->two_installment_payment_ministry,true);
+                                                            $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr_ministry']);
+                                                            $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $twoInstallmentPayment['two_installment_advance_irr_ministry']);
 
-                                                    $sevenInstallmentPayment=json_decode($tuition->seven_installment_payment_ministry,true);
-                                                    $sevenInstallmentPaymentAmount=str_replace(",", "", $sevenInstallmentPayment['seven_installment_amount_irr_ministry']);
-                                                    $sevenInstallmentPaymentAmountAdvance=(str_replace(",", "", $sevenInstallmentPayment['seven_installment_advance_irr_ministry']));
+                                                            $fourInstallmentPayment=json_decode($tuition->four_installment_payment_ministry,true);
+                                                            $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr_ministry']);
+                                                            $fourInstallmentPaymentAmountAdvance=(str_replace(",", "", $fourInstallmentPayment['four_installment_advance_irr_ministry']));
+
+                                                            $totalFeeTwoInstallment=$threeInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100));
+                                                            $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100));
+
+                                                    }else{
+                                                            $threeInstallmentPayment=json_decode($tuition->three_installment_payment_ministry,true);
+                                                            $threeInstallmentPaymentAmount=str_replace(",", "", $threeInstallmentPayment['three_installment_amount_irr_ministry']);
+                                                            $threeInstallmentPaymentAmountAdvance=str_replace(",", "", $threeInstallmentPayment['three_installment_advance_irr_ministry']);
+
+                                                            $sevenInstallmentPayment=json_decode($tuition->seven_installment_payment_ministry,true);
+                                                            $sevenInstallmentPaymentAmount=str_replace(",", "", $sevenInstallmentPayment['seven_installment_amount_irr_ministry']);
+                                                            $sevenInstallmentPaymentAmountAdvance=(str_replace(",", "", $sevenInstallmentPayment['seven_installment_advance_irr_ministry']));
+
+                                                            $totalFeeThreeInstallment=$threeInstallmentPaymentAmount-((($threeInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceThreeInstallment);
+                                                            $totalFeeSevenInstallment=$sevenInstallmentPaymentAmount-((($sevenInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceSevenInstallment);
+                                                    }
+
 
                                                     $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
                                                     $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
 
                                                     $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFullPayment);
-                                                    $totalFeeThreeInstallment=$threeInstallmentPaymentAmount-((($threeInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceThreeInstallment);
-                                                    $totalFeeSevenInstallment=$sevenInstallmentPaymentAmount-((($sevenInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceSevenInstallment);
                                                 break;
                                                 default:
 
@@ -127,20 +148,34 @@
                                                     $fullPaymentAmount=str_replace(",", "", $fullPayment['full_payment_irr']);
                                                     $fullPaymentAmountAdvance=((str_replace(",", "", $fullPayment['full_payment_irr']))*30)/100;
 
-                                                    $threeInstallmentPayment=json_decode($tuition->three_installment_payment,true);
-                                                    $threeInstallmentPaymentAmount=str_replace(",", "", $threeInstallmentPayment['three_installment_amount_irr']);
-                                                    $threeInstallmentPaymentAmountAdvance=str_replace(",", "", $threeInstallmentPayment['three_installment_advance_irr']);
+                                                    if(in_array($studentApplianceStatus->academic_year,[1,2,3])){
+                                                            $twoInstallmentPayment=json_decode($tuition->two_installment_payment,true);
+                                                            $twoInstallmentPaymentAmount=str_replace(",", "", $twoInstallmentPayment['two_installment_amount_irr']);
+                                                            $twoInstallmentPaymentAmountAdvance=str_replace(",", "", $twoInstallmentPayment['two_installment_advance_irr']);
 
-                                                    $sevenInstallmentPayment=json_decode($tuition->seven_installment_payment,true);
-                                                    $sevenInstallmentPaymentAmount=str_replace(",", "", $sevenInstallmentPayment['seven_installment_amount_irr']);
-                                                    $sevenInstallmentPaymentAmountAdvance=(str_replace(",", "", $sevenInstallmentPayment['seven_installment_advance_irr']));
+                                                            $fourInstallmentPayment=json_decode($tuition->four_installment_payment,true);
+                                                            $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr']);
+                                                            $fourInstallmentPaymentAmountAdvance=(str_replace(",", "", $fourInstallmentPayment['four_installment_advance_irr']));
 
+                                                            $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100));
+                                                            $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100));
+
+                                                    }else{
+                                                            $threeInstallmentPayment=json_decode($tuition->three_installment_payment,true);
+                                                            $threeInstallmentPaymentAmount=str_replace(",", "", $threeInstallmentPayment['three_installment_amount_irr']);
+                                                            $threeInstallmentPaymentAmountAdvance=str_replace(",", "", $threeInstallmentPayment['three_installment_advance_irr']);
+
+                                                            $sevenInstallmentPayment=json_decode($tuition->seven_installment_payment,true);
+                                                            $sevenInstallmentPaymentAmount=str_replace(",", "", $sevenInstallmentPayment['seven_installment_amount_irr']);
+                                                            $sevenInstallmentPaymentAmountAdvance=(str_replace(",", "", $sevenInstallmentPayment['seven_installment_advance_irr']));
+
+                                                            $totalFeeThreeInstallment=$threeInstallmentPaymentAmount-((($threeInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceThreeInstallment);
+                                                            $totalFeeSevenInstallment=$sevenInstallmentPaymentAmount-((($sevenInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceSevenInstallment);
+                                                    }
                                                     $dateOfModified=Carbon::parse($studentApplianceStatus->updated_at);
                                                     $dateOfDueAdvance=Carbon::parse($studentApplianceStatus->updated_at)->addHours(72);
 
                                                     $totalFeeFullPayment=$fullPaymentAmount-((($fullPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceFullPayment);
-                                                    $totalFeeThreeInstallment=$threeInstallmentPaymentAmount-((($threeInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceThreeInstallment);
-                                                    $totalFeeSevenInstallment=$sevenInstallmentPaymentAmount-((($sevenInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceSevenInstallment);
                                             }
                                     @endphp
                                 </div>
@@ -189,14 +224,121 @@
                                         </div>
                                     </div>
 
-                                    {{--                                    3 installments divs--}}
-                                    <div id="installment3-div" hidden="">
-                                        <div
-                                            class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                                            role="alert">
+                                    @if(in_array($studentApplianceStatus->academic_year,[1,2,3]))
+                                        {{--                                    2 installments divs--}}
+                                        <div id="installment2-div" hidden="">
+                                            <div
+                                                class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                                role="alert">
+                                                <div class="flex">
+                                                    <div class="py-1">
+                                                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="font-bold dark:text-white">In the installment method,
+                                                            you
+                                                            are allowed to
+                                                            pay the first row of the table below within the next 72
+                                                            hours.
+                                                            After payment, you can pay other rows separately in the
+                                                            payments
+                                                            section.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4">
+
+                                                <table
+                                                    class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                                    <thead
+                                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                    <tr>
+                                                        <th scope="col" class="p-4">
+                                                            <div class="flex items-center">
+                                                                #
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Date Created
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Due Date
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Due Amount
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            1
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{$dateOfDueAdvance}}
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format($twoInstallmentPaymentAmountAdvance) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            2
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $twoInstallmentPayment['date_of_installment1_two_ministry'] }}
+                                                            @else
+                                                                {{ $twoInstallmentPayment['date_of_installment1_two'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format((($totalFeeTwoInstallment-$twoInstallmentPaymentAmountAdvance)/2)) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            3
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $twoInstallmentPayment['date_of_installment2_two_ministry'] }}
+                                                            @else
+                                                                {{ $twoInstallmentPayment['date_of_installment2_two'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeTwoInstallment-$twoInstallmentPaymentAmountAdvance)/2) }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div id="installment2-online" hidden=""
+                                             class="bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md"
+                                             role="alert">
                                             <div class="flex">
                                                 <div class="py-1">
-                                                    <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                    <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
                                                          xmlns="http://www.w3.org/2000/svg"
                                                          viewBox="0 0 20 20">
                                                         <path
@@ -204,161 +346,18 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold dark:text-white">In the installment method, you
-                                                        are allowed to
-                                                        pay the first row of the table below within the next 72 hours.
-                                                        After payment, you can pay other rows separately in the payments
-                                                        section.</p>
+                                                    <p class="font-bold">You must pay your first installment through the
+                                                        direct banking portal. <br>
+                                                        After payment, you will be automatically redirected to your
+                                                        payment
+                                                        list page.<br>
+                                                        If you wish, you can pay your installments ahead of time on that
+                                                        page.</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="mt-4">
-
-                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                <thead
-                                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th scope="col" class="p-4">
-                                                        <div class="flex items-center">
-                                                            #
-                                                        </div>
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Date Created
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Due Date
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Due Amount
-                                                    </th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        1
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{$dateOfDueAdvance}}
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format($threeInstallmentPaymentAmountAdvance) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        2
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $threeInstallmentPayment['date_of_installment1_three_ministry'] }}
-                                                        @else
-                                                            {{ $threeInstallmentPayment['date_of_installment1_three'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format((($totalFeeThreeInstallment-$threeInstallmentPaymentAmountAdvance)/3)) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        3
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $threeInstallmentPayment['date_of_installment2_three_ministry'] }}
-                                                        @else
-                                                            {{ $threeInstallmentPayment['date_of_installment2_three'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeThreeInstallment-$threeInstallmentPaymentAmountAdvance)/3) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        4
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $threeInstallmentPayment['date_of_installment3_three_ministry'] }}
-                                                        @else
-                                                            {{ $threeInstallmentPayment['date_of_installment3_three'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeThreeInstallment-$threeInstallmentPaymentAmountAdvance)/3) }}
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div id="installment3-online" hidden=""
-                                         class="bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md"
-                                         role="alert">
-                                        <div class="flex">
-                                            <div class="py-1">
-                                                <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
-                                                     xmlns="http://www.w3.org/2000/svg"
-                                                     viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p class="font-bold">You must pay your first installment through the
-                                                    direct banking portal. <br>
-                                                    After payment, you will be automatically redirected to your payment
-                                                    list page.<br>
-                                                    If you wish, you can pay your installments ahead of time on that
-                                                    page.</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex mt-4">
-                                            <div class="py-1">
-                                                <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
-                                                     xmlns="http://www.w3.org/2000/svg"
-                                                     viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p class="font-bold">When paying, note that the deposit amount is the
-                                                    same amount as your first installment.<br>
-                                                    In case of discrepancy, prevent the payment and inform the financial
-                                                    unit of your school.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{--                                    7 installments divs--}}
-                                    <div id="installment7-div" hidden="">
-                                        <div
-                                            class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
-                                            role="alert">
-                                            <div class="flex">
+                                            <div class="flex mt-4">
                                                 <div class="py-1">
-                                                    <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                    <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
                                                          xmlns="http://www.w3.org/2000/svg"
                                                          viewBox="0 0 20 20">
                                                         <path
@@ -366,228 +365,618 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-bold dark:text-white">In the installment method, you
-                                                        are allowed to
-                                                        pay the first row of the table below within the next 72 hours.
-                                                        After payment, you can pay other rows separately in the payments
-                                                        section.</p>
+                                                    <p class="font-bold">When paying, note that the deposit amount is
+                                                        the
+                                                        same amount as your first installment.<br>
+                                                        In case of discrepancy, prevent the payment and inform the
+                                                        financial
+                                                        unit of your school.</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mt-4">
 
-                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                                <thead
-                                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                                <tr>
-                                                    <th scope="col" class="p-4">
-                                                        <div class="flex items-center">
-                                                            #
-                                                        </div>
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Date Created
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Due Date
-                                                    </th>
-                                                    <th scope="col" class="px-6 py-1 text-center">
-                                                        Due Amount
-                                                    </th>
-                                                </tr>
-                                                </thead>
+                                        {{--                                    4 installments divs--}}
+                                        <div id="installment4-div" hidden="">
+                                            <div
+                                                class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                                role="alert">
+                                                <div class="flex">
+                                                    <div class="py-1">
+                                                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="font-bold dark:text-white">In the installment method,
+                                                            you
+                                                            are allowed to
+                                                            pay the first row of the table below within the next 72
+                                                            hours.
+                                                            After payment, you can pay other rows separately in the
+                                                            payments
+                                                            section.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4">
 
-                                                <tbody>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        1
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{$dateOfDueAdvance}}
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format($sevenInstallmentPaymentAmountAdvance) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        2
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $sevenInstallmentPayment['date_of_installment1_seven_ministry'] }}
-                                                        @else
-                                                            {{ $sevenInstallmentPayment['date_of_installment1_seven'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        3
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $sevenInstallmentPayment['date_of_installment2_seven_ministry'] }}
-                                                        @else
-                                                            {{ $sevenInstallmentPayment['date_of_installment2_seven'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        4
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $sevenInstallmentPayment['date_of_installment3_seven_ministry'] }}
-                                                        @else
-                                                            {{ $sevenInstallmentPayment['date_of_installment3_seven'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        5
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $sevenInstallmentPayment['date_of_installment4_seven_ministry'] }}
-                                                        @else
-                                                            {{ $sevenInstallmentPayment['date_of_installment4_seven'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        5
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $sevenInstallmentPayment['date_of_installment5_seven_ministry'] }}
-                                                        @else
-                                                            {{ $sevenInstallmentPayment['date_of_installment5_seven'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        5
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $sevenInstallmentPayment['date_of_installment6_seven_ministry'] }}
-                                                        @else
-                                                            {{ $sevenInstallmentPayment['date_of_installment6_seven'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                                    <td class="w-4 p-4 text-center">
-                                                        7
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        {{ $dateOfModified }}
-                                                    </td>
-                                                    <td class="w-4 p-4 text-center">
-                                                        @if ($foreignSchool)
-                                                            {{ $sevenInstallmentPayment['date_of_installment7_seven_ministry'] }}
-                                                        @else
-                                                            {{ $sevenInstallmentPayment['date_of_installment7_seven'] }}
-                                                        @endif
-                                                    </td>
-                                                    <td class="w-20 p-4 text-center">
-                                                        IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div id="installment7-online" hidden=""
-                                         class="bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md"
-                                         role="alert">
-                                        <div class="flex">
-                                            <div class="py-1">
-                                                <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
-                                                     xmlns="http://www.w3.org/2000/svg"
-                                                     viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p class="font-bold">You must pay your first installment through the
-                                                    direct banking portal. <br>
-                                                    After payment, you will be automatically redirected to your payment
-                                                    list page.<br>
-                                                    If you wish, you can pay your installments ahead of time on that
-                                                    page.</p>
+                                                <table
+                                                    class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                                    <thead
+                                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                    <tr>
+                                                        <th scope="col" class="p-4">
+                                                            <div class="flex items-center">
+                                                                #
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Date Created
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Due Date
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Due Amount
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            1
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{$dateOfDueAdvance}}
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format($fourInstallmentPaymentAmountAdvance) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            2
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $fourInstallmentPayment['date_of_installment1_four_ministry'] }}
+                                                            @else
+                                                                {{ $fourInstallmentPayment['date_of_installment1_four'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            3
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $fourInstallmentPayment['date_of_installment2_four_ministry'] }}
+                                                            @else
+                                                                {{ $fourInstallmentPayment['date_of_installment2_four'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            4
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $fourInstallmentPayment['date_of_installment3_four_ministry'] }}
+                                                            @else
+                                                                {{ $fourInstallmentPayment['date_of_installment3_four'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            5
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $fourInstallmentPayment['date_of_installment4_four_ministry'] }}
+                                                            @else
+                                                                {{ $fourInstallmentPayment['date_of_installment4_four'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeFourInstallment-$fourInstallmentPaymentAmountAdvance)/4) }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
-                                        <div class="flex mt-4">
-                                            <div class="py-1">
-                                                <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
-                                                     xmlns="http://www.w3.org/2000/svg"
-                                                     viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                                                </svg>
+                                        <div id="installment4-online" hidden=""
+                                             class="bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md"
+                                             role="alert">
+                                            <div class="flex">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">You must pay your first installment through the
+                                                        direct banking portal. <br>
+                                                        After payment, you will be automatically redirected to your
+                                                        payment
+                                                        list page.<br>
+                                                        If you wish, you can pay your installments ahead of time on that
+                                                        page.</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p class="font-bold">When paying, note that the deposit amount is the
-                                                    same amount as your first installment.<br>
-                                                    In case of discrepancy, prevent the payment and inform the financial
-                                                    unit of your school.</p>
+                                            <div class="flex mt-4">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">When paying, note that the deposit amount is
+                                                        the
+                                                        same amount as your first installment.<br>
+                                                        In case of discrepancy, prevent the payment and inform the
+                                                        financial
+                                                        unit of your school.</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @else
+                                        {{--                                    3 installments divs--}}
+                                        <div id="installment3-div" hidden="">
+                                            <div
+                                                class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                                role="alert">
+                                                <div class="flex">
+                                                    <div class="py-1">
+                                                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="font-bold dark:text-white">In the installment method,
+                                                            you
+                                                            are allowed to
+                                                            pay the first row of the table below within the next 72
+                                                            hours.
+                                                            After payment, you can pay other rows separately in the
+                                                            payments
+                                                            section.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4">
+
+                                                <table
+                                                    class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                                    <thead
+                                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                    <tr>
+                                                        <th scope="col" class="p-4">
+                                                            <div class="flex items-center">
+                                                                #
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Date Created
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Due Date
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Due Amount
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            1
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{$dateOfDueAdvance}}
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format($threeInstallmentPaymentAmountAdvance) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            2
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $threeInstallmentPayment['date_of_installment1_three_ministry'] }}
+                                                            @else
+                                                                {{ $threeInstallmentPayment['date_of_installment1_three'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format((($totalFeeThreeInstallment-$threeInstallmentPaymentAmountAdvance)/3)) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            3
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $threeInstallmentPayment['date_of_installment2_three_ministry'] }}
+                                                            @else
+                                                                {{ $threeInstallmentPayment['date_of_installment2_three'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeThreeInstallment-$threeInstallmentPaymentAmountAdvance)/3) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            4
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $threeInstallmentPayment['date_of_installment3_three_ministry'] }}
+                                                            @else
+                                                                {{ $threeInstallmentPayment['date_of_installment3_three'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeThreeInstallment-$threeInstallmentPaymentAmountAdvance)/3) }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div id="installment3-online" hidden=""
+                                             class="bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md"
+                                             role="alert">
+                                            <div class="flex">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">You must pay your first installment through the
+                                                        direct banking portal. <br>
+                                                        After payment, you will be automatically redirected to your
+                                                        payment
+                                                        list page.<br>
+                                                        If you wish, you can pay your installments ahead of time on that
+                                                        page.</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex mt-4">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">When paying, note that the deposit amount is
+                                                        the
+                                                        same amount as your first installment.<br>
+                                                        In case of discrepancy, prevent the payment and inform the
+                                                        financial
+                                                        unit of your school.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{--                                    7 installments divs--}}
+                                        <div id="installment7-div" hidden="">
+                                            <div
+                                                class="bg-teal-100 dark:bg-gray-800 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+                                                role="alert">
+                                                <div class="flex">
+                                                    <div class="py-1">
+                                                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p class="font-bold dark:text-white">In the installment method,
+                                                            you
+                                                            are allowed to
+                                                            pay the first row of the table below within the next 72
+                                                            hours.
+                                                            After payment, you can pay other rows separately in the
+                                                            payments
+                                                            section.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4">
+
+                                                <table
+                                                    class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                                    <thead
+                                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                                    <tr>
+                                                        <th scope="col" class="p-4">
+                                                            <div class="flex items-center">
+                                                                #
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Date Created
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Due Date
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-1 text-center">
+                                                            Due Amount
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            1
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{$dateOfDueAdvance}}
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format($sevenInstallmentPaymentAmountAdvance) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            2
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $sevenInstallmentPayment['date_of_installment1_seven_ministry'] }}
+                                                            @else
+                                                                {{ $sevenInstallmentPayment['date_of_installment1_seven'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            3
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $sevenInstallmentPayment['date_of_installment2_seven_ministry'] }}
+                                                            @else
+                                                                {{ $sevenInstallmentPayment['date_of_installment2_seven'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            4
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $sevenInstallmentPayment['date_of_installment3_seven_ministry'] }}
+                                                            @else
+                                                                {{ $sevenInstallmentPayment['date_of_installment3_seven'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            5
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $sevenInstallmentPayment['date_of_installment4_seven_ministry'] }}
+                                                            @else
+                                                                {{ $sevenInstallmentPayment['date_of_installment4_seven'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            5
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $sevenInstallmentPayment['date_of_installment5_seven_ministry'] }}
+                                                            @else
+                                                                {{ $sevenInstallmentPayment['date_of_installment5_seven'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            5
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $sevenInstallmentPayment['date_of_installment6_seven_ministry'] }}
+                                                            @else
+                                                                {{ $sevenInstallmentPayment['date_of_installment6_seven'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr
+                                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <td class="w-4 p-4 text-center">
+                                                            7
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            {{ $dateOfModified }}
+                                                        </td>
+                                                        <td class="w-4 p-4 text-center">
+                                                            @if ($foreignSchool)
+                                                                {{ $sevenInstallmentPayment['date_of_installment7_seven_ministry'] }}
+                                                            @else
+                                                                {{ $sevenInstallmentPayment['date_of_installment7_seven'] }}
+                                                            @endif
+                                                        </td>
+                                                        <td class="w-20 p-4 text-center">
+                                                            IRR {{ number_format(($totalFeeSevenInstallment-$sevenInstallmentPaymentAmountAdvance)/7) }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div id="installment7-online" hidden=""
+                                             class="bg-yellow-100 border-t-4 border-yellow-500 rounded-b text-yellow-900 px-4 py-3 shadow-md"
+                                             role="alert">
+                                            <div class="flex">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">You must pay your first installment through the
+                                                        direct banking portal. <br>
+                                                        After payment, you will be automatically redirected to your
+                                                        payment
+                                                        list page.<br>
+                                                        If you wish, you can pay your installments ahead of time on that
+                                                        page.</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex mt-4">
+                                                <div class="py-1">
+                                                    <svg class="fill-current h-6 w-6 text-yellow-500 mr-4"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold">When paying, note that the deposit amount is
+                                                        the
+                                                        same amount as your first installment.<br>
+                                                        In case of discrepancy, prevent the payment and inform the
+                                                        financial
+                                                        unit of your school.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
 
                                     {{--                                    Full payment with advance divs--}}
                                     <div id="full-payment-with-advance-div" hidden="">
@@ -966,16 +1355,30 @@
                                         $totalFeeFullPayment=$fullPaymentAmount-$totalDiscountsFull;
                                     }
 
-                                    $totalDiscountsThree=(($threeInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceThreeInstallment;
-                                    $tuitionDiscountThree=($threeInstallmentPaymentAmount*40)/100;
-                                    if($totalDiscountsThree>$tuitionDiscountThree){
-                                        $totalDiscountsThree=$tuitionDiscountThree;
-                                    }
+                                    if(in_array($studentApplianceStatus->academic_year,[1,2,3])){
+                                        $totalDiscountsTwo=(($twoInstallmentPaymentAmount*$allDiscountPercentages)/100);
+                                        $tuitionDiscountTwo=($twoInstallmentPaymentAmount*40)/100;
+                                        if($totalDiscountsTwo>$tuitionDiscountTwo){
+                                            $totalDiscountsTwo=$tuitionDiscountTwo;
+                                        }
 
-                                    $totalDiscountsSeven=(($sevenInstallmentPaymentAmount*$allDiscountPercentages)/100)+$familyPercentagePriceSevenInstallment;
-                                    $tuitionDiscountSeven=($sevenInstallmentPaymentAmount*40)/100;
-                                    if($totalDiscountsSeven>$tuitionDiscountSeven){
-                                        $totalDiscountsSeven=$tuitionDiscountSeven;
+                                        $totalDiscountsFour=(($fourInstallmentPaymentAmount*$allDiscountPercentages)/100);
+                                        $tuitionDiscountFour=($fourInstallmentPaymentAmount*40)/100;
+                                        if($totalDiscountsFour>$tuitionDiscountFour){
+                                            $totalDiscountsFour=$tuitionDiscountFour;
+                                        }
+                                    }else{
+                                        $totalDiscountsThree=(($threeInstallmentPaymentAmount*$allDiscountPercentages)/100);
+                                        $tuitionDiscountThree=($threeInstallmentPaymentAmount*40)/100;
+                                        if($totalDiscountsThree>$tuitionDiscountThree){
+                                            $totalDiscountsThree=$tuitionDiscountThree;
+                                        }
+
+                                        $totalDiscountsSeven=(($sevenInstallmentPaymentAmount*$allDiscountPercentages)/100);
+                                        $tuitionDiscountSeven=($sevenInstallmentPaymentAmount*40)/100;
+                                        if($totalDiscountsSeven>$tuitionDiscountSeven){
+                                            $totalDiscountsSeven=$tuitionDiscountSeven;
+                                        }
                                     }
                                 @endphp
 
@@ -1014,6 +1417,74 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    @if(in_array($studentApplianceStatus->academic_year,[1,2,3]))
+                                        <div hidden="" id="installment2-payment-invoice">
+                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                                <tbody>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <th scope="col" class="p-4">
+                                                        Fee:
+                                                    </th>
+                                                    <td class="p-4 w-56 items-center">
+                                                        IRR {{ number_format($twoInstallmentPaymentAmount) }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <th scope="col" class="p-4">
+                                                        Discount:
+                                                    </th>
+                                                    <td class="p-4 w-56 items-center">
+                                                        IRR {{ number_format($totalDiscountsTwo) }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <th scope="col" class="p-4">
+                                                        Total Fee:
+                                                    </th>
+                                                    <td class="w-56 p-4">
+                                                        IRR {{ number_format($twoInstallmentPaymentAmount-$totalDiscountsTwo) }}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div hidden="" id="installment4-payment-invoice">
+                                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                                <tbody>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <th scope="col" class="p-4">
+                                                        Fee:
+                                                    </th>
+                                                    <td class="p-4 w-56 items-center">
+                                                        IRR {{ number_format($fourInstallmentPaymentAmount) }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <th scope="col" class="p-4">
+                                                        Discount:
+                                                    </th>
+                                                    <td class="p-4 w-56 items-center">
+                                                        IRR {{ number_format($totalDiscountsFour) }}
+                                                    </td>
+                                                </tr>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <th scope="col" class="p-4">
+                                                        Total Fee:
+                                                    </th>
+                                                    <td class="w-56 p-4">
+                                                        IRR {{ number_format($fourInstallmentPaymentAmount-$totalDiscountsFour) }}
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @else
                                     <div hidden="" id="installment3-payment-invoice">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <tbody>
@@ -1080,6 +1551,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    @endif
                                     <div hidden="" id="full-payment-with-advance-invoice">
                                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                             <tbody>
