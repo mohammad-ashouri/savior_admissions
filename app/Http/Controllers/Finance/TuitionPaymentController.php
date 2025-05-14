@@ -428,21 +428,6 @@ class TuitionPaymentController extends Controller
             ->orderByDesc('application_reservations.id')
             ->first();
 
-        if (in_array($studentAppliance->academic_year, [1, 2, 3])) {
-            $evidence = Evidence::where('appliance_id', $studentAppliance->id)->first()->informations;
-            if (json_decode($evidence, true)['foreign_school'] == 'Yes') {
-                $foreignSchool = true;
-            } else {
-                $foreignSchool = false;
-            }
-        } else {
-            $interview_form = json_decode($applicationInfo['interview_form'], true);
-            if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
-                $foreignSchool = true;
-            } else {
-                $foreignSchool = false;
-            }
-        }
 
         if ($tuitionType == 'Full Payment') {
             $tuitionInvoiceDetails = TuitionInvoiceDetails::find($tuition_id);
@@ -493,6 +478,23 @@ class TuitionPaymentController extends Controller
 
                     return response()->json(['message' => 'Approved!']);
                 }
+
+                if (in_array($studentAppliance->academic_year, [1, 2, 3])) {
+                    $evidence = Evidence::where('appliance_id', $studentAppliance->id)->first()->informations;
+                    if (json_decode($evidence, true)['foreign_school'] == 'Yes') {
+                        $foreignSchool = true;
+                    } else {
+                        $foreignSchool = false;
+                    }
+                } else {
+                    $interview_form = json_decode($applicationInfo['interview_form'], true);
+                    if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
+                        $foreignSchool = true;
+                    } else {
+                        $foreignSchool = false;
+                    }
+                }
+
                 $studentAppliance->tuition_payment_status = 'Paid';
                 //                $studentAppliance->approval_status = 1;
                 $studentAppliance->documents_uploaded = 0;
@@ -651,7 +653,7 @@ class TuitionPaymentController extends Controller
                 $tuitionInvoiceDetails->is_paid = 3;
                 $tuitionInvoiceDetails->save();
 
-                if (! str_contains(json_decode($tuitionInvoiceDetails['description'], true)['tuition_type'], 'Advance')) {
+                if (! str_contains(json_decode($tuitionInvoiceDetails['description'], true)['tuition_type'], 'Installment Advance') and  json_decode($tuitionInvoiceDetails['description'], true)['tuition_type'] == 'Full Payment With Advance - Installment') {
                     $newInvoice = $originalInvoice->replicate();
                     $newInvoice->payment_method = null;
                     $newInvoice->date_of_payment = null;
