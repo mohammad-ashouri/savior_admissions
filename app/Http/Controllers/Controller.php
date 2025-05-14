@@ -183,18 +183,22 @@ class Controller extends BaseController
         return array_filter(array_unique(array_merge($principalAccess)));
     }
 
-    public function sendSMS($mobile, $messageText): void
+    public function sendSMS($mobile, $messageText)
     {
-        try {
-            $sender = '+9890005085';
-            $message = $messageText;
-            $receptor = [$mobile];
-            $result = Kavenegar::Send($sender, $receptor, $message . "\nلغو11");
-            $this->format($result);
-        } catch (ApiException $e) {
-            echo $e->errorMessage();
-        } catch (HttpException $e) {
-            echo $e->errorMessage();
+        if (env('SEND_SMS')==true) {
+            try {
+                $sender = '+9890005085';
+                $message = $messageText;
+                $receptor = [$mobile];
+                $result = Kavenegar::Send($sender, $receptor, $message . "\nلغو11");
+                $this->format($result);
+            } catch (ApiException $e) {
+                echo $e->errorMessage();
+            } catch (HttpException $e) {
+                echo $e->errorMessage();
+            }
+        }else{
+            return 'Sent (BETA)';
         }
     }
 
