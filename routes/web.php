@@ -35,6 +35,7 @@ use App\Http\Middleware\SettingsCheck;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
+use App\Livewire\Tuition\TuitionInvoices\EditApplianceInvoices;
 use App\Models\Branch\ApplicationReservation;
 use App\Models\Branch\ApplicationTiming;
 use App\Models\Branch\StudentApplianceStatus;
@@ -142,7 +143,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('TuitionsStatus', [TuitionController::class, 'tuitionsStatus'])->name('tuitionsStatus');
             Route::get('SearchTuitionsStatus', [TuitionController::class, 'searchTuitionsStatus'])->name('SearchTuitionStatus');
             Route::get('ShowApplianceInvoices/{appliance_id}', [TuitionPaymentController::class, 'applianceInvoices'])->name('applianceInvoices');
-            Route::get('EditApplianceInvoices/{appliance_id}', [TuitionPaymentController::class, 'applianceInvoicesEdit'])->name('applianceInvoices.edit');
+            Route::get('EditApplianceInvoices/{appliance_id}', EditApplianceInvoices::class)->name('applianceInvoices.edit');
             Route::get('AllTuitions/{academic_year?}', [TuitionController::class, 'allTuitions'])->name('allTuitions');
 
             // Pay Tuition

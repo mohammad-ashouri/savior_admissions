@@ -1,0 +1,138 @@
+<?php
+
+namespace App\Livewire\Tuition\TuitionInvoices;
+
+use App\Models\Branch\StudentApplianceStatus;
+use App\Models\Catalogs\AcademicYear;
+use App\Models\Finance\Discount;
+use App\Models\Finance\TuitionInvoiceDetails;
+use App\Models\Finance\TuitionInvoiceEditHistory;
+use App\Models\Finance\TuitionInvoices;
+use App\Models\StudentInformation;
+use App\Models\UserAccessInformation;
+use Livewire\Component;
+
+class EditApplianceInvoices extends Component
+{
+    /**
+     * Student appliance status variable
+     */
+    public StudentApplianceStatus $appliance_status;
+
+    /**
+     * My students by permission variable
+     */
+    public array $my_students;
+
+    /**
+     * All tuition invoices for this appliance status
+     */
+    public array $tuition_invoices;
+
+    /**
+     * All invoices for this tuition
+     */
+    public $tuition_invoice_details;
+
+    /**
+     * All discounts for this academic year
+     */
+    public $discounts;
+
+    /**
+     * Invoice amounts
+     */
+    public array $amounts = [];
+
+    /**
+     * Listeners
+     *
+     * @var string[]
+     */
+    protected $listeners = ['refresh' => '$refresh'];
+
+    // Getting principal and financial manager accesses
+    public function getFilteredAccessesPF($userAccessInfo): array
+    {
+        $principalAccess = [];
+        $financialManagerAccess = [];
+
+        if (! empty($userAccessInfo->principal)) {
+            $principalAccess = explode('|', $userAccessInfo->principal);
+        }
+
+        if (! empty($userAccessInfo->financial_manager)) {
+            $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
+        }
+
+        return array_filter(array_unique(array_merge($principalAccess, $financialManagerAccess)));
+    }
+
+    /**
+     * Change invoice amount
+     */
+    public function changeInvoiceAmount($invoice_id): void
+    {
+        $newAmount = $this->amounts[$invoice_id];
+        TuitionInvoiceDetails::findOrFail($invoice_id)->update(['amount' => $newAmount]);
+
+        TuitionInvoiceEditHistory::create([
+            'invoice_details_id'=>$invoice_id,
+            'description'=>$invoice_id,
+            'user'=>auth()->user()->id,
+        ]);
+        $this->dispatch('refresh')->self();
+    }
+
+    /**
+     * Mount the component
+     */
+    public function mount($appliance_id): void
+    {
+        $this->appliance_status = StudentApplianceStatus::findOrFail($appliance_id);
+
+        if (auth()->user()->hasRole(['Principal', 'Financial Manager'])) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
+            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            $this->my_students = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->whereNotNull('tuition_payment_status')
+                ->whereIn('student_appliance_statuses.academic_year', $academicYears)
+                ->where('student_appliance_statuses.id', $appliance_id)
+                ->pluck('student_appliance_statuses.id')->toArray();
+            $this->tuition_invoices = TuitionInvoices::where('appliance_id', $this->my_students)->pluck('id')->toArray();
+            $this->tuition_invoice_details = TuitionInvoiceDetails::with(['tuitionInvoiceDetails', 'invoiceDetails', 'paymentMethodInfo'])
+                ->whereIn('tuition_invoice_id', $this->tuition_invoices)
+                ->get();
+        } elseif (auth()->user()->hasRole('Super Admin')) {
+            $this->my_students = StudentInformation::join('student_appliance_statuses', 'student_informations.student_id', '=', 'student_appliance_statuses.student_id')
+                ->whereNotNull('tuition_payment_status')
+                ->where('student_appliance_statuses.id', $appliance_id)
+                ->pluck('student_appliance_statuses.id')->toArray();
+
+            $this->tuition_invoices = TuitionInvoices::whereIn('appliance_id', $this->my_students)->pluck('id')->toArray();
+            $this->tuition_invoice_details = TuitionInvoiceDetails::with('tuitionInvoiceDetails')
+                ->with('invoiceDetails')
+                ->with('paymentMethodInfo')
+                ->whereIn('tuition_invoice_id', $this->tuition_invoices)
+                ->get();
+        } else {
+            abort(403);
+        }
+
+        foreach ($this->tuition_invoice_details as $invoice) {
+            $this->amounts[$invoice->id] = $invoice->amount;
+        }
+
+        $this->discounts = Discount::with('allDiscounts')
+            ->whereAcademicYear($this->tuition_invoice_details[0]->tuitionInvoiceDetails->applianceInformation->academic_year)
+            ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
+            ->where('discount_details.status', 1)
+            ->where('discount_details.interviewer_permission', 1)
+            ->get();
+    }
+}
