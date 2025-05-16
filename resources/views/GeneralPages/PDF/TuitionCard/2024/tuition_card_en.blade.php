@@ -2,9 +2,6 @@
 <html dir="ltr" lang="en">
 @php
     use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Country;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
-
-
-    $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
     $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
                                                 ->join('application_reservations','applications.id','=','application_reservations.application_id')
                                                 ->where('application_reservations.student_id',$applianceStatus->student_id)
@@ -20,10 +17,21 @@
     }])->whereApplianceId($applianceStatus->id)->latest()->first();
     $totalAmount=0;
 
-    if (isset($evidencesInfo['foreign_school']) and $evidencesInfo['foreign_school'] == 'Yes') {
-        $foreignSchool = true;
-    } else {
-        $foreignSchool = false;
+    $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
+
+    if (in_array($applianceStatus->academic_year,[1,2,3])){
+        if ($evidencesInfo['foreign_school'] == 'Yes') {
+            $foreignSchool = true;
+        } else {
+            $foreignSchool = false;
+        }
+    }else{
+        $interview_form = json_decode($applicationInfo['interview_form'], true);
+        if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
+            $foreignSchool = true;
+        } else {
+            $foreignSchool = false;
+        }
     }
 
     foreach($myTuitionInfo->invoiceDetails as $invoices){
@@ -609,7 +617,7 @@
                 </li>
             @endforeach
         @endif
-        @if($allFamilyDiscounts->discount_price>0)
+            @if(isset($allFamilyDiscounts->discount_price) and $allFamilyDiscounts->discount_price>0)
             <li class="consideration-item font-bold">
                 Included Family Discounts ({{number_format($allFamilyDiscounts->discount_price)}} )
             </li>
