@@ -248,24 +248,6 @@ Route::post('/VerifyApplicationPayment', [PaymentController::class, 'verifyAppli
 Route::post('/VerifyTuitionPayment', [PaymentController::class, 'verifyTuitionPayment']);
 Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'verifyTuitionInstallmentPayment']);
 
-Route::get('/testquery', function () {
-    $applianceStatuses = StudentApplianceStatus::whereNotNull('interview_status')->get();
-
-    foreach ($applianceStatuses as $appliance) {
-        $applicationReservation = ApplicationReservation::where('payment_status', 1)
-            ->where('student_id', $appliance->student_id)
-            ->whereHas('applicationInfo', function ($query) use ($appliance) {
-                $query->whereHas('applicationTimingInfo', function ($query) use ($appliance) {
-                    $query->where('academic_year',$appliance->academic_year);
-                });
-            })
-            ->latest()->first();
-        $applianceStatuses = StudentApplianceStatus::find($appliance->id)->update([
-            'level'=>$applicationReservation->level
-        ]);
-    }
-
-});
 // Route::get('/import-excel', [ExcelController::class, 'index']);
 // Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
 // Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');

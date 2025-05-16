@@ -33,7 +33,7 @@
 
                 <div class="grid grid-cols-2 gap-2">
                     <div class="flex p-2 relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
-                        <h4 class="text-xl font-semibold text-black dark:text-white ">Tuition Info:
+                        <h4 class="text-xl font-semibold ">Tuition Info:
                             @switch($tuitionInvoiceDetails[0]->tuitionInvoiceDetails->payment_type)
                                 @case('1')
                                     Full Payment
@@ -57,16 +57,16 @@
                         </h4>
                     </div>
                     <div class="flex p-2  relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
-                        <h4 class="text-xl font-semibold text-black dark:text-white ">Family Discount:
+                        <h4 class="text-xl font-semibold">Family Discount:
                         </h4>
-                        <h4 class="text-xl font-semibold text-black dark:text-white ">Price:
+                        <h4 class="text-xl font-semibold">Price:
                             {{ number_format($tuitionInvoiceDetails[0]->tuitionInvoiceDetails->applianceInformation->grantedFamilyDiscounts->discount_price) }}
                         </h4>
-                        <h4 class="text-xl font-semibold text-black dark:text-white ">Percent:
+                        <h4 class="text-xl font-semibold">Percent:
                             {{ $tuitionInvoiceDetails[0]->tuitionInvoiceDetails->applianceInformation->grantedFamilyDiscounts->discount_percent }}
                             %
                         </h4>
-                        <h4 class="text-xl font-semibold text-black dark:text-white ">Signed Student Number:
+                        <h4 class="text-xl font-semibold">Signed Student Number:
                             {{ $tuitionInvoiceDetails[0]->tuitionInvoiceDetails->applianceInformation->grantedFamilyDiscounts->signed_child_number }}
                         </h4>
                     </div>
@@ -204,75 +204,76 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="grid grid-cols-1 gap-2">
-                    <div class="flex p-2 relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
-                        <h4 class="text-xl font-semibold text-black dark:text-white ">Discounts Info:
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="p-4 text-center">
-                                        ID
-                                    </th>
-                                    <th scope="col" class="p-4 text-center">
-                                        Title
-                                    </th>
-                                    <th scope="col" class="p-4 text-center">
-                                        Percentage
-                                    </th>
-                                    <th scope="col" class="p-4 text-center">
-                                        Action
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                @php
-                                    $applicationReservation=ApplicationReservation::with(['applicationInfo'=>function ($query){
-                                                                $query->whereHas('interview',function ($query){
-                                                                    $query->where('interview_type','3');
-                                                                });
-                                                            }])
-                                                            ->whereHas('applicationInfo',function ($query){
-                                                                $query->whereHas('interview',function ($query){
-                                                                    $query->where('interview_type','3');
-                                                                });
-                                                            })
-                                                            ->where('student_id',$tuitionInvoiceDetails[0]->tuitionInvoiceDetails->applianceInformation->student_id)
-                                                            ->latest()
-                                                            ->first();
-                                    foreach ($applicationReservation->applicationInfo->interview as $interviews){
-                                        if ($interviews->interview_type!=3){ continue; }
-                                        $interviewDiscounts=json_decode($interviews['interview_form'],true)['discount'];
-                                    }
-                                @endphp
-                                @foreach($discounts as $discount)
+{{--                <div class="grid grid-cols-1 gap-2">--}}
+{{--                    <div class="flex p-2 relative overflow-x-auto shadow-md sm:rounded-lg bg-white">--}}
+{{--                        <h4 class="text-xl font-semibold text-black dark:text-white ">Discounts Info:--}}
+{{--                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">--}}
+{{--                                <thead--}}
+{{--                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">--}}
+{{--                                <tr>--}}
+{{--                                    <th scope="col" class="p-4 text-center">--}}
+{{--                                        ID--}}
+{{--                                    </th>--}}
+{{--                                    <th scope="col" class="p-4 text-center">--}}
+{{--                                        Title--}}
+{{--                                    </th>--}}
+{{--                                    <th scope="col" class="p-4 text-center">--}}
+{{--                                        Percentage--}}
+{{--                                    </th>--}}
+{{--                                    <th scope="col" class="p-4 text-center">--}}
+{{--                                        Action--}}
+{{--                                    </th>--}}
+{{--                                </tr>--}}
+{{--                                </thead>--}}
+{{--                                <tbody--}}
+{{--                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">--}}
+{{--                                @php--}}
+{{--                                    $applicationReservation=ApplicationReservation::with(['applicationInfo'=>function ($query){--}}
+{{--                                                                $query->whereHas('interview',function ($query){--}}
+{{--                                                                    $query->where('interview_type','3');--}}
+{{--                                                                });--}}
+{{--                                                            }])--}}
+{{--                                                            ->whereHas('applicationInfo',function ($query){--}}
+{{--                                                                $query->whereHas('interview',function ($query){--}}
+{{--                                                                    $query->where('interview_type','3');--}}
+{{--                                                                });--}}
+{{--                                                            })--}}
+{{--                                                            ->where('student_id',$tuitionInvoiceDetails[0]->tuitionInvoiceDetails->applianceInformation->student_id)--}}
+{{--                                                            ->latest()--}}
+{{--                                                            ->first();--}}
+{{--                                    foreach ($applicationReservation->applicationInfo->interview as $interviews){--}}
+{{--                                        if ($interviews->interview_type!=3){ continue; }else{--}}
+{{--                                            $interviewDiscounts=isset(json_decode($interviews['interview_form'],true)['discount']) ? json_decode($interviews['interview_form'],true)['discount'] : [];--}}
+{{--                                        }--}}
+{{--                                    }--}}
+{{--                                @endphp--}}
+{{--                                @foreach($discounts as $discount)--}}
 
-                                    <tr>
-                                        <td class="w-10 font-bold p-4 text-center">
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td class="w-1/3 font-bold p-4 text-center">
-                                            {{ $discount->name }}
-                                        </td>
-                                        <td class="font-bold p-4 text-center">
-                                            {{ $discount->percentage }}%
-                                        </td>
-                                        <td class="font-bold p-4 text-center">
-                                            <input class="discount-checks" type="checkbox"
-                                                   value="{{ $discount->id }}"
-                                                   @if(isset($interviewDiscounts) and in_array($discount->id,$interviewDiscounts)) checked
-                                                   @endif
-                                                   name="discount[]">
-                                        </td>
-                                    </tr>
-                                @endforeach
+{{--                                    <tr>--}}
+{{--                                        <td class="w-10 font-bold p-4 text-center">--}}
+{{--                                            {{ $loop->iteration }}--}}
+{{--                                        </td>--}}
+{{--                                        <td class="w-1/3 font-bold p-4 text-center">--}}
+{{--                                            {{ $discount->name }}--}}
+{{--                                        </td>--}}
+{{--                                        <td class="font-bold p-4 text-center">--}}
+{{--                                            {{ $discount->percentage }}%--}}
+{{--                                        </td>--}}
+{{--                                        <td class="font-bold p-4 text-center">--}}
+{{--                                            <input class="discount-checks" type="checkbox"--}}
+{{--                                                   value="{{ $discount->id }}"--}}
+{{--                                                   @if(isset($interviewDiscounts) and in_array($discount->id,$interviewDiscounts)) checked--}}
+{{--                                                   @endif--}}
+{{--                                                   name="discount[]">--}}
+{{--                                        </td>--}}
+{{--                                    </tr>--}}
+{{--                                @endforeach--}}
 
-                                </tbody>
-                            </table>
-                        </h4>
-                    </div>
-                </div>
+{{--                                </tbody>--}}
+{{--                            </table>--}}
+{{--                        </h4>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
             </div>
         </div>
