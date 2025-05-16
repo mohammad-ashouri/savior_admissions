@@ -65,8 +65,10 @@ class PaymentController extends Controller
                         $applianceStatus = new StudentApplianceStatus;
                         $applianceStatus->student_id = $applicationReservation->student_id;
                         $applianceStatus->academic_year = $applicationReservation->applicationInfo->applicationTimingInfo->academic_year;
+                        $applianceStatus->level = $applicationReservation->level;
                         $applianceStatus->interview_status = 'Pending Interview';
                     } else {
+                        $applianceStatus->level = $applicationReservation->level;
                         $applianceStatus->interview_status = 'Pending Interview';
                     }
                     $applianceStatus->save();
