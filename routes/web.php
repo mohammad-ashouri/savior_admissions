@@ -35,6 +35,9 @@ use App\Http\Middleware\SettingsCheck;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
+use App\Models\Branch\ApplicationReservation;
+use App\Models\Branch\ApplicationTiming;
+use App\Models\Branch\StudentApplianceStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -50,7 +53,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if (!Auth::check()) {
+    if (! Auth::check()) {
         return redirect()->route('login');
     }
 
@@ -88,7 +91,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
         Route::middleware(SettingsCheck::class)->group(function () {
             Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-            //Catalogs
+            // Catalogs
             Route::group([], function () {
                 Route::resources([
                     'Schools' => SchoolController::class,
@@ -100,17 +103,17 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
                 $resources = ['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
                 foreach ($resources as $resource) {
-                    Route::get("$resource/search", [ucfirst($resource) . 'Controller', 'search'])->name("$resource.search");
+                    Route::get("$resource/search", [ucfirst($resource).'Controller', 'search'])->name("$resource.search");
                 }
             });
 
-            //Get school educational charter
+            // Get school educational charter
             Route::get('GetEducationalCharter', [SchoolController::class, 'EducationalCharter'])->name('EducationalCharter');
 
-            //Search routes
+            // Search routes
             Route::get('/SearchRoles', [RoleController::class, 'search'])->name('Roles.search');
 
-            //Branch Info
+            // Branch Info
             Route::resource('AcademicYearClasses', AcademicYearClassController::class);
             Route::get('/GetLevelsForAcademicYearClass', [AcademicYearClassController::class, 'levels']);
             Route::get('/GetAcademicYearStarttimeAndEndtime', [AcademicYearClassController::class, 'academicYearStarttimeAndEndtime']);
@@ -129,7 +132,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::post('/SetInterview', [InterviewController::class, 'SetInterview'])->name('interviews.SetInterview');
             Route::post('/SubmitAbsence', [InterviewController::class, 'submitAbsence'])->name('interviews.submitAbsence');
 
-            //Finance
+            // Finance
             Route::resource('ReservationInvoices', ApplicationReservationController::class);
             Route::post('ChangeApplicationPaymentStatus', [ApplicationReservationController::class, 'changeApplicationPaymentStatus']);
             Route::get('SearchReservationInvoices', [ApplicationReservationController::class, 'searchReservationInvoices'])->name('SearchReservationInvoices');
@@ -142,11 +145,11 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('EditApplianceInvoices/{appliance_id}', [TuitionPaymentController::class, 'applianceInvoicesEdit'])->name('applianceInvoices.edit');
             Route::get('AllTuitions/{academic_year?}', [TuitionController::class, 'allTuitions'])->name('allTuitions');
 
-            //Pay Tuition
+            // Pay Tuition
             Route::get('PayTuition/{student_id}', [TuitionController::class, 'payTuition'])->name('Tuitions.PayTuition');
             Route::post('PayTuition', [TuitionController::class, 'tuitionPayment'])->name('Tuitions.Pay');
 
-            //Payment list
+            // Payment list
             Route::resource('TuitionInvoices', TuitionPaymentController::class);
             Route::get('searchTuitionInvoices', [TuitionPaymentController::class, 'search'])->name('searchTuitionInvoices');
             Route::post('TuitionInvoices/ChangeInvoiceStatus', [TuitionPaymentController::class, 'changeTuitionInvoiceStatus']);
@@ -170,11 +173,11 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::post('users/change_school_admin_information', [UserController::class, 'changePrincipalInformation'])->middleware('can:access-SuperAdmin');
             Route::get('/searchUsers', [UserController::class, 'searchUser'])->name('searchUser');
 
-            //Students management
+            // Students management
             Route::resource('Students', StudentController::class);
             Route::post('Students/uploadPersonalPicture', [StudentController::class, 'uploadPersonalPicture'])->name('UploadPersonalPicture');
 
-            //Applications
+            // Applications
             Route::resource('Applications', ApplicationController::class);
             Route::post('Applications/RemoveFromReserve/{id}', [ApplicationController::class, 'removeFromReserve']);
             Route::post('Applications/ChangeInterviewStatus/{id}', [ApplicationController::class, 'changeApplicationStatus']);
@@ -196,23 +199,23 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
                 Route::post('/Delete', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
             });
             Route::get('UploadStudentDocumentByParent/{student_id}', UploadDocumentsParentCreate::class)->name('Document.UploadByParent');
-//            Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
+            //            Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
             Route::get('EditUploadedEvidences/{student_id}', UploadDocumentsParentEdit::class)->name('Document.EditUploadedEvidences');
-//            Route::post('EditUploadedEvidences', [DocumentController::class, 'updateStudentDocuments'])->name('Document.EditUploadedEvidences.update');
+            //            Route::post('EditUploadedEvidences', [DocumentController::class, 'updateStudentDocuments'])->name('Document.EditUploadedEvidences.update');
 
-            //Application confirmation
+            // Application confirmation
             Route::get('ConfirmApplication', [ApplicationController::class, 'confirmApplication'])->name('Application.ConfirmApplicationList');
             Route::get('ConfirmApplication/{application_id}/{appliance_id}', [ApplicationController::class, 'showApplicationConfirmation']);
             Route::post('ConfirmApplication', [ApplicationController::class, 'confirmStudentAppliance'])->name('Application.ConfirmApplication');
 
-            //Evidences confirmation
+            // Evidences confirmation
             Route::get('ConfirmEvidences', [EvidenceController::class, 'index'])->name('Evidences');
             Route::get('ConfirmEvidences/{appliance_id}', UploadDocumentsParentShow::class)->name('Evidences.show');
             Route::get('Evidences/show/{appliance_id}', UploadDocumentsParentShow::class)->name('Evidences.showEvidence');
-//            Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
+            //            Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
             Route::post('ExtensionOfDocumentUpload', [EvidenceController::class, 'extensionOfDocumentUpload'])->name('Evidences.extensionOfDocumentUpload');
 
-            //Student status
+            // Student status
             Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
             Route::get('SearchStudentApplianceStatuses', [StudentController::class, 'search'])->name('SearchStudentApplianceStatuses');
             Route::get('GetApplianceConfirmationInformation', [StudentController::class, 'getApplianceConfirmationInformation']);
@@ -220,8 +223,8 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('SearchStudentStatisticsReport', [StudentController::class, 'searchStudentStatisticsReport'])->name('SearchStudentStatisticsReport');
             Route::get('StudentStatuses/export-excel', [ExcelController::class, 'exportStudentStatuses']);
 
-            //Exports
-            //PDF
+            // Exports
+            // PDF
             Route::prefix('PDF')->group(function () {
                 Route::get('/tuition_card_en/{appliance_id}', [PDFExportController::class, 'tuitionCardEnExport'])->name('tuitionCard.en');
                 Route::get('/tuition_card_fa/{appliance_id}', [PDFExportController::class, 'tuitionCardFaExport'])->name('tuitionCard.fa');
@@ -229,7 +232,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
         });
 
-        //SMS
+        // SMS
         Route::post('sendSMS', [SMSController::class, 'sendSMS'])->name('sms.send');
 
     });
@@ -240,18 +243,36 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
     });
 });
 
-//Payments
+// Payments
 Route::post('/VerifyApplicationPayment', [PaymentController::class, 'verifyApplicationPayment']);
 Route::post('/VerifyTuitionPayment', [PaymentController::class, 'verifyTuitionPayment']);
 Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'verifyTuitionInstallmentPayment']);
 
-//Route::get('/import-excel', [ExcelController::class, 'index']);
-//Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
-//Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');
-//Route::post('/importDocuments', [ExcelController::class, 'importDocuments'])->name('excel.importDocuments');
-//Route::post('/importParentFathers', [ExcelController::class, 'importParentFathers'])->name('excel.importParentFathers');
-//Route::post('/importParentMothers', [ExcelController::class, 'importParentMothers'])->name('excel.importParentMothers');
-//Route::post('/importNewUsers', [ExcelController::class, 'importNewUsers'])->name('excel.importNewUsers');
-//Route::get('/ExportExcelFromUsersMobile', [ExcelController::class, 'exportExcelFromUsersMobile'])->name('excel.importParentMothers');
-//Route::get('/ExportExcelFromAllStudents', [ExcelController::class, 'exportExcelFromAllStudents']);
-//Route::get('/ExportExcelFromAllGuardianWithStudents', [ExcelController::class, 'exportExcelFromAllGuardianWithStudents']);
+Route::get('/testquery', function () {
+    $applianceStatuses = StudentApplianceStatus::whereNotNull('interview_status')->get();
+
+    foreach ($applianceStatuses as $appliance) {
+        $applicationReservation = ApplicationReservation::where('payment_status', 1)
+            ->where('student_id', $appliance->student_id)
+            ->whereHas('applicationInfo', function ($query) use ($appliance) {
+                $query->whereHas('applicationTimingInfo', function ($query) use ($appliance) {
+                    $query->where('academic_year',$appliance->academic_year);
+                });
+            })
+            ->latest()->first();
+        $applianceStatuses = StudentApplianceStatus::find($appliance->id)->update([
+            'level'=>$applicationReservation->level
+        ]);
+    }
+
+});
+// Route::get('/import-excel', [ExcelController::class, 'index']);
+// Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
+// Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');
+// Route::post('/importDocuments', [ExcelController::class, 'importDocuments'])->name('excel.importDocuments');
+// Route::post('/importParentFathers', [ExcelController::class, 'importParentFathers'])->name('excel.importParentFathers');
+// Route::post('/importParentMothers', [ExcelController::class, 'importParentMothers'])->name('excel.importParentMothers');
+// Route::post('/importNewUsers', [ExcelController::class, 'importNewUsers'])->name('excel.importNewUsers');
+// Route::get('/ExportExcelFromUsersMobile', [ExcelController::class, 'exportExcelFromUsersMobile'])->name('excel.importParentMothers');
+// Route::get('/ExportExcelFromAllStudents', [ExcelController::class, 'exportExcelFromAllStudents']);
+// Route::get('/ExportExcelFromAllGuardianWithStudents', [ExcelController::class, 'exportExcelFromAllGuardianWithStudents']);

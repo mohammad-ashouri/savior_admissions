@@ -185,7 +185,7 @@
                                             class=" items-center text-center px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                             <div>
                                                 <div
-                                                    class="text-base font-semibold">{{ $applicationStatus->levelInfo?->levelInfo->name }}</div>
+                                                    class="text-base font-semibold">{{ $applicationStatus->levelInfo->name }}</div>
                                             </div>
                                         </th>
                                         <th scope="row"

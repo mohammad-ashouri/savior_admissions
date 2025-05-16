@@ -3,11 +3,11 @@
 namespace App\Models\Branch;
 
 use App\Models\Catalogs\AcademicYear;
+use App\Models\Catalogs\Level;
 use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -21,6 +21,7 @@ class StudentApplianceStatus extends Model
         'id',
         'student_id',
         'academic_year',
+        'level',
         'interview_status',
         'documents_uploaded',
         'documents_uploaded_approval',
@@ -79,11 +80,7 @@ class StudentApplianceStatus extends Model
 
     public function levelInfo()
     {
-        return $this->hasOne(ApplicationReservation::class, 'student_id', 'student_id')
-            ->whereHas('applicationInfo', function ($query) {
-                $query->where('reserved', 1);
-            })
-            ->latest('id');
+        return $this->belongsTo(Level::class, 'level');
     }
 
     public function grantedFamilyDiscounts()

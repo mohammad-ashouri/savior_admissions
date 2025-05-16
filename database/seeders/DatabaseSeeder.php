@@ -34,7 +34,8 @@ class DatabaseSeeder extends Seeder
             //            AddImpersonatePermission::class,
             //            AllTuitionsPermission::class,
 //            RevokeSomePermissions::class,
-            AddStudentStatisticsReportPermission::class,
+//            AddStudentStatisticsReportPermission::class,
+            AddLevelsToStudentApplianceStatuses::class,
         ]);
     }
 }
