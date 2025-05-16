@@ -24,11 +24,10 @@ class EvidenceController extends Controller
 
     public function index()
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
-        } elseif ($me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -47,11 +46,10 @@ class EvidenceController extends Controller
 
     public function show($appliance_id)
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
-        } elseif ($me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -81,11 +79,10 @@ class EvidenceController extends Controller
 
     public function confirmEvidences(Request $request)
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
-        } elseif ($me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -121,7 +118,7 @@ class EvidenceController extends Controller
                 abort(403);
         }
         $studentAppliance->seconder_description = $request->description;
-        $studentAppliance->documents_uploaded_seconder = $me->id;
+        $studentAppliance->documents_uploaded_seconder = auth()->user()->id;
         $studentAppliance->save();
 
         return redirect()->route('Evidences')
@@ -130,7 +127,6 @@ class EvidenceController extends Controller
 
     public function extensionOfDocumentUpload(Request $request)
     {
-        $me = User::find(auth()->user()->id);
         $validator = Validator::make($request->all(), [
             'appliance_id' => 'required|integer|exists:student_appliance_statuses,id',
         ]);
@@ -138,11 +134,11 @@ class EvidenceController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $applianceId = $request->appliance_id;
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $appliance = StudentApplianceStatus::find($applianceId);
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -169,11 +165,10 @@ class EvidenceController extends Controller
 
     public function showEvidence($appliance_id)
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
-        } elseif ($me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools

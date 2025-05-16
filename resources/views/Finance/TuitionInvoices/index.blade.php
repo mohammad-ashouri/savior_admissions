@@ -192,7 +192,7 @@
                                                 </a>
                                                 @break
                                             @case('0')
-                                                @if($me->hasRole('Parent'))
+                                                @if(auth()->user()->hasExactRoles(['Parent']))
                                                     <a href="/PayTuitionInstallment/{{ $invoice->id }}">
                                                         <button type="button"
                                                                 class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">

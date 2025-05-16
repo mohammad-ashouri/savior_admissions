@@ -1,5 +1,4 @@
 @php use App\Models\User;
- $me=User::find(auth()->user()->id);
 @endphp
 @extends('Layouts.panel')
 @section('content')
@@ -36,21 +35,21 @@
                         <form id="set-interview" method="post" enctype="multipart/form-data"
                               action="{{route('interviews.SetInterview')}}">
                             @csrf
-                            @if ($interview->first_interviewer == $me->id and $form=='i1')
+                            @if ($interview->first_interviewer == auth()->user()->id and $form=='i1')
                                 @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                     @include('BranchInfo.Interviews.Forms.1.KG.Set.interviewer1')
                                 @else
                                     @include('BranchInfo.Interviews.Forms.1.Levels.Set.interviewer1')
                                 @endif
                             @endif
-                            @if ($interview->second_interviewer == $me->id and $form=='i2')
+                            @if ($interview->second_interviewer == auth()->user()->id and $form=='i2')
                                 @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                     @include('BranchInfo.Interviews.Forms.1.KG.Set.interviewer2')
                                 @else
                                     @include('BranchInfo.Interviews.Forms.1.Levels.Set.interviewer2')
                                 @endif
                             @endif
-                            @if ($me->hasRole('Financial Manager') and $form=='fm')
+                            @if (auth()->user()->hasRole('Financial Manager') and $form=='fm')
                                 @if ($interview->reservationInfo->level == 1 or $interview->reservationInfo->level == 2)
                                     @include('BranchInfo.Interviews.Forms.1.KG.Set.admissions_officer')
                                 @else

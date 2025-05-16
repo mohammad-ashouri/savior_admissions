@@ -115,16 +115,15 @@ class ExcelController extends Controller
             'academicYear' => 'required|integer|exists:academic_years,id',
         ]);
 
-        $me = User::find(auth()->user()->id);
         $academicYear = $request->academicYear;
         $students = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with(['studentInfo', 'academicYearInfo', 'documentSeconder'])
                 ->whereAcademicYear($academicYear)
                 ->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools

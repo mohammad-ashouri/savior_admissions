@@ -10,6 +10,9 @@ use App\Models\Catalogs\Level;
 use App\Models\User;
 use App\Models\UserAccessInformation;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,11 +27,10 @@ class ApplicationTimingController extends Controller
         $this->middleware('permission:application-timing-search', ['only' => ['searchApplicationTiming']]);
     }
 
-    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         $applicationTimings = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $applicationTimings = ApplicationTiming::with('academicYearInfo')
                 ->with('firstInterviewer')
                 ->with('secondInterviewer')
@@ -36,8 +38,8 @@ class ApplicationTimingController extends Controller
             if ($applicationTimings->isEmpty()) {
                 $applicationTimings = [];
             }
-        } elseif (! $me->hasRole('Super Admin')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (! auth()->user()->hasRole('Super Admin')) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $applicationTimings = ApplicationTiming::with('academicYearInfo')
                 ->with('firstInterviewer')
@@ -56,14 +58,13 @@ class ApplicationTimingController extends Controller
         return view('BranchInfo.ApplicationTimings.index', compact('applicationTimings'));
     }
 
-    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         $academicYears = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::whereStatus(1)->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             if ($academicYears->count() == 0) {
@@ -100,12 +101,11 @@ class ApplicationTimingController extends Controller
             return redirect()->back()->withErrors(['errors' => 'The first and second interviewers cannot be equal.'])->withInput();
         }
 
-        $me = User::find(auth()->user()->id);
         $academicYears = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::whereStatus(1)->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             if ($academicYears->count() == 0) {
@@ -178,17 +178,16 @@ class ApplicationTimingController extends Controller
             ->with('success', 'Application timing created successfully');
     }
 
-    public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function show($id): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         $applicationTiming = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $applicationTiming = ApplicationTiming::with('applications')
                 ->with('firstInterviewer')
                 ->with('secondInterviewer')
                 ->find($id);
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $applicationTiming = ApplicationTiming::with('academicYearInfo')
                 ->with('firstInterviewer')
@@ -206,7 +205,6 @@ class ApplicationTimingController extends Controller
 
     public function interviewers(Request $request)
     {
-        $me = User::find(auth()->user()->id);
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
         ]);
@@ -216,11 +214,11 @@ class ApplicationTimingController extends Controller
 
         $academicYear = $request->academic_year;
 
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYearInterviewers = AcademicYear::whereStatus(1)->whereId($academicYear)->pluck('employees')->first();
             $interviewers = User::whereIn('id', json_decode($academicYearInterviewers, true)['Interviewer'][0])->whereStatus(1)->with('generalInformationInfo')->get()->keyBy('id')->toArray();
         } else {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYearInterviewers = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->pluck('employees')->first();
             if (empty($academicYearInterviewers)) {
@@ -237,7 +235,6 @@ class ApplicationTimingController extends Controller
 
     public function grades(Request $request)
     {
-        $me = User::find(auth()->user()->id);
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
         ]);
@@ -248,11 +245,11 @@ class ApplicationTimingController extends Controller
         $academicYear = $request->academic_year;
 
         $academicYearGrades = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYearGrades = AcademicYear::whereStatus(1)->whereId($academicYear)->pluck('levels')->first();
             $grades = Level::whereIn('id', json_decode($academicYearGrades, true))->get()->toArray();
         } else {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYearGrades = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->pluck('levels')->first();
             $grades = Level::whereIn('id', json_decode($academicYearGrades, true))->get()->toArray();
@@ -263,9 +260,8 @@ class ApplicationTimingController extends Controller
 
     public function destroy($id): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(auth()->user()->id);
         $applicationTiming = $applications = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $applicationTiming = ApplicationTiming::with('applications')
                 ->whereId($id)
                 ->whereHas('applications', function ($query) use ($id) {
@@ -273,8 +269,8 @@ class ApplicationTimingController extends Controller
                 })
                 ->first();
 
-        } elseif (! $me->hasRole('Super Admin')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (! auth()->user()->hasRole('Super Admin')) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $applicationTiming = ApplicationTiming::with('applications')
                 ->join('academic_years', 'application_timings.academic_year', '=', 'academic_years.id')

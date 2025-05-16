@@ -48,9 +48,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $me = User::with('generalInformationInfo')->find(auth()->user()->id);
-
-        if (empty($me)) {
+        if (empty(auth()->user())) {
             redirect()->route('logout');
         }
 
@@ -69,7 +67,7 @@ class DashboardController extends Controller
 
         //Students
         $students = collect();
-        if (auth()->user()->hasExactRoles(['Parent'])) {
+        if (auth()->user()->hasRole(['Parent'])) {
             $parentStudents = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with(['studentInfo', 'nationalityInfo', 'identificationTypeInfo', 'generalInformations'])
                 ->orderBy('id', 'desc')->orderBy('student_id', 'asc')->get();
@@ -83,8 +81,8 @@ class DashboardController extends Controller
 
         //Applications
         $applicationStatuses = [];
-        if (auth()->user()->hasExactRoles(['Parent'])) {
-            $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
+        if (auth()->user()->hasRole(['Parent'])) {
+            $myStudents = StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
             $applicationStatuses = StudentApplianceStatus::with('studentInfo','academicYearInfo','levelInfo')
                 ->whereIn('student_id', $myStudents)
                 ->orderByDesc('academic_year')
@@ -95,8 +93,7 @@ class DashboardController extends Controller
         if (empty($applicationStatuses)) {
             $applicationStatuses = [];
         }
-
-        return view('Dashboards.Main', compact('me',
+        return view('Dashboards.Main', compact(
             'allRegisteredStudentsInLastAcademicYear',
             'acceptedStudentNumberStatusByAcademicYear',
             'reservedApplicationsByAcademicYear',

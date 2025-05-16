@@ -11,16 +11,14 @@ class PDFExportController extends Controller
 {
     public function tuitionCardEnExport($appliance_id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = auth()->user()->id;
         $applianceStatus = StudentApplianceStatus::find($appliance_id);
 
-        $me = User::find($me);
-        if ($me) {
-            if ($me->hasRole('Parent')) {
-                $checkGuardian = StudentInformation::whereGuardian($me->id)->whereStudentId($applianceStatus->student_id)->exists();
-            } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager') or $me->hasRole('Admissions Officer')) {
+        if (auth()->user()) {
+            if (auth()->user()->hasExactRoles(['Parent'])) {
+                $checkGuardian = StudentInformation::whereGuardian(auth()->user()->id)->whereStudentId($applianceStatus->student_id)->exists();
+            } elseif (auth()->user()->hasRole(['Principal','Admissions Officer','Financial Manager'])) {
                 $checkGuardian = StudentApplianceStatus::whereStudentId($applianceStatus->student_id)->whereIn('academic_year', $this->getActiveAcademicYears())->exists();
-            } elseif ($me->hasRole('Super Admin')) {
+            } elseif (auth()->user()->hasRole('Super Admin')) {
                 $checkGuardian = StudentApplianceStatus::whereStudentId($applianceStatus->student_id)->exists();
             }
             if (! $checkGuardian) {
@@ -35,16 +33,14 @@ class PDFExportController extends Controller
 
     public function tuitionCardFaExport($appliance_id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = auth()->user()->id;
         $applianceStatus = StudentApplianceStatus::find($appliance_id);
 
-        $me = User::find($me);
-        if ($me) {
-            if ($me->hasRole('Parent')) {
-                $checkGuardian = StudentInformation::whereGuardian($me->id)->whereStudentId($applianceStatus->student_id)->exists();
-            } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager') or $me->hasRole('Admissions Officer')) {
+        if (auth()->user()) {
+            if (auth()->user()->hasExactRoles(['Parent'])) {
+                $checkGuardian = StudentInformation::whereGuardian(auth()->user()->id)->whereStudentId($applianceStatus->student_id)->exists();
+            } elseif (auth()->user()->hasRole(['Principal','Admissions Officer','Financial Manager'])) {
                 $checkGuardian = StudentApplianceStatus::whereStudentId($applianceStatus->student_id)->whereIn('academic_year', $this->getActiveAcademicYears())->exists();
-            } elseif ($me->hasRole('Super Admin')) {
+            } elseif (auth()->user()->hasRole('Super Admin')) {
                 $checkGuardian = StudentApplianceStatus::whereStudentId($applianceStatus->student_id)->exists();
             }
             if (! $checkGuardian) {

@@ -89,7 +89,7 @@
                                 <th scope="col" class="text-center">
                                     Gender
                                 </th>
-                                @if(!$me->hasRole('Parent'))
+                                @if(!auth()->user()->hasExactRoles(['Parent']))
                                     <th scope="col" class="text-center">
                                         Academic Year
                                     </th>
@@ -140,7 +140,7 @@
                                                 class="text-base font-semibold">{{ $student->studentInfo->generalInformationInfo->gender }}</div>
                                         </div>
                                     </th>
-                                    @if(!$me->hasRole('Parent'))
+                                    @if(!auth()->user()->hasExactRoles(['Parent']))
                                         <th scope="row"
                                             class=" items-center text-center text-gray-900 whitespace-nowrap dark:text-white">
                                             <div class="pl-3">

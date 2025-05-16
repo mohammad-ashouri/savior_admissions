@@ -23,13 +23,12 @@ class DiscountsController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         $discounts = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $discounts = Discount::with('academicYearInfo')->orderBy('academic_year', 'desc')->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole(['Financial Manager','Super Admin'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -47,13 +46,12 @@ class DiscountsController extends Controller
 
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         $discounts = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $discounts = Discount::with('academicYearInfo')->with('allDiscounts')->orderBy('academic_year', 'desc')->find($id);
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole(['Financial Manager','Super Admin'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -71,13 +69,12 @@ class DiscountsController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(auth()->user()->id);
         $discounts = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $discounts = Discount::with('academicYearInfo')->with('allDiscounts')->orderBy('academic_year', 'desc')->find($request->discount_id);
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools

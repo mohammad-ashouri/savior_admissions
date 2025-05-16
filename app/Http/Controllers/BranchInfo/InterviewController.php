@@ -31,12 +31,11 @@ class InterviewController extends Controller
 
     public function index(Request $request)
     {
-        $me = User::find(auth()->user()->id);
         $interviews = [];
         $academicYears = [];
 
-        if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
+        if (auth()->user()->hasExactRoles(['Parent'])) {
+            $myStudents = StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
             $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
             $interviews = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -54,7 +53,7 @@ class InterviewController extends Controller
 
 
         if ($request->academic_year) {
-            if ($me->hasRole('Super Admin')) {
+            if (auth()->user()->hasRole('Super Admin')) {
                 $academicYears = AcademicYear::get();
 
                 $interviews = Applications::with('firstInterviewerInfo')
@@ -73,9 +72,9 @@ class InterviewController extends Controller
                     ->orderBy('ends_to', 'asc')
                     ->orderBy('start_from', 'asc')
                     ->get();
-            } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
+            } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
                 // Convert accesses to arrays and remove duplicates
-                $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+                $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
                 $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
                 // Finding academic years with status 1 in the specified schools
@@ -104,7 +103,7 @@ class InterviewController extends Controller
                     ->orderBy('start_from', 'asc')
                     ->get();
 
-            } elseif ($me->hasRole('Interviewer')) {
+            } elseif (auth()->user()->hasRole('Interviewer')) {
                 $interviews = Applications::with('firstInterviewerInfo')
                     ->with('secondInterviewerInfo')
                     ->with('reservationInfo')
@@ -116,9 +115,9 @@ class InterviewController extends Controller
                         $query->where('academic_year', $request->academic_year);
                     })
                     ->whereReserved(1)
-                    ->where(function ($query) use ($me) {
-                        $query->where('first_interviewer', $me->id)
-                            ->orWhere('second_interviewer', $me->id);
+                    ->where(function ($query) {
+                        $query->where('first_interviewer', auth()->user()->id)
+                            ->orWhere('second_interviewer', auth()->user()->id);
                     })
                     ->orderBy('interviewed', 'asc') // Corrected column name
                     ->orderBy('date', 'asc')
@@ -133,18 +132,18 @@ class InterviewController extends Controller
             $interviews = [];
         }
 
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::orderByDesc('id')->get();
-        } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
+        } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->orderByDesc('id')->get();
-        } elseif ($me->hasRole('Interviewer')) {
+        } elseif (auth()->user()->hasRole('Interviewer')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesI($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -157,13 +156,12 @@ class InterviewController extends Controller
 
     public function GetInterviewForm($form,$id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         if ($form!='i1' and $form!='i2' and $form!='fm'){
             abort(403);
         }
 
         $interview = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
@@ -173,9 +171,9 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Principal')) {
+        } elseif (auth()->user()->hasRole('Principal')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -196,9 +194,9 @@ class InterviewController extends Controller
                 ->orderBy('start_from', 'desc')
                 ->first();
 
-        } elseif ($me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -226,15 +224,15 @@ class InterviewController extends Controller
                     abort(403);
             }
 
-        } elseif ($me->hasRole('Interviewer')) {
+        } elseif (auth()->user()->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->whereReserved(1)
-                ->where(function ($query) use ($me) {
-                    $query->where('first_interviewer', $me->id)
-                        ->orWhere('second_interviewer', $me->id);
+                ->where(function ($query) {
+                    $query->where('first_interviewer', auth()->user()->id)
+                        ->orWhere('second_interviewer', auth()->user()->id);
                 })
                 ->where('Interviewed', 0)
                 ->whereId($id)
@@ -264,10 +262,9 @@ class InterviewController extends Controller
 
     public function SetInterview(Request $request)
     {
-        $me = User::find(auth()->user()->id);
         $application = [];
 
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
@@ -277,9 +274,9 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -300,15 +297,15 @@ class InterviewController extends Controller
                 ->orderBy('start_from', 'desc')
                 ->first();
 
-        } elseif ($me->hasRole('Interviewer')) {
+        } elseif (auth()->user()->hasRole('Interviewer')) {
             $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->whereReserved(1)
-                ->where(function ($query) use ($me) {
-                    $query->where('first_interviewer', $me->id)
-                        ->orWhere('second_interviewer', $me->id);
+                ->where(function ($query) {
+                    $query->where('first_interviewer', auth()->user()->id)
+                        ->orWhere('second_interviewer', auth()->user()->id);
                 })
                 ->where('Interviewed', 0)
                 ->whereId($request->application_id)
@@ -442,13 +439,12 @@ class InterviewController extends Controller
 
     public function show($form,$id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         if ($form!='i1' and $form!='i2' and $form!='fm'){
             abort(403);
         }
         $interview = [];
-        if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
+        if (auth()->user()->hasExactRoles(['Parent'])) {
+            $myStudents = StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
             $reservations = ApplicationReservation::whereIn('student_id', $myStudents)->pluck('application_id')->toArray();
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
@@ -460,7 +456,7 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Super Admin')) {
+        } elseif (auth()->user()->hasRole('Super Admin')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
@@ -471,9 +467,9 @@ class InterviewController extends Controller
                 ->orderBy('ends_to', 'desc')
                 ->orderBy('start_from', 'desc')
                 ->first();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -491,9 +487,9 @@ class InterviewController extends Controller
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->whereId($id)
                 ->first();
-        } elseif ($me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -511,16 +507,16 @@ class InterviewController extends Controller
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->whereId($id)
                 ->first();
-        } elseif ($me->hasRole('Interviewer')) {
+        } elseif (auth()->user()->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
                 ->whereReserved(1)
-                ->where(function ($query) use ($me) {
-                    $query->where('first_interviewer', $me->id)
-                        ->orWhere('second_interviewer', $me->id);
+                ->where(function ($query) {
+                    $query->where('first_interviewer', auth()->user()->id)
+                        ->orWhere('second_interviewer', auth()->user()->id);
                 })
                 ->whereId($id)
                 ->first();
@@ -540,14 +536,13 @@ class InterviewController extends Controller
 
     public function edit($form,$id): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         if ($form!='i1' and $form!='i2' and $form!='fm'){
             abort(403);
         }
         $interview = [];
-        if ($me->hasRole('Financial Manager')) {
+        if (auth()->user()->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -565,16 +560,16 @@ class InterviewController extends Controller
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->whereId($id)
                 ->first();
-        } elseif ($me->hasRole('Interviewer')) {
+        } elseif (auth()->user()->hasRole('Interviewer')) {
             $interview = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
                 ->whereReserved(1)
-                ->where(function ($query) use ($me) {
-                    $query->where('first_interviewer', $me->id)
-                        ->orWhere('second_interviewer', $me->id);
+                ->where(function ($query) {
+                    $query->where('first_interviewer', auth()->user()->id)
+                        ->orWhere('second_interviewer', auth()->user()->id);
                 })
                 ->whereId($id)
                 ->first();
@@ -603,11 +598,10 @@ class InterviewController extends Controller
 
     public function update(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(auth()->user()->id);
         $application = [];
-        if ($me->hasRole('Financial Manager')) {
+        if (auth()->user()->hasRole('Financial Manager')) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -628,15 +622,15 @@ class InterviewController extends Controller
                 ->orderBy('start_from', 'desc')
                 ->first();
 
-        } elseif ($me->hasRole('Interviewer')) {
+        } elseif (auth()->user()->hasRole('Interviewer')) {
             $application = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->whereReserved(1)
-                ->where(function ($query) use ($me) {
-                    $query->where('first_interviewer', $me->id)
-                        ->orWhere('second_interviewer', $me->id);
+                ->where(function ($query) {
+                    $query->where('first_interviewer', auth()->user()->id)
+                        ->orWhere('second_interviewer', auth()->user()->id);
                 })
                 ->where('Interviewed', 0)
                 ->whereId($request->application_id)
@@ -748,16 +742,15 @@ class InterviewController extends Controller
         /* TODO:
         1- validation application id by academic year permission
         */
-        $me = User::find(auth()->user()->id);
         $applicationId = $request->application_id;
 
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $application = Applications::where('reserved', 1)
                 ->whereId($applicationId)
                 ->first();
-        } elseif ($me->hasRole('Interviewer')) {
+        } elseif (auth()->user()->hasRole('Interviewer')) {
             $application = Applications::where('reserved', 1)
-                ->where('first_interviewer', $me->id)
+                ->where('first_interviewer', auth()->user()->id)
                 ->whereId($applicationId)
                 ->first();
         }
@@ -797,18 +790,17 @@ class InterviewController extends Controller
         $lastName = $request->student_last_name;
         $applicationId = $request->application_id;
 
-        $me = User::find(auth()->user()->id);
         $interviews = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $data = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
                 ->where('applications.reserved', 1);
-        } elseif ($me->hasRole('Financial Manager') or $me->hasRole('Principal')) {
+        } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -825,15 +817,15 @@ class InterviewController extends Controller
                 ->with('interview')
                 ->whereIn('application_timing_id', $applicationTimings)
                 ->where('applications.reserved', 1);
-        } elseif ($me->hasRole('Interviewer')) {
+        } elseif (auth()->user()->hasRole('Interviewer')) {
             $data = Applications::with('applicationTimingInfo')
                 ->with('firstInterviewerInfo')
                 ->with('secondInterviewerInfo')
                 ->with('reservationInfo')
                 ->with('interview')
-                ->where(function ($query) use ($me) {
-                    $query->where('first_interviewer', $me->id)
-                        ->orWhere('second_interviewer', $me->id);
+                ->where(function ($query) {
+                    $query->where('first_interviewer', auth()->user()->id)
+                        ->orWhere('second_interviewer', auth()->user()->id);
                 })
                 ->where('applications.reserved', 1);
         }

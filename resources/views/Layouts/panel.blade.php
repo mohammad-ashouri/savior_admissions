@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 @php
     use App\Models\User;
-    $me=User::with('generalInformationInfo')->find(auth()->user()->id);
 @endphp
 <html class="light" lang="en">
 <head>
@@ -433,10 +432,10 @@
                         id="dropdown-user">
                         <div class="px-4 py-3" role="none">
                             <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                {{ $me->generalInformationInfo->first_name_en }} {{ $me->generalInformationInfo->last_name_en }}
+                                {{ auth()->user()->generalInformationInfo->first_name_en }} {{ auth()->user()->generalInformationInfo->last_name_en }}
                             </p>
                             <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                                {{ $me->email }}
+                                {{ auth()->user()->email }}
                             </p>
                         </div>
                         <ul class="py-1" role="none">
@@ -743,7 +742,7 @@
                     <span class="ml-4">Profile</span>
                 </a>
             </li>
-            @if($me->hasRole('Super Admin'))
+            @if(auth()->user()->hasRole('Super Admin'))
                 <li>
                     <a href="/telescope"
                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">

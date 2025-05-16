@@ -50,7 +50,7 @@
                             </div>
                             <div>
                                 <p class="font-bold">Status: </p>
-                                @if($me->hasRole('Principal') or $me->hasRole('Financial Manager') or $me->hasRole('Super Admin'))
+                                @if(auth()->user()->hasRole(['Principal','Financial Manager','Super Admin']))
                                     @if($tuitionInvoiceDetails->is_paid==2)
                                         <div class="flex">
                                             <select name="payment_status" id="payment_status"
@@ -198,7 +198,7 @@
 
                                             <p class="font-bold mb-3">Payment Date</p>
                                             <div class="flex">
-                                                @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
+                                                @if(auth()->user()->hasRole(['Financial Manager','Super Admin']))
                                                     <input type="text"
                                                            id="date_of_payment"
                                                            name="date_of_payment"
@@ -213,7 +213,7 @@
                                         <div class="mt-3 ">
                                             <p class="font-bold mb-3">Tracking Code</p>
                                             <div class="flex">
-                                                @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
+                                                @if(auth()->user()->hasRole(['Financial Manager','Super Admin']))
                                                     <input type="text"
                                                            value="{{ $tuitionInvoiceDetails->tracking_code }}"
                                                            id="tracking_code"
@@ -229,7 +229,7 @@
                                         <div class="mt-3 ">
                                             <p class="font-bold mb-3">Description</p>
                                             <div class="flex">
-                                                @if(auth()->user()->hasRole('Financial Manager') or auth()->user()->hasRole('Super Admin'))
+                                                @if(auth()->user()->hasRole(['Financial Manager','Super Admin']))
                                                     <textarea
                                                             id="description"
                                                             rows="5"

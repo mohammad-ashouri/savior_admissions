@@ -30,10 +30,10 @@ class ApplicationReservationController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
+
         $applications = $principalAccess = $financialManagerAccess = [];
 
-        //        if ($me->hasRole('Super Admin')) {
+        //        if (auth()->user()->hasRole('Super Admin')) {
         //            $applications = ApplicationReservation::with('applicationInfo')
         //                ->with('studentInfo')
         //                ->with('reservatoreInfo')
@@ -44,9 +44,9 @@ class ApplicationReservationController extends Controller
         //                ->orderBy('application_reservations.payment_status', 'desc')
         //                ->orderBy('application_timings.academic_year', 'desc')
         //                ->paginate(150);
-        //        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        //        } elseif (auth()->user()->hasRole('Principal') or auth()->user()->hasRole('Financial Manager')) {
         //            // Convert accesses to arrays and remove duplicates
-        //            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        //            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
         //            $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
         //
         //            // Finding academic years with status 1 in the specified schools
@@ -79,11 +79,11 @@ class ApplicationReservationController extends Controller
         //        }
         //
         $paymentMethods = PaymentMethod::whereStatus(1)->get();
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -96,9 +96,9 @@ class ApplicationReservationController extends Controller
 
     public function create()
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::with('generalInformations')->whereGuardian($me->id)->orderBy('id')->get();
+
+        if (auth()->user()->hasExactRoles(['Parent'])) {
+            $myStudents = StudentInformation::with('generalInformations')->whereGuardian(auth()->user()->id)->orderBy('id')->get();
             $levels = Level::get();
 
             return view('Finance.ApplicationReservationInvoices.create', compact('myStudents', 'levels'));
@@ -110,20 +110,20 @@ class ApplicationReservationController extends Controller
     {
         $applicationInfo = $principalAccess = $financialManagerAccess = [];
 
-        $me = User::find(auth()->user()->id);
+
         $applicationReservation = ApplicationReservation::find($id);
         if (empty($applicationReservation)) {
             abort(403);
         }
 
-        if ($me->hasRole('Parent')) {
-            $myStudents = StudentInformation::whereGuardian($me->id)->pluck('student_id')->toArray();
+        if (auth()->user()->hasExactRoles(['Parent'])) {
+            $myStudents = StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereIn('student_id', $myStudents)->whereId($id)->first();
-        } elseif ($me->hasRole('Super Admin')) {
+        } elseif (auth()->user()->hasRole('Super Admin')) {
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereId($id)->first();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -153,11 +153,11 @@ class ApplicationReservationController extends Controller
 
     public function destroy($id): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(auth()->user()->id);
+
         $checkAccessToApplication = [];
-        if (! $me->hasRole('Super Admin')) {
+        if (! auth()->user()->hasRole('Super Admin')) {
             if (isset($myAllAccesses->principal) or isset($myAllAccesses->admissions_officer)) {
-                $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+                $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
                 $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
                 $checkAccessToApplication = ApplicationTiming::with('academicYearInfo')
                     ->with('applications')
@@ -187,15 +187,15 @@ class ApplicationReservationController extends Controller
 
     public function changeApplicationPaymentStatus(Request $request): \Illuminate\Http\JsonResponse
     {
-        $me = User::find(auth()->user()->id);
+
         $applicationID = $request->application_id;
         $applicationStatus = $request->status;
 
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $applicationInfo = ApplicationReservation::with('levelInfo')->with('applicationInfo')->with('studentInfo')->with('reservatoreInfo')->with('applicationInvoiceInfo')->whereId($applicationID)->first();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -272,11 +272,11 @@ class ApplicationReservationController extends Controller
 
     public function searchReservationInvoices(Request $request)
     {
-        $me = User::find(auth()->user()->id);
+
         $applications = $principalAccess = $financialManagerAccess = [];
         $paymentMethod = $request->payment_method;
         $dateOfPayment = $request->date_of_payment;
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $data = ApplicationReservation::with('applicationInfo')
                 ->with('studentInfo')
                 ->with('reservatoreInfo')
@@ -302,9 +302,9 @@ class ApplicationReservationController extends Controller
                     $query->where('created_at', 'like', "%$dateOfPayment%");
                 });
             }
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -343,11 +343,11 @@ class ApplicationReservationController extends Controller
         }
 
         $paymentMethods = PaymentMethod::whereStatus(1)->get();
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Financial Manager')) {
+        } elseif (auth()->user()->hasRole(['Principal','Financial Manager'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPF($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools

@@ -31,13 +31,12 @@ class UserController extends Controller
 
     public function index()
     {
-        $me = User::find(auth()->user()->id);
         $roles = Role::orderBy('name', 'asc')->get();
 
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $data = User::with('generalInformationInfo')->orderBy('id', 'DESC')->paginate(150);
-            return view('users.index', compact('data', 'roles', 'me'));
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            return view('users.index', compact('data', 'roles'));
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             $data = User::whereStatus(1)
                 ->WhereHas('roles', function ($query) {
                     $query->whereName('Parent');
@@ -47,18 +46,17 @@ class UserController extends Controller
             if ($data->isEmpty()) {
                 $data = [];
             }
-            return view('users.index', compact('data', 'roles', 'me'));
+            return view('users.index', compact('data', 'roles'));
         }
         abort(403);
     }
 
     public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $schools = School::get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $schools = School::whereStatus(1)->whereIn('id', $filteredArray)->get();
             if ($schools->count() == 0) {
@@ -74,7 +72,6 @@ class UserController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $me = User::find(auth()->user()->id);
         $this->validate($request, [
             'first_name_fa' => 'required',
             'last_name_fa' => 'required',
@@ -99,7 +96,7 @@ class UserController extends Controller
             })->orderByDesc('id')->first();
             $user->id = $lastStudent->id + 1;
         }
-        //        if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and $request->role == 'Student') {
+        //        if ((auth()->user()->hasRole('Principal') or auth()->user()->hasRole('Admissions Officer')) and $request->role == 'Student') {
         //            $additionalInformation = [
         //                'school_id' => $request->school,
         //            ];
@@ -125,13 +122,12 @@ class UserController extends Controller
 
     public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         $user = User::find($id);
         $userRole = $user->roles->pluck('name', 'name')->all();
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $schools = School::get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $schools = School::whereStatus(1)->whereIn('id', $filteredArray)->get();
             if ($schools->count() == 0) {
@@ -204,7 +200,6 @@ class UserController extends Controller
 
     public function searchUser(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         $roles = Role::orderBy('name', 'asc')->get();
 
         $searchEduCode = $request->input('search-user-code');
@@ -225,7 +220,7 @@ class UserController extends Controller
             }
         })->get()->pluck('user_id')->toArray();
 
-        if ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        if (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             $query = User::with('generalInformationInfo')
                 ->whereIn('id', $users)
                 ->where(function ($query) {

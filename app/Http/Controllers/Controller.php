@@ -251,9 +251,7 @@ class Controller extends BaseController
 
     public function getAllFamilyDiscounts()
     {
-        $me = auth()->user()->id;
-
-        $allStudentsWithMyGuardian = StudentInformation::whereGuardian($me)->pluck('student_id')->toArray();
+        $allStudentsWithMyGuardian = StudentInformation::whereGuardian(auth()->user()->id)->pluck('student_id')->toArray();
         $allStudentsWithPaidStatusInActiveAcademicYear = StudentApplianceStatus::with('studentInfo')
             ->with('academicYearInfo')
             ->whereIn('student_id', $allStudentsWithMyGuardian)

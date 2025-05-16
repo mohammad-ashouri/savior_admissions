@@ -37,25 +37,23 @@ class StudentController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
-
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $students = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')
                 ->whereTuitionPaymentStatus('Paid')
                 ->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
 
-            return view('Students.index', compact('students', 'academicYears', 'me'));
-        } elseif ($me->hasRole('Parent')) {
+            return view('Students.index', compact('students', 'academicYears'));
+        } elseif (auth()->user()->hasExactRoles(['Parent'])) {
             $students = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
                 ->orderBy('student_id', 'asc')->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -66,7 +64,7 @@ class StudentController extends Controller
                 ->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
-            return view('Students.index', compact('students', 'academicYears', 'me'));
+            return view('Students.index', compact('students', 'academicYears'));
 
         }
 
@@ -74,7 +72,7 @@ class StudentController extends Controller
             $students = [];
         }
 
-        return view('Students.index', compact('students', 'me'));
+        return view('Students.index', compact('students'));
 
     }
 
@@ -112,10 +110,8 @@ class StudentController extends Controller
         $faragir_code = $request->faragir_code;
         $gender = $request->gender;
 
-        $me = User::find(auth()->user()->id);
-
         //Check student information
-        $allMyStudents = StudentInformation::whereGuardian($me->id)->get()->pluck('student_id')->toArray();
+        $allMyStudents = StudentInformation::whereGuardian(auth()->user()->id)->get()->pluck('student_id')->toArray();
         $allGeneralInformation = GeneralInformation::whereIn('user_id', $allMyStudents)
             ->whereFirstNameEn($request->first_name_en)
             ->whereLastNameEn($request->last_name_en)
@@ -163,9 +159,7 @@ class StudentController extends Controller
 
     public function show($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
-
-        if ($me->hasRole('Parent')) {
+        if (auth()->user()->hasExactRoles(['Parent'])) {
             $studentInformations = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
@@ -180,7 +174,7 @@ class StudentController extends Controller
             }
 
             return view('Students.show', compact('studentInformations'));
-        } elseif ($me->hasRole('Super Admin')) {
+        } elseif (auth()->user()->hasRole('Super Admin')) {
             $studentInformations = StudentInformation::with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
@@ -194,9 +188,9 @@ class StudentController extends Controller
             }
 
             return view('Students.show', compact('studentInformations'));
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -304,13 +298,11 @@ class StudentController extends Controller
 
     public function studentStatusIndex()
     {
-        $me = User::find(auth()->user()->id);
-
         $students = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::get();
 
-            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears'));
         } elseif (auth()->user()->hasExactRoles(['Parent'])) {
             $students = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
@@ -318,9 +310,9 @@ class StudentController extends Controller
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
                 ->orderBy('student_id', 'asc')->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -330,7 +322,7 @@ class StudentController extends Controller
             //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
-            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears'));
 
         }
 
@@ -338,7 +330,7 @@ class StudentController extends Controller
             $students = [];
         }
 
-        return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
+        return view('BranchInfo.StudentStatuses.index', compact('students'));
     }
 
     public function uploadPersonalPicture(Request $request)
@@ -399,18 +391,17 @@ class StudentController extends Controller
         $this->validate($request, [
             'academic_year' => 'nullable|exists:academic_years,id',
         ]);
-        $me = User::find(auth()->user()->id);
         $academicYear = $request->academic_year;
 
         $students = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with(['studentInfo','academicYearInfo','documentSeconder']);
             $students = $data
                 ->where('academic_year',$academicYear)
                 ->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::get();
 
-            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears'));
         } elseif (auth()->user()->hasExactRoles(['Parent'])) {
             $data = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
@@ -421,9 +412,9 @@ class StudentController extends Controller
                 $data->whereAcademicYear($academicYear);
             }
             $students = $data->orderBy('academic_year', 'desc')->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -436,7 +427,7 @@ class StudentController extends Controller
             $students = $data->orderBy('academic_year', 'desc')->get();
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
-            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatuses.index', compact('students', 'academicYears'));
 
         }
 
@@ -444,28 +435,26 @@ class StudentController extends Controller
             $students = [];
         }
 
-        return view('BranchInfo.StudentStatuses.index', compact('students', 'me'));
+        return view('BranchInfo.StudentStatuses.index', compact('students'));
     }
 
     public function StudentStatisticsReportIndex()
     {
-        $me = User::find(auth()->user()->id);
-
         $students = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::get();
 
-            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
-        } elseif ($me->hasRole('Parent')) {
+            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears'));
+        } elseif (auth()->user()->hasExactRoles(['Parent'])) {
             $students = StudentInformation::whereGuardian(auth()->user()->id)
                 ->with('studentInfo')
                 ->with('nationalityInfo')
                 ->with('identificationTypeInfo')
                 ->with('generalInformations')
                 ->orderBy('student_id', 'asc')->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -475,7 +464,7 @@ class StudentController extends Controller
             //                ->orderBy('academic_year', 'desc')->paginate(150);
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
-            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears'));
 
         }
 
@@ -483,7 +472,7 @@ class StudentController extends Controller
             $students = [];
         }
 
-        return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'me'));
+        return view('BranchInfo.StudentStatisticsReport.index', compact('students'));
     }
 
     public function searchStudentStatisticsReport(Request $request)
@@ -496,11 +485,10 @@ class StudentController extends Controller
             'gender' => 'nullable|string|in:Male,Female',
         ]);
 
-        $me = User::find(auth()->user()->id);
         $academicYear = $request->academic_year;
 
         $students = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $data = StudentApplianceStatus::with(['studentInfo', 'levelInfo', 'academicYearInfo', 'documentSeconder']);
             if (! empty($academicYear)) {
                 $data->whereAcademicYear($academicYear);
@@ -509,10 +497,10 @@ class StudentController extends Controller
 
             $academicYears = AcademicYear::get();
 
-            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears'));
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Finding academic years with status 1 in the specified schools
@@ -526,7 +514,7 @@ class StudentController extends Controller
 
             $academicYears = AcademicYear::whereIn('id', $academicYears)->get();
 
-            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears', 'me'));
+            return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'academicYears'));
 
         }
 
@@ -534,7 +522,7 @@ class StudentController extends Controller
             $students = [];
         }
 
-        return view('BranchInfo.StudentStatisticsReport.index', compact('students', 'me'));
+        return view('BranchInfo.StudentStatisticsReport.index', compact('students'));
     }
 
     public function getApplianceConfirmationInformation(Request $request)

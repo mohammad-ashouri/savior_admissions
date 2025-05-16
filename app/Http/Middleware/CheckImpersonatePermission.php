@@ -16,8 +16,7 @@ class CheckImpersonatePermission
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             return $next($request);
         }
         if ($request->is('impersonate/leave')) {

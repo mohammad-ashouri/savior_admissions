@@ -1,5 +1,4 @@
 @php use App\Models\StudentInformation;use App\Models\User;
- $me = User::find(auth()->user()->id);
 @endphp
 @extends('Layouts.panel')
 @section('content')
@@ -43,7 +42,7 @@
                                     >
                                         <option value="" selected disabled>Select role</option>
                                         @foreach ($roles as $role)
-                                            @if (($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) and ($role->name == 'Super Admin' or $role->name == 'Principal' or $role->name == 'Admissions Officer' or $role->name == 'Financial Manager' or $role->name == 'Interviewer'))
+                                            @if ((auth()->user()->hasRole(['Principal','Admissions Officer'])) and ($role->name == 'Super Admin' or $role->name == 'Principal' or $role->name == 'Admissions Officer' or $role->name == 'Financial Manager' or $role->name == 'Interviewer'))
                                                 @continue
                                             @endif
 

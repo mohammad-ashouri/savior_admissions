@@ -8,7 +8,7 @@
                 </svg>
                 <div class="ms-3 text-sm font-bold">
                     Dear
-                    {{ $me->generalInformationInfo->first_name_en }} {{ $me->generalInformationInfo->last_name_en }} ({{$me->id}})
+                    {{ auth()->user()->generalInformationInfo->first_name_en }} {{ auth()->user()->generalInformationInfo->last_name_en }} ({{auth()->user()->id}})
                     . Welcome to savior school panel
                 </div>
                 <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-border-1" aria-label="Close">
@@ -22,28 +22,12 @@
                 <div class="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-gray-900"></div>
                 <p id="spinner-text" class="ml-4 font-bold text-black animate__animated animate__heartBeat animate__infinite infinite">Loading...</p>
             </div>
-            @if($me->hasRole('Super Admin'))
+            @if(auth()->user()->hasRole('Super Admin'))
                 @include('Dashboards.Roles.SuperAdmin')
             @endif
-            @if($me->hasRole('Parent'))
+            @if(auth()->user()->hasRole('Parent'))
                 @include('Dashboards.Roles.Parent')
             @endif
-
-{{--            //        if ($me->hasRole('Super Admin')){--}}
-{{--            //            $view='SuperAdmin';--}}
-{{--            //        }elseif ($me->hasRole('Principal')){--}}
-{{--            //            $view='Principal';--}}
-{{--            //        }elseif ($me->hasRole('Admissions Officer')){--}}
-{{--            //            $view='AdmissionsOfficer';--}}
-{{--            //        }elseif ($me->hasRole('Financial Manager')){--}}
-{{--            //            $view='FinancialManager';--}}
-{{--            //        }elseif ($me->hasRole('Interviewer')){--}}
-{{--            //            $view='Interviewer';--}}
-{{--            //        }elseif ($me->hasRole('Parent(Father)') or $me->hasRole('Parent(Mother)')){--}}
-{{--            //            $view='Parent';--}}
-{{--            //        }elseif ($me->hasRole('Student')){--}}
-{{--            //            $view='Student';--}}
-{{--            //        }--}}
         </div>
     </div>
 @endsection

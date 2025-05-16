@@ -17,10 +17,9 @@ class SettingsCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $me=User::find(auth()->user()->id);
         //Check maintenance mode
         $systemSettingsMaintenanceMode=SystemSettings::whereName('maintenance_mode')->first();
-        if ($systemSettingsMaintenanceMode->value==1 and !$me->hasRole('Super Admin')){
+        if ($systemSettingsMaintenanceMode->value==1 and !auth()->user()->hasRole('Super Admin')){
             return response()->view('GeneralPages.errors.maintenance_mode', [], 503);
         }
 

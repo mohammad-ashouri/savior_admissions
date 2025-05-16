@@ -189,7 +189,7 @@
                                                 </a>
                                                 @break
                                             @case('0')
-                                                @if($me->hasRole('Parent'))
+                                                @if(auth()->user()->hasRole('Parent'))
                                                     <a href="/PayTuitionInstallment/{{ $invoice->id }}">
                                                         <button type="button"
                                                                 class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
@@ -202,7 +202,7 @@
                                                 @endif
                                                 @break
                                             @case('2')
-                                                @if($me->hasRole('Financial Manager') or $me->hasRole('Principal') or $me->hasRole('Super Admin')) @endif
+                                                @if(auth()->user()->hasRole(['Principal','Financial Manager','Super Admin'])) @endif
                                                 <a href="/TuitionInvoices/{{ $invoice->id }}">
                                                     <button type="button"
                                                             class="flex text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-3 py-2 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">

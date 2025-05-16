@@ -21,10 +21,9 @@ class ProfileController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
-        $myGeneralInformation = GeneralInformation::whereUserId($me->id)->with('user')->first();
+        $myGeneralInformation = GeneralInformation::whereUserId(auth()->user()->id)->with('user')->first();
         $personnelPhotoType = DocumentType::whereName('Personal picture')->first();
-        $myDocuments = Document::whereUserId($me->id)->where('document_type_id', $personnelPhotoType->id)->latest()->first();
+        $myDocuments = Document::whereUserId(auth()->user()->id)->where('document_type_id', $personnelPhotoType->id)->latest()->first();
         $countries = Country::get();
 
         return view('GeneralPages.profile', compact('myGeneralInformation', 'myDocuments', 'countries'));

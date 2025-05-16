@@ -10,6 +10,9 @@ use App\Models\Catalogs\Level;
 use App\Models\Gender;
 use App\Models\User;
 use App\Models\UserAccessInformation;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,15 +27,14 @@ class AcademicYearClassController extends Controller
         $this->middleware('permission:academic-year-class-search', ['only' => ['search']]);
     }
 
-    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYearClasses = AcademicYearClass::with('academicYearInfo')->with('levelInfo')->with('educationTypeInfo')->with('educationGenderInfo')->orderBy('id', 'desc')->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
             // Retrieve user access information
             // Convert accesses to arrays and remove duplicates
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
 
             // Retrieve academic years associated with the accesses
@@ -53,13 +55,12 @@ class AcademicYearClassController extends Controller
         return view('BranchInfo.AcademicYearClasses.index', compact('academicYearClasses'));
     }
 
-    public function create(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::whereStatus(1)->get();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             if ($academicYears->count() == 0) {
@@ -104,17 +105,16 @@ class AcademicYearClassController extends Controller
             ->with('success', 'Academic year class added successfully');
     }
 
-    public function edit($id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function edit($id): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $me = User::find(auth()->user()->id);
         $academicYearClass = AcademicYearClass::find($id);
 
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::whereStatus(1)->get();
             $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYearClass->academic_year)->pluck('levels')->all();
             $levels = Level::whereIn('id', json_decode($academicYearLevels[0], true))->whereStatus(1)->pluck('name', 'id')->all();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYears = AcademicYear::whereStatus(1)->whereIn('school_id', $filteredArray)->get();
             $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYearClass->academic_year)->whereIn('school_id', $filteredArray)->pluck('levels')->all();
@@ -160,13 +160,12 @@ class AcademicYearClassController extends Controller
 
     public function levels(Request $request)
     {
-        $me = User::find(auth()->user()->id);
         $academicYear = $request->academic_year;
         $academicYearLevels = [];
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYear)->pluck('levels')->all();
-        } elseif ($me->hasRole('Principal') or $me->hasRole('Admissions Officer')) {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+        } elseif (auth()->user()->hasRole(['Principal','Admissions Officer'])) {
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYearLevels = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->pluck('levels')->all();
         }
@@ -182,7 +181,6 @@ class AcademicYearClassController extends Controller
 
     public function academicYearStarttimeAndEndtime(Request $request)
     {
-        $me = User::find(auth()->user()->id);
         $validator = Validator::make($request->all(), [
             'academic_year' => 'required|exists:academic_years,id',
         ]);
@@ -192,10 +190,10 @@ class AcademicYearClassController extends Controller
 
         $academicYear = $request->academic_year;
 
-        if ($me->hasRole('Super Admin')) {
+        if (auth()->user()->hasRole('Super Admin')) {
             $academicYear = AcademicYear::whereStatus(1)->whereId($academicYear)->select('start_date', 'end_date')->first();
         } else {
-            $myAllAccesses = UserAccessInformation::whereUserId($me->id)->first();
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
             $filteredArray = $this->getFilteredAccessesPA($myAllAccesses);
             $academicYear = AcademicYear::whereStatus(1)->whereId($academicYear)->whereIn('school_id', $filteredArray)->select('start_date', 'end_date')->first();
             if (empty($academicYear)) {

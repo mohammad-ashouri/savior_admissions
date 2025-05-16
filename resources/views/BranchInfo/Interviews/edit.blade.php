@@ -1,5 +1,4 @@
 @php use App\Models\User;
-$me=User::find(auth()->user()->id)
 @endphp
 @extends('Layouts.panel')
 
@@ -36,7 +35,7 @@ $me=User::find(auth()->user()->id)
                                 {{ $interview->reservationInfo->levelInfo->name }}
                             </div>
                         </div>
-                        @if ($interview->first_interviewer == $me->id and $form=='i1')
+                        @if ($interview->first_interviewer == auth()->user()->id and $form=='i1')
                             @php
                                 $interviewID=$interview->interview->where('interview_type',1)->first()->id;
                                 $interviewFields=json_decode($interview->interview->where('interview_type',1)->first()->interview_form,true);
@@ -46,7 +45,7 @@ $me=User::find(auth()->user()->id)
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer1')
                             @endif
-                        @elseif ($interview->second_interviewer == $me->id and $form=='i2')
+                        @elseif ($interview->second_interviewer == auth()->user()->id and $form=='i2')
                             @php
                                 $interviewID=$interview->interview->where('interview_type',2)->first()->id;
                                 $interviewFields=json_decode($interview->interview->where('interview_type',2)->first()->interview_form,true);
@@ -56,7 +55,7 @@ $me=User::find(auth()->user()->id)
                             @else
                                 @include('BranchInfo.Interviews.Forms.1.Levels.Edit.interviewer2')
                             @endif
-                        @elseif ($me->hasRole('Financial Manager') and $form=='fm')
+                        @elseif (auth()->user()->hasRole('Financial Manager') and $form=='fm')
                             @php
                                 $interviewFields=json_decode($interview->interview->where('interview_type',3)->first()->interview_form,true);
                                 $interviewID=$interview->interview->where('interview_type',3)->first()->id;
