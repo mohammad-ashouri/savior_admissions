@@ -120,7 +120,7 @@
                                                             $fourInstallmentPaymentAmount=str_replace(",", "", $fourInstallmentPayment['four_installment_amount_irr_ministry']);
                                                             $fourInstallmentPaymentAmountAdvance=(str_replace(",", "", $fourInstallmentPayment['four_installment_advance_irr_ministry']));
 
-                                                            $totalFeeTwoInstallment=$threeInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100));
+                                                            $totalFeeTwoInstallment=$twoInstallmentPaymentAmount-((($twoInstallmentPaymentAmount*$allDiscountPercentages)/100));
                                                             $totalFeeFourInstallment=$fourInstallmentPaymentAmount-((($fourInstallmentPaymentAmount*$allDiscountPercentages)/100));
 
                                                     }else{
