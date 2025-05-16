@@ -475,7 +475,7 @@ class TuitionPaymentController extends Controller
 
                 if (in_array($studentAppliance->academic_year, [1, 2, 3])) {
                     $evidence = Evidence::where('appliance_id', $studentAppliance->id)->first()->informations;
-                    if (json_decode($evidence, true)['foreign_school'] == 'Yes') {
+                    if (isset(json_decode($evidence, true)['foreign_school']) and json_decode($evidence, true)['foreign_school'] == 'Yes') {
                         $foreignSchool = true;
                     } else {
                         $foreignSchool = false;

@@ -23,14 +23,14 @@
     $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
 
     if (in_array($applianceStatus->academic_year,[1,2,3])){
-        if ($evidencesInfo['foreign_school'] == 'Yes') {
+        if (isset($evidencesInfo['foreign_school']) and $evidencesInfo['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
             $foreignSchool = false;
         }
     }else{
         $interview_form = json_decode($applicationInfo['interview_form'], true);
-        if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
+        if ($interview_form['foreign_school'] and $interview_form['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
             $foreignSchool = false;

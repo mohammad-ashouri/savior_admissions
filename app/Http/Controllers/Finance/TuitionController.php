@@ -223,7 +223,7 @@ class TuitionController extends Controller
         // Get evidence info for foreign school in last year
         if (in_array($studentApplianceStatus->academic_year,[1,2,3])){
             $evidence=Evidence::where('appliance_id',$studentApplianceStatus->id)->first()->informations;
-            if (json_decode($evidence, true)['foreign_school'] == 'Yes') {
+            if (isset(json_decode($evidence, true)['foreign_school']) and json_decode($evidence, true)['foreign_school'] == 'Yes') {
                 $foreignSchool = true;
             } else {
                 $foreignSchool = false;
@@ -332,7 +332,7 @@ class TuitionController extends Controller
 
         if (in_array($studentApplianceStatus->academic_year,[1,2,3])){
             $evidence=Evidence::where('appliance_id',$studentApplianceStatus->id)->first()->informations;
-            if (json_decode($evidence, true)['foreign_school'] == 'Yes') {
+            if (isset(json_decode($evidence, true)['foreign_school']) and json_decode($evidence, true)['foreign_school'] == 'Yes') {
                 $foreignSchool = true;
             } else {
                 $foreignSchool = false;
