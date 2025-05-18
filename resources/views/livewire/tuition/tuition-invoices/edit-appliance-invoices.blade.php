@@ -30,7 +30,21 @@
             <div class="grid grid-cols-1 gap-4 mb-4">
                 @include('GeneralPages.errors.session.success')
                 @include('GeneralPages.errors.session.error')
-
+                @session('change-invoice-amount-success')
+                <div
+                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-800 dark:border-green-600 dark:text-green-200 flex items-center justify-between"
+                    role="alert">
+                    <button type="button" class="mr-2" onclick="this.parentElement.remove()">
+                        <svg class="fill-current h-6 w-6 text-green-500 dark:text-green-200" role="button"
+                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <title>Close</title>
+                            <path
+                                d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z"/>
+                        </svg>
+                    </button>
+                    <span class="flex-grow">{{ $value }}</span>
+                </div>
+                @endsession
                 <div class="grid grid-cols-2 gap-2">
                     <div class="flex p-2 relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
                         <h4 class="text-xl font-semibold ">Tuition Type:
@@ -156,6 +170,8 @@
                                 <td class="px-3 py-1 text-center">
                                     <button
                                         wire:click="changeInvoiceAmount({{ $invoice->id }})"
+                                        wire:target="changeInvoiceAmount"
+                                        wire:loading.remove
                                         type="button"
                                         class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline edit-tuition-invoice">
                                         <div class="text-center">
@@ -165,6 +181,7 @@
                                             Edit
                                         </div>
                                     </button>
+                                    <p wire:target="changeInvoiceAmount" wire:loading>Please Wait!</p>
                                 </td>
                             </tr>
                         @endforeach
@@ -196,7 +213,7 @@
 
                 <h4 class="text-xl font-semibold text-black dark:text-white ">Discounts Info:
                 </h4>
-                @session('success')
+                @session('change-discount-success')
                 <div
                     class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-800 dark:border-green-600 dark:text-green-200 flex items-center justify-between"
                     role="alert">

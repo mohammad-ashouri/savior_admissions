@@ -86,14 +86,19 @@ class EditApplianceInvoices extends Component
     public function changeInvoiceAmount($invoice_id): void
     {
         $newAmount = $this->amounts[$invoice_id];
-        TuitionInvoiceDetails::findOrFail($invoice_id)->update(['amount' => $newAmount]);
+        $invoice_details = TuitionInvoiceDetails::findOrFail($invoice_id);
 
         TuitionInvoiceEditHistory::create([
             'invoice_details_id' => $invoice_id,
-            'description' => $invoice_id,
+            'description' => json_encode([
+                'old_amount' => $invoice_details->amount,
+                'new_amount' => $newAmount,
+            ]),
             'user' => auth()->user()->id,
         ]);
-        $this->dispatch('refresh')->self();
+        $invoice_details->update(['amount' => $newAmount]);
+        $this->loadDiscounts();
+        session()->flash('change-invoice-amount-success', 'Invoice amount have been changed.');
     }
 
     /**
@@ -158,7 +163,10 @@ class EditApplianceInvoices extends Component
         $this->loadDiscounts();
     }
 
-    public function loadDiscounts()
+    /**
+     * Load academic year discounts
+     */
+    public function loadDiscounts(): void
     {
         $this->discounts = Discount::with('allDiscounts')
             ->whereAcademicYear($this->tuition_invoice_details[0]->tuitionInvoiceDetails->applianceInformation->academic_year)
@@ -167,6 +175,7 @@ class EditApplianceInvoices extends Component
             ->where('discount_details.interviewer_permission', 1)
             ->get();
     }
+
     public function changeDiscounts(): void
     {
         $interview_form = json_decode($this->interview->interview_form, true);
@@ -174,7 +183,7 @@ class EditApplianceInvoices extends Component
         $interview_form = json_encode($interview_form);
         $this->interview->interview_form = $interview_form;
         $this->interview->save();
-        session()->flash('success','Discounts have been changed.');
+        session()->flash('change-discount-success', 'Discounts have been changed.');
         $this->loadDiscounts();
     }
 }
