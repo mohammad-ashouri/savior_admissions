@@ -3,6 +3,7 @@
 namespace App\Models\Finance;
 
 use App\Models\Invoice;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\belongsTo;
@@ -34,7 +35,7 @@ class TuitionInvoiceEditHistory extends Model
 
     public function userInfo(): belongsTo
     {
-        return $this->belongsTo(Invoice::class, 'user');
+        return $this->belongsTo(User::class, 'user');
     }
 
 }

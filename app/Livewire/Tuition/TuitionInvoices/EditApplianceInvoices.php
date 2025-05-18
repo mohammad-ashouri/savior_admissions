@@ -12,6 +12,7 @@ use App\Models\Finance\TuitionInvoiceEditHistory;
 use App\Models\Finance\TuitionInvoices;
 use App\Models\StudentInformation;
 use App\Models\UserAccessInformation;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class EditApplianceInvoices extends Component
@@ -56,12 +57,17 @@ class EditApplianceInvoices extends Component
      */
     public Interview $interview;
 
+    #[Validate('required|integer|exists:tuition_invoice_edit_histories,id')]
+    public int $history_id;
     /**
      * Listeners
      *
      * @var string[]
      */
-    protected $listeners = ['refresh' => '$refresh'];
+    protected $listeners = [
+        'refresh' => '$refresh',
+        'open-file-modal' => 'fileModal',
+    ];
 
     // Getting principal and financial manager accesses
     public function getFilteredAccessesPF($userAccessInfo): array
@@ -184,6 +190,14 @@ class EditApplianceInvoices extends Component
         $this->interview->interview_form = $interview_form;
         $this->interview->save();
         session()->flash('change-discount-success', 'Discounts have been changed.');
+        $this->loadDiscounts();
+    }
+
+    public function fileModal($history_id)
+    {
+        TuitionInvoiceEditHistory::findOrFail($history_id);
+        $this->history_id = $history_id;
+        $this->validate();
         $this->loadDiscounts();
     }
 }

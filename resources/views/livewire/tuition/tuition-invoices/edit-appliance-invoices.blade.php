@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
+                    <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400 ">
                         <thead
                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -184,6 +184,83 @@
                                     <p wire:target="changeInvoiceAmount" wire:loading>Please Wait!</p>
                                 </td>
                             </tr>
+                            @if($invoice->invoiceEditHistory->isNotEmpty())
+                                <tr class="border-b">
+                                    <td class="p-3" colspan="7">
+                                        <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400 ">
+                                            <thead
+                                                class="odd:bg-white odd:dark:bg-gray-800 even:bg-gray-50 even:dark:bg-gray-700 border-b dark:border-gray-600">
+                                            <tr>
+                                                <th scope="col" class="text-center p-3">
+                                                    History Id
+                                                </th>
+                                                <th scope="col" class="text-center p-3">
+                                                    From
+                                                </th>
+                                                <th scope="col" class="text-center p-3">
+                                                    To
+                                                </th>
+                                                <th scope="col" class="text-center p-3">
+                                                    User
+                                                </th>
+                                                <th scope="col" class="text-center p-3">
+                                                    Date
+                                                </th>
+                                                <th scope="col" class="text-center p-3">
+                                                    Files
+                                                </th>
+                                                <th scope="col" class="text-center p-3">
+                                                    Action
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($invoice->invoiceEditHistory as $history)
+                                                <tr
+                                                    wire:key="history-{{ $history->id }}"
+                                                    class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                    <th scope="row"
+                                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        {{ $history->id }}
+                                                    </th>
+                                                    <th scope="row"
+                                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        {{ json_decode($history->description,true)['old_amount'] }}
+                                                    </th>
+                                                    <th scope="row"
+                                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        {{ json_decode($history->description,true)['new_amount'] }}
+                                                    </th>
+                                                    <th scope="row"
+                                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        {{ $history->userInfo->id }} -
+                                                        {{ $history->userInfo->generalInformationInfo->first_name_en }}
+                                                        {{ $history->userInfo->generalInformationInfo->last_name_en }}
+                                                    </th>
+                                                    <th scope="row"
+                                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        {{ $history->created_at }}
+                                                    </th>
+                                                    <th scope="row"
+                                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                                    </th>
+                                                    <th scope="row"
+                                                        class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        <x-secondary-button
+                                                            wire:click="$dispatch('open-file-modal',[{{ $history->id }}])"
+                                                            wire:target="fileModal"
+                                                            wire:loading.remove
+                                                        >Add File
+                                                        </x-secondary-button>
+                                                        <p wire:target="fileModal" wire:loading>Please Wait!</p>
+                                                    </th>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                         <tr class="odd:bg-white even:bg-gray-300 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600">
                             <td class="w-4 p-4">
@@ -231,7 +308,7 @@
                 <div class="grid grid-cols-1 gap-2">
                     <div
                         class="flex text-center justify-center p-2 relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-700 dark:text-gray-400">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
                             <thead
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>

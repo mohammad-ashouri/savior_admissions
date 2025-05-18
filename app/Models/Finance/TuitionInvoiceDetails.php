@@ -6,6 +6,8 @@ use App\Models\Catalogs\PaymentMethod;
 use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TuitionInvoiceDetails extends Model
@@ -34,23 +36,28 @@ class TuitionInvoiceDetails extends Model
         'deleted_at',
     ];
 
-    public function tuitionInvoiceDetails(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function tuitionInvoiceDetails(): BelongsTo
     {
         return $this->belongsTo(TuitionInvoices::class, 'tuition_invoice_id','id');
     }
 
-    public function invoiceDetails(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function invoiceDetails(): BelongsTo
     {
         return $this->belongsTo(Invoice::class, 'invoice_id','id');
     }
 
-    public function paymentMethodInfo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function paymentMethodInfo(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method','id');
     }
 
-    public function customPayments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function customPayments(): HasMany
     {
         return $this->hasMany(TuitionInvoiceDetailsPayment::class, 'invoice_details_id','id');
+    }
+
+    public function invoiceEditHistory(): HasMany
+    {
+        return $this->hasMany(TuitionInvoiceEditHistory::class, 'invoice_details_id')->orderByDesc('created_at');
     }
 }
