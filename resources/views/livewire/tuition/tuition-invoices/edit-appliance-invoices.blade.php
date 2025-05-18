@@ -268,8 +268,10 @@
                                                @checked(in_array($discount->id,$selected_discounts))
                                                wire:model="selected_discounts"
                                                wire:click="changeDiscounts"
+                                               wire:target="changeDiscounts"
+                                               wire:loading.remove
                                                name="discount[]">
-
+                                        <p wire:target="changeDiscounts" wire:loading>Please Wait!</p>
                                     </td>
                                 </tr>
                             @endforeach
