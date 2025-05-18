@@ -193,9 +193,25 @@
                         </tbody>
                     </table>
                 </div>
+
+                <h4 class="text-xl font-semibold text-black dark:text-white ">Discounts Info:
+                </h4>
+                @session('success')
+                <div
+                    class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-800 dark:border-green-600 dark:text-green-200 flex items-center justify-between"
+                    role="alert">
+                    <button type="button" class="mr-2" onclick="this.parentElement.remove()">
+                        <svg class="fill-current h-6 w-6 text-green-500 dark:text-green-200" role="button"
+                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <title>Close</title>
+                            <path
+                                d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z"/>
+                        </svg>
+                    </button>
+                    <span class="flex-grow">{{ $value }}</span>
+                </div>
+                @endsession
                 <div class="grid grid-cols-1 gap-2">
-                    <h4 class="text-xl font-semibold text-black dark:text-white ">Discounts Info:
-                    </h4>
                     <div
                         class="flex text-center justify-center p-2 relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-700 dark:text-gray-400">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -218,26 +234,6 @@
                             </thead>
                             <tbody
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            @php
-                                $applicationReservation=ApplicationReservation::with(['applicationInfo'=>function ($query){
-                                                            $query->whereHas('interview',function ($query){
-                                                                $query->where('interview_type','3');
-                                                            });
-                                                        }])
-                                                        ->whereHas('applicationInfo',function ($query){
-                                                            $query->whereHas('interview',function ($query){
-                                                                $query->where('interview_type','3');
-                                                            });
-                                                        })
-                                                        ->where('student_id',$tuition_invoice_details[0]->tuitionInvoiceDetails->applianceInformation->student_id)
-                                                        ->latest()
-                                                        ->first();
-                                foreach ($applicationReservation->applicationInfo->interview as $interviews){
-                                    if ($interviews->interview_type!=3){ continue; }else{
-                                        $interviewDiscounts=isset(json_decode($interviews['interview_form'],true)['discount']) ? json_decode($interviews['interview_form'],true)['discount'] : [];
-                                    }
-                                }
-                            @endphp
                             @foreach($discounts as $discount)
                                 <tr>
                                     <td class="w-10 font-bold p-4 text-center">
@@ -252,9 +248,11 @@
                                     <td class="font-bold p-4 text-center">
                                         <input class="discount-checks" type="checkbox"
                                                value="{{ $discount->id }}"
-                                               @if(isset($interviewDiscounts) and in_array($discount->id,$interviewDiscounts)) checked
-                                               @endif
+                                               @checked(in_array($discount->id,$selected_discounts))
+                                               wire:model="selected_discounts"
+                                               wire:click="changeDiscounts"
                                                name="discount[]">
+
                                     </td>
                                 </tr>
                             @endforeach

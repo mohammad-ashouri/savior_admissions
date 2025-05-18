@@ -43,13 +43,18 @@ class EditApplianceInvoices extends Component
 
     /**
      * Selected discounts in interview form
-     * @var array
      */
-    public array $selected_discounts=[];
+    public array $selected_discounts = [];
+
     /**
      * Invoice amounts
      */
     public array $amounts = [];
+
+    /**
+     * For change and show discounts
+     */
+    public Interview $interview;
 
     /**
      * Listeners
@@ -84,9 +89,9 @@ class EditApplianceInvoices extends Component
         TuitionInvoiceDetails::findOrFail($invoice_id)->update(['amount' => $newAmount]);
 
         TuitionInvoiceEditHistory::create([
-            'invoice_details_id'=>$invoice_id,
-            'description'=>$invoice_id,
-            'user'=>auth()->user()->id,
+            'invoice_details_id' => $invoice_id,
+            'description' => $invoice_id,
+            'user' => auth()->user()->id,
         ]);
         $this->dispatch('refresh')->self();
     }
@@ -135,26 +140,41 @@ class EditApplianceInvoices extends Component
             $this->amounts[$invoice->id] = $invoice->amount;
         }
 
-        $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
-            ->join('application_reservations','applications.id','=','application_reservations.application_id')
-            ->where('application_reservations.student_id',$this->appliance_status->student_id)
-            ->where('application_reservations.payment_status',1)
-            ->where('application_timings.academic_year',$this->appliance_status->academic_year)
-            ->where('application_reservations.deleted_at',null)
+        $applicationInformation = ApplicationTiming::join('applications', 'application_timings.id', '=', 'applications.application_timing_id')
+            ->join('application_reservations', 'applications.id', '=', 'application_reservations.application_id')
+            ->where('application_reservations.student_id', $this->appliance_status->student_id)
+            ->where('application_reservations.payment_status', 1)
+            ->where('application_timings.academic_year', $this->appliance_status->academic_year)
+            ->where('application_reservations.deleted_at', null)
             ->latest('application_reservations.id')
             ->first();
-        $interview_form=Interview::where('application_id',$applicationInformation->application_id)->where('interview_type',3)->latest()->first();
 
-        $interview_form = json_decode($interview_form->interview_form, true);
-        if (isset($interview_form['discounts'])){
-            $this->selected_discounts = $interview_form['discounts'];
+        $this->interview = Interview::where('application_id', $applicationInformation->application_id)->where('interview_type', 3)->latest()->firstOrFail();
+        $interview_form = json_decode($this->interview->interview_form, true);
+        if (isset($interview_form['discount'])) {
+            $this->selected_discounts = $interview_form['discount'];
         }
 
+        $this->loadDiscounts();
+    }
+
+    public function loadDiscounts()
+    {
         $this->discounts = Discount::with('allDiscounts')
             ->whereAcademicYear($this->tuition_invoice_details[0]->tuitionInvoiceDetails->applianceInformation->academic_year)
             ->join('discount_details', 'discounts.id', '=', 'discount_details.discount_id')
             ->where('discount_details.status', 1)
             ->where('discount_details.interviewer_permission', 1)
             ->get();
+    }
+    public function changeDiscounts(): void
+    {
+        $interview_form = json_decode($this->interview->interview_form, true);
+        $interview_form['discount'] = $this->selected_discounts;
+        $interview_form = json_encode($interview_form);
+        $this->interview->interview_form = $interview_form;
+        $this->interview->save();
+        session()->flash('success','Discounts have been changed.');
+        $this->loadDiscounts();
     }
 }
