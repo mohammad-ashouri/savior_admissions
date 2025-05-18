@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Tuition\TuitionInvoices;
 
+use App\Models\Branch\ApplicationTiming;
+use App\Models\Branch\Interview;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Finance\Discount;
@@ -39,6 +41,11 @@ class EditApplianceInvoices extends Component
      */
     public $discounts;
 
+    /**
+     * Selected discounts in interview form
+     * @var array
+     */
+    public array $selected_discounts=[];
     /**
      * Invoice amounts
      */
@@ -126,6 +133,21 @@ class EditApplianceInvoices extends Component
 
         foreach ($this->tuition_invoice_details as $invoice) {
             $this->amounts[$invoice->id] = $invoice->amount;
+        }
+
+        $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
+            ->join('application_reservations','applications.id','=','application_reservations.application_id')
+            ->where('application_reservations.student_id',$this->appliance_status->student_id)
+            ->where('application_reservations.payment_status',1)
+            ->where('application_timings.academic_year',$this->appliance_status->academic_year)
+            ->where('application_reservations.deleted_at',null)
+            ->latest('application_reservations.id')
+            ->first();
+        $interview_form=Interview::where('application_id',$applicationInformation->application_id)->where('interview_type',3)->latest()->first();
+
+        $interview_form = json_decode($interview_form->interview_form, true);
+        if (isset($interview_form['discounts'])){
+            $this->selected_discounts = $interview_form['discounts'];
         }
 
         $this->discounts = Discount::with('allDiscounts')
