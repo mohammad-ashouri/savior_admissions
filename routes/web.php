@@ -33,13 +33,11 @@ use App\Http\Middleware\CheckLoginMiddleware;
 use App\Http\Middleware\NoCache;
 use App\Http\Middleware\SettingsCheck;
 use App\Livewire\Auth\Login;
+use App\Livewire\Auth\LostPassword;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
 use App\Livewire\Tuition\TuitionInvoices\EditApplianceInvoices;
-use App\Models\Branch\ApplicationReservation;
-use App\Models\Branch\ApplicationTiming;
-use App\Models\Branch\StudentApplianceStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -68,19 +66,17 @@ Route::post('/authorization', [SignupController::class, 'authorization'])->name(
 Route::get('/new-account/{token}', [SignupController::class, 'newAccount'])->name('CreateAccount.new-account');
 Route::post('/new-account', [SignupController::class, 'createAccount'])->name('CreateAccount.createAccount');
 
-Route::prefix('login')->group(function () {
-    Route::get('/', Login::class)->name('login');
-    Route::post('/', [LoginController::class, 'login']);
-});
+Route::get('login', Login::class)->name('login');
+Route::get('forget-password', LostPassword::class)->name('ForgetPassword');
 
-Route::prefix('password')->group(function () {
-    Route::get('/forgot', [PasswordController::class, 'showForgetPassword'])->name('ForgetPassword');
-    Route::post('/sendToken', [PasswordController::class, 'sendToken'])->name('sendToken');
-    Route::post('/authorize', [PasswordController::class, 'authorization'])->name('authorize');
-    Route::get('/reset/{token}', [PasswordController::class, 'showResetPassword']);
-    Route::post('/reset', [PasswordController::class, 'resetPassword']);
-    Route::post('/change', [PasswordController::class, 'changePassword']);
-});
+//Route::prefix('password')->group(function () {
+//    Route::get('/forgot', [PasswordController::class, 'showForgetPassword'])->name('ForgetPassword');
+//    Route::post('/sendToken', [PasswordController::class, 'sendToken'])->name('sendToken');
+//    Route::post('/authorize', [PasswordController::class, 'authorization'])->name('authorize');
+//    Route::get('/reset/{token}', [PasswordController::class, 'showResetPassword']);
+//    Route::post('/reset', [PasswordController::class, 'resetPassword']);
+//    Route::post('/change', [PasswordController::class, 'changePassword']);
+//});
 
 Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
