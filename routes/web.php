@@ -32,6 +32,7 @@ use App\Http\Middleware\CheckImpersonatePermission;
 use App\Http\Middleware\CheckLoginMiddleware;
 use App\Http\Middleware\NoCache;
 use App\Http\Middleware\SettingsCheck;
+use App\Livewire\Auth\Login;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
@@ -68,7 +69,7 @@ Route::get('/new-account/{token}', [SignupController::class, 'newAccount'])->nam
 Route::post('/new-account', [SignupController::class, 'createAccount'])->name('CreateAccount.createAccount');
 
 Route::prefix('login')->group(function () {
-    Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::get('/', Login::class)->name('login');
     Route::post('/', [LoginController::class, 'login']);
 });
 
