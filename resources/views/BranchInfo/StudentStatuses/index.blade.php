@@ -90,9 +90,6 @@
                                     IMG
                                 </th>
                                 <th scope="col" class="p-4 text-center">
-                                    Student
-                                </th>
-                                <th scope="col" class="p-4 text-center">
                                     Guardian
                                 </th>
                                 <th scope="col" class=" text-center">
@@ -100,6 +97,12 @@
                                 </th>
                                 <th scope="col" class=" text-center">
                                     Information
+                                </th>
+                                <th scope="col" class=" text-center">
+                                    First Name Fa
+                                </th>
+                                <th scope="col" class=" text-center">
+                                    Last Name Fa
                                 </th>
                                 <th scope="col" class=" text-center">
                                     Gender
@@ -150,9 +153,6 @@
                                                 alt="Image not found!">
                                         @endif
                                     </td>
-                                    <td class="w-4 p-2 border text-center">
-                                        {{ $student->student_id }}
-                                    </td>
                                     @php
                                         @$guardian=User::whereId($student->studentInformations->guardian)->first();
                                     @endphp
@@ -171,7 +171,15 @@
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $student->studentInfo?->generalInformationInfo->first_name_en }} {{ $student->studentInfo?->generalInformationInfo->last_name_en }}
+                                        {{ $student->student_id }} - {{ $student->studentInfo?->generalInformationInfo->first_name_en }} {{ $student->studentInfo?->generalInformationInfo->last_name_en }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $student->studentInfo?->generalInformationInfo->first_name_fa }}
+                                    </th>
+                                    <th scope="row"
+                                        class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $student->studentInfo?->generalInformationInfo->last_name_fa }}
                                     </th>
                                     <th scope="row"
                                         class=" items-center border text-center text-gray-900 whitespace-nowrap dark:text-white">
