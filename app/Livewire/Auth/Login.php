@@ -29,6 +29,7 @@ class Login extends Component
 
     /**
      * Role for captcha
+     *
      * @return string[]
      */
     protected function rules(): array
@@ -40,6 +41,7 @@ class Login extends Component
 
     /**
      * Customize captcha message
+     *
      * @return string[]
      */
     protected function messages(): array
@@ -48,11 +50,11 @@ class Login extends Component
             'captcha.captcha' => 'Captcha is not valid.',
         ];
     }
+
     public $captcha;
 
     /**
      * User variable
-     * @var User
      */
     public User $user;
 
@@ -65,7 +67,6 @@ class Login extends Component
 
     /**
      * Login function
-     *
      */
     public function login()
     {
@@ -78,6 +79,7 @@ class Login extends Component
             $seconds = RateLimiter::availableIn('login-attempt:'.request()->ip());
             $this->resetErrorBag();
             $this->addError('mobile', "Too many login attempts. Please try again in {$seconds} seconds.");
+
             return;
         }
         RateLimiter::hit('login-attempt:'.request()->ip());
@@ -86,29 +88,33 @@ class Login extends Component
 
         $user = User::where('mobile', $this->mobile)->first();
 
-        if (!$user) {
+        if (! $user) {
             RateLimiter::hit('login-attempt:'.request()->ip(), $decayMinutes * 60);
+
             return $this->addError('mobile', 'The provided credentials do not match our records.');
         }
 
         $credentials = [
             'mobile' => $this->mobile,
-            'password' => $this->password
+            'password' => $this->password,
         ];
 
         if (Auth::attempt($credentials, $this->remember)) {
             RateLimiter::clear('login-attempt:'.request()->ip());
             Session::put('user_id', $user->id);
+
             return redirect()->intended(route('dashboard'));
         }
 
         RateLimiter::hit('login-attempt:'.request()->ip(), $decayMinutes * 60);
+
         return $this->addError('password', 'The provided password is incorrect.');
     }
 
     public function render()
     {
         $this->reset('captcha');
+
         return view('livewire.auth.login');
     }
 }

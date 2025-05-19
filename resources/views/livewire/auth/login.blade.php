@@ -3,7 +3,7 @@
         <div class="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
             <!-- Form Header -->
             <div class="bg-blue-600 py-4 px-6">
-                <h1 class="text-white text-xl font-bold text-center">Savior Schools System</h1>
+                <h1 class="text-white text-xl font-bold text-center">Savior Schools System | Login</h1>
             </div>
 
             <!-- Form Body -->
