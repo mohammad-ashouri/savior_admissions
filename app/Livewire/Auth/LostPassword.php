@@ -175,6 +175,7 @@ class LostPassword extends Component
         $this->validate(['verification_code' => 'required|integer|max_digits:5']);
         if ($this->currentToken->token != $this->verification_code) {
             $this->addError('verification_code', 'Invalid verification code.');
+            return;
         }
         $this->showPasswordForm = true;
         $this->tokenSent = false;
