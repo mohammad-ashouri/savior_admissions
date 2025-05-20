@@ -15,7 +15,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 #[Title('Savior Schools | Password Recovery')]
-#[Layout('layouts.login')]
+#[Layout('Layouts.login')]
 class LostPassword extends Component
 {
     use SMS;
