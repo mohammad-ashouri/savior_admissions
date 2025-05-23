@@ -5,21 +5,7 @@
             <div class="bg-blue-600 py-4 px-6">
                 <h1 class="text-white text-xl font-bold text-center">Savior Schools System | Login</h1>
             </div>
-            @session('success')
-            <div
-                class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-800 dark:border-green-600 dark:text-green-200 flex items-center justify-between"
-                role="alert">
-                <button type="button" class="mr-2" onclick="this.parentElement.remove()">
-                    <svg class="fill-current h-6 w-6 text-green-500 dark:text-green-200" role="button"
-                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <title>Close</title>
-                        <path
-                            d="M14.348 14.849a1 1 0 0 1-1.414 0L10 11.414l-2.93 2.93a1 1 0 1 1-1.414-1.414l2.93-2.93-2.93-2.93a1 1 0 1 1 1.414-1.414l2.93 2.93 2.93-2.93a1 1 0 1 1 1.414 1.414l-2.93 2.93 2.93 2.93a1 1 0 0 1 0 1.414z"/>
-                    </svg>
-                </button>
-                <span class="flex-grow">{{ $value }}</span>
-            </div>
-            @endsession
+            <x-flash-messages/>
             <!-- Form Body -->
             <div class="p-6">
                 <form wire:submit.prevent="login">
@@ -67,12 +53,21 @@
                             </label>
                         </div>
 
-                        <!-- Forgot Password Link -->
-                        <div class="text-sm">
-                            <a href="{{ route('ForgetPassword') }}" wire:navigate
-                               class="font-medium text-blue-600 hover:text-blue-500">
-                                Forgot your password?
-                            </a>
+                        <div class="space-y-1">
+                            <!-- Forgot Password Link -->
+                            <div class="text-sm">
+                                <a href="{{ route('ForgetPassword') }}" wire:navigate
+                                   class="font-medium text-blue-600 hover:text-blue-500">
+                                    Forgot your password?
+                                </a>
+                            </div>
+                            <!-- Create Account Link -->
+                            <div class="text-sm">
+                                <a href="{{ route('CreateAccount') }}" wire:navigate
+                                   class="font-medium text-blue-600 hover:text-blue-500">
+                                    Create Account
+                                </a>
+                            </div>
                         </div>
                     </div>
 

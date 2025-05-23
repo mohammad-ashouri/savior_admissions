@@ -63,6 +63,7 @@ class Login extends Component
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
+        return;
     }
 
     /**
@@ -75,21 +76,34 @@ class Login extends Component
         $maxAttempts = 5;
         $decayMinutes = 1;
 
-        if (RateLimiter::tooManyAttempts('login-attempt:'.request()->ip(), $maxAttempts)) {
-            $seconds = RateLimiter::availableIn('login-attempt:'.request()->ip());
+        if (RateLimiter::tooManyAttempts('login-attempt:' . request()->ip(), $maxAttempts)) {
+            $seconds = RateLimiter::availableIn('login-attempt:' . request()->ip());
             $this->resetErrorBag();
             $this->addError('mobile', "Too many login attempts. Please try again in {$seconds} seconds.");
 
             return;
         }
-        RateLimiter::hit('login-attempt:'.request()->ip());
+        RateLimiter::hit('login-attempt:' . request()->ip());
 
         $this->validate();
 
+        $user = User::where('mobile', $this->mobile)->where('status', 2)->first();
+
+        if ($user) {
+            RateLimiter::hit('login-attempt:' . request()->ip(), $decayMinutes * 60);
+
+            session()->flash(
+                'error',
+                'Account not yet approved. Your registration is still under review by our admissions officer. ' .
+                'You will receive an SMS notification when your account is activated. Thank you for your patience.'
+            );
+            return;
+        }
+
         $user = User::where('mobile', $this->mobile)->first();
 
-        if (! $user) {
-            RateLimiter::hit('login-attempt:'.request()->ip(), $decayMinutes * 60);
+        if (!$user) {
+            RateLimiter::hit('login-attempt:' . request()->ip(), $decayMinutes * 60);
 
             return $this->addError('mobile', 'The provided credentials do not match our records.');
         }
@@ -100,13 +114,13 @@ class Login extends Component
         ];
 
         if (Auth::attempt($credentials, $this->remember)) {
-            RateLimiter::clear('login-attempt:'.request()->ip());
+            RateLimiter::clear('login-attempt:' . request()->ip());
             Session::put('user_id', $user->id);
 
             return redirect()->intended(route('dashboard'));
         }
 
-        RateLimiter::hit('login-attempt:'.request()->ip(), $decayMinutes * 60);
+        RateLimiter::hit('login-attempt:' . request()->ip(), $decayMinutes * 60);
 
         return $this->addError('password', 'The provided password is incorrect.');
     }

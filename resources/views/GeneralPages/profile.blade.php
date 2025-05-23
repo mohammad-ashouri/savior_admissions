@@ -28,26 +28,6 @@
                 </div>
             @endif
             <div class="grid grid-cols-3 mt-4 gap-4 mb-4">
-                {{--                <div class="lg:col-span-1 col-span-3 bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg">--}}
-                {{--                    <div>--}}
-                {{--                        <div class="lg:flex grid lg:items-center items-start lg:space-x-4">--}}
-                {{--                            <img class="w-28 h-28 rounded-lg"--}}
-                {{--                                 src="--}}
-                {{--                                 @if($myDocuments)--}}
-                {{--                                 {{ str_replace('public','storage',$myDocuments->src) }}--}}
-                {{--                                 @else--}}
-                {{--                                    {{Vite::asset('resources/images/Panel/default_user_icon.png')}}--}}
-                {{--                                 @endif--}}
-                {{--                                 "--}}
-                {{--                                 alt="">--}}
-                {{--                            <div class="font-bold dark:text-white">--}}
-                {{--                                <div--}}
-                {{--                                    class="text-l">{{ $myGeneralInformation->first_name_en }} {{ $myGeneralInformation->last_name_en }}</div>--}}
-                {{--                            </div>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
-
                 <div class="lg:col-span-2 col-span-3 ">
                     <div class="general-info bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg mb-4">
                         <div class="col-span-1 gap-4 mb-4 text-black dark:text-white">

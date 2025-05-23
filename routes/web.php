@@ -32,6 +32,7 @@ use App\Http\Middleware\CheckImpersonatePermission;
 use App\Http\Middleware\CheckLoginMiddleware;
 use App\Http\Middleware\NoCache;
 use App\Http\Middleware\SettingsCheck;
+use App\Livewire\Auth\CreateAccount;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\LostPassword;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
@@ -60,23 +61,10 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-Route::get('/create-account', [SignupController::class, 'index'])->name('CreateAccount');
-Route::post('/create-account', [SignupController::class, 'register'])->name('CreateAccount.register');
-Route::post('/authorization', [SignupController::class, 'authorization'])->name('CreateAccount.authorize');
-Route::get('/new-account/{token}', [SignupController::class, 'newAccount'])->name('CreateAccount.new-account');
-Route::post('/new-account', [SignupController::class, 'createAccount'])->name('CreateAccount.createAccount');
+Route::get('/create-account', CreateAccount::class)->name('CreateAccount');
 
 Route::get('login', Login::class)->name('login');
 Route::get('forget-password', LostPassword::class)->name('ForgetPassword');
-
-//Route::prefix('password')->group(function () {
-//    Route::get('/forgot', [PasswordController::class, 'showForgetPassword'])->name('ForgetPassword');
-//    Route::post('/sendToken', [PasswordController::class, 'sendToken'])->name('sendToken');
-//    Route::post('/authorize', [PasswordController::class, 'authorization'])->name('authorize');
-//    Route::get('/reset/{token}', [PasswordController::class, 'showResetPassword']);
-//    Route::post('/reset', [PasswordController::class, 'resetPassword']);
-//    Route::post('/change', [PasswordController::class, 'changePassword']);
-//});
 
 Route::get('/captcha', [LoginController::class, 'getCaptcha'])->name('captcha');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
