@@ -51,7 +51,6 @@ class PendingUserApprovals extends Component
     /**
      * Change users status (if spam or not)
      * @param $user_id
-     * @param $status
      * @return void
      */
     public function changeStatus($user_id): void
@@ -82,7 +81,12 @@ class PendingUserApprovals extends Component
             ->show();
     }
 
-    public function deleteUser($id)
+    /**
+     * Delete user if not approved
+     * @param $id
+     * @return void
+     */
+    public function deleteUser($id): void
     {
         $user = User::where('id', $id)->first();
         GeneralInformation::where('user_id', $this->user_id)->first()->delete();
@@ -95,12 +99,17 @@ class PendingUserApprovals extends Component
             ->show();
     }
 
-    public function approveUser($id)
+    /**
+     * Approve user
+     * @param $id
+     * @return void
+     */
+    public function approveUser($id): void
     {
-        $user = User::where('id', $id)->first()->update([
+        $user = User::where('id', $id)->first();
+        $user->update([
             'status' => 1
         ]);
-
         GeneralInformation::where('user_id', $id)->first()->update([
             'status' => 1
         ]);
