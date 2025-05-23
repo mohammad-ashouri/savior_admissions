@@ -229,7 +229,7 @@ class TuitionController extends Controller
                 $foreignSchool = false;
             }
         }else{
-            if (json_decode($applicationInfo['interview_form'], true)['foreign_school'] == 'Yes') {
+            if (isset(json_decode($applicationInfo['interview_form'], true)['foreign_school']) and json_decode($applicationInfo['interview_form'], true)['foreign_school'] == 'Yes') {
                 $foreignSchool = true;
             } else {
                 $foreignSchool = false;
@@ -338,7 +338,7 @@ class TuitionController extends Controller
                 $foreignSchool = false;
             }
         }else{
-            if (json_decode($applicationInfo['interview_form'], true)['foreign_school'] == 'Yes') {
+            if (isset(json_decode($applicationInfo['interview_form'], true)['foreign_school']) and json_decode($applicationInfo['interview_form'], true)['foreign_school'] == 'Yes') {
                 $foreignSchool = true;
             } else {
                 $foreignSchool = false;

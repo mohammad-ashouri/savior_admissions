@@ -245,7 +245,7 @@
                                                                             </button>
                                                                         </form>
                                                                     @endif
-                                                                    @if($studentApplianceStatus->interview_status=='Pending Interview')
+                                                                    @if($studentApplianceStatus->interview_status=='Pending Interview' or $studentApplianceStatus->interview_status=='Pending For Principal Confirmation')
                                                                         @can('interview-edit')
                                                                             @if($interview->firstInterviewerInfo->id==auth()->user()->id and $interview->interview->where('interview_type',1)->first())
                                                                                 <a href="{{ route('interviews.edit',['form'=>'i1','id'=>$interview->id]) }}"

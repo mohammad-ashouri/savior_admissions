@@ -30,7 +30,7 @@
         }
     }else{
         $interview_form = json_decode($applicationInfo['interview_form'], true);
-        if ($interview_form['foreign_school'] and $interview_form['foreign_school'] == 'Yes') {
+        if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
             $foreignSchool = false;
