@@ -122,7 +122,7 @@ class CreateAccount extends Component
         ]);
     }
 
-    public function sendToken()
+    public function sendToken(): void
     {
         // Enhanced rate limiting with IP and mobile fingerprint
         $throttleKey = 'mobile-verification:' . request()->ip() . '|' . $this->mobile;

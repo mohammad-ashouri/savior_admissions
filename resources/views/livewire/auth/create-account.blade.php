@@ -1,6 +1,7 @@
 <div
     x-data="{
     remainingTime: @entangle('remainingTime'),
+    formName: @entangle('form_name'),
     init() {
         if (this.tokenSent) {
             this.startTimer();
@@ -20,7 +21,9 @@
                 this.remainingTime--;
             } else {
                 clearInterval(this.timer);
-                this.$dispatch('timer-expired');
+                if(this.formName!='register'){
+                    this.$dispatch('timer-expired');
+                }
             }
         }, 1000);
     },
