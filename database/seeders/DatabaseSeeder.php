@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\TemporarySeeders\AddPendingUserApprovalsPermission;
 use Database\Seeders\TemporarySeeders\AddSearchTuitionStatusPermission;
 use Database\Seeders\TemporarySeeders\AddStudentStatisticsReportPermission;
 use Illuminate\Database\Seeder;
@@ -35,7 +36,8 @@ class DatabaseSeeder extends Seeder
             //            AllTuitionsPermission::class,
 //            RevokeSomePermissions::class,
 //            AddStudentStatisticsReportPermission::class,
-            AddLevelsToStudentApplianceStatuses::class,
+//            AddLevelsToStudentApplianceStatuses::class,
+            AddPendingUserApprovalsPermission::class,
         ]);
     }
 }

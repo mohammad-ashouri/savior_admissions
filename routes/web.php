@@ -39,6 +39,7 @@ use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParent
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
 use App\Livewire\Tuition\TuitionInvoices\EditApplianceInvoices;
+use App\Livewire\Users\PendingUserApprovals;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -54,7 +55,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if (! Auth::check()) {
+    if (!Auth::check()) {
         return redirect()->route('login');
     }
 
@@ -89,7 +90,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
                 $resources = ['Schools', 'DocumentTypes', 'EducationTypes', 'Levels', 'AcademicYears'];
                 foreach ($resources as $resource) {
-                    Route::get("$resource/search", [ucfirst($resource).'Controller', 'search'])->name("$resource.search");
+                    Route::get("$resource/search", [ucfirst($resource) . 'Controller', 'search'])->name("$resource.search");
                 }
             });
 
@@ -152,6 +153,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('GetDiscountPercentage', [DiscountsController::class, 'getDiscountPercentage']);
 
             Route::resource('roles', RoleController::class);
+            Route::get('users/pending_user_approvals', PendingUserApprovals::class)->name('pending-user-approvals');
             Route::resource('users', UserController::class);
             Route::post('users/change_password', [UserController::class, 'changeUserPassword']);
             Route::post('users/change_user_general_information', [ProfileController::class, 'changeUserGeneralInformation']);

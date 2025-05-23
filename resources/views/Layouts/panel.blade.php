@@ -488,12 +488,37 @@
             @endcan
             @can('users-menu-access')
                 <li>
-                    <a href="/users"
-                       class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <i class="las la-users" style="font-size: 24px"></i>
-                        <span class="ml-4">Users</span>
-                    </a>
+                    <button type="button"
+                            class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                            aria-controls="dropdown-users" data-collapse-toggle="dropdown-users">
+                        <i class="nav-icon la la-landmark" style="font-size: 24px"></i>
+                        <span class="flex-1 ml-4 text-left whitespace-nowrap">Users</span>
+                        <i class="las la-angle-right mr-1" style="font-size: 20px"></i>
+                    </button>
+                    <ul id="dropdown-users" class="hidden py-2 space-y-2">
+                        @can('list-users')
+                            <li>
+                                <a href="/users"
+                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span class="menulist"><i class="nav-icon la la-chalkboard-teacher"
+                                                              style="font-size: 24px"></i>
+                                        All Users</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can('pending-user-approvals.view')
+                            <li>
+                                <a href="{{ route('pending-user-approvals') }}"
+                                   class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                    <span class="menulist"><i class="nav-icon la la-chalkboard-teacher"
+                                                              style="font-size: 24px"></i>
+                                        Pending User Approvals</span>
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
                 </li>
+
             @endcan
             @can('branch-info-menu-access')
                 <li>

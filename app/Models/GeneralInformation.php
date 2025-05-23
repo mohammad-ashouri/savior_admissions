@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GeneralInformation extends Model
 {
-    use HasFactory, softDeletes;
+    use softDeletes;
 
     protected $table = 'general_informations';
 
@@ -31,6 +31,7 @@ class GeneralInformation extends Model
         'address',
         'phone',
         'postal_code',
+        'status',
         'adder',
         'editor',
     ];
