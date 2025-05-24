@@ -20,16 +20,16 @@
             break;
     }
 
-    $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
-
     if (in_array($applianceStatus->academic_year,[1,2,3])){
+        $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
         if (isset($evidencesInfo['foreign_school']) and $evidencesInfo['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
             $foreignSchool = false;
         }
     }else{
-        $interview_form = json_decode($applicationInfo['interview_form'], true);
+        $interview_form=Interview::where('interview_type',3)->where('application_id',$applicationInformation->application_id)->latest()->first();
+        $interview_form = json_decode($interview_form->interview_form, true);
         if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
@@ -468,7 +468,8 @@
                 </p>
                 <p>{{ __('translated_fa.Passport Number') }}:
                     <span>{{ $evidencesInfo['student_passport_number'] }}</span></p>
-                <p style="white-space: nowrap">{{ __('translated_fa.Level of education') }}: <span style="white-space: nowrap">{{$levelName}}</span></p>
+                <p style="white-space: nowrap">{{ __('translated_fa.Level of education') }}: <span
+                        style="white-space: nowrap">{{$levelName}}</span></p>
             </div>
             <div class="flex justify-between">
                 <p>{{ __('translated_fa.Full Name of Parent/Guardian') }}:
@@ -480,7 +481,9 @@
                 <p>{{ __('translated_fa.Student ID') }}: <span>{{ $applianceStatus->student_id }}</span></p>
             </div>
             <div class="flex justify-between">
-                <p>{{ __('translated_fa.Nationality') }}: <span>{{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->nationalityInfo?->nationality}}</span></p>
+                <p>{{ __('translated_fa.Nationality') }}:
+                    <span>{{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->nationalityInfo?->nationality}}</span>
+                </p>
                 <p>{{ __('translated_fa.Contact Number') }}:
                     <span>{{ $applianceStatus->studentInformations->guardianInfo->mobile }}</span></p>
             </div>
@@ -521,6 +524,12 @@
                             @case('4')
                                 {{ __('translated_fa.Full Payment With Advance') }}
                                 @break
+                            @case('5')
+                                {{ __('translated_fa.Three Installment') }}
+                                @break
+                            @case('6')
+                                {{ __('translated_fa.Seven Installment') }}
+                                @break
                         @endswitch
                     </td>
                     <td style="white-space: nowrap;padding: 0 20px 0 20px;height: 1px">{{ number_format($paymentAmount) }} </td>
@@ -557,6 +566,14 @@
                             $invoiceDetailsDescription=json_decode($invoices->description,true);
                             $tuitionType=$invoiceDetailsDescription['tuition_type'];
                             $dueType=null;
+                            if (strstr($tuitionType,'Three') and !strstr($tuitionType,'Advance')){
+                                $dueType='Three';
+                                $dueDates=json_decode($systemTuitionInfo->three_installment_payment,true);
+                            }
+                            if (strstr($tuitionType,'Seven') and !strstr($tuitionType,'Advance')){
+                                $dueType='Seven';
+                                $dueDates=json_decode($systemTuitionInfo->seven_installment_payment,true);
+                            }
                             if (strstr($tuitionType,'Four') and !strstr($tuitionType,'Advance')){
                                 $dueType='Four';
                                 $dueDates=json_decode($systemTuitionInfo->four_installment_payment,true);
@@ -581,6 +598,18 @@
                                     @case('Two Installment - Installment 2')
                                         قسط دوم
                                         @break
+                                    @case('Three Installment Advance')
+                                        پیش پرداخت
+                                        @break
+                                    @case('Three Installment - Installment 1')
+                                        قسط اول
+                                        @break
+                                    @case('Three Installment - Installment 2')
+                                        قسط دوم
+                                        @break
+                                    @case('Three Installment - Installment 3')
+                                        قسط سوم
+                                        @break
                                     @case('Four Installment Advance')
                                         پیش پرداخت
                                         @break
@@ -594,6 +623,30 @@
                                         قسط سوم
                                         @break
                                     @case('Four Installment - Installment 4')
+                                        قسط چهارم
+                                        @break
+                                    @case('Seven Installment Advance')
+                                        پیش پرداخت
+                                        @break
+                                    @case('Seven Installment - Installment 1')
+                                        قسط اول
+                                        @break
+                                    @case('Seven Installment - Installment 2')
+                                        قسط دوم
+                                        @break
+                                    @case('Seven Installment - Installment 3')
+                                        قسط سوم
+                                        @break
+                                    @case('Seven Installment - Installment 4')
+                                        قسط چهارم
+                                        @break
+                                    @case('Seven Installment - Installment 5')
+                                        قسط چهارم
+                                        @break
+                                    @case('Seven Installment - Installment 6')
+                                        قسط چهارم
+                                        @break
+                                    @case('Seven Installment - Installment 7')
                                         قسط چهارم
                                         @break
                                     @case('Full Payment With Advance - Installment')
@@ -624,13 +677,27 @@
                                         @endphp
                                         {{ $formattedJalaliDate }}
                                         @break
+                                    @case('Three')
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($dueDates["date_of_installment".$key."_three"]);
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
+                                        @break
+                                    @case('Seven')
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($dueDates["date_of_installment".$key."_seven"]);
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
+                                        @break
                                     @case('Full')
                                         @php
                                             $jalaliDate = Jalalian::fromDateTime($invoices->date_of_payment);
                                             $endOfShahrivar = Jalalian::fromFormat('Y/m/d', $jalaliDate->getYear() . '/06/31');
                                             $formattedJalaliDate = $endOfShahrivar->format('Y/m/d');
-                                            echo $formattedJalaliDate;
                                         @endphp
+                                        {{ $formattedJalaliDate }}
                                         @break
                                     @default
                                         -
@@ -719,10 +786,12 @@
 <footer class="mt-2rem">
     <div class="footer-text ">
         اینجانب
-        <span style="font-weight: bold">{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_fa }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_fa }}</span>
+        <span
+            style="font-weight: bold">{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_fa }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_fa }}</span>
         ،
         والدین / قیم
-        <span style="font-weight: bold">{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_fa }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_fa }}</span>
+        <span
+            style="font-weight: bold">{{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->first_name_fa }} {{ $applianceStatus->studentInformations->studentInfo->generalInformationInfo->last_name_fa }}</span>
         ،
         بدین وسیله با کلیه قوانین و مقررات موسسه آموزشی بین المللی منجی نور موافقت می نمایم.
     </div>

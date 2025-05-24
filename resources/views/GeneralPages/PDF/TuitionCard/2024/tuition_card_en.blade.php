@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 @php
-    use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Country;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;
+    use App\Models\Branch\ApplicationTiming;use App\Models\Branch\Interview;use App\Models\Branch\StudentApplianceStatus;use App\Models\Catalogs\AcademicYear;use App\Models\Catalogs\Level;use App\Models\Country;use App\Models\Finance\DiscountDetail;use App\Models\Finance\Tuition;use App\Models\Finance\TuitionInvoices;use App\Models\StudentInformation;use Morilog\Jalali\Jalalian;
     $applicationInformation=ApplicationTiming::join('applications','application_timings.id','=','applications.application_timing_id')
                                                 ->join('application_reservations','applications.id','=','application_reservations.application_id')
                                                 ->where('application_reservations.student_id',$applianceStatus->student_id)
@@ -17,16 +17,16 @@
     }])->whereApplianceId($applianceStatus->id)->latest()->first();
     $totalAmount=0;
 
-    $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
-
     if (in_array($applianceStatus->academic_year,[1,2,3])){
+        $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
         if (isset($evidencesInfo['foreign_school']) and $evidencesInfo['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
             $foreignSchool = false;
         }
     }else{
-        $interview_form = json_decode($applicationInfo['interview_form'], true);
+        $interview_form=Interview::where('interview_type',3)->where('application_id',$applicationInformation->application_id)->latest()->first();
+        $interview_form = json_decode($interview_form->interview_form, true);
         if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
@@ -76,7 +76,9 @@
     }
     $discounts=DiscountDetail::whereIn('id',$discounts)->get();
 
-    $fatherNationality=Country::find($evidencesInfo['father_nationality']);
+    if (isset($evidencesInfo['father_nationality'])){
+        $fatherNationality=Country::find($evidencesInfo['father_nationality']);
+    }
 
     $academicYearInfo=AcademicYear::with('schoolInfo')->find($applicationInformation->academic_year);
     $schoolAddress=$academicYearInfo->schoolInfo->address;
@@ -438,7 +440,9 @@
             </div>
             <div class="flex justify-between">
                 <p>Grade: <span>{{$levelInfo->name}}</span></p>
-                <p>Nationality: <span> {{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->nationalityInfo?->nationality}}</span></p>
+                <p>Nationality:
+                    <span> {{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->nationalityInfo?->nationality}}</span>
+                </p>
             </div>
             <div class="flex justify-between">
                 <p>Guardian Full Name:
@@ -449,8 +453,12 @@
                 </p>
             </div>
             <div class="flex justify-between">
-                <p>Address: <span>{{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->address}}</span></p>
-                <p>Postal Code: <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->postal_code }}</span></p>
+                <p>Address:
+                    <span>{{$applianceStatus->studentInformations->guardianInfo->generalInformationInfo->address}}</span>
+                </p>
+                <p>Postal Code:
+                    <span>{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->postal_code }}</span>
+                </p>
             </div>
         </div>
     </div>
@@ -532,6 +540,14 @@
                             $invoiceDetailsDescription=json_decode($invoices->description,true);
                             $tuitionType=$invoiceDetailsDescription['tuition_type'];
                             $dueType=null;
+                            if (strstr($tuitionType,'Three') and !strstr($tuitionType,'Advance')){
+                                $dueType='Three';
+                                $dueDates=json_decode($systemTuitionInfo->three_installment_payment,true);
+                            }
+                            if (strstr($tuitionType,'Seven') and !strstr($tuitionType,'Advance')){
+                                $dueType='Seven';
+                                $dueDates=json_decode($systemTuitionInfo->seven_installment_payment,true);
+                            }
                             if (strstr($tuitionType,'Four') and !strstr($tuitionType,'Advance')){
                                 $dueType='Four';
                                 $dueDates=json_decode($systemTuitionInfo->four_installment_payment,true);
@@ -551,13 +567,40 @@
                             <td style="white-space: nowrap;padding: 0 20px 0 20px;">
                                 @switch ($dueType)
                                     @case('Four')
-                                        {{ $dueDates["date_of_installment".$key."_four"] }}
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($dueDates["date_of_installment".$key."_four"]);
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
                                         @break
                                     @case('Two')
-                                        {{ $dueDates["date_of_installment".$key."_two"] }}
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($dueDates["date_of_installment".$key."_two"]);
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
+                                        @break
+                                    @case('Three')
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($dueDates["date_of_installment".$key."_three"]);
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
+                                        @break
+                                    @case('Seven')
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($dueDates["date_of_installment".$key."_seven"]);
+                                            $formattedJalaliDate = $jalaliDate->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
                                         @break
                                     @case('Full')
-                                        {{$invoices->date_of_payment}}
+                                        @php
+                                            $jalaliDate = Jalalian::fromDateTime($invoices->date_of_payment);
+                                            $endOfShahrivar = Jalalian::fromFormat('Y/m/d', $jalaliDate->getYear() . '/06/31');
+                                            $formattedJalaliDate = $endOfShahrivar->format('Y/m/d');
+                                        @endphp
+                                        {{ $formattedJalaliDate }}
                                         @break
                                     @default
                                         -
@@ -617,7 +660,7 @@
                 </li>
             @endforeach
         @endif
-            @if(isset($allFamilyDiscounts->discount_price) and $allFamilyDiscounts->discount_price>0)
+        @if(isset($allFamilyDiscounts->discount_price) and $allFamilyDiscounts->discount_price>0)
             <li class="consideration-item font-bold">
                 Included Family Discounts ({{number_format($allFamilyDiscounts->discount_price)}} )
             </li>
@@ -629,7 +672,10 @@
 <footer class="">
     <div class="footer-text ">
         <p class="font-bold">
-            I, <span style="font-weight: bold">{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>, have read the Disciplinary and the Financial Charters of Monji International Educational Institute, and agree to abide by them
+            I, <span
+                style="font-weight: bold">{{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->first_name_en }} {{ $applianceStatus->studentInformations->guardianInfo->generalInformationInfo->last_name_en }}</span>,
+            have read the Disciplinary and the Financial Charters of Monji International Educational Institute, and
+            agree to abide by them
         </p>
     </div>
     <div class="footer-content font-bold">

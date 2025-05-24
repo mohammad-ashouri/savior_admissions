@@ -37,6 +37,8 @@ return [
     'Full Payment' => 'شهریه کامل',
     'Two Installment' => 'پرداخت دو قسطه',
     'Four Installment' => 'پرداخت چهار قسطه',
+    'Three Installment' => 'پرداخت سه قسطه',
+    'Seven Installment' => 'پرداخت هفت قسطه',
     'Full Payment With Advance' => 'شهریه کامل با پیش پرداخت',
     'Payment Details' => 'جزئیات پرداخت',
     'Type' => 'نوع',
