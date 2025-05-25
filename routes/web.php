@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthControllers\LoginController;
-use App\Http\Controllers\AuthControllers\PasswordController;
-use App\Http\Controllers\AuthControllers\SignupController;
 use App\Http\Controllers\BranchInfo\AcademicYearClassController;
 use App\Http\Controllers\BranchInfo\ApplicationTimingController;
 use App\Http\Controllers\BranchInfo\EvidenceController;
@@ -38,6 +36,7 @@ use App\Livewire\Auth\LostPassword;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
+use App\Livewire\Temp\ReInsertion;
 use App\Livewire\Tuition\TuitionInvoices\EditApplianceInvoices;
 use App\Livewire\Users\PendingUserApprovals;
 use Illuminate\Support\Facades\Auth;
@@ -229,6 +228,8 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
         Route::get('/', [ProfileController::class, 'index'])->name('profile');
         Route::post('/EditMyProfile', [ProfileController::class, 'editMyProfile'])->name('EditMyProfile');
     });
+
+    Route::get('re-insertion-data/fida-code', ReInsertion\FidaCode::class)->name('re-insertion-data.fida-code');
 });
 
 // Payments

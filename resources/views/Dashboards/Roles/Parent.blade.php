@@ -1,5 +1,5 @@
-@include('GeneralPages.errors.session.error')
-@include('GeneralPages.errors.session.success')
+<x-flash-messages/>
+
 <div class="grid grid-cols-2 gap-4 mb-4">
     <div class="lg:col-span-2 col-span-3 ">
         @can('students-list')

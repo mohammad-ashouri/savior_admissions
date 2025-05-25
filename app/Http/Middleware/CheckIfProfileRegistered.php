@@ -20,6 +20,10 @@ class CheckIfProfileRegistered
         if (auth()->user()->generalInformationInfo->status=='0'){
             return redirect()->route('profile');
         }
+        if (auth()->user()->generalInformationInfo->fida_code == null and auth()->user()->hasRole('Parent')) {
+            return redirect()->route('re-insertion-data.fida-code');
+        }
+
         return $next($request);
     }
 }
