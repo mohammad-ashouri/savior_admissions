@@ -408,44 +408,44 @@ $(document).ready(function () {
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
         resetFields();
-        $('#create-document').submit(function (e) {
-            e.preventDefault();
-            if ($('#document_type').val() === null) {
-                swalFire('Error', "Select document type!", 'error', 'Try again');
-            } else if ($('#document_file').val() == '') {
-                swalFire('Error', "Select document file!", 'error', 'Try again');
-            } else {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Your document will be added permanently!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Yes',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#defaultModal').hide();
-                        $(".page-spinner").show();
-                        let form = $(this);
-                        let formData = new FormData(form[0]);
-                        $.ajax({
-                            type: 'POST',
-                            url: '/Documents/Create',
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            headers: {
-                                'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                            }, success: function (response) {
-                                location.reload();
-                            }, error: function (xhr, textStatus, errorThrown) {
-                                swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        // $('#create-document').submit(function (e) {
+        //     e.preventDefault();
+        //     if ($('#document_type').val() === null) {
+        //         swalFire('Error', "Select document type!", 'error', 'Try again');
+        //     } else if ($('#document_file').val() == '') {
+        //         swalFire('Error', "Select document file!", 'error', 'Try again');
+        //     } else {
+        //         Swal.fire({
+        //             title: 'Are you sure?',
+        //             text: 'Your document will be added permanently!',
+        //             icon: 'warning',
+        //             showCancelButton: true,
+        //             cancelButtonText: 'No',
+        //             confirmButtonText: 'Yes',
+        //         }).then((result) => {
+        //             if (result.isConfirmed) {
+        //                 $('#defaultModal').hide();
+        //                 $(".page-spinner").show();
+        //                 let form = $(this);
+        //                 let formData = new FormData(form[0]);
+        //                 $.ajax({
+        //                     type: 'POST',
+        //                     url: '/Documents/Create',
+        //                     data: formData,
+        //                     contentType: false,
+        //                     processData: false,
+        //                     headers: {
+        //                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+        //                     }, success: function (response) {
+        //                         location.reload();
+        //                     }, error: function (xhr, textStatus, errorThrown) {
+        //                         swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+        //                     }
+        //                 });
+        //             }
+        //         });
+        //     }
+        // });
         $('.remove-document').click(function (e) {
             let documentId = $(this).data('document-id');
             Swal.fire({
@@ -503,47 +503,47 @@ $(document).ready(function () {
             printWindow.print();
         });
 
-        $('#create-document-for-user').submit(function (e) {
-            e.preventDefault();
-            if ($('#document_type').val('')) {
-                swalFire('Error', "Select document type!", 'error', 'Try again');
-            } else if ($('#document_file').val() == '') {
-                swalFire('Error', "Select document file!", 'error', 'Try again');
-            } else {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'User\'s document will be added permanently!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Yes',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#defaultModal').hide();
-                        $(".page-spinner").show();
-                        let form = $(this);
-                        let formData = new FormData(form[0]);
-                        let currentUrl = window.location.href;
-                        let parts = currentUrl.split('/');
-                        let urlLastPart = parts[parts.length - 1];
-                        $.ajax({
-                            type: 'POST',
-                            url: '/Documents/Create/' + urlLastPart,
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            headers: {
-                                'X-CSRF-TOKEN': $(csrf_token).attr('content'),
-                            }, success: function (response) {
-                                location.reload();
-                            }, error: function (xhr, textStatus, errorThrown) {
-                                swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        // $('#create-document-for-user').submit(function (e) {
+        //     e.preventDefault();
+        //     if ($('#document_type').val('')) {
+        //         swalFire('Error', "Select document type!", 'error', 'Try again');
+        //     } else if ($('#document_file').val() == '') {
+        //         swalFire('Error', "Select document file!", 'error', 'Try again');
+        //     } else {
+        //         Swal.fire({
+        //             title: 'Are you sure?',
+        //             text: 'User\'s document will be added permanently!',
+        //             icon: 'warning',
+        //             showCancelButton: true,
+        //             cancelButtonText: 'No',
+        //             confirmButtonText: 'Yes',
+        //         }).then((result) => {
+        //             if (result.isConfirmed) {
+        //                 $('#defaultModal').hide();
+        //                 $(".page-spinner").show();
+        //                 let form = $(this);
+        //                 let formData = new FormData(form[0]);
+        //                 let currentUrl = window.location.href;
+        //                 let parts = currentUrl.split('/');
+        //                 let urlLastPart = parts[parts.length - 1];
+        //                 $.ajax({
+        //                     type: 'POST',
+        //                     url: '/Documents/Create/' + urlLastPart,
+        //                     data: formData,
+        //                     contentType: false,
+        //                     processData: false,
+        //                     headers: {
+        //                         'X-CSRF-TOKEN': $(csrf_token).attr('content'),
+        //                     }, success: function (response) {
+        //                         location.reload();
+        //                     }, error: function (xhr, textStatus, errorThrown) {
+        //                         swalFire('Error', JSON.parse(xhr.responseText).message, 'error', 'Try again');
+        //                     }
+        //                 });
+        //             }
+        //         });
+        //     }
+        // });
 
         $('.type-filter').click(function () {
             let typeId = $(this).data('type-id');

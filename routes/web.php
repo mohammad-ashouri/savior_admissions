@@ -33,6 +33,7 @@ use App\Http\Middleware\SettingsCheck;
 use App\Livewire\Auth\CreateAccount;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\LostPassword;
+use App\Livewire\Documents\Show as ShowUserDocuments;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
@@ -179,7 +180,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
             Route::prefix('Documents')->group(function () {
                 Route::get('/', [DocumentController::class, 'index']);
-                Route::get('/Show/{user_id}', [DocumentController::class, 'showUserDocuments'])->name('show-user-documents');
+                Route::get('/Show/{user_id}', ShowUserDocuments::class)->name('show-user-documents');
                 Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-Principal');
                 Route::post('/Create', [DocumentController::class, 'createDocument']);
                 Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
