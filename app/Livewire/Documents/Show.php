@@ -46,23 +46,31 @@ class Show extends Component
 
     public function updatedDocumentFile()
     {
-        $this->validateOnly('document_file');
+        try {
+            $this->validateOnly('document_file');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error uploading file: ' . $e->getMessage());
+        }
     }
 
     public function createDocument()
     {
-        $this->validate();
-        $path = $this->document_file->store('public/uploads/Documents/' . $this->user->id);
-        $document = new Document;
-        $document->user_id = $this->user->id;
-        $document->document_type_id = $this->document_type;
-        $document->src = $path;
-        $document->save();
+        try {
+            $this->validate();
+            $path = $this->document_file->store('public/uploads/Documents/' . $this->user->id);
+            $document = new Document;
+            $document->user_id = $this->user->id;
+            $document->document_type_id = $this->document_type;
+            $document->src = $path;
+            $document->save();
 
-        $this->reset(['document_type', 'document_file']);
-        $this->mount($this->user->id);
-        session()->flash('success', 'Document created successfully.');
-        $this->dispatch('close-modal');
+            $this->reset(['document_type', 'document_file']);
+            $this->mount($this->user->id);
+            session()->flash('success', 'Document created successfully.');
+            $this->dispatch('close-modal');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error creating document: ' . $e->getMessage());
+        }
     }
 
     /**
