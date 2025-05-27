@@ -215,7 +215,7 @@ class AcademicYearClassController extends Controller
 
         $academicYear = $request->academic_year;
 
-        $academicYearFile = AcademicYear::find($academicYear)->value('financial_roles');
+        $academicYearFile = AcademicYear::find($academicYear)->financial_roles;
 
         return env('APP_URL').'/'.str_replace('public', 'storage', $academicYearFile);
     }
