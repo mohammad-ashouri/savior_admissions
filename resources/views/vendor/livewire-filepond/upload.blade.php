@@ -106,6 +106,21 @@
           if (error) console.log(error);
       });
 
+      pond.on('processfile', (error, file) => {
+        if (error) {
+            console.error('Upload error:', error);
+            $dispatch('filepond-upload-error', {
+                attribute: '{{ $wireModelAttribute }}',
+                error: error.body
+            });
+            return;
+        }
+        $dispatch('filepond-upload-complete', {
+            attribute: '{{ $wireModelAttribute }}',
+            file
+        });
+    });
+
       $wire.on('filepond-reset-{{ $wireModelAttribute }}', () => {
           pond.removeFiles();
       });
