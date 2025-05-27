@@ -225,11 +225,13 @@
                                                     </th>
                                                     <th scope="row"
                                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                                        {{ json_decode($history->description,true)['old_amount'] }}
+                                                        {{ number_format(json_decode($history->description,true)['old_amount']) }}
+                                                        IRR
                                                     </th>
                                                     <th scope="row"
                                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
-                                                        {{ json_decode($history->description,true)['new_amount'] }}
+                                                        {{ number_format(json_decode($history->description,true)['new_amount']) }}
+                                                        IRR
                                                     </th>
                                                     <th scope="row"
                                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
