@@ -146,7 +146,9 @@
                                        for="document_file">Upload file</label>
                                 <input
                                     class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400"
-                                    wire:model="document_file" type="file"
+                                    wire:model="document_file"
+                                    wire:loading.attr="disabled"
+                                    type="file"
                                     accept=".png,.jpg,.jpeg,.pdf,.bmp">
                                 <x-input-error :messages="$errors->get('document_file')"/>
 

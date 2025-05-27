@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\StudentInformation;
 use App\Models\User;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -23,10 +24,10 @@ class Show extends Component
     public $documentOwner;
     public $myDocumentTypes;
 
-    #[Validate('required|integer|exists:document_types,id')]
+    #[Rule('required|integer|exists:document_types,id')]
     public $document_type;
 
-    #[Validate('required|file|mimes:png,jpg,jpeg,pdf,bmp|max:2048')]
+    #[Rule('required|file|mimes:png,jpg,jpeg,pdf,bmp|max:2048')]
     public $document_file;
 
     public $showModal = false;
@@ -35,10 +36,18 @@ class Show extends Component
         '$refresh',
     ];
 
-    protected $rules = [
-        'document_type' => 'required',
-        'document_file' => 'required|file|mimes:png,jpg,jpeg,pdf,bmp|max:2048'
-    ];
+    protected function rules()
+    {
+        return [
+            'document_type' => 'required|integer|exists:document_types,id',
+            'document_file' => 'required|file|mimes:png,jpg,jpeg,pdf,bmp|max:2048'
+        ];
+    }
+
+    public function updatedDocumentFile()
+    {
+        $this->validateOnly('document_file');
+    }
 
     public function createDocument()
     {
