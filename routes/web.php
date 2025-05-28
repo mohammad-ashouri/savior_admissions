@@ -178,14 +178,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
             Route::post('student/change_information', [StudentController::class, 'changeInformation']);
 
-            Route::prefix('Documents')->group(function () {
-                Route::get('/', [DocumentController::class, 'index']);
-                Route::get('/Show/{user_id}', ShowUserDocuments::class)->name('show-user-documents');
-                Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-Principal');
-                Route::post('/Create', [DocumentController::class, 'createDocument']);
-                Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
-                Route::post('/Delete', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
-            });
+
             Route::get('UploadStudentDocumentByParent/{student_id}', UploadDocumentsParentCreate::class)->name('Document.UploadByParent');
             //            Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
             Route::get('EditUploadedEvidences/{student_id}', UploadDocumentsParentEdit::class)->name('Document.EditUploadedEvidences');
@@ -237,7 +230,14 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 Route::post('/VerifyApplicationPayment', [PaymentController::class, 'verifyApplicationPayment']);
 Route::post('/VerifyTuitionPayment', [PaymentController::class, 'verifyTuitionPayment']);
 Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'verifyTuitionInstallmentPayment']);
-
+Route::prefix('Documents')->group(function () {
+    Route::get('/', [DocumentController::class, 'index']);
+    Route::get('/Show/{user_id}', ShowUserDocuments::class)->name('show-user-documents');
+    Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-Principal');
+    Route::post('/Create', [DocumentController::class, 'createDocument']);
+    Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
+    Route::post('/Delete', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
+});
 // Route::get('/import-excel', [ExcelController::class, 'index']);
 // Route::post('/importUsers', [ExcelController::class, 'importUsers'])->name('excel.importUsers');
 // Route::post('/importDocumentTypes', [ExcelController::class, 'importDocumentTypes'])->name('excel.importDocumentTypes');
