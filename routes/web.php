@@ -204,12 +204,11 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::post('ExtensionOfDocumentUpload', [EvidenceController::class, 'extensionOfDocumentUpload'])->name('Evidences.extensionOfDocumentUpload');
 
             // Student status
-            Route::get('StudentStatuses', [StudentController::class, 'studentStatusIndex'])->name('StudentStatus');
+            Route::get('StudentStatuses', App\Livewire\BranchInfo\StudentStatus\Index::class)->name('StudentStatus');
             Route::get('SearchStudentApplianceStatuses', [StudentController::class, 'search'])->name('SearchStudentApplianceStatuses');
             Route::get('GetApplianceConfirmationInformation', [StudentController::class, 'getApplianceConfirmationInformation']);
             Route::get('StudentStatisticsReport', [StudentController::class, 'studentStatisticsReportIndex'])->name('StudentStatisticsReport');
             Route::get('SearchStudentStatisticsReport', [StudentController::class, 'searchStudentStatisticsReport'])->name('SearchStudentStatisticsReport');
-            Route::get('StudentStatuses/export-excel', [ExcelController::class, 'exportStudentStatuses']);
 
             // Exports
             // PDF
