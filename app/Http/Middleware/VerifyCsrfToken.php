@@ -16,5 +16,6 @@ class VerifyCsrfToken extends Middleware
         '/VerifyTuitionPayment',
         '/VerifyTuitionInstallmentPayment',
         '/livewire/*',
+        'livewire/upload-file',
     ];
 }
