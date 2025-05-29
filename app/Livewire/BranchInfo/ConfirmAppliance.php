@@ -16,6 +16,10 @@ class ConfirmAppliance extends Component
 
     public function mount()
     {
+        if (!auth()->user()->can('application-confirmation-menu-access')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         if (auth()->user()->hasRole('Super Admin')) {
             $academicYears = AcademicYear::pluck('id')->toArray();
         } elseif (auth()->user()->hasRole('Principal')) {
