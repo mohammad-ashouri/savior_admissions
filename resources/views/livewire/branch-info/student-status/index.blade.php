@@ -347,6 +347,23 @@
                                                         Wait!</p>
                                                 </div>
                                             @endif
+
+                                                @if($student->approval_status==3)
+                                                    <button wire:click="openDropoutInfoModal({{ $student->id }})"
+                                                            type="button"
+                                                            wire:loading.remove
+                                                            wire:target="openDropoutInfoModal({{ $student->id }})"
+                                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 whitespace-nowrap">
+                                                        Dropout Info
+                                                    </button>
+                                                    <div class="text-center ">
+                                                        <p class="font-bold text-blue-600 text-center"
+                                                           wire:target="openDropoutInfoModal({{ $student->id }})"
+                                                           wire:loading>
+                                                            Please
+                                                            Wait!</p>
+                                                    </div>
+                                                @endif
                                         </div>
                                     </div>
                                 </th>
@@ -360,7 +377,7 @@
         </div>
     </div>
 
-    @if($this->selected_student)
+    @if($this->show_dropout_modal)
         <form wire:submit.prevent="dropout">
             <div id="dropoutModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
                  role="dialog"
@@ -418,19 +435,106 @@
                                     class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
                                 Confirm Dropout
                             </button>
-                            <div class="text-center ml-3">
+                            <div class="text-center ml-1">
                                 <p class="font-bold text-blue-600 text-center" wire:target="dropout" wire:loading>Please
                                     Wait!</p>
                             </div>
-                            <button wire:click="closeDropoutModal" type="button" wire:target="dropout"
+                            <button wire:click="closeDropoutModal" type="button" wire:target="closeDropoutModal"
+                                    wire:loading.remove
                                     class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                                 Cancel
                             </button>
+                            <div class="text-center ml-1">
+                                <p class="font-bold text-blue-600 text-center" wire:target="closeDropoutModal"
+                                   wire:loading>Please
+                                    Wait!</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
+    @endif
+    @if($this->show_dropout_info_modal)
+        <div id="dropoutInfoModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+             role="dialog"
+             aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div
+                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div
+                                class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                    Dropout Information
+                                </h3>
+                                <h3 class="text-sm leading-6 font-medium text-gray-900" id="modal-title">
+                                    Student: {{ $selected_student->student_id }}
+                                    - {{ $selected_student->studentInfo->generalInformationInfo->first_name_en }} {{ $selected_student->studentInfo->generalInformationInfo->last_name_en }}
+                                </h3>
+                                <div class="mt-4">
+                                    <div class="mb-4">
+                                        <label for="dropout_description"
+                                               class="block text-sm font-medium text-gray-700">Description</label>
+                                        <div class="mt-1 p-3 bg-gray-50 rounded-md">
+                                            {{ $this->dropout_info->description }}
+                                        </div>
+                                    </div>
+
+                                    @php
+                                        $files=json_decode($this->dropout_info->files,true);
+                                    @endphp
+                                    @if(!empty($files))
+                                        <div class="mb-4">
+                                            <label
+                                                class="block text-sm font-medium text-gray-700 mb-2">Documents</label>
+                                            <div class="grid grid-cols-1 gap-4">
+                                                @foreach($files as $file)
+                                                    <div class="border rounded-lg p-3 bg-gray-50">
+                                                        <div class="flex items-center justify-between">
+                                                            <div class="flex items-center gap-2">
+                                                                <i class="las la-file-alt text-gray-500 text-xl"></i>
+                                                                <span
+                                                                    class="text-sm text-gray-700 truncate">{{ basename($file) }}</span>
+                                                            </div>
+                                                            <a href="{{ Storage::url($file) }}" target="_blank"
+                                                               class="text-blue-600 hover:text-blue-800">
+                                                                <i class="las la-download"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button wire:click="closeDropoutInfoModal" type="button" wire:target="closeDropoutInfoModal"
+                                wire:loading.remove
+                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Close
+                        </button>
+                        <div class="text-center ml-1">
+                            <p class="font-bold text-blue-600 text-center" wire:target="closeDropoutInfoModal"
+                               wire:loading>Please Wait...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
 </div>
 

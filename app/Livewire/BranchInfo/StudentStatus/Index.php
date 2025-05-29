@@ -8,6 +8,7 @@ use App\Models\Catalogs\AcademicYear;
 use App\Models\Finance\Tuition;
 use App\Models\StudentInformation;
 use App\Models\UserAccessInformation;
+use App\Traits\CheckPermissions;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -20,7 +21,7 @@ use Spatie\LivewireFilepond\WithFilePond;
 
 class Index extends Component
 {
-    use WithPagination, WithFilePond;
+    use WithPagination, WithFilePond, CheckPermissions;
 
     public $academic_years = [];
     #[Url]
@@ -30,6 +31,10 @@ class Index extends Component
     public $description;
     public $files;
     public $selected_student;
+    public $show_dropout_modal;
+    public $show_dropout_info_modal;
+    public Dropout $dropout_info;
+
     protected $queryString = ['academic_year'];
 
     /**
@@ -72,7 +77,11 @@ class Index extends Component
         $this->dispatch('initialize-data-table');
     }
 
-    public function fetchStudents()
+    /**
+     * Fetch and re-render students list
+     * @return void
+     */
+    public function fetchStudents(): void
     {
         $this->validate();
 
@@ -120,10 +129,15 @@ class Index extends Component
 
             // Finding academic years with status 1 in the specified schools
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            if (!in_array($student_id, $academicYears)) {
+                abort(403);
+            }
         }
 
         $this->description = '';
         $this->files = null;
+        $this->show_dropout_modal = true;
     }
 
     /**
@@ -168,7 +182,7 @@ class Index extends Component
                 ->show();
             $this->fetchStudents();
         }
-
+        $this->show_dropout_modal = false;
     }
 
     /**
@@ -177,6 +191,44 @@ class Index extends Component
      */
     public function closeDropoutModal(): void
     {
+        $this->show_dropout_modal = false;
+        $this->selected_student = null;
+        $this->description = '';
+        $this->files = null;
+    }
+
+    /**
+     * Open dropout info modal
+     * @param $student_id
+     * @return void
+     */
+    public function openDropoutInfoModal($student_id): void
+    {
+        $this->selected_student = StudentApplianceStatus::findOrFail($student_id);
+
+        if (auth()->user()->hasRole(['Principal'])) {
+            // Convert accesses to arrays and remove duplicates
+            $myAllAccesses = UserAccessInformation::whereUserId(auth()->user()->id)->first();
+            $filteredArray = $this->getFilteredAccessesP($myAllAccesses);
+
+            // Finding academic years with status 1 in the specified schools
+            $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
+
+            if (!in_array($student_id, $academicYears)) {
+                abort(403);
+            }
+        }
+        $this->dropout_info = Dropout::where('appliance_id', $this->selected_student->id)->first();
+        $this->show_dropout_info_modal = true;
+    }
+
+    /**
+     * Close dropout info modal
+     * @return void
+     */
+    public function closeDropoutInfoModal(): void
+    {
+        $this->show_dropout_info_modal = false;
         $this->selected_student = null;
         $this->description = '';
         $this->files = null;
