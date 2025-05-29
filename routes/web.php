@@ -34,6 +34,7 @@ use App\Livewire\Auth\CreateAccount;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\LostPassword;
 use App\Livewire\BranchInfo\ConfirmAppliance;
+use App\Livewire\BranchInfo\ConfirmInterview;
 use App\Livewire\Documents\Show as ShowUserDocuments;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
@@ -191,6 +192,9 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             //            Route::post('UploadStudentDocumentByParent', [DocumentController::class, 'uploadStudentDocuments'])->name('Documents.UploadDocumentsByParent');
             Route::get('EditUploadedEvidences/{student_id}', UploadDocumentsParentEdit::class)->name('Document.EditUploadedEvidences');
             //            Route::post('EditUploadedEvidences', [DocumentController::class, 'updateStudentDocuments'])->name('Document.EditUploadedEvidences.update');
+
+            // Interview confirmation
+            Route::get('ConfirmInterview', ConfirmInterview::class)->name('Application.ConfirmInterview');
 
             // Application confirmation
             Route::get('ConfirmApplication', ConfirmAppliance::class)->name('Application.ConfirmApplicationList');

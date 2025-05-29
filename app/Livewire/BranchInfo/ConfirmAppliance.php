@@ -34,7 +34,7 @@ class ConfirmAppliance extends Component
             ->whereIn('academic_year', $academicYears)
             ->where('approval_status', 0)
             ->where('documents_uploaded', 1)
-            ->where('interview_status', 'Pending For Principal Confirmation')
+            ->where('interview_status', 'Admitted')
             ->get();
     }
 

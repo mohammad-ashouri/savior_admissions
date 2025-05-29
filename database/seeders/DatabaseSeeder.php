@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\TemporarySeeders\AddConfirmInterviewForPrincipal;
 use Database\Seeders\TemporarySeeders\AddDropoutPermission;
 use Database\Seeders\TemporarySeeders\AddPendingUserApprovalsPermission;
 use Database\Seeders\TemporarySeeders\AddSearchTuitionStatusPermission;
@@ -39,7 +40,8 @@ class DatabaseSeeder extends Seeder
 //            AddStudentStatisticsReportPermission::class,
 //            AddLevelsToStudentApplianceStatuses::class,
 //            AddPendingUserApprovalsPermission::class,
-            AddDropoutPermission::class,
+//            AddDropoutPermission::class,
+            AddConfirmInterviewForPrincipal::class,
         ]);
     }
 }
