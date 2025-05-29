@@ -33,6 +33,7 @@ use App\Http\Middleware\SettingsCheck;
 use App\Livewire\Auth\CreateAccount;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\LostPassword;
+use App\Livewire\BranchInfo\ConfirmAppliance;
 use App\Livewire\Documents\Show as ShowUserDocuments;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
@@ -192,7 +193,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             //            Route::post('EditUploadedEvidences', [DocumentController::class, 'updateStudentDocuments'])->name('Document.EditUploadedEvidences.update');
 
             // Application confirmation
-            Route::get('ConfirmApplication', [ApplicationController::class, 'confirmApplication'])->name('Application.ConfirmApplicationList');
+            Route::get('ConfirmApplication', ConfirmAppliance::class)->name('Application.ConfirmApplicationList');
             Route::get('ConfirmApplication/{application_id}/{appliance_id}', [ApplicationController::class, 'showApplicationConfirmation']);
             Route::post('ConfirmApplication', [ApplicationController::class, 'confirmStudentAppliance'])->name('Application.ConfirmApplication');
 

@@ -205,22 +205,10 @@
                                                              $statusText='Pending Interview';
                                                              $statusPercent+=5;
                                                          }
-                                                         if ($applicationStatus->tuition_payment_status=='Pending'){
-                                                             $statusPercent+=25;
-                                                             $statusText='Waiting For Tuition Payment';
-                                                         }
                                                          if ($applicationStatus->interview_status=='Rejected'){
                                                              $statusText='Rejected Interview';
                                                              $statusColor='red';
                                                              $statusPercent=100;
-                                                         }
-                                                         if ($applicationStatus->interview_status=='Admitted'){
-                                                             $statusPercent+=25;
-                                                             $statusText='Waiting For Upload Documents';
-                                                         }
-                                                         if ($applicationStatus->documents_uploaded_approval==1){
-                                                             $statusPercent+=25;
-                                                             $statusText='Waiting For Tuition Payment';
                                                          }
                                                          if ($applicationStatus->documents_uploaded_approval==2){
                                                              $statusPercent=100;
@@ -231,6 +219,14 @@
                                                              $statusPercent-=25;
                                                              $statusColor='red';
                                                              $statusText='Automatic Rejected (Documents could not be uploaded after 72 hours)';
+                                                         }
+                                                         if ($applicationStatus->interview_status=='Pending For Principal Confirmation'){
+                                                             $statusPercent=35;
+                                                             $statusText='Pending For Principal Confirmation';
+                                                         }
+                                                         if ($applicationStatus->interview_status=='Admitted' and $applicationStatus->tuition_payment_status=='Pending'){
+                                                             $statusPercent+=25;
+                                                             $statusText='Waiting For Tuition Payment';
                                                          }
                                                          if ($applicationStatus->tuition_payment_status=='Paid'){
                                                              $statusPercent=100;
@@ -255,10 +251,6 @@
                                                          }
                                                          if ($applicationStatus->tuition_payment_status=='Pending For Review'){
                                                              $statusText='Checking tuition payment!';
-                                                         }
-                                                         if ($applicationStatus->interview_status=='Pending For Principal Confirmation' and $applicationStatus->tuition_payment_status!='Pending'){
-                                                             $statusText='Pending For Principal Confirmation';
-                                                             $statusPercent+=20;
                                                          }
                                                          if ($applicationStatus->interview_status=='Rejected' and !$applicationStatus->approval_status){
                                                              $statusText="Rejected By Principal: $applicationStatus->description";
@@ -315,7 +307,7 @@
                                                     </div>
                                                 @endif
 
-                                                @if($applicationStatus->tuition_payment_status=='Pending')
+                                                    @if($applicationStatus->tuition_payment_status=='Pending' and $applicationStatus->interview_status=='Admitted')
                                                     <div
                                                         class="text-base font-semibold">
                                                         <a href="{{ route('Tuitions.PayTuition',$applicationStatus->student_id) }}"
