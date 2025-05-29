@@ -246,7 +246,23 @@
                         </div>
                     </div>
                 </div>
-
+                <hr>
+                <div class="mb-8">
+                    <label for="foreign_school"
+                           class="block mb-2  font-bold text-gray-900 dark:text-white">
+                        * Did the student study at a foreign school the previous year?
+                    </label>
+                    <select id="foreign_school" name="foreign_school" disabled
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            title="Select an option">
+                        <option value="No">No
+                        </option>
+                        <option value="Yes">
+                            Yes
+                        </option>
+                    </select>
+                </div>
+                <hr>
                 <div id="last-step" class="text-center">
                     <div class="text-left mb-4">
                         <div>
