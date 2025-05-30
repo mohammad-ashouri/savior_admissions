@@ -99,6 +99,12 @@ class EditApplianceInvoices extends Component
      */
     public array $files = [];
 
+    /**
+     * Invoice files
+     * @var array
+     */
+    public array $invoice_files = [];
+
     // Getting principal and financial manager accesses
     public function getFilteredAccessesPF($userAccessInfo): array
     {
@@ -275,6 +281,18 @@ class EditApplianceInvoices extends Component
     {
         $history = TuitionInvoiceEditHistory::findOrFail($history_id);
         $this->files = json_decode($history->file, true) ?? [];
+        $this->loadDiscounts();
+    }
+
+    /**
+     * Show invoice payment files for offline payments
+     * @param $invoice_id
+     * @return void
+     */
+    public function showPaymentFiles($invoice_id): void
+    {
+        $invoice_details = TuitionInvoiceDetails::find($invoice_id);
+        $this->invoice_files = json_decode($invoice_details->description, true)['files'];
         $this->loadDiscounts();
     }
 }

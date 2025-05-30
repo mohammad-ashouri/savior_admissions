@@ -181,6 +181,22 @@
                                         </div>
                                     </button>
                                     <p wire:target="changeInvoiceAmount" wire:loading>Please Wait!</p>
+                                    @if($invoice->payment_method==1)
+                                        <button
+                                            wire:click="showPaymentFiles({{ $invoice->id }})"
+                                            x-on:click="$dispatch('show-invoice-files', [{{ $invoice->id }}])"
+                                            wire:target="showPaymentFiles({{ $invoice->id }})"
+                                            wire:loading.remove
+                                            type="button"
+                                            class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline edit-tuition-invoice">
+                                            <div class="text-center">
+                                                <i
+                                                    class="las la-eye "
+                                                    style="font-size: 20px"></i>
+                                                Show Payment Files
+                                            </div>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                             @if($invoice->invoiceEditHistory->isNotEmpty())
@@ -257,7 +273,6 @@
                                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                                         <x-secondary-button
                                                             wire:click="$dispatch('open-file-modal',[{{ $history->id }}])"
-                                                            wire:target="fileModal"
                                                             wire:loading.remove
                                                         >Add File
                                                         </x-secondary-button>
@@ -371,6 +386,7 @@
         </div>
     </div>
     <x-invoice-history-file-modal name="file-modal"/>
+    <x-show-invoice-files-modal :files="$invoice_files" name="show-invoice-files-modal"/>
     <x-show-invoice-history-files-modal :files="$files" name="show-files-modal"/>
 </section>
 
