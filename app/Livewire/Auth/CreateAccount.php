@@ -186,7 +186,12 @@ class CreateAccount extends Component
             . "Valid for 2 minutes. Do not share this code.\n"
             . "If you didn't request this, contact support immediately.";
 
-        $this->sendSms($this->mobile, $smsContent);
+        $smsResult = $this->sendSms($this->mobile, $smsContent);
+
+        if (isset($smsResult['error'])) {
+            $this->addError('mobile', 'Failed to send verification code: ' . $smsResult['error']);
+            return;
+        }
 
         $this->remainingTime = 120;
         $this->tokenSent = true;

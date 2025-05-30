@@ -16,25 +16,27 @@ trait SMS
                 $message = $messageText;
                 $receptor = [$mobile];
                 $result = Kavenegar::Send($sender, $receptor, $message . "\nلغو11");
-                $this->format($result);
+                return $this->format($result);
             } catch (ApiException $e) {
-                echo $e->errorMessage();
+                return ['error' => $e->errorMessage()];
             } catch (HttpException $e) {
-                echo $e->errorMessage();
+                return ['error' => $e->errorMessage()];
+            } catch (\Exception $e) {
+                return ['error' => $e->getMessage()];
             }
-        }else{
-            return 'Sent (BETA)';
+        } else {
+            return ['status' => 'Sent (BETA)'];
         }
     }
 
     private function format($result)
     {
-        //        $statuses = [];
-        //        if ($result) {
-        //            foreach ($result as $r) {
-        //                $statuses[] = ['status' => $r->status];
-        //            }
-        //        }
-        //        return json_encode($statuses);
+        $statuses = [];
+        if ($result) {
+            foreach ($result as $r) {
+                $statuses[] = ['status' => $r->status];
+            }
+        }
+        return ['status' => 'success', 'data' => $statuses];
     }
 }
