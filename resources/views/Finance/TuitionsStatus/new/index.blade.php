@@ -921,7 +921,7 @@
                                     </th>
                                     <th scope="row"
                                         class=" justify-center border text-center text-gray-900 whitespace-nowrap dark:text-white action">
-                                        @if(auth()->user()->hasRole('Super Admin'))
+                                        @if(auth()->user()->hasRole(['Super Admin','Financial Manager (Full Access)']))
                                             <a href="{{ route('applianceInvoices.edit',$student->id) }}"
                                                type="button"
                                                class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
