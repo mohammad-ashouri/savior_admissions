@@ -124,6 +124,9 @@
       $wire.on('filepond-reset-{{ $wireModelAttribute }}', () => {
           pond.removeFiles();
       });
+      $wire.on('filepond-reset', () => {
+          pond.removeFiles();
+      });
     }"
 >
     <input type="file" x-ref="input" accept="{{ $accept }}">

@@ -41,6 +41,12 @@ class EditApplianceInvoices extends Component
     public $tuition_invoice_details;
 
     /**
+     * Selected tuition invoice details
+     * @var TuitionInvoiceDetails
+     */
+    public TuitionInvoiceDetails $selected_invoice;
+
+    /**
      * All discounts for this academic year
      */
     public $discounts;
@@ -104,6 +110,12 @@ class EditApplianceInvoices extends Component
      * @var array
      */
     public array $invoice_files = [];
+
+    /**
+     * Tuition invoice replacement file
+     * @var
+     */
+    public $tuition_invoice_replacement_file;
 
     // Getting principal and financial manager accesses
     public function getFilteredAccessesPF($userAccessInfo): array
@@ -252,6 +264,7 @@ class EditApplianceInvoices extends Component
     public function resetFileModalValues(): void
     {
         $this->reset('description', 'file');
+        $this->dispatch('filepond-reset');
         $this->resetErrorBag();
         $this->loadDiscounts();
     }
@@ -291,8 +304,39 @@ class EditApplianceInvoices extends Component
      */
     public function showPaymentFiles($invoice_id): void
     {
-        $invoice_details = TuitionInvoiceDetails::find($invoice_id);
-        $this->invoice_files = json_decode($invoice_details->description, true)['files'];
+        $this->selected_invoice = TuitionInvoiceDetails::find($invoice_id);
+        $this->invoice_files = json_decode($this->selected_invoice->description, true)['files'];
         $this->loadDiscounts();
+    }
+
+    /**
+     * Change tuition invoice files in offline payment
+     * @param $file_key
+     * @return void
+     */
+    public function changeTuitionInvoiceFile($file_key): void
+    {
+        $this->validate([
+            'tuition_invoice_replacement_file' => 'required|file|max:5000|mimes:jpeg,png,jpg,bmp,pdf|max:2048',
+        ]);
+
+        $extension = $this->tuition_invoice_replacement_file->getClientOriginalExtension();
+        $fileName = 'Tuition_' . date('Y-m-d_H-i-s') . '.' . $extension;
+
+        $file = $this->tuition_invoice_replacement_file->storeAs(
+            'uploads/Documents/' . $this->appliance_status->student_id . '/Appliance_' . $this->appliance_status->id . '/Tuitions/',
+            $fileName,
+            'public'
+        );
+
+        $invoice_file = json_decode($this->selected_invoice->description, true);
+        $invoice_file['files'][$file_key] = $file;
+
+        $this->selected_invoice->description = json_encode($invoice_file);
+        $this->selected_invoice->save();
+
+        session()->flash('success', 'Invoice file changed successfully');
+        $this->dispatch('close-change-invoice-file-modal');
+        $this->resetFileModalValues();
     }
 }

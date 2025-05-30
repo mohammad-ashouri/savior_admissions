@@ -3,7 +3,7 @@
     'name',
     'files',
     'show' => false,
-    'maxWidth' => '2xl'
+    'maxWidth' => '4xl'
 ])
 
 @php
@@ -13,6 +13,7 @@
         'lg' => 'sm:max-w-lg',
         'xl' => 'sm:max-w-xl',
         '2xl' => 'sm:max-w-2xl',
+        '4xl' => 'sm:max-w-4xl',
     ][$maxWidth];
 @endphp
 
@@ -40,6 +41,7 @@
     })"
     x-on:show-invoice-files.window="$event.detail[0] ? show = true : null"
     x-on:close.stop="show = false"
+    x-on:close-change-invoice-file-modal.window="show = false"
     x-on:keydown.escape.window="show = false"
     x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
     x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
@@ -97,18 +99,33 @@
                                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">#</th>
+                                <th scope="col" class="px-6 py-3">File</th>
                                 <th scope="col" class="px-6 py-3">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($files ?? [] as $file)
-                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            @foreach($files ?? [] as $key=>$file)
+                                <tr wire:key="invoice-file-{{ $loop->iteration }}"
+                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <td class="px-6 py-4">{{ $loop->iteration }}</td>
                                     <td class="px-6 py-4">
                                         <a target="_blank" href="{{ Storage::url($file) }}"
                                            class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
                                             Download
                                         </a>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <form class="flex w-full gap-4 items-center"
+                                              wire:submit.prevent="changeTuitionInvoiceFile('{{ $key }}')">
+                                            <x-filepond::upload class="w-full"
+                                                                wire:model="tuition_invoice_replacement_file"/>
+                                            <x-secondary-button
+                                                type="submit"
+                                                wire:loading.remove
+                                            >Change
+                                            </x-secondary-button>
+                                        </form>
+                                        <x-input-error :messages="$errors->get('tuition_invoice_replacement_file')"/>
                                     </td>
                                 </tr>
                             @endforeach
