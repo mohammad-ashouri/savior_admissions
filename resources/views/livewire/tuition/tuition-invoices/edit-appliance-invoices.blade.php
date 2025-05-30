@@ -28,8 +28,7 @@
                     - {{ $tuition_invoice_details[0]->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->first_name_en }} {{ $tuition_invoice_details[0]->tuitionInvoiceDetails->applianceInformation->studentInfo->generalInformationInfo->last_name_en }}</h1>
             </div>
             <div class="grid grid-cols-1 gap-4 mb-4">
-                @include('GeneralPages.errors.session.success')
-                @include('GeneralPages.errors.session.error')
+                <x-flash-messages/>
                 @session('change-invoice-amount-success')
                 <div
                     class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-800 dark:border-green-600 dark:text-green-200 flex items-center justify-between"
@@ -140,7 +139,7 @@
                                     </div>
                                 </th>
                                 <th scope="row"
-                                    class="flex items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                    class="flex items-center text-center justify-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
                                     <input type="number" wire:model="amounts.{{ $invoice->id }}"
                                            value="{{$invoice->amount}}"
                                            class="bg-gray-50 border mr-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-40 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

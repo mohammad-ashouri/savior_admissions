@@ -261,6 +261,7 @@ class EditApplianceInvoices extends Component
         $history->save();
 
         $this->loadDiscounts();
+        session()->flash('success', 'File uploaded successfully');
         $this->dispatch('close-upload-modal');
         $this->resetFileModalValues();
     }
