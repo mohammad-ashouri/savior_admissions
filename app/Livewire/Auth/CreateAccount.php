@@ -38,6 +38,7 @@ class CreateAccount extends Component
     public $birthplace;
     public $passport_number;
     public $faragir_code;
+    public $fida_code;
     public $country;
     public $state_city;
     public $email;
@@ -71,6 +72,7 @@ class CreateAccount extends Component
         'birthplace' => 'required|exists:countries,id',
         'passport_number' => 'required|string|max:255|unique:general_informations,passport_number',
         'faragir_code' => 'required|string|max:24|unique:general_informations,faragir_code',
+        'fida_code' => 'required|string|max:12|unique:general_informations,fida_code',
         'country' => 'required|exists:countries,id',
         'state_city' => 'required|string|max:255',
         'email' => 'nullable|email|unique:users,email',
@@ -270,6 +272,7 @@ class CreateAccount extends Component
                 'birthplace' => $this->birthplace,
                 'passport_number' => $this->passport_number,
                 'faragir_code' => $this->faragir_code,
+                'fida_code' => $this->fida_code,
                 'country' => $this->country,
                 'state_city' => $this->state_city,
                 'address' => $this->address,

@@ -244,10 +244,20 @@
                         <div class="mb-4">
                             <label for="faragir_code" class="block text-gray-700 text-sm font-medium mb-2">Faragir
                                 Code</label>
-                            <input type="text" id="faragir_code" wire:model="faragir_code" placeholder="If not, enter 0"
+                            <input type="text" id="faragir_code" wire:model="faragir_code"
+                                   placeholder="Enter Faragir Code"
                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                             <x-input-error :messages="$errors->get('faragir_code')"/>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="fida_code" class="block text-gray-700 text-sm font-medium mb-2">Faragir
+                                Code</label>
+                            <input type="text" id="fida_code" wire:model="fida_code" placeholder="Enter Fida Code"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                            <x-input-error :messages="$errors->get('fida_code')"/>
                         </div>
 
                         <!-- Contact Information -->
