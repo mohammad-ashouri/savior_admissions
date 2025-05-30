@@ -14,9 +14,12 @@ use App\Models\StudentInformation;
 use App\Models\UserAccessInformation;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Spatie\LivewireFilepond\WithFilePond;
 
 class EditApplianceInvoices extends Component
 {
+    use WithFilePond;
+
     /**
      * Student appliance status variable
      */
@@ -57,8 +60,27 @@ class EditApplianceInvoices extends Component
      */
     public Interview $interview;
 
+    /**
+     * History file description
+     * @var string
+     */
+    #[Validate('required|string|max:255')]
+    public string $description;
+
+    /**
+     * History file
+     * @var
+     */
+    #[Validate('required|file|mimes:jpg,bmp,pdf,jpeg,png')]
+    public $file;
+
+    /**
+     * History id
+     * @var int
+     */
     #[Validate('required|integer|exists:tuition_invoice_edit_histories,id')]
     public int $history_id;
+
     /**
      * Listeners
      *
@@ -66,8 +88,16 @@ class EditApplianceInvoices extends Component
      */
     protected $listeners = [
         'refresh' => '$refresh',
-        'open-file-modal' => 'fileModal',
+        'open-file-modal' => 'openFileModal',
+        'resetFileModalValues' => 'resetFileModalValues',
+        'show-history-files' => 'showHistoryFiles',
     ];
+
+    /**
+     * Files for history
+     * @var array
+     */
+    public array $files = [];
 
     // Getting principal and financial manager accesses
     public function getFilteredAccessesPF($userAccessInfo): array
@@ -75,11 +105,11 @@ class EditApplianceInvoices extends Component
         $principalAccess = [];
         $financialManagerAccess = [];
 
-        if (! empty($userAccessInfo->principal)) {
+        if (!empty($userAccessInfo->principal)) {
             $principalAccess = explode('|', $userAccessInfo->principal);
         }
 
-        if (! empty($userAccessInfo->financial_manager)) {
+        if (!empty($userAccessInfo->financial_manager)) {
             $financialManagerAccess = explode('|', $userAccessInfo->financial_manager);
         }
 
@@ -182,6 +212,10 @@ class EditApplianceInvoices extends Component
             ->get();
     }
 
+    /**
+     * Change discounts after clicking on any checkboxes
+     * @return void
+     */
     public function changeDiscounts(): void
     {
         $interview_form = json_decode($this->interview->interview_form, true);
@@ -193,11 +227,53 @@ class EditApplianceInvoices extends Component
         $this->loadDiscounts();
     }
 
-    public function fileModal($history_id)
+    /**
+     * Set initial values after file modal opened
+     * @param $history_id
+     * @return void
+     */
+    public function openFileModal($history_id): void
     {
         TuitionInvoiceEditHistory::findOrFail($history_id);
         $this->history_id = $history_id;
+        $this->loadDiscounts();
+    }
+
+    /**
+     * Reset modal values
+     * @return void
+     */
+    public function resetFileModalValues(): void
+    {
+        $this->reset('description', 'file');
+        $this->resetErrorBag();
+        $this->loadDiscounts();
+    }
+
+    public function uploadFile(): void
+    {
         $this->validate();
+        $history = TuitionInvoiceEditHistory::find($this->history_id);
+        $file = $this->file->store('uploads/Documents/' . $this->appliance_status->student_id . '/Appliance_' . $this->appliance_status->id . '/Tuitions/Histories/' . $history->id, 'public');
+        $historyFile = json_decode($history->file);
+        $historyFile[] = ['description' => $this->description, 'file' => $file, 'created_at' => date('Y-m-d H:i:s'), 'user' => auth()->user()->id];
+        $history->file = json_encode($historyFile);
+        $history->save();
+
+        $this->loadDiscounts();
+        $this->dispatch('close-upload-modal');
+        $this->resetFileModalValues();
+    }
+
+    /**
+     * Show history files
+     * @param $history_id
+     * @return void
+     */
+    public function showHistoryFiles($history_id): void
+    {
+        $history = TuitionInvoiceEditHistory::findOrFail($history_id);
+        $this->files = json_decode($history->file, true) ?? [];
         $this->loadDiscounts();
     }
 }

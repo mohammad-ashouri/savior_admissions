@@ -245,6 +245,14 @@
                                                     </th>
                                                     <th scope="row"
                                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        <x-secondary-button
+                                                            wire:click="$dispatch('show-history-files',[{{ $history->id }}])"
+                                                            wire:target="showHistoryFiles"
+                                                            wire:loading.remove
+                                                        >Show Files
+                                                        </x-secondary-button>
+                                                        <p wire:target="showHistoryFiles" wire:loading>Please
+                                                            Wait...</p>
                                                     </th>
                                                     <th scope="row"
                                                         class=" items-center text-center px-3 py-1 text-gray-900 whitespace-nowrap dark:text-white">
@@ -254,7 +262,7 @@
                                                             wire:loading.remove
                                                         >Add File
                                                         </x-secondary-button>
-                                                        <p wire:target="fileModal" wire:loading>Please Wait!</p>
+                                                        <p wire:loading>Please Wait...</p>
                                                     </th>
                                                 </tr>
                                             @endforeach
@@ -363,4 +371,7 @@
             </div>
         </div>
     </div>
+    <x-invoice-history-file-modal name="file-modal"/>
+    <x-show-invoice-history-files-modal :files="$files" name="show-files-modal"/>
 </section>
+

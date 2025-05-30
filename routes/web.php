@@ -44,6 +44,7 @@ use App\Livewire\Tuition\TuitionInvoices\EditApplianceInvoices;
 use App\Livewire\Users\PendingUserApprovals;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------

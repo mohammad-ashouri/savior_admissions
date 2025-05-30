@@ -19,6 +19,7 @@ class TuitionInvoiceEditHistory extends Model
     protected $fillable = [
         'invoice_details_id',
         'description',
+        'file',
         'user',
     ];
 
