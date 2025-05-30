@@ -14,7 +14,7 @@ class AddConfirmInterviewForPrincipal extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'confirm-interview']);
+        Permission::createOrFirst(['name' => 'confirm-interview']);
         $superAdminRole = Role::whereName('Super Admin')->first();
         $superAdminRole->givePermissionTo([
             'confirm-interview'
