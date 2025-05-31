@@ -116,9 +116,7 @@ class Show extends Component
             ->orderBy('documents_uploaded')
             ->firstOrFail();
 
-        $checkStudentApplianceStatus = StudentApplianceStatus::with('evidences')->whereId($this->student_appliance_status->id)->where(function ($query) {
-            $query->where('documents_uploaded_approval', 1)->orWhere('documents_uploaded_approval', 2);
-        })->firstOrFail();
+        $checkStudentApplianceStatus = StudentApplianceStatus::with('evidences')->whereId($this->student_appliance_status->id)->where('tuition_payment_status','Paid')->firstOrFail();
         $studentInformation = StudentInformation::with('generalInformations')->whereStudentId($this->student_appliance_status->student_id)->firstOrFail();
         $evidences = Evidence::find($checkStudentApplianceStatus->evidences->id);
 
