@@ -262,7 +262,7 @@ class CreateAccount extends Component
             GeneralInformation::create([
                 'user_id' => $user->id,
                 'first_name_en' => $this->first_name_en,
-                'last_name_en' => $this->first_name_en,
+                'last_name_en' => $this->last_name_en,
                 'first_name_fa' => $this->first_name_fa,
                 'last_name_fa' => $this->last_name_fa,
                 'father_name' => $this->father_name,
