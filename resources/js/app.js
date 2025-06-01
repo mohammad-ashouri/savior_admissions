@@ -193,7 +193,7 @@ $(document).ready(function () {
     if (fullPath.includes('users')) {
         pageTitle = 'User Management';
         if (fullPath.includes('edit')) {
-            pageTitle = 'Edit User Profile';
+            pageTitle = 'Show User Profile';
             $('#changeUserGeneralInformation').submit(function (e) {
                 e.preventDefault();
                 let form = $(this);
@@ -1157,36 +1157,6 @@ $(document).ready(function () {
                     swalFire('Error', 'Your entry must contain Persian characters.', 'error', 'Try again');
                 }
             });
-
-            $('#birthdate').on('change', function (event) {
-                // Validate input
-                if (!checkAge($(this).val(), 4)) {
-                    event.preventDefault(); // Prevent typing of unauthorized character
-                    //Remove all field values
-                    $(this).val('');
-                    // Display an error message using swalFire
-                    swalFire('Error', 'Your student must be over four years old.', 'error', 'Try again');
-                }
-            });
-
-            $('#new-student').submit(function (e) {
-                e.preventDefault();
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Your student will be added permanently.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Yes',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        spinner();
-                        $(this).off('submit');
-                        $(this).submit();
-                    }
-                });
-            });
         }
 
         $('#student_personal_picture_form').submit(function (e) {
@@ -1681,7 +1651,7 @@ $(document).ready(function () {
         });
 
     } else if (fullPath.includes('EditUploadedEvidences')) {
-        pageTitle = 'Edit Documents';
+        pageTitle = 'Show Documents';
 
         const images = []; // Array to store image URLs
         let currentIndex = 0; // Variable to track the current image index
@@ -2445,7 +2415,7 @@ $(document).ready(function () {
         pageTitle = 'Invoices Details';
 
     }  else if (fullPath.includes('EditApplianceInvoices')) {
-        pageTitle = 'Edit Tuition Invoices ';
+        pageTitle = 'Show Tuition Invoices ';
 
     } else if (fullPath.includes('UploadStudentDocumentByParent')) {
         pageTitle = 'Upload Student\'s Documents';

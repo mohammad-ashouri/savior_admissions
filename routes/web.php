@@ -165,7 +165,10 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('/searchUsers', [UserController::class, 'searchUser'])->name('searchUser');
 
             // Students management
-            Route::resource('Students', StudentController::class);
+            Route::get('Students', App\Livewire\BranchInfo\Students\Index::class)->name('Students.index');
+            Route::get('Students/create', App\Livewire\BranchInfo\Students\Create::class)->name('Students.create');
+            Route::get('Students/{student_id}', App\Livewire\BranchInfo\Students\Show::class)->name('Students.show');
+
             Route::post('Students/uploadPersonalPicture', [StudentController::class, 'uploadPersonalPicture'])->name('UploadPersonalPicture');
 
             // Applications
@@ -186,7 +189,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
                 Route::get('/Show/{user_id}', ShowUserDocuments::class)->name('show-user-documents');
                 Route::post('/Create/{user_id}', [DocumentController::class, 'createDocumentForUser'])->middleware('can:access-SuperAdmin-and-Principal');
                 Route::post('/Create', [DocumentController::class, 'createDocument']);
-                Route::post('/Edit/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
+                Route::post('/Show/{id}', [DocumentController::class, 'editUserDocuments'])->middleware('can:access-SuperAdmin-and-Principal');
                 Route::post('/Delete', [DocumentController::class, 'deleteUserDocument'])->middleware('can:access-SuperAdmin-and-Principal');
             });
             Route::get('UploadStudentDocumentByParent/{student_id}', UploadDocumentsParentCreate::class)->name('Document.UploadByParent');
