@@ -225,7 +225,7 @@
                                                              $statusText='Pending For Principal Confirmation';
                                                          }
                                                          if ($applicationStatus->interview_status=='Admitted' and $applicationStatus->tuition_payment_status=='Pending'){
-                                                             $statusPercent+=25;
+                                                             $statusPercent=75;
                                                              $statusText='Waiting For Tuition Payment';
                                                          }
                                                          if ($applicationStatus->tuition_payment_status=='Paid'){
@@ -238,7 +238,7 @@
                                                              $statusColor='yellow';
                                                              $statusText="Tuition Paid. Waiting For Upload Documents";
                                                          }
-                                                         if ($applicationStatus->documents_uploaded==1){
+                                                         if ($applicationStatus->documents_uploaded==1 and $applicationStatus->documents_uploaded_approval!=1){
                                                              $statusText='Waiting For Documents Approval';
                                                          }
                                                          if ($applicationStatus->documents_uploaded==2){
@@ -307,7 +307,7 @@
                                                     </div>
                                                 @endif
 
-                                                    @if($applicationStatus->tuition_payment_status=='Pending' and $applicationStatus->interview_status=='Admitted')
+                                                    @if($applicationStatus->tuition_payment_status=='Pending' and $applicationStatus->interview_status=='Admitted' and $applicationStatus->approval_status==0)
                                                     <div
                                                         class="text-base font-semibold">
                                                         <a href="{{ route('Tuitions.PayTuition',$applicationStatus->student_id) }}"
@@ -322,7 +322,7 @@
                                                     </div>
                                                 @endif
 
-                                                @if($applicationStatus->tuition_payment_status=='Paid')
+                                                    @if($applicationStatus->documents_uploaded_approved==1)
                                                     <div
                                                         class="text-base font-semibold">
                                                         <a href="{{ route('tuitionCard.en',$applicationStatus->id) }}"

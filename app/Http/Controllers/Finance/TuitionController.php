@@ -326,7 +326,7 @@ class TuitionController extends Controller
 
         // Get tuition price
         $tuition = Tuition::join('tuition_details', 'tuitions.id', '=', 'tuition_details.tuition_id')
-            ->where('tuitions.academic_year', $applicationInfo->academic_year)
+            ->where('tuitions.academic_year', $studentApplianceStatus->academic_year)
             ->where('tuition_details.level', $applicationInfo->level)
             ->first();
 
