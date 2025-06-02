@@ -114,13 +114,11 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
 
             Route::get('/Interviews/{form}/{id}/edit', [InterviewController::class, 'edit'])->name('interviews.edit');
             Route::get('/Interviews/{form}/{id}', [InterviewController::class, 'show'])->name('interviews.show');
-            Route::resource('Interviews', InterviewController::class)->names([
-                'index' => 'interviews.index',
-            ]);
+            Route::resource('Interviews', InterviewController::class);
+            Route::get('Interviews', App\Livewire\BranchInfo\Interviews\Index::class)->name('interviews.index');
             Route::get('/SetInterview/{form}/{id}', [InterviewController::class, 'GetInterviewForm']);
             Route::get('/SearchInterviews', [InterviewController::class, 'searchInterviews'])->name('SearchInterviews');
             Route::post('/SetInterview', [InterviewController::class, 'SetInterview'])->name('interviews.SetInterview');
-            Route::post('/SubmitAbsence', [InterviewController::class, 'submitAbsence'])->name('interviews.submitAbsence');
 
             // Finance
             Route::resource('ReservationInvoices', ApplicationReservationController::class);
