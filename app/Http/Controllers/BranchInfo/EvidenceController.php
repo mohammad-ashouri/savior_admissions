@@ -37,6 +37,7 @@ class EvidenceController extends Controller
             ->with('academicYearInfo')
             ->whereIn('academic_year', $academicYears)
             ->whereDocumentsUploaded('2')
+            ->where('tuition_payment_status', 'Paid')
 //            ->whereInterviewStatus('Admitted')
             ->orderBy('documents_uploaded', 'asc')
             ->get();
@@ -60,7 +61,7 @@ class EvidenceController extends Controller
             ->with('evidences')
             ->whereId($appliance_id)
             ->whereIn('academic_year', $academicYears)
-            ->whereDocumentsUploaded('2')
+            ->where('tuition_payment_status', 'Paid')
 //            ->whereInterviewStatus('Admitted')
             ->orderBy('documents_uploaded', 'asc')
             ->first();
@@ -89,7 +90,9 @@ class EvidenceController extends Controller
             $academicYears = AcademicYear::whereIn('school_id', $filteredArray)->pluck('id')->toArray();
         }
         $appliance_id = $request->appliance_id;
-        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->whereId($appliance_id)->whereIn('academic_year', $academicYears)->whereDocumentsUploaded('2')->whereInterviewStatus('Admitted')->first();
+        $studentAppliance = StudentApplianceStatus::with('studentInfo')->with('academicYearInfo')->with('evidences')->whereId($appliance_id)->whereIn('academic_year', $academicYears)
+            ->where('tuition_payment_status', 'Paid')
+            ->first();
         if (empty($studentAppliance)) {
             abort(403);
         }

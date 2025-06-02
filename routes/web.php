@@ -207,7 +207,6 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
             Route::get('ConfirmEvidences', [EvidenceController::class, 'index'])->name('Evidences');
             Route::get('ConfirmEvidences/{appliance_id}', UploadDocumentsParentShow::class)->name('Evidences.show');
             Route::get('Evidences/show/{appliance_id}', UploadDocumentsParentShow::class)->name('Evidences.showEvidence');
-            //            Route::post('ConfirmEvidences', [EvidenceController::class, 'confirmEvidences'])->name('Evidences.confirm');
             Route::post('ExtensionOfDocumentUpload', [EvidenceController::class, 'extensionOfDocumentUpload'])->name('Evidences.extensionOfDocumentUpload');
 
             // Student status
