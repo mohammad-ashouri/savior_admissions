@@ -1,4 +1,99 @@
 <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
+    <!-- Image Zoom Modal -->
+    <div id="imageZoomModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title"
+         role="dialog" aria-modal="true" onclick="closeModal()">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div id="modalBackdrop"
+                 class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-300 ease-out opacity-0"
+                 aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div id="modalContent"
+                 class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all duration-300 ease-out sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full translate-y-4 opacity-0 scale-95"
+                 onclick="event.stopPropagation()">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                            <div class="relative">
+                                <img id="modalImage" src="" alt="Zoomed Image" class="w-full h-auto">
+                                <button type="button" onclick="closeModal()"
+                                        class="absolute top-0 right-0 bg-gray-800 text-white rounded-full p-2 m-2 hover:bg-gray-700 transition-colors duration-200">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageZoomModal');
+            const backdrop = document.getElementById('modalBackdrop');
+            const content = document.getElementById('modalContent');
+
+            document.getElementById('modalImage').src = imageSrc;
+            modal.classList.remove('hidden');
+
+            // Trigger reflow
+            modal.offsetHeight;
+
+            // Add animation classes
+            backdrop.classList.remove('opacity-0');
+            content.classList.remove('opacity-0', 'scale-95', 'translate-y-4');
+            content.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageZoomModal');
+            const backdrop = document.getElementById('modalBackdrop');
+            const content = document.getElementById('modalContent');
+
+            // Add closing animation classes
+            backdrop.classList.add('opacity-0');
+            content.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+            content.classList.add('opacity-0', 'scale-95', 'translate-y-4');
+
+            // Wait for animation to complete before hiding
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Close modal when pressing Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Add zoom button after FilePond upload
+        document.addEventListener('livewire:load', function () {
+            Livewire.hook('message.processed', (message, component) => {
+                const fileponds = document.querySelectorAll('.filepond--root');
+                fileponds.forEach(filepond => {
+                    if (!filepond.nextElementSibling?.classList.contains('zoom-button')) {
+                        const zoomButton = document.createElement('button');
+                        zoomButton.className = 'zoom-button mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded';
+                        zoomButton.innerHTML = '<i class="las la-search-plus"></i> بزرگنمایی';
+                        zoomButton.onclick = function () {
+                            const filepondItem = filepond.querySelector('.filepond--item-panel');
+                            if (filepondItem) {
+                                const imageUrl = filepondItem.style.backgroundImage.replace(/url\(['"](.+)['"]\)/, '$1');
+                                openModal(imageUrl);
+                            }
+                        };
+                        filepond.parentNode.insertBefore(zoomButton, filepond.nextSibling);
+                    }
+                });
+            });
+        });
+    </script>
+
     <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
         <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
             <h1 class="text-2xl font-medium"> Upload Student's Documents And Information</h1>
@@ -183,16 +278,27 @@
                                                        :messages="$errors->get('form.father_nationality')"/>
                                     </div>
                                     <div class="mt-3 mr-2">
-                                        <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                        <label class="block mb-2 font-bold text-gray-900 dark:text-white"
                                                for="father_passport_file">Father's passport Bio-Data page scan
                                             (file)</label>
-                                        <x-filepond::upload wire:model="form.father_passport_file"
-                                                            :allowMultiple="false"
-                                                            :instantUpload="true"
-                                                            server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
-                                                            :disabled="true"
-                                                            :chunkSize="2000000"
-                                                            :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-grow">
+                                                <x-filepond::upload wire:model="form.father_passport_file"
+                                                                    :allowMultiple="false"
+                                                                    :instantUpload="true"
+                                                                    server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                                    :disabled="true"
+                                                                    :chunkSize="2000000"
+                                                                    :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                            </div>
+                                            @if($form->father_passport_file)
+                                                <button type="button"
+                                                        onclick="openModal('{{ $form->father_passport_file }}')"
+                                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                    <i class="las la-search-plus"></i> Zoom
+                                                </button>
+                                            @endif
+                                        </div>
                                         <x-input-error class="mt-2"
                                                        :messages="$errors->get('form.father_passport_file')"/>
                                         @if(isset($form->father_passport_file) and substr($form->father_passport_file,-4)=='.pdf')
@@ -327,16 +433,27 @@
                                                        :messages="$errors->get('form.mother_nationality')"/>
                                     </div>
                                     <div class="mt-3 mr-2">
-                                        <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                        <label class="block mb-2 font-bold text-gray-900 dark:text-white"
                                                for="mother_passport_file">Mother's passport Bio-Data page scan
                                             (file)</label>
-                                        <x-filepond::upload wire:model="form.mother_passport_file"
-                                                            :allowMultiple="false"
-                                                            :instantUpload="true"
-                                                            server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
-                                                            :disabled="true"
-                                                            :chunkSize="2000000"
-                                                            :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                        <div class="flex items-center gap-2">
+                                            <div class="flex-grow">
+                                                <x-filepond::upload wire:model="form.mother_passport_file"
+                                                                    :allowMultiple="false"
+                                                                    :instantUpload="true"
+                                                                    server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                                    :disabled="true"
+                                                                    :chunkSize="2000000"
+                                                                    :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                            </div>
+                                            @if($form->mother_passport_file)
+                                                <button type="button"
+                                                        onclick="openModal('{{ $form->mother_passport_file }}')"
+                                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                    <i class="las la-search-plus"></i> Zoom
+                                                </button>
+                                            @endif
+                                        </div>
                                         <x-input-error class="mt-2"
                                                        :messages="$errors->get('form.mother_passport_file')"/>
                                         @if(isset($form->mother_passport_file) and substr($form->mother_passport_file,-4)=='.pdf')
@@ -554,18 +671,28 @@
                                                    :messages="$errors->get('form.student_iranian_sanad_code')"/>
                                 </div>
                                 <div class="mt-3 mr-2">
-                                    <label class="block mb-2  font-bold text-gray-900 dark:text-white"
+                                    <label class="block mb-2 font-bold text-gray-900 dark:text-white"
                                            for="student_passport_file">Student's passport Bio-Data page scan
                                         (file)</label>
-                                    <x-filepond::upload wire:model="form.student_passport_file"
-                                                        :allowMultiple="false"
-                                                        :instantUpload="true"
-                                                        server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
-                                                        :disabled="true"
-                                                        :chunkSize="2000000"
-                                                        :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
-                                    <x-input-error class="mt-2"
-                                                   :messages="$errors->get('form.student_passport_file')"/>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex-grow">
+                                            <x-filepond::upload wire:model="form.student_passport_file"
+                                                                :allowMultiple="false"
+                                                                :instantUpload="true"
+                                                                server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                                :disabled="true"
+                                                                :chunkSize="2000000"
+                                                                :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                        </div>
+                                        @if($form->student_passport_file)
+                                            <button type="button"
+                                                    onclick="openModal('{{ $form->student_passport_file }}')"
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                <i class="las la-search-plus"></i> Zoom
+                                            </button>
+                                        @endif
+                                    </div>
+                                    <x-input-error class="mt-2" :messages="$errors->get('form.student_passport_file')"/>
                                     @if(isset($form->student_passport_file) and substr($form->student_passport_file,-4)=='.pdf')
                                         <div class="mt-3">
                                             <label for="student_passport_file_preview"
@@ -597,16 +724,27 @@
                                     </div>
                                 </div>
                                 <div class="mt-3 mr-2">
-                                    <label class="block mb-2  font-bold text-gray-900 dark:text-white"
-                                           for="student_passport_file">Student's Passport photo
+                                    <label class="block mb-2 font-bold text-gray-900 dark:text-white"
+                                           for="student_passport_photo_file">Student's Passport photo
                                         (file)</label>
-                                    <x-filepond::upload wire:model="form.student_passport_photo_file"
-                                                        :allowMultiple="false"
-                                                        :instantUpload="true"
-                                                        server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
-                                                        :chunkSize="2000000"
-                                                        :disabled="true"
-                                                        :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex-grow">
+                                            <x-filepond::upload wire:model="form.student_passport_photo_file"
+                                                                :allowMultiple="false"
+                                                                :instantUpload="true"
+                                                                server-headers='@json(["X-CSRF-TOKEN" => csrf_token()])'
+                                                                :chunkSize="2000000"
+                                                                :disabled="true"
+                                                                :accept="'application/pdf,image/jpg,image/bmp,image/jpeg,image/png'"/>
+                                        </div>
+                                        @if($form->student_passport_photo_file)
+                                            <button type="button"
+                                                    onclick="openModal('{{ $form->student_passport_photo_file }}')"
+                                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                <i class="las la-search-plus"></i> Zoom
+                                            </button>
+                                        @endif
+                                    </div>
                                     <x-input-error class="mt-2"
                                                    :messages="$errors->get('form.student_passport_photo_file')"/>
                                     @if(isset($form->student_passport_photo_file) and substr($form->student_passport_photo_file,-4)=='.pdf')

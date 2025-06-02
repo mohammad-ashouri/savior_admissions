@@ -1,4 +1,77 @@
 <div id="content" class="p-4 sm:ml-14 transition-all duration-300 bg-light-theme-color-base dark:bg-gray-800">
+    <!-- Image Zoom Modal -->
+    <div id="imageZoomModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title"
+         role="dialog" aria-modal="true" onclick="closeModal()">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div id="modalBackdrop"
+                 class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-300 ease-out opacity-0"
+                 aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div id="modalContent"
+                 class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all duration-300 ease-out sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full translate-y-4 opacity-0 scale-95"
+                 onclick="event.stopPropagation()">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                            <div class="relative">
+                                <img id="modalImage" src="" alt="Zoomed Image" class="w-full h-auto">
+                                <button type="button" onclick="closeModal()"
+                                        class="absolute top-0 right-0 bg-gray-800 text-white rounded-full p-2 m-2 hover:bg-gray-700 transition-colors duration-200">
+                                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageZoomModal');
+            const backdrop = document.getElementById('modalBackdrop');
+            const content = document.getElementById('modalContent');
+
+            document.getElementById('modalImage').src = imageSrc;
+            modal.classList.remove('hidden');
+
+            // Trigger reflow
+            modal.offsetHeight;
+
+            // Add animation classes
+            backdrop.classList.remove('opacity-0');
+            content.classList.remove('opacity-0', 'scale-95', 'translate-y-4');
+            content.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageZoomModal');
+            const backdrop = document.getElementById('modalBackdrop');
+            const content = document.getElementById('modalContent');
+
+            // Add closing animation classes
+            backdrop.classList.add('opacity-0');
+            content.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+            content.classList.add('opacity-0', 'scale-95', 'translate-y-4');
+
+            // Wait for animation to complete before hiding
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Close modal when pressing Escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+
     <div class="p-4 rounded-lg dark:border-gray-700 mt-20">
         <div class="grid grid-cols-1 gap-4 mb-4 text-black dark:text-white">
             <h1 class="text-2xl font-medium"> Upload Student's Documents And Information</h1>
@@ -220,6 +293,10 @@
                                                            href="{{ $form->father_passport_file }}">
                                                             <img class="pdf-documents-icons">
                                                         </a>
+                                                        <button onclick="openModal('{{ $form->father_passport_file }}')"
+                                                                class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                            <i class="las la-search-plus"></i> Zoom
+                                                        </button>
                                                     </div>
                                                 </div>
                                             @endif
@@ -363,6 +440,10 @@
                                                            href="{{ $form->mother_passport_file }}">
                                                             <img class="pdf-documents-icons">
                                                         </a>
+                                                        <button onclick="openModal('{{ $form->mother_passport_file }}')"
+                                                                class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                            <i class="las la-search-plus"></i> Zoom
+                                                        </button>
                                                     </div>
                                                 </div>
                                             @endif
@@ -435,6 +516,10 @@
                                                        href="{{ $form->latest_report_card }}">
                                                         <img class="pdf-documents-icons">
                                                     </a>
+                                                    <button onclick="openModal('{{ $form->latest_report_card }}')"
+                                                            class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        <i class="las la-search-plus"></i> Zoom
+                                                    </button>
                                                 </div>
                                             </div>
                                         @endif
@@ -588,6 +673,10 @@
                                                        href="{{ $form->student_passport_file }}">
                                                         <img class="pdf-documents-icons">
                                                     </a>
+                                                    <button onclick="openModal('{{ $form->student_passport_file }}')"
+                                                            class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        <i class="las la-search-plus"></i> Zoom
+                                                    </button>
                                                 </div>
                                             </div>
                                         @endif
@@ -630,6 +719,11 @@
                                                        href="{{ $form->student_passport_photo_file }}">
                                                         <img class="pdf-documents-icons">
                                                     </a>
+                                                    <button
+                                                        onclick="openModal('{{ $form->student_passport_photo_file }}')"
+                                                        class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                        <i class="las la-search-plus"></i> Zoom
+                                                    </button>
                                                 </div>
                                             </div>
                                         @endif
