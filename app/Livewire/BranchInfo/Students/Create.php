@@ -99,5 +99,8 @@ class Create extends Component
         //        $studentInformation->current_identification_type = $current_identification_type;
         $studentInformation->current_identification_code = $this->faragir_code;
         $studentInformation->save();
+
+        session()->flash('success', 'Student added successfully.');
+        redirect()->route('Students.index');
     }
 }
