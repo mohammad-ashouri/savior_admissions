@@ -63,6 +63,11 @@ class Edit extends Form
     #[Validate(['required', 'string', 'max:100'])]
     public $mother_occupation;
 
+    #[Validate(['required', 'string', 'max:100'], message: [
+        'mother_qualification.required' => 'The mother degree field is required.',
+    ])]
+    public $mother_qualification;
+
     #[Validate(['required', 'string', 'max:25'])]
     public $mother_passport_number;
 
