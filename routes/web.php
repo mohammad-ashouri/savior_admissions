@@ -45,6 +45,7 @@ use App\Livewire\Users\PendingUserApprovals;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -223,6 +224,9 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
                 Route::get('/tuition_card_fa/{appliance_id}', [PDFExportController::class, 'tuitionCardFaExport'])->name('tuitionCard.fa');
             });
 
+            Route::get('/reports2', function () {
+                return view('reporttemp');
+            });
         });
 
         // SMS
@@ -253,3 +257,5 @@ Route::post('/VerifyTuitionInstallmentPayment', [PaymentController::class, 'veri
 // Route::get('/ExportExcelFromUsersMobile', [ExcelController::class, 'exportExcelFromUsersMobile'])->name('excel.importParentMothers');
 // Route::get('/ExportExcelFromAllStudents', [ExcelController::class, 'exportExcelFromAllStudents']);
 // Route::get('/ExportExcelFromAllGuardianWithStudents', [ExcelController::class, 'exportExcelFromAllGuardianWithStudents']);
+
+
