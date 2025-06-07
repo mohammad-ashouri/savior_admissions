@@ -89,7 +89,7 @@ class PendingUserApprovals extends Component
     public function deleteUser($id): void
     {
         $user = User::where('id', $id)->first();
-        GeneralInformation::where('user_id', $this->user_id)->first()->delete();
+        GeneralInformation::where('user_id', $user->id)->first()->delete();
 
         $this->sendSMS($user->mobile, 'Dear user, your account has been removed from Savior Schools system. If this was a mistake or you need assistance, please contact our admissions specialist.\nSavior Schools');
         $user->delete();
