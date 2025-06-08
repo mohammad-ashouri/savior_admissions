@@ -7,6 +7,7 @@ use App\Models\Branch\Interview;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
 use App\Models\Finance\Discount;
+use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\Finance\TuitionInvoiceDetails;
 use App\Models\Finance\TuitionInvoiceEditHistory;
 use App\Models\Finance\TuitionInvoices;
@@ -86,6 +87,23 @@ class EditApplianceInvoices extends Component
      */
     #[Validate('required|integer|exists:tuition_invoice_edit_histories,id')]
     public int $history_id;
+
+    /**
+     * Amount of family discount in 2024-2025 academic years
+     * @var int
+     */
+    public $family_discount = 0;
+
+    public function changeFamilyDiscount()
+    {
+        GrantedFamilyDiscount::where('appliance_id', $this->appliance_status->id)->update([
+            'discount_price' => $this->family_discount
+        ]);
+
+        session()->flash('success', 'Family discount have been changed.');
+
+        $this->loadDiscounts();
+    }
 
     /**
      * Listeners
@@ -197,6 +215,9 @@ class EditApplianceInvoices extends Component
             $this->selected_discounts = $interview_form['discount'];
         }
 
+        if (in_array($this->appliance_status->academic_year, [1, 2, 3])) {
+            $this->family_discount = GrantedFamilyDiscount::where('appliance_id', $appliance_id)->first()->discount_price;
+        }
         $this->loadDiscounts();
     }
 

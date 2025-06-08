@@ -69,6 +69,34 @@
                             @endswitch
                         </h4>
                     </div>
+                    @if(in_array($this->appliance_status->academic_year,[1,2,3]))
+                        <div
+                            class="flex p-2 relative items-center overflow-x-auto shadow-md sm:rounded-lg bg-white gap-2">
+                            <h4 class="text-xl font-semibold ">Family Discount:</h4>
+                            <input type="number" wire:model="family_discount"
+                                   class="bg-gray-50 border mr-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                   required>IRR
+                            <button
+                                wire:click="changeFamilyDiscount"
+                                wire:target="changeFamilyDiscount"
+                                wire:loading.remove
+                                type="button"
+                                class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline edit-tuition-invoice">
+                                <div class="text-center">
+                                    <i
+                                        class="las la-pen "
+                                        style="font-size: 20px"></i>
+                                    Edit
+                                </div>
+                            </button>
+
+                            <p
+                                class="text-blue-800 font-bold"
+                                wire:loading
+                                wire:target="changeFamilyDiscount"
+                            >Please Wait...</p>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
