@@ -22,6 +22,7 @@ use App\Http\Controllers\Finance\TuitionPaymentController;
 use App\Http\Controllers\GeneralControllers\PDFExportController;
 use App\Http\Controllers\GeneralControllers\ProfileController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SMSController;
 use App\Http\Controllers\UserController;
@@ -39,13 +40,14 @@ use App\Livewire\Documents\Show as ShowUserDocuments;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
+use App\Livewire\Report\StimulSoft;
+use App\Livewire\Report\TuitionCard\Single\Fa;
 use App\Livewire\Temp\ReInsertion;
 use App\Livewire\Tuition\TuitionInvoices\EditApplianceInvoices;
 use App\Livewire\Users\PendingUserApprovals;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -224,9 +226,7 @@ Route::middleware('web')->middleware(NoCache::class)->middleware(CheckLoginMiddl
                 Route::get('/tuition_card_fa/{appliance_id}', [PDFExportController::class, 'tuitionCardFaExport'])->name('tuitionCard.fa');
             });
 
-            Route::get('/reports2', function () {
-                return view('reporttemp');
-            });
+            Route::get('/report', [ReportController::class, 'index']);
         });
 
         // SMS

@@ -12,13 +12,13 @@ require_once 'stimulsoft/helper.php';
         }</style>
 
     <!-- Office2013 White-Blue style -->
-    <link href="css/stimulsoft.viewer.office2013.whiteblue.css" rel="stylesheet">
+    <link href="{{ asset('css/stimulsoft.viewer.office2013.whiteblue.css') }}" rel="stylesheet">
 
     <!-- Stimulsoft Reports.JS -->
-    <script src="scripts/stimulsoft.reports.js" type="text/javascript"></script>
+    <script src="{{ asset('scripts/stimulsoft.reports.js') }}" type="text/javascript"></script>
 
     <!-- Stimulsoft JS Viewer -->
-    <script src="scripts/stimulsoft.viewer.js" type="text/javascript"></script>
+    <script src="{{ asset('scripts/stimulsoft.viewer.js') }}" type="text/javascript"></script>
 
     <?php
     // Add JavaScript helpers and init options to work with the PHP server
@@ -37,14 +37,14 @@ require_once 'stimulsoft/helper.php';
         options.appearance.scrollbarsMode = true;
         options.height = "600px"; // Height for non-fullscreen mode
 
-        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("stimulsoft/fonts/IRANSansX-Black.ttf");
-        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("stimulsoft/fonts/IRANSansX-Bold.ttf");
-        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("stimulsoft/fonts/IRANSansX-DemiBold.ttf");
-        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("stimulsoft/fonts/IRANSansX-Light.ttf");
-        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("stimulsoft/fonts/IRANSansX-Medium.ttf");
-        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("stimulsoft/fonts/IRANSansX-Regular.ttf");
-        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("stimulsoft/fonts/IRANSansX-Thin.ttf");
-        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("stimulsoft/fonts/IRANSansX-UltraLight.ttf");
+        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("{{ asset('stimulsoft/fonts/IRANSansX-Black.ttf') }}");
+        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("{{ asset('stimulsoft/fonts/IRANSansX-Bold.ttf') }}");
+        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("{{ asset('stimulsoft/fonts/IRANSansX-DemiBold.ttf') }}");
+        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("{{ asset('stimulsoft/fonts/IRANSansX-Light.ttf') }}");
+        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("{{ asset('stimulsoft/fonts/IRANSansX-Medium.ttf') }}");
+        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("{{ asset('stimulsoft/fonts/IRANSansX-Regular.ttf') }}");
+        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("{{ asset('stimulsoft/fonts/IRANSansX-Thin.ttf') }}");
+        Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("{{ asset('stimulsoft/fonts/IRANSansX-UltraLight.ttf') }}");
 
         // Create Viewer component.
         // A description of the parameters can be found in the documentation at the link:
@@ -119,23 +119,9 @@ require_once 'stimulsoft/helper.php';
         }
 
         */
-
-        // Create a report and load a template from an MRT file:
-        var report = new Stimulsoft.Report.StiReport();
-        report.loadFile("reports/TuitionCardFa.mrt");
-
-        var variable = report.dictionary.variables.getByName("shomare");
-
-        // Assigning a report to the Viewer:
-        viewer.report = report;
-
-        // After loading the HTML page, display the visual part of the Viewer in the specified container.
-        function onLoad() {
-            viewer.renderHtml("viewerContent");
-        }
     </script>
 </head>
 <body onload="onLoad();">
-<div id="viewerContent"></div>
+<livewire:report/>
 </body>
 </html>
