@@ -4,8 +4,11 @@
         var report = new Stimulsoft.Report.StiReport();
         report.loadFile("{{ asset('reports/TuitionCardFa.mrt') }}");
 
-        var variable = report.dictionary.variables.getByName("shomare");
-        variable.value = "Hello from JavaScript!";
+        //Pass value to variable
+        // var variable = report.dictionary.variables.getByName("shomare");
+        // variable.value = "Hello from JavaScript!";
+
+
         // Assigning a report to the Viewer:
         viewer.report = report;
 

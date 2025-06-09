@@ -31,7 +31,7 @@ require_once 'stimulsoft/helper.php';
         // More options can be found in the documentation at the link:
         // https://www.stimulsoft.com/en/documentation/online/programming-manual/index.html?reports_js_web_viewer_settings.htm
         var options = new Stimulsoft.Viewer.StiViewerOptions();
-        options.toolbar.showSendEmailButton = true;
+        // options.toolbar.showSendEmailButton = true;
         options.toolbar.displayMode = Stimulsoft.Viewer.StiToolbarDisplayMode.Separated;
         options.appearance.fullScreenMode = true;
         options.appearance.scrollbarsMode = true;
@@ -122,6 +122,6 @@ require_once 'stimulsoft/helper.php';
     </script>
 </head>
 <body onload="onLoad();">
-<livewire:report/>
+<livewire:reports.report/>
 </body>
 </html>
