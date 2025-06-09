@@ -1,10 +1,10 @@
 {
   "ReportVersion": "2021.4.2.0",
-  "ReportGuid": "05042f281c9748e29444e08b488b9e8b",
+  "ReportGuid": "5d7d10f3b99b43298b1461a6b3cd5899",
   "ReportName": "TuitionCardFa",
   "ReportAlias": "TuitionCardFa",
   "ReportCreated": "/Date(0+0330)/",
-  "ReportChanged": "/Date(1749498101591+0330)/",
+  "ReportChanged": "/Date(1749501499960+0330)/",
   "EngineVersion": "EngineV2",
   "CalculationMode": "Interpretation",
   "ReportUnit": "HundredthsOfInch",
@@ -112,7 +112,14 @@
         "Name": "school_address",
         "Alias": "school_address",
         "Type": "System.String",
-        "ReadOnly": true
+        "ReadOnly": true,
+        "Key": "b4271102eda04d0e9f1dabbdaa539674"
+      },
+      "4": {
+        "Name": "JsonData",
+        "Alias": "JsonData",
+        "Type": "System.String",
+        "Key": "744d369d333d45d49b521e01022f47a1"
       }
     },
     "DataSources": {
@@ -221,6 +228,12 @@
         "Alias": "Demo",
         "Key": "0fc386c01fd244a7b8487c6338379aea",
         "PathData": "resource://SimleList"
+      },
+      "1": {
+        "Ident": "StiJsonDatabase",
+        "Name": "JsonData",
+        "Alias": "JsonData",
+        "Key": "db8c382c18324c1687610db6fdfba4bb"
       }
     }
   },
@@ -1287,6 +1300,20 @@
           "Type": "Expression"
         },
         "38": {
+          "Ident": "StiText",
+          "Name": "Text46",
+          "ClientRectangle": "170,630,350,20",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{JsonData}"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "TextBrush": "solid:Black"
+        },
+        "39": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive1",
           "Guid": "3eb4742cad744de3ac72a2b1f3f508b5",
@@ -1295,7 +1322,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "39": {
+        "40": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive1",
           "ClientRectangle": "750,200,0,0",
@@ -1304,7 +1331,7 @@
           },
           "ReferenceToGuid": "3eb4742cad744de3ac72a2b1f3f508b5"
         },
-        "40": {
+        "41": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive1",
           "ClientRectangle": "0,170,0,0",
@@ -1313,7 +1340,7 @@
           },
           "ReferenceToGuid": "3eb4742cad744de3ac72a2b1f3f508b5"
         },
-        "41": {
+        "42": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive3",
           "Guid": "6dfcb50e3ded4d07b8cb04828acde8b0",
@@ -1322,7 +1349,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "42": {
+        "43": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive3",
           "ClientRectangle": "470,200,0,0",
@@ -1331,7 +1358,7 @@
           },
           "ReferenceToGuid": "6dfcb50e3ded4d07b8cb04828acde8b0"
         },
-        "43": {
+        "44": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive3",
           "ClientRectangle": "750,230,0,0",
@@ -1340,7 +1367,7 @@
           },
           "ReferenceToGuid": "6dfcb50e3ded4d07b8cb04828acde8b0"
         },
-        "44": {
+        "45": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive4",
           "Guid": "bde4fc5cb1b74786a4c87cc54e504d3e",
@@ -1349,7 +1376,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "45": {
+        "46": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive4",
           "ClientRectangle": "300,200,0,0",
@@ -1358,7 +1385,7 @@
           },
           "ReferenceToGuid": "bde4fc5cb1b74786a4c87cc54e504d3e"
         },
-        "46": {
+        "47": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive4",
           "ClientRectangle": "470,230,0,0",
@@ -1367,7 +1394,7 @@
           },
           "ReferenceToGuid": "bde4fc5cb1b74786a4c87cc54e504d3e"
         },
-        "47": {
+        "48": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive5",
           "Guid": "f228e384ea9f4ba995d8522f58cc9e78",
@@ -1376,7 +1403,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "48": {
+        "49": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive5",
           "ClientRectangle": "0,200,0,0",
@@ -1385,7 +1412,7 @@
           },
           "ReferenceToGuid": "f228e384ea9f4ba995d8522f58cc9e78"
         },
-        "49": {
+        "50": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive5",
           "ClientRectangle": "300,230,0,0",
@@ -1394,7 +1421,7 @@
           },
           "ReferenceToGuid": "f228e384ea9f4ba995d8522f58cc9e78"
         },
-        "50": {
+        "51": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive7",
           "Guid": "4d3bf175aad141d9ac4be1d531439e35",
@@ -1403,7 +1430,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "51": {
+        "52": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive7",
           "ClientRectangle": "200,230,0,0",
@@ -1412,7 +1439,7 @@
           },
           "ReferenceToGuid": "4d3bf175aad141d9ac4be1d531439e35"
         },
-        "52": {
+        "53": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive7",
           "ClientRectangle": "750,260,0,0",
@@ -1421,7 +1448,7 @@
           },
           "ReferenceToGuid": "4d3bf175aad141d9ac4be1d531439e35"
         },
-        "53": {
+        "54": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive8",
           "Guid": "0502c62b53b0444cb51a5463f97ff5e2",
@@ -1430,7 +1457,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "54": {
+        "55": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive8",
           "ClientRectangle": "0,230,0,0",
@@ -1439,7 +1466,7 @@
           },
           "ReferenceToGuid": "0502c62b53b0444cb51a5463f97ff5e2"
         },
-        "55": {
+        "56": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive8",
           "ClientRectangle": "200,260,0,0",
