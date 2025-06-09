@@ -13,9 +13,6 @@ class Report extends Component
 
     public function render()
     {
-        $this->validate([
-            'report_type' => 'in:TuitionCardFa,TuitionCardEn'
-        ]);
         return view('livewire.reports.report');
     }
 }
