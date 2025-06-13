@@ -33,4 +33,9 @@ class TuitionInvoices extends Model
     {
         return $this->hasMany(TuitionInvoiceDetails::class, 'tuition_invoice_id');
     }
+
+    public function getJalaliCreatedAtAttribute()
+    {
+        return \Morilog\Jalali\Jalalian::fromDateTime($this->created_at)->format('H:i');
+    }
 }
