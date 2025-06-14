@@ -60,4 +60,14 @@ class TuitionInvoiceDetails extends Model
     {
         return $this->hasMany(TuitionInvoiceEditHistory::class, 'invoice_details_id')->orderByDesc('created_at');
     }
+
+    public function getJalaliCreatedAtAttribute()
+    {
+        return \Morilog\Jalali\Jalalian::fromDateTime($this->created_at)->format('Y/m/d H:i');
+    }
+
+    public function getJalaliDateOfPaymentAttribute()
+    {
+        return \Morilog\Jalali\Jalalian::fromDateTime($this->date_of_payment)->format('Y/m/d H:i:s');
+    }
 }

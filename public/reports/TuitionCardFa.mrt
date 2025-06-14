@@ -1,10 +1,10 @@
 {
   "ReportVersion": "2021.4.2.0",
-  "ReportGuid": "0c060f43fae34321914990f560427523",
+  "ReportGuid": "5b510ae3b2904789862f948f29ab83fd",
   "ReportName": "TuitionCardFa",
   "ReportAlias": "TuitionCardFa",
   "ReportCreated": "/Date(0+0330)/",
-  "ReportChanged": "/Date(1749831954781+0330)/",
+  "ReportChanged": "/Date(1749909783175+0330)/",
   "EngineVersion": "EngineV2",
   "CalculationMode": "Interpretation",
   "ReportUnit": "HundredthsOfInch",
@@ -88,121 +88,596 @@
     },
     "Variables": {
       "0": {
-        "Name": "invoice_id",
-        "Alias": "invoice_id",
-        "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "50a2c175a6024d26867ac3fbb3369bbf",
-        "AllowUseAsSqlParameter": true
-      },
-      "1": {
         "Name": "now_date",
         "Alias": "now_date",
         "Type": "System.String",
         "ReadOnly": true,
         "Key": "64856a36b9d54a74a5060df5f6d7aad2"
       },
-      "2": {
-        "Name": "school_address",
-        "Alias": "school_address",
+      "1": {
+        "Name": "academic_year",
+        "Alias": "academic_year",
         "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "b4271102eda04d0e9f1dabbdaa539674"
+        "Key": "4c46181874c74a8a9d29c77ddad866de"
+      },
+      "2": {
+        "Type": "System.String",
+        "Category": "TuitionInformation"
       },
       "3": {
-        "Name": "student_info",
-        "Alias": "student_info",
+        "Name": "invoice_id",
+        "Alias": "invoice_id",
         "Type": "System.String",
         "ReadOnly": true,
-        "Key": "a6eeba83490645f2ac8baf68dc74161f"
+        "Category": "TuitionInformation",
+        "Key": "50a2c175a6024d26867ac3fbb3369bbf",
+        "AllowUseAsSqlParameter": true
       },
       "4": {
-        "Name": "student_passport_number",
-        "Alias": "student_passport_number",
-        "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "c6d1a869ebcf48889556edb5c753854a"
-      },
-      "5": {
-        "Name": "country",
-        "Alias": "country",
-        "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "16dcec8d206a41db810cf25cd5853dd8"
-      },
-      "6": {
-        "Name": "guardian_info",
-        "Alias": "guardian_info",
-        "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "1c4606aded0b410b8135fb6bef49a71a"
-      },
-      "7": {
-        "Name": "guardian_passport_number",
-        "Alias": "guardian_passport_number",
-        "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "0a4620ed51cf4f02a7b3931f48b490a7"
-      },
-      "8": {
-        "Name": "mobile",
-        "Alias": "mobile",
-        "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "a26d7a7d14a9430885d8e22e8312f1f1"
-      },
-      "9": {
-        "Name": "address",
-        "Alias": "address",
-        "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "4a90d09563d74ac693d277888be0f2ea"
-      },
-      "10": {
-        "Name": "postal_code",
-        "Alias": "postal_code",
-        "Type": "System.String",
-        "ReadOnly": true,
-        "Key": "0631d001079c4468932d5e2f7319cf17"
-      },
-      "11": {
         "Name": "tuition_amount",
         "Alias": "tuition_amount",
         "Type": "System.String",
         "ReadOnly": true,
+        "Category": "TuitionInformation",
         "Key": "0e34a24bc1a64fe398e9a9b3e313bb90"
       },
-      "12": {
+      "5": {
         "Name": "tuition_type",
         "Alias": "tuition_type",
         "Type": "System.String",
         "ReadOnly": true,
+        "Category": "TuitionInformation",
         "Key": "96c48000c4f0495ca2b37d4720f38ece"
       },
-      "13": {
+      "6": {
         "Name": "discount_price",
         "Alias": "discount_price",
         "Type": "System.String",
         "ReadOnly": true,
+        "Category": "TuitionInformation",
         "Key": "57e633909c4540aeab19e19051c17f6d"
       },
-      "14": {
+      "7": {
         "Name": "tuition_final_amount",
         "Alias": "tuition_final_amount",
         "Type": "System.String",
-        "ReadOnly": true
+        "ReadOnly": true,
+        "Category": "TuitionInformation",
+        "Key": "758995160d1248bcb7d8955cad561528"
+      },
+      "8": {
+        "Type": "System.String",
+        "Category": "SchoolInformation"
+      },
+      "9": {
+        "Name": "school_address",
+        "Alias": "school_address",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "SchoolInformation",
+        "Key": "b4271102eda04d0e9f1dabbdaa539674"
+      },
+      "10": {
+        "Type": "System.String",
+        "Category": "StudentInformation"
+      },
+      "11": {
+        "Name": "student_passport_number",
+        "Alias": "student_passport_number",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "StudentInformation",
+        "Key": "c6d1a869ebcf48889556edb5c753854a"
+      },
+      "12": {
+        "Name": "country",
+        "Alias": "country",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "StudentInformation",
+        "Key": "16dcec8d206a41db810cf25cd5853dd8"
+      },
+      "13": {
+        "Name": "guardian_passport_number",
+        "Alias": "guardian_passport_number",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "StudentInformation",
+        "Key": "0a4620ed51cf4f02a7b3931f48b490a7"
+      },
+      "14": {
+        "Name": "mobile",
+        "Alias": "mobile",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "StudentInformation",
+        "Key": "a26d7a7d14a9430885d8e22e8312f1f1"
       },
       "15": {
-        "Name": "academic_year",
-        "Alias": "academic_year",
-        "Type": "System.String"
+        "Name": "address",
+        "Alias": "address",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "StudentInformation",
+        "Key": "4a90d09563d74ac693d277888be0f2ea"
       },
       "16": {
+        "Name": "postal_code",
+        "Alias": "postal_code",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "StudentInformation",
+        "Key": "0631d001079c4468932d5e2f7319cf17"
+      },
+      "17": {
+        "Name": "student_info",
+        "Alias": "student_info",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "StudentInformation",
+        "Key": "a6eeba83490645f2ac8baf68dc74161f"
+      },
+      "18": {
+        "Name": "guardian_info",
+        "Alias": "guardian_info",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "StudentInformation",
+        "Key": "1c4606aded0b410b8135fb6bef49a71a"
+      },
+      "19": {
         "Name": "student_id",
         "Alias": "student_id",
         "Type": "System.String",
         "ReadOnly": true,
+        "Category": "StudentInformation",
         "Key": "e07da305c33f4333824901e2564785f1"
+      },
+      "20": {
+        "Type": "System.String",
+        "Category": "InvoiceDetails"
+      },
+      "21": {
+        "Name": "AdvanceType",
+        "Alias": "AdvanceType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "b3d089e6547a49859304126e90988029"
+      },
+      "22": {
+        "Name": "AdvanceDate",
+        "Alias": "AdvanceDate",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "8c9b555d73fe4f5f953893d7a6d73945"
+      },
+      "23": {
+        "Name": "AdvanceAmount",
+        "Alias": "AdvanceAmount",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "d8a353639c8d497c938fa51a086e876a"
+      },
+      "24": {
+        "Name": "AdvancePaid",
+        "Alias": "AdvancePaid",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "24ee81c253244d929139138ff6d37212"
+      },
+      "25": {
+        "Name": "AdvanceDebt",
+        "Alias": "AdvanceDebt",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "69054dc3a2af4d359d4745a7e602dc6f"
+      },
+      "26": {
+        "Name": "AdvancePaymentType",
+        "Alias": "AdvancePaymentType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "369cdd15f30540309704624e7ef4124d"
+      },
+      "27": {
+        "Name": "P1Type",
+        "Alias": "P1Type",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "b14a0867b514495b8af0d248649aec72"
+      },
+      "28": {
+        "Name": "P1Date",
+        "Alias": "P1Date",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "b72bdd14f4154b19af7b09d0cfe6fde5"
+      },
+      "29": {
+        "Name": "P2Date",
+        "Alias": "P2Date",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "7eead97f00e044ed9e5e9f0e1d444e52"
+      },
+      "30": {
+        "Name": "P3Date",
+        "Alias": "P3Date",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "3faaa72318a7491ebdb18d8c2e088a6a"
+      },
+      "31": {
+        "Name": "P4Date",
+        "Alias": "P4Date",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "745f7d85f0ac48c7be842b19968146df"
+      },
+      "32": {
+        "Name": "P5Date",
+        "Alias": "P5Date",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "5a5576c18d104cb4985cf0d5fe451ad4"
+      },
+      "33": {
+        "Name": "P6Date",
+        "Alias": "P6Date",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "3c2b9194ba294f99a6103ec8c859240c"
+      },
+      "34": {
+        "Name": "P7Date",
+        "Alias": "P7Date",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "7b0964e639224f75bfcf9597f7ea83bf"
+      },
+      "35": {
+        "Name": "P2Type",
+        "Alias": "P2Type",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "8fd8298361b047f1b7ced6e21334f354"
+      },
+      "36": {
+        "Name": "P3Type",
+        "Alias": "P3Type",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "0a76a751482842969ae4709726e305d3"
+      },
+      "37": {
+        "Name": "P4Type",
+        "Alias": "P4Type",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "7b3be120fdeb460990b8bfd53762083a"
+      },
+      "38": {
+        "Name": "P5Type",
+        "Alias": "P5Type",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "75d7a81331424bca90bbed50ed26fad1"
+      },
+      "39": {
+        "Name": "P6Type",
+        "Alias": "P6Type",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "048e69f69d804cbd9a66d6c08de69baf"
+      },
+      "40": {
+        "Name": "P7Type",
+        "Alias": "P7Type",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "0d351704163c406f9ebd7f34a181347c"
+      },
+      "41": {
+        "Name": "P1Amount",
+        "Alias": "P1Amount",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "53a07b366e9a4504a00c2130a52527a7"
+      },
+      "42": {
+        "Name": "P2Amount",
+        "Alias": "P2Amount",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "7b5ef0a46eca4952a30969afce053fe4"
+      },
+      "43": {
+        "Name": "P3Amount",
+        "Alias": "P3Amount",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "b2e96d20c6a94eecb735f03973eca919"
+      },
+      "44": {
+        "Name": "P4Amount",
+        "Alias": "P4Amount",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "7ee8d8d09a0f4be5b5d2a7eb51156466"
+      },
+      "45": {
+        "Name": "P5Amount",
+        "Alias": "P5Amount",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "fbef90d0bf484a719b02345fd38222dc"
+      },
+      "46": {
+        "Name": "P6Amount",
+        "Alias": "P6Amount",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "702d8ceec7134b97931b5647a042efa9"
+      },
+      "47": {
+        "Name": "P7Amount",
+        "Alias": "P7Amount",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "1dbea60a0f4540adb30d88fc1a636879"
+      },
+      "48": {
+        "Name": "P1Paid",
+        "Alias": "P1Paid",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "5ae3b3db42344f2a95d9dbe45688829f"
+      },
+      "49": {
+        "Name": "P2Paid",
+        "Alias": "P2Paid",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "ebc0cb6e002040d99938c68ecc464e45"
+      },
+      "50": {
+        "Name": "P3Paid",
+        "Alias": "P3Paid",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "36e1ca971f6445a786da53b860049d81"
+      },
+      "51": {
+        "Name": "P4Paid",
+        "Alias": "P4Paid",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "82796b96e16e4234a8a5de4fd44cb3a2"
+      },
+      "52": {
+        "Name": "P5Paid",
+        "Alias": "P5Paid",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "07bde8f872824680be08495d4dfe91ff"
+      },
+      "53": {
+        "Name": "P6Paid",
+        "Alias": "P6Paid",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "b1accfa2494f422e9cbb0a1bfb178f92"
+      },
+      "54": {
+        "Name": "P7Paid",
+        "Alias": "P7Paid",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "ac4b0025647b4923aa3d5ac87e71c667"
+      },
+      "55": {
+        "Name": "P1Debt",
+        "Alias": "P1Debt",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "2976505d37c44c7db1da68054aa4f1b1"
+      },
+      "56": {
+        "Name": "P2Debt",
+        "Alias": "P2Debt",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "b95968a9ea6b40019581e1791836b8bb"
+      },
+      "57": {
+        "Name": "P3Debt",
+        "Alias": "P3Debt",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "ed867a3ee23440b29a1b14109c494097"
+      },
+      "58": {
+        "Name": "P4Debt",
+        "Alias": "P4Debt",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "bb71f65387b64d92ac41d2942923e6d9"
+      },
+      "59": {
+        "Name": "P5Debt",
+        "Alias": "P5Debt",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "b5c7000037f94691ad09fc707b853cdb"
+      },
+      "60": {
+        "Name": "P6Debt",
+        "Alias": "P6Debt",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "ebaa91ed8aa74ffab91b52d13759199e"
+      },
+      "61": {
+        "Name": "P7Debt",
+        "Alias": "P7Debt",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "dbbddeb0b9a6436f9b438527fdcb4105"
+      },
+      "62": {
+        "Name": "P1PaymentType",
+        "Alias": "P1PaymentType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "ada83bf6d64745519f15cc4272657aeb"
+      },
+      "63": {
+        "Name": "P2PaymentType",
+        "Alias": "P2PaymentType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "e7a391d844da4ced8c7585dc129d48c1"
+      },
+      "64": {
+        "Name": "P3PaymentType",
+        "Alias": "P3PaymentType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "c7c16232eebd4ed3bc1161b3f936fc3a"
+      },
+      "65": {
+        "Name": "P4PaymentType",
+        "Alias": "P4PaymentType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "29f2cec9259f4de9b1c5ee22dc5aafc5"
+      },
+      "66": {
+        "Name": "P5PaymentType",
+        "Alias": "P5PaymentType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "12876e46d79f4ce9a1e06de3a616e01b"
+      },
+      "67": {
+        "Name": "P6PaymentType",
+        "Alias": "P6PaymentType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "651edb7397ce4abcba5c0dfe9ce8d762"
+      },
+      "68": {
+        "Name": "P7PaymentType",
+        "Alias": "P7PaymentType",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "db14f7de6bbb424d97a8c6c21a04c4ee"
+      },
+      "69": {
+        "Name": "AdvanceDateOfPayment",
+        "Alias": "AdvanceDateOfPayment",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "605c2dbeae984f07ae036fab4f4e4f9c"
+      },
+      "70": {
+        "Name": "P1DateOfPayment",
+        "Alias": "P1DateOfPayment",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails",
+        "Key": "4c053e96bd904ee58f2e4692e18614e4"
+      },
+      "71": {
+        "Name": "P2DateOfPayment",
+        "Alias": "P2DateOfPayment",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails"
+      },
+      "72": {
+        "Name": "P3DateOfPayment",
+        "Alias": "P3DateOfPayment",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails"
+      },
+      "73": {
+        "Name": "P4DateOfPayment",
+        "Alias": "P4DateOfPayment",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails"
+      },
+      "74": {
+        "Name": "P5DateOfPayment",
+        "Alias": "P5DateOfPayment",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails"
+      },
+      "75": {
+        "Name": "P6DateOfPayment",
+        "Alias": "P6DateOfPayment",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails"
+      },
+      "76": {
+        "Name": "P7DateOfPayment",
+        "Alias": "P7DateOfPayment",
+        "Type": "System.String",
+        "ReadOnly": true,
+        "Category": "InvoiceDetails"
       }
     },
     "DataSources": {
@@ -327,9 +802,6 @@
       "Guid": "366bfdc35bcf48f3aeb38f2b5f58db21",
       "Interaction": {
         "Ident": "StiInteraction"
-      },
-      "Pointer": {
-        "Value": "Page1"
       },
       "Border": "All;;2;;;;;solid:0,0,0",
       "Brush": "empty",
@@ -480,6 +952,7 @@
                 "Value": "{invoice_id}"
               },
               "HorAlignment": "Center",
+              "VertAlignment": "Center",
               "Font": "IRANSansX;;Bold;",
               "Border": ";;;;;;;solid:Black",
               "Brush": "solid:",
@@ -496,6 +969,7 @@
                 "Value": "{now_date}"
               },
               "HorAlignment": "Center",
+              "VertAlignment": "Center",
               "Font": "IRANSansX;;Bold;",
               "Border": ";;;;;;;solid:Black",
               "Brush": "solid:",
@@ -1266,7 +1740,7 @@
         "31": {
           "Ident": "StiText",
           "Name": "Text40",
-          "ClientRectangle": "630,500,120,30",
+          "ClientRectangle": "670,500,80,30",
           "Interaction": {
             "Ident": "StiInteraction"
           },
@@ -1284,7 +1758,7 @@
         "32": {
           "Ident": "StiText",
           "Name": "Text41",
-          "ClientRectangle": "510,500,120,30",
+          "ClientRectangle": "590,500,80,30",
           "Interaction": {
             "Ident": "StiInteraction"
           },
@@ -1302,7 +1776,7 @@
         "33": {
           "Ident": "StiText",
           "Name": "Text42",
-          "ClientRectangle": "380,500,130,30",
+          "ClientRectangle": "480,500,110,30",
           "Interaction": {
             "Ident": "StiInteraction"
           },
@@ -1320,7 +1794,7 @@
         "34": {
           "Ident": "StiText",
           "Name": "Text43",
-          "ClientRectangle": "250,500,130,30",
+          "ClientRectangle": "350,500,130,30",
           "Interaction": {
             "Ident": "StiInteraction"
           },
@@ -1338,7 +1812,7 @@
         "35": {
           "Ident": "StiText",
           "Name": "Text44",
-          "ClientRectangle": "120,500,130,30",
+          "ClientRectangle": "240,500,110,30",
           "Interaction": {
             "Ident": "StiInteraction"
           },
@@ -1356,7 +1830,7 @@
         "36": {
           "Ident": "StiText",
           "Name": "Text45",
-          "ClientRectangle": "0,500,120,30",
+          "ClientRectangle": "140,500,100,30",
           "Interaction": {
             "Ident": "StiInteraction"
           },
@@ -1382,6 +1856,7 @@
             "Value": "{school_address}"
           },
           "HorAlignment": "Right",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": "All;;;;;;;solid:Black",
           "Brush": "solid:",
@@ -1398,6 +1873,7 @@
             "Value": "{student_info}"
           },
           "HorAlignment": "Right",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
@@ -1414,6 +1890,7 @@
             "Value": "{student_passport_number}"
           },
           "HorAlignment": "Right",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
@@ -1440,21 +1917,6 @@
         },
         "41": {
           "Ident": "StiText",
-          "Name": "Text52",
-          "ClientRectangle": "0,320,130,30",
-          "Interaction": {
-            "Ident": "StiInteraction"
-          },
-          "Text": {
-            "Value": "{student_info}"
-          },
-          "HorAlignment": "Right",
-          "Border": ";;;;;;;solid:Black",
-          "Brush": "solid:",
-          "TextBrush": "solid:Black"
-        },
-        "42": {
-          "Ident": "StiText",
           "Name": "Text53",
           "ClientRectangle": "210,320,130,30",
           "Interaction": {
@@ -1464,13 +1926,14 @@
             "Value": "{guardian_passport_number}"
           },
           "HorAlignment": "Right",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "43": {
+        "42": {
           "Ident": "StiText",
           "Name": "Text54",
           "ClientRectangle": "470,320,210,30",
@@ -1481,13 +1944,14 @@
             "Value": "{guardian_info}"
           },
           "HorAlignment": "Right",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "44": {
+        "43": {
           "Ident": "StiText",
           "Name": "Text55",
           "ClientRectangle": "210,350,500,30",
@@ -1498,13 +1962,14 @@
             "Value": "{address}"
           },
           "HorAlignment": "Right",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "45": {
+        "44": {
           "Ident": "StiText",
           "Name": "Text56",
           "ClientRectangle": "0,320,130,30",
@@ -1515,13 +1980,14 @@
             "Value": "{mobile}"
           },
           "HorAlignment": "Right",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "46": {
+        "45": {
           "Ident": "StiText",
           "Name": "Text57",
           "ClientRectangle": "0,350,150,30",
@@ -1532,13 +1998,14 @@
             "Value": "{postal_code}"
           },
           "HorAlignment": "Right",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "47": {
+        "46": {
           "Ident": "StiText",
           "Name": "Text58",
           "ClientRectangle": "240,440,160,30",
@@ -1549,13 +2016,14 @@
             "Value": "{tuition_amount}"
           },
           "HorAlignment": "Center",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "48": {
+        "47": {
           "Ident": "StiText",
           "Name": "Text59",
           "ClientRectangle": "400,440,160,30",
@@ -1566,13 +2034,14 @@
             "Value": "{tuition_type}"
           },
           "HorAlignment": "Center",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "49": {
+        "48": {
           "Ident": "StiText",
           "Name": "Text60",
           "ClientRectangle": "160,440,80,30",
@@ -1583,13 +2052,14 @@
             "Value": "{discount_price}"
           },
           "HorAlignment": "Center",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "50": {
+        "49": {
           "Ident": "StiText",
           "Name": "Text62",
           "ClientRectangle": "0,440,160,30",
@@ -1600,13 +2070,14 @@
             "Value": "{tuition_final_amount}"
           },
           "HorAlignment": "Center",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "51": {
+        "50": {
           "Ident": "StiText",
           "Name": "Text28",
           "ClientRectangle": "560,410,140,30",
@@ -1624,7 +2095,7 @@
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "52": {
+        "51": {
           "Ident": "StiText",
           "Name": "Text63",
           "ClientRectangle": "560,440,140,30",
@@ -1642,7 +2113,7 @@
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
-        "53": {
+        "52": {
           "Ident": "StiText",
           "Name": "Text5",
           "Guid": "72956dc279bb4e608a0befa31e201089",
@@ -1668,7 +2139,7 @@
           },
           "Type": "Expression"
         },
-        "54": {
+        "53": {
           "Ident": "StiText",
           "Name": "Text61",
           "ClientRectangle": "650,290,70,30",
@@ -1679,13 +2150,1950 @@
             "Value": "{student_id}"
           },
           "HorAlignment": "Center",
+          "VertAlignment": "Center",
           "Font": "IRANSansX;;Bold;",
           "Border": ";;;;;;;solid:Black",
           "Brush": "solid:",
           "TextBrush": "solid:Black",
           "Type": "Expression"
         },
+        "54": {
+          "Ident": "StiText",
+          "Name": "Text70",
+          "Guid": "39d4d7be9cb24d4cb4632b476638b34d",
+          "ClientRectangle": "670,530,80,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "AdvanceType != null"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{AdvanceType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
         "55": {
+          "Ident": "StiText",
+          "Name": "Text64",
+          "Guid": "3fcb6b6193e64e379f41b1715ff6b96c",
+          "ClientRectangle": "590,530,80,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{AdvanceDate!=null}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{AdvanceDate}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "56": {
+          "Ident": "StiText",
+          "Name": "Text65",
+          "Guid": "deb603aa1b76417a85b49a5497eb0d99",
+          "ClientRectangle": "480,530,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{AdvanceAmount != null}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{AdvanceAmount}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "57": {
+          "Ident": "StiText",
+          "Name": "Text66",
+          "Guid": "b53dd9e030634549a9395719c5bb4863",
+          "ClientRectangle": "350,530,130,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{AdvancePaid != null}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{AdvancePaid}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "58": {
+          "Ident": "StiText",
+          "Name": "Text67",
+          "Guid": "fc5abb008bd140b59daa04389e09b41c",
+          "ClientRectangle": "240,530,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{AdvanceDebt != null}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{AdvanceDebt}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "59": {
+          "Ident": "StiText",
+          "Name": "Text68",
+          "Guid": "53c2210b39814b84abde2d10d8025b26",
+          "ClientRectangle": "140,530,100,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{AdvancePaymentType != null}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{AdvancePaymentType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "60": {
+          "Ident": "StiText",
+          "Name": "Text69",
+          "Guid": "cfaa4edf2db34f0f83b9913db759b667",
+          "ClientRectangle": "670,560,80,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P1Type != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P1Type}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "61": {
+          "Ident": "StiText",
+          "Name": "Text71",
+          "Guid": "f98efd68b74e4ec782e2cd5afa3d1814",
+          "ClientRectangle": "590,560,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P1Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P1Date}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "62": {
+          "Ident": "StiText",
+          "Name": "Text72",
+          "Guid": "bf8a37c5e6be4bafb622a6b563a99d12",
+          "ClientRectangle": "480,560,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P1Amount != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P1Amount}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "63": {
+          "Ident": "StiText",
+          "Name": "Text73",
+          "Guid": "7bd5937996bd4f1b9d82fe1521100dda",
+          "ClientRectangle": "350,560,130,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P1Paid != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P1Paid}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "64": {
+          "Ident": "StiText",
+          "Name": "Text74",
+          "Guid": "421e3b4c538a40e581ddb463ba8eff23",
+          "ClientRectangle": "240,560,110,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P1Debt != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P1Debt}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "65": {
+          "Ident": "StiText",
+          "Name": "Text75",
+          "Guid": "13f9424ff4124fb195397e72fa89df06",
+          "ClientRectangle": "140,560,100,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P1PaymentType!= '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P1PaymentType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "66": {
+          "Ident": "StiText",
+          "Name": "Text112",
+          "Guid": "b23feff300c143c09dfb296b0ce5f3cd",
+          "ClientRectangle": "20,850,130,30",
+          "UseParentStyles": true,
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{IIF(P7Debt == null, \"-\", P7Debt)}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "67": {
+          "Ident": "StiText",
+          "Name": "Text113",
+          "Guid": "178be042172e4bdd909295795bbe3893",
+          "ClientRectangle": "150,850,130,30",
+          "UseParentStyles": true,
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{IIF(P7Paid == null, \"-\", P7Paid)}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "68": {
+          "Ident": "StiText",
+          "Name": "Text114",
+          "Guid": "8676c9d59ae440a9ad472b77da21a389",
+          "ClientRectangle": "280,850,130,30",
+          "UseParentStyles": true,
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{IIF(P7Paid == null, \"-\", P7Paid)}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "69": {
+          "Ident": "StiText",
+          "Name": "Text115",
+          "Guid": "4771722a74934700beab5420f111b870",
+          "ClientRectangle": "410,850,130,30",
+          "UseParentStyles": true,
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": ":مجموع"
+          },
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "70": {
+          "Ident": "StiText",
+          "Name": "Text52",
+          "ClientRectangle": "0,500,140,30",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "تاریخ تکمیل پرداخت"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX;10;;",
+          "Border": "All;;;;;;;solid:Black",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Type": "Expression"
+        },
+        "71": {
+          "Ident": "StiText",
+          "Name": "Text76",
+          "Guid": "6672311c20ba4d64bb542aaf46d3e252",
+          "ClientRectangle": "0,530,140,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{AdvanceDate!=null}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{AdvanceDateOfPayment}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "72": {
+          "Ident": "StiText",
+          "Name": "Text77",
+          "Guid": "4069af2ed642499eb31a1379d82b0ca3",
+          "ClientRectangle": "0,560,140,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P1Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P1DateOfPayment}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "73": {
+          "Ident": "StiText",
+          "Name": "Text78",
+          "Guid": "65e18963e13c4fdeae3b7e3c7b4d24ea",
+          "ClientRectangle": "670,590,80,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P2Type != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P2Type}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "74": {
+          "Ident": "StiText",
+          "Name": "Text79",
+          "Guid": "1cea729760c64f08a28df16abb410c1e",
+          "ClientRectangle": "590,590,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P2Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P2Date}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "75": {
+          "Ident": "StiText",
+          "Name": "Text80",
+          "Guid": "7930929b2c2e49fcae1c1932c123e433",
+          "ClientRectangle": "480,590,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P2Amount != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P2Amount}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "76": {
+          "Ident": "StiText",
+          "Name": "Text81",
+          "Guid": "bb625f9cb2cc4918a76be4cbf1facc1f",
+          "ClientRectangle": "350,590,130,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P2Paid != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P2Paid}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "77": {
+          "Ident": "StiText",
+          "Name": "Text82",
+          "Guid": "da154ed80f3f496893ec4d11ad8f393e",
+          "ClientRectangle": "240,590,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P2Debt != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P2Debt}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "78": {
+          "Ident": "StiText",
+          "Name": "Text83",
+          "Guid": "d6c5845e3a714ca68e1fdd3365b82da9",
+          "ClientRectangle": "140,590,100,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P2PaymentType!= '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P2PaymentType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "79": {
+          "Ident": "StiText",
+          "Name": "Text84",
+          "Guid": "d71b20d68c80488094e04c06058279ea",
+          "ClientRectangle": "0,590,140,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P2Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P2DateOfPayment}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "80": {
+          "Ident": "StiText",
+          "Name": "Text85",
+          "Guid": "c60674421a304d15853b89bc8314d068",
+          "ClientRectangle": "670,620,80,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P3Type != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P3Type}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "81": {
+          "Ident": "StiText",
+          "Name": "Text86",
+          "Guid": "7fe34317784d4c77b4ddcf530d6b5c74",
+          "ClientRectangle": "590,620,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P3Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P3Date}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "82": {
+          "Ident": "StiText",
+          "Name": "Text87",
+          "Guid": "7fd0c66aa7254922b256ca71d50384a6",
+          "ClientRectangle": "480,620,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P3Amount != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P3Amount}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "83": {
+          "Ident": "StiText",
+          "Name": "Text88",
+          "Guid": "62558688840f4ea2b0632ffdf2891c60",
+          "ClientRectangle": "350,620,130,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P3Paid != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P3Paid}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "84": {
+          "Ident": "StiText",
+          "Name": "Text89",
+          "Guid": "412f0cd0fd584f2d84323212723f9ea5",
+          "ClientRectangle": "240,620,110,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P3Debt != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P3Debt}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "85": {
+          "Ident": "StiText",
+          "Name": "Text90",
+          "Guid": "d9b3f2fa0dda4614a25ad00614e060da",
+          "ClientRectangle": "140,620,100,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P3PaymentType!= '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P3PaymentType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "86": {
+          "Ident": "StiText",
+          "Name": "Text91",
+          "Guid": "6d2c60c6bdb243488670fd0271401ab4",
+          "ClientRectangle": "0,620,140,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P3Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P3DateOfPayment}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "87": {
+          "Ident": "StiText",
+          "Name": "Text92",
+          "Guid": "6806f2f2266441f79c42412f495065e1",
+          "ClientRectangle": "670,650,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P4Type != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P4Type}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "88": {
+          "Ident": "StiText",
+          "Name": "Text93",
+          "Guid": "4b164bece74a4b629d72a9ae46732bc8",
+          "ClientRectangle": "590,650,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P4Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P4Date}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "89": {
+          "Ident": "StiText",
+          "Name": "Text94",
+          "Guid": "b60ac745c00f495584fad75c48a25ca8",
+          "ClientRectangle": "480,650,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P4Amount != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P4Amount}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "90": {
+          "Ident": "StiText",
+          "Name": "Text95",
+          "Guid": "ff2de946c2ae4f78b253115b979346e8",
+          "ClientRectangle": "350,650,130,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P4Paid != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P4Paid}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "91": {
+          "Ident": "StiText",
+          "Name": "Text96",
+          "Guid": "9f45d6a970404e1cafc7d7d7fd6a917a",
+          "ClientRectangle": "240,650,110,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P4Debt != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P4Debt}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "92": {
+          "Ident": "StiText",
+          "Name": "Text97",
+          "Guid": "7f4c145747a14bc39ca8771131ff69f2",
+          "ClientRectangle": "140,650,100,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P4PaymentType!= '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P4PaymentType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "93": {
+          "Ident": "StiText",
+          "Name": "Text98",
+          "Guid": "90277c380052420ca603d0d9c99ea93f",
+          "ClientRectangle": "0,650,140,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P4Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P4DateOfPayment}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "94": {
+          "Ident": "StiText",
+          "Name": "Text99",
+          "Guid": "4ecacd1cb63f474fab783262f8fb1048",
+          "ClientRectangle": "670,680,80,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P5Type != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P5Type}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "95": {
+          "Ident": "StiText",
+          "Name": "Text100",
+          "Guid": "9c915d7501094f8db22718bc4ea14fbb",
+          "ClientRectangle": "590,680,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P5Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P5Date}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "96": {
+          "Ident": "StiText",
+          "Name": "Text101",
+          "Guid": "e8a9404c5c89448b91dc08a3e1148bf9",
+          "ClientRectangle": "480,680,110,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P5Amount != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P5Amount}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "97": {
+          "Ident": "StiText",
+          "Name": "Text102",
+          "Guid": "804dff5d4b0f4858b46a6b38bcf82ceb",
+          "ClientRectangle": "350,680,130,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P5Paid != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P5Paid}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "98": {
+          "Ident": "StiText",
+          "Name": "Text103",
+          "Guid": "3592d571122b490f9d502dc8ca98a658",
+          "ClientRectangle": "240,680,110,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P5Debt != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P5Debt}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "99": {
+          "Ident": "StiText",
+          "Name": "Text104",
+          "Guid": "45ac906626ae48dd83fe1eba91421b91",
+          "ClientRectangle": "140,680,100,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P5PaymentType!= '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P5PaymentType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "100": {
+          "Ident": "StiText",
+          "Name": "Text105",
+          "Guid": "ce0fd8bd69c948dd8b73c853c978e926",
+          "ClientRectangle": "0,680,140,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P5Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P5DateOfPayment}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "101": {
+          "Ident": "StiText",
+          "Name": "Text106",
+          "Guid": "a66d5be3f898420a9d536aa6ab5de52d",
+          "ClientRectangle": "670,710,80,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P6Type != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P6Type}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "102": {
+          "Ident": "StiText",
+          "Name": "Text107",
+          "Guid": "5fcb64d28d6e414a849fb83038ca78d0",
+          "ClientRectangle": "590,710,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P6Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P6Date}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "103": {
+          "Ident": "StiText",
+          "Name": "Text108",
+          "Guid": "fda1f3498f0c46dd885564b9b25e16e7",
+          "ClientRectangle": "480,710,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P6Amount != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P6Amount}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "104": {
+          "Ident": "StiText",
+          "Name": "Text109",
+          "Guid": "de8f42cd2a6e4e529d19c4c7585a2f85",
+          "ClientRectangle": "350,710,130,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P6Paid != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P6Paid}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "105": {
+          "Ident": "StiText",
+          "Name": "Text110",
+          "Guid": "a14a33be45db4a94b8022b181f90f467",
+          "ClientRectangle": "240,710,110,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P6Debt != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P6Debt}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "106": {
+          "Ident": "StiText",
+          "Name": "Text111",
+          "Guid": "79f865f9a054484cae17214afad2588e",
+          "ClientRectangle": "140,710,100,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P6PaymentType!= '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P6PaymentType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "107": {
+          "Ident": "StiText",
+          "Name": "Text116",
+          "Guid": "44a3a264f4784bb695d6adfec2c0fc53",
+          "ClientRectangle": "0,710,140,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P6Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P6DateOfPayment}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "108": {
+          "Ident": "StiText",
+          "Name": "Text117",
+          "Guid": "0ebb48a065bb41ddbc121f67f59bb383",
+          "ClientRectangle": "670,740,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P7Type != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P7Type}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "109": {
+          "Ident": "StiText",
+          "Name": "Text118",
+          "Guid": "b484c8c6f8394e1a8a19b686743654ab",
+          "ClientRectangle": "590,740,80,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P7Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P7Date}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "110": {
+          "Ident": "StiText",
+          "Name": "Text119",
+          "Guid": "675b6068115245028d0ecc392e53f7c5",
+          "ClientRectangle": "480,740,110,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P7Amount != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P7Amount}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "111": {
+          "Ident": "StiText",
+          "Name": "Text120",
+          "Guid": "5038f118de984598b5119db8ab493a2b",
+          "ClientRectangle": "350,740,130,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P7Paid != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P7Paid}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "112": {
+          "Ident": "StiText",
+          "Name": "Text121",
+          "Guid": "ee27fe5468014dfe8f5610bdc6f08868",
+          "ClientRectangle": "240,740,110,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P7Debt != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P7Debt}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "113": {
+          "Ident": "StiText",
+          "Name": "Text122",
+          "Guid": "f2403dd75a43495eb3fa8ecf53783799",
+          "ClientRectangle": "140,740,100,30",
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P7PaymentType!= '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P7PaymentType}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "114": {
+          "Ident": "StiText",
+          "Name": "Text123",
+          "Guid": "da1cbf52a17c4f90a820cf190d7b4b9d",
+          "ClientRectangle": "0,740,140,30",
+          "Enabled": false,
+          "UseParentStyles": true,
+          "Expressions": {
+            "0": {
+              "Name": "Enabled",
+              "Expression": "{P7Date != '-'}"
+            }
+          },
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "{P7DateOfPayment}"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": "IRANSansX DemiBold;10;;",
+          "Border": "All;;2;;;;;solid:0,0,0",
+          "Brush": "empty",
+          "TextBrush": "solid:Black",
+          "Margins": {
+            "Left": 3.0,
+            "Right": 3.0,
+            "Top": 3.0,
+            "Bottom": 3.0
+          },
+          "Type": "Expression"
+        },
+        "115": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive1",
           "Guid": "3eb4742cad744de3ac72a2b1f3f508b5",
@@ -1694,7 +4102,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "56": {
+        "116": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive1",
           "ClientRectangle": "750,200,0,0",
@@ -1703,7 +4111,7 @@
           },
           "ReferenceToGuid": "3eb4742cad744de3ac72a2b1f3f508b5"
         },
-        "57": {
+        "117": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive1",
           "ClientRectangle": "0,170,0,0",
@@ -1712,7 +4120,7 @@
           },
           "ReferenceToGuid": "3eb4742cad744de3ac72a2b1f3f508b5"
         },
-        "58": {
+        "118": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive3",
           "Guid": "6dfcb50e3ded4d07b8cb04828acde8b0",
@@ -1721,7 +4129,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "59": {
+        "119": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive3",
           "ClientRectangle": "470,200,0,0",
@@ -1730,7 +4138,7 @@
           },
           "ReferenceToGuid": "6dfcb50e3ded4d07b8cb04828acde8b0"
         },
-        "60": {
+        "120": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive3",
           "ClientRectangle": "750,230,0,0",
@@ -1739,7 +4147,7 @@
           },
           "ReferenceToGuid": "6dfcb50e3ded4d07b8cb04828acde8b0"
         },
-        "61": {
+        "121": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive4",
           "Guid": "bde4fc5cb1b74786a4c87cc54e504d3e",
@@ -1748,7 +4156,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "62": {
+        "122": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive4",
           "ClientRectangle": "300,200,0,0",
@@ -1757,7 +4165,7 @@
           },
           "ReferenceToGuid": "bde4fc5cb1b74786a4c87cc54e504d3e"
         },
-        "63": {
+        "123": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive4",
           "ClientRectangle": "470,230,0,0",
@@ -1766,7 +4174,7 @@
           },
           "ReferenceToGuid": "bde4fc5cb1b74786a4c87cc54e504d3e"
         },
-        "64": {
+        "124": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive5",
           "Guid": "f228e384ea9f4ba995d8522f58cc9e78",
@@ -1775,7 +4183,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "65": {
+        "125": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive5",
           "ClientRectangle": "0,200,0,0",
@@ -1784,7 +4192,7 @@
           },
           "ReferenceToGuid": "f228e384ea9f4ba995d8522f58cc9e78"
         },
-        "66": {
+        "126": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive5",
           "ClientRectangle": "300,230,0,0",
@@ -1793,7 +4201,7 @@
           },
           "ReferenceToGuid": "f228e384ea9f4ba995d8522f58cc9e78"
         },
-        "67": {
+        "127": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive7",
           "Guid": "4d3bf175aad141d9ac4be1d531439e35",
@@ -1802,7 +4210,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "68": {
+        "128": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive7",
           "ClientRectangle": "200,230,0,0",
@@ -1811,7 +4219,7 @@
           },
           "ReferenceToGuid": "4d3bf175aad141d9ac4be1d531439e35"
         },
-        "69": {
+        "129": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive7",
           "ClientRectangle": "750,260,0,0",
@@ -1820,7 +4228,7 @@
           },
           "ReferenceToGuid": "4d3bf175aad141d9ac4be1d531439e35"
         },
-        "70": {
+        "130": {
           "Ident": "StiRectanglePrimitive",
           "Name": "RectanglePrimitive8",
           "Guid": "0502c62b53b0444cb51a5463f97ff5e2",
@@ -1829,7 +4237,7 @@
             "Ident": "StiInteraction"
           }
         },
-        "71": {
+        "131": {
           "Ident": "StiStartPointPrimitive",
           "Name": "StartPointPrimitive8",
           "ClientRectangle": "0,230,0,0",
@@ -1838,7 +4246,7 @@
           },
           "ReferenceToGuid": "0502c62b53b0444cb51a5463f97ff5e2"
         },
-        "72": {
+        "132": {
           "Ident": "StiEndPointPrimitive",
           "Name": "EndPointPrimitive8",
           "ClientRectangle": "200,260,0,0",

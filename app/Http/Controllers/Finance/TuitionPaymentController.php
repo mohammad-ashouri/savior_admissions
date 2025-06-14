@@ -942,6 +942,14 @@ class TuitionPaymentController extends Controller
         $tuitionInvoiceDetailsPayment->seconder = auth()->user()->id;
         $tuitionInvoiceDetailsPayment->save();
 
+        $sumOfAllCustomPayments = $tuitionInvoiceDetails->customPayments->where('status', 1)->pluck('amount')->sum();
+
+        if ($sumOfAllCustomPayments == $tuitionInvoiceDetails->amount) {
+            $tuitionInvoiceDetails->is_paid = 1;
+            $tuitionInvoiceDetails->date_of_payment = now();
+            $tuitionInvoiceDetails->payment_method = 3;
+            $tuitionInvoiceDetails->save();
+        }
         return back()->with('success', 'Tuition Invoice Details Status Changed Successfully');
     }
 }

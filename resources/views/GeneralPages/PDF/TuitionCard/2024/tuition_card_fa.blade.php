@@ -641,13 +641,13 @@
                                         قسط چهارم
                                         @break
                                     @case('Seven Installment - Installment 5')
-                                        قسط چهارم
+                                        قسط پنجم
                                         @break
                                     @case('Seven Installment - Installment 6')
-                                        قسط چهارم
+                                        قسط ششم
                                         @break
                                     @case('Seven Installment - Installment 7')
-                                        قسط چهارم
+                                        قسط هفتم
                                         @break
                                     @case('Full Payment With Advance - Installment')
                                         پرداخت دوم
