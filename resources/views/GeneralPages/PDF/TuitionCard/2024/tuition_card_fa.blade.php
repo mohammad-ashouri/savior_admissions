@@ -20,8 +20,8 @@
             break;
     }
 
+    $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
     if (in_array($applianceStatus->academic_year,[1,2,3])){
-        $evidencesInfo=json_decode($applianceStatus->evidences->informations,true);
         if (isset($evidencesInfo['foreign_school']) and $evidencesInfo['foreign_school'] == 'Yes') {
             $foreignSchool = true;
         } else {
