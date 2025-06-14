@@ -232,7 +232,6 @@ class TuitionCardFa extends Component
     public function getTuitionInvoices()
     {
         $data = [];
-        $paidAmount = $totalAmount = $debt = 0;
 
         foreach ($this->student_appliance_status->tuitionInvoices->invoiceDetails as $key => $detail) {
             // Decode the JSON description
@@ -293,8 +292,24 @@ class TuitionCardFa extends Component
             if ($detail->is_paid == 0) {
                 $paid_amount = $detail->customPayments->where('status', 1)->pluck('amount')->sum();
                 $debt = $detail->amount - $paid_amount;
+                $this->paid_amount += $paid_amount;
+                $this->debt += $debt;
+
+                $givenDate = Jalalian::fromFormat('Y/m/d', $formattedJalaliDate)->toCarbon();
+                $today = Jalalian::now()->toCarbon();
+                if ($paid_amount != 0) {
+                    $payment_status = 'پرداخت ناقص';
+                }
+
+                if ($givenDate->lt($today) or $givenDate->eq($today)) {
+                    $payment_status = 'سررسید شده';
+                } else {
+                    $payment_status = 'پرداخت نشده';
+                }
             } elseif ($detail->is_paid == 1) {
                 $paid_amount = $detail->amount;
+                $this->paid_amount += $paid_amount;
+                $payment_status = 'پرداخت شده';
             }
 
             // Prepare the detail information
@@ -303,6 +318,7 @@ class TuitionCardFa extends Component
                 'due_date' => $formattedJalaliDate,
                 'amount' => number_format($detail->amount),
                 'payment_method' => $this->translatePaymentMethod($detail->payment_method),
+                'payment_status' => $payment_status,
                 'date_of_payment' => $detail->is_paid == 1 ? $detail->jalali_date_of_payment : '-',
                 'paid' => number_format($paid_amount),
                 'debt' => number_format($debt),
