@@ -647,7 +647,7 @@ class TuitionPaymentController extends Controller
                 $tuitionInvoiceDetails->is_paid = 3;
                 $tuitionInvoiceDetails->save();
 
-                if (! str_contains(json_decode($tuitionInvoiceDetails['description'], true)['tuition_type'], 'Installment Advance') and  json_decode($tuitionInvoiceDetails['description'], true)['tuition_type'] == 'Full Payment With Advance - Installment') {
+                if (! str_contains(json_decode($tuitionInvoiceDetails['description'], true)['tuition_type'], 'Installment Advance') or json_decode($tuitionInvoiceDetails['description'], true)['tuition_type'] == 'Full Payment With Advance - Installment') {
                     $newInvoice = $originalInvoice->replicate();
                     $newInvoice->payment_method = null;
                     $newInvoice->date_of_payment = null;
