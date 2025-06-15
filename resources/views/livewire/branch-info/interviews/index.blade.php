@@ -237,7 +237,7 @@
                                                                         Submit Absence
                                                                     </button>
                                                                 @endif
-                                                                @if($studentApplianceStatus->interview_status=='Pending Interview' or $studentApplianceStatus->interview_status=='Pending For Principal Confirmation')
+                                                                @if($studentApplianceStatus->tuition_payment_status=='Pending')
                                                                     @can('interview-edit')
                                                                         @if($interview->firstInterviewerInfo->id==auth()->user()->id and $interview->interview->where('interview_type',1)->first())
                                                                             <a href="{{ route('interviews.edit',['form'=>'i1','id'=>$interview->id]) }}"
