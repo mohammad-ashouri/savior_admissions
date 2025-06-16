@@ -40,8 +40,6 @@ use App\Livewire\Documents\Show as ShowUserDocuments;
 use App\Livewire\Documents\UploadDocumentsParent\Create as UploadDocumentsParentCreate;
 use App\Livewire\Documents\UploadDocumentsParent\Edit as UploadDocumentsParentEdit;
 use App\Livewire\Documents\UploadDocumentsParent\Show as UploadDocumentsParentShow;
-use App\Livewire\Report\StimulSoft;
-use App\Livewire\Report\TuitionCard\Single\Fa;
 use App\Livewire\Temp\ReInsertion;
 use App\Livewire\Tuition\TuitionInvoices\EditApplianceInvoices;
 use App\Livewire\Users\PendingUserApprovals;

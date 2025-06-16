@@ -1,4 +1,4 @@
-@php use App\Models\Catalogs\PaymentMethod;use App\Models\Document;use Morilog\Jalali\Jalalian; @endphp
+@php use App\Models\Catalogs\PaymentMethod;use App\Models\Document;use Illuminate\Support\Facades\Storage;use Morilog\Jalali\Jalalian; @endphp
 @extends('Layouts.panel')
 
 @section('content')
@@ -170,7 +170,7 @@
                                                     @if(substr($file,-4)=='.pdf')
                                                         <div class="flex justify-center items-center">
                                                             <a target="_blank"
-                                                               href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}">
+                                                               href="{{ Storage::url($file) }}">
                                                                 <img class="pdf-documents-icons">
                                                             </a>
                                                         </div>
@@ -178,13 +178,14 @@
                                                         <div class="cursor-pointer img-hover-zoom img-hover-zoom--xyz "
                                                         >
                                                             <div
-                                                                    class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
-                                                                <a href="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
+                                                                class="cursor-pointer img-hover-zoom img-hover-zoom--xyz my-gallery">
+
+                                                                <a href="{{ Storage::url($file) }}"
                                                                    data-pswp-width="1669"
                                                                    data-pswp-height="1500">
                                                                     <img
-                                                                            src="{{ env('APP_URL').'/'. str_replace( 'public','storage', $file) }}"
-                                                                            alt="Document Not Found!"/>
+                                                                        src="{{ Storage::url($file) }}"
+                                                                        alt="Document Not Found!"/>
                                                                 </a>
                                                             </div>
                                                         </div>
@@ -231,11 +232,11 @@
                                             <div class="flex">
                                                 @if(auth()->user()->hasRole(['Financial Manager','Super Admin']))
                                                     <textarea
-                                                            id="description"
-                                                            rows="5"
-                                                            name="description"
-                                                            placeholder="Enter description"
-                                                            class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price">{{ $tuitionInvoiceDetails->financial_manager_description }}</textarea>
+                                                        id="description"
+                                                        rows="5"
+                                                        name="description"
+                                                        placeholder="Enter description"
+                                                        class=" rounded-s-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-20 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 price">{{ $tuitionInvoiceDetails->financial_manager_description }}</textarea>
 
                                                 @else
                                                     <p class="font-bold mb-3">{{ $tuitionInvoiceDetails->financial_manager_description }}</p>
@@ -279,7 +280,7 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 datatable">
                             <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="text-center">
                                     #
@@ -402,8 +403,8 @@
                                                                    value="{{$customPaymentInvoice->id}}"
                                                                    name="invoice_id">
                                                             <button
-                                                                    type="submit"
-                                                                    class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
+                                                                type="submit"
+                                                                class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline">
                                                                 <i class="las la-eye mt-1 mr-1"></i>
                                                                 Confirm
                                                             </button>
