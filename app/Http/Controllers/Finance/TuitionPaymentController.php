@@ -927,6 +927,9 @@ class TuitionPaymentController extends Controller
             ])
                 ->where('id', $tuitionInvoiceDetailsPayment->invoice_details_id)
                 ->firstOrFail();
+        } elseif (auth()->user()->hasRole('Super Admin')) {
+            $tuitionInvoiceDetails = TuitionInvoiceDetails::where('id', $tuitionInvoiceDetailsPayment->invoice_details_id)
+                ->firstOrFail();
         } elseif (! auth()->user()->hasRole('Super Admin')) {
             abort(403);
         }
