@@ -3,6 +3,7 @@
 namespace App\Livewire\Tuition\TuitionInvoices;
 
 use App\Models\Branch\ApplicationTiming;
+use App\Models\Branch\Evidence;
 use App\Models\Branch\Interview;
 use App\Models\Branch\StudentApplianceStatus;
 use App\Models\Catalogs\AcademicYear;
@@ -11,6 +12,7 @@ use App\Models\Finance\GrantedFamilyDiscount;
 use App\Models\Finance\TuitionInvoiceDetails;
 use App\Models\Finance\TuitionInvoiceEditHistory;
 use App\Models\Finance\TuitionInvoices;
+use App\Models\QueryLog;
 use App\Models\StudentInformation;
 use App\Models\UserAccessInformation;
 use Livewire\Attributes\Validate;
@@ -93,6 +95,12 @@ class EditApplianceInvoices extends Component
      * @var int
      */
     public $family_discount = 0;
+
+    /**
+     * Get foreign school from evidences or interviews form
+     * @var string
+     */
+    public string $foreign_school;
 
     public function changeFamilyDiscount()
     {
@@ -218,6 +226,8 @@ class EditApplianceInvoices extends Component
         if (in_array($this->appliance_status->academic_year, [1, 2, 3])) {
             $this->family_discount = GrantedFamilyDiscount::where('appliance_id', $appliance_id)->first()->discount_price;
         }
+
+        $this->setForeignSchool();
         $this->loadDiscounts();
     }
 
@@ -342,5 +352,57 @@ class EditApplianceInvoices extends Component
         session()->flash('success', 'Invoice file changed successfully');
         $this->dispatch('close-change-invoice-file-modal');
         $this->resetFileModalValues();
+    }
+
+    /**
+     * Set foreign school after mount the component
+     * @return void
+     */
+    public function setForeignSchool(): void
+    {
+        if (in_array($this->appliance_status->academic_year, [1, 2, 3])) {
+            $this->family_discount = GrantedFamilyDiscount::where('appliance_id', $this->appliance_status->id)->first()->discount_price;
+            $evidence = Evidence::where('appliance_id', $this->appliance_status->id)->first()->informations;
+            $evidence_informations = json_decode($evidence, true);
+            if (isset($evidence_informations['foreign_school']) and $evidence_informations['foreign_school'] == 'Yes') {
+                $this->foreign_school = 'Yes';
+            } else {
+                $this->foreign_school = 'No';
+            }
+        } else {
+            if (isset($interview_form['foreign_school']) and $interview_form['foreign_school'] == 'Yes') {
+                $this->foreign_school = 'Yes';
+            } else {
+                $this->foreign_school = 'No';
+            }
+        }
+    }
+
+    /**
+     * Change foreign school status from interviews or evidences form
+     * @return void
+     */
+    public function changeForeignSchool()
+    {
+        if (in_array($this->appliance_status->academic_year, [1, 2, 3])) {
+            $evidence = Evidence::where('appliance_id', $this->appliance_status->id)->first();
+            $evidence_informations = json_decode($evidence->informations, true);
+            $evidence_informations['foreign_school'] = $this->foreign_school;
+            $evidence->informations = json_encode($evidence_informations);
+            $evidence->save();
+
+            QueryLog::create([
+                'type'=>'change_foreign_school',
+                'title'=>'change foreign school from evidence',
+                'from'=>'change foreign school from evidence',
+            ]);
+        } else {
+            $interview_form = json_decode($this->interview->interview_form, true);
+            $interview_form['foreign_school'] = $this->foreign_school;
+            $this->interview->interview_form = json_encode($interview_form);
+            $this->interview->save();
+        }
+
+        $this->loadDiscounts();
     }
 }

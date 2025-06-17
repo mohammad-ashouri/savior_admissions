@@ -44,8 +44,8 @@
                     <span class="flex-grow">{{ $value }}</span>
                 </div>
                 @endsession
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="flex p-2 relative overflow-x-auto shadow-md sm:rounded-lg bg-white">
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="flex p-2 relative align-middle items-center overflow-x-auto shadow-md sm:rounded-lg bg-white">
                         <h4 class="text-xl font-semibold ">Tuition Type:
                             @switch($tuition_invoice_details[0]->tuitionInvoiceDetails->payment_type)
                                 @case('1')
@@ -71,8 +71,8 @@
                     </div>
                     @if(in_array($this->appliance_status->academic_year,[1,2,3]))
                         <div
-                            class="flex p-2 relative items-center overflow-x-auto shadow-md sm:rounded-lg bg-white gap-2">
-                            <h4 class="text-xl font-semibold ">Family Discount:</h4>
+                            class="flex p-2 relative items-center text-center overflow-x-auto shadow-md sm:rounded-lg bg-white gap-2">
+                            <h4 class="text-xl font-semibold text-nowrap">Family Discount:</h4>
                             <input type="number" wire:model="family_discount"
                                    class="bg-gray-50 border mr-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-80 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                    required>IRR
@@ -97,6 +97,33 @@
                             >Please Wait...</p>
                         </div>
                     @endif
+                    <div
+                        class="flex p-2 relative items-center text-center overflow-x-auto shadow-md sm:rounded-lg bg-white gap-2">
+                        <h4 class="text-xl font-semibold text-nowrap">Foreign School:</h4>
+                        <select wire:model="foreign_school"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-96 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        <button
+                            wire:click="changeForeignSchool"
+                            wire:target="changeForeignSchool"
+                            wire:loading.remove
+                            type="button"
+                            class="min-w-max inline-flex font-medium text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300  rounded-lg text-sm px-3 py-2.5 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800 hover:underline edit-tuition-invoice">
+                            <div class="text-center">
+                                <i
+                                    class="las la-pen "
+                                    style="font-size: 20px"></i>
+                                Change
+                            </div>
+                        </button>
+                        <p
+                            class="text-blue-800 font-bold"
+                            wire:loading
+                            wire:target="changeForeignSchool"
+                        >Please Wait...</p>
+                    </div>
                 </div>
 
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
